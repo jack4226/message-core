@@ -29,7 +29,7 @@ import com.legacytojava.message.exception.DataValidationException;
 @ContextConfiguration(locations={"/spring-mysql_ds-config.xml", "/spring-bo_jms-config.xml", "/spring-dao-config.xml"})
 @TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
 @Transactional
-public final class RuleEngineTest {
+public class RuleEngineTest {
 	static final Logger logger = Logger.getLogger(RuleEngineTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
