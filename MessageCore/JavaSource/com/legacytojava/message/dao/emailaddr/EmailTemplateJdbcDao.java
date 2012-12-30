@@ -8,6 +8,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -16,7 +17,6 @@ import com.legacytojava.message.constant.MsgDataType;
 import com.legacytojava.message.dao.action.MsgDataTypeDao;
 import com.legacytojava.message.dao.action.MsgDataTypeJdbcDao;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
-import com.legacytojava.message.dao.client.ReloadFlagsJdbcDao;
 import com.legacytojava.message.util.BlobUtil;
 import com.legacytojava.message.vo.action.MsgDataTypeVo;
 import com.legacytojava.message.vo.emailaddr.EmailTemplateVo;
@@ -263,12 +263,9 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 		getReloadFlagsDao().updateTemplateReloadFlag();
 	}
 
+	@Autowired
 	private ReloadFlagsDao reloadFlagsDao;
 	private synchronized ReloadFlagsDao getReloadFlagsDao() {
-		if (reloadFlagsDao == null) {
-			reloadFlagsDao = new ReloadFlagsJdbcDao();
-			((ReloadFlagsJdbcDao) reloadFlagsDao).setDataSource(dataSource);
-		}
 		return reloadFlagsDao;
 	}
 	

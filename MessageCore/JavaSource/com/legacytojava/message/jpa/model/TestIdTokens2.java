@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import org.eclipse.persistence.jpa.PersistenceProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,8 @@ public class TestIdTokens2 extends TestCase {
 	@Test
 	public void testIdTokens() {
 		// load entity manager factory by spring as a spring bean
-		EntityManagerFactory emf = (EntityManagerFactory) JbMain.getBatchAppContext().getBean("entityManagerFactory");
+		//EntityManagerFactory emf = (EntityManagerFactory) JbMain.getBatchAppContext().getBean("entityManagerFactory");
+		EntityManagerFactory emf = JbMain.getAppContext().getBean(LocalContainerEntityManagerFactoryBean.class).getObject();
 		EntityManager entityManager = emf.createEntityManager();
 		// Read the existing entries and write to console
 		Query q = entityManager.createQuery("select t from IdTokens t");

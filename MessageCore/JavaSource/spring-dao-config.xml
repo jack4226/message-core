@@ -4,6 +4,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -17,12 +18,41 @@
 	<context:property-placeholder ignore-resource-not-found="true" 
 		location="classpath:/META-INF/message-core.${env:dev}.prop,classpath:/META-INF/message-core-test.properties"/>
 	
-	<bean id="idTokensDao"
+	<!-- Spring JPA Entity Manager Factory -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
+	    <property name="dataSource" ref="mysqlDataSource" />
+	    <property name="persistenceUnitName" value="message_core" />
+	    <property name="jpaDialect" ref="jpaDialect" />
+	    <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	    <property name="loadTimeWeaver">
+	        <bean class="com.legacytojava.message.jpa.model.ClassCastClassloaderWeaver" />
+	    </property>
+	</bean>
+
+	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
+	
+	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter"
+    	p:databasePlatform="org.eclipse.persistence.platform.database.MySQLPlatform"
+    	p:showSql="true" p:generateDdl="false" />
+
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	<bean id="jpaTemplate" class="org.springframework.orm.jpa.JpaTemplate">
+	    <property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+	<!-- bean id="jpaAdministratorDAO"
+	    class="login.JpaAdministratorDAO">
+	    <property name="jpaTemplate" ref="jpaTemplate"/>
+	</bean -->
+
+
+	<!-- bean id="idTokensDao"
 		class="com.legacytojava.message.dao.idtokens.IdTokensJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 
 	<bean id="emailAddrDao" scope="singleton"
 		class="com.legacytojava.message.dao.emailaddr.EmailAddrJdbcDao">
@@ -71,19 +101,19 @@
 		<property name="dataSource" ref="mysqlDataSource"/>
 	</bean>
 	
-	<bean id="clientDao" scope="singleton"
+	<!-- bean id="clientDao" scope="singleton"
 		class="com.legacytojava.message.dao.client.ClientJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
-	<bean id="reloadFlagsDao" scope="singleton"
+	<!-- bean id="reloadFlagsDao" scope="singleton"
 		class="com.legacytojava.message.dao.client.ReloadFlagsJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
 	<bean id="customerDao" scope="singleton"
 		class="com.legacytojava.message.dao.customer.CustomerJdbcDao">
@@ -129,10 +159,10 @@
 		<property name="dataSource" ref="mysqlDataSource"/>
 	</bean>
 
-	<bean id="clientVariableDao" scope="singleton"
+	<!-- bean id="clientVariableDao" scope="singleton"
 		class="com.legacytojava.message.dao.template.ClientVariableJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
 	<bean id="templateVariableDao" scope="singleton"
 		class="com.legacytojava.message.dao.template.TemplateVariableJdbcDao">

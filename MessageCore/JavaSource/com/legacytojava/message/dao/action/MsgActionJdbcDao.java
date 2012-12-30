@@ -8,12 +8,12 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
-import com.legacytojava.message.dao.client.ReloadFlagsJdbcDao;
 import com.legacytojava.message.vo.action.MsgActionVo;
 
 public class MsgActionJdbcDao implements MsgActionDao {
@@ -288,12 +288,9 @@ public class MsgActionJdbcDao implements MsgActionDao {
 		getReloadFlagsDao().updateActionReloadFlag();
 	}
 
+	@Autowired
 	private ReloadFlagsDao reloadFlagsDao;
 	private synchronized ReloadFlagsDao getReloadFlagsDao() {
-		if (reloadFlagsDao == null) {
-			reloadFlagsDao = new ReloadFlagsJdbcDao();
-			((ReloadFlagsJdbcDao) reloadFlagsDao).setDataSource(dataSource);
-		}
 		return reloadFlagsDao;
 	}
 	

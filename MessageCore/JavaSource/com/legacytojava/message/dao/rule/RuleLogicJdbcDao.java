@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -15,7 +16,6 @@ import com.legacytojava.message.bo.rule.RuleBase;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
-import com.legacytojava.message.dao.client.ReloadFlagsJdbcDao;
 import com.legacytojava.message.vo.rule.RuleLogicVo;
 
 public class RuleLogicJdbcDao implements RuleLogicDao {
@@ -230,7 +230,6 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<String> getBuiltinRuleNames4Web() {
 		String sql = 
 			"select distinct(RuleName) " +
@@ -246,7 +245,6 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<String> getCustomRuleNames4Web() {
 		String sql = 
 			"select distinct(RuleName) " +
@@ -366,12 +364,9 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		getReloadFlagsDao().updateRuleReloadFlag();
 	}
 
+	@Autowired
 	private ReloadFlagsDao reloadFlagsDao;
 	private synchronized ReloadFlagsDao getReloadFlagsDao() {
-		if (reloadFlagsDao == null) {
-			reloadFlagsDao = new ReloadFlagsJdbcDao();
-			((ReloadFlagsJdbcDao) reloadFlagsDao).setDataSource(dataSource);
-		}
 		return reloadFlagsDao;
 	}
 	

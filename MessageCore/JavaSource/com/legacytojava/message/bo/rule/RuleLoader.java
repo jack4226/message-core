@@ -421,6 +421,7 @@ public final class RuleLoader implements java.io.Serializable {
 		return returnPath;
 	}
 	
+	// called from constructor, could not be Autowired
 	private ClientDao clientDao = null;
 	private ClientDao getClientDao() {
 		if (clientDao == null) {

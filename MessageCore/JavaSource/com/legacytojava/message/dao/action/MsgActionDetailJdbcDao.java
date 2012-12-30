@@ -8,11 +8,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
-import com.legacytojava.message.dao.client.ReloadFlagsJdbcDao;
 import com.legacytojava.message.vo.action.MsgActionDetailVo;
 
 public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
@@ -79,7 +79,6 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<String> getActionIds() {
 		String sql = 
 			"select distinct(ActionId) from MsgActionDetail " +
@@ -182,12 +181,9 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 		getReloadFlagsDao().updateActionReloadFlag();
 	}
 
+	@Autowired
 	private ReloadFlagsDao reloadFlagsDao;
 	private synchronized ReloadFlagsDao getReloadFlagsDao() {
-		if (reloadFlagsDao == null) {
-			reloadFlagsDao = new ReloadFlagsJdbcDao();
-			((ReloadFlagsJdbcDao) reloadFlagsDao).setDataSource(dataSource);
-		}
 		return reloadFlagsDao;
 	}
 	

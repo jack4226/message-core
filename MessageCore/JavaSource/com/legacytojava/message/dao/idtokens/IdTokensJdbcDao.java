@@ -8,18 +8,29 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.IdTokensVo;
 
+@Component
 public class IdTokensJdbcDao implements IdTokensDao {
 	
-	private DataSource dataSource;
-	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private DataSource mysqlDataSource;
+	private JdbcTemplate jdbcTemplate = null;
 	
 	private static final Hashtable<String, Object> cache = new Hashtable<String, Object>();
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class IdTokensMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -49,7 +60,7 @@ public class IdTokensJdbcDao implements IdTokensDao {
 		if (!cache.containsKey(clientId)) {
 			String sql = "select * from IdTokens where clientId=?";
 			Object[] parms = new Object[] {clientId};
-			List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new IdTokensMapper());
+			List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new IdTokensMapper());
 			if (list.size()>0) {
 				cache.put(clientId, list.get(0));
 			}
@@ -63,7 +74,7 @@ public class IdTokensJdbcDao implements IdTokensDao {
 	@SuppressWarnings("unchecked")
 	public List<IdTokensVo> getAll() {
 		String sql = "select * from IdTokens order by clientId";
-		List<IdTokensVo> list = (List<IdTokensVo>)jdbcTemplate.query(sql, new IdTokensMapper());
+		List<IdTokensVo> list = (List<IdTokensVo>)getJdbcTemplate().query(sql, new IdTokensMapper());
 		return list;
 	}
 	
@@ -96,7 +107,7 @@ public class IdTokensJdbcDao implements IdTokensDao {
 		
 		idTokensVo.setOrigUpdtTime(idTokensVo.getUpdtTime());
 		synchronized (cache) {
-			int rowsUpadted = jdbcTemplate.update(sql, parms);
+			int rowsUpadted = getJdbcTemplate().update(sql, parms);
 			removeFromCache(idTokensVo.getClientId());
 			return rowsUpadted;
 		}
@@ -106,7 +117,7 @@ public class IdTokensJdbcDao implements IdTokensDao {
 		String sql = "delete from IdTokens where clientId=?";
 		Object[] parms = new Object[] {clientId};
 		synchronized (cache) {
-			int rowsDeleted = jdbcTemplate.update(sql, parms);
+			int rowsDeleted = getJdbcTemplate().update(sql, parms);
 			removeFromCache(clientId);
 			return rowsDeleted;
 		}
@@ -143,7 +154,7 @@ public class IdTokensJdbcDao implements IdTokensDao {
 		
 		idTokensVo.setOrigUpdtTime(idTokensVo.getUpdtTime());
 		synchronized (cache) {
-			int rowsInserted = jdbcTemplate.update(sql, parms);
+			int rowsInserted = getJdbcTemplate().update(sql, parms);
 			idTokensVo.setRowId(retrieveRowId());
 			removeFromCache(idTokensVo.getClientId());
 			return rowsInserted;
@@ -157,16 +168,7 @@ public class IdTokensJdbcDao implements IdTokensDao {
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {

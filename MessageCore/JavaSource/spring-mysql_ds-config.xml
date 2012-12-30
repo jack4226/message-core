@@ -23,33 +23,6 @@
 	<!-- Spring JPA transaction manager -->
 	<bean id="mysqlTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" p:entityManagerFactory-ref="entityManagerFactory" />
 
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
-	    <property name="dataSource" ref="mysqlDataSource" />
-	    <property name="persistenceUnitName" value="message_core" />
-	    <property name="jpaDialect" ref="jpaDialect" />
-	    <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
-	    <property name="loadTimeWeaver">
-	        <bean class="com.legacytojava.message.jpa.model.ClassCastClassloaderWeaver" />
-	    </property>
-	</bean>
-
-	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
-	
-	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter"
-    	p:databasePlatform="org.eclipse.persistence.platform.database.MySQLPlatform"
-    	p:showSql="true" p:generateDdl="false" />
-
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-
-	<bean id="jpaTemplate" class="org.springframework.orm.jpa.JpaTemplate">
-	    <property name="entityManagerFactory" ref="entityManagerFactory"/>
-	</bean>
-	<!-- bean id="jpaAdministratorDAO"
-	    class="login.JpaAdministratorDAO">
-	    <property name="jpaTemplate" ref="jpaTemplate"/>
-	</bean -->
-
 	<!-- Data Sources -->
 	<bean id="mysqlDataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">

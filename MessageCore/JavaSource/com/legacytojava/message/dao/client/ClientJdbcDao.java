@@ -10,28 +10,38 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.jbatch.common.TimestampUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.constant.VariableType;
 import com.legacytojava.message.dao.template.ClientVariableDao;
-import com.legacytojava.message.dao.template.ClientVariableJdbcDao;
 import com.legacytojava.message.util.BlobUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.ClientVo;
 import com.legacytojava.message.vo.template.ClientVariableVo;
 
+@Component(value="clientDao")
 public class ClientJdbcDao implements ClientDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	private java.util.Date lastFetchTime = new java.util.Date();
 	
 	final static Map<String, ClientVo> clientCache = new HashMap<String, ClientVo>();
-		
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class ClientMapper implements RowMapper {
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ClientVo clientVo = new ClientVo();
@@ -88,7 +98,7 @@ public class ClientJdbcDao implements ClientDao {
 		if (!clientCache.containsKey(clientId)) {
 			String sql = "select * from Clients where clientid=?";
 			Object[] parms = new Object[] { clientId };
-			List<?> list = jdbcTemplate.query(sql, parms, new ClientMapper());
+			List<?> list = getJdbcTemplate().query(sql, parms, new ClientMapper());
 			if (list.size() > 0) {
 				ClientVo clientVo = (ClientVo) list.get(0);
 				synchronized (clientCache) {
@@ -102,7 +112,7 @@ public class ClientJdbcDao implements ClientDao {
 	public ClientVo getByDomainName(String domainName) {
 		String sql = "select * from Clients where DomainName=?";
 		Object[] parms = new Object[] { domainName };
-		List<?> list = jdbcTemplate.query(sql, parms, new ClientMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new ClientMapper());
 		if (list.size() > 0) {
 			return (ClientVo) list.get(0);
 		}
@@ -117,7 +127,7 @@ public class ClientJdbcDao implements ClientDao {
 				"from Clients order by clientId";
 		
 		@SuppressWarnings("unchecked")
-		List<ClientVo> list = (List<ClientVo>)jdbcTemplate.query(sql, new ClientMapper());
+		List<ClientVo> list = (List<ClientVo>)getJdbcTemplate().query(sql, new ClientMapper());
 		return list;
 	}
 	
@@ -127,14 +137,14 @@ public class ClientJdbcDao implements ClientDao {
 				"from Clients " +
 			" order by RowId " +
 			" limit 1 ";
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(1);
-		jdbcTemplate.setMaxRows(1);
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(1);
+		getJdbcTemplate().setMaxRows(1);
 		@SuppressWarnings("unchecked")
-		List<ClientVo> list =  (List<ClientVo>)jdbcTemplate.query(sql, new ClientMapper());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		List<ClientVo> list =  (List<ClientVo>)getJdbcTemplate().query(sql, new ClientMapper());
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		return list;
 	}
 	
@@ -142,14 +152,14 @@ public class ClientJdbcDao implements ClientDao {
 		String sql = 
 			"select SystemId " +
 				"from Clients where ClientId='" + Constants.DEFAULT_CLIENTID + "'";
-		return (String) jdbcTemplate.queryForObject(sql, String.class);
+		return (String) getJdbcTemplate().queryForObject(sql, String.class);
 	}
 
 	public String getSystemKey() {
 		String sql = 
 			"select SystemKey " +
 				"from Clients where ClientId='" + Constants.DEFAULT_CLIENTID + "'";
-		return (String) jdbcTemplate.queryForObject(sql, String.class);
+		return (String) getJdbcTemplate().queryForObject(sql, String.class);
 	}
 
 	public synchronized int updateSystemKey(String key) {
@@ -158,7 +168,7 @@ public class ClientJdbcDao implements ClientDao {
 		String sql = "update Clients set " +
 			"SystemKey=? " +
 			" where ClientId= '" + Constants.DEFAULT_CLIENTID + "'";
-		int rowsUpdated = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpdated = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpdated;
 	}
 
@@ -232,7 +242,7 @@ public class ClientJdbcDao implements ClientDao {
 			sql += " and UpdtTime=?";
 			keys.add(clientVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		synchronized (clientCache) {
 			clientCache.remove(clientVo.getClientId()); // remove from cache
 		}
@@ -249,7 +259,7 @@ public class ClientJdbcDao implements ClientDao {
 		}
 		String sql = "delete from Clients where clientid=?";
 		Object[] parms = new Object[] {clientId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		synchronized (clientCache) {
 			clientCache.remove(clientId); // remove from cache			
 		}
@@ -329,7 +339,7 @@ public class ClientJdbcDao implements ClientDao {
 				"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
 				"?, ?, ?, ?, ?, ?, ?, ?, ? )";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		clientVo.setRowId(retrieveRowId());
 		clientVo.setOrigUpdtTime(clientVo.getUpdtTime());
 		clientVo.setOrigClientId(clientVo.getClientId());
@@ -468,38 +478,23 @@ public class ClientJdbcDao implements ClientDao {
 		getReloadFlagsDao().updateClientReloadFlag();
 	}
 	
+	@Autowired
 	private ClientVariableDao clientVariableDao = null;
 	private synchronized ClientVariableDao getClientVariableDao() {
-		if (clientVariableDao == null) {
-			clientVariableDao = new ClientVariableJdbcDao();
-			((ClientVariableJdbcDao) clientVariableDao).setDataSource(dataSource);
-		}
 		return clientVariableDao;
 	}
 	
+	@Autowired
 	private ReloadFlagsDao reloadFlagsDao;
 	private synchronized ReloadFlagsDao getReloadFlagsDao() {
-		if (reloadFlagsDao == null) {
-			reloadFlagsDao = new ReloadFlagsJdbcDao();
-			((ReloadFlagsJdbcDao) reloadFlagsDao).setDataSource(dataSource);
-		}
 		return reloadFlagsDao;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

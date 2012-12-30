@@ -8,16 +8,28 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.ReloadFlagsVo;
 
+@Component(value="reloadFlagsDao")
 public class ReloadFlagsJdbcDao implements ReloadFlagsDao {
 	protected static final Logger logger = Logger.getLogger(ReloadFlagsJdbcDao.class);
-	private DataSource dataSource;
+	
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class ReloadFlagsMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -39,7 +51,7 @@ public class ReloadFlagsJdbcDao implements ReloadFlagsDao {
 	
 	private ReloadFlagsVo selectWithRepair(int retry) {
 		String sql = "select * from ReloadFlags ";
-		List<?> list = (List<?>)jdbcTemplate.query(sql, new ReloadFlagsMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, new ReloadFlagsMapper());
 		if (list.size()>0)
 			return (ReloadFlagsVo)list.get(0);
 		else if (retry < 1) {
@@ -65,42 +77,42 @@ public class ReloadFlagsJdbcDao implements ReloadFlagsDao {
 		fields.add(vo.getTemplates());
 		fields.add(vo.getSchedules());
 
-		int rowsUpdated = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpdated = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpdated;
 	}
 	
 	public int updateClientReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Clients=Clients + 1";
-		int rows = jdbcTemplate.update(sql);
+		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
 
 	public int updateRuleReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Rules=Rules + 1";
-		int rows = jdbcTemplate.update(sql);
+		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
 
 	public int updateActionReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Actions=Actions + 1";
-		int rows = jdbcTemplate.update(sql);
+		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
 
 	public int updateTemplateReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Templates=Templates + 1";
-		int rows = jdbcTemplate.update(sql);
+		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
 
 	public int updateScheduleReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Schedules=Schedules + 1";
-		int rows = jdbcTemplate.update(sql);
+		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
 
@@ -113,16 +125,7 @@ public class ReloadFlagsJdbcDao implements ReloadFlagsDao {
 				"Schedules) " +
 				" values (" +
 				"0,0,0,0,0)";
-		int rowsInserted = jdbcTemplate.update(sql);
+		int rowsInserted = getJdbcTemplate().update(sql);
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

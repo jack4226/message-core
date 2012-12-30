@@ -9,19 +9,30 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.template.ClientVariableVo;
 
+@Component(value="clientVariableDao")
 public class ClientVariableJdbcDao implements ClientVariableDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
 	private static final HashMap<String, List<?>> currentVariablesCache = new HashMap<String, List<?>>();
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class ClientVariableMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -58,7 +69,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 			parms = new Object[] {clientId,variableName};
 		}
 		
-		List<?> list = jdbcTemplate.query(sql, parms, new ClientVariableMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new ClientVariableMapper());
 		if (list.size()>0)
 			return (ClientVariableVo)list.get(0);
 		else
@@ -82,7 +93,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 		sql += " order by startTime desc ";
 		
 		Object[] parms = keys.toArray();
-		List<?> list = jdbcTemplate.query(sql, parms, new ClientVariableMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new ClientVariableMapper());
 		if (list.size()>0)
 			return (ClientVariableVo)list.get(0);
 		else
@@ -97,7 +108,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 				" ClientVariable where variableName=? " +
 			" order by clientId, startTime asc ";
 		Object[] parms = new Object[] {variableName};
-		List<ClientVariableVo> list = (List<ClientVariableVo>)jdbcTemplate.query(sql, parms, new ClientVariableMapper());
+		List<ClientVariableVo> list = (List<ClientVariableVo>)getJdbcTemplate().query(sql, parms, new ClientVariableMapper());
 		return list;
 	}
 	
@@ -119,7 +130,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 					" order by a.rowId asc ";
 			Object[] parms = new Object[] {StatusIdCode.ACTIVE,
 					new Timestamp(new java.util.Date().getTime()), clientId};
-			List<ClientVariableVo> list = (List<ClientVariableVo>)jdbcTemplate.query(sql, parms, new ClientVariableMapper());
+			List<ClientVariableVo> list = (List<ClientVariableVo>)getJdbcTemplate().query(sql, parms, new ClientVariableMapper());
 			currentVariablesCache.put(clientId, list);
 		}
 		
@@ -155,7 +166,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 			"where " +
 				" RowId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted>0)
 			currentVariablesCache.remove(clientVariableVo.getClientId());
 		return rowsUpadted;
@@ -176,7 +187,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 			sql += " and startTime is null ";
 		}
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0)
 			currentVariablesCache.remove(clientId);
 		return rowsDeleted;
@@ -189,7 +200,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(variableName);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0)
 			currentVariablesCache.clear();
 		return rowsDeleted;
@@ -202,7 +213,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(clientId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0)
 			currentVariablesCache.remove(clientId);
 		return rowsDeleted;
@@ -235,7 +246,7 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 		fields.add(clientVariableVo.getAllowOverride());
 		fields.add(clientVariableVo.getRequired());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		clientVariableVo.setRowId(retrieveRowId());
 		if (rowsInserted>0)
 			currentVariablesCache.remove(clientVariableVo.getClientId());
@@ -243,19 +254,11 @@ public class ClientVariableJdbcDao implements ClientVariableDao {
 	}
 
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
 	}
 	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
-	}
 }

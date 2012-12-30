@@ -8,12 +8,12 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ClientDao;
-import com.legacytojava.message.dao.client.ClientJdbcDao;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.dao.emailaddr.EmailAddrJdbcDao;
 import com.legacytojava.message.vo.ClientVo;
@@ -68,12 +68,13 @@ public class MailBoxJdbcDao implements MailBoxDao {
 		}
 	}
 	
+	@Autowired
 	private ClientDao clientDao = null;
 	private ClientDao getClientDao() {
-		if (clientDao == null) {
-			clientDao = new ClientJdbcDao();
-			((ClientJdbcDao)clientDao).setDataSource(dataSource);
-		}
+//		if (clientDao == null) {
+//			clientDao = new ClientJdbcDao();
+//			((ClientJdbcDao)clientDao).setDataSource(dataSource);
+//		}
 		return clientDao;
 	}
 	
