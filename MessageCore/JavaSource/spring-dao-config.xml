@@ -12,7 +12,8 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	<context:annotation-config/>
-
+	<context:component-scan base-package="com.legacytojava.message.dao" />
+	
 	<context:property-placeholder ignore-resource-not-found="true" 
 		location="classpath:/META-INF/message-core.${env:dev}.prop,classpath:/META-INF/message-core-test.properties"/>
 	
