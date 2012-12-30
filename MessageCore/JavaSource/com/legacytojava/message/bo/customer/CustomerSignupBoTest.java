@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -34,7 +34,7 @@ public class CustomerSignupBoTest extends TestCase {
 			DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 			def.setName("customerSignUp");
 			def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-			DataSourceTransactionManager txmgr = (DataSourceTransactionManager) JbMain.getBatchAppContext().getBean("mysqlTransactionManager");
+			PlatformTransactionManager txmgr = (PlatformTransactionManager) JbMain.getBatchAppContext().getBean("mysqlTransactionManager");
 			TransactionStatus status = txmgr.getTransaction(def);
 	
 			CustomerVo vo = getCustomerDao().getByCustId("test");
