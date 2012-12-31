@@ -8,15 +8,26 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.template.MsgSourceVo;
 
+@Component(value="msgSourceDao")
 public class MsgSourceJdbcDao implements MsgSourceDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 	
 	private static final class MsgSourceMapper implements RowMapper {
 		
@@ -53,7 +64,7 @@ public class MsgSourceJdbcDao implements MsgSourceDao {
 		
 		Object[] parms = new Object[] {msgSourceId};
 		
-		List<?> list = jdbcTemplate.query(sql, parms, new MsgSourceMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new MsgSourceMapper());
 		if (list.size()>0)
 			return (MsgSourceVo)list.get(0);
 		else
@@ -67,7 +78,7 @@ public class MsgSourceJdbcDao implements MsgSourceDao {
 			" from " +
 				" MsgSource where fromAddrId=? ";
 		Object[] parms = new Object[] {Long.valueOf(fromAddrId)};
-		List<MsgSourceVo> list = (List<MsgSourceVo>)jdbcTemplate.query(sql, parms, new MsgSourceMapper());
+		List<MsgSourceVo> list = (List<MsgSourceVo>)getJdbcTemplate().query(sql, parms, new MsgSourceMapper());
 		return list;
 	}
 	
@@ -117,7 +128,7 @@ public class MsgSourceJdbcDao implements MsgSourceDao {
 			sql += " and UpdtTime=?";
 			fields.add(msgSourceVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		msgSourceVo.setOrigUpdtTime(msgSourceVo.getUpdtTime());
 		return rowsUpadted;
 	}
@@ -129,7 +140,7 @@ public class MsgSourceJdbcDao implements MsgSourceDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgSourceId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -140,7 +151,7 @@ public class MsgSourceJdbcDao implements MsgSourceDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(Long.valueOf(fromAddrId));
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -187,26 +198,17 @@ public class MsgSourceJdbcDao implements MsgSourceDao {
 		fields.add(msgSourceVo.getUpdtTime());
 		fields.add(msgSourceVo.getUpdtUserId());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		msgSourceVo.setRowId(retrieveRowId());
 		msgSourceVo.setOrigUpdtTime(msgSourceVo.getUpdtTime());
 		return rowsInserted;
 	}
 
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

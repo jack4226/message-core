@@ -14,6 +14,10 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.message.constant.Constants;
@@ -29,6 +33,8 @@ import com.legacytojava.message.vo.rule.RuleLogicVo;
 import com.legacytojava.message.vo.rule.RuleSubRuleMapVo;
 import com.legacytojava.message.vo.rule.RuleVo;
 
+@Component(value="ruleLoader")
+@Scope(value="prototype")
 public final class RuleLoader implements java.io.Serializable {
 	private static final long serialVersionUID = 5251082728950956779L;
 	static final Logger logger = Logger.getLogger(RuleLoader.class);
@@ -49,7 +55,8 @@ public final class RuleLoader implements java.io.Serializable {
 	private long lastTimeLoaded;
 	final static int INTERVAL = 5 * 60 * 1000; // 5 minutes
 
-	public RuleLoader(RulesDataBo rulesDataBo) {
+	@Autowired(required=true)
+	public RuleLoader(@Qualifier("rulesDataBo") RulesDataBo rulesDataBo) {
 		this(rulesDataBo.getCurrentRules());
 		this.rulesDataBo = rulesDataBo;
 	}

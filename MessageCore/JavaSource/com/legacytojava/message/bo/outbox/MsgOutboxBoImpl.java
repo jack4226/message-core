@@ -19,6 +19,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.message.bean.MessageBean;
@@ -45,23 +47,32 @@ import com.legacytojava.message.vo.outbox.RenderAttachmentVo;
 import com.legacytojava.message.vo.outbox.RenderObjectVo;
 import com.legacytojava.message.vo.outbox.RenderVariableVo;
 
+@Component(value="msgOutboxBo")
 public class MsgOutboxBoImpl implements MsgOutboxBo {
 	static final Logger logger = Logger.getLogger(MsgOutboxBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	static final String LF = System.getProperty("line.separator","\n");
 	
+	@Autowired
 	private RenderBo renderBo;
+	@Autowired
 	private MsgRenderedDao msgRenderedDao;
+	@Autowired
 	private RenderAttachmentDao renderAttachmentDao;
+	@Autowired
 	private RenderVariableDao renderVariableDao;
+	@Autowired
 	private RenderObjectDao renderObjectDao;
-	
+	@Autowired
 	private MsgInboxDao msgInboxDao;
+	@Autowired
 	private AttachmentsDao attachmentsDao;
+	@Autowired
 	private MsgHeadersDao msgHeadersDao;
+	@Autowired
 	private MsgAddrsDao msgAddrsDao;
-	
+	@Autowired
 	private EmailAddrDao emailAddrDao;
 	
 	public MsgOutboxBoImpl() {
@@ -425,79 +436,39 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 		return attachmentsDao;
 	}
 
-	public void setAttachmentsDao(AttachmentsDao attachmentsDao) {
-		this.attachmentsDao = attachmentsDao;
-	}
-
 	public RenderVariableDao getRenderVariableDao() {
 		return renderVariableDao;
-	}
-
-	public void setRenderVariableDao(RenderVariableDao renderVariableDao) {
-		this.renderVariableDao = renderVariableDao;
 	}
 
 	public EmailAddrDao getEmailAddrDao() {
 		return emailAddrDao;
 	}
 
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
-	}
-
 	public RenderBo getRenderBo() {
 		return renderBo;
-	}
-
-	public void setRenderBo(RenderBo renderBo) {
-		this.renderBo = renderBo;
 	}
 
 	public MsgRenderedDao getMsgRenderedDao() {
 		return msgRenderedDao;
 	}
 
-	public void setMsgRenderedDao(MsgRenderedDao msgRenderedDao) {
-		this.msgRenderedDao = msgRenderedDao;
-	}
-
 	public RenderAttachmentDao getRenderAttachmentDao() {
 		return renderAttachmentDao;
-	}
-
-	public void setRenderAttachmentDao(RenderAttachmentDao renderAttachmentDao) {
-		this.renderAttachmentDao = renderAttachmentDao;
 	}
 
 	public MsgHeadersDao getMsgHeadersDao() {
 		return msgHeadersDao;
 	}
 
-	public void setMsgHeadersDao(MsgHeadersDao msgHeadersDao) {
-		this.msgHeadersDao = msgHeadersDao;
-	}
-
 	public MsgAddrsDao getMsgAddrsDao() {
 		return msgAddrsDao;
-	}
-
-	public void setMsgAddrsDao(MsgAddrsDao msgAddrsDao) {
-		this.msgAddrsDao = msgAddrsDao;
 	}
 
 	public MsgInboxDao getMsgInboxDao() {
 		return msgInboxDao;
 	}
 
-	public void setMsgInboxDao(MsgInboxDao msgInboxDao) {
-		this.msgInboxDao = msgInboxDao;
-	}
-
 	public RenderObjectDao getRenderObjectDao() {
 		return renderObjectDao;
-	}
-
-	public void setRenderObjectDao(RenderObjectDao renderObjectDao) {
-		this.renderObjectDao = renderObjectDao;
 	}
 }

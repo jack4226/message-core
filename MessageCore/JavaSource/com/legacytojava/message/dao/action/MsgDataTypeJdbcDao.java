@@ -7,16 +7,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.action.MsgDataTypeVo;
 
+@Component(value="msgDataTypeDao")
 public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	static final class MsgDataTypeMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -39,7 +50,7 @@ public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 		
 		Object[] parms = new Object[] {type, value};
 		
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgDataTypeMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgDataTypeMapper());
 		if (list.size()>0)
 			return (MsgDataTypeVo)list.get(0);
 		else
@@ -54,7 +65,7 @@ public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 		
 		Object[] parms = new Object[] {rowId};
 		
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgDataTypeMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgDataTypeMapper());
 		if (list.size()>0)
 			return (MsgDataTypeVo)list.get(0);
 		else
@@ -70,7 +81,7 @@ public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 		
 		Object[] parms = new Object[] {dataType};
 		@SuppressWarnings("unchecked")
-		List<MsgDataTypeVo> list = (List<MsgDataTypeVo>)jdbcTemplate.query(sql, parms, new MsgDataTypeMapper());
+		List<MsgDataTypeVo> list = (List<MsgDataTypeVo>)getJdbcTemplate().query(sql, parms, new MsgDataTypeMapper());
 		return list;
 	}
 	
@@ -81,8 +92,7 @@ public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 				"MsgDataType " +
 			" order by DataType asc ";
 		
-		@SuppressWarnings("unchecked")
-		List<String> list = (List<String>)jdbcTemplate.queryForList(sql, String.class);
+		List<String> list = (List<String>)getJdbcTemplate().queryForList(sql, String.class);
 		return list;
 	}
 	
@@ -102,7 +112,7 @@ public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 			" where " +
 				" RowId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -113,7 +123,7 @@ public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(rowId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -124,7 +134,7 @@ public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(dataType);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -143,22 +153,13 @@ public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 		fields.add(msgDataTypeVo.getDataTypeValue());
 		fields.add(msgDataTypeVo.getMiscProperties());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		msgDataTypeVo.setRowId(retrieveRowId());
 		return rowsInserted;
 	}
 	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
-	}
-	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	protected String getRowIdSql() {
 		return "select last_insert_id()";

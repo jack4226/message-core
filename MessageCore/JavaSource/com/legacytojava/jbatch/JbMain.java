@@ -229,24 +229,24 @@ public final class JbMain implements Runnable, JbMainMBean {
 			return applContext;
 		}
 		else if (daoAppCtx == null) {
-			String[] fileNames = new String[2];
+			//String[] fileNames = new String[2];
 			List<String> fnames = new ArrayList<String>();
 			try {
 				// see if it's running under JBoss by doing a JNDI lookup
 				ServiceLocator.getDataSource("java:/comp/env/jdbc/msgdb_pool");
 				logger.info("getDaoAppContext() - Running under JBoss, load jndi_ds xmls");
-				fileNames[0]="spring-jndi_ds-config.xml";
+				//fileNames[0]="classpath:spring-jndi_ds-config.xml";
 				fnames.add("classpath:spring-jndi_ds-config.xml");
 			}
 			catch (javax.naming.NamingException e) {
 				logger.info("getDaoAppContext() - running standalone, load mysql_ds xmls");
-				fileNames[0]="spring-mysql_ds-config.xml";
+				//fileNames[0]="classpath:spring-mysql_ds-config.xml";
 				fnames.add("classpath:spring-mysql_ds-config.xml");
 			}
-			fileNames[1]="spring-dao-config.xml";
+			//fileNames[1]="classpath:spring-dao-config.xml";
 			fnames.add("classpath:spring-dao-config.xml");
-			//daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
-			daoAppCtx = new ClassPathXmlApplicationContext(fileNames);
+			daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
+			//daoAppCtx = new ClassPathXmlApplicationContext(fileNames);
 		}
 		return daoAppCtx;
 	}
@@ -321,25 +321,25 @@ public final class JbMain implements Runnable, JbMainMBean {
 	private static String[] getBatchConfigXmlFiles() {
 		ClassLoader loader = JbMain.class.getClassLoader();
 		List<String> cfgFileNames = new ArrayList<String>();
-		cfgFileNames.add("spring-bo_jms-config.xml");
-		cfgFileNames.add("spring-mysql_ds-config.xml");
-		cfgFileNames.add("spring-dao-config.xml");
-		cfgFileNames.add("spring-jbatch-config.xml");
-		URL mreader = loader.getResource("spring-jbatch-mailreader.xml");
-		URL msender = loader.getResource("spring-jbatch-mailsender.xml");
-		URL testsvrs = loader.getResource("spring-jbatch-testservers.xml");
+		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
+		cfgFileNames.add("classpath:spring-mysql_ds-config.xml");
+		cfgFileNames.add("classpath:spring-dao-config.xml");
+		cfgFileNames.add("classpath:spring-jbatch-config.xml");
+		URL mreader = loader.getResource("classpath:spring-jbatch-mailreader.xml");
+		URL msender = loader.getResource("classpath:spring-jbatch-mailsender.xml");
+		URL testsvrs = loader.getResource("classpath:spring-jbatch-testservers.xml");
 		if (mreader != null) {
-			cfgFileNames.add("spring-jbatch-mailreader.xml");
+			cfgFileNames.add("classpath:spring-jbatch-mailreader.xml");
 		}
 		else if (msender != null) {
-			cfgFileNames.add("spring-jbatch-mailsender.xml");
+			cfgFileNames.add("classpath:spring-jbatch-mailsender.xml");
 			URL smtp = loader.getResource("spring-jbatch-smtp.xml");
 			if (smtp != null) {
-				cfgFileNames.add("spring-jbatch-smtp.xml");
+				cfgFileNames.add("classpath:spring-jbatch-smtp.xml");
 			}
 		}
 		else if (testsvrs != null) {
-			cfgFileNames.add("spring-jbatch-testservers.xml");
+			cfgFileNames.add("classpath:spring-jbatch-testservers.xml");
 		}
 		//URL smtpcfg = loader.getResource("spring-jbatch-smtp.xml");
 		//if (smtpcfg != null) { // for SMTP PoolsJUnit only
@@ -352,9 +352,9 @@ public final class JbMain implements Runnable, JbMainMBean {
 
 	public static String[] getServerConfigXmlFiles() {
 		List<String> cfgFileNames = new ArrayList<String>();
-		cfgFileNames.add("spring-bo_jms-config.xml");
-		cfgFileNames.add("spring-jndi_ds-config.xml");
-		cfgFileNames.add("spring-dao-config.xml");
+		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
+		cfgFileNames.add("classpath:spring-jndi_ds-config.xml");
+		cfgFileNames.add("classpath:spring-dao-config.xml");
 		String[] cfgFiles = new String[cfgFileNames.size()];
 		System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
 		return cfgFiles;
@@ -362,9 +362,9 @@ public final class JbMain implements Runnable, JbMainMBean {
 
 	public static String[] getStandaloneConfigXmlFiles() {
 		List<String> cfgFileNames = new ArrayList<String>();
-		cfgFileNames.add("spring-bo_jms-config.xml");
-		cfgFileNames.add("spring-mysql_ds-config.xml");
-		cfgFileNames.add("spring-dao-config.xml");
+		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
+		cfgFileNames.add("classpath:spring-mysql_ds-config.xml");
+		cfgFileNames.add("classpath:spring-dao-config.xml");
 		String[] cfgFiles = new String[cfgFileNames.size()];
 		System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
 		return cfgFiles;

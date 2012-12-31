@@ -9,16 +9,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.template.TemplateVariableVo;
 
+@Component(value="templateVariableDao")
 public class TemplateVariableJdbcDao implements TemplateVariableDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 	
 	private static final HashMap<String, List<?>> currentVariablesCache = new HashMap<String, List<?>>();
 	
@@ -69,7 +80,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 		}
 		
 		Object[] parms = keys.toArray();
-		List<?> list = jdbcTemplate.query(sql, parms, new TemplateVariableMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new TemplateVariableMapper());
 		if (list.size()>0)
 			return (TemplateVariableVo)list.get(0);
 		else
@@ -101,7 +112,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 		sql += " order by clientId desc, startTime desc ";
 		
 		Object[] parms = keys.toArray();
-		List<?> list = jdbcTemplate.query(sql, parms, new TemplateVariableMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new TemplateVariableMapper());
 		if (list.size()>0)
 			return (TemplateVariableVo)list.get(0);
 		else
@@ -116,7 +127,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 				" TemplateVariable where variableName=? " +
 			" order by templateId, clientId, startTime asc ";
 		Object[] parms = new Object[] {variableName};
-		List<TemplateVariableVo> list =  (List<TemplateVariableVo>)jdbcTemplate.query(sql, parms, new TemplateVariableMapper());
+		List<TemplateVariableVo> list =  (List<TemplateVariableVo>)getJdbcTemplate().query(sql, parms, new TemplateVariableMapper());
 		return list;
 	}
 	
@@ -128,7 +139,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 				" TemplateVariable where clientId=? " +
 			" order by templateId, variableName, startTime ";
 		Object[] parms = new Object[] { clientId };
-		List<TemplateVariableVo> list =  (List<TemplateVariableVo>)jdbcTemplate.query(sql, parms, new TemplateVariableMapper());
+		List<TemplateVariableVo> list =  (List<TemplateVariableVo>)getJdbcTemplate().query(sql, parms, new TemplateVariableMapper());
 		return list;
 	}
 	
@@ -150,7 +161,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 				" order by a.variableName asc ";
 			Object[] parms = new Object[] { StatusIdCode.ACTIVE,
 					new Timestamp(new java.util.Date().getTime()), templateId, clientId };
-			List<TemplateVariableVo> list =  (List<TemplateVariableVo>)jdbcTemplate.query(sql, parms, new TemplateVariableMapper());
+			List<TemplateVariableVo> list =  (List<TemplateVariableVo>)getJdbcTemplate().query(sql, parms, new TemplateVariableMapper());
 			currentVariablesCache.put(templateId+"."+clientId, list);
 		}
 		
@@ -166,7 +177,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 				" TemplateVariable where templateId=? " +
 			" order by clientId, variableName, startTime asc ";
 		Object[] parms = new Object[] {templateId};
-		List<TemplateVariableVo> list =  (List<TemplateVariableVo>)jdbcTemplate.query(sql, parms, new TemplateVariableMapper());
+		List<TemplateVariableVo> list =  (List<TemplateVariableVo>)getJdbcTemplate().query(sql, parms, new TemplateVariableMapper());
 		return list;
 	}
 	
@@ -200,7 +211,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 			"where " +
 				" RowId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted>0) {
 			currentVariablesCache.remove(templateVariableVo.getTemplateId() + "."
 					+ templateVariableVo.getClientId());
@@ -225,7 +236,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 			sql += " and startTime is null ";
 		}
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0) {
 			currentVariablesCache.remove(templateId+"."+clientId);
 		}
@@ -239,7 +250,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(variableName);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0)
 			currentVariablesCache.clear();
 		return rowsDeleted;
@@ -252,7 +263,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(clientId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0)
 			currentVariablesCache.clear();
 		return rowsDeleted;
@@ -265,7 +276,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(templateId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0)
 			currentVariablesCache.clear();
 		return rowsDeleted;
@@ -300,7 +311,7 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 		fields.add(templateVariableVo.getAllowOverride());
 		fields.add(templateVariableVo.getRequired());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		templateVariableVo.setRowId(retrieveRowId());
 		if (rowsInserted>0) {
 			currentVariablesCache.remove(templateVariableVo.getTemplateId() + "."
@@ -310,19 +321,10 @@ public class TemplateVariableJdbcDao implements TemplateVariableDao {
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

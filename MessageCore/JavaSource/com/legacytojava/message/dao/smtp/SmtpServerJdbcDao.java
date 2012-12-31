@@ -8,17 +8,28 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.SmtpConnVo;
 
+@Component(value="smtpServerDao")
 public class SmtpServerJdbcDao implements SmtpServerDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class SmtpServerMapper implements RowMapper {
 		
@@ -53,7 +64,7 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 	public SmtpConnVo getByPrimaryKey(String serverName) {
 		String sql = "select * from SmtpServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
-		List<?> list = jdbcTemplate.query(sql, parms, new SmtpServerMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new SmtpServerMapper());
 		if (list.size()>0) {
 			return (SmtpConnVo)list.get(0);
 		}
@@ -71,7 +82,7 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 			keys.add(StatusIdCode.ACTIVE);
 		}
 		sql += " order by ServerName ";
-		List<SmtpConnVo> list = (List<SmtpConnVo>)jdbcTemplate.query(sql, keys.toArray(), new SmtpServerMapper());
+		List<SmtpConnVo> list = (List<SmtpConnVo>)getJdbcTemplate().query(sql, keys.toArray(), new SmtpServerMapper());
 		return list;
 	}
 	
@@ -84,13 +95,13 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 			keys.add(StatusIdCode.ACTIVE);
 		}
 		sql += " order by RowId limit 1 ";
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(1);
-		jdbcTemplate.setMaxRows(1);
-		List<SmtpConnVo> list = (List<SmtpConnVo>)jdbcTemplate.query(sql, keys.toArray(), new SmtpServerMapper());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(1);
+		getJdbcTemplate().setMaxRows(1);
+		List<SmtpConnVo> list = (List<SmtpConnVo>)getJdbcTemplate().query(sql, keys.toArray(), new SmtpServerMapper());
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		return list;
 	}
 	
@@ -104,7 +115,7 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 			keys.add(StatusIdCode.ACTIVE);
 		}
 		sql += " order by ServerName ";
-		List<SmtpConnVo> list = (List<SmtpConnVo>)jdbcTemplate.query(sql, keys.toArray(), new SmtpServerMapper());
+		List<SmtpConnVo> list = (List<SmtpConnVo>)getJdbcTemplate().query(sql, keys.toArray(), new SmtpServerMapper());
 		return list;
 	}
 	
@@ -118,7 +129,7 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 			keys.add(StatusIdCode.ACTIVE);
 		}
 		sql += " order by RowId ";
-		List<?> list = (List<?>)jdbcTemplate.query(sql, keys.toArray(), new SmtpServerMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, keys.toArray(), new SmtpServerMapper());
 		return (List<SmtpConnVo>) list;
 	}
 
@@ -132,7 +143,7 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 			keys.add(StatusIdCode.ACTIVE);
 		}
 		sql += " order by RowId limit 1 ";
-		List<?> list = (List<?>)jdbcTemplate.query(sql, keys.toArray(), new SmtpServerMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, keys.toArray(), new SmtpServerMapper());
 		return (List<SmtpConnVo>) list;
 	}
 
@@ -186,7 +197,7 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 			sql += " and UpdtTime=?";
 			keys.add(smtpConnVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		smtpConnVo.setOrigUpdtTime(smtpConnVo.getUpdtTime());
 		return rowsUpadted;
 	}
@@ -194,7 +205,7 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 	public int deleteByPrimaryKey(String serverName) {
 		String sql = "delete from SmtpServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -246,26 +257,17 @@ public class SmtpServerJdbcDao implements SmtpServerDao {
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		smtpConnVo.setRowId(retrieveRowId());
 		smtpConnVo.setOrigUpdtTime(smtpConnVo.getUpdtTime());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

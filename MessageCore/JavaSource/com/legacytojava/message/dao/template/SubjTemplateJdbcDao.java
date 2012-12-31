@@ -8,15 +8,26 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.template.SubjTemplateVo;
 
+@Component(value="subjTemplateDao")
 public class SubjTemplateJdbcDao implements SubjTemplateDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 	
 	private static final class SubjTemplateMapper implements RowMapper {
 		
@@ -52,7 +63,7 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 		}
 		sql += " order by startTime asc ";
 		
-		List<?> list = jdbcTemplate.query(sql, parms, new SubjTemplateMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new SubjTemplateMapper());
 		if (list.size()>0)
 			return (SubjTemplateVo)list.get(0);
 		else
@@ -82,7 +93,7 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 		sql += " order by clientId desc, startTime desc ";
 		
 		Object[] parms = keys.toArray();
-		List<?> list = jdbcTemplate.query(sql, parms, new SubjTemplateMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new SubjTemplateMapper());
 		if (list.size()>0)
 			return (SubjTemplateVo)list.get(0);
 		else
@@ -97,7 +108,7 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 				" SubjTemplate where templateId=? " +
 			" order by clientId, startTime asc ";
 		Object[] parms = new Object[] {templateId};
-		List<SubjTemplateVo> list = (List<SubjTemplateVo>)jdbcTemplate.query(sql, parms, new SubjTemplateMapper());
+		List<SubjTemplateVo> list = (List<SubjTemplateVo>)getJdbcTemplate().query(sql, parms, new SubjTemplateMapper());
 		return list;
 	}
 	
@@ -109,7 +120,7 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 				" SubjTemplate where clientId=? " +
 			" order by templateId, startTime asc ";
 		Object[] parms = new Object[] {clientId};
-		List<SubjTemplateVo> list = (List<SubjTemplateVo>)jdbcTemplate.query(sql, parms, new SubjTemplateMapper());
+		List<SubjTemplateVo> list = (List<SubjTemplateVo>)getJdbcTemplate().query(sql, parms, new SubjTemplateMapper());
 		return list;
 	}
 	
@@ -135,7 +146,7 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 			"where " +
 				" RowId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -154,7 +165,7 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 			sql += " and startTime is null ";
 		}
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -165,7 +176,7 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(templateId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -176,7 +187,7 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(clientId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -201,25 +212,16 @@ public class SubjTemplateJdbcDao implements SubjTemplateDao {
 		fields.add(subjTemplateVo.getStatusId());
 		fields.add(subjTemplateVo.getTemplateValue());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		subjTemplateVo.setRowId(retrieveRowId());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

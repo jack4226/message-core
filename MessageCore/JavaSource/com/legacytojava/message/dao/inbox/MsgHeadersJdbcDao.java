@@ -8,16 +8,27 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.MsgHeadersVo;
 
+@Component(value="msgHeadersDao")
 public class MsgHeadersJdbcDao implements MsgHeadersDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class MsgHeadersMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -39,7 +50,7 @@ public class MsgHeadersJdbcDao implements MsgHeadersDao {
 				"MsgHeaders where msgid=? and headerSeq=? ";
 		
 		Object[] parms = new Object[] {msgId+"",headerSeq+""};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgHeadersMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgHeadersMapper());
 		if (list.size()>0)
 			return (MsgHeadersVo)list.get(0);
 		else
@@ -54,7 +65,7 @@ public class MsgHeadersJdbcDao implements MsgHeadersDao {
 				" MsgHeaders where msgId=? " +
 			" order by headerSeq";
 		Object[] parms = new Object[] {msgId+""};
-		List<MsgHeadersVo> list = (List<MsgHeadersVo>)jdbcTemplate.query(sql, parms, new MsgHeadersMapper());
+		List<MsgHeadersVo> list = (List<MsgHeadersVo>)getJdbcTemplate().query(sql, parms, new MsgHeadersMapper());
 		return list;
 	}
 	
@@ -73,7 +84,7 @@ public class MsgHeadersJdbcDao implements MsgHeadersDao {
 			" where " +
 				" msgid=? and headerSeq=?  ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -85,7 +96,7 @@ public class MsgHeadersJdbcDao implements MsgHeadersDao {
 		fields.add(msgId+"");
 		fields.add(headerSeq+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -96,7 +107,7 @@ public class MsgHeadersJdbcDao implements MsgHeadersDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(msgId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -117,17 +128,8 @@ public class MsgHeadersJdbcDao implements MsgHeadersDao {
 		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
 		fields.add(msgHeadersVo.getHeaderValue());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

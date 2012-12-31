@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -25,7 +26,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.transaction.annotation.Isolation;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,12 +36,21 @@ import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 
+@Component(value="emailAddrDao")
 public class EmailAddrJdbcDao implements EmailAddrDao {
 	static final Logger logger = Logger.getLogger(EmailAddrJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static class EmailAddrMapper implements RowMapper {
 
@@ -103,7 +113,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 	public EmailAddrVo getByAddrId(long addrId) {
 		String sql = "select * from EmailAddr where emailAddrId=?";
 		Object[] parms = new Object[] { addrId + "" };
-		List<?> list = (List<?>) jdbcTemplate.query(sql, parms,
+		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms,
 				new EmailAddrMapper());
 		if (list.size() > 0) {
 			return (EmailAddrVo) list.get(0);
@@ -116,7 +126,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 		String sql = "select * from EmailAddr where EmailAddr=?";
 		String emailAddress = StringUtil.removeDisplayName(address);
 		Object[] parms = new Object[] { emailAddress };
-		List<?> list = (List<?>) jdbcTemplate.query(sql, parms,
+		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms,
 				new EmailAddrMapper());
 		if (list.size() > 0) {
 			return (EmailAddrVo) list.get(0);
@@ -129,7 +139,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = "select count(*) from EmailAddr a " + whereSql;
-		int rowCount = jdbcTemplate.queryForInt(sql, parms.toArray());
+		int rowCount = getJdbcTemplate().queryForInt(sql, parms.toArray());
 		return rowCount;
 	}
 
@@ -194,14 +204,14 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 				+ fetchOrder
 				+ " limit "
 				+ vo.getPageSize();
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(vo.getPageSize());
-		jdbcTemplate.setMaxRows(vo.getPageSize());
-		List<EmailAddrVo> list = (List<EmailAddrVo>) jdbcTemplate.query(sql,
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(vo.getPageSize());
+		getJdbcTemplate().setMaxRows(vo.getPageSize());
+		List<EmailAddrVo> list = (List<EmailAddrVo>) getJdbcTemplate().query(sql,
 				parms.toArray(), new EmailAddrMapper3());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
 			// reverse the list
 			Collections.reverse(list);
@@ -241,11 +251,11 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 		String sql = "SELECT min(e.emailaddrid) as emailaddrid "
 				+ " FROM emailaddr e, customers c "
 				+ " where e.emailaddrid=c.emailaddrid ";
-		Long emailAddrId = (Long) jdbcTemplate.queryForObject(sql, Long.class);
+		Long emailAddrId = (Long) getJdbcTemplate().queryForObject(sql, Long.class);
 		if (emailAddrId == null) {
 			sql = "SELECT min(e.emailaddrid) as emailaddrid "
 					+ " FROM emailaddr e ";
-			emailAddrId = (Long) jdbcTemplate.queryForObject(sql, Long.class);
+			emailAddrId = (Long) getJdbcTemplate().queryForObject(sql, Long.class);
 		}
 		if (emailAddrId == null) {
 			emailAddrId = Long.valueOf(0);
@@ -388,7 +398,6 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 			compile();
 		}
 
-		@SuppressWarnings("unchecked")
 		public Map<String, Object> execute(String address) {
 			Map<String, Object> inputs = new HashMap<String, Object>();
 			inputs.put("iEmailAddr", StringUtil.removeDisplayName(address));
@@ -403,7 +412,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 	 */
 	EmailAddrVo findByAddressSP(String address) {
 		FindByAddressProcedure sp = new FindByAddressProcedure(
-				jdbcTemplate.getDataSource(), "FindByAddress");
+				getJdbcTemplate().getDataSource(), "FindByAddress");
 		Map<String, Object> map = sp.execute(address);
 		EmailAddrVo vo = new EmailAddrVo();
 		vo.setEmailAddrId(((BigDecimal) map.get("oEmailAddrId")).longValue());
@@ -429,7 +438,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 				+ " inner join MsgInbox b on a.EmailAddrId = b.FromAddrId "
 				+ " where" + " b.MsgId = ?";
 		Object[] parms = new Object[] { msgRefId };
-		List<?> list = (List<?>) jdbcTemplate.query(sql, parms,
+		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms,
 				new EmailAddrMapper2());
 		if (list.size() > 0) {
 			return (EmailAddrVo) list.get(0);
@@ -443,7 +452,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 				+ " inner join MsgInbox b on a.EmailAddrId = b.ToAddrId "
 				+ " where" + " b.MsgId = ?";
 		Object[] parms = new Object[] { msgRefId };
-		List<?> list = (List<?>) jdbcTemplate.query(sql, parms,
+		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms,
 				new EmailAddrMapper2());
 		if (list.size() > 0) {
 			return (EmailAddrVo) list.get(0);
@@ -487,7 +496,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 		}
 		Object[] parms = keys.toArray();
 
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		emailAddrVo.setCurrEmailAddr(emailAddrVo.getEmailAddr());
 		emailAddrVo.setOrigUpdtTime(emailAddrVo.getUpdtTime());
 		return rowsUpadted;
@@ -501,7 +510,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 		String sql = "update EmailAddr set " + " LastRcptTime=? "
 				+ " where emailAddrId=?";
 
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
 	}
 
@@ -513,7 +522,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 		String sql = "update EmailAddr set " + " LastSentTime=? "
 				+ " where emailAddrId=?";
 
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
 	}
 
@@ -525,7 +534,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 		String sql = "update EmailAddr set " + " AcceptHtml=? "
 				+ " where emailAddrId=?";
 
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
 	}
 
@@ -567,7 +576,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 			keys.add(emailAddrVo.getOrigUpdtTime());
 		}
 
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		emailAddrVo.setOrigUpdtTime(emailAddrVo.getUpdtTime());
 		return rowsUpadted;
 	}
@@ -575,14 +584,14 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 	public int deleteByAddrId(long addrId) {
 		String sql = "delete from EmailAddr where emailAddrId=?";
 		Object[] parms = new Object[] { addrId + "" };
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 
 	public int deleteByAddress(String address) {
 		String sql = "delete from EmailAddr where emailAddr=?";
 		Object[] parms = new Object[] { address };
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 
@@ -622,7 +631,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 			keys.add(emailAddrVo.getUpdtTime());
 		}
 
-		int rowsInserted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, keys.toArray());
 		emailAddrVo.setEmailAddrId(retrieveRowId());
 		emailAddrVo.setCurrEmailAddr(emailAddrVo.getEmailAddr());
 		emailAddrVo.setOrigUpdtTime(emailAddrVo.getUpdtTime());
@@ -635,7 +644,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 	public int insert_keyholder(final EmailAddrVo emailAddrVo,
 			final boolean withUpdate) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		int rowsInserted = jdbcTemplate.update(new PreparedStatementCreator() {
+		int rowsInserted = getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
 				emailAddrVo.setUpdtTime(new Timestamp(new java.util.Date()
@@ -682,19 +691,10 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 	}
 
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

@@ -15,6 +15,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.message.bean.BodypartBean;
@@ -39,6 +42,8 @@ import com.legacytojava.message.vo.outbox.MsgRenderedVo;
 /**
  * Scan email header and body, and match rules to determine the ruleName.
  */
+@Component(value="messageParser")
+@Scope(value="prototype")
 public final class MessageParser {
 	static final Logger logger = Logger.getLogger(MessageParser.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
@@ -50,9 +55,13 @@ public final class MessageParser {
 	static final String REPLY_SEPARATOR = "---------Reply Separator---------";
 	static final String LF = System.getProperty("line.separator", "\n");
 
+	@Autowired
 	private RuleLoader ruleLoader;
+	@Autowired
 	private EmailAddrDao emailAddrDao;
+	@Autowired
 	private MsgInboxDao msgInboxDao;
+	@Autowired
 	private MsgRenderedDao msgRenderedDao;
 	
 	/**
@@ -648,34 +657,18 @@ public final class MessageParser {
 		return ruleLoader;
 	}
 
-	public void setRuleLoader(RuleLoader ruleLoader) {
-		this.ruleLoader = ruleLoader;
-	}
-
 	public EmailAddrDao getEmailAddrDao() {
 		return emailAddrDao;
-	}
-
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
 	}
 
 	public MsgInboxDao getMsgInboxDao() {
 		return msgInboxDao;
 	}
 
-	public void setMsgInboxDao(MsgInboxDao msgInboxDao) {
-		this.msgInboxDao = msgInboxDao;
-	}
-
 	public MsgRenderedDao getMsgRenderedDao() {
 		return msgRenderedDao;
 	}
 
-	public void setMsgRenderedDao(MsgRenderedDao msgRenderedDao) {
-		this.msgRenderedDao = msgRenderedDao;
-	}
-	
 	public static void main(String[] args) {
 		try {
 			MessageParser parser = (MessageParser) JbMain.getAppContext().getBean("messageParser");

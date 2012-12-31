@@ -9,16 +9,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.template.GlobalVariableVo;
 
+@Component(value="globalVariableDao")
 public class GlobalVariableJdbcDao implements GlobalVariableDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 	
 	private static final List<GlobalVariableVo> currentVariablesCache = new ArrayList<GlobalVariableVo>();
 	
@@ -57,7 +68,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 			parms = new Object[] {variableName};
 		}
 		
-		List<?> list = jdbcTemplate.query(sql, parms, new GlobalVariableMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new GlobalVariableMapper());
 		if (list.size()>0)
 			return (GlobalVariableVo)list.get(0);
 		else
@@ -78,7 +89,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 		sql += " order by startTime desc ";
 		
 		parms = new Object[] {variableName, startTime};
-		List<?> list = jdbcTemplate.query(sql, parms, new GlobalVariableMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new GlobalVariableMapper());
 		if (list.size()>0)
 			return (GlobalVariableVo)list.get(0);
 		else
@@ -93,7 +104,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 				" GlobalVariable where variableName=? " +
 			" order by startTime asc ";
 		Object[] parms = new Object[] {variableName};
-		List<GlobalVariableVo> list = (List<GlobalVariableVo>)jdbcTemplate.query(sql, parms, new GlobalVariableMapper());
+		List<GlobalVariableVo> list = (List<GlobalVariableVo>)getJdbcTemplate().query(sql, parms, new GlobalVariableMapper());
 		return list;
 	}
 	
@@ -113,7 +124,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 					" order by a.variableName asc ";
 			Object[] parms = new Object[] { StatusIdCode.ACTIVE,
 					new Timestamp(new java.util.Date().getTime()) };
-			List<GlobalVariableVo> list = (List<GlobalVariableVo>)jdbcTemplate.query(sql, parms, new GlobalVariableMapper());
+			List<GlobalVariableVo> list = (List<GlobalVariableVo>)getJdbcTemplate().query(sql, parms, new GlobalVariableMapper());
 			currentVariablesCache.addAll(list);
 		}
 		
@@ -130,7 +141,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 				" order by variableName asc, starttime desc ";
 		Object[] parms = new Object[] { statusId,
 				new Timestamp(new java.util.Date().getTime()) };
-		List<?> list =  jdbcTemplate.query(sql, parms, new GlobalVariableMapper());
+		List<?> list =  getJdbcTemplate().query(sql, parms, new GlobalVariableMapper());
 		ArrayList<GlobalVariableVo> list2 = new ArrayList<GlobalVariableVo>();
 		String varName = null;
 		for (Iterator<?> it=list.iterator(); it.hasNext(); ) {
@@ -169,7 +180,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 			"where " +
 				" RowId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted>0)
 			currentVariablesCache.clear();
 		return rowsUpadted;
@@ -189,7 +200,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 			sql += " and startTime is null ";
 		}
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0)
 			currentVariablesCache.clear();
 		return rowsDeleted;
@@ -202,7 +213,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(variableName);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted>0)
 			currentVariablesCache.clear();
 		return rowsDeleted;
@@ -233,7 +244,7 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 		fields.add(globalVariableVo.getAllowOverride());
 		fields.add(globalVariableVo.getRequired());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		globalVariableVo.setRowId(retrieveRowId());
 		if (rowsInserted>0)
 			currentVariablesCache.clear();
@@ -241,19 +252,10 @@ public class GlobalVariableJdbcDao implements GlobalVariableDao {
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

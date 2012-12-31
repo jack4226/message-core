@@ -8,16 +8,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.MsgActionLogsVo;
 
+@Component(value="msgActionLogsDao")
 public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class MsgActionLogsMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -49,7 +60,7 @@ public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 			sql += "and msgRefId=? ";
 		}
 		
-		List<?> list = (List<?>) jdbcTemplate.query(sql, fields.toArray(),
+		List<?> list = (List<?>) getJdbcTemplate().query(sql, fields.toArray(),
 				new MsgActionLogsMapper());
 		if (list.size() > 0)
 			return (MsgActionLogsVo) list.get(0);
@@ -65,7 +76,7 @@ public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 				" MsgActionLogs where msgId=? " +
 			" order by msgRefId ";
 		Object[] parms = new Object[] {msgId+""};
-		List<MsgActionLogsVo> list =  (List<MsgActionLogsVo>)jdbcTemplate.query(sql, parms, new MsgActionLogsMapper());
+		List<MsgActionLogsVo> list =  (List<MsgActionLogsVo>)getJdbcTemplate().query(sql, parms, new MsgActionLogsMapper());
 		return list;
 	}
 	
@@ -77,7 +88,7 @@ public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 				" MsgActionLogs where leadMsgId=? " +
 			" order by addrTime";
 		Object[] parms = new Object[] {leadMsgId+""};
-		List<MsgActionLogsVo> list =  (List<MsgActionLogsVo>)jdbcTemplate.query(sql, parms, new MsgActionLogsMapper());
+		List<MsgActionLogsVo> list =  (List<MsgActionLogsVo>)getJdbcTemplate().query(sql, parms, new MsgActionLogsMapper());
 		return list;
 	}
 	
@@ -106,7 +117,7 @@ public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 			sql += "and MsgRefId=? ";
 		}
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -124,7 +135,7 @@ public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 			sql += "and msgRefId=? ";
 		}
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -135,7 +146,7 @@ public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -146,7 +157,7 @@ public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(leadMsgId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -174,17 +185,8 @@ public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 		fields.add(msgActionLogsVo.getParameters());
 		fields.add(msgActionLogsVo.getAddTime());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

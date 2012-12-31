@@ -10,14 +10,24 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.rule.RuleSubRuleMapVo;
 
+@Component(value="ruleSubRuleMapDao")
 public class RuleSubRuleMapJdbcDao implements RuleSubRuleMapDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 	
 	private static final class RuleSubRuleMapMapper implements RowMapper {
 		
@@ -41,7 +51,7 @@ public class RuleSubRuleMapJdbcDao implements RuleSubRuleMapDao {
 		
 		Object[] parms = new Object[] {ruleName, subRuleName};
 		
-		List<?> list = jdbcTemplate.query(sql, parms, new RuleSubRuleMapMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new RuleSubRuleMapMapper());
 		if (list.size()>0)
 			return (RuleSubRuleMapVo)list.get(0);
 		else
@@ -57,7 +67,7 @@ public class RuleSubRuleMapJdbcDao implements RuleSubRuleMapDao {
 			" order by subRuleSeq asc ";
 		
 		Object[] parms = new Object[] {ruleName};
-		List<RuleSubRuleMapVo> list = (List<RuleSubRuleMapVo>)jdbcTemplate.query(sql, parms, new RuleSubRuleMapMapper());
+		List<RuleSubRuleMapVo> list = (List<RuleSubRuleMapVo>)getJdbcTemplate().query(sql, parms, new RuleSubRuleMapMapper());
 		return list;
 	}
 	
@@ -69,7 +79,7 @@ public class RuleSubRuleMapJdbcDao implements RuleSubRuleMapDao {
 		fields.add(ruleName);
 		fields.add(subRuleName);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -81,7 +91,7 @@ public class RuleSubRuleMapJdbcDao implements RuleSubRuleMapDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(ruleName);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -101,7 +111,7 @@ public class RuleSubRuleMapJdbcDao implements RuleSubRuleMapDao {
 		fields.add(ruleSubRuleMapVo.getSubRuleName());
 		fields.add(ruleSubRuleMapVo.getRowId());
 		
-		int rowsUpdated = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpdated = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsUpdated;
 	}
@@ -121,7 +131,7 @@ public class RuleSubRuleMapJdbcDao implements RuleSubRuleMapDao {
 		fields.add(ruleSubRuleMapVo.getSubRuleName());
 		fields.add(ruleSubRuleMapVo.getSubRuleSeq());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		ruleSubRuleMapVo.setRowId(retrieveRowId());
 		updateReloadFlags();
 		return rowsInserted;
@@ -138,19 +148,10 @@ public class RuleSubRuleMapJdbcDao implements RuleSubRuleMapDao {
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

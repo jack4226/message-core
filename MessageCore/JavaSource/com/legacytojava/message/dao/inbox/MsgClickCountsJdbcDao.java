@@ -9,17 +9,28 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.inbox.MsgClickCountsVo;
 
+@Component(value="msgClickCountsDao")
 public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class MsgClickCountsMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -50,7 +61,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 			"from " +
 				"MsgClickCounts order by MsgId ";
 		
-		List<MsgClickCountsVo> list = (List<MsgClickCountsVo>) jdbcTemplate.query(sql,
+		List<MsgClickCountsVo> list = (List<MsgClickCountsVo>) getJdbcTemplate().query(sql,
 				new MsgClickCountsMapper());
 		return list;
 	}
@@ -60,7 +71,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 			"select count(*) " +
 			"from " +
 				"MsgClickCounts where SentCount > 0 and StartTime is not null ";
-		int count = jdbcTemplate.queryForInt(sql);
+		int count = getJdbcTemplate().queryForInt(sql);
 		return count;
 	}
 	
@@ -71,7 +82,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 				"MsgClickCounts where msgid=? ";
 		
 		Object[] parms = new Object[] {msgId};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgClickCountsMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgClickCountsMapper());
 		if (list.size()>0)
 			return (MsgClickCountsVo)list.get(0);
 		else
@@ -135,14 +146,14 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 			" and a.StartTime is not null " +
 			" order by a.MsgId " + fetchOrder +
 			" limit " + vo.getPageSize();
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(vo.getPageSize());
-		jdbcTemplate.setMaxRows(vo.getPageSize());
-		List<MsgClickCountsVo> list = (List<MsgClickCountsVo>) jdbcTemplate.query(sql, parms
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(vo.getPageSize());
+		getJdbcTemplate().setMaxRows(vo.getPageSize());
+		List<MsgClickCountsVo> list = (List<MsgClickCountsVo>) getJdbcTemplate().query(sql, parms
 				.toArray(), new MsgClickCountsMapper());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
 			// reverse the list
 			Collections.reverse(list);
@@ -184,7 +195,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 			" where " +
 				" MsgId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -197,7 +208,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 				", EndTime=now() " +
 			" where " +
 				" MsgId=? ";
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -210,7 +221,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 				", LastOpenTime=now() " +
 			" where " +
 				" MsgId=? ";
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
 	
@@ -229,7 +240,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 				" ,LastClickTime=? " +
 			" where " +
 				" MsgId=? ";
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
 	
@@ -245,7 +256,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 				"ReferralCount=ReferralCount+" + count +
 			" where " +
 				" MsgId=? ";
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
 
@@ -263,7 +274,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 				"StartTime=? " +
 			" where " +
 				" MsgId=? ";
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
 	
@@ -275,7 +286,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 				"UnsubscribeCount=UnsubscribeCount+" + count +
 			" where " +
 				" MsgId=? ";
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
 	
@@ -287,7 +298,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 				"ComplaintCount=ComplaintCount+" + count +
 			" where " +
 				" MsgId=? ";
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
 	
@@ -298,7 +309,7 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -327,17 +338,8 @@ public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 		fields.add(msgClickCountsVo.getLastOpenTime());
 		fields.add(msgClickCountsVo.getLastClickTime());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

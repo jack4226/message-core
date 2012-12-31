@@ -8,15 +8,26 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.MailSenderVo;
 
+@Component(value="mailSenderPropsDao")
 public class MailSenderPropsJdbcDao implements MailSenderPropsDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class MailSenderPropsMapper implements RowMapper {
 		
@@ -42,7 +53,7 @@ public class MailSenderPropsJdbcDao implements MailSenderPropsDao {
 		String sql = 
 			"select * from MailSenderProps where rowId=?";
 		Object[] parms = new Object[] {rowId};
-		List<?> list = jdbcTemplate.query(sql, parms, new MailSenderPropsMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new MailSenderPropsMapper());
 		if (list.size()>0) {
 			return (MailSenderVo)list.get(0);
 		}
@@ -55,7 +66,7 @@ public class MailSenderPropsJdbcDao implements MailSenderPropsDao {
 	public List<MailSenderVo> getAll() {
 		
 		String sql = "select * from MailSenderProps ";
-		List<MailSenderVo> list = (List<MailSenderVo>)jdbcTemplate.query(sql, new MailSenderPropsMapper());
+		List<MailSenderVo> list = (List<MailSenderVo>)getJdbcTemplate().query(sql, new MailSenderPropsMapper());
 		return list;
 	}
 	
@@ -89,7 +100,7 @@ public class MailSenderPropsJdbcDao implements MailSenderPropsDao {
 			sql += " and UpdtTime=?";
 			keys.add(mailSenderVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		mailSenderVo.setOrigUpdtTime(mailSenderVo.getUpdtTime());
 		return rowsUpadted;
 	}
@@ -98,7 +109,7 @@ public class MailSenderPropsJdbcDao implements MailSenderPropsDao {
 		String sql = 
 			"delete from MailSenderProps where RowId=?";
 		Object[] parms = new Object[] {rowId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -129,23 +140,14 @@ public class MailSenderPropsJdbcDao implements MailSenderPropsDao {
 			") VALUES (" +
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		mailSenderVo.setRowId(retrieveRowId());
 		mailSenderVo.setOrigUpdtTime(mailSenderVo.getUpdtTime());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {

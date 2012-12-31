@@ -8,16 +8,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.DeliveryStatusVo;
 
+@Component(value="deliveryStatusDao")
 public class DeliveryStatusJdbcDao implements DeliveryStatusDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class DeliveryStatusMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -46,7 +57,7 @@ public class DeliveryStatusJdbcDao implements DeliveryStatusDao {
 				"DeliveryStatus where msgid=? and finalRecipientId=? ";
 		
 		Object[] parms = new Object[] {msgId, finalRecipientId};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new DeliveryStatusMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new DeliveryStatusMapper());
 		if (list.size()>0)
 			return (DeliveryStatusVo)list.get(0);
 		else
@@ -61,7 +72,7 @@ public class DeliveryStatusJdbcDao implements DeliveryStatusDao {
 				" DeliveryStatus where msgId=? " +
 			" order by finalRecipient";
 		Object[] parms = new Object[] {msgId};
-		List<DeliveryStatusVo> list = (List<DeliveryStatusVo>)jdbcTemplate.query(sql, parms, new DeliveryStatusMapper());
+		List<DeliveryStatusVo> list = (List<DeliveryStatusVo>)getJdbcTemplate().query(sql, parms, new DeliveryStatusMapper());
 		return list;
 	}
 	
@@ -97,7 +108,7 @@ public class DeliveryStatusJdbcDao implements DeliveryStatusDao {
 			" where " +
 				" msgid=? and finalRecipientId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -109,7 +120,7 @@ public class DeliveryStatusJdbcDao implements DeliveryStatusDao {
 		fields.add(msgId);
 		fields.add(finalRecipientId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -120,7 +131,7 @@ public class DeliveryStatusJdbcDao implements DeliveryStatusDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -174,17 +185,8 @@ public class DeliveryStatusJdbcDao implements DeliveryStatusDao {
 		fields.add(deliveryStatusVo.getDeliveryStatus());
 		fields.add(deliveryStatusVo.getAddTime());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

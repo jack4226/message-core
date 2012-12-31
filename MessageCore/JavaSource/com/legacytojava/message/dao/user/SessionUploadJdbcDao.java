@@ -8,15 +8,26 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.SessionUploadVo;
 
+@Component(value="sessionUploadDao")
 public class SessionUploadJdbcDao implements SessionUploadDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class SessionUploadMapper implements RowMapper {
 		
@@ -38,7 +49,7 @@ public class SessionUploadJdbcDao implements SessionUploadDao {
 	public SessionUploadVo getByPrimaryKey(String sessionId, int sessionSeq) {
 		String sql = "select * from SessionUploads where SessionId=? and sessionSeq=?";
 		Object[] parms = new Object[] {sessionId, sessionSeq};
-		List<?> list = jdbcTemplate.query(sql, parms, new SessionUploadMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new SessionUploadMapper());
 		if (list.size()>0) {
 			return (SessionUploadVo)list.get(0);
 		}
@@ -51,7 +62,7 @@ public class SessionUploadJdbcDao implements SessionUploadDao {
 	public List<SessionUploadVo> getBySessionId(String sessionId) {
 		String sql = "select * from SessionUploads where SessionId=?";
 		Object[] parms = new Object[] {sessionId};
-		List<SessionUploadVo> list = jdbcTemplate.query(sql, parms, new SessionUploadMapper());
+		List<SessionUploadVo> list = getJdbcTemplate().query(sql, parms, new SessionUploadMapper());
 		return list;
 	}
 	
@@ -78,7 +89,7 @@ public class SessionUploadJdbcDao implements SessionUploadDao {
 	public List<SessionUploadVo> getByUserId(String userId) {
 		String sql = "select * from SessionUploads where UserId=?";
 		Object[] parms = new Object[] {userId};
-		List<SessionUploadVo> list = jdbcTemplate.query(sql, parms, new SessionUploadMapper());
+		List<SessionUploadVo> list = getJdbcTemplate().query(sql, parms, new SessionUploadMapper());
 		return list;
 	}
 	
@@ -99,28 +110,28 @@ public class SessionUploadJdbcDao implements SessionUploadDao {
 			"SessionValue=?" +
 			" where SessionId=? and SessionSeq=?";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
 	}
 	
 	public int deleteByPrimaryKey(String sessionId, int sessionSeq) {
 		String sql = "delete from SessionUploads where SessionId=? and SessionSeq=?";
 		Object[] parms = new Object[] {sessionId, sessionSeq};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 
 	public int deleteBySessionId(String sessionId) {
 		String sql = "delete from SessionUploads where SessionId=?";
 		Object[] parms = new Object[] {sessionId,};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
 	public int deleteByUserId(String userId) {
 		String sql = "delete from SessionUploads where UserId=?";
 		Object[] parms = new Object[] {userId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -130,13 +141,13 @@ public class SessionUploadJdbcDao implements SessionUploadDao {
 		Timestamp now = new Timestamp(cal.getTimeInMillis());
 		String sql = "delete from SessionUploads where CreateTime<?";
 		Object[] parms = new Object[] {now};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;	
 	}
 	
 	public int deleteAll() {
 		String sql = "delete from SessionUploads";
-		int rowsDeleted = jdbcTemplate.update(sql);
+		int rowsDeleted = getJdbcTemplate().update(sql);
 		return rowsDeleted;	
 	}
 
@@ -161,14 +172,14 @@ public class SessionUploadJdbcDao implements SessionUploadDao {
 			") VALUES (" +
 				" ?, ?, ?, ?, ?, current_timestamp, ?)";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		return rowsInserted;
 	}
 	
 	public int insertLast(SessionUploadVo sessVo) {
 		String lastSeq = "select max(SessionSeq) from SessionUploads where SessionId = '"
 				+ sessVo.getSessionId() + "'";
-		int sessSeq = jdbcTemplate.queryForInt(lastSeq) + 1;
+		int sessSeq = getJdbcTemplate().queryForInt(lastSeq) + 1;
 		Object[] parms = {
 				sessVo.getSessionId(),
 				sessSeq,
@@ -189,21 +200,12 @@ public class SessionUploadJdbcDao implements SessionUploadDao {
 			") VALUES (" +
 				" ?, ?, ?, ?, ?, current_timestamp, ?)";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {

@@ -20,7 +20,7 @@
 	
 	<!-- Spring JPA Entity Manager Factory -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
+		<property name="persistenceXmlLocation" value="classpath:/META-INF/jpa-persistence.xml" />
 	    <property name="dataSource" ref="mysqlDataSource" />
 	    <property name="persistenceUnitName" value="message_core" />
 	    <property name="jpaDialect" ref="jpaDialect" />
@@ -47,6 +47,12 @@
 	</bean -->
 
 
+	<bean id="duplicateCheck"
+		class="com.legacytojava.message.bo.mailreader.DuplicateCheckJdbcDao">
+		<property name="dataSource" ref="mysqlDataSource" />
+		<property name="purgeAfter" value="24"/>
+	</bean>
+
 	<!-- bean id="idTokensDao"
 		class="com.legacytojava.message.dao.idtokens.IdTokensJdbcDao">
 		<property name="dataSource">
@@ -54,52 +60,52 @@
 		</property>
 	</bean -->
 
-	<bean id="emailAddrDao" scope="singleton"
+	<!-- bean id="emailAddrDao" scope="singleton"
 		class="com.legacytojava.message.dao.emailaddr.EmailAddrJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
-	<bean id="mailingListDao" scope="singleton"
+	<!-- bean id="mailingListDao" scope="singleton"
 		class="com.legacytojava.message.dao.emailaddr.MailingListJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
-	<bean id="subscriptionDao" scope="singleton"
+	<!-- bean id="subscriptionDao" scope="singleton"
 		class="com.legacytojava.message.dao.emailaddr.SubscriptionJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
-	<bean id="emailVariableDao" scope="singleton"
+	<!-- bean id="emailVariableDao" scope="singleton"
 		class="com.legacytojava.message.dao.emailaddr.EmailVariableJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
-	<bean id="emailTemplateDao" scope="singleton"
+	<!-- bean id="emailTemplateDao" scope="singleton"
 		class="com.legacytojava.message.dao.emailaddr.EmailTemplateJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
-	<bean id="unsubCommentsDao" scope="singleton"
+	<!-- bean id="unsubCommentsDao" scope="singleton"
 		class="com.legacytojava.message.dao.emailaddr.UnsubCommentsJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
-	<bean id="mailBoxDao" scope="singleton"
+	<!-- bean id="mailBoxDao" scope="singleton"
 		class="com.legacytojava.message.dao.mailbox.MailBoxJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
 	<!-- bean id="clientDao" scope="singleton"
 		class="com.legacytojava.message.dao.client.ClientJdbcDao">
@@ -115,211 +121,205 @@
 		</property>
 	</bean -->
 	
-	<bean id="customerDao" scope="singleton"
+	<!-- bean id="customerDao" scope="singleton"
 		class="com.legacytojava.message.dao.customer.CustomerJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 
-	<bean id="custSequenceDao" scope="singleton"
+	<!-- >bean id="custSequenceDao" scope="singleton"
 		class="com.legacytojava.message.dao.customer.CustSequenceJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 
 	<!-- Define Rule DAO's -->
-	<bean id="ruleElementDao" scope="singleton"
+	<!-- bean id="ruleElementDao" scope="singleton"
 		class="com.legacytojava.message.dao.rule.RuleElementJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="ruleLogicDao" scope="singleton"
+	<!-- bean id="ruleLogicDao" scope="singleton"
 		class="com.legacytojava.message.dao.rule.RuleLogicJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="ruleSubRuleMapDao" scope="singleton"
+	<!-- bean id="ruleSubRuleMapDao" scope="singleton"
 		class="com.legacytojava.message.dao.rule.RuleSubRuleMapJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="ruleDao" scope="singleton"
+	<!-- bean id="ruleDao" scope="singleton"
 		class="com.legacytojava.message.dao.rule.RuleJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
 		<property name="ruleElementDao" ref="ruleElementDao"/>
 		<property name="ruleLogicDao" ref="ruleLogicDao"/>
 		<property name="ruleSubRuleMapDao" ref="ruleSubRuleMapDao"/>
-	</bean>
+	</bean -->
 	
 	<!-- Define Template DAO's -->
-	<bean id="globalVariableDao" scope="singleton"
+	<!-- bean id="globalVariableDao" scope="singleton"
 		class="com.legacytojava.message.dao.template.GlobalVariableJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 
 	<!-- bean id="clientVariableDao" scope="singleton"
 		class="com.legacytojava.message.dao.template.ClientVariableJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
 	</bean -->
 	
-	<bean id="templateVariableDao" scope="singleton"
+	<!-- bean id="templateVariableDao" scope="singleton"
 		class="com.legacytojava.message.dao.template.TemplateVariableJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 		
-	<bean id="subjTemplateDao" scope="singleton"
+	<!-- bean id="subjTemplateDao" scope="singleton"
 		class="com.legacytojava.message.dao.template.SubjTemplateJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 		
-	<bean id="bodyTemplateDao" scope="singleton"
+	<!-- bean id="bodyTemplateDao" scope="singleton"
 		class="com.legacytojava.message.dao.template.BodyTemplateJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 		
-	<bean id="msgSourceDao" scope="singleton"
+	<!-- bean id="msgSourceDao" scope="singleton"
 		class="com.legacytojava.message.dao.template.MsgSourceJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 		
 	<!-- Define MsgOutbox DAO's -->
-	<bean id="deliveryStatusDao" scope="singleton"
+	<!-- bean id="deliveryStatusDao" scope="singleton"
 		class="com.legacytojava.message.dao.outbox.DeliveryStatusJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="renderVariableDao" scope="singleton"
+	<!-- bean id="renderVariableDao" scope="singleton"
 		class="com.legacytojava.message.dao.outbox.RenderVariableJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="renderAttachmentDao" scope="singleton"
+	<!-- bean id="renderAttachmentDao" scope="singleton"
 		class="com.legacytojava.message.dao.outbox.RenderAttachmentJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="renderObjectDao" scope="singleton"
+	<!-- bean id="renderObjectDao" scope="singleton"
 		class="com.legacytojava.message.dao.outbox.RenderObjectJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgRenderedDao" scope="singleton"
+	<!-- bean id="msgRenderedDao" scope="singleton"
 		class="com.legacytojava.message.dao.outbox.MsgRenderedJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgSequenceDao" scope="singleton"
+	<!-- bean id="msgSequenceDao" scope="singleton"
 		class="com.legacytojava.message.dao.outbox.MsgSequenceJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgUnreadCountDao" scope="singleton"
+	<!-- bean id="msgUnreadCountDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.MsgUnreadCountJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
 	<!-- Define Action DAO's -->
-	<bean id="msgDataTypeDao" scope="singleton"
+	<!-- bean id="msgDataTypeDao" scope="singleton"
 		class="com.legacytojava.message.dao.action.MsgDataTypeJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgActionDao" scope="singleton"
+	<!-- bean id="msgActionDao" scope="singleton"
 		class="com.legacytojava.message.dao.action.MsgActionJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgActionDetailDao" scope="singleton"
+	<!-- >bean id="msgActionDetailDao" scope="singleton"
 		class="com.legacytojava.message.dao.action.MsgActionDetailJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
 	<!-- Define MsgInbox DAO's -->
-	<bean id="msgInboxDao" scope="singleton"
+	<!-- bean id="msgInboxDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.MsgInboxJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgAddrsDao" scope="singleton"
+	<!-- bean id="msgAddrsDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.MsgAddrsJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="attachmentsDao" scope="singleton"
+	<!-- bean id="attachmentsDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.AttachmentsJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgStreamDao" scope="singleton"
+	<!-- bean id="msgStreamDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.MsgStreamJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgHeadersDao" scope="singleton"
+	<!-- bean id="msgHeadersDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.MsgHeadersJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="rfcFieldsDao" scope="singleton"
+	<!-- bean id="rfcFieldsDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.RfcFieldsJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 
-	<bean id="msgActionLogsDao" scope="singleton"
+	<!-- bean id="msgActionLogsDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.MsgActionLogsJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgClickCountsDao" scope="singleton"
+	<!-- bean id="msgClickCountsDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.MsgClickCountsJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="msgUnsubCommentsDao" scope="singleton"
+	<!-- bean id="msgUnsubCommentsDao" scope="singleton"
 		class="com.legacytojava.message.dao.inbox.MsgUnsubCommentsJdbcDao">
 		<property name="dataSource">
 			<ref bean="mysqlDataSource"/>
 		</property>
-	</bean>
+	</bean -->
 	
 	<!-- Define SMTP server and Other Servers DAO's -->
 	
-	<bean id="smtpServerDao" scope="singleton"
+	<!-- bean id="smtpServerDao" scope="singleton"
 		class="com.legacytojava.message.dao.smtp.SmtpServerJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="mailSenderPropsDao" scope="singleton"
+	<!-- bean id="mailSenderPropsDao" scope="singleton"
 		class="com.legacytojava.message.dao.smtp.MailSenderPropsJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="socketServerDao" scope="singleton"
+	<!-- bean id="socketServerDao" scope="singleton"
 		class="com.legacytojava.message.dao.socket.SocketServerJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="timerServerDao" scope="singleton"
+	<!-- bean id="timerServerDao" scope="singleton"
 		class="com.legacytojava.message.dao.timer.TimerServerJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="duplicateCheck"
-		class="com.legacytojava.message.bo.mailreader.DuplicateCheckJdbcDao">
-		<property name="dataSource" ref="mysqlDataSource" />
-		<property name="purgeAfter" value="24"/>
-	</bean>
-
-	<bean id="userDao" scope="singleton"
+	<!-- bean id="userDao" scope="singleton"
 		class="com.legacytojava.message.dao.user.UserJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
-	<bean id="sessionUploadDao" scope="singleton"
+	<!-- bean id="sessionUploadDao" scope="singleton"
 		class="com.legacytojava.message.dao.user.SessionUploadJdbcDao">
 		<property name="dataSource" ref="mysqlDataSource"/>
-	</bean>
+	</bean -->
 	
 </beans>

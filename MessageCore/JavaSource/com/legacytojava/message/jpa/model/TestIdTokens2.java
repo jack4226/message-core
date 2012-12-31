@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import junit.framework.TestCase;
 
+import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.jpa.PersistenceProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,9 +30,11 @@ public class TestIdTokens2 extends TestCase {
 		JbMain.getInstance();
 	}
 
+	/*
+	 * load entity manager factory by spring as a spring bean
+	 */
 	@Test
 	public void testIdTokens() {
-		// load entity manager factory by spring as a spring bean
 		//EntityManagerFactory emf = (EntityManagerFactory) JbMain.getBatchAppContext().getBean("entityManagerFactory");
 		EntityManagerFactory emf = JbMain.getAppContext().getBean(LocalContainerEntityManagerFactoryBean.class).getObject();
 		EntityManager entityManager = emf.createEntityManager();
@@ -57,10 +60,13 @@ public class TestIdTokens2 extends TestCase {
 		entityManager.close();
 	}
 
+	/* 
+	 * load entity manager factory by EclipseLink from persistence.xml
+	 */
 	@Test
 	public void testIdTokens2() {
-		// load entity manager factory by EclipseLink from persistence.xml
 		HashMap<Object,Object> properties = new HashMap<Object,Object>();
+		properties.put(PersistenceUnitProperties.ECLIPSELINK_PERSISTENCE_XML, "META-INF/jpa-persistence.xml");
 		//properties.put(PersistenceUnitProperties.CLASSLOADER, this.getClass().getClassLoader());
 		
 		EntityManagerFactory emf = new PersistenceProvider().createEntityManagerFactory(PERSISTENCE_UNIT_NAME, properties);

@@ -7,16 +7,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.RenderObjectVo;
 
+@Component(value="renderObjectDao")
 public class RenderObjectJdbcDao implements RenderObjectDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class RenderObjectMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -39,7 +50,7 @@ public class RenderObjectJdbcDao implements RenderObjectDao {
 				"RenderObject where RenderId=? and variableName=? ";
 		
 		Object[] parms = new Object[] {renderId, variableName};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new RenderObjectMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new RenderObjectMapper());
 		if (list.size()>0)
 			return (RenderObjectVo)list.get(0);
 		else
@@ -54,7 +65,7 @@ public class RenderObjectJdbcDao implements RenderObjectDao {
 				" RenderObject where RenderId=? " +
 			" order by variableName";
 		Object[] parms = new Object[] {renderId};
-		List<RenderObjectVo> list = (List<RenderObjectVo>)jdbcTemplate.query(sql, parms, new RenderObjectMapper());
+		List<RenderObjectVo> list = (List<RenderObjectVo>)getJdbcTemplate().query(sql, parms, new RenderObjectMapper());
 		return list;
 	}
 	
@@ -75,7 +86,7 @@ public class RenderObjectJdbcDao implements RenderObjectDao {
 			" where " +
 				" RenderId=? and VariableName=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -87,7 +98,7 @@ public class RenderObjectJdbcDao implements RenderObjectDao {
 		fields.add(msgId+"");
 		fields.add(variableName);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -98,7 +109,7 @@ public class RenderObjectJdbcDao implements RenderObjectDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(msgId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -121,17 +132,8 @@ public class RenderObjectJdbcDao implements RenderObjectDao {
 		fields.add(renderVariableVo.getVariableType());
 		fields.add(renderVariableVo.getVariableValue());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

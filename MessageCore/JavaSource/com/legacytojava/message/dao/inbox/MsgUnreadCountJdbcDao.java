@@ -5,24 +5,36 @@ import java.util.ArrayList;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component(value="msgUnreadCountDao")
 public class MsgUnreadCountJdbcDao implements MsgUnreadCountDao {
 	protected static final Logger logger = Logger.getLogger(MsgUnreadCountJdbcDao.class);
-	private DataSource dataSource;
+	
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	public int updateInboxUnreadCount(int delta) {
 		String sql = 
 			"update MsgUnreadCount set InboxUnreadCount = (InboxUnreadCount + " + delta + ")";
-		int rowsUpdated = jdbcTemplate.update(sql);
+		int rowsUpdated = getJdbcTemplate().update(sql);
 		return rowsUpdated;
 	}
 
 	public int updateSentUnreadCount(int delta) {
 		String sql = 
 			"update MsgUnreadCount set SentUnreadCount = (SentUnreadCount + " + delta + ")";
-		int rowsUpdated = jdbcTemplate.update(sql);
+		int rowsUpdated = getJdbcTemplate().update(sql);
 		return rowsUpdated;
 	}
 
@@ -33,7 +45,7 @@ public class MsgUnreadCountJdbcDao implements MsgUnreadCountDao {
 		String sql = "update MsgUnreadCount set " +
 				"InboxUnreadCount=?";
 		
-		int rowsUpdated = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpdated = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpdated;
 	}
 
@@ -44,7 +56,7 @@ public class MsgUnreadCountJdbcDao implements MsgUnreadCountDao {
 		String sql = "update MsgUnreadCount set " +
 				"SentUnreadCount=?";
 		
-		int rowsUpdated = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpdated = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpdated;
 	}
 
@@ -57,28 +69,19 @@ public class MsgUnreadCountJdbcDao implements MsgUnreadCountDao {
 				"InboxUnreadCount=?," +
 				"SentUnreadCount=?";
 		
-		int rowsUpdated = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpdated = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpdated;
 	}
 
 	public int selectInboxUnreadCount() {
 		String sql = "select InboxUnreadCount from MsgUnreadCount";
-		int unreadCount = jdbcTemplate.queryForInt(sql);
+		int unreadCount = getJdbcTemplate().queryForInt(sql);
 		return unreadCount;
 	}
 
 	public int selectSentUnreadCount() {
 		String sql = "select SentUnreadCount from MsgUnreadCount";
-		int unreadCount = jdbcTemplate.queryForInt(sql);
+		int unreadCount = getJdbcTemplate().queryForInt(sql);
 		return unreadCount;
-	}
-
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

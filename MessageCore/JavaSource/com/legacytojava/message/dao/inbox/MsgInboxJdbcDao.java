@@ -11,9 +11,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MsgDirectionCode;
@@ -23,12 +24,20 @@ import com.legacytojava.message.vo.inbox.MsgInboxVo;
 import com.legacytojava.message.vo.inbox.MsgInboxWebVo;
 import com.legacytojava.message.vo.inbox.SearchFieldsVo;
 
+@Component(value="msgInboxDao")
 public class MsgInboxJdbcDao implements MsgInboxDao {
 	
-	private DataSourceTransactionManager transactionManager;
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static class MsgInboxMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -129,7 +138,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 				"MsgInbox " +
 			" where msgId=? ";
 		Object[] parms = new Object[] {msgId};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgInboxMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgInboxMapper());
 		if (list.size()>0)
 			return (MsgInboxVo)list.get(0);
 		else
@@ -142,7 +151,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			"from " +
 				"MsgInbox " +
 			" where msgId = (select max(MsgId) from MsgInbox) ";
-		List<?> list = (List<?>)jdbcTemplate.query(sql, new MsgInboxMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, new MsgInboxMapper());
 		if (list.size()>0)
 			return (MsgInboxVo)list.get(0);
 		else
@@ -158,7 +167,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			" where leadMsgId=? " +
 			" order by msgId";
 		Object[] parms = new Object[] {leadMsgId};
-		List<MsgInboxWebVo> list = (List<MsgInboxWebVo>)jdbcTemplate.query(sql, parms, new MsgInboxMapperWeb());
+		List<MsgInboxWebVo> list = (List<MsgInboxWebVo>)getJdbcTemplate().query(sql, parms, new MsgInboxMapperWeb());
 		return list;
 	}
 	
@@ -171,7 +180,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			" where MsgRefId=? " +
 			" order by msgId";
 		Object[] parms = new Object[] {msgRefId};
-		List<MsgInboxWebVo> list = (List<MsgInboxWebVo>)jdbcTemplate.query(sql, parms, new MsgInboxMapperWeb());
+		List<MsgInboxWebVo> list = (List<MsgInboxWebVo>)getJdbcTemplate().query(sql, parms, new MsgInboxMapperWeb());
 		return list;
 	}
 	
@@ -184,7 +193,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			" where fromAddrId=? " +
 			" order by msgId";
 		Object[] parms = new Object[] {addrId};
-		List<MsgInboxVo> list = (List<MsgInboxVo>)jdbcTemplate.query(sql, parms, new MsgInboxMapper());
+		List<MsgInboxVo> list = (List<MsgInboxVo>)getJdbcTemplate().query(sql, parms, new MsgInboxMapper());
 		return list;
 	}
 	
@@ -197,7 +206,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			" where toAddrId=? " +
 			" order by msgId";
 		Object[] parms = new Object[] {addrId};
-		List<MsgInboxVo> list = (List<MsgInboxVo>)jdbcTemplate.query(sql, parms, new MsgInboxMapper());
+		List<MsgInboxVo> list = (List<MsgInboxVo>)getJdbcTemplate().query(sql, parms, new MsgInboxMapper());
 		return list;
 	}
 	
@@ -223,7 +232,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			" where receivedTime>=? " +
 			" order by receivedTime desc limit 100";
 		Object[] parms = new Object[] {new Timestamp(date.getTime())};
-		List<MsgInboxVo> list = (List<MsgInboxVo>)jdbcTemplate.query(sql, parms, new MsgInboxMapper());
+		List<MsgInboxVo> list = (List<MsgInboxVo>)getJdbcTemplate().query(sql, parms, new MsgInboxMapper());
 		return list;
 	}
 	
@@ -250,7 +259,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 		List<Object> parms = new ArrayList<Object>();
 		parms.add(MsgDirectionCode.MSG_RECEIVED);
 		parms.add(MsgStatusCode.CLOSED);
-		int inboxUnreadCount = jdbcTemplate.queryForInt(sql, parms.toArray());
+		int inboxUnreadCount = getJdbcTemplate().queryForInt(sql, parms.toArray());
 		getMsgUnreadCountDao().resetInboxUnreadCount(inboxUnreadCount);
 		return inboxUnreadCount;
 	}
@@ -266,7 +275,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 		List<Object> parms = new ArrayList<Object>();
 		parms.add(MsgDirectionCode.MSG_SENT);
 		parms.add(MsgStatusCode.CLOSED);
-		int sentUnreadCount = jdbcTemplate.queryForInt(sql, parms.toArray());
+		int sentUnreadCount = getJdbcTemplate().queryForInt(sql, parms.toArray());
 		getMsgUnreadCountDao().resetSentUnreadCount(sentUnreadCount);
 		return sentUnreadCount;
 	}
@@ -282,7 +291,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			" FROM MsgInbox a " + 
 			" JOIN EmailAddr b ON a.FromAddrId=b.EmailAddrId " +
 			whereSql;
-		int rowCount = jdbcTemplate.queryForInt(sql, parms.toArray());
+		int rowCount = getJdbcTemplate().queryForInt(sql, parms.toArray());
 		return rowCount;
 	}
 	
@@ -358,13 +367,13 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			" order by MsgId " + fetchOrder +
 			" limit " + vo.getPageSize();
 		// set result set size
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(vo.getPageSize());
-		jdbcTemplate.setMaxRows(vo.getPageSize());
-		List<MsgInboxWebVo> list = (List<MsgInboxWebVo>)jdbcTemplate.query(sql, parms.toArray(), new MsgInboxMapperWeb());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(vo.getPageSize());
+		getJdbcTemplate().setMaxRows(vo.getPageSize());
+		List<MsgInboxWebVo> list = (List<MsgInboxWebVo>)getJdbcTemplate().query(sql, parms.toArray(), new MsgInboxMapperWeb());
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		if (vo.getPageAction().equals(SearchFieldsVo.PageAction.PREVIOUS)) {
 			// reverse the list
 			Collections.reverse(list);
@@ -524,7 +533,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			fields.add(msgInboxVo.getOrigUpdtTime());
 		}
 
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted > 0) {
 			adjustUnreadCounts(msgInboxVo);
 			msgInboxVo.setOrigReadCount(msgInboxVo.getReadCount());
@@ -564,7 +573,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			fields.add(msgInboxVo.getOrigUpdtTime());
 		}
 
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted > 0) {
 			adjustUnreadCounts(msgInboxVo);
 			msgInboxVo.setOrigReadCount(msgInboxVo.getReadCount());
@@ -655,7 +664,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			fields.add(msgInboxVo.getOrigUpdtTime());
 		}
 
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted > 0) {
 			adjustUnreadCounts(msgInboxVo);
 			msgInboxVo.setOrigReadCount(msgInboxVo.getReadCount());
@@ -687,7 +696,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			fields.add(msgInboxVo.getOrigUpdtTime());
 		}
 
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted > 0) {
 			adjustUnreadCounts(msgInboxVo);
 			msgInboxVo.setOrigUpdtTime(msgInboxVo.getUpdtTime());
@@ -714,7 +723,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			" where " +
 				" LeadMsgId=? ";
 
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted > 0) {
 			adjustUnreadCounts(msgInboxVo);
 			msgInboxVo.setOrigStatusId(msgInboxVo.getStatusId());
@@ -809,7 +818,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 			fields.add(msgInboxVo.getOrigUpdtTime());
 		}
 
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted > 0) {
 			adjustUnreadCounts(msgInboxVo);
 			msgInboxVo.setOrigReadCount(msgInboxVo.getReadCount());
@@ -831,7 +840,7 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted > 0 && msgInboxVo.getOrigReadCount() == 0
 				&& !MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())) {
 			if (MsgDirectionCode.MSG_RECEIVED.equals(msgInboxVo.getMsgDirection())) {
@@ -925,9 +934,9 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 		fields.add(msgInboxVo.getBodyContentType());
 		fields.add(msgInboxVo.getMsgBody());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		msgInboxVo.setOrigUpdtTime(msgInboxVo.getUpdtTime());
-		//msgInboxVo.setMsgId(jdbcTemplate.queryForInt(getRowIdSql()));
+		//msgInboxVo.setMsgId(getJdbcTemplate().queryForInt(getRowIdSql()));
 		if (rowsInserted > 0 && msgInboxVo.getReadCount() == 0
 				&& !MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())) {
 			if (MsgDirectionCode.MSG_RECEIVED.equals(msgInboxVo.getMsgDirection())) {
@@ -939,35 +948,14 @@ public class MsgInboxJdbcDao implements MsgInboxDao {
 		}
 		return rowsInserted;
 	}
-	
+
+	@Autowired
 	private MsgUnreadCountDao msgUnreadCountDao = null;
 	MsgUnreadCountDao getMsgUnreadCountDao() {
-		if (msgUnreadCountDao == null) {
-			msgUnreadCountDao = new MsgUnreadCountJdbcDao();
-			((MsgUnreadCountJdbcDao)msgUnreadCountDao).setDataSource(dataSource);
-		}
 		return msgUnreadCountDao;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-
-	public DataSourceTransactionManager getTransactionManager() {
-		return transactionManager;
-	}
-
-	public void setTransactionManager(
-			DataSourceTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
 	}
 }

@@ -9,18 +9,28 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.MsgUnsubCommentsVo;
 
-
+@Component(value="msgUnsubCommentsDao")
 public class MsgUnsubCommentsJdbcDao implements MsgUnsubCommentsDao {
 	static final Logger logger = Logger.getLogger(MsgUnsubCommentsJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class MsgUnsubCommentsMapper implements RowMapper {
 		
@@ -41,7 +51,7 @@ public class MsgUnsubCommentsJdbcDao implements MsgUnsubCommentsDao {
 	public MsgUnsubCommentsVo getByPrimaryKey(int rowId){
 		String sql = "select * from MsgUnsubComments where RowId=?";
 		Object[] parms = new Object[] {rowId};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgUnsubCommentsMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgUnsubCommentsMapper());
 		if (list.size()>0) {
 			return (MsgUnsubCommentsVo)list.get(0);
 		}
@@ -54,7 +64,7 @@ public class MsgUnsubCommentsJdbcDao implements MsgUnsubCommentsDao {
 	public List<MsgUnsubCommentsVo> getAll() {
 		String sql = "select * from MsgUnsubComments " +
 		" order by RowId";
-		List<MsgUnsubCommentsVo> list = (List<MsgUnsubCommentsVo>)jdbcTemplate.query(sql, new MsgUnsubCommentsMapper());
+		List<MsgUnsubCommentsVo> list = (List<MsgUnsubCommentsVo>)getJdbcTemplate().query(sql, new MsgUnsubCommentsMapper());
 		return list;
 	}
 	
@@ -63,7 +73,7 @@ public class MsgUnsubCommentsJdbcDao implements MsgUnsubCommentsDao {
 		String sql = "select * from MsgUnsubComments " +
 			" where MsgId=" + msgId +
 			" order by RowId";
-		List<MsgUnsubCommentsVo> list = (List<MsgUnsubCommentsVo>)jdbcTemplate.query(sql, new MsgUnsubCommentsMapper());
+		List<MsgUnsubCommentsVo> list = (List<MsgUnsubCommentsVo>)getJdbcTemplate().query(sql, new MsgUnsubCommentsMapper());
 		return list;
 	}
 	
@@ -72,7 +82,7 @@ public class MsgUnsubCommentsJdbcDao implements MsgUnsubCommentsDao {
 		String sql = "select * from MsgUnsubComments " +
 			" where EmailAddrId=" + emailAddrId +
 			" order by RowId";
-		List<MsgUnsubCommentsVo> list = (List<MsgUnsubCommentsVo>)jdbcTemplate.query(sql, new MsgUnsubCommentsMapper());
+		List<MsgUnsubCommentsVo> list = (List<MsgUnsubCommentsVo>)getJdbcTemplate().query(sql, new MsgUnsubCommentsMapper());
 		return list;
 	}
 	
@@ -81,7 +91,7 @@ public class MsgUnsubCommentsJdbcDao implements MsgUnsubCommentsDao {
 		String sql = "select * from MsgUnsubComments " +
 			" where ListId='" + listId + "' " +
 			" order by RowId";
-		List<MsgUnsubCommentsVo> list = (List<MsgUnsubCommentsVo>)jdbcTemplate.query(sql, new MsgUnsubCommentsMapper());
+		List<MsgUnsubCommentsVo> list = (List<MsgUnsubCommentsVo>)getJdbcTemplate().query(sql, new MsgUnsubCommentsMapper());
 		return list;
 	}
 	
@@ -102,28 +112,28 @@ public class MsgUnsubCommentsJdbcDao implements MsgUnsubCommentsDao {
 		
 		Object[] parms = keys.toArray();
 
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
 	}
 	
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = "delete from MsgUnsubComments where RowId=?";
 		Object[] parms = new Object[] {rowId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
 	public int deleteByMsgId(long msgId) {
 		String sql = "delete from MsgUnsubComments where MsgId=?";
 		Object[] parms = new Object[] {msgId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
 	public int deleteByEmailAddrId(long emailAddrId) {
 		String sql = "delete from MsgUnsubComments where EmailAddrId=?";
 		Object[] parms = new Object[] {emailAddrId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -147,25 +157,16 @@ public class MsgUnsubCommentsJdbcDao implements MsgUnsubCommentsDao {
 				" ?, ?, ?, ?, ? " +
 				")";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		msgUnsubCommentsVo.setRowId(retrieveRowId());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

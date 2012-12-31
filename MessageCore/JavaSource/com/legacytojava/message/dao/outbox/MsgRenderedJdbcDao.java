@@ -8,16 +8,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.MsgRenderedVo;
 
+@Component(value="msgRenderedDao")
 public class MsgRenderedJdbcDao implements MsgRenderedDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class MsgRenderedMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -45,7 +56,7 @@ public class MsgRenderedJdbcDao implements MsgRenderedDao {
 				"MsgRendered where renderId=? ";
 		
 		Object[] parms = new Object[] {renderId};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgRenderedMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgRenderedMapper());
 		if (list.size()>0)
 			return (MsgRenderedVo)list.get(0);
 		else
@@ -58,7 +69,7 @@ public class MsgRenderedJdbcDao implements MsgRenderedDao {
 			"from " +
 				"MsgRendered where renderId=(select max(RenderId) from MsgRendered) ";
 		
-		List<?> list = (List<?>)jdbcTemplate.query(sql, new MsgRenderedMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, new MsgRenderedMapper());
 		if (list.size()>0)
 			return (MsgRenderedVo)list.get(0);
 		else
@@ -73,7 +84,7 @@ public class MsgRenderedJdbcDao implements MsgRenderedDao {
 				" MsgRendered where msgSourceId=? " +
 			" order by renderId";
 		Object[] parms = new Object[] {msgSourceId};
-		List<MsgRenderedVo> list = (List<MsgRenderedVo>)jdbcTemplate.query(sql, parms, new MsgRenderedMapper());
+		List<MsgRenderedVo> list = (List<MsgRenderedVo>)getJdbcTemplate().query(sql, parms, new MsgRenderedMapper());
 		return list;
 	}
 	
@@ -111,7 +122,7 @@ public class MsgRenderedJdbcDao implements MsgRenderedDao {
 			sql += " and UpdtTime=?";
 			fields.add(msgRenderedVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		msgRenderedVo.setOrigUpdtTime(msgRenderedVo.getUpdtTime());
 		return rowsUpadted;
 	}
@@ -123,7 +134,7 @@ public class MsgRenderedJdbcDao implements MsgRenderedDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(renderId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -155,19 +166,10 @@ public class MsgRenderedJdbcDao implements MsgRenderedDao {
 		fields.add(msgRenderedVo.getUpdtTime());
 		fields.add(msgRenderedVo.getUpdtUserId());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
-		msgRenderedVo.setRenderId(jdbcTemplate.queryForInt(getRowIdSql()));
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
+		msgRenderedVo.setRenderId(getJdbcTemplate().queryForInt(getRowIdSql()));
 		msgRenderedVo.setOrigUpdtTime(msgRenderedVo.getUpdtTime());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

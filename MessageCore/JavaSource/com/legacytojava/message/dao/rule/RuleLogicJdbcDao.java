@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.bo.rule.RuleBase;
 import com.legacytojava.message.constant.Constants;
@@ -18,10 +19,19 @@ import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.rule.RuleLogicVo;
 
+@Component(value="ruleLogicDao")
 public class RuleLogicJdbcDao implements RuleLogicDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 	
 	static final class RuleLogicMapper implements RowMapper {
 		
@@ -81,7 +91,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		
 		Object[] parms = new Object[] {ruleName};
 		
-		List<?> list = jdbcTemplate.query(sql, parms, new RuleLogicMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new RuleLogicMapper());
 		if (list.size()>0)
 			return (RuleLogicVo)list.get(0);
 		else
@@ -123,7 +133,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		
 		Object[] parms = new Object[] {ruleName};
 		
-		List<?> list = jdbcTemplate.query(sql, parms, new RuleLogicMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new RuleLogicMapper());
 		return (List<RuleLogicVo>) list;
 	}
 	
@@ -131,7 +141,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		String sql = 
 			"select max(RuleSeq) from RuleLogic";
 
-		int nextSeq = jdbcTemplate.queryForInt(sql);
+		int nextSeq = getJdbcTemplate().queryForInt(sql);
 		return (nextSeq + 1);
 	}
 	
@@ -168,7 +178,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 				"r.Description " +
 			" order by r.ruleCategory asc, r.ruleSeq asc, r.ruleName asc ";
 		Object[] parms = new Object[] {StatusIdCode.ACTIVE, new Timestamp(System.currentTimeMillis())};
-		List<RuleLogicVo> list = (List<RuleLogicVo>)jdbcTemplate.query(sql, parms, new RuleLogicMapper());
+		List<RuleLogicVo> list = (List<RuleLogicVo>)getJdbcTemplate().query(sql, parms, new RuleLogicMapper());
 		return list;
 	}
 	
@@ -212,7 +222,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		sql += " order by r.ruleCategory asc, r.ruleSeq asc, r.ruleName asc ";
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(Constants.YES_CODE);
-		List<RuleLogicVo> list = (List<RuleLogicVo>)jdbcTemplate.query(sql, fields.toArray(), new RuleLogicMapper());
+		List<RuleLogicVo> list = (List<RuleLogicVo>)getJdbcTemplate().query(sql, fields.toArray(), new RuleLogicMapper());
 		return list;
 	}
 	
@@ -226,7 +236,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 			sql += " and BuiltInRule!='" + Constants.YES_CODE + "' ";
 		}
 		
-		List<RuleLogicVo> list = (List<RuleLogicVo>)jdbcTemplate.query(sql, new RuleLogicMapper());
+		List<RuleLogicVo> list = (List<RuleLogicVo>)getJdbcTemplate().query(sql, new RuleLogicMapper());
 		return list;
 	}
 	
@@ -241,7 +251,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		fields.add(Constants.YES_CODE);
 		fields.add(Constants.YES_CODE);
 		fields.add(RuleBase.MAIN_RULE);
-		List<String> list = jdbcTemplate.queryForList(sql, fields.toArray(), String.class);
+		List<String> list = getJdbcTemplate().queryForList(sql, fields.toArray(), String.class);
 		return list;
 	}
 	
@@ -256,7 +266,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		fields.add(Constants.YES_CODE);
 		fields.add(Constants.YES_CODE);
 		fields.add(RuleBase.MAIN_RULE);
-		List<String> list = jdbcTemplate.queryForList(sql, fields.toArray(), String.class);
+		List<String> list = getJdbcTemplate().queryForList(sql, fields.toArray(), String.class);
 		return list;
 	}
 	
@@ -303,7 +313,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 			" where " +
 				" RowId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		ruleLogicVo.setOrigRuleName(ruleLogicVo.getRuleName());
 		ruleLogicVo.setOrigRuleSeq(ruleLogicVo.getRuleSeq());
 		updateReloadFlags();
@@ -318,7 +328,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		fields.add(ruleName);
 		fields.add(ruleSeq);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -352,7 +362,7 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 		fields.add(ruleLogicVo.getBuiltInRule());
 		fields.add(ruleLogicVo.getDescription());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		ruleLogicVo.setRowId(retrieveRowId());
 		ruleLogicVo.setOrigRuleName(ruleLogicVo.getRuleName());
 		ruleLogicVo.setOrigRuleSeq(ruleLogicVo.getRuleSeq());
@@ -371,19 +381,10 @@ public class RuleLogicJdbcDao implements RuleLogicDao {
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

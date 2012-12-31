@@ -3,6 +3,8 @@ package com.legacytojava.message.bo.rule;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.message.bo.TaskBaseBo;
@@ -11,10 +13,12 @@ import com.legacytojava.message.external.RuleTargetProc;
 import com.legacytojava.message.vo.rule.RuleElementVo;
 import com.legacytojava.message.vo.rule.RuleVo;
 
+@Component(value="rulesDataBo")
 public final class RulesDataBoImpl implements RulesDataBo {
 	static final Logger logger = Logger.getLogger(RulesDataBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
+	@Autowired
 	private RuleDao ruleDao;
 
 	private RulesDataBoImpl() {
@@ -38,10 +42,6 @@ public final class RulesDataBoImpl implements RulesDataBo {
 		return ruleDao;
 	}
 
-	public void setRuleDao(RuleDao ruleDao) {
-		this.ruleDao = ruleDao;
-	}
-	
 	private void substituteTargetProc(List<RuleVo> rules) {
 		if (rules == null || rules.size() == 0) return;
 		for (RuleVo rule : rules) {

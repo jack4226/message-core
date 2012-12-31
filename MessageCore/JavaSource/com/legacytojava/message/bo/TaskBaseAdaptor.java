@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.jbatch.queue.JmsProcessor;
 
+@Component(value="taskBaseBo")
+@Scope(value="prototype")
 public abstract class TaskBaseAdaptor implements TaskBaseBo {
 
+	@Autowired
 	protected JmsProcessor jmsProcessor;
 	protected String taskArguments;
 	

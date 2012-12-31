@@ -3,20 +3,32 @@ package com.legacytojava.message.dao.customer;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component(value="custSequenceDao")
 public class CustSequenceJdbcDao implements CustSequenceDao {
 	protected static final Logger logger = Logger.getLogger(CustSequenceJdbcDao.class);
-	private DataSource dataSource;
+	
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	public long findNextValue() {
 		/* simulate a sequence table */
 		String sql1 = "update CustSequence set seqId = LAST_INSERT_ID(seqId + 1)";
 		String sql2 = "select LAST_INSERT_ID()";
 		try {
-			jdbcTemplate.update(sql1);
-			long nextValue = jdbcTemplate.queryForLong(sql2);
+			getJdbcTemplate().update(sql1);
+			long nextValue = getJdbcTemplate().queryForLong(sql2);
 			return nextValue;
 		}
 		catch (Exception e) {
@@ -32,22 +44,13 @@ public class CustSequenceJdbcDao implements CustSequenceDao {
 		logger.info("repair() - perform delete and insert...");
 		String sql = 
 			"select max(SeqId) from CustSequence ";
-		long currValue = jdbcTemplate.queryForLong(sql);
+		long currValue = getJdbcTemplate().queryForLong(sql);
 		sql = "delete from CustSequence";
-		jdbcTemplate.update(sql);
+		getJdbcTemplate().update(sql);
 		sql = "insert into CustSequence (SeqId) values(" +(currValue + 1)+ ")";
-		jdbcTemplate.update(sql);
+		getJdbcTemplate().update(sql);
 		sql = "select LAST_INSERT_ID()";
-		long nextValue = jdbcTemplate.queryForLong(sql);
+		long nextValue = getJdbcTemplate().queryForLong(sql);
 		return nextValue;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

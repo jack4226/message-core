@@ -10,18 +10,29 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.emailaddr.MailingListVo;
 
+@Component(value="mailingListDao")
 public class MailingListJdbcDao implements MailingListDao {
 	static final Logger logger = Logger.getLogger(MailingListJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class MailingListMapper implements RowMapper {
 		
@@ -94,7 +105,7 @@ public class MailingListJdbcDao implements MailingListDao {
 				" a.CreateTime, " +
 				" a.ListMasterEmailAddr ";
 		Object[] parms = new Object[] {listId};
-		List<?> list = (List<?>) jdbcTemplate.query(sql, parms, new MailingListMapper());
+		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms, new MailingListMapper());
 		if (list.size()>0) {
 			return (MailingListVo)list.get(0);
 		}
@@ -149,7 +160,7 @@ public class MailingListJdbcDao implements MailingListDao {
 			" a.CreateTime, " +
 			" a.ListMasterEmailAddr " ;
 		Object[] parms = new Object[] {acctUserName};
-		List<MailingListVo> list = (List<MailingListVo>) jdbcTemplate.query(sql, parms,
+		List<MailingListVo> list = (List<MailingListVo>) getJdbcTemplate().query(sql, parms,
 				new MailingListMapper());
 		return list;
 	}
@@ -192,7 +203,7 @@ public class MailingListJdbcDao implements MailingListDao {
 		" a.CreateTime, " +
 		" a.ListMasterEmailAddr " ;
 		sql += " order by a.RowId ";
-		List<MailingListVo> list = (List<MailingListVo>) jdbcTemplate.query(sql, parms.toArray(),
+		List<MailingListVo> list = (List<MailingListVo>) getJdbcTemplate().query(sql, parms.toArray(),
 				new MailingListMapper());
 		return list;
 	}
@@ -235,14 +246,14 @@ public class MailingListJdbcDao implements MailingListDao {
 		" a.CreateTime, " +
 		" a.ListMasterEmailAddr " ;
 		sql += " order by a.RowId limit 5";
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(5);
-		jdbcTemplate.setMaxRows(5);
-		List<MailingListVo> list = (List<MailingListVo>) jdbcTemplate.query(sql, parms.toArray(),
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(5);
+		getJdbcTemplate().setMaxRows(5);
+		List<MailingListVo> list = (List<MailingListVo>) getJdbcTemplate().query(sql, parms.toArray(),
 				new MailingListMapper());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		return list;
 	}
 
@@ -260,7 +271,7 @@ public class MailingListJdbcDao implements MailingListDao {
 			" and m.ClientId=c.ClientId " +
 			" and s.EmailAddrId=? ";
 		Object[] parms = new Object[] {emailAddrId};
-		List<MailingListVo> list = (List<MailingListVo>) jdbcTemplate.query(sql, parms,
+		List<MailingListVo> list = (List<MailingListVo>) getJdbcTemplate().query(sql, parms,
 				new MailingListMapper());
 		return list;
 	}
@@ -289,7 +300,7 @@ public class MailingListJdbcDao implements MailingListDao {
 		
 		Object[] parms = keys.toArray();
 
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		mailingListVo.setOrigListId(mailingListVo.getListId());
 		return rowsUpadted;
 	}
@@ -297,14 +308,14 @@ public class MailingListJdbcDao implements MailingListDao {
 	public int deleteByListId(String listId) {
 		String sql = "delete from MailingList where ListId=?";
 		Object[] parms = new Object[] {listId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
 	public int deleteByAddress(String emailAddr) {
 		String sql = "delete from MailingList where EmailAddr=?";
 		Object[] parms = new Object[] {emailAddr};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -336,26 +347,17 @@ public class MailingListJdbcDao implements MailingListDao {
 				" ?, ?, ?, ?, ?, ?, ?, ?, ? "+
 				")";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		mailingListVo.setRowId(retrieveRowId());
 		mailingListVo.setOrigListId(mailingListVo.getListId());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

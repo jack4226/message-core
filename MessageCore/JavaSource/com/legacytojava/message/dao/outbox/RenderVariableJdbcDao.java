@@ -7,15 +7,26 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.RenderVariableVo;
 
+@Component(value="renderVariableDao")
 public class RenderVariableJdbcDao implements RenderVariableDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 	
 	private static final class RenderVariableMapper implements RowMapper {
 		
@@ -39,7 +50,7 @@ public class RenderVariableJdbcDao implements RenderVariableDao {
 				"RenderVariable where RenderId=? and variableName=? ";
 		
 		Object[] parms = new Object[] {renderId+"", variableName};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new RenderVariableMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new RenderVariableMapper());
 		if (list.size()>0)
 			return (RenderVariableVo)list.get(0);
 		else
@@ -54,7 +65,7 @@ public class RenderVariableJdbcDao implements RenderVariableDao {
 				" RenderVariable where RenderId=? " +
 			" order by variableName";
 		Object[] parms = new Object[] {renderId};
-		List<RenderVariableVo> list = (List<RenderVariableVo>)jdbcTemplate.query(sql, parms, new RenderVariableMapper());
+		List<RenderVariableVo> list = (List<RenderVariableVo>)getJdbcTemplate().query(sql, parms, new RenderVariableMapper());
 		return list;
 	}
 	
@@ -75,7 +86,7 @@ public class RenderVariableJdbcDao implements RenderVariableDao {
 			" where " +
 				" RenderId=? and VariableName=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -87,7 +98,7 @@ public class RenderVariableJdbcDao implements RenderVariableDao {
 		fields.add(msgId+"");
 		fields.add(variableName);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -98,7 +109,7 @@ public class RenderVariableJdbcDao implements RenderVariableDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(msgId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -121,17 +132,8 @@ public class RenderVariableJdbcDao implements RenderVariableDao {
 		fields.add(renderVariableVo.getVariableType());
 		fields.add(renderVariableVo.getVariableValue());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

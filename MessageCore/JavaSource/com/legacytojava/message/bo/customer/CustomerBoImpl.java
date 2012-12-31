@@ -1,6 +1,8 @@
 package com.legacytojava.message.bo.customer;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
@@ -12,12 +14,16 @@ import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.CustomerVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 
+@Component(value="customerBo")
 public class CustomerBoImpl implements CustomerBo {
 	static final Logger logger = Logger.getLogger(CustomerBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
+	@Autowired
 	private CustomerDao customerDao;
+	@Autowired
 	private EmailAddrDao emailAddrDao;
+	@Autowired
 	private CustSequenceDao custSequenceDao;
 
 	public synchronized int insert(CustomerVo vo) throws DataValidationException {
@@ -173,24 +179,24 @@ public class CustomerBoImpl implements CustomerBo {
 		return customerDao;
 	}
 
-	public void setCustomerDao(CustomerDao customerDao) {
-		this.customerDao = customerDao;
-	}
+//	public void setCustomerDao(CustomerDao customerDao) {
+//		this.customerDao = customerDao;
+//	}
 
 	public EmailAddrDao getEmailAddrDao() {
 		return emailAddrDao;
 	}
 
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
-	}
+//	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
+//		this.emailAddrDao = emailAddrDao;
+//	}
 
 	public CustSequenceDao getCustSequenceDao() {
 		return custSequenceDao;
 	}
 
-	public void setCustSequenceDao(CustSequenceDao custSequenceDao) {
-		this.custSequenceDao = custSequenceDao;
-	}
+//	public void setCustSequenceDao(CustSequenceDao custSequenceDao) {
+//		this.custSequenceDao = custSequenceDao;
+//	}
 
 }

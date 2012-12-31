@@ -11,16 +11,26 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.action.MsgActionVo;
 
+@Component(value="msgActionDao")
 public class MsgActionJdbcDao implements MsgActionDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	static final class MsgActionMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -51,7 +61,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			" order by actionSeq, clientId, startTime";
 		
 		Object[] parms = new Object[] {ruleName};
-		List<MsgActionVo> list = (List<MsgActionVo>)jdbcTemplate.query(sql, parms, new MsgActionMapper());
+		List<MsgActionVo> list = (List<MsgActionVo>)getJdbcTemplate().query(sql, parms, new MsgActionMapper());
 		return list;
 	}
 	
@@ -63,7 +73,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			" where a.ActionId = b.ActionId and RowId=? ";
 		
 		Object[] parms = new Object[] {rowId};
-		List<MsgActionVo> list = (List<MsgActionVo>)jdbcTemplate.query(sql, parms, new MsgActionMapper());
+		List<MsgActionVo> list = (List<MsgActionVo>)getJdbcTemplate().query(sql, parms, new MsgActionMapper());
 		if (list != null && list.size() > 0)
 			return (MsgActionVo) list.get(0);
 		else
@@ -95,7 +105,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 		
 		Object[] parms = keys.toArray();
 		@SuppressWarnings("unchecked")
-		List<MsgActionVo> list = (List<MsgActionVo>)jdbcTemplate.query(sql, parms, new MsgActionMapper());
+		List<MsgActionVo> list = (List<MsgActionVo>)getJdbcTemplate().query(sql, parms, new MsgActionMapper());
 		// remove duplicates
 		list = removeDuplicates(list);
 		return list;
@@ -122,7 +132,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			" order by actionSeq";
 		
 		@SuppressWarnings("unchecked")
-		List<MsgActionVo> list = (List<MsgActionVo>)jdbcTemplate.query(sql, new MsgActionMapper());
+		List<MsgActionVo> list = (List<MsgActionVo>)getJdbcTemplate().query(sql, new MsgActionMapper());
 		return list;	
 	}
 	
@@ -147,7 +157,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			keys.add(clientId);
 		}
 		
-		List<?> list = (List<?>)jdbcTemplate.query(sql, keys.toArray(), new MsgActionMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, keys.toArray(), new MsgActionMapper());
 		if (list.size()>0)
 			return (MsgActionVo)list.get(0);
 		else
@@ -179,7 +189,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 		
 		Object[] parms = keys.toArray();
 		@SuppressWarnings("unchecked")
-		List<MsgActionVo> list =  (List<MsgActionVo>)jdbcTemplate.query(sql, parms, new MsgActionMapper());
+		List<MsgActionVo> list =  (List<MsgActionVo>)getJdbcTemplate().query(sql, parms, new MsgActionMapper());
 		if (list.size() > 0)
 			return (MsgActionVo) list.get(0);
 		else
@@ -208,7 +218,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			"dataTypeValues=? " +
 			" where rowId=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		updateReloadFlags();
 		return rowsUpadted;
 	}
@@ -218,7 +228,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			"delete from MsgAction where ruleName=?";
 		
 		Object[] parms = new Object[] {ruleName};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -228,7 +238,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			"delete from MsgAction where rowId=?";
 		
 		Object[] parms = new Object[] {rowId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -252,7 +262,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			keys.add(clientId);
 		}
 		
-		int rowsDeleted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, keys.toArray());
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -278,7 +288,7 @@ public class MsgActionJdbcDao implements MsgActionDao {
 			"statusId," +
 			"dataTypeValues " +
 			") VALUES (?, ?, ?, ?, ?, ?, ?)";
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		msgActionVo.setRowId(retrieveRowId());
 		updateReloadFlags();
 		return rowsInserted;
@@ -294,17 +304,8 @@ public class MsgActionJdbcDao implements MsgActionDao {
 		return reloadFlagsDao;
 	}
 	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
-	}
-	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	protected String getRowIdSql() {
 		return "select last_insert_id()";

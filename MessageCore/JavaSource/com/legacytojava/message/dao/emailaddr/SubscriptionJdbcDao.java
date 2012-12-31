@@ -10,8 +10,10 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.message.constant.Constants;
@@ -22,12 +24,21 @@ import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.emailaddr.SubscriptionVo;
 
+@Component(value="subscriptionDao")
 public class SubscriptionJdbcDao implements SubscriptionDao {
 	static final Logger logger = Logger.getLogger(SubscriptionJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	protected static class SubscriptionMapper implements RowMapper {
 		
@@ -179,7 +190,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 			" from Subscription a " +
 				" join EmailAddr b on a.EmailAddrId=b.EmailAddrId " +
 			whereSql;
-		int rowCount = jdbcTemplate.queryForInt(sql, parms.toArray());
+		int rowCount = getJdbcTemplate().queryForInt(sql, parms.toArray());
 		return rowCount;
 	}
 	
@@ -250,14 +261,14 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 			whereSql +
 			" order by a.EmailAddrId " + fetchOrder +
 			" limit " + vo.getPageSize();
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(vo.getPageSize());
-		jdbcTemplate.setMaxRows(vo.getPageSize());
-		List<SubscriptionVo> list = (List<SubscriptionVo>) jdbcTemplate.query(sql, parms.toArray(),
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(vo.getPageSize());
+		getJdbcTemplate().setMaxRows(vo.getPageSize());
+		List<SubscriptionVo> list = (List<SubscriptionVo>) getJdbcTemplate().query(sql, parms.toArray(),
 				new SubscriberMapper2());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
 			// reverse the list
 			Collections.reverse(list);
@@ -313,7 +324,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
 		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.YES_CODE};
-		List<SubscriptionVo> list = (List<SubscriptionVo>) jdbcTemplate.query(sql, parms,
+		List<SubscriptionVo> list = (List<SubscriptionVo>) getJdbcTemplate().query(sql, parms,
 				new SubscriberMapper2());
 		return list;
 	}
@@ -343,7 +354,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
 		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.YES_CODE};
-		List<SubscriptionVo> list = (List<SubscriptionVo>) jdbcTemplate.query(sql, parms,
+		List<SubscriptionVo> list = (List<SubscriptionVo>) getJdbcTemplate().query(sql, parms,
 				new SubscriberMapper2());
 		return list;
 	}
@@ -370,7 +381,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 				" and a.Subscribed=? " +
 				" and not exists (select 1 from Customers where EmailAddrId=b.EmailAddrId) ";
 		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.YES_CODE};
-		List<SubscriptionVo> list = (List<SubscriptionVo>) jdbcTemplate.query(sql, parms,
+		List<SubscriptionVo> list = (List<SubscriptionVo>) getJdbcTemplate().query(sql, parms,
 				new SubscriptionMapper());
 		return list;
 	}
@@ -383,7 +394,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
 				" where a.EmailAddrId=? and a.ListId=?";
 		Object[] parms = new Object[] {addrId, listId};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new SubscriptionMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new SubscriptionMapper());
 		if (list.size()>0) {
 			return (SubscriptionVo)list.get(0);
 		}
@@ -400,7 +411,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
 				" and a.ListId=? and b.EmailAddr=?";
 		Object[] parms = new Object[] {listId, addr};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new SubscriptionMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new SubscriptionMapper());
 		if (list.size()>0) {
 			return (SubscriptionVo)list.get(0);
 		}
@@ -418,7 +429,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
 				" and a.EmailAddrId=?";
 		Object[] parms = new Object[] {addrId};
-		List<SubscriptionVo> list = (List<SubscriptionVo>) jdbcTemplate.query(sql, parms,
+		List<SubscriptionVo> list = (List<SubscriptionVo>) getJdbcTemplate().query(sql, parms,
 				new SubscriptionMapper());
 		return list;
 	}
@@ -432,7 +443,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
 				" and a.ListId=?";
 		Object[] parms = new Object[] {listId};
-		List<SubscriptionVo> list = (List<SubscriptionVo>) jdbcTemplate.query(sql, parms,
+		List<SubscriptionVo> list = (List<SubscriptionVo>) getJdbcTemplate().query(sql, parms,
 				new SubscriptionMapper());
 		return list;
 	}
@@ -461,7 +472,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 		
 		Object[] parms = keys.toArray();
 
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
 	}
 	
@@ -476,7 +487,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 			"LastSentTime=? " +
 			" where EmailAddrId=? and ListId=?";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
 	}
 	
@@ -491,7 +502,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 			"LastOpenTime=? " +
 			" where EmailAddrId=? and ListId=?";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
 	}
 	
@@ -506,28 +517,28 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 			"LastClickTime=? " +
 			" where EmailAddrId=? and ListId=?";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
 	}
 	
 	public int deleteByPrimaryKey(long addrid, String listId) {
 		String sql = "delete from Subscription where EmailAddrId=? and ListId=?";
 		Object[] parms = new Object[] {addrid, listId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
 	public int deleteByAddrId(long addrId) {
 		String sql = "delete from Subscription where EmailAddrId=?";
 		Object[] parms = new Object[] {addrId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
 	public int deleteByListId(String listId) {
 		String sql = "delete from Subscription where ListId=?";
 		Object[] parms = new Object[] {listId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -563,7 +574,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
 				")";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		return rowsInserted;
 	}
 	
@@ -576,16 +587,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {

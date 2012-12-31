@@ -181,10 +181,11 @@
 		SMTP (MailSender) Section
 	 -->
 	<bean id="mailSenderProcessor" lazy-init="true" scope="thread"
-	      class="com.legacytojava.mailsender.MailSenderProcessor">
+	      class="com.legacytojava.message.bo.mailsender.MailSenderProcessor">
    		<property name="jmsProcessor" ref="jmsProcessor"/>
    		<property name="jmsTransactionManager" ref="jmsTransactionManager"/>
    		<property name="errorQueue" ref="unHandledOutput"/>
+   		<property name="autoStartup" value="false"/>
 	</bean>
 	
 	<bean id="smtpProperties" class="java.util.HashMap">

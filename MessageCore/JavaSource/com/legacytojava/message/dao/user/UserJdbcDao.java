@@ -7,16 +7,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.UserVo;
 
+@Component(value="userDao")
 public class UserJdbcDao implements UserDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class UserMapper implements RowMapper {
 		
@@ -48,7 +59,7 @@ public class UserJdbcDao implements UserDao {
 	public UserVo getByPrimaryKey(String userId) {
 		String sql = "select * from Users where UserId=?";
 		Object[] parms = new Object[] {userId};
-		List<?> list = jdbcTemplate.query(sql, parms, new UserMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new UserMapper());
 		if (list.size()>0) {
 			return (UserVo)list.get(0);
 		}
@@ -60,7 +71,7 @@ public class UserJdbcDao implements UserDao {
 	public UserVo getForLogin(String userId, String password) {
 		String sql = "select * from Users where UserId=? and Password=?";
 		Object[] parms = new Object[] {userId, password};
-		List<?> list = jdbcTemplate.query(sql, parms, new UserMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new UserMapper());
 		if (list.size()>0) {
 			return (UserVo)list.get(0);
 		}
@@ -76,7 +87,7 @@ public class UserJdbcDao implements UserDao {
 		if (onlyActive) {
 			sql += " where StatusId='" + StatusIdCode.ACTIVE + "'";
 		}
-		List<UserVo> list = jdbcTemplate.query(sql, new UserMapper());
+		List<UserVo> list = getJdbcTemplate().query(sql, new UserMapper());
 		return list;
 	}
 	
@@ -123,7 +134,7 @@ public class UserJdbcDao implements UserDao {
 			"ClientId=?" +
 			" where RowId=?";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
 	}
 	
@@ -141,14 +152,14 @@ public class UserJdbcDao implements UserDao {
 			"Hits=?" +
 			" where RowId=?";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
 	}
 	
 	public int deleteByPrimaryKey(String userId) {
 		String sql = "delete from Users where UserId=?";
 		Object[] parms = new Object[] {userId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -196,25 +207,16 @@ public class UserJdbcDao implements UserDao {
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" +
 				", ?, ?, ?, ?, ?, ?)";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		userVo.setRowId(retrieveRowId());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

@@ -7,16 +7,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.RenderAttachmentVo;
 
+@Component(value="renderAttachmentDao")
 public class RenderAttachmentJdbcDao implements RenderAttachmentDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class RenderAttachmentMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -40,7 +51,7 @@ public class RenderAttachmentJdbcDao implements RenderAttachmentDao {
 				"RenderAttachment where renderId=? and attchmntSeq=? ";
 		
 		Object[] parms = new Object[] {renderId, attchmntSeq};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new RenderAttachmentMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new RenderAttachmentMapper());
 		if (list.size()>0)
 			return (RenderAttachmentVo)list.get(0);
 		else
@@ -55,7 +66,7 @@ public class RenderAttachmentJdbcDao implements RenderAttachmentDao {
 				" RenderAttachment where renderId=? " +
 			" order by attchmntSeq";
 		Object[] parms = new Object[] {renderId};
-		List<RenderAttachmentVo> list = (List<RenderAttachmentVo>)jdbcTemplate.query(sql, parms, new RenderAttachmentMapper());
+		List<RenderAttachmentVo> list = (List<RenderAttachmentVo>)getJdbcTemplate().query(sql, parms, new RenderAttachmentMapper());
 		return list;
 	}
 	
@@ -78,7 +89,7 @@ public class RenderAttachmentJdbcDao implements RenderAttachmentDao {
 			" where " +
 				" renderId=? and attchmntSeq=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -90,7 +101,7 @@ public class RenderAttachmentJdbcDao implements RenderAttachmentDao {
 		fields.add(renderId+"");
 		fields.add(attchmntSeq+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -101,7 +112,7 @@ public class RenderAttachmentJdbcDao implements RenderAttachmentDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(renderId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -126,17 +137,8 @@ public class RenderAttachmentJdbcDao implements RenderAttachmentDao {
 		fields.add(renderAttachmentVo.getAttchmntDisp());
 		fields.add(renderAttachmentVo.getAttchmntValue());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

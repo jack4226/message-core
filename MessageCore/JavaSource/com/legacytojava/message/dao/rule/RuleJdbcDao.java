@@ -7,20 +7,35 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.rule.RuleElementVo;
 import com.legacytojava.message.vo.rule.RuleLogicVo;
 import com.legacytojava.message.vo.rule.RuleSubRuleMapVo;
 import com.legacytojava.message.vo.rule.RuleVo;
 
+@Component(value="ruleDao")
 public class RuleJdbcDao implements RuleDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
+	@Autowired
 	private RuleLogicDao ruleLogicDao;
+	@Autowired
 	private RuleElementDao ruleElementDao;
+	@Autowired
 	private RuleSubRuleMapDao ruleSubRuleMapDao;
 	
 	private static final class RuleMapper implements RowMapper {
@@ -69,7 +84,7 @@ public class RuleJdbcDao implements RuleDao {
 		
 		Object[] parms = new Object[] {ruleName};
 		
-		List<?> list = jdbcTemplate.query(sql, parms, new RuleMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new RuleMapper());
 		if (list == null || list.size() == 0) {
 			return null;
 		}
@@ -111,39 +126,18 @@ public class RuleJdbcDao implements RuleDao {
 		return ruleVos;
 	}
 	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
-	}
-	
-	public RuleSubRuleMapDao getRuleSubRuleMapDao() {
+	RuleSubRuleMapDao getRuleSubRuleMapDao() {
 		return ruleSubRuleMapDao;
 	}
 
-	public void setRuleSubRuleMapDao(RuleSubRuleMapDao ruleSubRuleMapDao) {
-		this.ruleSubRuleMapDao = ruleSubRuleMapDao;
-	}
-
-	public RuleElementDao getRuleElementDao() {
+	RuleElementDao getRuleElementDao() {
 		return ruleElementDao;
 	}
 
-	public void setRuleElementDao(RuleElementDao ruleElementDao) {
-		this.ruleElementDao = ruleElementDao;
-	}
-
-	public RuleLogicDao getRuleLogicDao() {
+	RuleLogicDao getRuleLogicDao() {
 		return ruleLogicDao;
 	}
 
-	public void setRuleLogicDao(RuleLogicDao ruleLogicDao) {
-		this.ruleLogicDao = ruleLogicDao;
-	}
-	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
 	}

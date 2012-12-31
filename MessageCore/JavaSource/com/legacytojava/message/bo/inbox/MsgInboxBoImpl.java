@@ -9,6 +9,8 @@ import javax.mail.Address;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.bean.BodypartBean;
 import com.legacytojava.message.bean.BodypartUtil;
@@ -55,21 +57,34 @@ import com.legacytojava.message.vo.outbox.MsgStreamVo;
 /**
  * save email data and properties into database.
  */
+@Component(value="msgInboxBo")
 public class MsgInboxBoImpl implements MsgInboxBo {
 	static final Logger logger = Logger.getLogger(MsgInboxBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
+	@Autowired
 	private MsgSequenceDao msgSequenceDao;
+	@Autowired
 	private MsgInboxDao msgInboxDao;
+	@Autowired
 	private AttachmentsDao attachmentsDao;
+	@Autowired
 	private MsgAddrsDao msgAddrsDao;
+	@Autowired
 	private MsgHeadersDao msgHeadersDao;
+	@Autowired
 	private RfcFieldsDao rfcFieldsDao;
+	@Autowired
 	private EmailAddrDao emailAddrDao;
+	@Autowired
 	private MsgStreamDao msgStreamDao;
+	@Autowired
 	private DeliveryStatusDao deliveryStatusDao;
+	@Autowired
 	private MsgRenderedDao msgRenderedDao;
+	@Autowired
 	private MsgActionLogsDao msgActionLogsDao;
+	@Autowired
 	private MsgClickCountsDao msgClickCountsDao;
 
 	static final String LF = System.getProperty("line.separator", "\n");
@@ -495,95 +510,47 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		return msgSequenceDao;
 	}
 
-	public void setMsgSequenceDao(MsgSequenceDao msgSequenceDao) {
-		this.msgSequenceDao = msgSequenceDao;
-	}
-
 	public MsgInboxDao getMsgInboxDao() {
 		return msgInboxDao;
-	}
-
-	public void setMsgInboxDao(MsgInboxDao msgInboxDao) {
-		this.msgInboxDao = msgInboxDao;
 	}
 
 	public AttachmentsDao getAttachmentsDao() {
 		return attachmentsDao;
 	}
 
-	public void setAttachmentsDao(AttachmentsDao attachmentsDao) {
-		this.attachmentsDao = attachmentsDao;
-	}
-
 	public MsgAddrsDao getMsgAddrsDao() {
 		return msgAddrsDao;
-	}
-
-	public void setMsgAddrsDao(MsgAddrsDao msgAddrsDao) {
-		this.msgAddrsDao = msgAddrsDao;
 	}
 
 	public MsgHeadersDao getMsgHeadersDao() {
 		return msgHeadersDao;
 	}
 
-	public void setMsgHeadersDao(MsgHeadersDao msgHeadersDao) {
-		this.msgHeadersDao = msgHeadersDao;
-	}
-
 	public RfcFieldsDao getRfcFieldsDao() {
 		return rfcFieldsDao;
-	}
-
-	public void setRfcFieldsDao(RfcFieldsDao rfcFieldsDao) {
-		this.rfcFieldsDao = rfcFieldsDao;
 	}
 
 	public EmailAddrDao getEmailAddrDao() {
 		return emailAddrDao;
 	}
 
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
-	}
-
 	public MsgStreamDao getMsgStreamDao() {
 		return msgStreamDao;
-	}
-
-	public void setMsgStreamDao(MsgStreamDao msgStreamDao) {
-		this.msgStreamDao = msgStreamDao;
 	}
 
 	public DeliveryStatusDao getDeliveryStatusDao() {
 		return deliveryStatusDao;
 	}
 
-	public void setDeliveryStatusDao(DeliveryStatusDao deliveryStatusDao) {
-		this.deliveryStatusDao = deliveryStatusDao;
-	}
-
 	public MsgRenderedDao getMsgRenderedDao() {
 		return msgRenderedDao;
-	}
-
-	public void setMsgRenderedDao(MsgRenderedDao msgRenderedDao) {
-		this.msgRenderedDao = msgRenderedDao;
 	}
 
 	public MsgActionLogsDao getMsgActionLogsDao() {
 		return msgActionLogsDao;
 	}
 
-	public void setMsgActionLogsDao(MsgActionLogsDao msgActionLogsDao) {
-		this.msgActionLogsDao = msgActionLogsDao;
-	}
-
 	public MsgClickCountsDao getMsgClickCountsDao() {
 		return msgClickCountsDao;
-	}
-
-	public void setMsgClickCountsDao(MsgClickCountsDao msgClickCountsDao) {
-		this.msgClickCountsDao = msgClickCountsDao;
 	}
 }

@@ -9,10 +9,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.CustomerVo;
@@ -20,10 +21,19 @@ import com.legacytojava.message.vo.PagingCustomerVo;
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 
+@Component(value="customerDao")
 public class CustomerJdbcDao implements CustomerDao {
 
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class CustomerMapper implements RowMapper {
 		
@@ -88,7 +98,7 @@ public class CustomerJdbcDao implements CustomerDao {
 				"from Customers where custid=? ";
 		
 		Object[] parms = new Object[] {custId};
-		List<?> list =  jdbcTemplate.query(sql, parms, new CustomerMapper());
+		List<?> list =  getJdbcTemplate().query(sql, parms, new CustomerMapper());
 		if (list.size()>0)
 			return (CustomerVo)list.get(0);
 		else
@@ -101,7 +111,7 @@ public class CustomerJdbcDao implements CustomerDao {
 				"from Customers where clientid=? ";
 		Object[] parms = new Object[] {clientId};
 		@SuppressWarnings("unchecked")
-		List<CustomerVo> list = (List<CustomerVo>)jdbcTemplate.query(sql, parms, new CustomerMapper());
+		List<CustomerVo> list = (List<CustomerVo>)getJdbcTemplate().query(sql, parms, new CustomerMapper());
 		return list;
 	}
 	
@@ -111,7 +121,7 @@ public class CustomerJdbcDao implements CustomerDao {
 			" from customers where emailAddrId=? ";
 		Object[] parms = new Object[] {Long.valueOf(emailAddrId)};
 		@SuppressWarnings("unchecked")
-		List<CustomerVo> list = (List<CustomerVo>)jdbcTemplate.query(sql, parms, new CustomerMapper());
+		List<CustomerVo> list = (List<CustomerVo>)getJdbcTemplate().query(sql, parms, new CustomerMapper());
 		if (list == null || list.isEmpty()) {
 			return null;
 		}
@@ -128,7 +138,7 @@ public class CustomerJdbcDao implements CustomerDao {
 			" and a.EmailAddr=? ";
 		Object[] parms = new Object[] {StringUtil.removeDisplayName(emailAddr)};
 		@SuppressWarnings("unchecked")
-		List<CustomerVo> list = (List<CustomerVo>)jdbcTemplate.query(sql, parms, new CustomerMapper());
+		List<CustomerVo> list = (List<CustomerVo>)getJdbcTemplate().query(sql, parms, new CustomerMapper());
 		if (list == null || list.isEmpty()) {
 			return null;
 		}
@@ -143,7 +153,7 @@ public class CustomerJdbcDao implements CustomerDao {
 				"from Customers";
 		
 		@SuppressWarnings("unchecked")
-		List<CustomerVo> list = (List<CustomerVo>)jdbcTemplate.query(sql, new CustomerMapper());
+		List<CustomerVo> list = (List<CustomerVo>)getJdbcTemplate().query(sql, new CustomerMapper());
 		return list;
 	}
 	
@@ -153,7 +163,7 @@ public class CustomerJdbcDao implements CustomerDao {
 		String sql = 
 			"select count(*) from Customers a " +
 			whereSql;
-		int rowCount = jdbcTemplate.queryForInt(sql, parms.toArray());
+		int rowCount = getJdbcTemplate().queryForInt(sql, parms.toArray());
 		return rowCount;
 	}
 	
@@ -208,15 +218,15 @@ public class CustomerJdbcDao implements CustomerDao {
 			whereSql +
 			" order by a.CustId " + fetchOrder +
 			" limit " + vo.getPageSize();
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(vo.getPageSize());
-		jdbcTemplate.setMaxRows(vo.getPageSize());
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(vo.getPageSize());
+		getJdbcTemplate().setMaxRows(vo.getPageSize());
 		@SuppressWarnings("unchecked")
-		List<CustomerVo> list = (List<CustomerVo>) jdbcTemplate.query(sql, parms.toArray(),
+		List<CustomerVo> list = (List<CustomerVo>) getJdbcTemplate().query(sql, parms.toArray(),
 				new CustomerMapper());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
 			// reverse the list
 			Collections.reverse(list);
@@ -362,7 +372,7 @@ public class CustomerJdbcDao implements CustomerDao {
 			sql += " and UpdtTime=?";
 			keys.add(customerVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		customerVo.setOrigUpdtTime(customerVo.getUpdtTime());
 		customerVo.setOrigCustId(customerVo.getCustId());
 		return rowsUpadted;
@@ -372,7 +382,7 @@ public class CustomerJdbcDao implements CustomerDao {
 		String sql = 
 			"delete from Customers where custid=? ";
 		
-		int rowsDeleted = jdbcTemplate.update(sql, new Object[] {custId});
+		int rowsDeleted = getJdbcTemplate().update(sql, new Object[] {custId});
 		return rowsDeleted;
 	}
 
@@ -384,7 +394,7 @@ public class CustomerJdbcDao implements CustomerDao {
 		String sql = 
 			"delete from Customers where EmailAddrId=? ";
 		
-		int rowsDeleted = jdbcTemplate.update(sql, new Object[] {addrVo.getEmailAddrId()});
+		int rowsDeleted = getJdbcTemplate().update(sql, new Object[] {addrVo.getEmailAddrId()});
 		return rowsDeleted;
 	}
 
@@ -483,7 +493,7 @@ public class CustomerJdbcDao implements CustomerDao {
 			+ ",?, ?, ?, ?, ?, ?, ?, ?, ?, ? "
 			+ ",?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? )";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		customerVo.setRowId(retrieveRowId());
 		customerVo.setOrigUpdtTime(customerVo.getUpdtTime());
 		customerVo.setOrigCustId(customerVo.getCustId());
@@ -503,28 +513,18 @@ public class CustomerJdbcDao implements CustomerDao {
 		}
 	}
 	
+	@Autowired
 	private EmailAddrDao emailAddrDao = null;
 	private EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) JbMain.getDaoAppContext().getBean("emailAddrDao");
-		}
 		return emailAddrDao;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
 	}
 		
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
-	}
 }

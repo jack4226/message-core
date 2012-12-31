@@ -8,16 +8,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.MsgStreamVo;
 
+@Component(value="msgStreamDao")
 public class MsgStreamJdbcDao implements MsgStreamDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class MsgStreamMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -41,7 +52,7 @@ public class MsgStreamJdbcDao implements MsgStreamDao {
 				"MsgStream where msgid=? ";
 		
 		Object[] parms = new Object[] {msgId+""};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgStreamMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgStreamMapper());
 		if (list.size()>0)
 			return (MsgStreamVo)list.get(0);
 		else
@@ -56,7 +67,7 @@ public class MsgStreamJdbcDao implements MsgStreamDao {
 				"MsgStream where fromAddrId=? ";
 		
 		Object[] parms = new Object[] {fromAddrId+""};
-		List<MsgStreamVo> list = (List<MsgStreamVo>)jdbcTemplate.query(sql, parms, new MsgStreamMapper());
+		List<MsgStreamVo> list = (List<MsgStreamVo>)getJdbcTemplate().query(sql, parms, new MsgStreamMapper());
 		return list;
 	}
 	
@@ -66,7 +77,7 @@ public class MsgStreamJdbcDao implements MsgStreamDao {
 			"from " +
 				"MsgStream where msgid = (select max(MsgId) from MsgStream) ";
 		
-		List<?> list = (List<?>)jdbcTemplate.query(sql, new MsgStreamMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, new MsgStreamMapper());
 		if (list.size()>0)
 			return (MsgStreamVo)list.get(0);
 		else
@@ -96,7 +107,7 @@ public class MsgStreamJdbcDao implements MsgStreamDao {
 			" where " +
 				" msgid=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -107,7 +118,7 @@ public class MsgStreamJdbcDao implements MsgStreamDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -135,17 +146,8 @@ public class MsgStreamJdbcDao implements MsgStreamDao {
 		fields.add(msgStreamVo.getAddTime());
 		fields.add(msgStreamVo.getMsgStream());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

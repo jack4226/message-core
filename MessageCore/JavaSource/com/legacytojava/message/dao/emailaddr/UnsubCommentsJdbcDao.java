@@ -9,17 +9,28 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.emailaddr.UnsubCommentsVo;
 
+@Component(value="unsubCommentsDao")
 public class UnsubCommentsJdbcDao implements UnsubCommentsDao {
 	static final Logger logger = Logger.getLogger(UnsubCommentsJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class UnsubCommentsMapper implements RowMapper {
 		
@@ -39,7 +50,7 @@ public class UnsubCommentsJdbcDao implements UnsubCommentsDao {
 	public UnsubCommentsVo getByPrimaryKey(int rowId){
 		String sql = "select * from UnsubComments where RowId=?";
 		Object[] parms = new Object[] {rowId};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new UnsubCommentsMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new UnsubCommentsMapper());
 		if (list.size()>0) {
 			return (UnsubCommentsVo)list.get(0);
 		}
@@ -52,7 +63,7 @@ public class UnsubCommentsJdbcDao implements UnsubCommentsDao {
 	public List<UnsubCommentsVo> getAll() {
 		String sql = "select * from UnsubComments " +
 		" order by RowId";
-		List<UnsubCommentsVo> list = (List<UnsubCommentsVo>)jdbcTemplate.query(sql, new UnsubCommentsMapper());
+		List<UnsubCommentsVo> list = (List<UnsubCommentsVo>)getJdbcTemplate().query(sql, new UnsubCommentsMapper());
 		return list;
 	}
 	
@@ -61,7 +72,7 @@ public class UnsubCommentsJdbcDao implements UnsubCommentsDao {
 		String sql = "select * from UnsubComments " +
 			" where EmailAddrId=" + emailAddrId +
 			" order by RowId";
-		List<UnsubCommentsVo> list = (List<UnsubCommentsVo>)jdbcTemplate.query(sql, new UnsubCommentsMapper());
+		List<UnsubCommentsVo> list = (List<UnsubCommentsVo>)getJdbcTemplate().query(sql, new UnsubCommentsMapper());
 		return list;
 	}
 	
@@ -70,7 +81,7 @@ public class UnsubCommentsJdbcDao implements UnsubCommentsDao {
 		String sql = "select * from UnsubComments " +
 			" where ListId='" + listId + "' " +
 			" order by RowId";
-		List<UnsubCommentsVo> list = (List<UnsubCommentsVo>)jdbcTemplate.query(sql, new UnsubCommentsMapper());
+		List<UnsubCommentsVo> list = (List<UnsubCommentsVo>)getJdbcTemplate().query(sql, new UnsubCommentsMapper());
 		return list;
 	}
 	
@@ -89,21 +100,21 @@ public class UnsubCommentsJdbcDao implements UnsubCommentsDao {
 		
 		Object[] parms = keys.toArray();
 
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
 	}
 	
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = "delete from UnsubComments where RowId=?";
 		Object[] parms = new Object[] {rowId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
 	public int deleteByEmailAddrId(long emailAddrId) {
 		String sql = "delete from UnsubComments where EmailAddrId=?";
 		Object[] parms = new Object[] {emailAddrId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -125,25 +136,16 @@ public class UnsubCommentsJdbcDao implements UnsubCommentsDao {
 				" ?, ?, ?, ? " +
 				")";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		unsubCommentsVo.setRowId(retrieveRowId());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

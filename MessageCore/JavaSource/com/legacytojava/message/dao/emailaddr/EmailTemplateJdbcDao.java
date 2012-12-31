@@ -11,22 +11,31 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MsgDataType;
 import com.legacytojava.message.dao.action.MsgDataTypeDao;
-import com.legacytojava.message.dao.action.MsgDataTypeJdbcDao;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.util.BlobUtil;
 import com.legacytojava.message.vo.action.MsgDataTypeVo;
 import com.legacytojava.message.vo.emailaddr.EmailTemplateVo;
 
+@Component(value="emailTemplateDao")
 public class EmailTemplateJdbcDao implements EmailTemplateDao {
 	static final Logger logger = Logger.getLogger(EmailTemplateJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class EmailTemplateMapper implements RowMapper {
 		
@@ -66,7 +75,7 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 				" from EmailTemplate a, MailingList b " +
 				" where a.ListId=b.ListId and a.TemplateId=?";
 		Object[] parms = new Object[] {templateId};
-		List<?> list = (List<?>) jdbcTemplate.query(sql, parms, new EmailTemplateMapper());
+		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms, new EmailTemplateMapper());
 		if (list.size()>0) {
 			return (EmailTemplateVo)list.get(0);
 		}
@@ -82,7 +91,7 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 				" where a.ListId=b.ListId and a.ListId=?" +
 				" order by a.TemplateId";
 		Object[] parms = new Object[] {listId};
-		List<EmailTemplateVo> list = (List<EmailTemplateVo>) jdbcTemplate.query(sql, parms,
+		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql, parms,
 				new EmailTemplateMapper());
 		return list;
 	}
@@ -93,7 +102,7 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 				" from EmailTemplate a, MailingList b " +
 				" where a.ListId=b.ListId" +
 				" order by a.RowId";
-		List<EmailTemplateVo> list = (List<EmailTemplateVo>) jdbcTemplate.query(sql,
+		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql,
 				new EmailTemplateMapper());
 		return list;
 	}
@@ -105,14 +114,14 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 				" where a.ListId=b.ListId" +
 				" order by a.RowId" +
 				" limit 20";
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(20);
-		jdbcTemplate.setMaxRows(20);
-		List<EmailTemplateVo> list = (List<EmailTemplateVo>) jdbcTemplate.query(sql,
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(20);
+		getJdbcTemplate().setMaxRows(20);
+		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql,
 				new EmailTemplateMapper());
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		return list;
 	}
 
@@ -153,7 +162,7 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 			" where RowId=?";
 		
 		Object[] parms = keys.toArray();
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		updateMsgDataType(emailTemplateVo); // do it before set Original Template Id
 		emailTemplateVo.setOrigTemplateId(emailTemplateVo.getTemplateId());
 		updateReloadFlags();
@@ -163,7 +172,7 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 	public synchronized int deleteByTemplateId(String templateId) {
 		String sql = "delete from EmailTemplate where TemplateId=?";
 		Object[] parms = new Object[] {templateId};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		deleteMsgDataType(templateId);
 		updateReloadFlags();
 		return rowsDeleted;
@@ -209,7 +218,7 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "+
 				" ? )";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		emailTemplateVo.setRowId(retrieveRowId());
 		emailTemplateVo.setOrigTemplateId(emailTemplateVo.getTemplateId());
 		insertMsgDataType(emailTemplateVo);
@@ -268,30 +277,18 @@ public class EmailTemplateJdbcDao implements EmailTemplateDao {
 	private synchronized ReloadFlagsDao getReloadFlagsDao() {
 		return reloadFlagsDao;
 	}
-	
+
+	@Autowired
 	private MsgDataTypeDao msgDataTypeDao = null;
 	MsgDataTypeDao getMsgDataTypeDao() {
-		if (msgDataTypeDao == null) {
-			msgDataTypeDao = new MsgDataTypeJdbcDao();
-			((MsgDataTypeJdbcDao)msgDataTypeDao).setDataSource(dataSource);
-		}
 		return msgDataTypeDao;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

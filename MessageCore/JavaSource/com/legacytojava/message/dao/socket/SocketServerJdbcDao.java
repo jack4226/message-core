@@ -8,15 +8,26 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.SocketServerVo;
 
+@Component(value="socketServerDao")
 public class SocketServerJdbcDao implements SocketServerDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class SocketMapper implements RowMapper {
 		
@@ -45,7 +56,7 @@ public class SocketServerJdbcDao implements SocketServerDao {
 	public SocketServerVo getByPrimaryKey(String serverName) {
 		String sql = "select * from SocketServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
-		List<?> list = jdbcTemplate.query(sql, parms, new SocketMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new SocketMapper());
 		if (list.size()>0) {
 			return (SocketServerVo)list.get(0);
 		}
@@ -61,7 +72,7 @@ public class SocketServerJdbcDao implements SocketServerDao {
 		if (onlyActive) {
 			sql += " where StatusId='A'";
 		}
-		List<SocketServerVo> list = jdbcTemplate.query(sql, new SocketMapper());
+		List<SocketServerVo> list = getJdbcTemplate().query(sql, new SocketMapper());
 		return list;
 	}
 	
@@ -103,7 +114,7 @@ public class SocketServerJdbcDao implements SocketServerDao {
 			sql += " and UpdtTime=?";
 			keys.add(socketServerVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		socketServerVo.setOrigUpdtTime(socketServerVo.getUpdtTime());
 		return rowsUpadted;
 	}
@@ -111,7 +122,7 @@ public class SocketServerJdbcDao implements SocketServerDao {
 	public int deleteByPrimaryKey(String serverName) {
 		String sql = "delete from SocketServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -151,26 +162,17 @@ public class SocketServerJdbcDao implements SocketServerDao {
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
 				" ?, ?, ?)";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		socketServerVo.setRowId(retrieveRowId());
 		socketServerVo.setOrigUpdtTime(socketServerVo.getUpdtTime());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

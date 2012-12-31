@@ -11,18 +11,27 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ClientDao;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
-import com.legacytojava.message.dao.emailaddr.EmailAddrJdbcDao;
 import com.legacytojava.message.vo.ClientVo;
 import com.legacytojava.message.vo.MailBoxVo;
 
+@Component(value="mailBoxDao")
 public class MailBoxJdbcDao implements MailBoxDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class MailBoxMapper implements RowMapper {
 		private final String clientDomains;
@@ -94,7 +103,7 @@ public class MailBoxJdbcDao implements MailBoxDao {
 	public MailBoxVo getByPrimaryKey(String userId, String hostName) {
 		String sql = "select * from MailBoxes where UserId=? and HostName=?";
 		Object[] parms = new Object[] {userId, hostName};
-		List<?> list = (List<?>) jdbcTemplate.query(sql, parms, new MailBoxMapper(
+		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms, new MailBoxMapper(
 				getClientDomains()));
 		if (list.size()>0) {
 			return (MailBoxVo)list.get(0);
@@ -113,7 +122,7 @@ public class MailBoxJdbcDao implements MailBoxDao {
 			keys.add(StatusIdCode.ACTIVE);
 		}
 		sql += " order by HostName, UserId ";
-		List<MailBoxVo> list = (List<MailBoxVo>) jdbcTemplate.query(sql, keys.toArray(),
+		List<MailBoxVo> list = (List<MailBoxVo>) getJdbcTemplate().query(sql, keys.toArray(),
 				new MailBoxMapper(getClientDomains()));
 		return list;
 	}
@@ -127,14 +136,14 @@ public class MailBoxJdbcDao implements MailBoxDao {
 			keys.add(StatusIdCode.ACTIVE);
 		}
 		sql += " order by RowId limit 1";
-		int fetchSize = jdbcTemplate.getFetchSize();
-		int maxRows = jdbcTemplate.getMaxRows();
-		jdbcTemplate.setFetchSize(1);
-		jdbcTemplate.setMaxRows(1);
-		List<MailBoxVo> list = (List<MailBoxVo>) jdbcTemplate.query(sql, keys.toArray(),
+		int fetchSize = getJdbcTemplate().getFetchSize();
+		int maxRows = getJdbcTemplate().getMaxRows();
+		getJdbcTemplate().setFetchSize(1);
+		getJdbcTemplate().setMaxRows(1);
+		List<MailBoxVo> list = (List<MailBoxVo>) getJdbcTemplate().query(sql, keys.toArray(),
 				new MailBoxMapper(getClientDomains()));
-		jdbcTemplate.setFetchSize(fetchSize);
-		jdbcTemplate.setMaxRows(maxRows);
+		getJdbcTemplate().setFetchSize(fetchSize);
+		getJdbcTemplate().setMaxRows(maxRows);
 		return list;
 	}
 	
@@ -202,7 +211,7 @@ public class MailBoxJdbcDao implements MailBoxDao {
 			sql += " and UpdtTime=?";
 			keys.add(mailBoxVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, keys.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		mailBoxVo.setOrigUpdtTime(mailBoxVo.getUpdtTime());
 		// insert/update EmailAddr record
 		getEmailAddrDao().findByAddress(mailBoxVo.getUserId() + "@" + mailBoxVo.getHostName());
@@ -212,7 +221,7 @@ public class MailBoxJdbcDao implements MailBoxDao {
 	public int deleteByPrimaryKey(String userId, String hostName) {
 		String sql = "delete from MailBoxes where UserId=? and HostName=?";
 		Object[] parms = new Object[] {userId, hostName};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -279,7 +288,7 @@ public class MailBoxJdbcDao implements MailBoxDao {
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
 				" ?, ?, ?, ?, ?, ?)";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		mailBoxVo.setRowId(retrieveRowId());
 		mailBoxVo.setOrigUpdtTime(mailBoxVo.getUpdtTime());
 		// insert mailbox address to EmailAddr table
@@ -287,29 +296,17 @@ public class MailBoxJdbcDao implements MailBoxDao {
 		return rowsInserted;
 	}
 	
+	@Autowired
 	private EmailAddrDao emailAddrDao = null;
 	private EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = new EmailAddrJdbcDao();
-			((EmailAddrJdbcDao) emailAddrDao).setDataSource(dataSource);
-		}
 		return emailAddrDao;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

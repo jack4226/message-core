@@ -16,6 +16,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.bean.BodypartBean;
 import com.legacytojava.message.bean.MessageBean;
@@ -42,6 +44,7 @@ import com.legacytojava.message.vo.template.MsgSourceVo;
 import com.legacytojava.message.vo.template.SubjTemplateVo;
 import com.legacytojava.message.vo.template.TemplateVariableVo;
 
+@Component(value="renderBo")
 public class RenderBoImpl implements RenderBo {
 	static final Logger logger = Logger.getLogger(RenderBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
@@ -49,12 +52,19 @@ public class RenderBoImpl implements RenderBo {
 	
 	private final Renderer render = Renderer.getInstance();
 	
+	@Autowired
 	private MsgSourceDao msgSourceDao;
+	@Autowired
 	private BodyTemplateDao bodyTemplateDao;
+	@Autowired
 	private SubjTemplateDao subjTemplateDao;
+	@Autowired
 	private ClientVariableDao clientVariableDao;
+	@Autowired
 	private GlobalVariableDao globalVariableDao;
+	@Autowired
 	private TemplateVariableDao templateVariableDao;
+	@Autowired
 	private EmailAddrDao emailAddrDao;
 	
 	public RenderResponse getRenderedEmail(RenderRequest req) throws DataValidationException,
@@ -568,56 +578,28 @@ public class RenderBoImpl implements RenderBo {
 		return msgSourceDao;
 	}
 
-	public void setMsgSourceDao(MsgSourceDao msgSourceDao) {
-		this.msgSourceDao = msgSourceDao;
-	}
-	
 	public BodyTemplateDao getBodyTemplateDao() {
 		return bodyTemplateDao;
-	}
-
-	public void setBodyTemplateDao(BodyTemplateDao bodyTemplateDao) {
-		this.bodyTemplateDao = bodyTemplateDao;
 	}
 
 	public ClientVariableDao getClientVariableDao() {
 		return clientVariableDao;
 	}
 
-	public void setClientVariableDao(ClientVariableDao clientVariableDao) {
-		this.clientVariableDao = clientVariableDao;
-	}
-
 	public GlobalVariableDao getGlobalVariableDao() {
 		return globalVariableDao;
-	}
-
-	public void setGlobalVariableDao(GlobalVariableDao globalVariableDao) {
-		this.globalVariableDao = globalVariableDao;
 	}
 
 	public SubjTemplateDao getSubjTemplateDao() {
 		return subjTemplateDao;
 	}
 
-	public void setSubjTemplateDao(SubjTemplateDao subjTemplateDao) {
-		this.subjTemplateDao = subjTemplateDao;
-	}
-
 	public TemplateVariableDao getTemplateVariableDao() {
 		return templateVariableDao;
 	}
 
-	public void setTemplateVariableDao(TemplateVariableDao templateVariableDao) {
-		this.templateVariableDao = templateVariableDao;
-	}
-
 	public EmailAddrDao getEmailAddrDao() {
 		return emailAddrDao;
-	}
-
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
 	}
 
 }

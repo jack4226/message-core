@@ -7,16 +7,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.RfcFieldsVo;
 
+@Component(value="rfcFieldsDao")
 public class RfcFieldsJdbcDao implements RfcFieldsDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class RfcFieldsMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -46,7 +57,7 @@ public class RfcFieldsJdbcDao implements RfcFieldsDao {
 				"RfcFields where msgid=? and rfcType=? ";
 		
 		Object[] parms = new Object[] {msgId+"",rfcType};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new RfcFieldsMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new RfcFieldsMapper());
 		if (list.size()>0)
 			return (RfcFieldsVo)list.get(0);
 		else
@@ -61,7 +72,7 @@ public class RfcFieldsJdbcDao implements RfcFieldsDao {
 				" RfcFields where msgId=? " +
 			" order by rfcType";
 		Object[] parms = new Object[] {msgId+""};
-		List<RfcFieldsVo> list = (List<RfcFieldsVo>)jdbcTemplate.query(sql, parms, new RfcFieldsMapper());
+		List<RfcFieldsVo> list = (List<RfcFieldsVo>)getJdbcTemplate().query(sql, parms, new RfcFieldsMapper());
 		return list;
 	}
 	
@@ -96,7 +107,7 @@ public class RfcFieldsJdbcDao implements RfcFieldsDao {
 			" where " +
 				" msgid=? and rfcType=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -108,7 +119,7 @@ public class RfcFieldsJdbcDao implements RfcFieldsDao {
 		fields.add(msgId+"");
 		fields.add(rfcType);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -119,7 +130,7 @@ public class RfcFieldsJdbcDao implements RfcFieldsDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -156,17 +167,8 @@ public class RfcFieldsJdbcDao implements RfcFieldsDao {
 		fields.add(rfcFieldsVo.getDsnRfc822());
 		fields.add(rfcFieldsVo.getDlvrStatus());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

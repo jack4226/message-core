@@ -7,16 +7,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.AttachmentsVo;
 
+@Component(value="attachmentsDao")
 public class AttachmentsJdbcDao implements AttachmentsDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	private static final class AttachmentsMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -41,7 +52,7 @@ public class AttachmentsJdbcDao implements AttachmentsDao {
 				"Attachments where msgid=? and attchmntDepth=? and attchmntSeq=? ";
 		
 		Object[] parms = new Object[] {msgId+"",attchmntDepth+"",attchmntSeq+""};
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new AttachmentsMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new AttachmentsMapper());
 		if (list.size()>0)
 			return (AttachmentsVo)list.get(0);
 		else
@@ -56,7 +67,7 @@ public class AttachmentsJdbcDao implements AttachmentsDao {
 				" Attachments where msgId=? " +
 			" order by attchmntDepth, attchmntSeq";
 		Object[] parms = new Object[] {msgId+""};
-		List<AttachmentsVo> list = (List<AttachmentsVo>) jdbcTemplate.query(sql, parms,
+		List<AttachmentsVo> list = (List<AttachmentsVo>) getJdbcTemplate().query(sql, parms,
 				new AttachmentsMapper());
 		return list;
 	}
@@ -81,7 +92,7 @@ public class AttachmentsJdbcDao implements AttachmentsDao {
 			" where " +
 				" msgid=? and attchmntDepth=? and attchmntSeq=? ";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -94,7 +105,7 @@ public class AttachmentsJdbcDao implements AttachmentsDao {
 		fields.add(attchmntDepth+"");
 		fields.add(attchmntSeq+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -105,7 +116,7 @@ public class AttachmentsJdbcDao implements AttachmentsDao {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
@@ -132,17 +143,8 @@ public class AttachmentsJdbcDao implements AttachmentsDao {
 		fields.add(attachmentsVo.getAttchmntDisp());
 		fields.add(attachmentsVo.getAttchmntValue());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 	
 	protected String getRowIdSql() {

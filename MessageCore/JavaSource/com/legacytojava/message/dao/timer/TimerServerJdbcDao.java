@@ -7,16 +7,27 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.TimerServerVo;
 
+@Component(value="timerServerDao")
 public class TimerServerJdbcDao implements TimerServerDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
+	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
 
 	private static final class TimerMapper implements RowMapper {
 		
@@ -42,7 +53,7 @@ public class TimerServerJdbcDao implements TimerServerDao {
 	public TimerServerVo getByPrimaryKey(String serverName) {
 		String sql = "select * from TimerServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
-		List<?> list = jdbcTemplate.query(sql, parms, new TimerMapper());
+		List<?> list = getJdbcTemplate().query(sql, parms, new TimerMapper());
 		if (list.size()>0) {
 			return (TimerServerVo)list.get(0);
 		}
@@ -58,7 +69,7 @@ public class TimerServerJdbcDao implements TimerServerDao {
 		if (onlyActive) {
 			sql += " where StatusId='" + StatusIdCode.ACTIVE + "'";
 		}
-		List<TimerServerVo> list = (List<TimerServerVo>)jdbcTemplate.query(sql, new TimerMapper());
+		List<TimerServerVo> list = (List<TimerServerVo>)getJdbcTemplate().query(sql, new TimerMapper());
 		return list;
 	}
 	
@@ -93,14 +104,14 @@ public class TimerServerJdbcDao implements TimerServerDao {
 			"UpdtUserId=?" +
 			" where RowId=?";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, parms);
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
 	}
 	
 	public int deleteByPrimaryKey(String serverName) {
 		String sql = "delete from TimerServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
-		int rowsDeleted = jdbcTemplate.update(sql, parms);
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
 	
@@ -135,25 +146,16 @@ public class TimerServerJdbcDao implements TimerServerDao {
 			") VALUES (" +
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		int rowsInserted = jdbcTemplate.update(sql, parms);
+		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		timerServerVo.setRowId(retrieveRowId());
 		return rowsInserted;
 	}
 	
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }

@@ -11,15 +11,25 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.action.MsgActionDetailVo;
 
+@Component(value="msgActionDetailDao")
 public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	static final class MsgActionDetailMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -46,7 +56,7 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 		
 		Object[] parms = new Object[] {actionId};
 		
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgActionDetailMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgActionDetailMapper());
 		if (list.size()>0)
 			return (MsgActionDetailVo)list.get(0);
 		else
@@ -61,7 +71,7 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 		
 		Object[] parms = new Object[] {rowId};
 		
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new MsgActionDetailMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new MsgActionDetailMapper());
 		if (list.size()>0)
 			return (MsgActionDetailVo)list.get(0);
 		else
@@ -75,7 +85,7 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 			" from " +
 				" MsgActionDetail " +
 			" order by actionId asc ";
-		List<MsgActionDetailVo> list = (List<MsgActionDetailVo>)jdbcTemplate.query(sql, new MsgActionDetailMapper());
+		List<MsgActionDetailVo> list = (List<MsgActionDetailVo>)getJdbcTemplate().query(sql, new MsgActionDetailMapper());
 		return list;
 	}
 	
@@ -84,7 +94,7 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 			"select distinct(ActionId) from MsgActionDetail " +
 			" order by ActionId";
 		
-		List<String> list = (List<String>)jdbcTemplate.queryForList(sql, String.class);
+		List<String> list = (List<String>)getJdbcTemplate().queryForList(sql, String.class);
 		return list;
 	}
 	
@@ -116,7 +126,7 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 			sql += " and UpdtTime=?";
 			fields.add(msgActionDetailVo.getOrigUpdtTime());
 		}
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		msgActionDetailVo.setOrigUpdtTime(msgActionDetailVo.getUpdtTime());
 		updateReloadFlags();
 		return rowsUpadted;
@@ -129,7 +139,7 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(actionId);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -141,7 +151,7 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(rowId+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -170,7 +180,7 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 		fields.add(msgActionDetailVo.getUpdtTime());
 		fields.add(msgActionDetailVo.getUpdtUserId());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		msgActionDetailVo.setRowId(retrieveRowId());
 		msgActionDetailVo.setOrigUpdtTime(msgActionDetailVo.getUpdtTime());
 		updateReloadFlags();
@@ -187,17 +197,8 @@ public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 		return reloadFlagsDao;
 	}
 	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
-	}
-
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 	protected String getRowIdSql() {
 		return "select last_insert_id()";

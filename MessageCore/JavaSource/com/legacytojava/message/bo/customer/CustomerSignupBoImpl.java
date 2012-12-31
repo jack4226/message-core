@@ -1,6 +1,9 @@
 package com.legacytojava.message.bo.customer;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.bo.mailinglist.MailingListBo;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
@@ -9,13 +12,19 @@ import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.vo.CustomerVo;
 import com.legacytojava.message.vo.emailaddr.MailingListVo;
 
+@Component(value="customerSignupBo")
+@Scope(value="prototype")
 public class CustomerSignupBoImpl implements CustomerSignupBo {
 	static final Logger logger = Logger.getLogger(CustomerSignupBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
+	@Autowired
 	private MailingListDao mailingListDao;
+	@Autowired
 	private EmailAddrDao emailAddrDao;
+	@Autowired
 	private MailingListBo mailingListBo;
+	@Autowired
 	private CustomerBo customerBo;
 	
 	public int signUpOnly(CustomerVo vo) throws DataValidationException {
@@ -93,32 +102,16 @@ public class CustomerSignupBoImpl implements CustomerSignupBo {
 		return mailingListDao;
 	}
 
-	public void setMailingListDao(MailingListDao mailingListDao) {
-		this.mailingListDao = mailingListDao;
-	}
-
 	public EmailAddrDao getEmailAddrDao() {
 		return emailAddrDao;
-	}
-
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
 	}
 
 	public MailingListBo getMailingListBo() {
 		return mailingListBo;
 	}
 
-	public void setMailingListBo(MailingListBo mailingListBo) {
-		this.mailingListBo = mailingListBo;
-	}
-
 	public CustomerBo getCustomerBo() {
 		return customerBo;
-	}
-
-	public void setCustomerBo(CustomerBo customerBo) {
-		this.customerBo = customerBo;
 	}
 
 }

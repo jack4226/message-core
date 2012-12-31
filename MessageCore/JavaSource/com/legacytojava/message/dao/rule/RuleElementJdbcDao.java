@@ -10,15 +10,25 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.rule.RuleElementVo;
 
+@Component(value="ruleElementDao")
 public class RuleElementJdbcDao implements RuleElementDao {
 	
-	private DataSource dataSource;
+	@Autowired
+	private DataSource mysqlDataSource;
 	private JdbcTemplate jdbcTemplate;
 	
+	private JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			jdbcTemplate = new JdbcTemplate(mysqlDataSource);
+		}
+		return jdbcTemplate;
+	}
+
 	static final class RuleElementMapper implements RowMapper {
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -49,7 +59,7 @@ public class RuleElementJdbcDao implements RuleElementDao {
 		
 		Object[] parms = new Object[] {ruleName, elementSeq};
 		
-		List<?> list = (List<?>)jdbcTemplate.query(sql, parms, new RuleElementMapper());
+		List<?> list = (List<?>)getJdbcTemplate().query(sql, parms, new RuleElementMapper());
 		if (list.size()>0)
 			return (RuleElementVo)list.get(0);
 		else
@@ -63,7 +73,7 @@ public class RuleElementJdbcDao implements RuleElementDao {
 			" from " +
 				" RuleElement " +
 			" order by ruleName asc, elementSeq asc ";
-		List<RuleElementVo> list = (List<RuleElementVo>)jdbcTemplate.query(sql, new RuleElementMapper());
+		List<RuleElementVo> list = (List<RuleElementVo>)getJdbcTemplate().query(sql, new RuleElementMapper());
 		return list;
 	}
 	
@@ -76,7 +86,7 @@ public class RuleElementJdbcDao implements RuleElementDao {
 				" where ruleName = ? " +
 			" order by elementSeq asc ";
 		Object[] parms = new Object[] { ruleName };
-		List<RuleElementVo> list = (List<RuleElementVo>)jdbcTemplate.query(sql, parms, new RuleElementMapper());
+		List<RuleElementVo> list = (List<RuleElementVo>)getJdbcTemplate().query(sql, parms, new RuleElementMapper());
 		return list;
 	}
 	
@@ -113,7 +123,7 @@ public class RuleElementJdbcDao implements RuleElementDao {
 			" where " +
 				" RowId=?";
 		
-		int rowsUpadted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsUpadted;
 	}
@@ -126,7 +136,7 @@ public class RuleElementJdbcDao implements RuleElementDao {
 		fields.add(ruleName);
 		fields.add(elementSeq+"");
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -138,7 +148,7 @@ public class RuleElementJdbcDao implements RuleElementDao {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(ruleName);
 		
-		int rowsDeleted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
 		return rowsDeleted;
 	}
@@ -174,7 +184,7 @@ public class RuleElementJdbcDao implements RuleElementDao {
 		fields.add(ruleElementVo.getExclListProc());
 		fields.add(ruleElementVo.getDelimiter());
 		
-		int rowsInserted = jdbcTemplate.update(sql, fields.toArray());
+		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		ruleElementVo.setRowId(retrieveRowId());
 		updateReloadFlags();
 		return rowsInserted;
@@ -191,19 +201,10 @@ public class RuleElementJdbcDao implements RuleElementDao {
 	}
 
 	protected int retrieveRowId() {
-		return jdbcTemplate.queryForInt(getRowIdSql());
+		return getJdbcTemplate().queryForInt(getRowIdSql());
 	}
 
 	protected String getRowIdSql() {
 		return "select last_insert_id()";
-	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(this.dataSource);
 	}
 }
