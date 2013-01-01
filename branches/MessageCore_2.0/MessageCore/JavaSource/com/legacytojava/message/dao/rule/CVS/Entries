@@ -1,0 +1,12 @@
+/RuleDao.java/1.1/Sun May  4 01:33:25 2008//
+/RuleElementDao.java/1.1/Sun May  4 01:33:25 2008//
+/RuleElementJdbcDao.java/1.1/Thu Sep  8 20:30:52 2011//
+/RuleElementTest.java/1.2/Mon Sep 19 15:14:44 2011//
+/RuleJdbcDao.java/1.1/Sun May  4 01:33:25 2008//
+/RuleLogicDao.java/1.1/Wed Jul  2 20:42:09 2008//
+/RuleLogicJdbcDao.java/1.2/Sat Sep 24 16:06:32 2011//
+/RuleLogicTest.java/1.2/Sat Sep 24 16:06:32 2011//
+/RuleSubRuleMapDao.java/1.1/Sun May  4 01:33:25 2008//
+/RuleSubRuleMapJdbcDao.java/1.1/Fri Sep 16 20:04:47 2011//
+/RuleSubRuleMapTest.java/1.2/Sat Sep 24 13:48:52 2011//
+/RuleTables.java/1.2/Sat Sep 24 16:53:18 2011//
