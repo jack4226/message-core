@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.template.SubjTemplateVo;
 
-@Component(value="subjTemplateDao")
+@Component("subjTemplateDao")
 public class SubjTemplateJdbcDao implements SubjTemplateDao {
 	
 	@Autowired

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.MsgStreamVo;
 
-@Component(value="msgStreamDao")
+@Component("msgStreamDao")
 public class MsgStreamJdbcDao implements MsgStreamDao {
 	
 	@Autowired

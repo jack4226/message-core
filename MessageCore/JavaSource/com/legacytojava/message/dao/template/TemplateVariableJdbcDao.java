@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.template.TemplateVariableVo;
 
-@Component(value="templateVariableDao")
+@Component("templateVariableDao")
 public class TemplateVariableJdbcDao implements TemplateVariableDao {
 	
 	@Autowired

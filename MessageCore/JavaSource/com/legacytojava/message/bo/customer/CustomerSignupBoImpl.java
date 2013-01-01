@@ -12,7 +12,7 @@ import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.vo.CustomerVo;
 import com.legacytojava.message.vo.emailaddr.MailingListVo;
 
-@Component(value="customerSignupBo")
+@Component("customerSignupBo")
 @Scope(value="prototype")
 public class CustomerSignupBoImpl implements CustomerSignupBo {
 	static final Logger logger = Logger.getLogger(CustomerSignupBoImpl.class);

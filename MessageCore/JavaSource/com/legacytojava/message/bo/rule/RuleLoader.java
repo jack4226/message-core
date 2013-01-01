@@ -33,7 +33,7 @@ import com.legacytojava.message.vo.rule.RuleLogicVo;
 import com.legacytojava.message.vo.rule.RuleSubRuleMapVo;
 import com.legacytojava.message.vo.rule.RuleVo;
 
-@Component(value="ruleLoader")
+@Component("ruleLoader")
 @Scope(value="prototype")
 public final class RuleLoader implements java.io.Serializable {
 	private static final long serialVersionUID = 5251082728950956779L;

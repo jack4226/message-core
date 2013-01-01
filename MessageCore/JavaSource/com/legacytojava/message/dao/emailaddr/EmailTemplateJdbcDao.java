@@ -21,7 +21,7 @@ import com.legacytojava.message.util.BlobUtil;
 import com.legacytojava.message.vo.action.MsgDataTypeVo;
 import com.legacytojava.message.vo.emailaddr.EmailTemplateVo;
 
-@Component(value="emailTemplateDao")
+@Component("emailTemplateDao")
 public class EmailTemplateJdbcDao implements EmailTemplateDao {
 	static final Logger logger = Logger.getLogger(EmailTemplateJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

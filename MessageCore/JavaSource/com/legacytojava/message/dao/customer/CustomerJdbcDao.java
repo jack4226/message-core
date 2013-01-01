@@ -21,7 +21,7 @@ import com.legacytojava.message.vo.PagingCustomerVo;
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 
-@Component(value="customerDao")
+@Component("customerDao")
 public class CustomerJdbcDao implements CustomerDao {
 
 	@Autowired

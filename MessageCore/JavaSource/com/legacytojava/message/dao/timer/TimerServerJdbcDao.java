@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.TimerServerVo;
 
-@Component(value="timerServerDao")
+@Component("timerServerDao")
 public class TimerServerJdbcDao implements TimerServerDao {
 	
 	@Autowired

@@ -19,7 +19,7 @@ import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.vo.ClientVo;
 import com.legacytojava.message.vo.MailBoxVo;
 
-@Component(value="mailBoxDao")
+@Component("mailBoxDao")
 public class MailBoxJdbcDao implements MailBoxDao {
 	
 	@Autowired

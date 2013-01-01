@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.AttachmentsVo;
 
-@Component(value="attachmentsDao")
+@Component("attachmentsDao")
 public class AttachmentsJdbcDao implements AttachmentsDao {
 	
 	@Autowired

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.inbox.MsgClickCountsVo;
 
-@Component(value="msgClickCountsDao")
+@Component("msgClickCountsDao")
 public class MsgClickCountsJdbcDao implements MsgClickCountsDao {
 	
 	@Autowired

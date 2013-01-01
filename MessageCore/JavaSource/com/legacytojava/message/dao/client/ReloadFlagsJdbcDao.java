@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.ReloadFlagsVo;
 
-@Component(value="reloadFlagsDao")
+@Component("reloadFlagsDao")
 public class ReloadFlagsJdbcDao implements ReloadFlagsDao {
 	protected static final Logger logger = Logger.getLogger(ReloadFlagsJdbcDao.class);
 	

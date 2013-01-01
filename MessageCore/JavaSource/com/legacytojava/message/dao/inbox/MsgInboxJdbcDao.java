@@ -24,7 +24,7 @@ import com.legacytojava.message.vo.inbox.MsgInboxVo;
 import com.legacytojava.message.vo.inbox.MsgInboxWebVo;
 import com.legacytojava.message.vo.inbox.SearchFieldsVo;
 
-@Component(value="msgInboxDao")
+@Component("msgInboxDao")
 public class MsgInboxJdbcDao implements MsgInboxDao {
 	
 	@Autowired

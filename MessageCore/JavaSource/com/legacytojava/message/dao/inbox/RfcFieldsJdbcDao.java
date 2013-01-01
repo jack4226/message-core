@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.RfcFieldsVo;
 
-@Component(value="rfcFieldsDao")
+@Component("rfcFieldsDao")
 public class RfcFieldsJdbcDao implements RfcFieldsDao {
 	
 	@Autowired

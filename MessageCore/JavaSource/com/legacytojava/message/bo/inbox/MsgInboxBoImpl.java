@@ -57,7 +57,7 @@ import com.legacytojava.message.vo.outbox.MsgStreamVo;
 /**
  * save email data and properties into database.
  */
-@Component(value="msgInboxBo")
+@Component("msgInboxBo")
 public class MsgInboxBoImpl implements MsgInboxBo {
 	static final Logger logger = Logger.getLogger(MsgInboxBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

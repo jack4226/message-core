@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.template.ClientVariableVo;
 
-@Component(value="clientVariableDao")
+@Component("clientVariableDao")
 public class ClientVariableJdbcDao implements ClientVariableDao {
 	
 	@Autowired

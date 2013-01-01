@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.rule.RuleElementVo;
 
-@Component(value="ruleElementDao")
+@Component("ruleElementDao")
 public class RuleElementJdbcDao implements RuleElementDao {
 	
 	@Autowired

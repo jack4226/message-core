@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.template.BodyTemplateVo;
 
-@Component(value="bodyTemplateDao")
+@Component("bodyTemplateDao")
 public class BodyTemplateJdbcDao implements BodyTemplateDao {
 	
 	@Autowired

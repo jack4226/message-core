@@ -17,7 +17,7 @@ import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.SmtpConnVo;
 
-@Component(value="smtpServerDao")
+@Component("smtpServerDao")
 public class SmtpServerJdbcDao implements SmtpServerDao {
 	
 	@Autowired

@@ -42,7 +42,7 @@ import com.legacytojava.message.vo.outbox.MsgRenderedVo;
 /**
  * Scan email header and body, and match rules to determine the ruleName.
  */
-@Component(value="messageParser")
+@Component("messageParser")
 @Scope(value="prototype")
 public final class MessageParser {
 	static final Logger logger = Logger.getLogger(MessageParser.class);

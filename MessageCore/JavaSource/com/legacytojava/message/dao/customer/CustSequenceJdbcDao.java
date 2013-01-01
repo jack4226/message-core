@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-@Component(value="custSequenceDao")
+@Component("custSequenceDao")
 public class CustSequenceJdbcDao implements CustSequenceDao {
 	protected static final Logger logger = Logger.getLogger(CustSequenceJdbcDao.class);
 	

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.SocketServerVo;
 
-@Component(value="socketServerDao")
+@Component("socketServerDao")
 public class SocketServerJdbcDao implements SocketServerDao {
 	
 	@Autowired

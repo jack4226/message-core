@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.jbatch.queue.JmsProcessor;
 
-@Component(value="taskBaseBo")
+@Component("taskBaseBo")
 @Scope(value="prototype")
 public abstract class TaskBaseAdaptor implements TaskBaseBo {
 

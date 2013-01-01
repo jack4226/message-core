@@ -44,7 +44,7 @@ import com.legacytojava.message.vo.template.MsgSourceVo;
 import com.legacytojava.message.vo.template.SubjTemplateVo;
 import com.legacytojava.message.vo.template.TemplateVariableVo;
 
-@Component(value="renderBo")
+@Component("renderBo")
 public class RenderBoImpl implements RenderBo {
 	static final Logger logger = Logger.getLogger(RenderBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

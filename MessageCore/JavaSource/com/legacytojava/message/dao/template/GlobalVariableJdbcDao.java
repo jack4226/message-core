@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.template.GlobalVariableVo;
 
-@Component(value="globalVariableDao")
+@Component("globalVariableDao")
 public class GlobalVariableJdbcDao implements GlobalVariableDao {
 	
 	@Autowired

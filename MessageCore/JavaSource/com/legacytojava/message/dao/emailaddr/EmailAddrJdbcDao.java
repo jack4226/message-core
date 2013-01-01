@@ -36,7 +36,7 @@ import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 
-@Component(value="emailAddrDao")
+@Component("emailAddrDao")
 public class EmailAddrJdbcDao implements EmailAddrDao {
 	static final Logger logger = Logger.getLogger(EmailAddrJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

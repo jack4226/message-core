@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-@Component(value="msgUnreadCountDao")
+@Component("msgUnreadCountDao")
 public class MsgUnreadCountJdbcDao implements MsgUnreadCountDao {
 	protected static final Logger logger = Logger.getLogger(MsgUnreadCountJdbcDao.class);
 	

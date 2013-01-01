@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.MsgAddrsVo;
 
-@Component(value="msgAddrsDao")
+@Component("msgAddrsDao")
 public class MsgAddrsJdbcDao implements MsgAddrsDao {
 	
 	@Autowired

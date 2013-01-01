@@ -13,7 +13,7 @@ import com.legacytojava.message.external.RuleTargetProc;
 import com.legacytojava.message.vo.rule.RuleElementVo;
 import com.legacytojava.message.vo.rule.RuleVo;
 
-@Component(value="rulesDataBo")
+@Component("rulesDataBo")
 public final class RulesDataBoImpl implements RulesDataBo {
 	static final Logger logger = Logger.getLogger(RulesDataBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

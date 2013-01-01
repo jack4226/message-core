@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.emailaddr.MailingListVo;
 
-@Component(value="mailingListDao")
+@Component("mailingListDao")
 public class MailingListJdbcDao implements MailingListDao {
 	static final Logger logger = Logger.getLogger(MailingListJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

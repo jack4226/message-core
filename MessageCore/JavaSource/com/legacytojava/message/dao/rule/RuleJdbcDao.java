@@ -17,7 +17,7 @@ import com.legacytojava.message.vo.rule.RuleLogicVo;
 import com.legacytojava.message.vo.rule.RuleSubRuleMapVo;
 import com.legacytojava.message.vo.rule.RuleVo;
 
-@Component(value="ruleDao")
+@Component("ruleDao")
 public class RuleJdbcDao implements RuleDao {
 	
 	@Autowired

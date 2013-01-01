@@ -19,7 +19,7 @@ import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.rule.RuleLogicVo;
 
-@Component(value="ruleLogicDao")
+@Component("ruleLogicDao")
 public class RuleLogicJdbcDao implements RuleLogicDao {
 	
 	@Autowired

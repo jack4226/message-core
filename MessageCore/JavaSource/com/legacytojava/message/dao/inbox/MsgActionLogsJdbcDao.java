@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.MsgActionLogsVo;
 
-@Component(value="msgActionLogsDao")
+@Component("msgActionLogsDao")
 public class MsgActionLogsJdbcDao implements MsgActionLogsDao {
 	
 	@Autowired

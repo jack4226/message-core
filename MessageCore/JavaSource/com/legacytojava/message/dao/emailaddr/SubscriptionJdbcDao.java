@@ -24,7 +24,7 @@ import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.emailaddr.SubscriptionVo;
 
-@Component(value="subscriptionDao")
+@Component("subscriptionDao")
 public class SubscriptionJdbcDao implements SubscriptionDao {
 	static final Logger logger = Logger.getLogger(SubscriptionJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

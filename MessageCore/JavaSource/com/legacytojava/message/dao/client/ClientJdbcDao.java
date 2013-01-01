@@ -25,7 +25,7 @@ import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.ClientVo;
 import com.legacytojava.message.vo.template.ClientVariableVo;
 
-@Component(value="clientDao")
+@Component("clientDao")
 public class ClientJdbcDao implements ClientDao {
 	
 	@Autowired

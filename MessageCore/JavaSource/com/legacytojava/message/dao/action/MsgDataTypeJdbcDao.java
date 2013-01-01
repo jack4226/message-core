@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.action.MsgDataTypeVo;
 
-@Component(value="msgDataTypeDao")
+@Component("msgDataTypeDao")
 public class MsgDataTypeJdbcDao implements MsgDataTypeDao {
 	
 	@Autowired

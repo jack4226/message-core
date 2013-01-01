@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.vo.emailaddr.EmailVariableVo;
 
-@Component(value="emailVariableDao")
+@Component("emailVariableDao")
 public class EmailVariableJdbcDao implements EmailVariableDao {
 	static final Logger logger = Logger.getLogger(EmailVariableJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

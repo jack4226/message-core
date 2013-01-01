@@ -17,7 +17,7 @@ import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.action.MsgActionVo;
 
-@Component(value="msgActionDao")
+@Component("msgActionDao")
 public class MsgActionJdbcDao implements MsgActionDao {
 	
 	@Autowired

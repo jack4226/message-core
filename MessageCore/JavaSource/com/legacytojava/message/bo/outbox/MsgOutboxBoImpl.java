@@ -47,7 +47,7 @@ import com.legacytojava.message.vo.outbox.RenderAttachmentVo;
 import com.legacytojava.message.vo.outbox.RenderObjectVo;
 import com.legacytojava.message.vo.outbox.RenderVariableVo;
 
-@Component(value="msgOutboxBo")
+@Component("msgOutboxBo")
 public class MsgOutboxBoImpl implements MsgOutboxBo {
 	static final Logger logger = Logger.getLogger(MsgOutboxBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

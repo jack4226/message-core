@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.emailaddr.UnsubCommentsVo;
 
-@Component(value="unsubCommentsDao")
+@Component("unsubCommentsDao")
 public class UnsubCommentsJdbcDao implements UnsubCommentsDao {
 	static final Logger logger = Logger.getLogger(UnsubCommentsJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

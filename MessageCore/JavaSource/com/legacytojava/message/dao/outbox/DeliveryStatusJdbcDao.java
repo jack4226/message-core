@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.DeliveryStatusVo;
 
-@Component(value="deliveryStatusDao")
+@Component("deliveryStatusDao")
 public class DeliveryStatusJdbcDao implements DeliveryStatusDao {
 	
 	@Autowired

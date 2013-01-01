@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.outbox.RenderObjectVo;
 
-@Component(value="renderObjectDao")
+@Component("renderObjectDao")
 public class RenderObjectJdbcDao implements RenderObjectDao {
 	
 	@Autowired

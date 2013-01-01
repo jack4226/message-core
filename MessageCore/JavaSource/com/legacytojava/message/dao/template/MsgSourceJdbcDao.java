@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.template.MsgSourceVo;
 
-@Component(value="msgSourceDao")
+@Component("msgSourceDao")
 public class MsgSourceJdbcDao implements MsgSourceDao {
 	
 	@Autowired

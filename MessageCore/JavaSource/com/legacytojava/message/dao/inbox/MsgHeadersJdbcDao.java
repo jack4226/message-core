@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.inbox.MsgHeadersVo;
 
-@Component(value="msgHeadersDao")
+@Component("msgHeadersDao")
 public class MsgHeadersJdbcDao implements MsgHeadersDao {
 	
 	@Autowired

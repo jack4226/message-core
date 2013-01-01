@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.MailSenderVo;
 
-@Component(value="mailSenderPropsDao")
+@Component("mailSenderPropsDao")
 public class MailSenderPropsJdbcDao implements MailSenderPropsDao {
 	
 	@Autowired

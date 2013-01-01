@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.SessionUploadVo;
 
-@Component(value="sessionUploadDao")
+@Component("sessionUploadDao")
 public class SessionUploadJdbcDao implements SessionUploadDao {
 	
 	@Autowired

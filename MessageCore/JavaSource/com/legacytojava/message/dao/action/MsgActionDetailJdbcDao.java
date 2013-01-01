@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
 import com.legacytojava.message.vo.action.MsgActionDetailVo;
 
-@Component(value="msgActionDetailDao")
+@Component("msgActionDetailDao")
 public class MsgActionDetailJdbcDao implements MsgActionDetailDao {
 	
 	@Autowired

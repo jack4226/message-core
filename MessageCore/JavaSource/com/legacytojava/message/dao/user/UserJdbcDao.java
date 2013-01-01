@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.vo.UserVo;
 
-@Component(value="userDao")
+@Component("userDao")
 public class UserJdbcDao implements UserDao {
 	
 	@Autowired
