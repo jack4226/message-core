@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!-- Transaction Managers -->
+	<bean id="jtaTransactionManager" lazy-init="true"
+		class="org.springframework.transaction.jta.JtaTransactionManager">
+	    <property name="userTransactionName" value="java:/UserTransaction"/>
+	</bean>
+	
+	<bean id="jmsTransactionManager" lazy-init="true"
+		class="org.springframework.jms.connection.JmsTransactionManager">
+		<property name="connectionFactory">
+			<ref bean="jmsConnectionFactory"/>
+		</property>
+	</bean>
+	<!-- end of Transaction Managers -->
+
+	<!-- JNDI template -->
+	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+	    <property name="environment">
+	      <props>
+	        <prop key="java.naming.factory.initial">
+	          org.jnp.interfaces.NamingContextFactory
+	        </prop>
+	        <prop key="java.naming.provider.url">
+	          jnp://localhost:2099
+	        </prop>
+	        <prop key="java.naming.factory.url.pkgs">
+	          org.jboss.naming:org.jnp.interfaces
+	        </prop>
+	      </props>
+	    </property>
+	</bean>
+	
+	<!-- JMS Connection Factory -->
+	<bean id="jmsConnectionFactory" 
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+    	<property name="jndiName">
+        	<!-- value>UILXAConnectionFactory</value -->
+        	<value>XAConnectionFactory</value>
+    	</property>
+	</bean>
+	
+	<!-- JMS Queues - JNDI Objects -->
+	<bean id="mailReaderOutput"
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+	    <property name="jndiName">
+	        <value>queue/mailReaderOutput</value>
+	    </property>
+	</bean>
+	
+	<bean id="ruleEngineInput" parent="mailReaderOutput"
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	</bean>
+	
+	<bean id="ruleEngineOutput" 
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+	    <property name="jndiName">
+	        <value>queue/ruleEngineOutput</value>
+	    </property>
+	</bean>
+	
+	<bean id="mailSenderInput"
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+	    <property name="jndiName">
+	        <value>queue/mailSenderInput</value>
+	    </property>
+	</bean>
+	
+	<bean id="mailSenderOutput"
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+	    <property name="jndiName">
+	        <value>queue/mailSenderOutput</value>
+	    </property>
+	</bean>
+	
+	<bean id="customerCareInput"
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+	    <property name="jndiName">
+	        <value>queue/customerCareInput</value>
+	    </property>
+	</bean>
+	
+	<bean id="rmaRequestInput"
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+	    <property name="jndiName">
+	        <value>queue/rmaRequestInput</value>
+	    </property>
+	</bean>
+	
+	<bean id="unHandledOutput"
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+	    <property name="jndiName">
+	        <value>queue/unHandledOutput</value>
+	    </property>
+	</bean>
+	
+	<bean id="destination"
+	    class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiTemplate">
+	        <ref bean="jndiTemplate"/>
+	    </property>
+	    <property name="jndiName">
+	        <value>queue/mailSenderInput</value>
+	    </property>
+	</bean>
+	
+	<!-- end of JMS Queues -->
+	
+	<!-- JMS templates -->
+	<bean id="jmsTemplate" 
+	      class="org.springframework.jms.core.JmsTemplate">
+	    <property name="connectionFactory">
+	        <ref bean="jmsConnectionFactory"/>
+	    </property>
+	    <property name="defaultDestination">
+	        <ref bean="destination"/>
+	    </property>
+	    <property name="receiveTimeout">
+	        <value>2000</value>
+	    </property>
+	</bean>
+
+	<bean id="jmsTemplateDefaultDest" parent="jmsTemplate"
+	    class="org.springframework.jms.core.JmsTemplate">
+	</bean>
+	
+	<bean id="mailReaderOutputJmsTemplate"
+	      class="org.springframework.jms.core.JmsTemplate">
+	    <property name="connectionFactory">
+	        <ref bean="jmsConnectionFactory"/>
+	    </property>
+	    <property name="defaultDestination">
+	        <ref bean="mailReaderOutput"/>
+	    </property>
+	    <property name="receiveTimeout">
+	        <value>2000</value>
+	    </property>
+	    <property name="priority">
+	    	<value>1</value>
+	    </property>
+	</bean>
+	
+	<bean id="ruleEngineInputJmsTemplate" parent="mailReaderOutputJmsTemplate"
+	      class="org.springframework.jms.core.JmsTemplate">
+	</bean>
+	
+	<bean id="ruleEngineOutputJmsTemplate"
+	      class="org.springframework.jms.core.JmsTemplate">
+	    <property name="connectionFactory">
+	        <ref bean="jmsConnectionFactory"/>
+	    </property>
+	    <property name="defaultDestination">
+	        <ref bean="ruleEngineOutput"/>
+	    </property>
+	    <property name="receiveTimeout">
+	        <value>2000</value>
+	    </property>
+	    <property name="priority">
+	    	<value>1</value>
+	    </property>
+	</bean>
+	
+	<bean id="mailSenderInputJmsTemplate" 
+	      class="org.springframework.jms.core.JmsTemplate">
+	    <property name="connectionFactory">
+	        <ref bean="jmsConnectionFactory"/>
+	    </property>
+	    <property name="defaultDestination">
+	        <ref bean="mailSenderInput"/>
+	    </property>
+	    <property name="receiveTimeout">
+	        <value>2000</value>
+	    </property>
+	</bean>
+	
+	<bean id="mailSenderOutputJmsTemplate" 
+	      class="org.springframework.jms.core.JmsTemplate">
+	    <property name="connectionFactory">
+	        <ref bean="jmsConnectionFactory"/>
+	    </property>
+	    <property name="defaultDestination">
+	        <ref bean="mailSenderOutput"/>
+	    </property>
+	    <property name="receiveTimeout">
+	        <value>2000</value>
+	    </property>
+	</bean>
+	
+	<bean id="customerCareInputJmsTemplate" 
+	      class="org.springframework.jms.core.JmsTemplate">
+	    <property name="connectionFactory">
+	        <ref bean="jmsConnectionFactory"/>
+	    </property>
+	    <property name="defaultDestination">
+	        <ref bean="customerCareInput"/>
+	    </property>
+	    <property name="receiveTimeout">
+	        <value>2000</value>
+	    </property>
+	</bean>
+	
+	<bean id="rmaRequestInputJmsTemplate" 
+	      class="org.springframework.jms.core.JmsTemplate">
+	    <property name="connectionFactory">
+	        <ref bean="jmsConnectionFactory"/>
+	    </property>
+	    <property name="defaultDestination">
+	        <ref bean="rmaRequestInput"/>
+	    </property>
+	    <property name="receiveTimeout">
+	        <value>2000</value>
+	    </property>
+	</bean>
+	
+	<bean id="unHandledOutputJmsTemplate"
+	      class="org.springframework.jms.core.JmsTemplate">
+	    <property name="connectionFactory">
+	        <ref bean="jmsConnectionFactory"/>
+	    </property>
+	    <property name="defaultDestination">
+	        <ref bean="unHandledOutput"/>
+	    </property>
+	    <property name="receiveTimeout">
+	        <value>2000</value>
+	    </property>
+	</bean>
+	<!-- end of Templates -->
+	
+	<!-- JMS Processor -->
+	<bean id="jmsProcessor" scope="prototype" lazy-init="false"
+		class="com.legacytojava.jbatch.queue.JmsProcessor">
+	    <property name="jmsTemplate">
+	        <ref bean="ruleEngineOutputJmsTemplate"/>
+	    </property>
+	    <property name="errorJmsTemplate">
+	        <ref bean="unHandledOutputJmsTemplate"/>
+	    </property>
+	    <property name="msgSelector">
+	    	<null/>
+	    </property>
+	    <property name="msgType">
+	    	<value>JMS</value>
+	    </property>
+	</bean>
+
+	<!-- JMS Sender/Receiver -->
+	<bean id="jmsSender" class="test.JmsSender">
+	    <property name="jmsTemplate">
+	        <ref bean="jmsTemplateDefaultDest"/>
+	    </property>
+	</bean>
+	
+	<bean id="jmsReceiver" class="test.JmsReceiver">
+	    <property name="jmsTemplate">
+	        <ref bean="unHandledOutputJmsTemplate"/>
+	    </property>
+	</bean>
+	<!-- end of Sender/Receiver -->
+	
+	<!-- define properties and class for SimpleEmailSender -->	
+	<bean id="smtpProperties" class="java.util.HashMap">
+	    <constructor-arg>
+	    <map>
+	    	<entry key="smtphost" value="localhost"/>
+	    	<entry key="smtpport" value="-1"/>
+	    	<entry key="userid" value="jwang"/>
+	    	<entry key="password" value="jwang"/>
+	    	<entry key="persistent" value="no"/>
+	    </map>
+	    </constructor-arg>
+	</bean>
+	
+	<bean id="simpleEmailSender" lazy-init="true"
+	      class="com.legacytojava.message.bean.SimpleEmailSender">
+	    <constructor-arg index="0" ref="smtpProperties"/>
+	</bean>
+	<!-- end of SimpleEmailSender -->
+	
+	<!-- bean id="customerBo" scope="singleton" lazy-init="true"
+		class="com.legacytojava.message.bo.customer.CustomerBoImpl">
+		<property name="customerDao" ref="customerDao"/>
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="custSequenceDao" ref="custSequenceDao"/>
+	</bean -->
+	
+	<!-- bean id="rulesDataBo" scope="singleton"
+		class="com.legacytojava.message.bo.rule.RulesDataBoImpl">
+		<property name="ruleDao" ref="ruleDao"/>
+	</bean -->
+
+	<!-- bean id="renderBo" scope="singleton"
+		class="com.legacytojava.message.bo.template.RenderBoImpl">
+		<property name="msgSourceDao" ref="msgSourceDao"/>
+		<property name="bodyTemplateDao" ref="bodyTemplateDao"/>
+		<property name="subjTemplateDao" ref="subjTemplateDao"/>
+		<property name="clientVariableDao" ref="clientVariableDao"/>
+		<property name="globalVariableDao" ref="globalVariableDao"/>
+		<property name="templateVariableDao" ref="templateVariableDao"/>
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+	</bean -->
+
+	<!-- bean id="msgOutboxBo" scope="singleton"
+		class="com.legacytojava.message.bo.outbox.MsgOutboxBoImpl">
+		<property name="renderBo" ref="renderBo"/>
+		<property name="msgRenderedDao" ref="msgRenderedDao"/>
+		<property name="renderAttachmentDao" ref="renderAttachmentDao"/>
+		<property name="renderVariableDao" ref="renderVariableDao"/>
+		<property name="renderObjectDao" ref="renderObjectDao"/>
+		<property name="msgInboxDao" ref="msgInboxDao"/>
+		<property name="attachmentsDao" ref="attachmentsDao"/>
+		<property name="msgHeadersDao" ref="msgHeadersDao"/>
+		<property name="msgAddrsDao" ref="msgAddrsDao"/>
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+	</bean -->
+	
+	<!-- bean id="msgInboxBo" scope="singleton"
+		class="com.legacytojava.message.bo.inbox.MsgInboxBoImpl">
+		<property name="msgSequenceDao" ref="msgSequenceDao"/>
+		<property name="msgInboxDao" ref="msgInboxDao"/>
+		<property name="attachmentsDao" ref="attachmentsDao"/>
+		<property name="msgAddrsDao" ref="msgAddrsDao"/>
+		<property name="msgHeadersDao" ref="msgHeadersDao"/>
+		<property name="rfcFieldsDao" ref="rfcFieldsDao"/>
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="msgStreamDao" ref="msgStreamDao"/>
+		<property name="deliveryStatusDao" ref="deliveryStatusDao"/>
+		<property name="msgRenderedDao" ref="msgRenderedDao"/>
+		<property name="msgActionLogsDao" ref="msgActionLogsDao"/>
+		<property name="msgClickCountsDao" ref="msgClickCountsDao"/>
+	</bean -->
+	
+	<!-- bean id="ruleLoader" scope="prototype" lazy-init="true"
+		class="com.legacytojava.message.bo.rule.RuleLoader">
+		<constructor-arg index="0" ref="rulesDataBo"/>
+	</bean -->
+	
+	<!-- bean id="messageParser" scope="prototype" lazy-init="true"
+		class="com.legacytojava.message.bo.inbox.MessageParser">
+		<property name="ruleLoader" ref="ruleLoader"/>
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="msgInboxDao" ref="msgInboxDao"/>
+		<property name="msgRenderedDao" ref="msgRenderedDao"/>
+	</bean -->
+	
+	<bean id="mailingListBo" scope="prototype" lazy-init="true"
+		class="com.legacytojava.message.bo.mailinglist.MailingListBoImpl">
+		<property name="emailTemplateDao" ref="emailTemplateDao"/>
+		<property name="mailingListDao" ref="mailingListDao"/>
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="subscriptionDao" ref="subscriptionDao"/>
+		<property name="msgClickCountsDao" ref="msgClickCountsDao"/>
+		<property name="assignRuleNameBo" ref="assignRuleNameBo"/>
+		<property name="sendMailBo" ref="sendMailBo"/>
+	</bean>
+	
+	<!-- bean id="customerSignupBo" scope="prototype" lazy-init="true"
+		class="com.legacytojava.message.bo.customer.CustomerSignupBoImpl">
+		<property name="customerBo" ref="customerBo"/>
+		<property name="mailingListDao" ref="mailingListDao"/>
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="mailingListBo" ref="mailingListBo"/>
+	</bean -->
+	
+	<!-- Task BO's -->
+	<bean id="taskBaseBo" scope="prototype" abstract="true"
+		class="com.legacytojava.message.bo.TaskBaseAdaptor">
+		<property name="jmsProcessor" ref="jmsProcessor"/>
+	</bean>
+	<bean id="activateBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.ActivateBoImpl">
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+	</bean>
+	<bean id="assignRuleNameBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.AssignRuleNameBoImpl">
+	</bean>
+	<bean id="autoReplyBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.AutoReplyBoImpl">
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="emailTemplateDao" ref="emailTemplateDao"/>
+		<property name="mailingListDao" ref="mailingListDao"/>
+	</bean>
+	<bean id="bounceBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.BounceBoImpl">
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+	</bean>
+	<bean id="broadcastBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.BroadcastBoImpl">
+		<property name="mailingListDao" ref="mailingListDao"/>
+		<property name="subscriptionDao" ref="subscriptionDao"/>
+		<property name="msgClickCountsDao" ref="msgClickCountsDao"/>
+	</bean>
+	<bean id="closeBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.CloseBoImpl">
+		<property name="msgInboxDao" ref="msgInboxDao"/>
+	</bean>
+	<bean id="csrReplyBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.CsrReplyBoImpl">
+	</bean>
+	<bean id="deliveryErrorBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.DeliveryErrorBoImpl">
+		<property name="deliveryStatusDao" ref="deliveryStatusDao"/>
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="msgInboxDao" ref="msgInboxDao"/>
+	</bean>
+	<bean id="dropBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.DropBoImpl">
+	</bean>
+	<bean id="forwardBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.ForwardBoImpl">
+		<property name="msgStreamDao" ref="msgStreamDao"/>
+		<property name="clientDao" ref="clientDao"/>
+	</bean>
+	<bean id="mailingListRegExBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.MailingListRegExBoImpl">
+		<property name="mailingListDao" ref="mailingListDao"/>
+	</bean>
+	<bean id="openBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.OpenBoImpl">
+		<property name="msgInboxDao" ref="msgInboxDao"/>
+	</bean>
+	<bean id="saveBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.SaveBoImpl">
+		<property name="msgInboxBo" ref="msgInboxBo"/>
+	</bean>
+	<bean id="sendMailBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.SendMailBoImpl">
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+	</bean>
+	<bean id="subscribeBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.SubscribeBoImpl">
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="mailingListDao" ref="mailingListDao"/>
+		<property name="subscriptionDao" ref="subscriptionDao"/>
+	</bean>
+	<bean id="suspendBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.SuspendBoImpl">
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="msgInboxDao" ref="msgInboxDao"/>
+	</bean>
+	<bean id="toCsrBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.ToCsrBoImpl">
+		<property name="msgDataTypeDao" ref="msgDataTypeDao"/>
+	</bean>
+	<bean id="toSecurityBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.ToSecurityBoImpl">
+		<property name="clientDao" ref="clientDao"/>
+	</bean>
+	<bean id="unsubscribeBo" lazy-init="true" scope="prototype" parent="taskBaseBo"
+		class="com.legacytojava.message.bo.UnsubscribeBoImpl">
+		<property name="emailAddrDao" ref="emailAddrDao"/>
+		<property name="mailingListDao" ref="mailingListDao"/>
+		<property name="subscriptionDao" ref="subscriptionDao"/>
+	</bean>
+	
+</beans>
