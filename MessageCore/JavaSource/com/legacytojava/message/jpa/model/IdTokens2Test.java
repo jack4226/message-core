@@ -21,7 +21,7 @@ import com.legacytojava.jbatch.JbMain;
 
 @Repository
 @Transactional
-public class TestIdTokens2 extends TestCase {
+public class IdTokens2Test extends TestCase {
 
 	private static final String PERSISTENCE_UNIT_NAME = "message_core";
 

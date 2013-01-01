@@ -169,7 +169,9 @@ public final class JbMain implements Runnable, JbMainMBean {
 		return theMonitor;
 	}
 
-//	private static String[] xmlFiles = null;
+	public static int getNumberOfThreadAtStart() {
+		return numberofThreadAtStart;
+	}
 
 	/**
 	 * The factory is initialized by loading all "spring-jbatch-*" files from
@@ -178,15 +180,7 @@ public final class JbMain implements Runnable, JbMainMBean {
 	 * @return Spring Application Context factory.
 	 */
 	public static AbstractApplicationContext getBatchAppContext() {
-//		if (batchAppContext == null) {
-//			if (xmlFiles==null) {
-//				xmlFiles = getBatchConfigXmlFiles();
-//			}
-//			batchAppContext = new ClassPathXmlApplicationContext(xmlFiles);
-//			//batchAppContext.registerShutdownHook(); // causing Exception
-//		}
-//		return batchAppContext;
-		return getAppContext();
+		return SpringUtil.getAppContext();
 	}
 
 	/**
@@ -196,7 +190,6 @@ public final class JbMain implements Runnable, JbMainMBean {
 	 */
 	public static AbstractApplicationContext getAppContext() {
 		if (applContext == null) {
-			//String fileName = null;
 			String[] fileNames = null;
 			try {
 				// see if it's running under JBoss by doing a JNDI lookup
@@ -205,7 +198,6 @@ public final class JbMain implements Runnable, JbMainMBean {
 				fileNames = getServerConfigXmlFiles();
 			}
 			catch (javax.naming.NamingException e) {
-			//catch (Throwable e) {
 				if (numberofThreadAtStart < 0) {
 					logger.info("getAppContext() - running standalone, load standalone xmls");
 					fileNames = getStandaloneConfigXmlFiles();
@@ -229,24 +221,19 @@ public final class JbMain implements Runnable, JbMainMBean {
 			return applContext;
 		}
 		else if (daoAppCtx == null) {
-			//String[] fileNames = new String[2];
 			List<String> fnames = new ArrayList<String>();
 			try {
 				// see if it's running under JBoss by doing a JNDI lookup
 				ServiceLocator.getDataSource("java:/comp/env/jdbc/msgdb_pool");
 				logger.info("getDaoAppContext() - Running under JBoss, load jndi_ds xmls");
-				//fileNames[0]="classpath:spring-jndi_ds-config.xml";
 				fnames.add("classpath:spring-jndi_ds-config.xml");
 			}
 			catch (javax.naming.NamingException e) {
 				logger.info("getDaoAppContext() - running standalone, load mysql_ds xmls");
-				//fileNames[0]="classpath:spring-mysql_ds-config.xml";
 				fnames.add("classpath:spring-mysql_ds-config.xml");
 			}
-			//fileNames[1]="classpath:spring-dao-config.xml";
 			fnames.add("classpath:spring-dao-config.xml");
 			daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
-			//daoAppCtx = new ClassPathXmlApplicationContext(fileNames);
 		}
 		return daoAppCtx;
 	}

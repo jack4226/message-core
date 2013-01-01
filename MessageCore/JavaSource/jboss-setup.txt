@@ -336,6 +336,13 @@ from 1098 to 2098
 
 5) Copy mySql connector jar (version 5.1.22) to server/default/lib
 
+6) Modify ear-deployer-jboss-beans.xml to enable isolated classloading for ears
+	open server\default\deployers\ear-deployer-jboss-beans.xml
+	Change 
+		<property name="isolated">false</property>
+	to
+		<property name="isolated">true</property>
+
 
 =================================================
 Side Notes:

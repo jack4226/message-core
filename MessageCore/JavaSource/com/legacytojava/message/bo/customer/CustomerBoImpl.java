@@ -2,8 +2,8 @@ package com.legacytojava.message.bo.customer;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
@@ -15,13 +15,13 @@ import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.CustomerVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 
+@Service
 @Component("customerBo")
 public class CustomerBoImpl implements CustomerBo {
 	static final Logger logger = Logger.getLogger(CustomerBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
-	@Qualifier("customerDao")
 	private CustomerDao customerDao;
 	@Autowired
 	private EmailAddrDao emailAddrDao;

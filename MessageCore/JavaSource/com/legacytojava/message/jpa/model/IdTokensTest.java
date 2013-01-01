@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations={"/spring-mysql_ds-config.xml", "/spring-dao-config.xml"})
 @TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
 @Transactional
-public class TestIdTokens {
+public class IdTokensTest {
 
 	@PersistenceContext
 	private EntityManager entityManager;

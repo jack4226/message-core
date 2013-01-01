@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.util.StringUtil;
@@ -21,6 +22,7 @@ import com.legacytojava.message.vo.PagingCustomerVo;
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 
+@Repository
 @Component("customerDao")
 public class CustomerJdbcDao implements CustomerDao {
 

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.legacytojava.message.bo.mailinglist.MailingListBo;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
@@ -12,6 +13,7 @@ import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.vo.CustomerVo;
 import com.legacytojava.message.vo.emailaddr.MailingListVo;
 
+@Service
 @Component("customerSignupBo")
 @Scope(value="prototype")
 public class CustomerSignupBoImpl implements CustomerSignupBo {
