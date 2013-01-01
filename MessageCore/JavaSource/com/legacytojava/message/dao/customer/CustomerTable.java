@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
@@ -119,7 +119,7 @@ public class CustomerTable extends CreateTableBase {
 	}
 	
 	public void loadTestData() throws SQLException {
-		EmailAddrDao dao = (EmailAddrDao) JbMain.getDaoAppContext().getBean("emailAddrDao");
+		EmailAddrDao dao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
 		String emailAddr = "jsmith@test.com";
 		EmailAddrVo vo = dao.findByAddress(emailAddr);
 		// 41 fields

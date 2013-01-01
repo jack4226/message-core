@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.vo.SocketServerVo;
 
 public class SocketServerTest {
 	public static void main(String[] args){
-		ApplicationContext factory = JbMain.getDaoAppContext();
+		ApplicationContext factory = SpringUtil.getDaoAppContext();
 		SocketServerDao socketServerDao = (SocketServerDao)factory.getBean("socketServerDao");
 		
 		try {

@@ -11,7 +11,7 @@ import javax.mail.MessagingException;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.inbox.MsgStreamDao;
 import com.legacytojava.message.vo.outbox.MsgStreamVo;
 
@@ -21,7 +21,7 @@ public class MessageBeanTest {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	public static void main(String[] args){
-		AbstractApplicationContext factory = JbMain.getAppContext();
+		AbstractApplicationContext factory = SpringUtil.getAppContext();
 		MsgStreamDao msgStreamDao = (MsgStreamDao)factory.getBean("msgStreamDao");
 		
 		try {

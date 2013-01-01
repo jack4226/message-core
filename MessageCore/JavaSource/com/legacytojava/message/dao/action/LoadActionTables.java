@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.springframework.context.ApplicationContext;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.EmailAddressType;
 import com.legacytojava.message.constant.MsgDataType;
 import com.legacytojava.message.constant.RuleNameType;
@@ -33,7 +33,7 @@ public class LoadActionTables {
 	
 	public void loadData(ApplicationContext factory)  {
 		if (factory == null) {
-			factory = JbMain.getDaoAppContext();
+			factory = SpringUtil.getDaoAppContext();
 		}
 		MsgDataTypeDao msgDataTypeDao = (MsgDataTypeDao) factory.getBean("msgDataTypeDao");
 		MsgActionDao msgActionDao = (MsgActionDao) factory.getBean("msgActionDao");

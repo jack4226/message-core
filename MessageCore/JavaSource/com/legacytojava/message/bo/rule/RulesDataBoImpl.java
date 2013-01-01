@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bo.TaskBaseBo;
 import com.legacytojava.message.dao.rule.RuleDao;
 import com.legacytojava.message.external.RuleTargetProc;
@@ -62,7 +62,7 @@ public final class RulesDataBoImpl implements RulesDataBo {
 			}
 			catch (Exception e) { // not a class name, try load it as a Bean
 				try {
-					obj = JbMain.getAppContext().getBean(element.getTargetProc());
+					obj = SpringUtil.getAppContext().getBean(element.getTargetProc());
 					logger.info("Loaded bean " + element.getTargetProc() + " for rule "
 							+ rule.getRuleName());
 				}
@@ -110,7 +110,7 @@ public final class RulesDataBoImpl implements RulesDataBo {
 			if (element.getExclListProc() == null) continue;
 			Object obj = null;
 			try {
-				obj = JbMain.getAppContext().getBean(element.getExclListProc());
+				obj = SpringUtil.getAppContext().getBean(element.getExclListProc());
 			}
 			catch (Exception e) {
 				logger.error("Failed to load bean: " + element.getExclListProc() + " for rule "
@@ -145,7 +145,7 @@ public final class RulesDataBoImpl implements RulesDataBo {
 	}
 	
 	public static void main(String[] args) {
-		RulesDataBo bo = (RulesDataBo) JbMain.getAppContext().getBean("rulesDataBo");
+		RulesDataBo bo = (RulesDataBo) SpringUtil.getAppContext().getBean("rulesDataBo");
 		bo.getCurrentRules();
 	}
 }

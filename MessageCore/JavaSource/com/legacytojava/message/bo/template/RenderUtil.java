@@ -17,7 +17,7 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bo.mailinglist.MailingListUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
@@ -65,48 +65,48 @@ public final class RenderUtil {
 	
 	static GlobalVariableDao getGlobalVariableDao() {
 		if (globalVariableDao == null)
-			globalVariableDao = (GlobalVariableDao) JbMain.getDaoAppContext().getBean(
+			globalVariableDao = (GlobalVariableDao) SpringUtil.getDaoAppContext().getBean(
 					"globalVariableDao");
 		return globalVariableDao;
 	}
 
 	static ClientVariableDao getClientVariableDao() {
 		if (clientVariableDao == null)
-			clientVariableDao = (ClientVariableDao) JbMain.getDaoAppContext().getBean(
+			clientVariableDao = (ClientVariableDao) SpringUtil.getDaoAppContext().getBean(
 					"clientVariableDao");
 		return clientVariableDao;
 	}
 
 	static TemplateVariableDao getTemplateVariableDao() {
 		if (templateVariableDao == null)
-			templateVariableDao = (TemplateVariableDao) JbMain.getDaoAppContext().getBean(
+			templateVariableDao = (TemplateVariableDao) SpringUtil.getDaoAppContext().getBean(
 					"templateVariableDao");
 		return templateVariableDao;
 	}
 
 	static BodyTemplateDao getBodyTemplateDao() {
 		if (bodyTemplateDao == null)
-			bodyTemplateDao = (BodyTemplateDao) JbMain.getDaoAppContext()
+			bodyTemplateDao = (BodyTemplateDao) SpringUtil.getDaoAppContext()
 					.getBean("bodyTemplateDao");
 		return bodyTemplateDao;
 	}
 
 	static EmailTemplateDao getEmailTemplateDao() {
 		if (emailTemplateDao == null)
-			emailTemplateDao = (EmailTemplateDao) JbMain.getDaoAppContext().getBean(
+			emailTemplateDao = (EmailTemplateDao) SpringUtil.getDaoAppContext().getBean(
 					"emailTemplateDao");
 		return emailTemplateDao;
 	}
 
 	static MailingListDao getMailingListDao() {
 		if (mailingListDao == null)
-			mailingListDao = (MailingListDao) JbMain.getDaoAppContext().getBean("mailingListDao");
+			mailingListDao = (MailingListDao) SpringUtil.getDaoAppContext().getBean("mailingListDao");
 		return mailingListDao;
 	}
 
 	static EmailAddrDao getEmailAddrDao() {
 		if (emailAddrDao == null)
-			emailAddrDao = (EmailAddrDao) JbMain.getDaoAppContext().getBean("emailAddrDao");
+			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
 		return emailAddrDao;
 	}
 
@@ -430,7 +430,7 @@ public final class RenderUtil {
 	private static EmailVariableDao emailVariableDao = null;
 	static EmailVariableDao getEmailVariableDao() {
 		if (emailVariableDao == null)
-			emailVariableDao = (EmailVariableDao) JbMain.getDaoAppContext().getBean(
+			emailVariableDao = (EmailVariableDao) SpringUtil.getDaoAppContext().getBean(
 					"emailVariableDao");
 		return emailVariableDao;
 	}

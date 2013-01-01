@@ -5,12 +5,12 @@ import javax.jms.Message;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 
 public class JmsReceiver {
 
 	public static void main(String[] args){
-		AbstractApplicationContext factory = JbMain.getAppContext();
+		AbstractApplicationContext factory = SpringUtil.getAppContext();
 		
 		javax.jms.Queue queue = (javax.jms.Queue) factory.getBean("customerCareInput");
 		queue = (javax.jms.Queue) factory.getBean("unHandledOutput");

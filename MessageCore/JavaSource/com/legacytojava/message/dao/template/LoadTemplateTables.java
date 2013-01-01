@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import org.springframework.context.ApplicationContext;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
@@ -43,7 +43,7 @@ public class LoadTemplateTables
 	
 	public void loadData(ApplicationContext factory) {
 		if (factory == null) {
-			factory = JbMain.getDaoAppContext();
+			factory = SpringUtil.getDaoAppContext();
 		}
 		GlobalVariableDao globalVariableDao = (GlobalVariableDao) factory
 				.getBean("globalVariableDao");

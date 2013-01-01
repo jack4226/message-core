@@ -3,7 +3,7 @@ package com.legacytojava.message.bo.mailsender;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.pool.NamedPools;
 import com.legacytojava.jbatch.pool.ObjectPool;
 import com.legacytojava.jbatch.smtp.SmtpConnection;
@@ -115,7 +115,7 @@ public class SmtpWrapperUtil {
 	
 	public static SmtpServerDao getSmtpServerDao() {
 		if (smtpServerDao == null) {
-			smtpServerDao = (SmtpServerDao) JbMain.getDaoAppContext().getBean("smtpServerDao");
+			smtpServerDao = (SmtpServerDao) SpringUtil.getDaoAppContext().getBean("smtpServerDao");
 		}
 		return smtpServerDao;
 	}

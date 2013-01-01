@@ -72,7 +72,7 @@ public class TestProcessor extends RunnableProcessor {
 					interactive = true;
 				}
 			}
-			String myAddr = JbMain.getHostIpAddress();
+			String myAddr = HostUtil.getHostIpAddress();
 			if (interactive) {
 				processSocket(skt, interactive, myAddr);
 			}

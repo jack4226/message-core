@@ -31,7 +31,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.HostUtil;
 import com.legacytojava.jbatch.common.EmailSender;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
@@ -773,10 +773,10 @@ public final class MessageBeanBuilder {
 				setAnodeValue(aNode, p, "Unchecked Exception caught: " + e.toString());
 			}
 			// TODO notify programming with Email (requires an SMTP server on local host)
-			String hostIp = JbMain.getHostIpAddress();
+			String hostIp = HostUtil.getHostIpAddress();
 			String subj = "MessageBeanBuilder running on " + hostIp + " caught Unchecked Exception";
 			EmailSender sender = new EmailSender(new Properties());
-			String fromAddr = "MessageBeanBuilder@" + JbMain.getHostName();
+			String fromAddr = "MessageBeanBuilder@" + HostUtil.getHostName();
 			try {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				PrintStream ps = new PrintStream(baos);

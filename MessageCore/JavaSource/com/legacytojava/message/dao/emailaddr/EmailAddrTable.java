@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MailingListDeliveryOption;
 import com.legacytojava.message.constant.MailingListType;
@@ -1480,7 +1480,7 @@ DELIMITER ;
 	private EmailTemplateDao emailTemplateDao = null;
 	private EmailTemplateDao getEmailTemplateDao() {
 		if (emailTemplateDao == null) {
-			emailTemplateDao = (EmailTemplateDao) JbMain.getDaoAppContext().getBean("emailTemplateDao");
+			emailTemplateDao = (EmailTemplateDao) SpringUtil.getDaoAppContext().getBean("emailTemplateDao");
 		}
 		return emailTemplateDao;
 	}

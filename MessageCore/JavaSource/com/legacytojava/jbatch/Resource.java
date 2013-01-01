@@ -30,7 +30,7 @@ public class Resource implements java.io.Serializable {
 
 	public static void main(String[] args) {
 		JbMain.getInstance();
-		Resource resource = (Resource)  JbMain.getAppContext().getBean(Resource.class);
+		Resource resource = (Resource)  SpringUtil.getAppContext().getBean(Resource.class);
 		Properties props = System.getProperties();
 		props.list(System.out);
 		try {

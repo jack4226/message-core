@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.emailaddr.EmailTemplateDao;
 import com.legacytojava.message.dao.emailaddr.SchedulesBlob;
 import com.legacytojava.message.dao.emailaddr.SchedulesBlob.DateWrapper;
@@ -23,7 +23,7 @@ public class CalendarTest {
 	}
 	
 	private void startTasks() {
-		emailTemplateDao = (EmailTemplateDao) JbMain.getDaoAppContext().getBean("emailTemplateDao");
+		emailTemplateDao = (EmailTemplateDao) SpringUtil.getDaoAppContext().getBean("emailTemplateDao");
 		List<EmailTemplateVo> templates = emailTemplateDao.getAll();
 		for (Iterator<EmailTemplateVo> it = templates.iterator(); it.hasNext();) {
 			EmailTemplateVo vo = (EmailTemplateVo) it.next();

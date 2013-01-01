@@ -7,7 +7,7 @@ import javax.jms.JMSException;
 import org.apache.log4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bean.MsgHeader;
 import com.legacytojava.message.constant.XHeaderName;
@@ -55,9 +55,9 @@ public class AssignRuleNameBoImpl extends TaskBaseAdaptor {
 			messageBean.setMsgRefId(messageBean.getMsgId());
 		}
 		// send the bean back to Rule Engine input queue
-		JmsTemplate jmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"mailReaderOutputJmsTemplate");
-		JmsTemplate errorJmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"unHandledOutputJmsTemplate");
 		jmsProcessor.setJmsTemplate(jmsTemplate);
 		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);

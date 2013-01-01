@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bo.template.RenderBo;
 import com.legacytojava.message.bo.template.RenderRequest;
@@ -79,7 +79,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 	}
 	
 	public static void main(String[] args) {
-		MsgOutboxBo msgOutboxBo = (MsgOutboxBo) JbMain.getAppContext().getBean("msgOutboxBo");
+		MsgOutboxBo msgOutboxBo = (MsgOutboxBo) SpringUtil.getAppContext().getBean("msgOutboxBo");
 		long renderId = 2L;
 		try {
 			MessageBean bean = msgOutboxBo.getMessageByPK(renderId);

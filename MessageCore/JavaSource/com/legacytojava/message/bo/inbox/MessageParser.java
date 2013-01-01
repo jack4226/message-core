@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bean.BodypartBean;
 import com.legacytojava.message.bean.BodypartUtil;
 import com.legacytojava.message.bean.MessageBean;
@@ -671,7 +671,7 @@ public final class MessageParser {
 
 	public static void main(String[] args) {
 		try {
-			MessageParser parser = (MessageParser) JbMain.getAppContext().getBean("messageParser");
+			MessageParser parser = (MessageParser) SpringUtil.getAppContext().getBean("messageParser");
 			MessageBean mBean = new MessageBean();
 			try {
 				mBean.setFrom(InternetAddress.parse("event.alert@localhost", false));

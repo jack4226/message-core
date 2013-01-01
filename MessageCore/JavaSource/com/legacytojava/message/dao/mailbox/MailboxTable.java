@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MailProtocol;
@@ -505,7 +505,7 @@ public class MailboxTable extends CreateTableBase
 	private MailBoxDao mailBoxDao = null;
 	private MailBoxDao getMailBoxDao() {
 		if (mailBoxDao == null) {
-			mailBoxDao = (MailBoxDao) JbMain.getDaoAppContext().getBean("mailBoxDao");
+			mailBoxDao = (MailBoxDao) SpringUtil.getDaoAppContext().getBean("mailBoxDao");
 		}
 		return mailBoxDao;
 	}
@@ -513,7 +513,7 @@ public class MailboxTable extends CreateTableBase
 	private EmailAddrDao emailAddrDao = null;
 	private EmailAddrDao getEmailAddrdao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) JbMain.getDaoAppContext().getBean("emailAddrDao");
+			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
 		}
 		return emailAddrDao;
 	}

@@ -114,7 +114,7 @@ public class SpringUtil {
 
 	public static String[] getServerConfigXmlFiles() {
 		List<String> cfgFileNames = new ArrayList<String>();
-		cfgFileNames.add("spring-bo_jms-config.xml");
+		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
 		cfgFileNames.add("classpath:spring-jndi_ds-config.xml");
 		cfgFileNames.add("classpath:spring-dao-config.xml");
 		String[] cfgFiles = new String[cfgFileNames.size()];

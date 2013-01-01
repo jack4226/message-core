@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.Rollback;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bo.TaskBaseBo;
@@ -86,7 +86,7 @@ public class BroadcastBoTest extends BoTestBase {
 		JmsProcessor jmsProcessor = (JmsProcessor) TaskScheduler.getMailSenderFactory().getBean(
 				"jmsProcessor");
 		// send the bean back to Rule Engine input queue
-		JmsTemplate jmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"mailReaderOutputJmsTemplate");
 		jmsProcessor.setJmsTemplate(jmsTemplate);
 		String jmsMsgId = jmsProcessor.writeMsg(messageBean);

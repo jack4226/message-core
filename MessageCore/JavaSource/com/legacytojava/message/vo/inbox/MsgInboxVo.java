@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bo.mailsender.MessageBodyBuilder;
 import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
@@ -284,14 +284,14 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	
 	private EmailAddrDao getEmailAddrDao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) JbMain.getDaoAppContext().getBean("emailAddrDao");
+			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
 		}
 		return emailAddrDao;
 	}
 	
 	private MsgStreamDao getMsgStreamDao() {
 		if (msgStreamDao == null) {
-			msgStreamDao = (MsgStreamDao) JbMain.getDaoAppContext().getBean("msgStreamDao");
+			msgStreamDao = (MsgStreamDao) SpringUtil.getDaoAppContext().getBean("msgStreamDao");
 		}
 		return msgStreamDao;
 	}

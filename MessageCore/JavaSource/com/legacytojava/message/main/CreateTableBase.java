@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 
 public abstract class CreateTableBase {
 	protected static final String LF = System.getProperty("line.separator", "\n");
@@ -14,7 +14,7 @@ public abstract class CreateTableBase {
 	protected Statement stm = null;
 
 	protected void init() throws ClassNotFoundException, SQLException {
-		DataSource ds = (DataSource) JbMain.getDaoAppContext().getBean("mysqlDataSource");
+		DataSource ds = (DataSource) SpringUtil.getDaoAppContext().getBean("mysqlDataSource");
 		con = ds.getConnection();
 		stm = con.createStatement();
 	}

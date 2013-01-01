@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bean.MessageBeanBuilder;
 import com.legacytojava.message.bean.MessageBeanUtil;
@@ -72,7 +72,7 @@ public class BoTestBase {
 	protected EmailAddrDao emailAddrDao;
 	@BeforeClass
 	public static void prepare() {
-		factory = JbMain.getAppContext();
+		factory = SpringUtil.getAppContext();
 	}
 	@Before
 	public void checkMsgrendered() throws AddressException, DataValidationException, ParseException {

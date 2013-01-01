@@ -1,13 +1,13 @@
 package com.legacytojava.message.dao.outbox;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 
 public class TestMsgSequence implements Runnable {
 	final static String LF = System.getProperty("line.separator", "\n");
 	static MsgSequenceDao msgSequenceDao = null;
 	
 	public static void main(String[] args) {
-		msgSequenceDao = (MsgSequenceDao) JbMain.getDaoAppContext().getBean("msgSequenceDao");
+		msgSequenceDao = (MsgSequenceDao) SpringUtil.getDaoAppContext().getBean("msgSequenceDao");
 
 		try {
 			TestMsgSequence test = new TestMsgSequence();

@@ -5,7 +5,7 @@ import javax.jms.JMSException;
 import org.apache.log4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.dao.action.MsgDataTypeDao;
 import com.legacytojava.message.exception.DataValidationException;
@@ -62,11 +62,11 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 		}
 		// Configure JmsProcessor to use provided JMS template
 		if (templateName != null) {
-			if (JbMain.getAppContext().getBean(templateName) == null) {
+			if (SpringUtil.getAppContext().getBean(templateName) == null) {
 				throw new DataValidationException(templateName + " not found in Spring xmls.");
 			}
 			else {
-				Object obj = JbMain.getAppContext().getBean(templateName);
+				Object obj = SpringUtil.getAppContext().getBean(templateName);
 				if (!(obj instanceof JmsTemplate)) {
 					throw new DataValidationException(templateName + " is not expected type.");
 				}

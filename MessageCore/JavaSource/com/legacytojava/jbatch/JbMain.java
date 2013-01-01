@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,13 +28,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.legacytojava.jbatch.common.ProductKey;
 import com.legacytojava.message.bo.mailreader.MailReaderBoImpl;
 import com.legacytojava.message.dao.mailbox.MailBoxDao;
 import com.legacytojava.message.dao.timer.TimerServerDao;
-import com.legacytojava.message.util.ServiceLocator;
 import com.legacytojava.message.vo.MailBoxVo;
 import com.legacytojava.message.vo.ServerBaseVo;
 import com.legacytojava.message.vo.SocketServerVo;
@@ -51,9 +48,6 @@ public final class JbMain implements Runnable, JbMainMBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private static JbMain theMonitor = null;
-//	private static AbstractApplicationContext batchAppContext = null;
-	private static AbstractApplicationContext applContext = null;
-	private static AbstractApplicationContext daoAppCtx = null;
 
 	static final String QUEUE_LISTENERS = "queueListeners";
 	static final String MAIL_READERS = "mailReaders";
@@ -73,9 +67,6 @@ public final class JbMain implements Runnable, JbMainMBean {
 	static int MAX_THREADS = 100;
 	static final Properties appConf = new Properties();
 	static Resource resource = null;
-	/** host IP address and host name */
-	private static String hostIPAddr = null;
-	private static String hostName = null;
 
 	private static int numberofThreadAtStart = -1;
 	private static String APP_ROOT = null;
@@ -183,74 +174,6 @@ public final class JbMain implements Runnable, JbMainMBean {
 		return SpringUtil.getAppContext();
 	}
 
-	/**
-	 * If it's running in JBoss server, it loads a set of xmls using JNDI's,
-	 * otherwise loads a set of xmls using mysql data source.
-	 * @return ApplicationContext
-	 */
-	public static AbstractApplicationContext getAppContext() {
-		if (applContext == null) {
-			String[] fileNames = null;
-			try {
-				// see if it's running under JBoss by doing a JNDI lookup
-				ServiceLocator.getDataSource("java:/comp/env/jdbc/msgdb_pool");
-				logger.info("getAppContext() - Running under JBoss, load server xmls");
-				fileNames = getServerConfigXmlFiles();
-			}
-			catch (javax.naming.NamingException e) {
-				if (numberofThreadAtStart < 0) {
-					logger.info("getAppContext() - running standalone, load standalone xmls");
-					fileNames = getStandaloneConfigXmlFiles();
-				}
-				else {
-					logger.info("getAppContext() - running batch standalone, load batch xmls");
-					fileNames = getBatchConfigXmlFiles();
-				}
-			}
-			applContext = new ClassPathXmlApplicationContext(fileNames);
-		} 
-		return applContext;
-	}
-
-	/**
-	 * This method is intended to be used by table creation classes.
-	 * @return ApplicationContext
-	 */
-	public static AbstractApplicationContext getDaoAppContext() {
-		if (applContext != null) {
-			return applContext;
-		}
-		else if (daoAppCtx == null) {
-			List<String> fnames = new ArrayList<String>();
-			try {
-				// see if it's running under JBoss by doing a JNDI lookup
-				ServiceLocator.getDataSource("java:/comp/env/jdbc/msgdb_pool");
-				logger.info("getDaoAppContext() - Running under JBoss, load jndi_ds xmls");
-				fnames.add("classpath:spring-jndi_ds-config.xml");
-			}
-			catch (javax.naming.NamingException e) {
-				logger.info("getDaoAppContext() - running standalone, load mysql_ds xmls");
-				fnames.add("classpath:spring-mysql_ds-config.xml");
-			}
-			fnames.add("classpath:spring-dao-config.xml");
-			daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
-		}
-		return daoAppCtx;
-	}
-
-	public static Object getBean(AbstractApplicationContext factory, String name) {
-		try {
-			return factory.getBean(name);
-		}
-		catch (IllegalStateException e) {
-			logger.error("IllegalStateException caught, call 'refresh'", e);
-			//String err = e.toString();
-			//String regex = ".*BeanFactory.*refresh.*ApplicationContext.*";
-			factory.refresh();
-			return factory.getBean(name);
-		}
-	}
-	
 	private static Boolean isKeyValid = null;
 	
 	public static boolean isProductKeyValid() {
@@ -303,58 +226,6 @@ public final class JbMain implements Runnable, JbMainMBean {
 		if (eventAlert==null)
 			eventAlert = (EventAlert) getBatchAppContext().getBean("eventAlert");
 		return eventAlert;
-	}
-
-	private static String[] getBatchConfigXmlFiles() {
-		ClassLoader loader = JbMain.class.getClassLoader();
-		List<String> cfgFileNames = new ArrayList<String>();
-		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
-		cfgFileNames.add("classpath:spring-mysql_ds-config.xml");
-		cfgFileNames.add("classpath:spring-dao-config.xml");
-		cfgFileNames.add("classpath:spring-jbatch-config.xml");
-		URL mreader = loader.getResource("classpath:spring-jbatch-mailreader.xml");
-		URL msender = loader.getResource("classpath:spring-jbatch-mailsender.xml");
-		URL testsvrs = loader.getResource("classpath:spring-jbatch-testservers.xml");
-		if (mreader != null) {
-			cfgFileNames.add("classpath:spring-jbatch-mailreader.xml");
-		}
-		else if (msender != null) {
-			cfgFileNames.add("classpath:spring-jbatch-mailsender.xml");
-			URL smtp = loader.getResource("spring-jbatch-smtp.xml");
-			if (smtp != null) {
-				cfgFileNames.add("classpath:spring-jbatch-smtp.xml");
-			}
-		}
-		else if (testsvrs != null) {
-			cfgFileNames.add("classpath:spring-jbatch-testservers.xml");
-		}
-		//URL smtpcfg = loader.getResource("spring-jbatch-smtp.xml");
-		//if (smtpcfg != null) { // for SMTP PoolsJUnit only
-		//	cfgFileNames.add("spring-jbatch-smtp.xml");
-		//}
-		String[] cfgFiles = new String[cfgFileNames.size()];
-		System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
-		return cfgFiles;
-	}
-
-	public static String[] getServerConfigXmlFiles() {
-		List<String> cfgFileNames = new ArrayList<String>();
-		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
-		cfgFileNames.add("classpath:spring-jndi_ds-config.xml");
-		cfgFileNames.add("classpath:spring-dao-config.xml");
-		String[] cfgFiles = new String[cfgFileNames.size()];
-		System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
-		return cfgFiles;
-	}
-
-	public static String[] getStandaloneConfigXmlFiles() {
-		List<String> cfgFileNames = new ArrayList<String>();
-		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
-		cfgFileNames.add("classpath:spring-mysql_ds-config.xml");
-		cfgFileNames.add("classpath:spring-dao-config.xml");
-		String[] cfgFiles = new String[cfgFileNames.size()];
-		System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
-		return cfgFiles;
 	}
 
 	/**
@@ -468,8 +339,8 @@ public final class JbMain implements Runnable, JbMainMBean {
 	}
 	
 	void init() throws SQLException {
-		hostIPAddr = getHostIpAddress();
-		hostName = getHostName();
+		HostUtil.getHostIpAddress();
+		HostUtil.getHostName();
 		resource = (Resource) getBatchAppContext().getBean("resource");
 		resource.init(); // throws SQLException
 		// initialize the static EventAlert instance
@@ -510,7 +381,7 @@ public final class JbMain implements Runnable, JbMainMBean {
 		});
 		// issue clear alert
 		getEventAlert().issueInfoAlert(CLEAR_ALERT,
-				APP_NAME + " on " + getHostIpAddress() + ":" + APP_ROOT + " started");
+				APP_NAME + " on " + HostUtil.getHostIpAddress() + ":" + APP_ROOT + " started");
 	}
 
 	/******************************** 
@@ -1357,7 +1228,7 @@ public final class JbMain implements Runnable, JbMainMBean {
 		}
 		resource.wrapup();
 		getEventAlert().issueInfoAlert(CLEAR_ALERT,
-				APP_NAME + " on " + getHostIpAddress() + ":" + APP_ROOT + " stopped");
+				APP_NAME + " on " + HostUtil.getHostIpAddress() + ":" + APP_ROOT + " stopped");
 	}
 
 	/**
@@ -1489,39 +1360,4 @@ public final class JbMain implements Runnable, JbMainMBean {
 		}
 	}
 
-	/**
-	 * @return IP address of the machine this program is running on
-	 */
-	public static String getHostIpAddress() {
-		if (hostIPAddr == null) {
-			try {
-				hostIPAddr = java.net.InetAddress.getLocalHost().getHostAddress();
-				if (isDebugEnabled)
-					logger.debug("Host IP Address: " + hostIPAddr);
-			}
-			catch (UnknownHostException e) {
-				logger.warn("UnknownHostException caught, use 127.0.0.1", e);
-				hostIPAddr = "127.0.0.1";
-			}
-		}
-		return hostIPAddr;
-	}
-
-	/**
-	 * @return Host name of the machine this program is running on
-	 */
-	public static String getHostName() {
-		if (hostName == null) {
-			try {
-				hostName = java.net.InetAddress.getLocalHost().getHostName();
-				if (isDebugEnabled)
-					logger.debug("Host Name: " + hostName);
-			}
-			catch (UnknownHostException e) {
-				logger.warn("UnknownHostException caught, use localhost", e);
-				hostName = "localhost";
-			}
-		}
-		return hostName;
-	}
 }

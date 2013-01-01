@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.queue.JmsProcessor;
 
 @Component("taskBaseBo")
@@ -36,7 +36,7 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 		// send MailSender queue
 		JmsTemplate jmsTemplate = (JmsTemplate) TaskScheduler.getMailSenderFactory().getBean(
 				"mailSenderInputJmsTemplate");
-		JmsTemplate errorJmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"unHandledOutputJmsTemplate");
 		jmsProcessor.setJmsTemplate(jmsTemplate);
 		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);
@@ -44,26 +44,26 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 	
 	protected void setTargetToRuleEngine() {
 		// send RuleEngine queue
-		JmsTemplate jmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"mailReaderOutputJmsTemplate");
-		JmsTemplate errorJmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"unHandledOutputJmsTemplate");
 		jmsProcessor.setJmsTemplate(jmsTemplate);
 		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);
 	}
 	
 	protected void setTargetToCsrWorkQueue() {
-		JmsTemplate jmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"ruleEngineOutputJmsTemplate");
-		JmsTemplate errorJmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"unHandledOutputJmsTemplate");
 		jmsProcessor.setJmsTemplate(jmsTemplate);
 		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);
 	}
 	
 	protected void setTargetToCsrWorkQueue(String templateName) {
-		JmsTemplate jmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(templateName);
-		JmsTemplate errorJmsTemplate = (JmsTemplate) JbMain.getAppContext().getBean(
+		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(templateName);
+		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
 				"unHandledOutputJmsTemplate");
 		jmsProcessor.setJmsTemplate(jmsTemplate);
 		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);

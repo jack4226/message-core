@@ -16,7 +16,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.bean.BodypartUtil;
 import com.legacytojava.message.bean.MessageBean;
@@ -51,10 +51,10 @@ public class MailFileReader {
 	}
 	
 	MessageBean start(String filePath) throws MessagingException, IOException, JMSException {
-		JmsTransactionManager jmsTransactionManager = (JmsTransactionManager) JbMain
+		JmsTransactionManager jmsTransactionManager = (JmsTransactionManager) SpringUtil
 				.getAppContext().getBean("jmsTransactionManager");
-		JmsProcessor jmsProcessor = (JmsProcessor) JbMain.getAppContext().getBean("jmsProcessor");
-		Queue queue = (Queue) JbMain.getAppContext().getBean("mailReaderOutput");
+		JmsProcessor jmsProcessor = (JmsProcessor) SpringUtil.getAppContext().getBean("jmsProcessor");
+		Queue queue = (Queue) SpringUtil.getAppContext().getBean("mailReaderOutput");
 		
 		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
 		definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);

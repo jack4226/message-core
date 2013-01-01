@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.dao.client.ClientDao;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
@@ -432,7 +432,7 @@ public final class RuleLoader implements java.io.Serializable {
 	private ClientDao clientDao = null;
 	private ClientDao getClientDao() {
 		if (clientDao == null) {
-			clientDao = (ClientDao)JbMain.getDaoAppContext().getBean("clientDao");
+			clientDao = (ClientDao)SpringUtil.getDaoAppContext().getBean("clientDao");
 		}
 		return clientDao;
 	}
@@ -440,7 +440,7 @@ public final class RuleLoader implements java.io.Serializable {
 	private MailingListDao mailingListDao = null;
 	private MailingListDao getMailingListDao() {
 		if (mailingListDao == null) {
-			mailingListDao = (MailingListDao)JbMain.getDaoAppContext().getBean("mailingListDao");
+			mailingListDao = (MailingListDao)SpringUtil.getDaoAppContext().getBean("mailingListDao");
 		}
 		return mailingListDao;
 	}
@@ -448,7 +448,7 @@ public final class RuleLoader implements java.io.Serializable {
 	private ReloadFlagsDao reloadFlagsDao = null;
 	private ReloadFlagsDao getReloadFlagsDao() {
 		if (reloadFlagsDao == null) {
-			reloadFlagsDao = (ReloadFlagsDao) JbMain.getDaoAppContext().getBean("reloadFlagsDao");
+			reloadFlagsDao = (ReloadFlagsDao) SpringUtil.getDaoAppContext().getBean("reloadFlagsDao");
 		}
 		return reloadFlagsDao;
 	}

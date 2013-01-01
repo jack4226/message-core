@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 
 @Repository
 @Transactional
@@ -36,7 +37,7 @@ public class IdTokens2Test extends TestCase {
 	@Test
 	public void testIdTokens() {
 		//EntityManagerFactory emf = (EntityManagerFactory) JbMain.getBatchAppContext().getBean("entityManagerFactory");
-		EntityManagerFactory emf = JbMain.getAppContext().getBean(LocalContainerEntityManagerFactoryBean.class).getObject();
+		EntityManagerFactory emf = SpringUtil.getAppContext().getBean(LocalContainerEntityManagerFactoryBean.class).getObject();
 		EntityManager entityManager = emf.createEntityManager();
 		// Read the existing entries and write to console
 		Query q = entityManager.createQuery("select t from IdTokens t");

@@ -14,7 +14,7 @@ import javax.jms.TextMessage;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.HostUtil;
 import com.legacytojava.jbatch.Processor;
 
 /**
@@ -66,7 +66,7 @@ public class TestProcessor implements Processor {
 				if ("yes".equalsIgnoreCase(props.getProperty("interactive"))) {
 					interactive = true;
 				}
-				String myAddr = JbMain.getHostIpAddress();
+				String myAddr = HostUtil.getHostIpAddress();
 				if (interactive) {
 					processSocket(skt, interactive, myAddr);
 				}

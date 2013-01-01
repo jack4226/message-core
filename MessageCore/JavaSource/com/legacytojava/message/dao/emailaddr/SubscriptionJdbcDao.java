@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MsgStatusCode;
 import com.legacytojava.message.constant.StatusIdCode;
@@ -581,7 +581,7 @@ public class SubscriptionJdbcDao implements SubscriptionDao {
 	private EmailAddrDao emailAddrDao = null;
 	private EmailAddrDao getEmailAddrDao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) JbMain.getDaoAppContext().getBean("emailAddrDao");
+			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
 		}
 		return emailAddrDao;
 	}

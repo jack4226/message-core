@@ -64,7 +64,7 @@ public class MailReaderTest {
 			}
 			mBean.setSubject(subject + " " + new Date());
 			mBean.setValue(body);
-			//SimpleEmailSender mSend = (SimpleEmailSender) JbMain.getAppContext().getBean(
+			//SimpleEmailSender mSend = (SimpleEmailSender) SpringUtil.getAppContext().getBean(
 			//		"simpleEmailSender");
 			if (mSend != null) {
 				mSend.sendMessage(mBean);

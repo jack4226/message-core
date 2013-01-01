@@ -25,8 +25,8 @@ import javax.mail.event.StoreListener;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.jbatch.JbMain;
 import com.legacytojava.jbatch.RunnableProcessor;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.constant.MailProtocol;
 import com.legacytojava.message.constant.MailServerType;
@@ -193,7 +193,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	}
 	
 	public static void main(String[] args) {
-		AbstractApplicationContext factory = JbMain.getAppContext();
+		AbstractApplicationContext factory = SpringUtil.getAppContext();
 		MailBoxDao mailBoxDao = (MailBoxDao) factory.getBean("mailBoxDao");
 		MailBoxVo vo = mailBoxDao.getByPrimaryKey("twang", "localhost");
 		if (vo == null) return;
@@ -544,9 +544,9 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	private void execute(Message[] msgs) throws InterruptedException, IOException, JMSException,
 			MessagingException {
 		if (msgs == null || msgs.length == 0) return;
-		JmsProcessor jmsProcessor = (JmsProcessor) JbMain
+		JmsProcessor jmsProcessor = (JmsProcessor) SpringUtil
 				.getBean(ruleEngineFactory, "jmsProcessor");
-		DuplicateCheckDao duplicateCheck = (DuplicateCheckDao) JbMain.getBean(factory,
+		DuplicateCheckDao duplicateCheck = (DuplicateCheckDao) SpringUtil.getBean(factory,
 				"duplicateCheck");
 		MailProcessor processor = new MailProcessor(jmsProcessor, mailBoxVo, duplicateCheck);
 		processor.process(msgs);

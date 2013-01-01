@@ -8,6 +8,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.common.ProductKey;
 import com.legacytojava.jbatch.common.TimestampUtil;
 import com.legacytojava.message.util.StringUtil;
@@ -103,7 +104,7 @@ public final class ClientUtil {
 	
 	private static ClientDao getClientDao() {
 		if (clientDao == null) {
-			clientDao = (ClientDao)JbMain.getDaoAppContext().getBean("clientDao");
+			clientDao = (ClientDao)SpringUtil.getDaoAppContext().getBean("clientDao");
 		}
 		return clientDao;
 	}

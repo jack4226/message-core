@@ -3,7 +3,7 @@ package com.legacytojava.message.vo.inbox;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MsgDirectionCode;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
@@ -107,7 +107,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	
 	private EmailAddrDao getEmailAddrDao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) JbMain.getDaoAppContext().getBean("emailAddrDao");
+			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
 		}
 		return emailAddrDao;
 	}

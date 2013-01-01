@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bo.rule.RuleBase;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MailingListDeliveryOption;
@@ -40,7 +40,7 @@ public class PremiumUpgradeSetup {
 	// 1) insert mailing Template
 	// 2) insert bounce rules and actions
 	public PremiumUpgradeSetup() {
-		context = JbMain.getDaoAppContext();
+		context = SpringUtil.getDaoAppContext();
 		emailTemplateDao = (EmailTemplateDao) context.getBean("emailTemplateDao");
 	}
 	

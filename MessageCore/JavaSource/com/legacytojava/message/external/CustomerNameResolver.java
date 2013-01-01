@@ -2,7 +2,7 @@ package com.legacytojava.message.external;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.emailaddr.EmailVariableDao;
 import com.legacytojava.message.exception.DataValidationException;
 
@@ -17,7 +17,7 @@ public class CustomerNameResolver implements VariableResolver {
 				" FROM customers c, emailaddr e " +
 				" where e.emailaddrId=c.emailAddrId and e.emailAddrId=?";
 		
-		EmailVariableDao dao = (EmailVariableDao) JbMain.getDaoAppContext().getBean(
+		EmailVariableDao dao = (EmailVariableDao) SpringUtil.getDaoAppContext().getBean(
 				"emailVariableDao");
 		String result = dao.getByQuery(query, addrId);
 		

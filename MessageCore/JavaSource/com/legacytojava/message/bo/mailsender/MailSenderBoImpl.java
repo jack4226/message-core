@@ -9,7 +9,7 @@ import javax.mail.MessagingException;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.pool.NamedPools;
 import com.legacytojava.jbatch.smtp.SmtpConnection;
 import com.legacytojava.jbatch.smtp.SmtpException;
@@ -33,7 +33,7 @@ public class MailSenderBoImpl extends MailSenderBase {
 	}
 
 	protected AbstractApplicationContext loadFactory() {
-		return JbMain.getAppContext();
+		return SpringUtil.getAppContext();
 	}
 	
 	/**

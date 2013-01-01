@@ -8,12 +8,12 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 
 public class JmsSender {
 
 	public static void main(String[] args) {
-		AbstractApplicationContext factory = JbMain.getAppContext();
+		AbstractApplicationContext factory = SpringUtil.getAppContext();
 
 		try {
 			JmsSender test = (JmsSender)factory.getBean("jmsSender");

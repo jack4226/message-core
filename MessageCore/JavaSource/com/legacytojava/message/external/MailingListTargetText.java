@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.emailaddr.MailingListDao;
 import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.util.StringUtil;
@@ -25,7 +25,7 @@ public class MailingListTargetText implements RuleTargetProc {
 			logger.debug("Entering process() method...");
 		
 		StringBuffer sb = new StringBuffer();
-		MailingListDao dao = (MailingListDao) JbMain.getDaoAppContext().getBean("mailingListDao");
+		MailingListDao dao = (MailingListDao) SpringUtil.getDaoAppContext().getBean("mailingListDao");
 		List<MailingListVo> list = dao.getAll(false);
 		for (int i = 0; i < list.size(); i++) {
 			MailingListVo item = list.get(i);

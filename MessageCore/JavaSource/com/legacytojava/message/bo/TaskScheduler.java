@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.dao.action.MsgActionDao;
@@ -51,7 +51,7 @@ public class TaskScheduler {
 			throw new DataValidationException("RuleName is not valued");
 		}
 		
-		MsgActionDao msgActionDao = (MsgActionDao) JbMain.getBean(factory, "msgActionDao");
+		MsgActionDao msgActionDao = (MsgActionDao) SpringUtil.getBean(factory, "msgActionDao");
 		List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null,
 				msgBean.getClientId());
 		if (actions == null || actions.isEmpty()) {
@@ -59,7 +59,7 @@ public class TaskScheduler {
 			String processBeanId = "saveBo";
 			logger.warn("scheduleTasks() - No Actions found for ruleName: " + msgBean.getRuleName()
 					+ ", ProcessBeanId [0]: " + processBeanId);
-			TaskBaseBo bo = (TaskBaseBo) JbMain.getBean(factory, processBeanId);
+			TaskBaseBo bo = (TaskBaseBo) SpringUtil.getBean(factory, processBeanId);
 			bo.process(msgBean);
 			return;
 		}
@@ -90,7 +90,7 @@ public class TaskScheduler {
 			else { // use process bean
 				String processBeanId = msgActionVo.getProcessBeanId();
 				logger.info("scheduleTasks() - ProcessBeanId [" + i + "]: " + processBeanId);
-				bo = (TaskBaseBo) JbMain.getBean(factory, processBeanId);
+				bo = (TaskBaseBo) SpringUtil.getBean(factory, processBeanId);
 			}
 			/*
 			 * retrieve arguments

@@ -1,13 +1,13 @@
 package com.legacytojava.message.dao.customer;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 
 public class TestCustSeqThreads implements Runnable {
 	final static String LF = System.getProperty("line.separator", "\n");
 	static CustSequenceDao custSequenceDao = null;
 	
 	public static void main(String[] args) {
-		custSequenceDao = (CustSequenceDao) JbMain.getDaoAppContext().getBean("custSequenceDao");
+		custSequenceDao = (CustSequenceDao) SpringUtil.getDaoAppContext().getBean("custSequenceDao");
 
 		try {
 			TestCustSeqThreads test = new TestCustSeqThreads();

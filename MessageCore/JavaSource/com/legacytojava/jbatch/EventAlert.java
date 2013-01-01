@@ -247,7 +247,7 @@ public class EventAlert implements java.io.Serializable {
 			appMsg = "Error: Message Text was no provided by Application.";
 		}
 		String origToAddrs = eventProps.getProperty(eventKey);// from event Properties
-		String hostName = JbMain.getHostName(); // just in case
+		String hostName = HostUtil.getHostName(); // just in case
 		ClientVo clientVo = ClientUtil.getDefaultClientVo();
 		if (StringUtil.isEmpty(origToAddrs)) {
 			origToAddrs = clientVo.getSecurityEmail();

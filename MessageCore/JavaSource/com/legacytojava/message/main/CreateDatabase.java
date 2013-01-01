@@ -14,7 +14,7 @@ import javax.swing.JPasswordField;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 
 public class CreateDatabase {
 	static final Logger logger = Logger.getLogger(CreateDatabase.class);
@@ -151,13 +151,13 @@ public class CreateDatabase {
     }
     
 	private Connection getInitConnection() throws SQLException {
-		DataSource ds = (DataSource) JbMain.getDaoAppContext().getBean("initDataSource");
+		DataSource ds = (DataSource) SpringUtil.getDaoAppContext().getBean("initDataSource");
 		Connection con = ds.getConnection("root", rootPassword);
 		return con;
 	}
 
 	private boolean isMessageDatabaseExist() {
-		DataSource ds = (DataSource) JbMain.getDaoAppContext().getBean("mysqlDataSource");
+		DataSource ds = (DataSource) SpringUtil.getDaoAppContext().getBean("mysqlDataSource");
 		Connection con = null;
 		try {
 			con = ds.getConnection();
@@ -221,7 +221,7 @@ public class CreateDatabase {
 		CreateReleaseTables create = new CreateReleaseTables();
 		create.init();
 		create.dropAllTables();
-		create.createAllTables(JbMain.getDaoAppContext());
+		create.createAllTables(SpringUtil.getDaoAppContext());
 		create.wrapup();
 	}
 	
