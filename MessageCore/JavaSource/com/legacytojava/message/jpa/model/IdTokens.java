@@ -16,7 +16,7 @@ public class IdTokens implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int rowId = -1;
+	private Integer rowId = -1;
 
 	@Column(name="ClientId", unique=true, nullable=false, length=16)
 	private String clientId = "";
@@ -42,13 +42,13 @@ public class IdTokens implements java.io.Serializable {
 		// must have a no-argument constructor
 	}
 
-	public int getRowId() {
+	public Integer getRowId() {
 		return rowId;
 	}
 
-	public void setRowId(int rowId) {
-		this.rowId = rowId;
-	}
+//	public void setRowId(Integer rowId) {
+//		this.rowId = rowId;
+//	}
 
 	public String getClientId() {
 		return clientId;
