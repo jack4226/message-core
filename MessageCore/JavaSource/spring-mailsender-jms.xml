@@ -29,7 +29,7 @@
 		</property>
 	</bean>
 
-	<!-- JMS Copnnection Factory -->
+	<!-- JMS Connection Factory -->
 	<bean id="jmsConnectionFactory"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiTemplate">
