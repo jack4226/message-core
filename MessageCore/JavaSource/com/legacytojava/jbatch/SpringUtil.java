@@ -91,9 +91,9 @@ public class SpringUtil {
 		cfgFileNames.add("classpath:spring-mysql_ds-config.xml");
 		cfgFileNames.add("classpath:spring-dao-config.xml");
 		cfgFileNames.add("classpath:spring-jbatch-config.xml");
-		URL mreader = loader.getResource("classpath:spring-jbatch-mailreader.xml");
-		URL msender = loader.getResource("classpath:spring-jbatch-mailsender.xml");
-		URL testsvrs = loader.getResource("classpath:spring-jbatch-testservers.xml");
+		URL mreader = loader.getResource("spring-jbatch-mailreader.xml");
+		URL msender = loader.getResource("spring-jbatch-mailsender.xml");
+		URL testsvrs = loader.getResource("spring-jbatch-testservers.xml");
 		if (mreader != null) {
 			cfgFileNames.add("classpath:spring-jbatch-mailreader.xml");
 		}
