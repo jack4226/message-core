@@ -101,7 +101,7 @@ public class TaskScheduler {
 			else {
 				bo.setTaskArguments(null);
 			}
-			// jmsProcessor's JNDI must point to where MailSenderEar is
+			// jmsProcessor's JNDI must point to the location where MailSenderEar is
 			// deployed.
 			JmsProcessor jmsProcessor = (JmsProcessor) getMailSenderFactory().getBean(
 					"jmsProcessor");
