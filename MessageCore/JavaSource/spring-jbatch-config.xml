@@ -185,7 +185,6 @@
    		<property name="jmsProcessor" ref="jmsProcessor"/>
    		<property name="jmsTransactionManager" ref="jmsTransactionManager"/>
    		<property name="errorQueue" ref="unHandledOutput"/>
-   		<property name="autoStartup" value="false"/>
 	</bean>
 	
 	<bean id="smtpProperties" class="java.util.HashMap">
