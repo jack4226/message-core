@@ -107,8 +107,7 @@ public class SpringUtil {
 		else if (testsvrs != null) {
 			cfgFileNames.add("classpath:spring-jbatch-testservers.xml");
 		}
-		String[] cfgFiles = new String[cfgFileNames.size()];
-		System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
+		String[] cfgFiles = cfgFileNames.toArray(new String[]{});
 		return cfgFiles;
 	}
 
@@ -117,9 +116,9 @@ public class SpringUtil {
 		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
 		cfgFileNames.add("classpath:spring-jndi_ds-config.xml");
 		cfgFileNames.add("classpath:spring-dao-config.xml");
-		String[] cfgFiles = new String[cfgFileNames.size()];
-		System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
-		return cfgFiles;
+		//String[] cfgFiles = new String[cfgFileNames.size()];
+		//System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
+		return cfgFileNames.toArray(new String[]{});
 	}
 
 	public static String[] getStandaloneConfigXmlFiles() {
@@ -127,9 +126,9 @@ public class SpringUtil {
 		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
 		cfgFileNames.add("classpath:spring-mysql_ds-config.xml");
 		cfgFileNames.add("classpath:spring-dao-config.xml");
-		String[] cfgFiles = new String[cfgFileNames.size()];
-		System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
-		return cfgFiles;
+		//String[] cfgFiles = new String[cfgFileNames.size()];
+		//System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
+		return cfgFileNames.toArray(new String[]{});
 	}
 
 }
