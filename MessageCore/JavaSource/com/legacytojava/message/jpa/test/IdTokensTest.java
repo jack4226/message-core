@@ -1,4 +1,4 @@
-package com.legacytojava.message.jpa.model;
+package com.legacytojava.message.jpa.test;
 
 import static org.junit.Assert.*;
 
@@ -15,14 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.legacytojava.message.jpa.model.IdTokens;
 import com.legacytojava.message.jpa.service.IdTokensService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"/spring-mysql_ds-config.xml", "/spring-dao-config.xml"})
 @TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
+@Transactional(propagation=Propagation.REQUIRED)
 public class IdTokensTest {
 
 	@PersistenceContext
@@ -67,5 +69,7 @@ public class IdTokensTest {
 		
 		IdTokens tkn2 = service.getByClientId("JBatchCorp");
 		assertNotNull(tkn2);
+		
+		service.delete(tkn2.getClientId());
 	}
 }

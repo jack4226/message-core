@@ -11,6 +11,9 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import com.legacytojava.jbatch.SpringUtil;
 
+/**
+ * @deprecated - use injection instead
+ */
 public class JpaUtil {
 	static final Logger logger = Logger.getLogger(JpaUtil.class);
 	static boolean isDebugEnabled = logger.isDebugEnabled();

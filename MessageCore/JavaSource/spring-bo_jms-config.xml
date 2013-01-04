@@ -311,72 +311,6 @@
 	</bean>
 	<!-- end of SimpleEmailSender -->
 	
-	<!-- bean id="customerBo" scope="singleton" lazy-init="true"
-		class="com.legacytojava.message.bo.customer.CustomerBoImpl">
-		<property name="customerDao" ref="customerDao"/>
-		<property name="emailAddrDao" ref="emailAddrDao"/>
-		<property name="custSequenceDao" ref="custSequenceDao"/>
-	</bean -->
-	
-	<!-- bean id="rulesDataBo" scope="singleton"
-		class="com.legacytojava.message.bo.rule.RulesDataBoImpl">
-		<property name="ruleDao" ref="ruleDao"/>
-	</bean -->
-
-	<!-- bean id="renderBo" scope="singleton"
-		class="com.legacytojava.message.bo.template.RenderBoImpl">
-		<property name="msgSourceDao" ref="msgSourceDao"/>
-		<property name="bodyTemplateDao" ref="bodyTemplateDao"/>
-		<property name="subjTemplateDao" ref="subjTemplateDao"/>
-		<property name="clientVariableDao" ref="clientVariableDao"/>
-		<property name="globalVariableDao" ref="globalVariableDao"/>
-		<property name="templateVariableDao" ref="templateVariableDao"/>
-		<property name="emailAddrDao" ref="emailAddrDao"/>
-	</bean -->
-
-	<!-- bean id="msgOutboxBo" scope="singleton"
-		class="com.legacytojava.message.bo.outbox.MsgOutboxBoImpl">
-		<property name="renderBo" ref="renderBo"/>
-		<property name="msgRenderedDao" ref="msgRenderedDao"/>
-		<property name="renderAttachmentDao" ref="renderAttachmentDao"/>
-		<property name="renderVariableDao" ref="renderVariableDao"/>
-		<property name="renderObjectDao" ref="renderObjectDao"/>
-		<property name="msgInboxDao" ref="msgInboxDao"/>
-		<property name="attachmentsDao" ref="attachmentsDao"/>
-		<property name="msgHeadersDao" ref="msgHeadersDao"/>
-		<property name="msgAddrsDao" ref="msgAddrsDao"/>
-		<property name="emailAddrDao" ref="emailAddrDao"/>
-	</bean -->
-	
-	<!-- bean id="msgInboxBo" scope="singleton"
-		class="com.legacytojava.message.bo.inbox.MsgInboxBoImpl">
-		<property name="msgSequenceDao" ref="msgSequenceDao"/>
-		<property name="msgInboxDao" ref="msgInboxDao"/>
-		<property name="attachmentsDao" ref="attachmentsDao"/>
-		<property name="msgAddrsDao" ref="msgAddrsDao"/>
-		<property name="msgHeadersDao" ref="msgHeadersDao"/>
-		<property name="rfcFieldsDao" ref="rfcFieldsDao"/>
-		<property name="emailAddrDao" ref="emailAddrDao"/>
-		<property name="msgStreamDao" ref="msgStreamDao"/>
-		<property name="deliveryStatusDao" ref="deliveryStatusDao"/>
-		<property name="msgRenderedDao" ref="msgRenderedDao"/>
-		<property name="msgActionLogsDao" ref="msgActionLogsDao"/>
-		<property name="msgClickCountsDao" ref="msgClickCountsDao"/>
-	</bean -->
-	
-	<!-- bean id="ruleLoader" scope="prototype" lazy-init="true"
-		class="com.legacytojava.message.bo.rule.RuleLoader">
-		<constructor-arg index="0" ref="rulesDataBo"/>
-	</bean -->
-	
-	<!-- bean id="messageParser" scope="prototype" lazy-init="true"
-		class="com.legacytojava.message.bo.inbox.MessageParser">
-		<property name="ruleLoader" ref="ruleLoader"/>
-		<property name="emailAddrDao" ref="emailAddrDao"/>
-		<property name="msgInboxDao" ref="msgInboxDao"/>
-		<property name="msgRenderedDao" ref="msgRenderedDao"/>
-	</bean -->
-	
 	<bean id="mailingListBo" scope="prototype" lazy-init="true"
 		class="com.legacytojava.message.bo.mailinglist.MailingListBoImpl">
 		<property name="emailTemplateDao" ref="emailTemplateDao"/>
@@ -387,14 +321,6 @@
 		<property name="assignRuleNameBo" ref="assignRuleNameBo"/>
 		<property name="sendMailBo" ref="sendMailBo"/>
 	</bean>
-	
-	<!-- bean id="customerSignupBo" scope="prototype" lazy-init="true"
-		class="com.legacytojava.message.bo.customer.CustomerSignupBoImpl">
-		<property name="customerBo" ref="customerBo"/>
-		<property name="mailingListDao" ref="mailingListDao"/>
-		<property name="emailAddrDao" ref="emailAddrDao"/>
-		<property name="mailingListBo" ref="mailingListBo"/>
-	</bean -->
 	
 	<!-- Task BO's -->
 	<bean id="taskBaseBo" scope="prototype" abstract="true"

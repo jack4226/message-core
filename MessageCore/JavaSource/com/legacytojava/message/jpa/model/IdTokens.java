@@ -1,24 +1,17 @@
 package com.legacytojava.message.jpa.model;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="IdTokens")
-public class IdTokens implements java.io.Serializable {
+public class IdTokens extends BaseModel implements java.io.Serializable {
 	private static final long serialVersionUID = -632308305179136081L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer rowId = -1;
-
 	@Column(name="ClientId", unique=true, nullable=false, length=16)
+	//@OneToOne(targetEntity=Clients.class, fetch=FetchType.LAZY)
+	//@JoinColumn(name="ClientId", columnDefinition="clientId")
 	private String clientId = "";
 	@Column(nullable=true, length=100)
 	private String description = null;
@@ -34,21 +27,10 @@ public class IdTokens implements java.io.Serializable {
 	private String xhdrEndToken = null;
 	@Column(length=11)
 	private int maxLength = -1;
-	private Timestamp updtTime;
-	@Column(length=10)
-	private String updtUserId;
 
 	public IdTokens() {
 		// must have a no-argument constructor
 	}
-
-	public Integer getRowId() {
-		return rowId;
-	}
-
-//	public void setRowId(Integer rowId) {
-//		this.rowId = rowId;
-//	}
 
 	public String getClientId() {
 		return clientId;
@@ -112,21 +94,5 @@ public class IdTokens implements java.io.Serializable {
 
 	public void setMaxLength(int maxLength) {
 		this.maxLength = maxLength;
-	}
-
-	public Timestamp getUpdtTime() {
-		return updtTime;
-	}
-
-	public void setUpdtTime(Timestamp updtTime) {
-		this.updtTime = updtTime;
-	}
-
-	public String getUpdtUserId() {
-		return updtUserId;
-	}
-
-	public void setUpdtUserId(String updtUserId) {
-		this.updtUserId = updtUserId;
 	}
 }

@@ -21,7 +21,8 @@
 	<!-- end of Transaction Managers -->
 	
 	<!-- Spring JPA transaction manager -->
-	<bean id="mysqlTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" p:entityManagerFactory-ref="entityManagerFactory" />
+	<bean id="mysqlTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+			p:entityManagerFactory-ref="entityManagerFactory" />
 
 	<!-- Data Sources -->
 	<bean id="mysqlDataSource"
