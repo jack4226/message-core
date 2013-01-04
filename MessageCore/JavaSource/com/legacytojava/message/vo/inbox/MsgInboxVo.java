@@ -14,6 +14,7 @@ import com.legacytojava.message.constant.MsgDirectionCode;
 import com.legacytojava.message.constant.MsgStatusCode;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.dao.inbox.MsgStreamDao;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.BaseVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
@@ -254,7 +255,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		if (bodyContentType == null) bodyContentType = "text/plain";
 		if (bodyContentType.toLowerCase().startsWith("text/plain")
 				|| bodyContentType.toLowerCase().startsWith("message")) {
-			return StringUtil.getHtmlDisplayText(msgBody);
+			return EmailAddrUtil.getHtmlDisplayText(msgBody);
 		}
 		else if (bodyContentType.toLowerCase().startsWith("text/html")) {
 			return MessageBodyBuilder.removeHtmlBodyTags(msgBody);
@@ -278,7 +279,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		}
 		else {
 			String txt = new String(vo.getMsgStream());
-			return StringUtil.getHtmlDisplayText(txt);
+			return EmailAddrUtil.getHtmlDisplayText(txt);
 		}
 	}
 	

@@ -5,6 +5,7 @@ public class IdTokensVo extends BaseVo implements java.io.Serializable {
 	
 	private int rowId = -1;
 	private String clientId = "";
+	private int clientRowId = -1;
 	private String description = null;
 	private String bodyBeginToken = "";
 	private String bodyEndToken = "";
@@ -24,6 +25,12 @@ public class IdTokensVo extends BaseVo implements java.io.Serializable {
 	}
 	public void setClientId(String sentId) {
 		this.clientId = sentId;
+	}
+	public int getClientRowId() {
+		return clientRowId;
+	}
+	public void setClientRowId(int clientRowId) {
+		this.clientRowId = clientRowId;
 	}
 	public String getDescription() {
 		return description;

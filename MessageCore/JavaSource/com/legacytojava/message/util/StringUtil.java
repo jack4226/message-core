@@ -30,12 +30,10 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.mail.Address;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.constant.EmailIDToken;
 
 public final class StringUtil {
 	static final Logger logger = Logger.getLogger(StringUtil.class);
@@ -86,172 +84,6 @@ public final class StringUtil {
 	}
 
 	/**
-	 * convert Address array to string, addresses are comma delimited. Display
-	 * names are removed from returned addresses by default.
-	 * 
-	 * @param addrs -
-	 *            Address array
-	 * @return addresses in string format comma delimited, or null if input is
-	 *         null
-	 */
-	public static String emailAddrToString(Address[] addrs) {
-		return emailAddrToString(addrs, true);
-	}
-
-	/**
-	 * convert Address array to string, addresses are comma delimited.
-	 * 
-	 * @param addrs -
-	 *            Address array
-	 * @param removeDisplayName -
-	 *            remove display name from addresses if true
-	 * @return addresses in string format comma delimited, or null if input is
-	 *         null
-	 */
-	public static String emailAddrToString(Address[] addrs, boolean removeDisplayName) {
-		if (addrs == null || addrs.length == 0) {
-			return null;
-		}
-		String str = addrs[0].toString();
-		if (removeDisplayName) {
-			str = removeDisplayName(str);
-		}
-		for (int i = 1; i < addrs.length; i++) {
-			if (removeDisplayName) {
-				str = str + "," + removeDisplayName(addrs[i].toString());
-			}
-			else {
-				str = str + "," + addrs[i].toString();
-			}
-		}
-		return str;
-	}
-
-	/**
-	 * remove display name from an email address, and convert all characters 
-	 * to lower case.
-	 * 
-	 * @param addr -
-	 *            email address
-	 * @return email address without display name, or null if input is null.
-	 */
-	public static String removeDisplayName(String addr) {
-		return removeDisplayName(addr, true);
-	}
-
-	/**
-	 * remove display name from an email address.
-	 * 
-	 * @param addr -
-	 *            email address
-	 * @param toLowerCase -
-	 *            true to convert characters to lower case
-	 * @return email address without display name, or null if input is null.
-	 */
-	public static String removeDisplayName(String addr, boolean toLowerCase) {
-		if (StringUtils.isEmpty(addr)) {
-			return addr;
-		}
-		int at_pos = addr.lastIndexOf("@");
-		if (at_pos > 0) {
-			int pos1 = addr.lastIndexOf("<", at_pos);
-			int pos2 = addr.indexOf(">", at_pos + 1);
-			if (pos1 >= 0 && pos2 > pos1) {
-				addr = addr.substring(pos1 + 1, pos2);
-			}
-		}
-		if (toLowerCase)
-			return addr.toLowerCase();
-		else
-			return addr;
-	}
-
-	/**
-	 * check if an email address has a display name.
-	 * 
-	 * @param addr -
-	 *            email address
-	 * @return true if it has a display name
-	 */
-	public static boolean hasDisplayName(String addr) {
-		if (isEmpty(addr)) return false;
-		return addr.matches("^\\s*\\S+.{0,250}\\<.+\\>\\s*$");
-	}
-
-	/**
-	 * return the display name of an email address.
-	 * 
-	 * @param addr -
-	 *            email address
-	 * @return - display name of the address, or null if the email does not have
-	 *         a display name.
-	 */
-	public static String getDisplayName(String addr) {
-		if (isEmpty(addr)) {
-			return null;
-		}
-		int at_pos = addr.lastIndexOf("@");
-		if (at_pos > 0) {
-			int pos1 = addr.lastIndexOf("<", at_pos);
-			int pos2 = addr.indexOf(">", at_pos + 1);
-			if (pos1 >= 0 && pos2 > pos1) {
-				String dispName = addr.substring(0, pos1);
-				return dispName.trim();
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Compare two email addresses. Email address could be enclosed by angle
-	 * brackets and it should still be equal to the one without angle brackets.
-	 * 
-	 * @param addr1 -
-	 *            email address 1
-	 * @param addr2 -
-	 *            email address 2
-	 * @return 0 if addr1 == addr2, -1 if addr1 < addr2, or 1 if addr1 > addr2.
-	 */
-	public static int compareEmailAddrs(String addr1, String addr2) {
-		if (addr1 == null) {
-			if (addr2 != null) {
-				return -1;
-			}
-			else {
-				return 0;
-			}
-		}
-		else if (addr2 == null) {
-			return 1;
-		}
-		addr1 = removeDisplayName(addr1);
-		addr2 = removeDisplayName(addr2);
-		return addr1.compareToIgnoreCase(addr2);
-	}
-
-	/**
-	 * returns the domain name of an email address.
-	 * 
-	 * @param addr -
-	 *            email address
-	 * @return domain name of the address, or null if it's local address
-	 */
-	public static String getEmailDomainName(String addr) {
-		if (isEmpty(addr)) {
-			return null;
-		}
-		int pos;
-		if ((pos = addr.lastIndexOf("@")) > 0) {
-			String domain = addr.substring(pos + 1).trim();
-			if (domain.endsWith(">")) {
-				domain = domain.substring(0, domain.length() - 1);
-			}
-			return (domain.length() == 0 ? null : domain);
-		}
-		return null;
-	}
-
- 	/**
 	 * Strip off leading and trailing spaces for all String objects in the list
 	 * 
 	 * @param list -
@@ -328,14 +160,13 @@ public final class StringUtil {
 		}
 	}
 
-	static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-	static boolean sortByMethodName = true;
-	static Pattern pkgPattern = Pattern.compile("(\\w{1,20}\\.\\w{1,20})\\..*");
+	final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
 	public static String prettyPrint(Object obj) {
 		if (obj == null) {
 			return ("-null");
 		}
+		Pattern pkgPattern = Pattern.compile("(\\w{1,20}\\.\\w{1,20})\\..*");
 		Stack<Object> stack = new Stack<Object>();
 		String pkgName = obj.getClass().getPackage().getName();
 		Matcher m = pkgPattern.matcher(pkgName);
@@ -349,6 +180,7 @@ public final class StringUtil {
 		if (obj == null) {
 		   return ("-null");
 		}
+		boolean sortByMethodName = true;
 		if (level > 10) {
 			System.err.println("StringUtil.prettyPrint - has reached nested level of " + level + ", exit.");
 			return (obj.getClass().getCanonicalName() + " - (more)...");
@@ -581,41 +413,6 @@ public final class StringUtil {
 	 */
 	public static String replaceAll(String body, String replFrom, String replWith) {
 		return StringUtils.replace(body, replFrom, replWith);
-		/*
-		if (body == null || body.trim().length() == 0) {
-			return body;
-		}
-		if (replFrom == null || replWith == null) {
-			logger.warn("replaceAll() - either replFrom or replyWith is null.");
-			return body;
-		}
-		StringBuffer sb = new StringBuffer();
-		int newpos = 0, pos = 0;
-		while ((newpos = body.indexOf(replFrom, pos)) >= 0) {
-			sb.append(body.substring(pos, newpos));
-			sb.append(replWith);
-			pos = newpos + Math.max(1, replFrom.length());
-		}
-		sb.append(body.substring(pos, body.length()));
-		return sb.toString();
-		*/
-	}
-
-	/**
-	 * Add PRE tags for plain text message so the spaces and line breaks are
-	 * preserved in web browser.
-	 * 
-	 * @param msgBody -
-	 *            message text
-	 * @return new message text
-	 */
-	public static String getHtmlDisplayText(String text) {
-		if (text == null) return null;
-		if (text.startsWith("<pre>") && text.endsWith("</pre>")) {
-			return text;
-		}
-		String str = StringUtil.replaceAll(text, "<", "&lt;");
-		return "<pre>" + StringUtil.replaceAll(str, ">", "&gt;") + "</pre>";
 	}
 
 	/**
@@ -742,131 +539,6 @@ public final class StringUtil {
         return string.substring(start, end);
     }
 
-    private final static String localPart = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*";
-	private final static String remotePart = "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])+";
-	private final static String intraPart = "@[a-z0-9](?:[a-z0-9-]*[a-z0-9])+";
-	
-    private final static Pattern remotePattern = Pattern.compile("^" + localPart + remotePart + "$",
-			Pattern.CASE_INSENSITIVE);
-    private final static Pattern intraPattern = Pattern.compile("^" + localPart + intraPart + "$",
-			Pattern.CASE_INSENSITIVE);
- 	private static final Pattern localPattern = Pattern.compile("^" + localPart + "$",
-			Pattern.CASE_INSENSITIVE);
- 	
- 	public static String getEmailRegex() {
- 		return localPart + remotePart;
- 	}
- 
-    /**
-	 * Check if the provided string is a valid email address. This conforms to
-	 * the RFC822 and RFC1035 specifications. Both local part and remote part
-	 * are required.
-	 * 
-	 * @param string
-	 *            The string to be checked.
-	 * @return True if string is an valid email address. False if not.
-	 */
-    public static boolean isInternetEmailAddress(String string) {
-    	if (string == null) return false;
-    	Matcher matcher = remotePattern.matcher(string);
-    	return matcher.matches();
-        //return string.matches(
-        //    "(?i)^[a-z0-9-~#&\\_]+(?:\\.[a-z0-9-~#&\\_]+)*@(?:[a-z0-9-]+\\.)+[a-z]{2,5}$");
-    }
-
-   /**
-	 * Check if the provided string is a valid remote or Intranet email address.
-	 * An Intranet email address could include only a sub-domain name such as
-	 * "bounce" or "localhost" as its remote part.
-	 * 
-	 * @param string
-	 *            The string to be checked.
-	 * @return True if string is an valid email address. False if not.
-	 */
-    public static boolean isRemoteEmailAddress(String string) {
-    	if (string == null) return false;
-    	if (isInternetEmailAddress(string)) return true;
-    	Matcher matcher = intraPattern.matcher(string);
-    	return matcher.matches();
-        //return string.matches(
-        //    "(?i)^[a-z0-9-~#&\\_]+(?:\\.[a-z0-9-~#&\\_]+)*@(?:[a-z0-9-]+)$");
-    }
-
-	/**
-	 * matches any remote or local email addresses like john or john@localhost
-	 * or john@smith.com.
-	 * 
-	 * @param string
-	 *            the email address to be checked
-	 * @return true if it's a valid email address
-	 */
-	public static boolean isRemoteOrLocalEmailAddress(String string) {
-		if (string == null) return false;
-		if (isRemoteEmailAddress(string)) return true;
-		Matcher matcher = localPattern.matcher(string);
-		return matcher.matches();
-	}
-
-    public static boolean isValidEmailLocalPart(String string) {
-    	Matcher matcher = localPattern.matcher(string);
-    	return matcher.matches();
-    }
-
-	
-	private static String bounceRegex = (new StringBuilder("\\s*\\W?((\\w+)\\-(")).append(
-			EmailIDToken.XHDR_BEGIN).append("\\d+").append(EmailIDToken.XHDR_END).append(
-			")\\-(.+\\=.+)\\@(.+\\w))\\W?\\s*").toString();
-		// for ex.: bounce-10.07410251.0-jsmith=test.com@localhost
-	private static Pattern bouncePattern = Pattern.compile(bounceRegex);
-	private static String removeRegex = "\\s*\\W?((\\w+)\\-(\\w+)\\-(.+\\=.+)\\@(.+\\w))\\W?\\s*";
-		// for ex.: remove-testlist-jsmith=test.com@localhost
-	private static Pattern removePattern = Pattern.compile(removeRegex);
-	
-	public static boolean isVERPAddress(String recipient) {
-		if (isEmpty(recipient)) {
-			return false;
-		}
-		Matcher bounceMatcher = bouncePattern.matcher(recipient);
-		Matcher removeMatcher = removePattern.matcher(recipient);
-		return bounceMatcher.matches() || removeMatcher.matches();
-	}
-	
-	public static String getDestAddrFromVERP(String verpAddr) {
-		Matcher bounceMatcher = bouncePattern.matcher(verpAddr);
-		if (bounceMatcher.matches()) {
-			if (bounceMatcher.groupCount() >= 5) {
-				String destAddr = bounceMatcher.group(2) + "@" + bounceMatcher.group(5);
-				return destAddr;
-			}
-		}
-		Matcher removeMatcher = removePattern.matcher(verpAddr);
-		if (removeMatcher.matches()) {
-			if (removeMatcher.groupCount() >= 5) {
-				String destAddr = removeMatcher.group(2) + "@" + removeMatcher.group(5);
-				return destAddr;
-			}
-		}
-		return verpAddr;
-	}
-	
-	public static String getOrigAddrFromVERP(String verpAddr) {
-		Matcher bounceMatcher = bouncePattern.matcher(verpAddr);
-		if (bounceMatcher.matches()) {
-			if (bounceMatcher.groupCount() >= 4) {
-				String origAddr = bounceMatcher.group(4).replace('=', '@');
-				return origAddr;
-			}
-		}
-		Matcher removeMatcher = removePattern.matcher(verpAddr);
-		if (removeMatcher.matches()) {
-			if (removeMatcher.groupCount() >= 4) {
-				String origAddr = removeMatcher.group(4).replace('=', '@');
-				return origAddr;
-			}
-		}
-		return verpAddr;
-	}
-	
     private static final String ssnRegex = "^(?!000)(?:[0-6]\\d{2}|7(?:[0-6]\\d|7[0-2]))([ -]?)(?!00)\\d{2}\\1(?!0000)\\d{4}$";
     private final static Pattern ssnPattern = Pattern.compile(ssnRegex);
     
@@ -893,14 +565,6 @@ public final class StringUtil {
     }
 
 	public static void main(String[] args) {
-		String addr = "\"ORCPT jwang@nc.rr.com\" <jwang@nc.rr.com>";
-		addr = "DirectStarTV <fqusoogd.undlwfeteot@chaffingphotosensitive.com>";
-		System.out.println(addr+" --> "+removeDisplayName(addr));
-		
 		System.out.println(removeStringFirst("<pre>12345abcdefklqhdkh</pre>", "<pre>"));
-		System.out.println("EmailAddr: " + isRemoteEmailAddress("A!#$%&'*+/=?.^_`{|}~-BC@localhost.us"));
-		System.out.println("EmailAddr: " + isRemoteOrLocalEmailAddress("A!#$%&'*+/=?.^_`{|}~-BC"));
-		System.out.println(getOrigAddrFromVERP("bounce-10.07410251.0-jsmith=test.com@localhost"));
-		System.out.println(getOrigAddrFromVERP("remove-testlist-jsmith=test.com@localhost"));
 	}
 }
