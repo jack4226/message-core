@@ -37,6 +37,7 @@ import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
 import com.legacytojava.message.constant.XHeaderName;
 import com.legacytojava.message.exception.DataValidationException;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.inbox.AttachmentsVo;
 import com.legacytojava.message.vo.inbox.MsgAddrsVo;
@@ -318,7 +319,7 @@ public final class MessageBeanBuilder {
 		// TO: Received (non-VERP) > Delivered-To > Received (VERP) > Envelope 
 		if (received_to != null && received_to.length > 0) {
 			String dest = received_to[0] == null ? null : received_to[0].toString();
-			if (!StringUtil.isEmpty(dest) && !StringUtil.isVERPAddress(dest)) {
+			if (!StringUtil.isEmpty(dest) && !EmailAddrUtil.isVERPAddress(dest)) {
 				msgBean.setTo(received_to);
 			}
 		}
@@ -336,8 +337,8 @@ public final class MessageBeanBuilder {
 				// address. This will cause a disaster to EmailAddr table since all
 				// TO addresses are saved to that table.
 				String dest = received_to[0] == null ? null : received_to[0].toString();
-				if (!StringUtil.isEmpty(dest) && StringUtil.isVERPAddress(dest)) {
-					String verpDest = StringUtil.getDestAddrFromVERP(dest);
+				if (!StringUtil.isEmpty(dest) && EmailAddrUtil.isVERPAddress(dest)) {
+					String verpDest = EmailAddrUtil.getDestAddrFromVERP(dest);
 					try {
 						Address[] destAddr = InternetAddress.parse(verpDest);
 						msgBean.setTo(destAddr);
@@ -351,9 +352,9 @@ public final class MessageBeanBuilder {
 				msgBean.setTo(envelope_to);
 			}
 		}
-		logger.info("Email To from Delivered-To: " + StringUtil.emailAddrToString(delivered_to, false)
-				+ ", from Received Header: " + StringUtil.emailAddrToString(received_to, false)
-				+ ", from Envelope: " + StringUtil.emailAddrToString(envelope_to, false));
+		logger.info("Email To from Delivered-To: " + EmailAddrUtil.emailAddrToString(delivered_to, false)
+				+ ", from Received Header: " + EmailAddrUtil.emailAddrToString(received_to, false)
+				+ ", from Envelope: " + EmailAddrUtil.emailAddrToString(envelope_to, false));
 		
 		// CC
 		try {
@@ -926,7 +927,7 @@ public final class MessageBeanBuilder {
 	private static String getDomain(String addr) {
 		if (isDebugEnabled)
 			logger.debug("Real_TO Address: ->" + addr + "<-");
-		addr = StringUtil.removeDisplayName(addr);
+		addr = EmailAddrUtil.removeDisplayName(addr);
 
 		int at_pos = addr.lastIndexOf("@");
 		if (at_pos > 0 && addr.length() > at_pos + 1) {

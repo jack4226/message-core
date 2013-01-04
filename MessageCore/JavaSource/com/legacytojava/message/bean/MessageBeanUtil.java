@@ -34,6 +34,7 @@ import com.legacytojava.message.bo.mailsender.MessageBodyBuilder;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.XHeaderName;
 import com.legacytojava.message.dao.idtokens.EmailIdParser;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 
 public final class MessageBeanUtil {
@@ -588,7 +589,7 @@ public final class MessageBeanUtil {
 				return ((Long)obj).toString();
 			}
 			else if (obj instanceof Address[]) {
-				return StringUtil.emailAddrToString((Address[])obj);
+				return EmailAddrUtil.emailAddrToString((Address[])obj);
 			}
 			else if (obj != null) {
 				logger.warn("invokeMethod() - invalid return type: " + obj.getClass().getName());

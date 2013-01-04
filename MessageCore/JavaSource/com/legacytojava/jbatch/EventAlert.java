@@ -17,6 +17,7 @@ import com.legacytojava.jbatch.smtp.SmtpException;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.dao.client.ClientDao;
 import com.legacytojava.message.dao.client.ClientUtil;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.ClientVo;
 
@@ -311,7 +312,7 @@ public class EventAlert implements java.io.Serializable {
 			}
 		}
 		else { // remote address (with the right part)
-			String domainName = StringUtil.getEmailDomainName(addr);
+			String domainName = EmailAddrUtil.getEmailDomainName(addr);
 			if ("localhost".equalsIgnoreCase(domainName) || domainName == null) {
 				if (addr.lastIndexOf(">") > 0) { // address looks like <user@localhost>
 					addr = addr.substring(0, atPos) + "@" + hostName + ">";
@@ -359,10 +360,10 @@ public class EventAlert implements java.io.Serializable {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(StringUtil.getDisplayName("  abc@abc.com"));
-		System.out.println(StringUtil.getDisplayName("\"my name\" <abc@abc.com>"));
-		System.out.println(StringUtil.getEmailDomainName("alert@localhost"));
-		System.out.println(StringUtil.getEmailDomainName("\"my name\" <abc@abc.com>"));
+		System.out.println(EmailAddrUtil.getDisplayName("  abc@abc.com"));
+		System.out.println(EmailAddrUtil.getDisplayName("\"my name\" <abc@abc.com>"));
+		System.out.println(EmailAddrUtil.getEmailDomainName("alert@localhost"));
+		System.out.println(EmailAddrUtil.getEmailDomainName("\"my name\" <abc@abc.com>"));
 		
 		System.out.println(replaceDomainName("alert@localhost", Constants.VENDER_DOMAIN_NAME));
 	}

@@ -11,6 +11,7 @@ import com.legacytojava.message.dao.customer.CustSequenceDao;
 import com.legacytojava.message.dao.customer.CustomerDao;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.exception.DataValidationException;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.CustomerVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
@@ -76,7 +77,7 @@ public class CustomerBoImpl implements CustomerBo {
 		if (StringUtil.isEmpty(vo.getEmailAddr())) {
 			throw new DataValidationException("Email Address is not valued.");
 		}
-		if (!StringUtil.isRemoteEmailAddress(vo.getEmailAddr())) {
+		if (!EmailAddrUtil.isRemoteEmailAddress(vo.getEmailAddr())) {
 			throw new DataValidationException("Email Address is invalid: " + vo.getEmailAddr());
 		}
 		if (StringUtil.isEmpty(vo.getLastName())) {

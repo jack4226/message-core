@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 
 import com.legacytojava.message.constant.MailServerType;
-import com.legacytojava.message.util.StringUtil;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.vo.SmtpConnVo;
 
 /** 
@@ -264,8 +264,8 @@ public final class SmtpConnection implements java.io.Serializable {
 			msg.saveChanges();
 			// send the thing off
 			transport.sendMessage(msg, msg.getAllRecipients());
-			logger.info("sendMail() - Mail from: " + StringUtil.emailAddrToString(msg.getFrom(), false)
-					+ " was sent to: " + StringUtil.emailAddrToString(msg.getAllRecipients(), false)
+			logger.info("sendMail() - Mail from: " + EmailAddrUtil.emailAddrToString(msg.getFrom(), false)
+					+ " was sent to: " + EmailAddrUtil.emailAddrToString(msg.getAllRecipients(), false)
 					+ ", via " + smtpHost + ", " + new Date());
 		}
 		catch (SendFailedException sfex) {

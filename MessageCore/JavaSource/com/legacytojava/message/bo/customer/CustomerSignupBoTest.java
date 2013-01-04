@@ -1,6 +1,6 @@
 package com.legacytojava.message.bo.customer;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
@@ -11,6 +11,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.legacytojava.jbatch.JbMain;
+import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.customer.CustomerDao;
 import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.vo.CustomerVo;
@@ -18,7 +19,7 @@ import com.legacytojava.message.vo.CustomerVo;
 /*
  * !!! Do not modify this class to use SpringJunit as it will cause DB deadlock.
  */
-public class CustomerSignupBoTest extends TestCase {
+public class CustomerSignupBoTest {
 	static final Logger logger = Logger.getLogger(CustomerSignupBoTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
@@ -34,7 +35,7 @@ public class CustomerSignupBoTest extends TestCase {
 			DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 			def.setName("customerSignUp");
 			def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-			PlatformTransactionManager txmgr = (PlatformTransactionManager) JbMain.getBatchAppContext().getBean("mysqlTransactionManager");
+			PlatformTransactionManager txmgr = (PlatformTransactionManager) SpringUtil.getAppContext().getBean("mysqlTransactionManager");
 			TransactionStatus status = txmgr.getTransaction(def);
 	
 			CustomerVo vo = getCustomerDao().getByCustId("test");

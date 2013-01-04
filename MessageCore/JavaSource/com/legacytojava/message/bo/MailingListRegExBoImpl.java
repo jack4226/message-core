@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.dao.emailaddr.MailingListDao;
 import com.legacytojava.message.exception.DataValidationException;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.emailaddr.MailingListVo;
 
@@ -31,7 +32,7 @@ public class MailingListRegExBoImpl extends TaskBaseAdaptor {
 		for (int i = 0; i < list.size(); i++) {
 			MailingListVo item = list.get(i);
 			// no display name allowed for list address, just for safety
-			String emailAddr = StringUtil.removeDisplayName(item.getEmailAddr(), true);
+			String emailAddr = EmailAddrUtil.removeDisplayName(item.getEmailAddr(), true);
 			emailAddr = StringUtil.replaceAll(emailAddr, ".", "\\.");
 			if (i > 0) {
 				sb.append("|");
