@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Wed Jan 02 12:10:22 EST 2013:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-013b-fc3e-040f-00000562f6c0 
+on database directory C:\pkgs\workspace\MailReader\dbcache  with class loader sun.misc.Launcher$AppClassLoader@535ff48b 
+Loaded from file:/C:/pkgs/workspace/MessageCore/lib/derby.jar
+java.vendor=Sun Microsystems Inc.
+java.runtime.version=1.6.0_37-b06
+user.dir=C:\pkgs\workspace\MailReader
+derby.system.home=C:\pkgs\workspace\MailReader
+Database Class Loader started - derby.database.classpath=''
