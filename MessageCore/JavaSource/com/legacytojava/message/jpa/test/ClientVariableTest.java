@@ -8,7 +8,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.jboss.xnio.log.Logger;
+import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
