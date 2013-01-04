@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="./" default="compile" name="${msg.app}">
+
+	<property file="${basedir}/build.properties" />
+
+	<!--  ***** these are the properties calling ants need to override **** -->
+	<property name="source.dir" value="${basedir}/JavaSource" />
+	<property name="dist.dir" value="${basedir}/dist" />
+	<property name="class.dir" value="${dist.dir}/classes" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="log.dir" value="${basedir}/logs" />
+
+	<property name="core.base" value="../${msg.core}" />
+	<property name="core.classes" value="${core.base}/bin" />
+	<property name="core.lib" value="${core.base}/lib" />
+
+	<property name="ejbclient.base" value="../${msg.ejbs}" />
+	<property name="ejbclient.classes" value="${ejbclient.base}/build/classes" />
+	<property name="ejbclient.lib" value="${ejbclient.base}/lib" />
+
+	<property name="jboss.client.dir" value="${jboss.server.home}/client"/>
+	
+	<!-- define classpath's -->
+	<path id="base.path">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/javamail">
+			<include name="mail.jar" />
+			<include name="activation.jar" />
+		</fileset>
+		<fileset dir="${jboss.client.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="compile.path">
+		<path refid="base.path" />
+		<pathelement location="${core.classes}" />
+		<pathelement location="${ejbclient.classes}" />
+	</path>
+
+	<path id="runtime.path">
+		<fileset dir="${jboss.client.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${dist.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<!-- initialization -->
+	<target name="init">
+		<!-- pathconvert targetos="windows"  pathsep="," property="xx" refid="compile.path"/>
+    	<echo message="compile path: ${xx}"/ -->
+		<!-- Create the time stamp -->
+		<tstamp>
+			<format property="file.time" pattern="yyyyMMdd_HHmmss" />
+			<format property="display.time" pattern="yyyy-MM-dd hh:mm:ss a" />
+		</tstamp>
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${log.dir}" />
+		<echo message="${basedir} Starting Time: ${display.time}" />
+	</target>
+
+	<!-- cleanup compile output folder -->
+	<target name="cleanForCompile">
+		<delete dir="${class.dir}" failonerror="false" />
+	</target>
+
+	<!-- compile -->
+	<target name="compile" depends="init">
+		<echo message="base directory is ${basedir}" />
+		<echo message="compiling from directory ${source.dir}" />
+
+		<mkdir dir="${class.dir}" />
+		<javac deprecation="true" failonerror="true" 
+			destdir="${class.dir}" 
+			srcdir="${source.dir}" debug="on" verbose="true">
+			<classpath refid="compile.path" />
+		</javac>
+	</target>
+
+	<!-- copy xml and properties files to classes folder -->
+	<target name="postCompile" depends="compile">
+		<echo message="copy xml/properties files to ${class.dir} directory" />
+		<copy todir="${class.dir}" preservelastmodified="true" verbose="true">
+			<fileset dir="${source.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.html" />
+				<include name="**/*.gif" />
+				<exclude name="**/*.txt" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- build jar files -->
+	<target name="build" depends="postCompile">
+		<!-- build core jar -->
+		<jar destfile="${dist.dir}/${msg.core}.jar" basedir="${core.classes}" />
+
+		<!-- build ejbclient jar -->
+		<jar destfile="${dist.dir}/${msg.ejbs}.jar" basedir="${ejbclient.classes}" />
+		
+		<!-- build application jar -->
+		<jar destfile="${dist.dir}/${msg.app}.jar" >
+			<fileset dir="${class.dir}" 
+				excludes="**/*Test.class, **/*Suite.class"/>
+			<manifest>
+				<attribute name="Built-By" value="Legacytojava Team" />
+				<attribute name="Main-Class" value="${msg.mainclass}" />
+			</manifest>
+		</jar>
+		<!-- jar destfile="${dist.dir}/${msg.app}_Test.jar"
+            basedir="${class.dir}"
+            includes="**/*Test.class, **/Suite.class"
+        / -->
+		
+		<!-- copy other jar files to dist folder -->
+		<copy todir="${dist.dir}" preservelastmodified="true" verbose="true">
+			<fileset dir="${core.lib}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${core.lib}/aspectj">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/javamail">
+				<include name="activation.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- run -->
+	<target name="run" depends="build">
+		<java classname="${msg.mainclass}"
+			fork="true" failonerror="true" maxmemory="512m" 
+			output="${log.dir}/sysout_${file.time}.txt">
+			<arg line="-h -list list-of-something" />
+			<classpath>
+				<path refid="runtime.path" />
+			</classpath>
+		</java>
+	</target>
+
+	<!-- print out all the applictation specific properties -->
+	<target name="propertyList">
+		<echoproperties prefix="msg" />
+	</target>
+
+	<!-- cleanup -->
+	<target name="clean" depends="cleanForCompile">
+		<delete dir="${dist.dir}" failonerror="false" />
+		<delete dir="${basedir}/deploy" failonerror="false" />
+	</target>
+
+</project>

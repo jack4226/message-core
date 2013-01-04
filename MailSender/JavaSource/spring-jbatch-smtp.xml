@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    
+	<!-- 
+		SMTP Section
+	 -->
+	<!--
+	 Required properties for smtp connections
+	 	- smtphost: smtp host domain name or ip address
+	 Optional properties
+	 	- smtpport: smtp port, default = 25
+		- default: default smtp server domain name or ip address
+		- use_ssl: yes/no, set smtpport to 465 (or -1) if yes
+		- userid: userid to login to smtp server
+		- password: password for the user
+		- persistence: yes/no, default to yes
+	 	- server_type: smtp/exch, default to smtp
+		- threads: number of connections to be created, default=1
+	 	- retry: number, 0(default): no extra retry, n: for n minutes, -1: infinite
+	 	- freq(for retry): number, 5(default): every 5 minutes, n: every n minutes
+	 	- alert_after: send alert after the number of retries to connect the server
+	 	- alert_level: infor/error/fatal/nolog
+		- message_count: number of messages to send before stopping the process, 0=unlimited
+	-->
+	<bean id="smtpProperties" class="java.util.HashMap">
+	    <constructor-arg>
+	    <map>
+	    	<entry key="smtphost" value="localhost"/>
+	    	<entry key="smtpport" value="-1"/>
+	    	<entry key="default" value="localhost"/>
+	    	<entry key="use_ssl" value="no"/>
+	    	<entry key="userid" value="jwang"/>
+	    	<entry key="password" value="jwang"/>
+	    	<entry key="persistence" value="yes"/>
+	    	<entry key="server_type" value="smtp"/>
+	    	<entry key="threads" value="2"/>
+	    	<entry key="retry" value="10"/>
+	    	<entry key="freq" value="5"/>
+	    	<entry key="alert_after" value="15"/>
+	    	<entry key="alert_level" value="error"/>
+	    	<entry key="message_count" value="0"/>
+	    </map>
+	    </constructor-arg>
+	</bean>
+	
+	<bean id="gmailSmtpProperties" class="java.util.HashMap">
+	    <constructor-arg>
+	    <map>
+	    	<entry key="smtphost" value="smtp.gmail.com"/>
+	    	<entry key="smtpport" value="-1"/>
+	    	<entry key="default" value="smtp.gmail.com"/>
+	    	<entry key="use_ssl" value="yes"/>
+	    	<entry key="userid" value="jackwng"/>
+	    	<entry key="password" value="jackwng01"/>
+	    	<entry key="persistence" value="yes"/>
+	    	<entry key="server_type" value="smtp"/>
+	    	<entry key="threads" value="2"/>
+	    	<entry key="retry" value="10"/>
+	    	<entry key="freq" value="5"/>
+	    	<entry key="alert_after" value="15"/>
+	    	<entry key="alert_level" value="error"/>
+	    	<entry key="message_count" value="0"/>
+	    </map>
+	    </constructor-arg>
+	</bean>
+	
+	<bean id="exchProperties" class="java.util.HashMap">
+	    <constructor-arg>
+	    <map>
+	    	<entry key="smtphost" value="localhost"/>
+	    	<entry key="smtpport" value="25"/>
+	    	<entry key="default" value="localhost"/>
+	    	<entry key="userid" value="uid"/>
+	    	<entry key="password" value="pwd"/>
+	    	<entry key="persistence" value="yes"/>
+	    	<entry key="server_type" value="exch"/>
+	    	<entry key="retry" value="4"/>
+	    	<entry key="freq" value="1"/>
+	    	<entry key="alert_after" value="15"/>
+	    	<entry key="alert_level" value="error"/>
+	    	<entry key="message_count" value="0"/>
+	    </map>
+	    </constructor-arg>
+	</bean>
+	
+	<bean id="smtpConnection" scope="prototype"
+	      class="com.legacytojava.jbatch.smtp.SmtpConnection">
+	    <constructor-arg index="0" ref="smtpProperties"/>
+	</bean>
+	
+	<bean id="exchConnection" scope="prototype"
+	      class="com.legacytojava.jbatch.smtp.SmtpConnection">
+	    <constructor-arg index="0" ref="exchProperties"/>
+	</bean>
+	
+	<!-- 
+	 Constructor arguments:
+	 0: bean id of a smtp connection, must be defined
+	 1: maximum number of connections, must be defined
+	 2: pool name, must be unique across the board
+	 3: smtp server type - smtp or exch
+	 4: distribution to be used by NamedPools
+	 -->
+	<bean id="smtpPool" lazy-init="true"
+	      class="com.legacytojava.jbatch.pool.ObjectPool">
+	    <constructor-arg index="0" type="java.lang.String" value="smtpConnection"/>
+	    <constructor-arg index="1" type="int" value="2"/>
+	    <constructor-arg index="2" type="java.lang.String" value="smtpPool"/>
+	    <constructor-arg index="3" type="java.lang.String" value="smtp"/>
+	    <constructor-arg index="4" type="int" value="100"/>
+	</bean>
+	
+	<bean id="exchPool" lazy-init="true"
+	      class="com.legacytojava.jbatch.pool.ObjectPool">
+	    <constructor-arg index="0" type="java.lang.String" value="exchConnection"/>
+	    <constructor-arg index="1" type="int" value="1"/>
+	    <constructor-arg index="2" type="java.lang.String" value="exchPool"/>
+	    <constructor-arg index="3" type="java.lang.String" value="smtp"/>
+	    <constructor-arg index="4" type="int" value="100"/>
+	</bean>
+	
+	<bean id="namedPools" lazy-init="true"
+	      class="com.legacytojava.jbatch.pool.NamedPools">
+	    <constructor-arg index="0">
+	    	<list>
+	    	<ref bean="smtpPool"/>
+	    	<ref bean="exchPool"/>
+	    	</list>
+	    </constructor-arg>
+	</bean>
+	
+	<bean id="smtpWrapper" lazy-init="true"
+	      class="com.legacytojava.jbatch.smtp.SmtpWrapper">
+	    <constructor-arg index="0" ref="smtpPool"/>
+	</bean>
+	<bean id="exchWrapper" lazy-init="true"
+	      class="com.legacytojava.jbatch.smtp.SmtpWrapper">
+	    <constructor-arg index="0" ref="exchPool"/>
+	</bean>
+	
+	<!-- 
+	- use_masking_addr: yes/no: to override the TO address with the value from test_to
+	- masking_to_addr: use it as the TO address when mask is yes
+	 -->
+	<bean id="mailSenderProperties" class="java.util.HashMap">
+	    <constructor-arg index="0">
+	    <map>
+	    	<entry key="internal_routing_loopback" value="inbox@intranet.domain.com"/>
+	    	<entry key="external_smtpmail_loopback" value="inbox@lagacytojava.com"/>
+	    	<entry key="use_testing_addresses" value="yes"/>
+	    	<entry key="testing_from_address" value="testfrom@localhost"/>
+	    	<entry key="testing_to_address" value="testto@localhost"/>
+	    	<entry key="testing_replyto_address" value="testreplyto@localhost"/>
+	    </map>
+	    </constructor-arg>
+	</bean>
+	
+	<!-- bean id="mailSenderProcessor" lazy-init="true" scope="prototype"
+	      class="com.legacytojava.mailsender.MailSenderProcessor">
+	    <property name="appProperties" ref="mailSenderProperties"/>
+   		<property name="jmsProcessor" ref="jmsProcessor"/>
+   		<property name="jmsTransactionManager" ref="jmsTransactionManager"/>
+   		<property name="errorQueue" ref="unHandledOutput"/>
+   		<property name="deliveryStatusDao" ref="deliveryStatusDao"/>
+   		<property name="msgInboxDao" ref="msgInboxDao"/>
+   		<property name="emailAddrDao" ref="emailAddrDao"/>
+   		<property name="msgStreamDao" ref="msgStreamDao"/>
+	</bean -->
+	
+	<!-- bean id="deliveryStatusDao" scope="singleton"
+		class="com.legacytojava.message.dao.outbox.DeliveryStatusJdbcDao">
+		<property name="dataSource" ref="mysqlDataSource"/>
+	</bean>
+	
+	<bean id="msgInboxDao" scope="singleton"
+		class="com.legacytojava.message.dao.inbox.MsgInboxJdbcDao">
+		<property name="dataSource" ref="mysqlDataSource"/>
+	</bean>
+	
+	<bean id="emailAddrDao" scope="singleton"
+		class="com.legacytojava.message.dao.emailaddr.EmailAddrJdbcDao">
+		<property name="dataSource" ref="mysqlDataSource"/>
+	</bean>
+	
+	<bean id="msgStreamDao" scope="singleton"
+		class="com.legacytojava.message.dao.inbox.MsgStreamJdbcDao">
+		<property name="dataSource" ref="mysqlDataSource"/>
+	</bean -->
+	
+	<bean id="emailSender" lazy-init="true"
+	      class="com.legacytojava.jbatch.common.EmailSender">
+	    <constructor-arg index="0" ref="smtpProperties"/>
+	</bean>
+	<bean id="simpleEmailSender" lazy-init="true"
+	      class="com.legacytojava.message.bean.SimpleEmailSender">
+	    <constructor-arg index="0" ref="smtpProperties"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,2975 @@
+[2011-10-20 16:46:38,625] [main] [INFO,JbMain,JbMain.java:402] Number of threads at start 1
+[2011-10-20 16:46:38,656] [main] [DEBUG,TimedSocketFactory,Logger.java:228] createSocket, hostAddr: localhost/127.0.0.1, port: 2099, localAddr: null, localPort: 0, timeout: 0
+[2011-10-20 16:46:38,828] [main] [INFO,JbMain,JbMain.java:214] getAppContext() - running batch standalone, load batch xmls
+[2011-10-20 16:46:38,875] [main] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:412] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1b8e059: display name [org.springframework.context.support.ClassPathXmlApplicationContext@1b8e059]; startup date [Thu Oct 20 16:46:38 EDT 2011]; root of context hierarchy
+[2011-10-20 16:46:38,953] [main] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-bo_jms-config.xml]
+[2011-10-20 16:46:39,219] [main] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-mysql_ds-config.xml]
+[2011-10-20 16:46:39,375] [main] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-dao-config.xml]
+[2011-10-20 16:46:39,406] [main] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-jbatch-config.xml]
+[2011-10-20 16:46:39,422] [main] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:467] Overriding bean definition for bean 'jmsSender': replacing [Generic bean: class [test.JmsSender]; scope=singleton; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-bo_jms-config.xml]] with [Generic bean: class [com.legacytojava.jbatch.queue.JmsSender]; scope=singleton; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-jbatch-config.xml]]
+[2011-10-20 16:46:39,437] [main] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:467] Overriding bean definition for bean 'smtpProperties': replacing [Generic bean: class [java.util.HashMap]; scope=singleton; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-bo_jms-config.xml]] with [Generic bean: class [java.util.HashMap]; scope=singleton; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-jbatch-config.xml]]
+[2011-10-20 16:46:39,437] [main] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:467] Overriding bean definition for bean 'simpleEmailSender': replacing [Generic bean: class [com.legacytojava.message.bean.SimpleEmailSender]; scope=singleton; abstract=false; lazyInit=true; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-bo_jms-config.xml]] with [Generic bean: class [com.legacytojava.message.bean.SimpleEmailSender]; scope=singleton; abstract=false; lazyInit=true; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-jbatch-config.xml]]
+[2011-10-20 16:46:39,437] [main] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-jbatch-mailsender.xml]
+[2011-10-20 16:46:39,453] [main] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:467] Overriding bean definition for bean 'jndiTemplate': replacing [Generic bean: class [org.springframework.jndi.JndiTemplate]; scope=singleton; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-bo_jms-config.xml]] with [Generic bean: class [org.springframework.jndi.JndiTemplate]; scope=singleton; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-jbatch-mailsender.xml]]
+[2011-10-20 16:46:39,453] [main] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:467] Overriding bean definition for bean 'jmsProcessor': replacing [Generic bean: class [com.legacytojava.jbatch.queue.JmsProcessor]; scope=prototype; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-bo_jms-config.xml]] with [Generic bean: class [com.legacytojava.jbatch.queue.JmsProcessor]; scope=singleton; abstract=false; lazyInit=true; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [spring-jbatch-mailsender.xml]]
+[2011-10-20 16:46:39,453] [main] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:427] Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@1b8e059]: org.springframework.beans.factory.support.DefaultListableBeanFactory@1385660
+[2011-10-20 16:46:39,625] [main] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:414] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@1385660: defining beans [jtaTransactionManager,jmsTransactionManager,jndiTemplate,jmsConnectionFactory,mailReaderOutput,ruleEngineInput,ruleEngineOutput,mailSenderInput,mailSenderOutput,customerCareInput,rmaRequestInput,unHandledOutput,destination,jmsTemplate,jmsTemplateDefaultDest,mailReaderOutputJmsTemplate,ruleEngineInputJmsTemplate,ruleEngineOutputJmsTemplate,mailSenderInputJmsTemplate,mailSenderOutputJmsTemplate,customerCareInputJmsTemplate,rmaRequestInputJmsTemplate,unHandledOutputJmsTemplate,jmsProcessor,jmsSender,jmsReceiver,smtpProperties,simpleEmailSender,customerBo,rulesDataBo,renderBo,msgOutboxBo,msgInboxBo,ruleLoader,messageParser,mailingListBo,customerSignupBo,taskBaseBo,activateBo,assignRuleNameBo,autoReplyBo,bounceBo,broadcastBo,closeBo,csrReplyBo,deliveryErrorBo,dropBo,forwardBo,mailingListRegExBo,openBo,saveBo,sendMailBo,subscribeBo,suspendBo,toCsrBo,toSecurityBo,unsubscribeBo,mysqlTransactionManager,mysqlDataSource,initDataSource,dsTxAdviceEmailAddr,org.springframework.aop.config.internalAutoProxyCreator,emailAddrOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,dsTxAdvice,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#1,boOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#2,boBaseOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#3,idTokensDao,emailAddrDao,mailingListDao,subscriptionDao,emailVariableDao,emailTemplateDao,unsubCommentsDao,mailBoxDao,clientDao,reloadFlagsDao,customerDao,custSequenceDao,ruleElementDao,ruleLogicDao,ruleSubRuleMapDao,ruleDao,globalVariableDao,clientVariableDao,templateVariableDao,subjTemplateDao,bodyTemplateDao,msgSourceDao,deliveryStatusDao,renderVariableDao,renderAttachmentDao,renderObjectDao,msgRenderedDao,msgSequenceDao,msgUnreadCountDao,msgDataTypeDao,msgActionDao,msgActionDetailDao,msgInboxDao,msgAddrsDao,attachmentsDao,msgStreamDao,msgHeadersDao,rfcFieldsDao,msgActionLogsDao,msgClickCountsDao,msgUnsubCommentsDao,smtpServerDao,mailSenderPropsDao,socketServerDao,timerServerDao,duplicateCheck,userDao,sessionUploadDao,org.springframework.beans.factory.config.CustomScopeConfigurer#0,csTransactionManager,csDataSource,jmsTxAdvice,mailProcessorOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#4,resource,metricsData,metricsLogger,appProperties,jmsListenerContainer,jmsListener,queueListenerContainer,queueListener,queueReaderVo,queueReader,queueProcessor,extraProperties,mailProcessor,mailSenderProcessor,smtpConnection,emailSender,timerProcessor,eventProperties,eventAlert,queueListeners,socketServers,socketServerVo,socketServer,httpServer]; root of factory hierarchy
+[2011-10-20 16:46:40,234] [main] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:40,609] [main] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:41,000] [main] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: org.apache.derby.jdbc.EmbeddedDriver
+[2011-10-20 16:46:41,016] [main] [DEBUG,Resource,Resource.java:26] Entering Constructor...
+[2011-10-20 16:46:41,031] [main] [INFO,JbMain,JbMain.java:406] AppProperties: {shutdown_delay=5, retry_alert=fatal, silent_shutdown=yes, app_xmldocs=./xmldocs/, notify=no, app_name=jbatch, request_gc=no}
+[2011-10-20 16:46:41,031] [main] [WARN,JbMain,JbMain.java:418] No MailReaders are defined in Config file
+[2011-10-20 16:46:41,047] [main] [WARN,JbMain,JbMain.java:431] No TimerServer are defined in Config file
+[2011-10-20 16:46:41,047] [main] [INFO,JbMain,JbMain.java:437] QueueListeners: {queueListener1=queueListener}
+[2011-10-20 16:46:41,047] [main] [INFO,JbMain,JbMain.java:446] SocketServers: {socketServer1=socketServer}
+[2011-10-20 16:46:41,047] [main] [DEBUG,JbMain,JbMain.java:1501] Host IP Address: 10.91.139.146
+[2011-10-20 16:46:41,047] [main] [DEBUG,JbMain,JbMain.java:1519] Host Name: TSD-119491
+[2011-10-20 16:46:41,047] [main] [INFO,Resource,Resource.java:60] Entering checkMetricsTable()...
+[2011-10-20 16:46:41,547] [main] [INFO,EventAlert,EventAlert.java:49] Entering Constructor...
+[2011-10-20 16:46:41,562] [main] [INFO,JbMain,JbMain.java:676] Creating QueueListener queueListener1/queueListener
+[2011-10-20 16:46:41,562] [main] [INFO,MetricsLogger,MetricsLogger.java:42] Entering Constructor...
+[2011-10-20 16:46:41,562] [main] [INFO,QueueListener,QueueListener.java:34] in Constructor() - props:
+     QueueReaderVo.class=com.legacytojava.message.vo.QueueReaderVo
+     QueueReaderVo.clone=
+     QueueReaderVo.deliveryCountReached=error_queue
+     QueueReaderVo.description=null
+     QueueReaderVo.logList=[]
+     QueueReaderVo.messageCount=0
+     QueueReaderVo.origUpdtTime=null
+     QueueReaderVo.primaryKey=null
+     QueueReaderVo.priority=high
+     QueueReaderVo.processorName=mailSenderProcessor
+     QueueReaderVo.queueName=mailSenderInput
+     QueueReaderVo.rowId=-1
+     QueueReaderVo.serverName=queueReader
+     QueueReaderVo.statusId=A
+     QueueReaderVo.statusIdDesc=Active
+     QueueReaderVo.threads=1
+     QueueReaderVo.updtTime=null
+     QueueReaderVo.updtUserId=null
+
+[2011-10-20 16:46:41,594] [pool-1-thread-1] [INFO,QueueListener,QueueListener.java:137] Entering QueueListener.run() method...
+[2011-10-20 16:46:42,312] [queueListenerContainer-2] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612847981297710]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:42,312] [queueListenerContainer-1] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848036855857]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:42,312] [queueListenerContainer-3] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848036855856]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:42,312] [queueListenerContainer-4] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612847980527661]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:42,328] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:81] Entering constructor...
+[2011-10-20 16:46:42,328] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:81] Entering constructor...
+[2011-10-20 16:46:42,328] [queueListenerContainer-3] [DEBUG,MailSenderBase,MailSenderBase.java:81] Entering constructor...
+[2011-10-20 16:46:42,328] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:81] Entering constructor...
+[2011-10-20 16:46:42,328] [queueListenerContainer-2] [INFO,MailSenderProcessor,MailSenderProcessor.java:55] Entering constructor...
+[2011-10-20 16:46:42,328] [queueListenerContainer-1] [INFO,MailSenderProcessor,MailSenderProcessor.java:55] Entering constructor...
+[2011-10-20 16:46:42,328] [queueListenerContainer-4] [INFO,MailSenderProcessor,MailSenderProcessor.java:55] Entering constructor...
+[2011-10-20 16:46:42,328] [queueListenerContainer-3] [INFO,MailSenderProcessor,MailSenderProcessor.java:55] Entering constructor...
+[2011-10-20 16:46:42,359] [queueListenerContainer-2] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:42,375] [queueListenerContainer-1] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:42,375] [queueListenerContainer-1] [DEBUG,TimedSocketFactory,Logger.java:228] createSocket, hostAddr: localhost/127.0.0.1, port: 2099, localAddr: null, localPort: 0, timeout: 0
+[2011-10-20 16:46:42,375] [queueListenerContainer-4] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:42,375] [queueListenerContainer-3] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:42,375] [queueListenerContainer-4] [DEBUG,TimedSocketFactory,Logger.java:228] createSocket, hostAddr: localhost/127.0.0.1, port: 2099, localAddr: null, localPort: 0, timeout: 0
+[2011-10-20 16:46:42,375] [queueListenerContainer-2] [DEBUG,TimedSocketFactory,Logger.java:228] createSocket, hostAddr: localhost/127.0.0.1, port: 2099, localAddr: null, localPort: 0, timeout: 0
+[2011-10-20 16:46:42,375] [queueListenerContainer-3] [DEBUG,TimedSocketFactory,Logger.java:228] createSocket, hostAddr: localhost/127.0.0.1, port: 2099, localAddr: null, localPort: 0, timeout: 0
+[2011-10-20 16:46:42,375] [queueListenerContainer-1] [INFO,JbMain,JbMain.java:237] getDaoAppContext() - running standalone, load mysql_ds xmls
+[2011-10-20 16:46:42,375] [queueListenerContainer-1] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:412] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@12e43f1: display name [org.springframework.context.support.ClassPathXmlApplicationContext@12e43f1]; startup date [Thu Oct 20 16:46:42 EDT 2011]; root of context hierarchy
+[2011-10-20 16:46:42,375] [queueListenerContainer-1] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-mysql_ds-config.xml]
+[2011-10-20 16:46:42,391] [queueListenerContainer-4] [INFO,JbMain,JbMain.java:237] getDaoAppContext() - running standalone, load mysql_ds xmls
+[2011-10-20 16:46:42,391] [queueListenerContainer-4] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:412] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@19d794d: display name [org.springframework.context.support.ClassPathXmlApplicationContext@19d794d]; startup date [Thu Oct 20 16:46:42 EDT 2011]; root of context hierarchy
+[2011-10-20 16:46:42,391] [queueListenerContainer-4] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-mysql_ds-config.xml]
+[2011-10-20 16:46:42,391] [queueListenerContainer-2] [INFO,JbMain,JbMain.java:237] getDaoAppContext() - running standalone, load mysql_ds xmls
+[2011-10-20 16:46:42,406] [queueListenerContainer-2] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:412] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@493dca: display name [org.springframework.context.support.ClassPathXmlApplicationContext@493dca]; startup date [Thu Oct 20 16:46:42 EDT 2011]; root of context hierarchy
+[2011-10-20 16:46:42,422] [queueListenerContainer-2] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-mysql_ds-config.xml]
+[2011-10-20 16:46:42,391] [queueListenerContainer-3] [INFO,JbMain,JbMain.java:237] getDaoAppContext() - running standalone, load mysql_ds xmls
+[2011-10-20 16:46:42,422] [queueListenerContainer-3] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:412] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1561437: display name [org.springframework.context.support.ClassPathXmlApplicationContext@1561437]; startup date [Thu Oct 20 16:46:42 EDT 2011]; root of context hierarchy
+[2011-10-20 16:46:42,422] [queueListenerContainer-3] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-mysql_ds-config.xml]
+[2011-10-20 16:46:42,437] [queueListenerContainer-1] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-dao-config.xml]
+[2011-10-20 16:46:42,453] [queueListenerContainer-1] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:427] Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@12e43f1]: org.springframework.beans.factory.support.DefaultListableBeanFactory@1b6a1c4
+[2011-10-20 16:46:42,469] [queueListenerContainer-1] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:414] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@1b6a1c4: defining beans [mysqlTransactionManager,mysqlDataSource,initDataSource,dsTxAdviceEmailAddr,org.springframework.aop.config.internalAutoProxyCreator,emailAddrOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,dsTxAdvice,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#1,boOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#2,boBaseOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#3,idTokensDao,emailAddrDao,mailingListDao,subscriptionDao,emailVariableDao,emailTemplateDao,unsubCommentsDao,mailBoxDao,clientDao,reloadFlagsDao,customerDao,custSequenceDao,ruleElementDao,ruleLogicDao,ruleSubRuleMapDao,ruleDao,globalVariableDao,clientVariableDao,templateVariableDao,subjTemplateDao,bodyTemplateDao,msgSourceDao,deliveryStatusDao,renderVariableDao,renderAttachmentDao,renderObjectDao,msgRenderedDao,msgSequenceDao,msgUnreadCountDao,msgDataTypeDao,msgActionDao,msgActionDetailDao,msgInboxDao,msgAddrsDao,attachmentsDao,msgStreamDao,msgHeadersDao,rfcFieldsDao,msgActionLogsDao,msgClickCountsDao,msgUnsubCommentsDao,smtpServerDao,mailSenderPropsDao,socketServerDao,timerServerDao,duplicateCheck,userDao,sessionUploadDao]; root of factory hierarchy
+[2011-10-20 16:46:42,469] [queueListenerContainer-1] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:42,500] [queueListenerContainer-3] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-dao-config.xml]
+[2011-10-20 16:46:42,500] [queueListenerContainer-2] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-dao-config.xml]
+[2011-10-20 16:46:42,516] [queueListenerContainer-4] [INFO,XmlBeanDefinitionReader,XmlBeanDefinitionReader.java:323] Loading XML bean definitions from class path resource [spring-dao-config.xml]
+[2011-10-20 16:46:42,531] [queueListenerContainer-4] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:427] Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@19d794d]: org.springframework.beans.factory.support.DefaultListableBeanFactory@9d267d
+[2011-10-20 16:46:42,531] [queueListenerContainer-4] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:414] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@9d267d: defining beans [mysqlTransactionManager,mysqlDataSource,initDataSource,dsTxAdviceEmailAddr,org.springframework.aop.config.internalAutoProxyCreator,emailAddrOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,dsTxAdvice,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#1,boOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#2,boBaseOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#3,idTokensDao,emailAddrDao,mailingListDao,subscriptionDao,emailVariableDao,emailTemplateDao,unsubCommentsDao,mailBoxDao,clientDao,reloadFlagsDao,customerDao,custSequenceDao,ruleElementDao,ruleLogicDao,ruleSubRuleMapDao,ruleDao,globalVariableDao,clientVariableDao,templateVariableDao,subjTemplateDao,bodyTemplateDao,msgSourceDao,deliveryStatusDao,renderVariableDao,renderAttachmentDao,renderObjectDao,msgRenderedDao,msgSequenceDao,msgUnreadCountDao,msgDataTypeDao,msgActionDao,msgActionDetailDao,msgInboxDao,msgAddrsDao,attachmentsDao,msgStreamDao,msgHeadersDao,rfcFieldsDao,msgActionLogsDao,msgClickCountsDao,msgUnsubCommentsDao,smtpServerDao,mailSenderPropsDao,socketServerDao,timerServerDao,duplicateCheck,userDao,sessionUploadDao]; root of factory hierarchy
+[2011-10-20 16:46:42,531] [queueListenerContainer-1] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:42,531] [queueListenerContainer-4] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:42,516] [queueListenerContainer-3] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:427] Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@1561437]: org.springframework.beans.factory.support.DefaultListableBeanFactory@14f2bd7
+[2011-10-20 16:46:42,547] [queueListenerContainer-3] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:414] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@14f2bd7: defining beans [mysqlTransactionManager,mysqlDataSource,initDataSource,dsTxAdviceEmailAddr,org.springframework.aop.config.internalAutoProxyCreator,emailAddrOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,dsTxAdvice,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#1,boOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#2,boBaseOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#3,idTokensDao,emailAddrDao,mailingListDao,subscriptionDao,emailVariableDao,emailTemplateDao,unsubCommentsDao,mailBoxDao,clientDao,reloadFlagsDao,customerDao,custSequenceDao,ruleElementDao,ruleLogicDao,ruleSubRuleMapDao,ruleDao,globalVariableDao,clientVariableDao,templateVariableDao,subjTemplateDao,bodyTemplateDao,msgSourceDao,deliveryStatusDao,renderVariableDao,renderAttachmentDao,renderObjectDao,msgRenderedDao,msgSequenceDao,msgUnreadCountDao,msgDataTypeDao,msgActionDao,msgActionDetailDao,msgInboxDao,msgAddrsDao,attachmentsDao,msgStreamDao,msgHeadersDao,rfcFieldsDao,msgActionLogsDao,msgClickCountsDao,msgUnsubCommentsDao,smtpServerDao,mailSenderPropsDao,socketServerDao,timerServerDao,duplicateCheck,userDao,sessionUploadDao]; root of factory hierarchy
+[2011-10-20 16:46:42,562] [queueListenerContainer-4] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:42,547] [queueListenerContainer-2] [INFO,ClassPathXmlApplicationContext,AbstractApplicationContext.java:427] Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@493dca]: org.springframework.beans.factory.support.DefaultListableBeanFactory@6baf24
+[2011-10-20 16:46:42,578] [queueListenerContainer-2] [INFO,DefaultListableBeanFactory,DefaultListableBeanFactory.java:414] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@6baf24: defining beans [mysqlTransactionManager,mysqlDataSource,initDataSource,dsTxAdviceEmailAddr,org.springframework.aop.config.internalAutoProxyCreator,emailAddrOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,dsTxAdvice,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#1,boOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#2,boBaseOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#3,idTokensDao,emailAddrDao,mailingListDao,subscriptionDao,emailVariableDao,emailTemplateDao,unsubCommentsDao,mailBoxDao,clientDao,reloadFlagsDao,customerDao,custSequenceDao,ruleElementDao,ruleLogicDao,ruleSubRuleMapDao,ruleDao,globalVariableDao,clientVariableDao,templateVariableDao,subjTemplateDao,bodyTemplateDao,msgSourceDao,deliveryStatusDao,renderVariableDao,renderAttachmentDao,renderObjectDao,msgRenderedDao,msgSequenceDao,msgUnreadCountDao,msgDataTypeDao,msgActionDao,msgActionDetailDao,msgInboxDao,msgAddrsDao,attachmentsDao,msgStreamDao,msgHeadersDao,rfcFieldsDao,msgActionLogsDao,msgClickCountsDao,msgUnsubCommentsDao,smtpServerDao,mailSenderPropsDao,socketServerDao,timerServerDao,duplicateCheck,userDao,sessionUploadDao]; root of factory hierarchy
+[2011-10-20 16:46:42,562] [queueListenerContainer-3] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:42,578] [queueListenerContainer-2] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:42,594] [main] [INFO,JbMain,JbMain.java:750] Creating SocketServer socketServer1/socketServer
+[2011-10-20 16:46:42,609] [queueListenerContainer-2] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:42,609] [queueListenerContainer-3] [INFO,DriverManagerDataSource,DriverManagerDataSource.java:155] Loaded JDBC driver: com.mysql.jdbc.Driver
+[2011-10-20 16:46:42,828] [main] [INFO,SocketServer,SocketServer.java:100] Creating Socket Threads, # of Threads: 10
+[2011-10-20 16:46:42,844] [main] [INFO,SocketServer,SocketServer.java:76] Created Socket Server for port 5448, number of connections 10
+[2011-10-20 16:46:42,859] [pool-1-thread-2] [INFO,SocketServer,SocketServer.java:111] Entering SocketServer.run() method...
+[2011-10-20 16:46:42,859] [pool-1-thread-2] [INFO,HttpServer,HttpServer.java:51] Document Root: file:/F:/pkgs/workspace/MailSender/dist/MailSender.jar!/com/legacytojava/mailsender/htmldocs
+[2011-10-20 16:46:43,250] [queueListenerContainer-3] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:43,250] [queueListenerContainer-4] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:43,250] [queueListenerContainer-2] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:43,250] [queueListenerContainer-1] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:43,312] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: Sample List 2 <demolist2@localhost>
+To: test@test.com
+CarrierCode: S
+Subject: Sample HTML newsletter to test@test.com
+Send Date: Thu Oct 20 16:45:52 EDT 2011
+Embed EmailId: true
+MsgId: 293
+RuleName: SEND_MAIL
+Mailing List Id: SMPLLST2
+ToCustomersOnly: false
+Client Id: System
+To PlainText: false
+Override TestAddr: false
+
+List Header Lines:
+Header Line - X-Orig_Rule_Name: BROADCAST
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/html, Disposition: null, Description: null
+Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:43,312] [queueListenerContainer-2] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 297, From MailReader: false
+[2011-10-20 16:46:43,312] [queueListenerContainer-3] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: testfrom@localhost
+To: user00@localhost
+Subject: Test MailSender - 00 Thu Oct 20 16:45:56 EDT 2011
+Embed EmailId: true
+RuleName: SEND_MAIL
+To PlainText: false
+Override TestAddr: false
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/plain, Disposition: null, Description: null
+Test MailSender Body Message - 00
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:43,328] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: testfrom@localhost
+To: user01@localhost
+Subject: Test MailSender - 01 Thu Oct 20 16:45:56 EDT 2011
+Embed EmailId: true
+RuleName: SEND_MAIL
+To PlainText: false
+Override TestAddr: false
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/plain, Disposition: null, Description: null
+Test MailSender Body Message - 01
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:43,344] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: Sample List 2 <demolist2@localhost>
+To: jsmith@test.com
+CarrierCode: S
+Subject: Sample HTML newsletter to jsmith@test.com
+Send Date: Thu Oct 20 16:45:52 EDT 2011
+Embed EmailId: true
+MsgId: 293
+RuleName: SEND_MAIL
+Mailing List Id: SMPLLST2
+ToCustomersOnly: false
+Client Id: System
+To PlainText: false
+Override TestAddr: false
+
+List Header Lines:
+Header Line - X-Orig_Rule_Name: BROADCAST
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/html, Disposition: null, Description: null
+Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:43,328] [queueListenerContainer-2] [DEBUG,EmailIdParser,EmailIdParser.java:84] Regex for body 1: (System\s+Email\s+Id:\s+10\.(\d{1,30})\.0)
+[2011-10-20 16:46:43,344] [queueListenerContainer-2] [DEBUG,EmailIdParser,EmailIdParser.java:85] Regex for body 2: (X-Email_Id:\s+10\.(\d{1,30})\.0)
+[2011-10-20 16:46:43,344] [queueListenerContainer-2] [DEBUG,EmailIdParser,EmailIdParser.java:86] Regex for header: \s*(10\.(\d{1,30})\.0)\s*
+[2011-10-20 16:46:43,344] [queueListenerContainer-4] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 300, From MailReader: false
+[2011-10-20 16:46:43,344] [queueListenerContainer-3] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 298, From MailReader: false
+[2011-10-20 16:46:43,344] [queueListenerContainer-1] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 299, From MailReader: false
+[2011-10-20 16:46:43,344] [queueListenerContainer-1] [WARN,MsgInboxBoImpl,MsgInboxBoImpl.java:106] saveMessage() - carrierCode field is null, set to S (SMTP)
+[2011-10-20 16:46:43,344] [queueListenerContainer-3] [WARN,MsgInboxBoImpl,MsgInboxBoImpl.java:106] saveMessage() - carrierCode field is null, set to S (SMTP)
+[2011-10-20 16:46:43,344] [queueListenerContainer-1] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 299, EmailId: System Email Id: 10.07412023.0
+[2011-10-20 16:46:43,344] [queueListenerContainer-4] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 300, EmailId: <div style='color: darkgray;'><p>System Email Id: 10.15532692.0</p></div>
+[2011-10-20 16:46:43,344] [queueListenerContainer-3] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 298, EmailId: System Email Id: 10.07410208.0
+[2011-10-20 16:46:43,344] [queueListenerContainer-2] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 297, EmailId: <div style='color: darkgray;'><p>System Email Id: 10.07411283.0</p></div>
+[2011-10-20 16:46:43,406] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/plain
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=null
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=<pre>Test MailSender Body Message - 01
+
+System Email Id: 10.07412023.0</pre>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=13
+      MsgInboxVo.fromAddress=testfrom@localhost
+      MsgInboxVo.fromDisplayName=testfrom@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=299
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=Test MailSender Body Message - 01
+
+System Email Id: 10.07412023.0
+      MsgInboxVo.msgBodySize=67
+      MsgInboxVo.msgContentType=text/plain
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=299
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Test MailSender - 01 Thu Oct 20 16:45:56 EDT 2011
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:43.344
+      MsgInboxVo.rawMessage=<pre>Test MailSender Body Message - 01
+
+System Email Id: 10.07412023.0</pre>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:43.344
+      MsgInboxVo.receivedTime=2011-10-20 16:46:43.344, Nanos: 344000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=1024
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=34
+      MsgInboxVo.toAddress=user01@localhost
+      MsgInboxVo.updtTime=2011-10-20 16:46:43.344, Nanos: 344000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:43,422] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/html
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=System
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.07411283.0</p></div>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=8
+      MsgInboxVo.fromAddress=demolist2@localhost
+      MsgInboxVo.fromDisplayName=demolist2@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=297
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=<HTML><BODY>Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.07411283.0</p></div>
+</BODY></HTML>
+      MsgInboxVo.msgBodySize=1183
+      MsgInboxVo.msgContentType=text/html
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=297
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Sample HTML newsletter to test@test.com
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:43.328
+      MsgInboxVo.rawMessage=Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.07411283.0</p></div>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:45:52.515
+      MsgInboxVo.receivedTime=2011-10-20 16:45:52.515, Nanos: 515000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=2K
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=2
+      MsgInboxVo.toAddress=test@test.com
+      MsgInboxVo.updtTime=2011-10-20 16:46:43.312, Nanos: 312000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:43,422] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 299
+[2011-10-20 16:46:43,422] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 297
+[2011-10-20 16:46:43,453] [queueListenerContainer-3] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/plain
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=null
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=<pre>Test MailSender Body Message - 00
+
+System Email Id: 10.07410208.0</pre>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=13
+      MsgInboxVo.fromAddress=testfrom@localhost
+      MsgInboxVo.fromDisplayName=testfrom@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=298
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=Test MailSender Body Message - 00
+
+System Email Id: 10.07410208.0
+      MsgInboxVo.msgBodySize=67
+      MsgInboxVo.msgContentType=text/plain
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=298
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Test MailSender - 00 Thu Oct 20 16:45:56 EDT 2011
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:43.344
+      MsgInboxVo.rawMessage=<pre>Test MailSender Body Message - 00
+
+System Email Id: 10.07410208.0</pre>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:43.344
+      MsgInboxVo.receivedTime=2011-10-20 16:46:43.344, Nanos: 344000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=1024
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=28
+      MsgInboxVo.toAddress=user00@localhost
+      MsgInboxVo.updtTime=2011-10-20 16:46:43.344, Nanos: 344000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:43,453] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/html
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=System
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532692.0</p></div>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=8
+      MsgInboxVo.fromAddress=demolist2@localhost
+      MsgInboxVo.fromDisplayName=demolist2@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=300
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=<HTML><BODY>Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532692.0</p></div>
+</BODY></HTML>
+      MsgInboxVo.msgBodySize=1185
+      MsgInboxVo.msgContentType=text/html
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=300
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Sample HTML newsletter to jsmith@test.com
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:43.344
+      MsgInboxVo.rawMessage=Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532692.0</p></div>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:45:52.515
+      MsgInboxVo.receivedTime=2011-10-20 16:45:52.515, Nanos: 515000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=2K
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=1
+      MsgInboxVo.toAddress=jsmith@test.com
+      MsgInboxVo.updtTime=2011-10-20 16:46:43.344, Nanos: 344000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:43,453] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 300
+[2011-10-20 16:46:43,453] [queueListenerContainer-3] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 298
+[2011-10-20 16:46:43,469] [queueListenerContainer-3] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.07410897.0
+[2011-10-20 16:46:43,469] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.07412280.0
+[2011-10-20 16:46:43,469] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Orig_Rule_Name: BROADCAST
+[2011-10-20 16:46:43,469] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15532072.0
+[2011-10-20 16:46:43,469] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-jsmith=test.com@localhost>
+[2011-10-20 16:46:43,469] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Orig_Rule_Name: BROADCAST
+[2011-10-20 16:46:43,469] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.07411283.0
+[2011-10-20 16:46:43,469] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-test=test.com@localhost>
+[2011-10-20 16:46:43,484] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15532072.0
+[2011-10-20 16:46:43,484] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.07412280.0
+[2011-10-20 16:46:43,484] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.07412280.0
+[2011-10-20 16:46:43,484] [queueListenerContainer-3] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.07410208.0
+[2011-10-20 16:46:43,484] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.07412621.0
+[2011-10-20 16:46:43,484] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Orig_Rule_Name: BROADCAST
+[2011-10-20 16:46:43,484] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.07411283.0
+[2011-10-20 16:46:43,484] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-test=test.com@localhost>
+[2011-10-20 16:46:43,484] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Orig_Rule_Name: BROADCAST
+[2011-10-20 16:46:43,484] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15532072.0
+[2011-10-20 16:46:43,484] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-jsmith=test.com@localhost>
+[2011-10-20 16:46:43,484] [queueListenerContainer-3] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.07410897.0
+[2011-10-20 16:46:43,594] [queueListenerContainer-3] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:43,594] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:43,594] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: user01@localhost, with testing address: testto@localhost
+[2011-10-20 16:46:43,594] [queueListenerContainer-3] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: user00@localhost, with testing address: testto@localhost
+[2011-10-20 16:46:43,594] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:43,594] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:43,594] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: test@test.com, with testing address: testto@localhost
+[2011-10-20 16:46:43,594] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: jsmith@test.com, with testing address: testto@localhost
+DEBUG: setDebug: JavaMail version 1.4ea
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:132] Extra SMTP retries to be attempted for localhost: 10 minutes, freq=6
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:155] localhost - will retry for up to 15 minutes.
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:157] localhost - maximum retry attempts 9
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:175] Persistent SMTP Connection used for localhost? false
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:177] Smtp Properties:     SmtpConnVo.alertAfter=5
+     SmtpConnVo.alertLevel=error
+     SmtpConnVo.class=com.legacytojava.message.vo.SmtpConnVo
+     SmtpConnVo.clone=
+     SmtpConnVo.description=smtp server on localhost
+     SmtpConnVo.logList=[]
+     SmtpConnVo.messageCount=0
+     SmtpConnVo.origUpdtTime=2011-09-23 15:52:20.0
+     SmtpConnVo.persistence=No
+     SmtpConnVo.primaryKey=null
+     SmtpConnVo.priority=null
+     SmtpConnVo.processorName=
+     SmtpConnVo.retries=10
+     SmtpConnVo.retryFreq=6
+     SmtpConnVo.rowId=1
+     SmtpConnVo.serverName=smtpServer
+     SmtpConnVo.serverType=smtp
+     SmtpConnVo.smtpHost=localhost
+     SmtpConnVo.smtpPort=-1
+     SmtpConnVo.statusId=A
+     SmtpConnVo.statusIdDesc=Active
+     SmtpConnVo.threads=4
+     SmtpConnVo.updtTime=2011-09-23 15:52:20.0
+     SmtpConnVo.updtUserId=MsgMaint
+     SmtpConnVo.useAuth=null
+     SmtpConnVo.useSsl=No
+     SmtpConnVo.userId=support
+     SmtpConnVo.userPswd=support
+
+DEBUG: setDebug: JavaMail version 1.4ea
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:132] Extra SMTP retries to be attempted for localhost: 4 minutes, freq=1
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:155] localhost - will retry for up to 14 minutes.
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:157] localhost - maximum retry attempts 13
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:175] Persistent SMTP Connection used for localhost? false
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:177] Smtp Properties:     SmtpConnVo.alertAfter=15
+     SmtpConnVo.alertLevel=error
+     SmtpConnVo.class=com.legacytojava.message.vo.SmtpConnVo
+     SmtpConnVo.clone=
+     SmtpConnVo.description=exch server on localhost
+     SmtpConnVo.logList=[]
+     SmtpConnVo.messageCount=0
+     SmtpConnVo.origUpdtTime=2011-09-23 15:52:20.0
+     SmtpConnVo.persistence=No
+     SmtpConnVo.primaryKey=null
+     SmtpConnVo.priority=null
+     SmtpConnVo.processorName=
+     SmtpConnVo.retries=4
+     SmtpConnVo.retryFreq=1
+     SmtpConnVo.rowId=4
+     SmtpConnVo.serverName=exchServer
+     SmtpConnVo.serverType=exch
+     SmtpConnVo.smtpHost=localhost
+     SmtpConnVo.smtpPort=25
+     SmtpConnVo.statusId=A
+     SmtpConnVo.statusIdDesc=Active
+     SmtpConnVo.threads=1
+     SmtpConnVo.updtTime=2011-09-23 15:52:20.0
+     SmtpConnVo.updtUserId=MsgMaint
+     SmtpConnVo.useAuth=null
+     SmtpConnVo.useSsl=No
+     SmtpConnVo.userId=uid
+     SmtpConnVo.userPswd=pwd
+
+[2011-10-20 16:46:43,641] [queueListenerContainer-1] [INFO,NamedPools,NamedPools.java:78] Named Pools Created for: [smtpServer, exchServer]
+[2011-10-20 16:46:43,656] [queueListenerContainer-1] [INFO,NamedPools,NamedPools.java:78] Named Pools Created for: []
+[2011-10-20 16:46:43,656] [queueListenerContainer-1] [DEBUG,ObjectPool,ObjectPool.java:178] smtpServer/smtp: Found a free pool item, pool size: 1, in use: 1
+[2011-10-20 16:46:43,656] [queueListenerContainer-4] [DEBUG,ObjectPool,ObjectPool.java:178] exchServer/exch: Found a free pool item, pool size: 1, in use: 1
+[2011-10-20 16:46:43,656] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/plain; charset=us-ascii
+[2011-10-20 16:46:43,656] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/html; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+DEBUG: setDebug: JavaMail version 1.4ea
+[2011-10-20 16:46:43,656] [queueListenerContainer-3] [INFO,SmtpConnection,SmtpConnection.java:132] Extra SMTP retries to be attempted for localhost: 10 minutes, freq=6
+[2011-10-20 16:46:43,656] [queueListenerContainer-3] [INFO,SmtpConnection,SmtpConnection.java:155] localhost - will retry for up to 15 minutes.
+[2011-10-20 16:46:43,656] [queueListenerContainer-3] [INFO,SmtpConnection,SmtpConnection.java:157] localhost - maximum retry attempts 9
+[2011-10-20 16:46:43,656] [queueListenerContainer-3] [INFO,SmtpConnection,SmtpConnection.java:175] Persistent SMTP Connection used for localhost? false
+[2011-10-20 16:46:43,656] [queueListenerContainer-3] [DEBUG,SmtpConnection,SmtpConnection.java:177] Smtp Properties:     SmtpConnVo.alertAfter=5
+     SmtpConnVo.alertLevel=error
+     SmtpConnVo.class=com.legacytojava.message.vo.SmtpConnVo
+     SmtpConnVo.clone=
+     SmtpConnVo.description=smtp server on localhost
+     SmtpConnVo.logList=[]
+     SmtpConnVo.messageCount=0
+     SmtpConnVo.origUpdtTime=2011-09-23 15:52:20.0
+     SmtpConnVo.persistence=No
+     SmtpConnVo.primaryKey=null
+     SmtpConnVo.priority=null
+     SmtpConnVo.processorName=
+     SmtpConnVo.retries=10
+     SmtpConnVo.retryFreq=6
+     SmtpConnVo.rowId=1
+     SmtpConnVo.serverName=smtpServer
+     SmtpConnVo.serverType=smtp
+     SmtpConnVo.smtpHost=localhost
+     SmtpConnVo.smtpPort=-1
+     SmtpConnVo.statusId=A
+     SmtpConnVo.statusIdDesc=Active
+     SmtpConnVo.threads=4
+     SmtpConnVo.updtTime=2011-09-23 15:52:20.0
+     SmtpConnVo.updtUserId=MsgMaint
+     SmtpConnVo.useAuth=null
+     SmtpConnVo.useSsl=No
+     SmtpConnVo.userId=support
+     SmtpConnVo.userPswd=support
+
+[2011-10-20 16:46:43,656] [queueListenerContainer-3] [DEBUG,ObjectPool,ObjectPool.java:178] smtpServer/smtp: Found a free pool item, pool size: 2, in use: 2
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:43,656] [queueListenerContainer-3] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/plain; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+DEBUG: setDebug: JavaMail version 1.4ea
+[2011-10-20 16:46:43,656] [queueListenerContainer-2] [INFO,SmtpConnection,SmtpConnection.java:132] Extra SMTP retries to be attempted for localhost: 10 minutes, freq=6
+[2011-10-20 16:46:43,656] [queueListenerContainer-2] [INFO,SmtpConnection,SmtpConnection.java:155] localhost - will retry for up to 15 minutes.
+[2011-10-20 16:46:43,656] [queueListenerContainer-2] [INFO,SmtpConnection,SmtpConnection.java:157] localhost - maximum retry attempts 9
+[2011-10-20 16:46:43,656] [queueListenerContainer-2] [INFO,SmtpConnection,SmtpConnection.java:175] Persistent SMTP Connection used for localhost? false
+[2011-10-20 16:46:43,656] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:177] Smtp Properties:     SmtpConnVo.alertAfter=5
+     SmtpConnVo.alertLevel=error
+     SmtpConnVo.class=com.legacytojava.message.vo.SmtpConnVo
+     SmtpConnVo.clone=
+     SmtpConnVo.description=smtp server on localhost
+     SmtpConnVo.logList=[]
+     SmtpConnVo.messageCount=0
+     SmtpConnVo.origUpdtTime=2011-09-23 15:52:20.0
+     SmtpConnVo.persistence=No
+     SmtpConnVo.primaryKey=null
+     SmtpConnVo.priority=null
+     SmtpConnVo.processorName=
+     SmtpConnVo.retries=10
+     SmtpConnVo.retryFreq=6
+     SmtpConnVo.rowId=1
+     SmtpConnVo.serverName=smtpServer
+     SmtpConnVo.serverType=smtp
+     SmtpConnVo.smtpHost=localhost
+     SmtpConnVo.smtpPort=-1
+     SmtpConnVo.statusId=A
+     SmtpConnVo.statusIdDesc=Active
+     SmtpConnVo.threads=4
+     SmtpConnVo.updtTime=2011-09-23 15:52:20.0
+     SmtpConnVo.updtUserId=MsgMaint
+     SmtpConnVo.useAuth=null
+     SmtpConnVo.useSsl=No
+     SmtpConnVo.userId=support
+     SmtpConnVo.userPswd=support
+
+[2011-10-20 16:46:43,656] [queueListenerContainer-2] [DEBUG,ObjectPool,ObjectPool.java:178] smtpServer/smtp: Found a free pool item, pool size: 3, in use: 3
+[2011-10-20 16:46:43,656] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/html; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:43,672] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/25)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+[2011-10-20 16:46:43,672] [queueListenerContainer-3] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/-1)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+[2011-10-20 16:46:43,672] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/-1)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+[2011-10-20 16:46:43,672] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/-1)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:43 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:43 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:43 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:43 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+EHLO TSD-119491
+EHLO TSD-119491
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+EHLO TSD-119491
+EHLO TSD-119491
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+DEBUG SMTP: use8bit false
+DEBUG SMTP: use8bit false
+MAIL FROM:<testfrom@localhost>
+MAIL FROM:<demolist2@localhost>
+DEBUG SMTP: use8bit false
+MAIL FROM:<testfrom@localhost>
+250 2.1.0 Sender <testfrom@localhost> OK
+DEBUG SMTP: use8bit false
+250 2.1.0 Sender <testfrom@localhost> OK
+RCPT TO:<user00@localhost>
+RCPT TO:<user01@localhost>
+250 2.1.5 Recipient <user00@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   user00@localhost
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+250 2.1.5 Recipient <user01@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   user01@localhost
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+MAIL FROM:<demolist2@localhost>
+250 2.1.0 Sender <demolist2@localhost> OK
+RCPT TO:<testto@localhost>
+250 2.1.5 Recipient <testto@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   "test@test.com" <testto@localhost>
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+250 2.1.0 Sender <demolist2@localhost> OK
+RCPT TO:<testto@localhost>
+250 2.1.5 Recipient <testto@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   "jsmith@test.com" <testto@localhost>
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+Return-Path: <bounce-10.07410897.0-user00=localhost@localhost>
+Date: Thu, 20 Oct 2011 16:46:43 -0400 (EDT)
+From: testfrom@localhost
+To: user00@localhost
+Message-ID: <20071629.61319143603672.JavaMail.iapjkw@TSD-119491>
+Subject: Test MailSender - 00 Thu Oct 20 16:45:56 EDT 2011
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Msg_Id: 298
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.07410208.0
+
+Test MailSender Body Message - 00
+
+System Email Id: 10.07410208.0
+.
+Return-Path: <bounce-10.07412023.0-user01=localhost@localhost>
+Date: Thu, 20 Oct 2011 16:46:43 -0400 (EDT)
+From: testfrom@localhost
+To: user01@localhost
+Message-ID: <30662761.51319143603672.JavaMail.iapjkw@TSD-119491>
+Subject: Test MailSender - 01 Thu Oct 20 16:45:56 EDT 2011
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Msg_Id: 299
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.07412280.0
+
+Test MailSender Body Message - 01
+
+System Email Id: 10.07412023.0
+.
+Return-Path: <bounce-10.15532072.0-jsmith=test.com@localhost>
+Date: Thu, 20 Oct 2011 16:46:43 -0400 (EDT)
+From: Sample List 2 <demolist2@localhost>
+To: "jsmith@test.com" <testto@localhost>
+Message-ID: <32717744.41319143603672.JavaMail.iapjkw@TSD-119491>
+Subject: Sample HTML newsletter to jsmith@test.com
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Orig_Rule_Name: BROADCAST
+List-Unsubscribe: <mailto:remove-SMPLLST2-jsmith=test.com@localhost>
+X-Client_Id: System
+X-Msg_Id: 300
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15532072.0
+
+<HTML><BODY>Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532692.0</p></div>
+</BODY></HTML>
+.
+Return-Path: <bounce-10.07411283.0-test=test.com@localhost>
+Date: Thu, 20 Oct 2011 16:46:43 -0400 (EDT)
+From: Sample List 2 <demolist2@localhost>
+To: "test@test.com" <testto@localhost>
+Message-ID: <27847924.31319143603672.JavaMail.iapjkw@TSD-119491>
+Subject: Sample HTML newsletter to test@test.com
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Orig_Rule_Name: BROADCAST
+List-Unsubscribe: <mailto:remove-SMPLLST2-test=test.com@localhost>
+X-Client_Id: System
+X-Msg_Id: 297
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.07412621.0
+
+<HTML><BODY>Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 293, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=293&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=293&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.07411283.0</p></div>
+</BODY></HTML>
+.
+250 2.6.0 Message received
+[2011-10-20 16:46:43,703] [queueListenerContainer-2] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: Sample List 2 <demolist2@localhost> was sent to: "test@test.com" <testto@localhost>, via localhost, Thu Oct 20 16:46:43 EDT 2011
+[2011-10-20 16:46:43,703] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:43,703] [queueListenerContainer-2] [DEBUG,ObjectPool,ObjectPool.java:243] smtpServer/smtp: Returned a pool item, pool size: 3, in use: 2
+250 2.6.0 Message received
+[2011-10-20 16:46:43,703] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: testfrom@localhost was sent to: user01@localhost, via localhost, Thu Oct 20 16:46:43 EDT 2011
+[2011-10-20 16:46:43,703] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:43,719] [queueListenerContainer-1] [DEBUG,ObjectPool,ObjectPool.java:243] smtpServer/smtp: Returned a pool item, pool size: 3, in use: 1
+[2011-10-20 16:46:43,734] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 297
+[2011-10-20 16:46:43,734] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 299
+[2011-10-20 16:46:43,766] [queueListenerContainer-1] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 1454
+250 2.6.0 Message received
+[2011-10-20 16:46:43,766] [queueListenerContainer-4] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: Sample List 2 <demolist2@localhost> was sent to: "jsmith@test.com" <testto@localhost>, via localhost, Thu Oct 20 16:46:43 EDT 2011
+[2011-10-20 16:46:43,766] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:43,766] [queueListenerContainer-4] [DEBUG,ObjectPool,ObjectPool.java:243] exchServer/exch: Returned a pool item, pool size: 1, in use: 0
+[2011-10-20 16:46:43,781] [queueListenerContainer-2] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 1469
+[2011-10-20 16:46:43,781] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 300
+[2011-10-20 16:46:43,812] [queueListenerContainer-4] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 1500
+250 2.6.0 Message received
+[2011-10-20 16:46:43,859] [queueListenerContainer-3] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: testfrom@localhost was sent to: user00@localhost, via localhost, Thu Oct 20 16:46:43 EDT 2011
+[2011-10-20 16:46:43,859] [queueListenerContainer-3] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+[2011-10-20 16:46:43,859] [main] [INFO,JbMain,JbMain.java:1074] Creating TimerTasks for ServerWatch and MetricsTask
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:43,859] [queueListenerContainer-3] [DEBUG,ObjectPool,ObjectPool.java:243] smtpServer/smtp: Returned a pool item, pool size: 3, in use: 0
+[2011-10-20 16:46:43,859] [TheMonitor] [INFO,JbMain,JbMain.java:1289] JbMain thread started at Thu Oct 20 16:46:43 EDT 2011
+[2011-10-20 16:46:43,859] [main] [DEBUG,EmailSender,EmailSender.java:99] Entering send method
+[2011-10-20 16:46:43,875] [queueListenerContainer-3] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 298
+[2011-10-20 16:46:43,891] [queueListenerContainer-3] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 1579
+[2011-10-20 16:46:43,906] [queueListenerContainer-2] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612847981559855]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:43,906] [queueListenerContainer-2] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:43,906] [queueListenerContainer-1] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848331259961]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:43,906] [queueListenerContainer-1] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:43,906] [queueListenerContainer-4] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848274161717]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:43,922] [queueListenerContainer-4] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:43,922] [queueListenerContainer-4] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:43,922] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: jsmith@test.com
+To: testto@localhost
+CarrierCode: S
+Subject: Weekend Deals at MyBesyDeals.com
+Embed EmailId: true
+RuleName: SEND_MAIL
+RenderId: 10
+Client Id: System
+Cust Id: test
+To PlainText: false
+Override TestAddr: false
+
+List Header Lines:
+Header Line - X-Client_Id: System
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/html, Disposition: null, Description: null
+BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+-> Level(1)****** BEGIN BodypartBean ******
+Mime Type: application/octet-stream; name="jndi.bin", Disposition: attachment, Description: jndi.bin
+Data contains nonprintable content.
+<- Level(1)****** END BodypartBean ******
+-> Level(1)****** BEGIN BodypartBean ******
+Mime Type: text/plain; charset="iso-8859-1"; name="attachment1.txt", Disposition: attachment, Description: attachment1.txt
+Attachment Text ============================================
+<- Level(1)****** END BodypartBean ******
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:43,922] [queueListenerContainer-1] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 301, From MailReader: false
+[2011-10-20 16:46:43,922] [queueListenerContainer-2] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:43,937] [queueListenerContainer-1] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 301, EmailId: <div style='color: darkgray;'><p>System Email Id: 10.15530514.0</p></div>
+[2011-10-20 16:46:43,937] [queueListenerContainer-1] [INFO,BodypartUtil,BodypartUtil.java:62] retrieveAttachments(): level=1, mtype=application/octet-stream, , disp=attachment, desc=jndi.bin, not null
+[2011-10-20 16:46:43,937] [queueListenerContainer-1] [INFO,BodypartUtil,BodypartUtil.java:62] retrieveAttachments(): level=1, mtype=text/plain, , disp=attachment, desc=attachment1.txt, not null
+[2011-10-20 16:46:43,937] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: demolist2@localhost
+To: testto@localhost
+CarrierCode: S
+Subject: Sample HTML newsletter to testto@localhost
+Send Date: Thu Oct 20 16:45:53 EDT 2011
+Embed EmailId: true
+RuleName: SEND_MAIL
+Mailing List Id: SMPLLST2
+ToCustomersOnly: false
+Client Id: System
+To PlainText: false
+Override TestAddr: false
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/html, Disposition: null, Description: null
+Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:43,937] [queueListenerContainer-2] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 302, From MailReader: false
+[2011-10-20 16:46:43,953] [queueListenerContainer-2] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 302, EmailId: <div style='color: darkgray;'><p>System Email Id: 10.15531581.0</p></div>
+[2011-10-20 16:46:43,969] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: Sample List 2 <demolist2@localhost>
+To: jsmith@test.com
+CarrierCode: S
+Subject: Sample HTML newsletter to jsmith@test.com
+Send Date: Thu Oct 20 16:46:10 EDT 2011
+Embed EmailId: true
+MsgId: 296
+RuleName: SEND_MAIL
+Mailing List Id: SMPLLST2
+ToCustomersOnly: false
+Client Id: System
+To PlainText: false
+Override TestAddr: false
+
+List Header Lines:
+Header Line - X-Orig_Rule_Name: BROADCAST
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/html, Disposition: null, Description: null
+Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:43,969] [queueListenerContainer-4] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 303, From MailReader: false
+[2011-10-20 16:46:43,969] [queueListenerContainer-4] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 303, EmailId: <div style='color: darkgray;'><p>System Email Id: 10.15531195.0</p></div>
+[2011-10-20 16:46:43,969] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=2
+      MsgInboxVo.attachmentSize=266
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/html
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=System
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=test
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+<div style='color: darkgray;'><p>System Email Id: 10.15530514.0</p></div>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=1
+      MsgInboxVo.fromAddress=jsmith@test.com
+      MsgInboxVo.fromDisplayName=jsmith@test.com
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=301
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=<HTML><BODY>BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+<div style='color: darkgray;'><p>System Email Id: 10.15530514.0</p></div>
+</BODY></HTML>
+      MsgInboxVo.msgBodySize=481
+      MsgInboxVo.msgContentType=text/html
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=301
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Weekend Deals at MyBesyDeals.com
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:43.937
+      MsgInboxVo.rawMessage=BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+<div style='color: darkgray;'><p>System Email Id: 10.15530514.0</p></div>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:43.922
+      MsgInboxVo.receivedTime=2011-10-20 16:46:43.922, Nanos: 922000000
+      MsgInboxVo.renderId=10
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=1024
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=14
+      MsgInboxVo.toAddress=testto@localhost
+      MsgInboxVo.updtTime=2011-10-20 16:46:43.922, Nanos: 922000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=true
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:43,984] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 301
+[2011-10-20 16:46:44,000] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Client_Id: System
+[2011-10-20 16:46:44,000] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15530514.0
+[2011-10-20 16:46:44,000] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15530729.0
+[2011-10-20 16:46:44,000] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Client_Id: System
+[2011-10-20 16:46:44,000] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15530514.0
+[2011-10-20 16:46:44,000] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:280] constructMultiPart() - MultipartHL - Content Type: multipart/mixed; 
+	boundary="----=_Part_0_12915102.1319143604000"
+[2011-10-20 16:46:44,031] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/html
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=System
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15531581.0</p></div>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=8
+      MsgInboxVo.fromAddress=demolist2@localhost
+      MsgInboxVo.fromDisplayName=demolist2@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=302
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=<HTML><BODY>Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15531581.0</p></div>
+</BODY></HTML>
+      MsgInboxVo.msgBodySize=1230
+      MsgInboxVo.msgContentType=text/html
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=302
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Sample HTML newsletter to testto@localhost
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:43.953
+      MsgInboxVo.rawMessage=Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15531581.0</p></div>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:45:53.531
+      MsgInboxVo.receivedTime=2011-10-20 16:45:53.531, Nanos: 531000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=2K
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=14
+      MsgInboxVo.toAddress=testto@localhost
+      MsgInboxVo.updtTime=2011-10-20 16:46:43.937, Nanos: 937000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:44,031] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 302
+[2011-10-20 16:46:44,031] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/html
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=System
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15531195.0</p></div>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=8
+      MsgInboxVo.fromAddress=demolist2@localhost
+      MsgInboxVo.fromDisplayName=demolist2@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=303
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=<HTML><BODY>Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15531195.0</p></div>
+</BODY></HTML>
+      MsgInboxVo.msgBodySize=1185
+      MsgInboxVo.msgContentType=text/html
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=303
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Sample HTML newsletter to jsmith@test.com
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:43.969
+      MsgInboxVo.rawMessage=Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15531195.0</p></div>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:10.484
+      MsgInboxVo.receivedTime=2011-10-20 16:46:10.484, Nanos: 484000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=2K
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=1
+      MsgInboxVo.toAddress=jsmith@test.com
+      MsgInboxVo.updtTime=2011-10-20 16:46:43.969, Nanos: 969000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:44,031] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:44,031] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: testto@localhost, with testing address: testto@localhost
+[2011-10-20 16:46:44,031] [queueListenerContainer-1] [DEBUG,ObjectPool,ObjectPool.java:178] exchServer/exch: Found a free pool item, pool size: 1, in use: 1
+[2011-10-20 16:46:44,031] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15531581.0
+[2011-10-20 16:46:44,031] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-testto=localhost@localhost>
+[2011-10-20 16:46:44,031] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15532270.0
+[2011-10-20 16:46:44,031] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15531581.0
+[2011-10-20 16:46:44,031] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-testto=localhost@localhost>
+[2011-10-20 16:46:44,047] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: multipart/mixed; 
+	boundary="----=_Part_0_12915102.1319143604000"
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:44,047] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:44,047] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: testto@localhost, with testing address: testto@localhost
+[2011-10-20 16:46:44,047] [queueListenerContainer-2] [DEBUG,ObjectPool,ObjectPool.java:178] smtpServer/smtp: Found a free pool item, pool size: 3, in use: 1
+[2011-10-20 16:46:44,047] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/html; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:44,047] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/-1)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 303
+[2011-10-20 16:46:44,047] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/25)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Orig_Rule_Name: BROADCAST
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15531195.0
+DEBUG SMTP: connected to host "localhost", port: 25
+
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-jsmith=test.com@localhost>
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15532689.0
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Orig_Rule_Name: BROADCAST
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15531195.0
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-jsmith=test.com@localhost>
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+EHLO TSD-119491
+EHLO TSD-119491
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: jsmith@test.com, with testing address: testto@localhost
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,ObjectPool,ObjectPool.java:178] smtpServer/smtp: Found a free pool item, pool size: 3, in use: 2
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/html; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+DEBUG SMTP: use8bit false
+MAIL FROM:<jsmith@test.com>
+[2011-10-20 16:46:44,047] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/-1)
+DEBUG SMTP: useEhlo true, useAuth false
+250 2.1.0 Sender <jsmith@test.com> OK
+RCPT TO:<testto@localhost>
+DEBUG SMTP: use8bit false
+MAIL FROM:<demolist2@localhost>
+250 2.1.5 Recipient <testto@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   testto@localhost
+DATA
+250 2.1.0 Sender <demolist2@localhost> OK
+354 Ok Send data ending with <CRLF>.<CRLF>
+RCPT TO:<testto@localhost>
+250 2.1.5 Recipient <testto@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   testto@localhost
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+Return-Path: <bounce-10.15531581.0-testto=localhost@localhost>
+Date: Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+From: demolist2@localhost
+To: testto@localhost
+Message-ID: <33443850.121319143604047.JavaMail.iapjkw@TSD-119491>
+Subject: Sample HTML newsletter to testto@localhost
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+List-Unsubscribe: <mailto:remove-SMPLLST2-testto=localhost@localhost>
+X-Client_Id: System
+X-Msg_Id: 302
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15532270.0
+
+<HTML><BODY>Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15531581.0</p></div>
+</BODY></HTML>
+.
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+Return-Path: <bounce-10.15530514.0-testto=localhost@localhost>
+Date: Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+From: jsmith@test.com
+To: testto@localhost
+Message-ID: <29946829.111319143604047.JavaMail.iapjkw@TSD-119491>
+Subject: Weekend Deals at MyBesyDeals.com
+MIME-Version: 1.0
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_0_12915102.1319143604000"
+X-Client_Id: System
+X-Customer_Id: test
+X-Msg_Id: 301
+X-Render_Id: 10
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15530729.0
+
+------=_Part_0_12915102.1319143604000
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Client_Id: System
+
+<HTML><BODY>BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+<div style='color: darkgray;'><p>System Email Id: 10.15530514.0</p></div>
+</BODY></HTML>
+------=_Part_0_12915102.1319143604000
+Content-Type: application/octet-stream; name="jndi.bin"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment
+Content-Description: jndi.bin
+
+### JBossNS properties
+java.naming.factory.initial=org.jnp.interfaces.NamingContextFactory
+java.naming.provider.url=jnp://localhost:2099
+java.naming.factory.url.pkgs=org.jboss.naming:org.jnp.interfaces
+
+------=_Part_0_12915102.1319143604000
+Content-Type: text/plain; charset="iso-8859-1"; name="attachment1.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment
+Content-Description: attachment1.txt
+
+Attachment Text ============================================
+------=_Part_0_12915102.1319143604000--
+
+.
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+EHLO TSD-119491
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+DEBUG SMTP: use8bit false
+MAIL FROM:<demolist2@localhost>
+250 2.1.0 Sender <demolist2@localhost> OK
+RCPT TO:<testto@localhost>
+250 2.1.5 Recipient <testto@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   "jsmith@test.com" <testto@localhost>
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+Return-Path: <bounce-10.15531195.0-jsmith=test.com@localhost>
+Date: Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+From: Sample List 2 <demolist2@localhost>
+To: "jsmith@test.com" <testto@localhost>
+Message-ID: <27501868.131319143604062.JavaMail.iapjkw@TSD-119491>
+Subject: Sample HTML newsletter to jsmith@test.com
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Orig_Rule_Name: BROADCAST
+List-Unsubscribe: <mailto:remove-SMPLLST2-jsmith=test.com@localhost>
+X-Client_Id: System
+X-Msg_Id: 303
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15532689.0
+
+<HTML><BODY>Dear jsmith@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=1'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=1' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15531195.0</p></div>
+</BODY></HTML>
+.
+[2011-10-20 16:46:44,094] [main] [DEBUG,EmailSender,EmailSender.java:134] Mail from event.alert@localhost - A info_event occured was sent to: alert@localhost
+[2011-10-20 16:46:44,094] [main] [INFO,EventAlert,EventAlert.java:278] Alert sent to alert@localhost - msg=jbatch on 10.91.139.146:F:\pkgs\workspace\MailSender started, key=info_event
+250 2.6.0 Message received
+[2011-10-20 16:46:44,156] [queueListenerContainer-4] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: Sample List 2 <demolist2@localhost> was sent to: "jsmith@test.com" <testto@localhost>, via localhost, Thu Oct 20 16:46:44 EDT 2011
+[2011-10-20 16:46:44,156] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+250 2.6.0 Message received
+[2011-10-20 16:46:44,156] [queueListenerContainer-2] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: demolist2@localhost was sent to: testto@localhost, via localhost, Thu Oct 20 16:46:44 EDT 2011
+[2011-10-20 16:46:44,156] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:44,156] [queueListenerContainer-4] [DEBUG,ObjectPool,ObjectPool.java:243] smtpServer/smtp: Returned a pool item, pool size: 3, in use: 1
+250 2.6.0 Message received
+[2011-10-20 16:46:44,156] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: jsmith@test.com was sent to: testto@localhost, via localhost, Thu Oct 20 16:46:44 EDT 2011
+[2011-10-20 16:46:44,156] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:44,172] [queueListenerContainer-2] [DEBUG,ObjectPool,ObjectPool.java:243] smtpServer/smtp: Returned a pool item, pool size: 3, in use: 0
+[2011-10-20 16:46:44,172] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 303
+[2011-10-20 16:46:44,172] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 302
+[2011-10-20 16:46:44,203] [queueListenerContainer-4] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 297
+[2011-10-20 16:46:44,203] [queueListenerContainer-2] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 297
+[2011-10-20 16:46:44,219] [queueListenerContainer-3] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848328949816]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:44,219] [queueListenerContainer-3] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:44,219] [queueListenerContainer-1] [DEBUG,ObjectPool,ObjectPool.java:243] exchServer/exch: Returned a pool item, pool size: 1, in use: 0
+[2011-10-20 16:46:44,234] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 301
+[2011-10-20 16:46:44,250] [queueListenerContainer-3] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:44,266] [queueListenerContainer-1] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 360
+[2011-10-20 16:46:44,266] [queueListenerContainer-3] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: testfrom@localhost
+To: user01@localhost
+Subject: Test MailSender - 01 Thu Oct 20 16:46:14 EDT 2011
+Embed EmailId: true
+RuleName: SEND_MAIL
+To PlainText: false
+Override TestAddr: false
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/plain, Disposition: null, Description: null
+Test MailSender Body Message - 01
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:44,266] [queueListenerContainer-3] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 304, From MailReader: false
+[2011-10-20 16:46:44,266] [queueListenerContainer-3] [WARN,MsgInboxBoImpl,MsgInboxBoImpl.java:106] saveMessage() - carrierCode field is null, set to S (SMTP)
+[2011-10-20 16:46:44,266] [queueListenerContainer-3] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 304, EmailId: System Email Id: 10.15531316.0
+[2011-10-20 16:46:44,297] [queueListenerContainer-4] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848273145908]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:44,297] [queueListenerContainer-4] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:44,297] [queueListenerContainer-4] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:44,297] [queueListenerContainer-3] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/plain
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=null
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=<pre>Test MailSender Body Message - 01
+
+System Email Id: 10.15531316.0</pre>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=13
+      MsgInboxVo.fromAddress=testfrom@localhost
+      MsgInboxVo.fromDisplayName=testfrom@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=304
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=Test MailSender Body Message - 01
+
+System Email Id: 10.15531316.0
+      MsgInboxVo.msgBodySize=67
+      MsgInboxVo.msgContentType=text/plain
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=304
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Test MailSender - 01 Thu Oct 20 16:46:14 EDT 2011
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:44.266
+      MsgInboxVo.rawMessage=<pre>Test MailSender Body Message - 01
+
+System Email Id: 10.15531316.0</pre>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:44.266
+      MsgInboxVo.receivedTime=2011-10-20 16:46:44.266, Nanos: 266000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=1024
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=34
+      MsgInboxVo.toAddress=user01@localhost
+      MsgInboxVo.updtTime=2011-10-20 16:46:44.266, Nanos: 266000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:44,312] [queueListenerContainer-3] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 304
+[2011-10-20 16:46:44,312] [queueListenerContainer-3] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15531676.0
+[2011-10-20 16:46:44,312] [queueListenerContainer-3] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15531316.0
+[2011-10-20 16:46:44,312] [queueListenerContainer-3] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15531676.0
+[2011-10-20 16:46:44,312] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: demolist2@localhost
+To: testto@localhost
+CarrierCode: S
+Subject: Sample HTML newsletter to testto@localhost
+Send Date: Thu Oct 20 16:46:11 EDT 2011
+Embed EmailId: true
+RuleName: SEND_MAIL
+Mailing List Id: SMPLLST2
+ToCustomersOnly: false
+Client Id: System
+To PlainText: false
+Override TestAddr: false
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/html, Disposition: null, Description: null
+Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:44,312] [queueListenerContainer-4] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 305, From MailReader: false
+[2011-10-20 16:46:44,312] [queueListenerContainer-4] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 305, EmailId: <div style='color: darkgray;'><p>System Email Id: 10.15532295.0</p></div>
+[2011-10-20 16:46:44,328] [queueListenerContainer-3] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:44,328] [queueListenerContainer-3] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: user01@localhost, with testing address: testto@localhost
+[2011-10-20 16:46:44,328] [queueListenerContainer-3] [DEBUG,ObjectPool,ObjectPool.java:178] exchServer/exch: Found a free pool item, pool size: 1, in use: 1
+[2011-10-20 16:46:44,328] [queueListenerContainer-3] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/plain; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:44,328] [queueListenerContainer-3] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/25)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+[2011-10-20 16:46:44,344] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/html
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=System
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532295.0</p></div>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=8
+      MsgInboxVo.fromAddress=demolist2@localhost
+      MsgInboxVo.fromDisplayName=demolist2@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=305
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=<HTML><BODY>Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532295.0</p></div>
+</BODY></HTML>
+      MsgInboxVo.msgBodySize=1230
+      MsgInboxVo.msgContentType=text/html
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=305
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Sample HTML newsletter to testto@localhost
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:44.312
+      MsgInboxVo.rawMessage=Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532295.0</p></div>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:11.312
+      MsgInboxVo.receivedTime=2011-10-20 16:46:11.312, Nanos: 312000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=2K
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=14
+      MsgInboxVo.toAddress=testto@localhost
+      MsgInboxVo.updtTime=2011-10-20 16:46:44.312, Nanos: 312000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+[2011-10-20 16:46:44,359] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 305
+[2011-10-20 16:46:44,359] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15532295.0
+[2011-10-20 16:46:44,359] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-testto=localhost@localhost>
+[2011-10-20 16:46:44,359] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15532295.0
+[2011-10-20 16:46:44,359] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15532295.0
+[2011-10-20 16:46:44,359] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-testto=localhost@localhost>
+EHLO TSD-119491
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+[2011-10-20 16:46:44,375] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:44,375] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: testto@localhost, with testing address: testto@localhost
+[2011-10-20 16:46:44,375] [queueListenerContainer-4] [DEBUG,ObjectPool,ObjectPool.java:178] smtpServer/smtp: Found a free pool item, pool size: 3, in use: 1
+[2011-10-20 16:46:44,375] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/html; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:44,375] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/-1)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+DEBUG SMTP: use8bit false
+MAIL FROM:<testfrom@localhost>
+250 2.1.0 Sender <testfrom@localhost> OK
+RCPT TO:<user01@localhost>
+250 2.1.5 Recipient <user01@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   user01@localhost
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+Return-Path: <bounce-10.15531316.0-user01=localhost@localhost>
+Date: Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+From: testfrom@localhost
+To: user01@localhost
+Message-ID: <3968441.161319143604375.JavaMail.iapjkw@TSD-119491>
+Subject: Test MailSender - 01 Thu Oct 20 16:46:14 EDT 2011
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Msg_Id: 304
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15531316.0
+
+Test MailSender Body Message - 01
+
+System Email Id: 10.15531316.0
+.
+EHLO TSD-119491
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+DEBUG SMTP: use8bit false
+MAIL FROM:<demolist2@localhost>
+250 2.1.0 Sender <demolist2@localhost> OK
+RCPT TO:<testto@localhost>
+250 2.1.5 Recipient <testto@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   testto@localhost
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+Return-Path: <bounce-10.15532295.0-testto=localhost@localhost>
+Date: Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+From: demolist2@localhost
+To: testto@localhost
+Message-ID: <24936523.171319143604391.JavaMail.iapjkw@TSD-119491>
+Subject: Sample HTML newsletter to testto@localhost
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+List-Unsubscribe: <mailto:remove-SMPLLST2-testto=localhost@localhost>
+X-Client_Id: System
+X-Msg_Id: 305
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15532295.0
+
+<HTML><BODY>Dear testto@localhost,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: ${BroadcastMsgId}, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=${BroadcastMsgId}&listid=SMPLLST2&sbsrid=14' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532295.0</p></div>
+</BODY></HTML>
+.
+250 2.6.0 Message received
+[2011-10-20 16:46:44,453] [queueListenerContainer-4] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: demolist2@localhost was sent to: testto@localhost, via localhost, Thu Oct 20 16:46:44 EDT 2011
+[2011-10-20 16:46:44,453] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:44,453] [queueListenerContainer-4] [DEBUG,ObjectPool,ObjectPool.java:243] smtpServer/smtp: Returned a pool item, pool size: 3, in use: 0
+250 2.6.0 Message received
+[2011-10-20 16:46:44,469] [queueListenerContainer-3] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: testfrom@localhost was sent to: user01@localhost, via localhost, Thu Oct 20 16:46:44 EDT 2011
+[2011-10-20 16:46:44,469] [queueListenerContainer-3] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+[2011-10-20 16:46:44,469] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 305
+[2011-10-20 16:46:44,500] [queueListenerContainer-4] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 203
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:44,500] [queueListenerContainer-3] [DEBUG,ObjectPool,ObjectPool.java:243] exchServer/exch: Returned a pool item, pool size: 1, in use: 0
+[2011-10-20 16:46:44,516] [queueListenerContainer-3] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 304
+[2011-10-20 16:46:44,531] [queueListenerContainer-3] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 312
+[2011-10-20 16:46:44,547] [queueListenerContainer-4] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848048635954]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:44,547] [queueListenerContainer-1] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848275193910]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:44,547] [queueListenerContainer-4] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:44,547] [queueListenerContainer-1] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:44,562] [queueListenerContainer-1] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:44,562] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: Sample List 2 <demolist2@localhost>
+To: test@test.com
+CarrierCode: S
+Subject: Sample HTML newsletter to test@test.com
+Send Date: Thu Oct 20 16:46:10 EDT 2011
+Embed EmailId: true
+MsgId: 296
+RuleName: SEND_MAIL
+Mailing List Id: SMPLLST2
+ToCustomersOnly: false
+Client Id: System
+To PlainText: false
+Override TestAddr: false
+
+List Header Lines:
+Header Line - X-Orig_Rule_Name: BROADCAST
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/html, Disposition: null, Description: null
+Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:44,562] [queueListenerContainer-1] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 306, From MailReader: false
+[2011-10-20 16:46:44,562] [queueListenerContainer-1] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 306, EmailId: <div style='color: darkgray;'><p>System Email Id: 10.15532123.0</p></div>
+[2011-10-20 16:46:44,562] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: jsmith@test.com
+To: testto@localhost
+CarrierCode: S
+Subject: Weekend Deals at MyBesyDeals.com
+Embed EmailId: true
+RuleName: SEND_MAIL
+RenderId: 9
+Client Id: System
+Cust Id: test
+To PlainText: false
+Override TestAddr: false
+
+List Header Lines:
+Header Line - X-Client_Id: System
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/html, Disposition: null, Description: null
+BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+-> Level(1)****** BEGIN BodypartBean ******
+Mime Type: application/octet-stream; name="jndi.bin", Disposition: attachment, Description: jndi.bin
+Data contains nonprintable content.
+<- Level(1)****** END BodypartBean ******
+-> Level(1)****** BEGIN BodypartBean ******
+Mime Type: text/plain; charset="iso-8859-1"; name="attachment1.txt", Disposition: attachment, Description: attachment1.txt
+Attachment Text ============================================
+<- Level(1)****** END BodypartBean ******
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:44,562] [queueListenerContainer-4] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 307, From MailReader: false
+[2011-10-20 16:46:44,578] [queueListenerContainer-4] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 307, EmailId: <div style='color: darkgray;'><p>System Email Id: 10.15530728.0</p></div>
+[2011-10-20 16:46:44,578] [queueListenerContainer-2] [DEBUG,QueueListener,QueueListener.java:39] JMS Message Received: delegator->JBossMessage[21612848328949815]:PERSISTENT, deliveryId=0
+[2011-10-20 16:46:44,578] [queueListenerContainer-2] [INFO,MailSenderProcessor,MailSenderProcessor.java:107] A MessageBean object received.
+[2011-10-20 16:46:44,578] [queueListenerContainer-2] [WARN,MailSenderBase,MailSenderBase.java:122] process() - Render Id is null, the message was not rendered
+[2011-10-20 16:46:44,594] [queueListenerContainer-4] [INFO,BodypartUtil,BodypartUtil.java:62] retrieveAttachments(): level=1, mtype=application/octet-stream, , disp=attachment, desc=jndi.bin, not null
+[2011-10-20 16:46:44,594] [queueListenerContainer-4] [INFO,BodypartUtil,BodypartUtil.java:62] retrieveAttachments(): level=1, mtype=text/plain, , disp=attachment, desc=attachment1.txt, not null
+[2011-10-20 16:46:44,594] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:89] Entering saveMessage() method...
+From: testfrom@localhost
+To: user00@localhost
+Subject: Test MailSender - 00 Thu Oct 20 16:46:14 EDT 2011
+Embed EmailId: true
+RuleName: SEND_MAIL
+To PlainText: false
+Override TestAddr: false
+
+List Body Parts:
+-> Level(0)****** BEGIN BodypartBean ******
+Mime Type: text/plain, Disposition: null, Description: null
+Test MailSender Body Message - 00
+<- Level(0)****** END BodypartBean ******
+
+[2011-10-20 16:46:44,594] [queueListenerContainer-2] [INFO,MsgInboxBoImpl,MsgInboxBoImpl.java:101] saveMessage() - MsgId to be saved: 308, From MailReader: false
+[2011-10-20 16:46:44,594] [queueListenerContainer-2] [WARN,MsgInboxBoImpl,MsgInboxBoImpl.java:106] saveMessage() - carrierCode field is null, set to S (SMTP)
+[2011-10-20 16:46:44,609] [queueListenerContainer-2] [DEBUG,MessageBodyBuilder,MessageBodyBuilder.java:277] getEmailIdSection() - MsgId: 308, EmailId: System Email Id: 10.15530873.0
+[2011-10-20 16:46:44,609] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/html
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=System
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532123.0</p></div>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=8
+      MsgInboxVo.fromAddress=demolist2@localhost
+      MsgInboxVo.fromDisplayName=demolist2@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=306
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=<HTML><BODY>Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532123.0</p></div>
+</BODY></HTML>
+      MsgInboxVo.msgBodySize=1183
+      MsgInboxVo.msgContentType=text/html
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=306
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Sample HTML newsletter to test@test.com
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:44.562
+      MsgInboxVo.rawMessage=Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532123.0</p></div>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:10.484
+      MsgInboxVo.receivedTime=2011-10-20 16:46:10.484, Nanos: 484000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=2K
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=2
+      MsgInboxVo.toAddress=test@test.com
+      MsgInboxVo.updtTime=2011-10-20 16:46:44.562, Nanos: 562000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:44,625] [queueListenerContainer-1] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 306
+[2011-10-20 16:46:44,625] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Orig_Rule_Name: BROADCAST
+[2011-10-20 16:46:44,625] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15532123.0
+[2011-10-20 16:46:44,625] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-test=test.com@localhost>
+[2011-10-20 16:46:44,641] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15532123.0
+[2011-10-20 16:46:44,641] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Orig_Rule_Name: BROADCAST
+[2011-10-20 16:46:44,641] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15532123.0
+[2011-10-20 16:46:44,641] [queueListenerContainer-1] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - List-Unsubscribe: <mailto:remove-SMPLLST2-test=test.com@localhost>
+[2011-10-20 16:46:44,625] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=2
+      MsgInboxVo.attachmentSize=266
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/html
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=System
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=test
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+<div style='color: darkgray;'><p>System Email Id: 10.15530728.0</p></div>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=1
+      MsgInboxVo.fromAddress=jsmith@test.com
+      MsgInboxVo.fromDisplayName=jsmith@test.com
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=307
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=<HTML><BODY>BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+<div style='color: darkgray;'><p>System Email Id: 10.15530728.0</p></div>
+</BODY></HTML>
+      MsgInboxVo.msgBodySize=481
+      MsgInboxVo.msgContentType=text/html
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=307
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Weekend Deals at MyBesyDeals.com
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:44.578
+      MsgInboxVo.rawMessage=BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+<div style='color: darkgray;'><p>System Email Id: 10.15530728.0</p></div>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:44.562
+      MsgInboxVo.receivedTime=2011-10-20 16:46:44.562, Nanos: 562000000
+      MsgInboxVo.renderId=9
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=1024
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=14
+      MsgInboxVo.toAddress=testto@localhost
+      MsgInboxVo.updtTime=2011-10-20 16:46:44.562, Nanos: 562000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=true
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:44,641] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:239] Message to insert
+
+ 
+      MsgInboxVo.attachmentCount=0
+      MsgInboxVo.attachmentSize=0
+      MsgInboxVo.attachments=a List
+      MsgInboxVo.bodyContentType=text/plain
+      MsgInboxVo.carrierCode=S
+      MsgInboxVo.ccAddress=
+      MsgInboxVo.class=com.legacytojava.message.vo.inbox.MsgInboxVo
+      MsgInboxVo.clientId=null
+      MsgInboxVo.clone=
+      MsgInboxVo.composeFromAddress=null
+      MsgInboxVo.composeToAddress=null
+      MsgInboxVo.custId=null
+      MsgInboxVo.deliveryStatus=a List
+      MsgInboxVo.deliveryTime=null
+      MsgInboxVo.displayBody=<pre>Test MailSender Body Message - 00
+
+System Email Id: 10.15530873.0</pre>
+      MsgInboxVo.flagged=N
+      MsgInboxVo.forwardCount=0
+      MsgInboxVo.fromAddrId=13
+      MsgInboxVo.fromAddress=testfrom@localhost
+      MsgInboxVo.fromDisplayName=testfrom@localhost
+      MsgInboxVo.isForward=false
+      MsgInboxVo.isReply=false
+      MsgInboxVo.leadMsgId=308
+      MsgInboxVo.levelDots=
+      MsgInboxVo.levelPrefix=
+      MsgInboxVo.lockId=null
+      MsgInboxVo.lockTime=null
+      MsgInboxVo.logList=a List
+      MsgInboxVo.msgAddrs=a List
+      MsgInboxVo.msgBody=Test MailSender Body Message - 00
+
+System Email Id: 10.15530873.0
+      MsgInboxVo.msgBodySize=67
+      MsgInboxVo.msgContentType=text/plain
+      MsgInboxVo.msgDirection=S
+      MsgInboxVo.msgHeaders=a List
+      MsgInboxVo.msgId=308
+      MsgInboxVo.msgPriority=2 (Normal)
+      MsgInboxVo.msgRefId=null
+      MsgInboxVo.msgRenderedVo=-null
+      MsgInboxVo.msgStreamVo=-null
+      MsgInboxVo.msgSubject=Test MailSender - 00 Thu Oct 20 16:46:14 EDT 2011
+      MsgInboxVo.origReadCount=-1
+      MsgInboxVo.origStatusId=null
+      MsgInboxVo.origUpdtTime=null
+      MsgInboxVo.overrideTestAddr=N
+      MsgInboxVo.primaryKey=null
+      MsgInboxVo.purgeDate=2012-10-20 16:46:44.609
+      MsgInboxVo.rawMessage=<pre>Test MailSender Body Message - 00
+
+System Email Id: 10.15530873.0</pre>
+      MsgInboxVo.readCount=0
+      MsgInboxVo.receivedDate=2011-10-20 16:46:44.594
+      MsgInboxVo.receivedTime=2011-10-20 16:46:44.594, Nanos: 594000000
+      MsgInboxVo.renderId=null
+      MsgInboxVo.replyCount=0
+      MsgInboxVo.replyToAddrId=null
+      MsgInboxVo.rfcFields=a List
+      MsgInboxVo.rowId=-1
+      MsgInboxVo.rows=25
+      MsgInboxVo.ruleName=SEND_MAIL
+      MsgInboxVo.size=1024
+      MsgInboxVo.smtpMessageId=null
+      MsgInboxVo.statusId=P
+      MsgInboxVo.statusIdDesc=P
+      MsgInboxVo.threadLevel=0
+      MsgInboxVo.toAddrId=28
+      MsgInboxVo.toAddress=user00@localhost
+      MsgInboxVo.updtTime=2011-10-20 16:46:44.594, Nanos: 594000000
+      MsgInboxVo.updtUserId=MsgMaint
+      MsgInboxVo.isClosedStatus=false
+      MsgInboxVo.isEditable=true
+      MsgInboxVo.isFlaggedMsg=false
+      MsgInboxVo.isHasAttachments=false
+      MsgInboxVo.isMarkedForDeletion=false
+      MsgInboxVo.isMarkedForEdition=false
+      MsgInboxVo.isReceivedMsg=false
+      MsgInboxVo.isShowAllHeaders=false
+      MsgInboxVo.isShowRawMessage=false
+[2011-10-20 16:46:44,641] [queueListenerContainer-4] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 307
+[2011-10-20 16:46:44,641] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:44,641] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: test@test.com, with testing address: testto@localhost
+[2011-10-20 16:46:44,641] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Client_Id: System
+[2011-10-20 16:46:44,641] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15530728.0
+[2011-10-20 16:46:44,641] [queueListenerContainer-2] [DEBUG,MsgInboxBoImpl,MsgInboxBoImpl.java:374] saveMessage() - Message has been saved to database, MsgId: 308
+[2011-10-20 16:46:44,641] [queueListenerContainer-1] [DEBUG,ObjectPool,ObjectPool.java:178] exchServer/exch: Found a free pool item, pool size: 1, in use: 1
+[2011-10-20 16:46:44,641] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15530139.0
+[2011-10-20 16:46:44,656] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:76] createMimeMessage() - Header Line - X-Email_Id: 10.15530873.0
+[2011-10-20 16:46:44,656] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/html; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:44,656] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Client_Id: System
+[2011-10-20 16:46:44,656] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15530728.0
+[2011-10-20 16:46:44,656] [queueListenerContainer-4] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:280] constructMultiPart() - MultipartHL - Content Type: multipart/mixed; 
+	boundary="----=_Part_1_33507544.1319143604656"
+[2011-10-20 16:46:44,656] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/25)
+[2011-10-20 16:46:44,656] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:139] createMimeMessage() - X-Header Line - X-Email_Id: 10.15530873.0
+[2011-10-20 16:46:44,656] [queueListenerContainer-2] [DEBUG,MessageBeanUtil,MessageBeanUtil.java:326] constructSinglePart() - Header Line - X-Email_Id: 10.15530873.0
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+[2011-10-20 16:46:44,656] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:44,656] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: user00@localhost, with testing address: testto@localhost
+[2011-10-20 16:46:44,656] [queueListenerContainer-2] [DEBUG,ObjectPool,ObjectPool.java:178] smtpServer/smtp: Found a free pool item, pool size: 3, in use: 1
+[2011-10-20 16:46:44,656] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: text/plain; charset=us-ascii
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:44,656] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/-1)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+[2011-10-20 16:46:44,656] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:300] Entering rebuildAddresses method...
+[2011-10-20 16:46:44,656] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:305] rebuildAddresses() - Replace original TO: testto@localhost, with testing address: testto@localhost
+[2011-10-20 16:46:44,656] [queueListenerContainer-4] [DEBUG,ObjectPool,ObjectPool.java:178] smtpServer/smtp: Found a free pool item, pool size: 3, in use: 2
+[2011-10-20 16:46:44,656] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:259] sendMail() - Message Content Type: multipart/mixed; 
+	boundary="----=_Part_1_33507544.1319143604656"
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Sun Microsystems, Inc]
+[2011-10-20 16:46:44,672] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:432] Obtaining SMTP Transport... (localhost/-1)
+DEBUG SMTP: useEhlo true, useAuth false
+DEBUG SMTP: trying to connect to host "localhost", port 25, isSSL false
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+220 TSD-119491 SMTP Server (JAMES SMTP Server 2.3.1) ready Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+DEBUG SMTP: connected to host "localhost", port: 25
+
+EHLO TSD-119491
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+EHLO TSD-119491
+DEBUG SMTP: use8bit false
+MAIL FROM:<demolist2@localhost>
+250 2.1.0 Sender <demolist2@localhost> OK
+RCPT TO:<testto@localhost>
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+250 2.1.5 Recipient <testto@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   "test@test.com" <testto@localhost>
+DATA
+354 Ok Send data ending with <CRLF>.<CRLF>
+EHLO TSD-119491
+Return-Path: <bounce-10.15532123.0-test=test.com@localhost>
+Date: Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+From: Sample List 2 <demolist2@localhost>
+To: "test@test.com" <testto@localhost>
+Message-ID: <6170099.211319143604672.JavaMail.iapjkw@TSD-119491>
+Subject: Sample HTML newsletter to test@test.com
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Orig_Rule_Name: BROADCAST
+List-Unsubscribe: <mailto:remove-SMPLLST2-test=test.com@localhost>
+X-Client_Id: System
+X-Msg_Id: 306
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15532123.0
+
+<HTML><BODY>Dear test@test.com,<p/>
+This is a sample HTML newsletter message for a traditional mailing list. 
+With a traditional mailing list, people who want to subscribe to the list 
+must send an email from their account to the mailing list address with 
+"subscribe" in the email subject.<p/>
+Unsubscribing from a traditional mailing list is just as easy; simply send 
+an email to the mailing list address with "unsubscribe" in subject.<p/>
+The mailing list address for this newsletter is: demolist2@localhost.<p/>
+Date this newsletter is sent: 2011-10-20.<p/>
+BroadcastMsgId: 296, ListId: SMPLLST2<p/>
+Contact Email: sitemaster@emailsphere.com<p/>
+<a target='_blank' href='http://localhost:8080/MsgUI/publicsite/SamplePromoPage.jsp?msgid=296&listid=SMPLLST2&sbsrid=2'>Click here</a> to see our promotions<p/>
+
+To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost
+with "unsubscribe" (no quotation marks) in the subject.
+<br/><img src='http://localhost:8080/MsgUI/publicsite/msgopen.jsp?msgid=296&listid=SMPLLST2&sbsrid=2' alt='' height='1' width='1'>
+<div style='color: darkgray;'><p>System Email Id: 10.15532123.0</p></div>
+</BODY></HTML>
+.
+250-TSD-119491 Hello TSD-119491 (localhost [127.0.0.1])
+250-PIPELINING
+250 ENHANCEDSTATUSCODES
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "ENHANCEDSTATUSCODES", arg ""
+DEBUG SMTP: use8bit false
+MAIL FROM:<testfrom@localhost>
+DEBUG SMTP: use8bit false
+MAIL FROM:<jsmith@test.com>
+250 2.1.0 Sender <testfrom@localhost> OK
+RCPT TO:<user00@localhost>
+250 2.1.0 Sender <jsmith@test.com> OK
+250 2.1.5 Recipient <user00@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   user00@localhost
+DATA
+RCPT TO:<testto@localhost>
+354 Ok Send data ending with <CRLF>.<CRLF>
+250 2.1.5 Recipient <testto@localhost> OK
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   testto@localhost
+DATA
+Return-Path: <bounce-10.15530560.0-user00=localhost@localhost>
+Date: Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+From: testfrom@localhost
+To: user00@localhost
+Message-ID: <17670616.221319143604672.JavaMail.iapjkw@TSD-119491>
+Subject: Test MailSender - 00 Thu Oct 20 16:46:14 EDT 2011
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Msg_Id: 308
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15530873.0
+
+Test MailSender Body Message - 00
+
+System Email Id: 10.15530873.0
+.
+354 Ok Send data ending with <CRLF>.<CRLF>
+Return-Path: <bounce-10.15530728.0-testto=localhost@localhost>
+Date: Thu, 20 Oct 2011 16:46:44 -0400 (EDT)
+From: jsmith@test.com
+To: testto@localhost
+Message-ID: <33321625.231319143604672.JavaMail.iapjkw@TSD-119491>
+Subject: Weekend Deals at MyBesyDeals.com
+MIME-Version: 1.0
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_1_33507544.1319143604656"
+X-Client_Id: System
+X-Customer_Id: test
+X-Msg_Id: 307
+X-Render_Id: 9
+X-Rule_Name: SEND_MAIL
+X-Use_Secure_Smtp: No
+X-Save_Raw_Stream: Yes
+X-Embed_Email_Id: Yes
+X-Override_Test_Addr: No
+X-Priority: 2 (Normal)
+X-Mailer: MailSender
+X-Email_Id: 10.15530139.0
+
+------=_Part_1_33507544.1319143604656
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Client_Id: System
+
+<HTML><BODY>BeginTemplate
+Current DateTime: 2011-10-20<br>
+Jack WangRendered User2 Some Text Rendered User3More Text<br>
+TableRowBegin &lt;Rendered User2 - Row 1&gt; TableRowEnd<br>
+TableRowBegin &lt;Rendered User2 - Row 2&gt; TableRowEnd<br>
+text<br>
+Level 1-1 Jack Wang<br>
+Level 2-1<br>
+<br>
+Level 2-3Rendered User2<br>
+Level 1-2<br>
+Recursive Variable Jack Wang End<br>
+EndTemplate<br>
+
+<div style='color: darkgray;'><p>System Email Id: 10.15530728.0</p></div>
+</BODY></HTML>
+------=_Part_1_33507544.1319143604656
+Content-Type: application/octet-stream; name="jndi.bin"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment
+Content-Description: jndi.bin
+
+### JBossNS properties
+java.naming.factory.initial=org.jnp.interfaces.NamingContextFactory
+java.naming.provider.url=jnp://localhost:2099
+java.naming.factory.url.pkgs=org.jboss.naming:org.jnp.interfaces
+
+------=_Part_1_33507544.1319143604656
+Content-Type: text/plain; charset="iso-8859-1"; name="attachment1.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment
+Content-Description: attachment1.txt
+
+Attachment Text ============================================
+------=_Part_1_33507544.1319143604656--
+
+.
+250 2.6.0 Message received
+[2011-10-20 16:46:44,687] [queueListenerContainer-2] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: testfrom@localhost was sent to: user00@localhost, via localhost, Thu Oct 20 16:46:44 EDT 2011
+[2011-10-20 16:46:44,687] [queueListenerContainer-2] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:44,687] [queueListenerContainer-2] [DEBUG,ObjectPool,ObjectPool.java:243] smtpServer/smtp: Returned a pool item, pool size: 3, in use: 1
+250 2.6.0 Message received
+[2011-10-20 16:46:44,703] [queueListenerContainer-1] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: Sample List 2 <demolist2@localhost> was sent to: "test@test.com" <testto@localhost>, via localhost, Thu Oct 20 16:46:44 EDT 2011
+[2011-10-20 16:46:44,703] [queueListenerContainer-1] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+[2011-10-20 16:46:44,703] [queueListenerContainer-2] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 308
+250 2.6.0 Message received
+[2011-10-20 16:46:44,703] [queueListenerContainer-4] [INFO,SmtpConnection,SmtpConnection.java:267] sendMail() - Mail from: jsmith@test.com was sent to: testto@localhost, via localhost, Thu Oct 20 16:46:44 EDT 2011
+[2011-10-20 16:46:44,703] [queueListenerContainer-4] [DEBUG,SmtpConnection,SmtpConnection.java:317] sendMail() - closing transport...
+QUIT
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:44,703] [queueListenerContainer-4] [DEBUG,ObjectPool,ObjectPool.java:243] smtpServer/smtp: Returned a pool item, pool size: 3, in use: 0
+[2011-10-20 16:46:44,719] [queueListenerContainer-4] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 307
+221 2.0.0 TSD-119491 Service closing transmission channel
+[2011-10-20 16:46:44,734] [queueListenerContainer-1] [DEBUG,ObjectPool,ObjectPool.java:243] exchServer/exch: Returned a pool item, pool size: 1, in use: 0
+[2011-10-20 16:46:44,750] [queueListenerContainer-1] [DEBUG,MailSenderBase,MailSenderBase.java:389] saveMsgStream() - msgId: 306
+[2011-10-20 16:46:44,750] [queueListenerContainer-4] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 203
+[2011-10-20 16:46:44,766] [queueListenerContainer-2] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 188
+[2011-10-20 16:46:44,766] [queueListenerContainer-1] [INFO,QueueListener,QueueListener.java:120] onMessage() ended. Time spent in milliseconds: 219
