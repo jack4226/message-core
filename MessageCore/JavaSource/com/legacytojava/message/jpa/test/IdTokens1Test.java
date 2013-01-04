@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ import com.legacytojava.message.jpa.service.IdTokensService;
 @ContextConfiguration(locations={"/spring-mysql_ds-config.xml", "/spring-dao-config.xml"})
 @TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
 @Transactional(propagation=Propagation.REQUIRED)
-public class IdTokensTest {
+public class IdTokens1Test {
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -51,25 +52,34 @@ public class IdTokensTest {
 	IdTokensService service;
 
 	@Test
-	public void idTokensService() {
-		IdTokens idTokens = service.getByClientId("System");
-		assertNotNull(idTokens);
-		
+	public void idTokensService1() {
 		List<IdTokens> list = service.getAll();
 		assertFalse(list.isEmpty());
 		
-		idTokens.setUpdtUserId("JpaTest");
-		service.update(idTokens);
+		IdTokens tkn0 = service.getByClientId("System");
+		assertNotNull(tkn0);
 		
-		IdTokens tkn = service.getByClientId("System");
-		assertTrue("JpaTest".equals(tkn.getUpdtUserId()));
+		// test update
+		tkn0.setUpdtUserId("JpaTest");
+		service.update(tkn0);
+		IdTokens tkn1 = service.getByRowId(tkn0.getRowId());
+		assertTrue("JpaTest".equals(tkn1.getUpdtUserId()));
 		
-		tkn.setClientId("JBatchCorp");
-		service.insert(tkn);
+		// test insert
+		IdTokens tkn2 = new IdTokens();
+		try {
+			BeanUtils.copyProperties(tkn2, tkn1);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		tkn2.setClientId("JBatchCorp");
+		service.insert(tkn2);
 		
-		IdTokens tkn2 = service.getByClientId("JBatchCorp");
-		assertNotNull(tkn2);
+		IdTokens tkn3 = service.getByClientId("JBatchCorp");
+		assertNotNull(tkn3);
+		assertTrue(tkn1.getRowId()!=tkn3.getRowId());
 		
-		service.delete(tkn2.getClientId());
+		assertTrue(1==service.deleteByClientId(tkn3.getClientId()));
 	}
 }

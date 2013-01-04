@@ -4,10 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.jpa.model.Clients;
 import com.legacytojava.message.jpa.service.ClientsService;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,24 +39,46 @@ public class ClientsTest {
 		List<Clients> list = service.getAll();
 		assertFalse(list.isEmpty());
 		
-		Clients client = service.getByClientId(Constants.DEFAULT_CLIENTID);
-		assertNotNull(client);
+		Clients tkn0 = service.getByClientId(Constants.DEFAULT_CLIENTID);
+		assertNotNull(tkn0);
 		
-		assertTrue(client.getSystemId().equals(service.getSystemId()));
-		assertTrue(client.getSystemKey().equals(service.getSystemKey()));
+		assertTrue(tkn0.getSystemId().equals(service.getSystemId()));
+		assertTrue(tkn0.getSystemKey().equals(service.getSystemKey()));
+		assertNotNull(service.getByDomainName(tkn0.getDomainName()));
 
-		client.setUpdtUserId("JpaTest");
-		service.update(client);
+		// test update
+		tkn0.setUpdtUserId("JpaTest");
+		service.update(tkn0);
 		
-		Clients tkn = service.getByClientId(Constants.DEFAULT_CLIENTID);
-		assertTrue("JpaTest".equals(tkn.getUpdtUserId()));
+		Clients tkn1 = service.getByRowId(tkn0.getRowId());
+		assertTrue("JpaTest".equals(tkn1.getUpdtUserId()));
+		// end of test update
 		
-//		tkn.setClientId(Constants.DEFAULT_CLIENTID + "_2");
-//		service.insert(tkn);
-//		
-//		Clients tkn2 = service.getByClientId(tkn.getClientId());
-//		assertNotNull(tkn2);
-//		
-//		service.delete(tkn2.getClientId());
+		// test insert
+		Clients tkn2 = new Clients();
+		try {
+			BeanUtils.copyProperties(tkn2, tkn1);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		tkn2.setClientId(Constants.DEFAULT_CLIENTID + "_2");
+		service.insert(tkn2);
+		
+		Clients tkn3 = service.getByClientId(tkn2.getClientId());
+		assertTrue(tkn3.getRowId()!=tkn1.getRowId());
+		// end of test insert
+		
+		// test select with NoResultException
+		service.delete(tkn3);
+		try {
+			service.getByClientId(tkn2.getClientId());
+			fail();
+		}
+		catch (NoResultException e) {
+		}
+		
+		assertTrue(0==service.deleteByClientId(tkn3.getClientId()));
+		assertTrue(0==service.deleteByRowId(tkn3.getRowId()));
 	}
 }

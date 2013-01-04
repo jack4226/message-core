@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="ClientVariable")
-public class ClientVariable extends GlobalVariable implements Serializable
+public class ClientVariable extends BaseVariableModel implements Serializable
 {
 	private static final long serialVersionUID = -5873779791693771806L;
 	@Column(name="ClientId", unique=true, nullable=false, length=16)

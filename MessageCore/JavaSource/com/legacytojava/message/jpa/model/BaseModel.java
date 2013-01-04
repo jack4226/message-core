@@ -18,12 +18,13 @@ public abstract class BaseModel implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="RowId")
 	protected int rowId = -1;
 
-	@Column(nullable=false)
+	@Column(name="UpdtTime", nullable=false)
 	@Version
 	protected Timestamp updtTime = null;
-	@Column(length=10, nullable=false)
+	@Column(name="UpdtUserId", length=10, nullable=false)
 	protected String updtUserId = null;
 
 	public Timestamp getUpdtTime() {

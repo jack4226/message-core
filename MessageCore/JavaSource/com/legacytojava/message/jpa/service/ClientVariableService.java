@@ -1,9 +1,10 @@
 package com.legacytojava.message.jpa.service;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -23,7 +24,22 @@ public class ClientVariableService {
 	@PersistenceContext(unitName="message_core")
 	EntityManager em;
 
-	public ClientVariable getByPrimaryKey(String clientId, String variableName, Timestamp startTime) {
+	public ClientVariable getByRowId(int rowId) throws NoResultException {
+		String sql = 
+			"select t " +
+			"from " +
+				"ClientVariable t where t.rowId=:rowId";
+		try {
+			Query query = em.createQuery(sql);
+			query.setParameter("rowId", rowId);
+			ClientVariable record = (ClientVariable) query.getSingleResult();
+			return record;
+		}
+		finally {
+		}
+	}
+
+	public ClientVariable getByPrimaryKey(String clientId, String variableName, Date startTime) {
 		String sql = 
 			"select t " +
 			"from " +
@@ -52,9 +68,9 @@ public class ClientVariableService {
 		}
 	}
 
-	public ClientVariable getByBestMatch(String clientId, String variableName, Timestamp startTime) {
+	public ClientVariable getByBestMatch(String clientId, String variableName, Date startTime) {
 		if (startTime!=null) {
-			startTime = new Timestamp(System.currentTimeMillis());
+			startTime = new Date(System.currentTimeMillis());
 		}
 		String sql = 
 				"select t " +
@@ -77,6 +93,7 @@ public class ClientVariableService {
 		finally {
 		}
 	}
+
 	public List<ClientVariable> getByVariableName(String variableName) {
 		String sql = 
 				"select t " +
@@ -109,7 +126,7 @@ public class ClientVariableService {
 		try {
 			Query query = em.createNativeQuery(sql, ClientVariable.class);
 			query.setParameter(1, StatusIdCode.ACTIVE);
-			query.setParameter(2, new Timestamp(System.currentTimeMillis()));
+			query.setParameter(2, new Date(System.currentTimeMillis()));
 			query.setParameter(3, clientId);
 			@SuppressWarnings("unchecked")
 			List<ClientVariable> list = query.getResultList();
@@ -119,12 +136,26 @@ public class ClientVariableService {
 		}
 	}
 
-	public void deleteByPrimaryKey(String clientId, String variableName, Timestamp startTime) {
+	public void delete(ClientVariable var) {
+		if (var == null) return;
 		try {
-			ClientVariable record = getByPrimaryKey(clientId, variableName, startTime);
-			if (record != null) {
-				em.remove(record);
-			}
+			em.remove(var);
+		}
+		finally {
+		}
+	}
+
+	public int deleteByPrimaryKey(String clientId, String variableName, Date startTime) {
+		String sql = 
+				"delete from ClientVariable t where t.variableName=:variableName and t.startTime=:startTime " +
+				" and t.clientId=:clientId ";
+		try {
+			Query query = em.createQuery(sql);
+			query.setParameter("variableName", variableName);
+			query.setParameter("startTime", startTime);
+			query.setParameter("clientId", clientId);
+			int rows = query.executeUpdate();
+			return rows;
 		}
 		finally {
 		}
@@ -163,6 +194,7 @@ public class ClientVariableService {
 	public void insert(ClientVariable var) {
 		try {
 			em.persist(var);
+			em.flush();
 		}
 		finally {
 		}

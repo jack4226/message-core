@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -25,7 +26,7 @@ public class ClientsService {
 	@PersistenceContext(unitName="message_core")
 	EntityManager em;
 
-	public Clients getByClientId(String clientId) {
+	public Clients getByClientId(String clientId) throws NoResultException {
 		try {
 			Query query = em.createQuery("select t from Clients t where t.clientId = :clientId");
 			query.setParameter("clientId", clientId);
@@ -37,7 +38,19 @@ public class ClientsService {
 		}
 	}
 	
-	public Clients getByDomainName(String domainName) {
+	public Clients getByRowId(int rowId) throws NoResultException {
+		try {
+			Query query = em.createQuery("select t from Clients t where t.rowId = :rowId");
+			query.setParameter("rowId", rowId);
+			Clients client = (Clients) query.getSingleResult();
+			em.lock(client, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			return client;
+		}
+		finally {
+		}
+	}
+	
+	public Clients getByDomainName(String domainName) throws NoResultException {
 		try {
 			Query query = em.createQuery("select t from Clients t where t.domainName = :domainName");
 			query.setParameter("domainName", domainName);
@@ -59,7 +72,7 @@ public class ClientsService {
 		}
 	}
 	
-	public String getSystemId() {
+	public String getSystemId() throws NoResultException {
 		try {
 			Query query = em.createQuery("select t.systemId from Clients t where t.clientId = :clientId");
 			query.setParameter("clientId", Constants.DEFAULT_CLIENTID);
@@ -70,7 +83,7 @@ public class ClientsService {
 		}		
 	}
 
-	public String getSystemKey() {
+	public String getSystemKey() throws NoResultException {
 		try {
 			Query query = em.createQuery("select t.systemKey from Clients t where t.clientId = :clientId");
 			query.setParameter("clientId", Constants.DEFAULT_CLIENTID);
@@ -81,12 +94,32 @@ public class ClientsService {
 		}		
 	}
 
-	public void delete(String clientId) {
+	public void delete(Clients client) {
+		if (client==null) return;
 		try {
-			Clients record = getByClientId(clientId);
-			if (record != null) {
-				em.remove(record);
-			}
+			em.remove(client);
+		}
+		finally {
+		}
+	}
+
+	public int deleteByClientId(String clientId) {
+		try {
+			Query query = em.createQuery("delete from Clients t where t.clientId=:clientId");
+			query.setParameter("clientId", clientId);
+			int rows = query.executeUpdate();
+			return rows;
+		}
+		finally {
+		}
+	}
+
+	public int deleteByRowId(int rowId) {
+		try {
+			Query query = em.createQuery("delete from Clients t where t.rowId=:rowId");
+			query.setParameter("rowId", rowId);
+			int rows = query.executeUpdate();
+			return rows;
 		}
 		finally {
 		}

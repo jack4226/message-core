@@ -7,9 +7,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.jpa.PersistenceProvider;
 import org.junit.AfterClass;
@@ -90,39 +92,69 @@ public class IdTokens2Test {
 
 		List<IdTokens> list = service.getAll();
 		assertFalse(list.isEmpty());
-
-		IdTokens idTokens = service.getByClientId("System");
-		assertNotNull(idTokens);
 		
-		idTokens.setUpdtUserId("JpaTest");
-		service.update(idTokens);
+		IdTokens tkn0 = service.getByClientId("System");
+		assertNotNull(tkn0);
 		
-		IdTokens tkn = service.getByClientId(idTokens.getClientId());
-		assertTrue("JpaTest".equals(tkn.getUpdtUserId()));
+		// test update - it should not create a new record
+		tkn0.setUpdtUserId("JpaTest");
+		service.update(tkn0);
 		
-		tkn.setClientId("JBatchCorp");
-		service.insert(tkn);
+		IdTokens tkn1 = service.getByRowId(tkn0.getRowId());
+		assertTrue("JpaTest".equals(tkn1.getUpdtUserId()));
+		// end of test update
 		
-		IdTokens tkn2 = service.getByClientId(tkn.getClientId());
-		assertNotNull(tkn2);
+		// test insert - a new record should be created
+		IdTokens tkn2 = new IdTokens();
+		try {
+			BeanUtils.copyProperties(tkn2, tkn1);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		tkn2.setClientId("JBatchCorp");
+		service.insert(tkn2);
 		
-		service.delete(tkn2.getClientId());
+		IdTokens tkn3 = service.getByClientId("JBatchCorp");
+		assertNotNull(tkn3);
+		assertTrue(tkn1.getRowId()!=tkn3.getRowId());
+		// end of test insert
+		
+		service.delete(tkn3);
+		try {
+			service.getByRowId(tkn3.getRowId());
+			fail();
+		}
+		catch (NoResultException e) {
+			// expected
+		}
+		
+		assertTrue(0==service.deleteByClientId(tkn3.getClientId()));
+		assertTrue(0==service.deleteByRowId(tkn3.getRowId()));
 	}
 	
 	@Test(expected=javax.persistence.NoResultException.class)
 	public void idTokensService2() {
 		IdTokensService service = (IdTokensService) SpringUtil.getAppContext().getBean("idTokensService");
 
-		IdTokens tkn = service.getByClientId("System");
-		assertNotNull(tkn);
+		IdTokens tkn0 = service.getByClientId("System");
+		assertNotNull(tkn0);
 		
-		tkn.setClientId("JBatchCorp");
-		service.insert(tkn);
+		IdTokens tkn1 = new IdTokens();
+		try {
+			BeanUtils.copyProperties(tkn1, tkn0);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		tkn1.setClientId("JBatchCorp");
+		service.insert(tkn1);
 		
-		IdTokens tkn2 = service.getByClientId(tkn.getClientId());
+		IdTokens tkn2 = service.getByClientId(tkn1.getClientId());
 		assertNotNull(tkn2);
 		
-		service.delete(tkn2.getClientId());
+		service.delete(tkn2);
 		service.getByClientId(tkn2.getClientId());
 	}
 

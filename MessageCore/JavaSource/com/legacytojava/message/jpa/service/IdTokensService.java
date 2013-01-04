@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -23,10 +24,22 @@ public class IdTokensService {
 	@PersistenceContext(unitName="message_core")
 	EntityManager em;
 
-	public IdTokens getByClientId(String clientId) {
+	public IdTokens getByClientId(String clientId) throws NoResultException {
 		try {
 			Query query = em.createQuery("select t from IdTokens t where t.clientId = :clientId");
 			query.setParameter("clientId", clientId);
+			IdTokens idTokens = (IdTokens) query.getSingleResult();
+			em.lock(idTokens, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			return idTokens;
+		}
+		finally {
+		}
+	}
+	
+	public IdTokens getByRowId(int rowId) throws NoResultException {
+		try {
+			Query query = em.createQuery("select t from IdTokens t where t.rowId = :rowId");
+			query.setParameter("rowId", rowId);
 			IdTokens idTokens = (IdTokens) query.getSingleResult();
 			em.lock(idTokens, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 			return idTokens;
@@ -46,12 +59,32 @@ public class IdTokensService {
 		}
 	}
 	
-	public void delete(String clientId) {
+	public void delete(IdTokens idTokens) {
+		if (idTokens == null) return;
 		try {
-			IdTokens record = getByClientId(clientId);
-			if (record != null) {
-				em.remove(record);
-			}
+			em.remove(idTokens);
+		}
+		finally {
+		}
+	}
+
+	public int deleteByClientId(String clientId) {
+		try {
+			Query query = em.createQuery("delete from IdTokens t where t.clientId=:clientId");
+			query.setParameter("clientId", clientId);
+			int rows = query.executeUpdate();
+			return rows;
+		}
+		finally {
+		}
+	}
+
+	public int deleteByRowId(int rowId) {
+		try {
+			Query query = em.createQuery("delete from IdTokens t where t.rowId=:rowId");
+			query.setParameter("rowId", rowId);
+			int rows = query.executeUpdate();
+			return rows;
 		}
 		finally {
 		}
@@ -64,7 +97,7 @@ public class IdTokensService {
 		finally {
 		}
 	}
-	
+
 	public void update(IdTokens idTokens) {
 		try {
 			em.persist(idTokens);
