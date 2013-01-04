@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.CustomerVo;
 import com.legacytojava.message.vo.PagingCustomerVo;
@@ -138,7 +139,7 @@ public class CustomerJdbcDao implements CustomerDao {
 			" from Customers a, EmailAddr b " +
 			" where a.EmailAddrId=b.EmailAddrId " +
 			" and a.EmailAddr=? ";
-		Object[] parms = new Object[] {StringUtil.removeDisplayName(emailAddr)};
+		Object[] parms = new Object[] {EmailAddrUtil.removeDisplayName(emailAddr)};
 		@SuppressWarnings("unchecked")
 		List<CustomerVo> list = (List<CustomerVo>)getJdbcTemplate().query(sql, parms, new CustomerMapper());
 		if (list == null || list.isEmpty()) {

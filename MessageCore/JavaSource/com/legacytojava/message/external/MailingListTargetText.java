@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.emailaddr.MailingListDao;
 import com.legacytojava.message.exception.DataValidationException;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.emailaddr.MailingListVo;
 
@@ -30,7 +31,7 @@ public class MailingListTargetText implements RuleTargetProc {
 		for (int i = 0; i < list.size(); i++) {
 			MailingListVo item = list.get(i);
 			// no display name allowed for list address, just for safety
-			String emailAddr = StringUtil.removeDisplayName(item.getEmailAddr(), true);
+			String emailAddr = EmailAddrUtil.removeDisplayName(item.getEmailAddr(), true);
 			// make it a regular expression
 			emailAddr = StringUtil.replaceAll(emailAddr, ".", "\\.");
 			if (i > 0) {

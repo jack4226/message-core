@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
@@ -124,7 +125,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 
 	public EmailAddrVo getByAddress(String address) {
 		String sql = "select * from EmailAddr where EmailAddr=?";
-		String emailAddress = StringUtil.removeDisplayName(address);
+		String emailAddress = EmailAddrUtil.removeDisplayName(address);
 		Object[] parms = new Object[] { emailAddress };
 		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms,
 				new EmailAddrMapper());
@@ -400,7 +401,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 
 		public Map<String, Object> execute(String address) {
 			Map<String, Object> inputs = new HashMap<String, Object>();
-			inputs.put("iEmailAddr", StringUtil.removeDisplayName(address));
+			inputs.put("iEmailAddr", EmailAddrUtil.removeDisplayName(address));
 			inputs.put("iOrigEmailAddr", address);
 			Map<String, Object> output = super.execute(inputs);
 			return output;
@@ -469,7 +470,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 		emailAddrVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 
 		ArrayList<Object> keys = new ArrayList<Object>();
-		keys.add(StringUtil.removeDisplayName(emailAddrVo.getEmailAddr()));
+		keys.add(EmailAddrUtil.removeDisplayName(emailAddrVo.getEmailAddr()));
 		keys.add(emailAddrVo.getEmailAddr());
 		keys.add(emailAddrVo.getStatusId());
 		keys.add(emailAddrVo.getStatusChangeTime());
@@ -606,7 +607,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 	private int insert(EmailAddrVo emailAddrVo, boolean withUpdate) {
 		emailAddrVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 		ArrayList<Object> keys = new ArrayList<Object>();
-		keys.add(StringUtil.removeDisplayName(emailAddrVo.getEmailAddr()));
+		keys.add(EmailAddrUtil.removeDisplayName(emailAddrVo.getEmailAddr()));
 		keys.add(emailAddrVo.getEmailAddr());
 		keys.add(emailAddrVo.getStatusId());
 		keys.add(emailAddrVo.getStatusChangeTime());
@@ -650,7 +651,7 @@ public class EmailAddrJdbcDao implements EmailAddrDao {
 				emailAddrVo.setUpdtTime(new Timestamp(new java.util.Date()
 						.getTime()));
 				ArrayList<Object> keys = new ArrayList<Object>();
-				keys.add(StringUtil.removeDisplayName(emailAddrVo
+				keys.add(EmailAddrUtil.removeDisplayName(emailAddrVo
 						.getEmailAddr()));
 				keys.add(emailAddrVo.getEmailAddr());
 				keys.add(emailAddrVo.getStatusId());

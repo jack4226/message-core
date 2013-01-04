@@ -34,6 +34,7 @@ import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.dao.idtokens.EmailIdParser;
 import com.legacytojava.message.dao.inbox.MsgInboxDao;
 import com.legacytojava.message.dao.outbox.MsgRenderedDao;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.inbox.MsgInboxVo;
@@ -559,7 +560,7 @@ public final class MessageParser {
 					if (StringUtil.isEmpty(msgBean.getFinalRcpt())) {
 						msgBean.setFinalRcpt(token);
 					}
-					else if (StringUtil.compareEmailAddrs(msgBean.getFinalRcpt(), token) != 0) {
+					else if (EmailAddrUtil.compareEmailAddrs(msgBean.getFinalRcpt(), token) != 0) {
 						logger.error("parseRfc() - Final_Rcpt from RFC822: " + token
 								+ " is different from DSN's: " + msgBean.getFinalRcpt());
 					}

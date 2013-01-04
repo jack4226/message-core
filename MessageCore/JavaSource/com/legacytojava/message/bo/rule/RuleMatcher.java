@@ -16,7 +16,7 @@ import com.legacytojava.message.bean.MsgHeader;
 import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.VariableName;
-import com.legacytojava.message.util.StringUtil;
+import com.legacytojava.message.util.EmailAddrUtil;
 
 public class RuleMatcher implements java.io.Serializable {
 	private static final long serialVersionUID = 5389476995961087231L;
@@ -146,15 +146,15 @@ public class RuleMatcher implements java.io.Serializable {
 		String data = null;
 		String data_type = r.getDataName();
 		if (RuleBase.FROM_ADDR.equals(data_type))
-			data = StringUtil.emailAddrToString(mobj.getFrom());
+			data = EmailAddrUtil.emailAddrToString(mobj.getFrom());
 		else if (RuleBase.TO_ADDR.equals(data_type))
-			data = StringUtil.emailAddrToString(mobj.getTo());
+			data = EmailAddrUtil.emailAddrToString(mobj.getTo());
 		else if (RuleBase.REPLYTO_ADDR.equals(data_type))
-			data = StringUtil.emailAddrToString(mobj.getReplyto());
+			data = EmailAddrUtil.emailAddrToString(mobj.getReplyto());
 		else if (RuleBase.CC_ADDR.equals(data_type))
-			data = StringUtil.emailAddrToString(mobj.getCc());
+			data = EmailAddrUtil.emailAddrToString(mobj.getCc());
 		else if (RuleBase.BCC_ADDR.equals(data_type))
-			data = StringUtil.emailAddrToString(mobj.getBcc());
+			data = EmailAddrUtil.emailAddrToString(mobj.getBcc());
 		else if (RuleBase.SUBJECT.equals(data_type))
 			data = mobj.getSubject();
 		else if (RuleBase.BODY.equals(data_type))

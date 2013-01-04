@@ -25,6 +25,7 @@ import com.legacytojava.message.dao.inbox.MsgClickCountsDao;
 import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.exception.OutOfServiceException;
 import com.legacytojava.message.exception.TemplateNotFoundException;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.emailaddr.EmailTemplateVo;
@@ -361,7 +362,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (StringUtil.isEmpty(emailAddr)) {
 			throw new DataValidationException("Email Address is not valued.");
 		}
-		if (!StringUtil.isRemoteEmailAddress(emailAddr)) {
+		if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 			throw new DataValidationException("Email Address is invalid: " + emailAddr);
 		}
 		// validate mailing list id

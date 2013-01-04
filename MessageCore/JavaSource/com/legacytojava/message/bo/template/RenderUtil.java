@@ -35,6 +35,7 @@ import com.legacytojava.message.dao.template.TemplateVariableDao;
 import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.exception.TemplateNotFoundException;
 import com.legacytojava.message.external.VariableResolver;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.emailaddr.EmailTemplateVo;
@@ -806,7 +807,7 @@ public final class RenderUtil {
 		if (toAddr == null) {
 			throw new DataValidationException("Input toAddr is null.");
 		}
-		if (!StringUtil.isRemoteEmailAddress(toAddr)) {
+		if (!EmailAddrUtil.isRemoteEmailAddress(toAddr)) {
 			throw new DataValidationException("Input toAddr is invalid: " + toAddr);
 		}
 		try {

@@ -10,6 +10,7 @@ import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.dao.client.ClientUtil;
 import com.legacytojava.message.dao.idtokens.EmailIdParser;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 
 /**
@@ -65,7 +66,7 @@ public final class MessageBodyBuilder {
 			// either the reply or the original message is HTML
 			if (msgBean.getBodyContentType().indexOf("html") < 0) {
 				// reply message is plain text
-				msgBody = StringUtil.getHtmlDisplayText(msgBody);
+				msgBody = EmailAddrUtil.getHtmlDisplayText(msgBody);
 			}
 			msgBody = constructHtmlBody(msgBean, msgBody);
 		}
@@ -207,7 +208,7 @@ public final class MessageBodyBuilder {
 				String origType = msgBean.getOriginalMail().getBodyContentType();
 				if (origType != null && origType.indexOf("html") < 0) {
 					// original message is plain text, add PRE tags
-					origBody = StringUtil.getHtmlDisplayText(origBody);
+					origBody = EmailAddrUtil.getHtmlDisplayText(origBody);
 				}
 				// insert headers after the <BODY> or <HTML> tag
 				return prependTextToHtml(origBody, header);

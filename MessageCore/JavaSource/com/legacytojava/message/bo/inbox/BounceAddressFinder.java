@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.util.StringUtil;
+import com.legacytojava.message.util.EmailAddrUtil;
 
 public final class BounceAddressFinder {
 	static final Logger logger = Logger.getLogger(BounceAddressFinder.class);
@@ -71,78 +71,78 @@ public final class BounceAddressFinder {
 	private final void loadPatterns() {
 		String bodyGmail = 
 			"Delivery .{4,10} following recipient(?:s)? failed[\\.|\\s](?:permanently:)?\\s+" +
-			"<?(" + StringUtil.getEmailRegex() + ")>?\\s+";
+			"<?(" + EmailAddrUtil.getEmailRegex() + ")>?\\s+";
 		patternList.add(new MyPattern("Gmail",bodyGmail));
 		
 		String bodyAol = 
 			"\\-{3,6} The following address(?:es|\\(es\\))? had (?:permanent fatal errors|delivery problems) \\-{3,6}\\s+" +
-			"<?(" + StringUtil.getEmailRegex() + ")>?(?:\\s|;)";
+			"<?(" + EmailAddrUtil.getEmailRegex() + ")>?(?:\\s|;)";
 		patternList.add(new MyPattern("AOL",bodyAol));
 		
 		String bodyYahoo = 
 			"This .{1,10} permanent error.\\s+I(?:'ve| have) given up\\. Sorry it did(?:n't| not) work out\\.\\s+" +
-			"<?(" + StringUtil.getEmailRegex() + ")>?";
+			"<?(" + EmailAddrUtil.getEmailRegex() + ")>?";
 		patternList.add(new MyPattern("Yahoo",bodyYahoo));
 		
 		String bodyPostfix = 
 			"message\\s.*could\\s+not\\s+be\\s+.{0,10}delivered\\s+to\\s.*(?:recipient(?:s)?|destination(?:s)?)" +
 			".{80,180}\\sinclude\\s+this\\s+problem\\s+report.{60,120}" +
-			"\\s+<(" + StringUtil.getEmailRegex() + ")>";
+			"\\s+<(" + EmailAddrUtil.getEmailRegex() + ")>";
 		patternList.add(new MyPattern("Postfix",bodyPostfix));
 		
 		String bodyFailed = 
-			"Failed\\s+to\\s+deliver\\s+to\\s+\\'(" + StringUtil.getEmailRegex() + ")\\'" +
+			"Failed\\s+to\\s+deliver\\s+to\\s+\\'(" + EmailAddrUtil.getEmailRegex() + ")\\'" +
 			".{1,20}\\smodule.{5,100}\\sreports";
 		patternList.add(new MyPattern("Failed",bodyFailed));
 		
 		String bodyFirewall = 
-			"Your\\s+message\\s+to:\\s+(" + StringUtil.getEmailRegex() + ")\\s+" +
+			"Your\\s+message\\s+to:\\s+(" + EmailAddrUtil.getEmailRegex() + ")\\s+" +
 			".{1,10}\\sblocked\\s+by\\s.{1,20}\\sSpam\\s+Firewall";
 		patternList.add(new MyPattern("SpamFirewall",bodyFirewall));
 		
 		String bodyFailure = 
 			"message\\s.{8,20}\\scould\\s+not\\s+be\\s+delivered\\s.{10,40}\\srecipients" +
 			".{6,20}\\spermanent\\s+error.{10,20}\\saddress(?:\\(es\\))?\\s+failed:" +
-			"\\s+(" + StringUtil.getEmailRegex() + ")\\s";
+			"\\s+(" + EmailAddrUtil.getEmailRegex() + ")\\s";
 		patternList.add(new MyPattern("Failure",bodyFailure));
 		
 		String bodyUnable = 
 			"Unable to deliver message to the following address(?:\\(es\\))?.{0,5}" +
-			"\\s+<(" + StringUtil.getEmailRegex() + ")>";
+			"\\s+<(" + EmailAddrUtil.getEmailRegex() + ")>";
 		patternList.add(new MyPattern("Unable",bodyUnable));
 		
 		String bodyEtrust = 
 			"\\scould not deliver the e(?:\\-)?mail below because\\s.{10,20}\\srecipient(?:s)?\\s.{1,10}\\srejected"+
-			".{60,200}\\s(" + StringUtil.getEmailRegex() + ")";
+			".{60,200}\\s(" + EmailAddrUtil.getEmailRegex() + ")";
 		patternList.add(new MyPattern("eTrust",bodyEtrust));
 		
 		String bodyReport = 
 			"\\scollection of report(?:s)? about email delivery\\s.+\\sFAILED:\\s.{1,1000}" +
-			"Final Recipient:.{0,20};\\s*(" + StringUtil.getEmailRegex() + ")";
+			"Final Recipient:.{0,20};\\s*(" + EmailAddrUtil.getEmailRegex() + ")";
 		patternList.add(new MyPattern("Report",bodyReport));
 		
 		String bodyNotReach = 
 			"Your message.{1,400}did not reach the following recipient(?:\\(s\\))?:" +
-			"\\s+(" + StringUtil.getEmailRegex() + ")";
+			"\\s+(" + EmailAddrUtil.getEmailRegex() + ")";
 		patternList.add(new MyPattern("NotReach",bodyNotReach));
 		
 		String bodyFailed2 = 
 			"Could not deliver message to the following recipient(?:\\(s\\))?:" +
-			"\\s+Failed Recipient:\\s+(" + StringUtil.getEmailRegex() + ")\\s";
+			"\\s+Failed Recipient:\\s+(" + EmailAddrUtil.getEmailRegex() + ")\\s";
 		patternList.add(new MyPattern("Failed2",bodyFailed2));
 		
 		String bodyExceeds = 
 			"User(?:'s)?\\s+mailbox\\s+exceeds\\s+allowed\\s+size:\\s+" +
-			"(" + StringUtil.getEmailRegex() + ")\\s+";
+			"(" + EmailAddrUtil.getEmailRegex() + ")\\s+";
 		patternList.add(new MyPattern("Exceeds",bodyExceeds));
 		
 		String bodyDelayed = 
-			"Message\\s+delivery\\s+to\\s+\\'(" + StringUtil.getEmailRegex() + ")\\'" +
+			"Message\\s+delivery\\s+to\\s+\\'(" + EmailAddrUtil.getEmailRegex() + ")\\'" +
 			"\\s+delayed.{1,20}\\smodule.{5,100}\\sreports";
 		patternList.add(new MyPattern("Delayed",bodyDelayed));
 		
 		String bodyInvalid = 
-			"Invalid\\s+Address(?:es)?.{1,20}\\b(?:TO|addr)\\b.{1,20}\\s+<?(" + StringUtil.getEmailRegex() + ")>?\\s+";
+			"Invalid\\s+Address(?:es)?.{1,20}\\b(?:TO|addr)\\b.{1,20}\\s+<?(" + EmailAddrUtil.getEmailRegex() + ")>?\\s+";
 		patternList.add(new MyPattern("Invalid",bodyInvalid));
 	}
 }

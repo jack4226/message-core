@@ -44,6 +44,7 @@ import com.legacytojava.message.dao.inbox.MsgStreamDao;
 import com.legacytojava.message.dao.outbox.DeliveryStatusDao;
 import com.legacytojava.message.dao.outbox.MsgSequenceDao;
 import com.legacytojava.message.exception.DataValidationException;
+import com.legacytojava.message.util.EmailAddrUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.ClientVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
@@ -139,7 +140,7 @@ public abstract class MailSenderBase {
 			if (addrs == null || addrs.length == 0 || addrs[0] == null) {
 				throw new DataValidationException("TO address is not provided.");
 			}
-			String recipient = StringUtil.removeDisplayName(addrs[0].toString());
+			String recipient = EmailAddrUtil.removeDisplayName(addrs[0].toString());
 			if (StringUtil.isEmpty(clientVo.getVerpInboxName())) {
 				throw new DataValidationException("VERP inbox name is blank in Client table.");
 			}
@@ -303,7 +304,7 @@ public abstract class MailSenderBase {
 		if (clientVo.getUseTestAddress() && !overrideTestAddr) {
 			if (isDebugEnabled) {
 				logger.debug("rebuildAddresses() - Replace original TO: "
-						+ StringUtil.emailAddrToString(m
+						+ EmailAddrUtil.emailAddrToString(m
 								.getRecipients(javax.mail.Message.RecipientType.TO))
 						+ ", with testing address: " + clientVo.getTestToAddr());
 			}
@@ -316,7 +317,7 @@ public abstract class MailSenderBase {
 				if (to_addr != null) {
 					String addr = to_addr.toString();
 					if (!StringUtil.isEmpty(addr)) {
-						displayName = StringUtil.removeDisplayName(addr);
+						displayName = EmailAddrUtil.removeDisplayName(addr);
 						//displayName = StringUtil.replaceAll(displayName, "@", ".at.");
 						toAddrIsLocal = addr.toLowerCase().endsWith("@localhost");
 					}
@@ -330,7 +331,7 @@ public abstract class MailSenderBase {
 				else {
 					m.setRecipients(RecipientType.TO, InternetAddress.parse("\""
 								+ displayName + "\" <"
-								+ StringUtil.removeDisplayName(clientVo.getTestToAddr()) + ">"));
+								+ EmailAddrUtil.removeDisplayName(clientVo.getTestToAddr()) + ">"));
 				}
 			}
 		}
@@ -346,7 +347,7 @@ public abstract class MailSenderBase {
 				logger.debug("rebuildAddresses() - Original From is missing, use testing address: "
 						+  clientVo.getTestFromAddr());
 			}
-			if (StringUtil.hasDisplayName(clientVo.getTestFromAddr())) {
+			if (EmailAddrUtil.hasDisplayName(clientVo.getTestFromAddr())) {
 				m.setFrom(InternetAddress.parse(clientVo.getTestFromAddr())[0]);
 			}
 			else {
@@ -362,7 +363,7 @@ public abstract class MailSenderBase {
 		if (clientVo.getUseTestAddress() && !overrideTestAddr
 				&& (m.getReplyTo() == null || m.getReplyTo().length == 0)) {
 			if (!StringUtil.isEmpty(clientVo.getTestReplytoAddr())) {
-				if (StringUtil.hasDisplayName(clientVo.getTestReplytoAddr())) {
+				if (EmailAddrUtil.hasDisplayName(clientVo.getTestReplytoAddr())) {
 					m.setReplyTo(InternetAddress.parse(clientVo.getTestReplytoAddr()));
 				}
 				else {
