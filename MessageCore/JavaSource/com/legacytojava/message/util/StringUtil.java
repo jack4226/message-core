@@ -498,20 +498,7 @@ public final class StringUtil {
 		}
 	}
 
-	public static String removeCRLFTabs(String str) {
-		// remove possible CR/LF and tabs, that are inserted by some Email
-		// servers, from the Email_ID found in bounced E-mails (MS exchange
-		// server for one). MS exchange server inserted "\r\n\t" into the
-		// Email_ID string, and it caused "check digit test" error.
-		StringTokenizer sTokens = new StringTokenizer(str, "\r\n\t");
-		StringBuffer sb = new StringBuffer();
-		while (sTokens.hasMoreTokens()) {
-			sb.append(sTokens.nextToken());
-		}
-		return sb.toString();
-	}
-
-    /**
+	/**
 	 * Trim the given string with the given trim value.
 	 * 
 	 * @param string

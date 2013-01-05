@@ -276,7 +276,7 @@ public final class MessageBodyBuilder {
 			}
 			if (isDebugEnabled) {
 				logger.debug("getEmailIdSection() - MsgId: " + msgBean.getMsgId()
-						+ ", EmailId: " + StringUtil.removeCRLFTabs(section));
+						+ ", EmailId: " + EmailAddrUtil.removeCRLFTabs(section));
 			}
 		}
 		return section;

@@ -59,13 +59,13 @@ public class SpringUtil {
 				// see if it's running under JBoss by doing a JNDI lookup
 				ServiceLocator.getDataSource("java:/comp/env/jdbc/msgdb_pool");
 				logger.info("getDaoAppContext() - Running under JBoss, load jndi_ds xmls");
-				fnames.add("classpath:spring-jndi_ds-config.xml");
+				fnames.add("classpath*:spring-jndi_ds-config.xml");
 			}
 			catch (javax.naming.NamingException e) {
 				logger.info("getDaoAppContext() - running standalone, load mysql_ds xmls");
-				fnames.add("classpath:spring-mysql_ds-config.xml");
+				fnames.add("classpath*:spring-mysql_ds-config.xml");
 			}
-			fnames.add("classpath:spring-dao-config.xml");
+			fnames.add("classpath*:spring-dao-config.xml");
 			daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
 		}
 		return daoAppCtx;
@@ -113,9 +113,9 @@ public class SpringUtil {
 
 	public static String[] getServerConfigXmlFiles() {
 		List<String> cfgFileNames = new ArrayList<String>();
-		cfgFileNames.add("classpath:spring-bo_jms-config.xml");
-		cfgFileNames.add("classpath:spring-jndi_ds-config.xml");
-		cfgFileNames.add("classpath:spring-dao-config.xml");
+		cfgFileNames.add("classpath*:spring-bo_jms-config.xml");
+		cfgFileNames.add("classpath*:spring-jndi_ds-config.xml");
+		cfgFileNames.add("classpath*:spring-dao-config.xml");
 		//String[] cfgFiles = new String[cfgFileNames.size()];
 		//System.arraycopy(cfgFileNames.toArray(), 0, cfgFiles, 0, cfgFiles.length);
 		return cfgFileNames.toArray(new String[]{});

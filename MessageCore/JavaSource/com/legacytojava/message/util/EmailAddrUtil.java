@@ -1,5 +1,6 @@
 package com.legacytojava.message.util;
 
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -331,5 +332,18 @@ public class EmailAddrUtil {
 		System.out.println("EmailAddr: " + EmailAddrUtil.isRemoteOrLocalEmailAddress("A!#$%&'*+/=?.^_`{|}~-BC"));
 		System.out.println(EmailAddrUtil.getOrigAddrFromVERP("bounce-10.07410251.0-jsmith=test.com@localhost"));
 		System.out.println(EmailAddrUtil.getOrigAddrFromVERP("remove-testlist-jsmith=test.com@localhost"));
+	}
+
+	public static String removeCRLFTabs(String str) {
+		// remove possible CR/LF and tabs, that are inserted by some Email
+		// servers, from the Email_ID found in bounced E-mails (MS exchange
+		// server for one). MS exchange server inserted "\r\n\t" into the
+		// Email_ID string, and it caused "check digit test" error.
+		StringTokenizer sTokens = new StringTokenizer(str, "\r\n\t");
+		StringBuffer sb = new StringBuffer();
+		while (sTokens.hasMoreTokens()) {
+			sb.append(sTokens.nextToken());
+		}
+		return sb.toString();
 	}
 }
