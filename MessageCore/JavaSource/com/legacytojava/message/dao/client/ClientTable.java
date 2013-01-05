@@ -110,11 +110,13 @@ public class ClientTable extends CreateTableBase {
 	void createReloadFlagsTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE RELOADFLAGS ( "
+					+ "RowId int AUTO_INCREMENT not null, "
 					+ "Clients int NOT NULL, "
 					+ "Rules int NOT NULL, "
 					+ "Actions int NOT NULL, "
 					+ "Templates int NOT NULL, "
 					+ "Schedules int NOT NULL "
+					+ "PRIMARY KEY (RowId), "
 					+ ") TYPE=MyISAM");
 			System.out.println("Created RELOADFLAGS Table...");
 			stm.execute("INSERT INTO RELOADFLAGS VALUES(0,0,0,0,0)");
