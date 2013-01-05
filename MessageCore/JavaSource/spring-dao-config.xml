@@ -20,7 +20,7 @@
 	
 	<!-- Spring JPA Entity Manager Factory -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceXmlLocation" value="classpath:/META-INF/jpa-persistence.xml" />
+		<property name="persistenceXmlLocation" value="classpath*:/META-INF/jpa-persistence.xml" />
 	    <property name="dataSource" ref="mysqlDataSource" />
 	    <property name="persistenceUnitName" value="message_core" />
 	    <property name="jpaDialect" ref="jpaDialect" />
