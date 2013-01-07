@@ -6,10 +6,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +21,14 @@ import com.legacytojava.message.jpa.model.IdTokens;
 public class IdTokensService {
 	static Logger logger = Logger.getLogger(IdTokensService.class);
 	
-	@PersistenceContext(unitName="message_core")
+	/*
+	 * This next annotation triggers JBoss to look for the persistence unit name "message_core"
+	 * when it is bundled and deployed in a war file. Use spring @Autowired injection instead.
+	 */
+	//@PersistenceContext(unitName="message_core")
+	@Autowired
 	EntityManager em;
-
+	
 	public IdTokens getByClientId(String clientId) throws NoResultException {
 		try {
 			Query query = em.createQuery("select t from IdTokens t where t.clientId = :clientId");

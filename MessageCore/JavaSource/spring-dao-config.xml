@@ -19,6 +19,11 @@
 	<context:annotation-config/>
 	
 	<!-- Spring JPA Entity Manager Factory -->
+	<bean id="entityManager" 
+	    class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+	    <property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceXmlLocation" value="classpath*:/META-INF/jpa-persistence.xml" />
 	    <property name="dataSource" ref="mysqlDataSource" />

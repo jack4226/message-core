@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
@@ -23,7 +22,7 @@ import com.legacytojava.message.util.StringUtil;
 public class ClientsService {
 	static Logger logger = Logger.getLogger(ClientsService.class);
 	
-	@PersistenceContext(unitName="message_core")
+	@Autowired
 	EntityManager em;
 
 	public Clients getByClientId(String clientId) throws NoResultException {

@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -28,7 +27,7 @@ import com.legacytojava.message.jpa.service.IdTokensService;
 @Transactional(propagation=Propagation.REQUIRED)
 public class IdTokens1Test {
 
-	@PersistenceContext
+	@Autowired
 	private EntityManager entityManager;
 
 	@BeforeClass

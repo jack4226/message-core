@@ -3,10 +3,10 @@ package com.legacytojava.message.jpa.service;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ import com.legacytojava.message.jpa.model.ReloadFlags;
 public class ReloadFlagsService {
 	static Logger logger = Logger.getLogger(ReloadFlagsService.class);
 	
-	@PersistenceContext(unitName="message_core")
+	@Autowired
 	EntityManager em;
 
 	public ReloadFlags select() {

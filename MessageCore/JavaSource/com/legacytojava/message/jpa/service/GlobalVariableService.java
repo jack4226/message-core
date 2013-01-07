@@ -7,10 +7,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,7 @@ import com.legacytojava.message.jpa.model.GlobalVariable;
 public class GlobalVariableService {
 	static Logger logger = Logger.getLogger(GlobalVariableService.class);
 	
-	@PersistenceContext(unitName="message_core")
+	@Autowired
 	EntityManager em;
 
 	public GlobalVariable getByRowId(int rowId) throws NoResultException {
