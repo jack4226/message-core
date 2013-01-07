@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.legacytojava.message.vo.IdTokensVo;
 
-@Component
+@Component("idTokensDao")
 public class IdTokensJdbcDao implements IdTokensDao {
 	
 	@Autowired
