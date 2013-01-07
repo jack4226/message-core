@@ -3,6 +3,7 @@
 rem ### to make NullanleStringConverter work with Tomcat 6 and 7 - JW
 set "JAVA_OPTS=%JAVA_OPTS% -Dorg.apache.el.parser.COERCE_TO_ZERO=false
 
+set "JAVA_HOME=../../jdk1.6.0_37"
 
 1) modify server\default\conf\jboss-log4j.xml:
 
@@ -375,3 +376,12 @@ Configure Connection Factory for JBoss Messaging (jboss5.1):
     </mbean>
  </server>
 
+
+=================================================
+JBoss AS 7.1 Setup:
+
+1) standalone.conf - set JAVA_HOME="../../jdk1.6.0_37"
+
+2) Change ports under folder %JBOSS_HOME%/standalone/configuration:
+  A) standalone.xml: 8090 -> 8190, 8080 -> 8090
+  B) standalone-full.xml: 8090 -> 8190, 8080 -> 8090
