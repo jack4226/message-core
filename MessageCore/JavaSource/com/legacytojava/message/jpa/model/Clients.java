@@ -22,17 +22,17 @@ public class Clients extends BaseModel implements Serializable {
 
 	@Column(length=40, nullable=false)
 	private String clientName = "";
-	@Column(length=1)
+	@Column(length=1, columnDefinition="char")
 	private String clientType = null;
 	@Column(length=100, nullable=false)
 	private String domainName = "";
-	@Column(length=1, nullable=false)
+	@Column(length=1, nullable=false, columnDefinition="char")
 	private String statusId = "";
 	@Column(length=10)
 	private String irsTaxId = null;
 	@Column(length=100)
 	private String webSiteUrl = null;
-	@Column(length=1, nullable=false)
+	@Column(length=1, nullable=false, columnDefinition="char")
 	private String saveRawMsg = Constants.YES_CODE;
 	@Column(length=60)
 	private String contactName = null;
@@ -74,13 +74,13 @@ public class Clients extends BaseModel implements Serializable {
 	private String systemId = "";
 	@Column(length=30)
 	private String systemKey = null;
-	@Column(length=1)
+	@Column(length=1, columnDefinition="char")
 	private String dikm = null;
-	@Column(length=1)
+	@Column(length=1, columnDefinition="char")
 	private String domainKey = null;
 	@Column(length=200)
 	private String keyFilePath = null;
-	@Column(length=1)
+	@Column(length=1, columnDefinition="char")
 	private String spf = null;
 
 	@Transient

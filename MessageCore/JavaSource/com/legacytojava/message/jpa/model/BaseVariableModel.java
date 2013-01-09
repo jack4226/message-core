@@ -22,11 +22,23 @@ public abstract class BaseVariableModel implements Serializable
 	private static final long serialVersionUID = 3239024926806006588L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	/*
-	 * !!!!!!!!!! Very important !!!!!!!!!!
+	 * XXX GenerationType.IDENTITY caused following error when deployed to JBoss 5.1: 
+	 * 	org.hibernate.MappingException: Cannot use identity column key generation with <union-subclass> mapping for: ...
+	 * 
+	 * Cause (Hybernate specific):
+	 * There is a problem with mixing Table per Class inheritance and GenerationType.IDENTITY. 
+	 * Consider an identity column in MySql. It is Column-Based. In a Table-Per-Class Strategy
+	 * you use one table per class and each one has an id.
+	 * 
+	 * Fix:
+	 * Use GenerationType.TABLE instead.
+	 */
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	/*
+	 * XXX !!!!!!!!!! Very important !!!!!!!!!!
 	 * "name" attribute in Column annotation is required for native query
-	 * to map query results.
+	 * to map query results to the JPA model class.
 	 */
 	@Column(name="RowId") 
 	protected int rowId = -1;
@@ -37,21 +49,30 @@ public abstract class BaseVariableModel implements Serializable
 	private Date startTime = new Date(System.currentTimeMillis());
 	@Column(name="VariableFormat", length=50)
 	private String variableFormat= null;
-	@Column(name="VariableType", nullable=false, length=1)
+	/*
+	 * XXX received following error when deployed to JBoss 5.1:
+	 * org.hibernate.HibernateException: Wrong column type Found: char, expected: varchar(1)
+	 * 
+	 * Cause (Hybernate specific):
+	 * Hibernate has found "char" as the dataType of the column in the DATABASE and in 
+	 * Hybernate mapping the default data type is String.
+	 * 
+	 * Fix:
+	 * Add columnDefinition="char" to @Column annotation.
+	 */
+	@Column(name="VariableType", nullable=false, length=1, columnDefinition="char")
 	private String variableType = "";
 	// T - text, N - numeric, D - DateField/time,
 	// A - address, X - Xheader, L - LOB(Attachment)
 	//private String statusId = Constants.ACTIVE;
 	// A - Active, I - Inactive
-	@Column(name="StatusId", length=1, nullable=false)
+	@Column(name="StatusId", length=1, nullable=false, columnDefinition="char")
 	private String statusId = "";
-	@Column(name="AllowOverride", length=1, nullable=false)
+	@Column(name="AllowOverride", length=1, nullable=false, columnDefinition="char")
 	private String allowOverride = Constants.YES_CODE;
 	// allow override value to be supplied at runtime, Y/N/M, M=Mandatory
-	@Column(name="Required", length=1, nullable=false)
+	@Column(name="Required", length=1, nullable=false, columnDefinition="char")
 	private String required = Constants.NO_CODE;
-	@Column(name="VariableValue", length=255)
-	private String variableValue = null;
 	
 	public int getRowId() {
 		return rowId;
@@ -97,11 +118,5 @@ public abstract class BaseVariableModel implements Serializable
 	}
 	public void setStatusId(String statusId) {
 		this.statusId = statusId;
-	}
-	public String getVariableValue() {
-		return variableValue;
-	}
-	public void setVariableValue(String variableValue) {
-		this.variableValue = variableValue;
 	}
 }

@@ -17,14 +17,14 @@ public abstract class BaseModel implements java.io.Serializable {
 	private static final long serialVersionUID = -3737571995910644181L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name="RowId")
 	protected int rowId = -1;
 
 	@Column(name="UpdtTime", nullable=false)
 	@Version
 	protected Timestamp updtTime = null;
-	@Column(name="UpdtUserId", length=10, nullable=false)
+	@Column(name="UpdtUserId", length=10, nullable=false, columnDefinition="char")
 	protected String updtUserId = null;
 
 	public Timestamp getUpdtTime() {

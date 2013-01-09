@@ -22,7 +22,7 @@ public class IdTokensService {
 	static Logger logger = Logger.getLogger(IdTokensService.class);
 	
 	/*
-	 * This next annotation triggers JBoss to look for the persistence unit name "message_core"
+	 * XXX This next annotation triggers JBoss to look for the persistence unit name "message_core"
 	 * when it is bundled and deployed in a war file. Use spring @Autowired injection instead.
 	 */
 	//@PersistenceContext(unitName="message_core")

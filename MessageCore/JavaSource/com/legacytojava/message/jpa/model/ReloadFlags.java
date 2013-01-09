@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="ReloadFlags")
 /*
- * !!!!! Rollback will not work since this table is defined with MyISAM engine
+ * XXX !!!!! Rollback will not work since this table is defined with MyISAM engine
  */
 public class ReloadFlags implements java.io.Serializable {	
 	private static final long serialVersionUID = -5657762883755527124L;

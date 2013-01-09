@@ -3,9 +3,10 @@ package com.legacytojava.message.jpa.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="IdTokens")
+@Table(name="IdTokens", uniqueConstraints=@UniqueConstraint(columnNames = {"clientId"}))
 public class IdTokens extends BaseModel implements java.io.Serializable {
 	private static final long serialVersionUID = -632308305179136081L;
 

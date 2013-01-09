@@ -33,7 +33,7 @@
 	          org.jnp.interfaces.NamingContextFactory
 	        </prop>
 	        <prop key="java.naming.provider.url">
-	          jnp://localhost:2099
+	          ${jndi.url}
 	        </prop>
 	        <prop key="java.naming.factory.url.pkgs">
 	          org.jboss.naming:org.jnp.interfaces
