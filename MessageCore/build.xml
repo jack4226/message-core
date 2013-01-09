@@ -15,6 +15,7 @@
 			<fileset dir="${source.dir}">
 				<include name="jndi.*"/>
 				<include name="spring-*.xml"/>
+				<include name="META-INF/message-core.*.properties"/>
 			</fileset>
 		</copy>
 	</target>
