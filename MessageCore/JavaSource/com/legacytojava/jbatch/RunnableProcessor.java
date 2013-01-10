@@ -30,6 +30,7 @@ public abstract class RunnableProcessor implements Processor, Runnable {
 	/**
 	 * be a thread
 	 */
+	@Override
 	public void run() {
 		try {
 			process(threadObject);
