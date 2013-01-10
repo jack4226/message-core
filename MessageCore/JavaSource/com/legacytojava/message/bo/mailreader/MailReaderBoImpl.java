@@ -213,6 +213,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	/**
 	 * run the MailReader, invoke Application plug-in to process e-mails.
 	 */
+	@Override
 	public void run() {
 		logger.info("thread " + Thread.currentThread().getName() + " running");
 		try {
@@ -253,6 +254,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	
 	public void process(Object req) throws IOException, JMSException, MessagingException {
 		// dummy method to satisfy super class
+		logger.error("If we entered here, something is wrong, please investigate!!!");
 	}
 	
 	/**
