@@ -54,11 +54,4 @@
 	    <property name="jpaTemplate" ref="jpaTemplate"/>
 	</bean -->
 
-
-	<bean id="duplicateCheck"
-		class="com.legacytojava.message.bo.mailreader.DuplicateCheckJdbcDao">
-		<property name="dataSource" ref="mysqlDataSource" />
-		<property name="purgeAfter" value="24"/>
-	</bean>
-
 </beans>
