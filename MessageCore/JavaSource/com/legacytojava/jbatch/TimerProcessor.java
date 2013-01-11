@@ -3,12 +3,10 @@ package com.legacytojava.jbatch;
 import java.io.IOException;
 
 import javax.jms.JMSException;
-import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
 import com.legacytojava.message.bo.mailreader.DuplicateCheckDao;
-import com.legacytojava.message.bo.mailreader.DuplicateCheckJdbcDao;
 
 /**
  * test processor
@@ -48,18 +46,8 @@ public class TimerProcessor extends RunnableProcessor {
 
 	private DuplicateCheckDao getDuplicateCheck() {
 		if (duplicateCheck == null) {
-			duplicateCheck = new DuplicateCheckJdbcDao();
-			((DuplicateCheckJdbcDao)duplicateCheck).setDataSource(getCsDataSource());
-			((DuplicateCheckJdbcDao)duplicateCheck).setPurgeAfter("24");
+			duplicateCheck = (DuplicateCheckDao) SpringUtil.getDaoAppContext().getBean("duplicateCheck");
 		}
 		return duplicateCheck;
-	}
-	
-	private DataSource csDataSource = null;
-	private DataSource getCsDataSource() {
-		if (csDataSource == null) {
-			csDataSource = (DataSource)JbMain.getBatchAppContext().getBean("csDataSource");
-		}
-		return csDataSource;
 	}
 }
