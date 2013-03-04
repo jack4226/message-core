@@ -219,7 +219,7 @@ public class LoadTemplateTables
 		in.setStartTime(updtTime);
 		in.setDescription(null);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setTemplateValue("Weekend Deals at MyBesyDeals.com");
+		in.setTemplateValue("Weekend Deals at MyBestDeals.com");
 
 		subjTemplateDao.insert(in);
 
