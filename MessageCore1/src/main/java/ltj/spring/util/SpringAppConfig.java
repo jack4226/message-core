@@ -26,7 +26,8 @@ import ltj.tomee.util.TomeeCtxUtil;
 
 @Configuration
 //@org.springframework.context.annotation.Import(JBatchConfig.class)
-@ImportResource("classpath:/properties-config.xml")
+@ImportResource({"classpath:/properties-config.xml", "classpath:/spring-mysql-config.xml"})
+
 @EnableJms
 public class SpringAppConfig implements JmsListenerConfigurer {
 	protected final static Logger logger = Logger.getLogger(SpringAppConfig.class);

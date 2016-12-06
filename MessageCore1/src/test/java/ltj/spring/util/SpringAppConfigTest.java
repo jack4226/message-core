@@ -2,12 +2,15 @@ package ltj.spring.util;
 
 import static org.junit.Assert.*;
 
-import javax.jms.Connection;
+import java.sql.SQLException;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
+import javax.sql.DataSource;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -19,14 +22,21 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 public class SpringAppConfigTest {
 	protected final static Logger logger = Logger.getLogger(SpringAppConfigTest.class);
 	
+	AbstractApplicationContext context = null;
+	
+	@Before
+	public void setup() {
+		context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+	}
+	
 	@Test
 	public void testSpringAppConfig1() {
-		AbstractApplicationContext ctx = null;
-		Connection conn = null;
+		//AbstractApplicationContext ctx = null;
+		javax.jms.Connection conn = null;
 		try {
-			ctx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+			//ctx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
 		
-			ConnectionFactory factory = ctx.getBean(ConnectionFactory.class);
+			ConnectionFactory factory = context.getBean(ConnectionFactory.class);
 			assertNotNull(factory);
 			
 			conn = factory.createConnection();
@@ -43,8 +53,8 @@ public class SpringAppConfigTest {
 					// ignore
 				}
 			}
-			if (ctx != null) {
-				ctx.close();
+			if (context != null) {
+				context.close();
 			}
 		}
 	}
@@ -52,7 +62,7 @@ public class SpringAppConfigTest {
 	@Test
 	public void testSpringAppConfig2() {
 		AnnotationConfigApplicationContext ctx = null;
-		Connection conn = null;
+		javax.jms.Connection conn = null;
 		try {
 			ctx = new AnnotationConfigApplicationContext(); //SpringAppConfig.class);
 		
@@ -89,5 +99,42 @@ public class SpringAppConfigTest {
 				ctx.close();
 			}
 		}
+	}
+	
+	@Test
+	public void testDataSourceConfig() {
+		try {
+			Object obj1 = context.getBean("mysqlTransactionManager");
+			assertNotNull(obj1);
+			assertTrue(obj1 instanceof org.springframework.jdbc.datasource.DataSourceTransactionManager);
+			
+			Object obj2 = context.getBean("mysqlDataSource");
+			assertNotNull(obj2);
+			assertTrue(obj2 instanceof org.springframework.jdbc.datasource.DriverManagerDataSource);
+			DataSource ds = (DataSource) obj2;
+			
+			java.sql.Connection conn = null;
+			try {
+				conn = ds.getConnection();
+				assertNotNull(conn);
+				conn.setAutoCommit(false);
+			} catch (SQLException e) {
+				fail();
+			}
+			finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {}
+				}
+			}
+		}
+		finally {
+			
+			if (context != null) {
+				context.close();
+			}
+		}
+
 	}
 }
