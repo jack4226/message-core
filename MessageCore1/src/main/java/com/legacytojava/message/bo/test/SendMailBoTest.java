@@ -11,12 +11,13 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
-import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bo.TaskBaseBo;
 import com.legacytojava.message.bo.TaskScheduler;
 import com.legacytojava.message.constant.RuleNameType;
 import com.legacytojava.message.vo.inbox.MsgInboxWebVo;
+
+import ltj.jbatch.queue.JmsProcessor;
 
 public class SendMailBoTest extends BoTestBase {
 	@Resource

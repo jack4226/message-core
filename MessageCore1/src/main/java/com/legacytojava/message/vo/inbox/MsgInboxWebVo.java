@@ -3,12 +3,13 @@ package com.legacytojava.message.vo.inbox;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MsgDirectionCode;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.vo.BaseVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class MsgInboxWebVo extends BaseVo implements Serializable {
 	private static final long serialVersionUID = 4827192283916378782L;

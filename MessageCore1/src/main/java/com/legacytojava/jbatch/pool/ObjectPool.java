@@ -7,10 +7,11 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.JbMain;
-import com.legacytojava.jbatch.smtp.SmtpConnection;
 import com.legacytojava.message.constant.MailServerType;
 import com.legacytojava.message.vo.SmtpConnVo;
+
+import ltj.jbatch.app.JbMain;
+import ltj.jbatch.smtp.SmtpConnection;
 
 /**
  * a common object pool.

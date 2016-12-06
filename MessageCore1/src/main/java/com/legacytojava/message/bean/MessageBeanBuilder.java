@@ -31,8 +31,6 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.HostUtil;
-import com.legacytojava.jbatch.common.EmailSender;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
 import com.legacytojava.message.constant.XHeaderName;
@@ -43,6 +41,9 @@ import com.legacytojava.message.vo.inbox.AttachmentsVo;
 import com.legacytojava.message.vo.inbox.MsgAddrsVo;
 import com.legacytojava.message.vo.inbox.MsgHeadersVo;
 import com.legacytojava.message.vo.inbox.MsgInboxVo;
+
+import ltj.jbatch.app.HostUtil;
+import ltj.jbatch.common.EmailSender;
 
 public final class MessageBeanBuilder {
 	static final Logger logger = Logger.getLogger(MessageBeanBuilder.class);

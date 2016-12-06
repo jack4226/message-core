@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import com.legacytojava.jbatch.SpringUtil;
+import ltj.jbatch.app.SpringUtil;
 
 public abstract class CreateTableBase {
 	protected static final String LF = System.getProperty("line.separator", "\n");

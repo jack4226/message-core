@@ -14,7 +14,7 @@
 		<property name="scopes">
 		<map>
 			<entry key="thread">
-				<bean class="com.legacytojava.jbatch.common.SpringThreadScope"/>
+				<bean class="ltj.jbatch.common.SpringThreadScope"/>
 			</entry>
 		</map>
 		</property>
@@ -46,21 +46,21 @@
 	
 	<aop:config>
 		<aop:pointcut id="mailProcessorOperation"
-			expression="execution(* com.legacytojava.jbatch.Processor.*(..))"/>
+			expression="execution(* ltj.jbatch.app.Processor.*(..))"/>
 		<aop:advisor advice-ref="jmsTxAdvice" pointcut-ref="mailProcessorOperation"/>
 	</aop:config>
 	<!-- end of Advice -->
 	
-	<bean id="resource" class="com.legacytojava.jbatch.Resource">
+	<bean id="resource" class="ltj.jbatch.app.Resource">
 		<property name="dataSource" ref="csDataSource"/>
 	</bean>
 	
 	<bean id="metricsData" scope="thread"
-		class="com.legacytojava.jbatch.MetricsData">
+		class="ltj.jbatch.app.MetricsData">
 	</bean>
 	
 	<bean id="metricsLogger" scope="thread"
-		class="com.legacytojava.jbatch.MetricsLogger">
+		class="ltj.jbatch.app.MetricsLogger">
 		<constructor-arg index="0" ref="csDataSource"/>
 		<constructor-arg index="1" ref="metricsData"/>
 	</bean>
@@ -93,7 +93,7 @@
 	
 	<!-- this is the Message Driven POJO (MDP) -->
 	<bean id="jmsListener" lazy-init="true"
-		class="com.legacytojava.jbatch.queue.JmsListener">
+		class="ltj.jbatch.queue.JmsListener">
 		<property name="jmsProcessor" ref="jmsProcessor"/>
 	</bean>
 
@@ -112,7 +112,7 @@
 	
 	<!-- this is the Message Driven POJO (MDP) -->
 	<bean id="queueListener" lazy-init="true"
-		class="com.legacytojava.jbatch.QueueListener">
+		class="ltj.jbatch.app.QueueListener">
 		<constructor-arg index="0" ref="queueReaderVo"/>
 		<property name="jmsTemplate" ref="unHandledOutputJmsTemplate"/>
 	</bean>
@@ -141,14 +141,14 @@
 	</bean>
 	
 	<bean id="queueReader" lazy-init="true"
-		class="com.legacytojava.jbatch.QueueReader">
+		class="ltj.jbatch.app.QueueReader">
 		<constructor-arg index="0" ref="queueReaderVo"></constructor-arg>
 		<property name="transactionManager" ref="jmsTransactionManager" />
 		<property name="jmsTemplate" ref="ruleEngineInputJmsTemplate"/>
 	</bean>
 
 	<bean id="queueProcessor" lazy-init="true"
-		class="com.legacytojava.jbatch.TestProcessor">
+		class="ltj.jbatch.app.TestProcessor">
 		<property name="serverBaseVo" ref="queueReaderVo"></property>
 	</bean>
 
@@ -170,7 +170,7 @@
 	</bean>
 	
 	<bean id="mailProcessor" lazy-init="true"
-		class="com.legacytojava.jbatch.TestProcessor">
+		class="ltj.jbatch.app.TestProcessor">
 		<property name="properties" ref="extraProperties"></property>
 	</bean>
 
@@ -205,11 +205,11 @@
 	    </constructor-arg>
 	</bean>
 	<bean id="smtpConnection" scope="prototype"
-	      class="com.legacytojava.jbatch.smtp.SmtpConnection">
+	      class="ltj.jbatch.smtp.SmtpConnection">
 	    <constructor-arg index="0" ref="smtpProperties"/>
 	</bean>
 	<bean id="emailSender" lazy-init="true"
-	      class="com.legacytojava.jbatch.common.EmailSender">
+	      class="ltj.jbatch.common.EmailSender">
 	    <constructor-arg index="0" ref="smtpProperties"/>
 	</bean>
 	<bean id="simpleEmailSender" lazy-init="true"
@@ -221,7 +221,7 @@
 		Timer Section. Default is to use TestProcessor.
 	 -->
 	<bean id="timerProcessor" lazy-init="true" scope="thread"
-		class="com.legacytojava.jbatch.TimerProcessor">
+		class="ltj.jbatch.app.TimerProcessor">
 	</bean>
 	
 	<!-- 
@@ -254,7 +254,7 @@
 		[CHANGEME] - if you want to disable all alerts, set "disabled" property to "yes". 
 	 -->
 	<bean id="eventAlert" lazy-init="true" scope="prototype"
-	      class="com.legacytojava.jbatch.EventAlert">
+	      class="ltj.jbatch.app.EventAlert">
 	    <constructor-arg index="0" ref="eventProperties" />
 	    <property name="emailSender" ref="emailSender"/>
 	    <property name="disabled" value="no"/>

@@ -11,12 +11,13 @@ import javax.sql.DataSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.BaseVo;
 import com.legacytojava.message.vo.emailaddr.MailingListVo;
 import com.legacytojava.message.vo.inbox.AttachmentsVo;
 import com.legacytojava.message.vo.inbox.MsgInboxVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class MetaDataUtil {
 	static final Logger logger = Logger.getLogger(MetaDataUtil.class);

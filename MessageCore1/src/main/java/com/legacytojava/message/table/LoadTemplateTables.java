@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 
 import org.springframework.context.ApplicationContext;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
@@ -25,6 +24,8 @@ import com.legacytojava.message.vo.template.GlobalVariableVo;
 import com.legacytojava.message.vo.template.MsgSourceVo;
 import com.legacytojava.message.vo.template.SubjTemplateVo;
 import com.legacytojava.message.vo.template.TemplateVariableVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class LoadTemplateTables
 {

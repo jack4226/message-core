@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bean.BodypartBean;
 import com.legacytojava.message.bean.BodypartUtil;
 import com.legacytojava.message.bean.MessageBean;
@@ -39,6 +38,8 @@ import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.inbox.MsgInboxVo;
 import com.legacytojava.message.vo.outbox.MsgRenderedVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 /**
  * Scan email header and body, and match rules to determine the ruleName.

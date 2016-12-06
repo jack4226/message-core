@@ -1,6 +1,6 @@
 package com.legacytojava.message.dao.outbox;
 
-import com.legacytojava.jbatch.SpringUtil;
+import ltj.jbatch.app.SpringUtil;
 
 public class TestMsgSequence implements Runnable {
 	final static String LF = System.getProperty("line.separator", "\n");

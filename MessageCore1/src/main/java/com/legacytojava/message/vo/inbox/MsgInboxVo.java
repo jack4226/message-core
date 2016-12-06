@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bo.mailsender.MessageBodyBuilder;
 import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
@@ -21,6 +20,8 @@ import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.outbox.DeliveryStatusVo;
 import com.legacytojava.message.vo.outbox.MsgRenderedVo;
 import com.legacytojava.message.vo.outbox.MsgStreamVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class MsgInboxVo extends BaseVo implements Serializable {
 	private static final long serialVersionUID = -6107126104027039811L;

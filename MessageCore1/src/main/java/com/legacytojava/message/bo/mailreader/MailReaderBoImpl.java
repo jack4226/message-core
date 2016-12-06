@@ -25,14 +25,15 @@ import javax.mail.event.StoreListener;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.jbatch.RunnableProcessor;
-import com.legacytojava.jbatch.SpringUtil;
-import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.constant.MailProtocol;
 import com.legacytojava.message.constant.MailServerType;
 import com.legacytojava.message.dao.mailbox.MailBoxDao;
 import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.vo.MailBoxVo;
+
+import ltj.jbatch.app.RunnableProcessor;
+import ltj.jbatch.app.SpringUtil;
+import ltj.jbatch.queue.JmsProcessor;
 
 /**
  * <pre>

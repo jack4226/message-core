@@ -27,7 +27,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bean.MessageBeanBuilder;
 import com.legacytojava.message.bean.MessageBeanUtil;
@@ -46,6 +45,8 @@ import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.inbox.MsgInboxVo;
 import com.legacytojava.message.vo.inbox.MsgInboxWebVo;
 import com.legacytojava.message.vo.outbox.MsgStreamVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})

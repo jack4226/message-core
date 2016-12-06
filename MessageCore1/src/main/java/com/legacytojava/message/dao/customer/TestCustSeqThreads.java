@@ -1,6 +1,6 @@
 package com.legacytojava.message.dao.customer;
 
-import com.legacytojava.jbatch.SpringUtil;
+import ltj.jbatch.app.SpringUtil;
 
 public class TestCustSeqThreads implements Runnable {
 	final static String LF = System.getProperty("line.separator", "\n");

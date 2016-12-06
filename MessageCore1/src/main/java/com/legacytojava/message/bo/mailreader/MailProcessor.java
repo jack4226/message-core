@@ -13,14 +13,15 @@ import javax.mail.Transport;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.RunnableProcessor;
-import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bean.MessageBeanBuilder;
 import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.dao.client.ClientUtil;
 import com.legacytojava.message.vo.MailBoxVo;
+
+import ltj.jbatch.app.RunnableProcessor;
+import ltj.jbatch.queue.JmsProcessor;
 
 /**
  * process email's handed over by MailReader class.

@@ -14,7 +14,7 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.SpringUtil;
+import ltj.jbatch.app.SpringUtil;
 
 /**
  * This class is used to check duplicate messages. It uses derby database as its

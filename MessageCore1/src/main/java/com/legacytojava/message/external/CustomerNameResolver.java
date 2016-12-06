@@ -2,9 +2,10 @@ package com.legacytojava.message.external;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.emailaddr.EmailVariableDao;
 import com.legacytojava.message.exception.DataValidationException;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class CustomerNameResolver implements VariableResolver {
 	static final Logger logger = Logger.getLogger(CustomerNameResolver.class);

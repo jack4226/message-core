@@ -14,7 +14,7 @@ import javax.swing.JPasswordField;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.SpringUtil;
+import ltj.jbatch.app.SpringUtil;
 
 public class CreateDatabase {
 	static final Logger logger = Logger.getLogger(CreateDatabase.class);

@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.springframework.context.ApplicationContext;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.EmailAddressType;
 import com.legacytojava.message.constant.MsgDataType;
 import com.legacytojava.message.constant.RuleNameType;
@@ -16,6 +15,8 @@ import com.legacytojava.message.dao.action.MsgDataTypeDao;
 import com.legacytojava.message.vo.action.MsgActionDetailVo;
 import com.legacytojava.message.vo.action.MsgActionVo;
 import com.legacytojava.message.vo.action.MsgDataTypeVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class LoadActionTables {
 	String LF = System.getProperty("line.separator", "\n");

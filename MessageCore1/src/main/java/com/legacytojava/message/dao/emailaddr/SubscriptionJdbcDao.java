@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MsgStatusCode;
 import com.legacytojava.message.constant.StatusIdCode;
@@ -22,6 +21,8 @@ import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.PagingVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.emailaddr.SubscriptionVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 @Component("subscriptionDao")
 public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao {

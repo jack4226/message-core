@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bo.template.RenderBo;
 import com.legacytojava.message.bo.template.RenderRequest;
@@ -46,6 +45,8 @@ import com.legacytojava.message.vo.outbox.MsgRenderedVo;
 import com.legacytojava.message.vo.outbox.RenderAttachmentVo;
 import com.legacytojava.message.vo.outbox.RenderObjectVo;
 import com.legacytojava.message.vo.outbox.RenderVariableVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 @Component("msgOutboxBo")
 public class MsgOutboxBoImpl implements MsgOutboxBo {

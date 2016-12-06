@@ -22,7 +22,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.bo.template.RenderBo;
 import com.legacytojava.message.bo.template.RenderRequest;
 import com.legacytojava.message.bo.template.RenderResponse;
@@ -32,6 +31,8 @@ import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
 import com.legacytojava.message.constant.VariableName;
 import com.legacytojava.message.constant.VariableType;
+
+import ltj.jbatch.queue.JmsProcessor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})

@@ -22,7 +22,6 @@ import javax.mail.internet.InternetAddress;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.jbatch.smtp.SmtpException;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bean.MessageBeanBuilder;
 import com.legacytojava.message.bean.MessageBeanUtil;
@@ -50,6 +49,8 @@ import com.legacytojava.message.vo.ClientVo;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.inbox.MsgInboxVo;
 import com.legacytojava.message.vo.outbox.MsgStreamVo;
+
+import ltj.jbatch.smtp.SmtpException;
 
 /**
  * process queue messages handed over by QueueListener.

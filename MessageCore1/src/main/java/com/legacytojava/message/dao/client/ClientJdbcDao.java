@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.common.TimestampUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.constant.VariableType;
@@ -24,6 +23,8 @@ import com.legacytojava.message.util.BlobUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.ClientVo;
 import com.legacytojava.message.vo.template.ClientVariableVo;
+
+import ltj.jbatch.common.TimestampUtil;
 
 @Component("clientDao")
 public class ClientJdbcDao extends AbstractDao implements ClientDao {

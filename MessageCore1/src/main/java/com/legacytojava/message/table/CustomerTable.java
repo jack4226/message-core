@@ -5,13 +5,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MobileCarrier;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
 import com.legacytojava.message.main.CreateTableBase;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class CustomerTable extends CreateTableBase {
 	/**

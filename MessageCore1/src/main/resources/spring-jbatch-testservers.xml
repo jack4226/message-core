@@ -49,7 +49,7 @@
 	 -->
 	<!-- Application Beans -->
 	<bean id="jmsProcessor" lazy-init="true"
-		class="com.legacytojava.jbatch.queue.JmsProcessor">
+		class="ltj.jbatch.queue.JmsProcessor">
 	    <property name="jmsTemplate">
 	        <ref bean="ruleEngineOutputJmsTemplate"/>
 	    </property>
@@ -80,7 +80,7 @@
 	
 	<!-- test only, not yet used -->
 	<bean id="mailSenderJmsProcessor" lazy-init="true"
-		class="com.legacytojava.jbatch.queue.JmsProcessor">
+		class="ltj.jbatch.queue.JmsProcessor">
 	    <property name="jmsTemplate">
 	        <ref bean="mailSenderInputJmsTemplate"/>
 	    </property>
@@ -127,12 +127,12 @@
 	</bean>
 	
 	<bean id="socketServer" lazy-init="true" scope="prototype"
-	      class="com.legacytojava.jbatch.SocketServer">
+	      class="ltj.jbatch.app.SocketServer">
 	    <constructor-arg index="0" ref="socketServerVo" />
 	</bean>
 	
 	<bean id="httpServer" lazy-init="true" scope="prototype"
-	      class="com.legacytojava.jbatch.HttpServer">
+	      class="ltj.jbatch.app.HttpServer">
 	    <constructor-arg index="0" value="com/legacytojava/jbatch/htmldocs"/>
 	</bean>
 	

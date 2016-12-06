@@ -100,7 +100,7 @@
 	<!-- end of Templates -->
 
 	<bean id="jmsProcessor" lazy-init="true"
-		class="com.legacytojava.jbatch.queue.JmsProcessor">
+		class="ltj.jbatch.queue.JmsProcessor">
 		<property name="jmsTemplate">
 			<ref bean="mailSenderInputJmsTemplate" />
 		</property>

@@ -6,12 +6,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bo.TaskBaseBo;
 import com.legacytojava.message.dao.rule.RuleDao;
 import com.legacytojava.message.external.RuleTargetProc;
 import com.legacytojava.message.vo.rule.RuleElementVo;
 import com.legacytojava.message.vo.rule.RuleVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 @Component("rulesDataBo")
 public final class RulesDataBoImpl implements RulesDataBo {

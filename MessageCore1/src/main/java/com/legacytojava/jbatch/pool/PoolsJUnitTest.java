@@ -7,9 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
+import ltj.jbatch.app.JbMain;
+import ltj.jbatch.smtp.SmtpConnection;
 
-import com.legacytojava.jbatch.JbMain;
-import com.legacytojava.jbatch.smtp.SmtpConnection;
 import com.legacytojava.message.bo.mailsender.SmtpWrapperUtil;
 
 public class PoolsJUnitTest extends TestCase {

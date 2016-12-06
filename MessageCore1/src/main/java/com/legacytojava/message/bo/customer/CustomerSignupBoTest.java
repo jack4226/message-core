@@ -10,11 +10,12 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.legacytojava.jbatch.JbMain;
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.customer.CustomerDao;
 import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.vo.CustomerVo;
+
+import ltj.jbatch.app.JbMain;
+import ltj.jbatch.app.SpringUtil;
 
 /*
  * !!! Do not modify this class to use SpringJunit as it will cause DB deadlock.

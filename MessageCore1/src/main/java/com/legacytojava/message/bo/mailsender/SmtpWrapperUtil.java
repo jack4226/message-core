@@ -3,13 +3,14 @@ package com.legacytojava.message.bo.mailsender;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.jbatch.pool.NamedPools;
 import com.legacytojava.jbatch.pool.ObjectPool;
-import com.legacytojava.jbatch.smtp.SmtpConnection;
 import com.legacytojava.message.dao.client.ClientUtil;
 import com.legacytojava.message.dao.smtp.SmtpServerDao;
 import com.legacytojava.message.vo.SmtpConnVo;
+
+import ltj.jbatch.app.SpringUtil;
+import ltj.jbatch.smtp.SmtpConnection;
 
 public class SmtpWrapperUtil {
 	private static SmtpServerDao smtpServerDao = null;

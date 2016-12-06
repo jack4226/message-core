@@ -7,12 +7,13 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.ProductUtil;
-import com.legacytojava.jbatch.SpringUtil;
-import com.legacytojava.jbatch.common.ProductKey;
-import com.legacytojava.jbatch.common.TimestampUtil;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.ClientVo;
+
+import ltj.jbatch.app.ProductUtil;
+import ltj.jbatch.app.SpringUtil;
+import ltj.jbatch.common.ProductKey;
+import ltj.jbatch.common.TimestampUtil;
 
 public final class ClientUtil {
 	static final Logger logger = Logger.getLogger(ClientUtil.class);

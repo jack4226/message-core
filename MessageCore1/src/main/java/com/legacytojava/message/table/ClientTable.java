@@ -6,15 +6,16 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 
-import com.legacytojava.jbatch.ProductUtil;
-import com.legacytojava.jbatch.SpringUtil;
-import com.legacytojava.jbatch.common.ProductKey;
-import com.legacytojava.jbatch.common.TimestampUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.StatusIdCode;
 import com.legacytojava.message.dao.client.ClientDao;
 import com.legacytojava.message.main.CreateTableBase;
 import com.legacytojava.message.vo.ClientVo;
+
+import ltj.jbatch.app.ProductUtil;
+import ltj.jbatch.app.SpringUtil;
+import ltj.jbatch.common.ProductKey;
+import ltj.jbatch.common.TimestampUtil;
 
 public class ClientTable extends CreateTableBase {
 	/** Creates a new instance of ClientTables 

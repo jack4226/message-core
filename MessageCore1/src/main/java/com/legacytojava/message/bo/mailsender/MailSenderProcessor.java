@@ -22,14 +22,15 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.legacytojava.jbatch.JbMain;
-import com.legacytojava.jbatch.Processor;
 import com.legacytojava.jbatch.pool.NamedPools;
-import com.legacytojava.jbatch.queue.JmsProcessor;
-import com.legacytojava.jbatch.smtp.SmtpConnection;
-import com.legacytojava.jbatch.smtp.SmtpException;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.exception.DataValidationException;
+
+import ltj.jbatch.app.JbMain;
+import ltj.jbatch.app.Processor;
+import ltj.jbatch.queue.JmsProcessor;
+import ltj.jbatch.smtp.SmtpConnection;
+import ltj.jbatch.smtp.SmtpException;
 
 /**
  * process queue messages handed over by QueueListener

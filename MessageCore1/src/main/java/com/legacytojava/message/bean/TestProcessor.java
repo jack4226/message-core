@@ -14,8 +14,8 @@ import javax.jms.TextMessage;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.HostUtil;
-import com.legacytojava.jbatch.Processor;
+import ltj.jbatch.app.HostUtil;
+import ltj.jbatch.app.Processor;
 
 /**
  * test processor

@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bo.rule.RuleBase;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.MailingListDeliveryOption;
@@ -21,6 +20,8 @@ import com.legacytojava.message.vo.action.MsgActionVo;
 import com.legacytojava.message.vo.emailaddr.EmailTemplateVo;
 import com.legacytojava.message.vo.rule.RuleElementVo;
 import com.legacytojava.message.vo.rule.RuleLogicVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class PremiumUpgradeSetup {
 	static final Logger logger = Logger.getLogger(PremiumUpgradeSetup.class);

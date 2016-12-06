@@ -1,6 +1,6 @@
 package com.legacytojava.message.bo.mailreader;
 
-import com.legacytojava.jbatch.Processor;
+import ltj.jbatch.app.Processor;
 
 public interface DuplicateCheckDao extends Processor {
 	public boolean isDuplicate(String msg_id);

@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.common.KeyGenerator;
 import com.legacytojava.message.bean.HtmlConverter;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bo.template.RenderUtil;
@@ -28,6 +27,8 @@ import com.legacytojava.message.exception.TemplateNotFoundException;
 import com.legacytojava.message.util.StringUtil;
 import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
 import com.legacytojava.message.vo.emailaddr.TemplateRenderVo;
+
+import ltj.jbatch.common.KeyGenerator;
 
 @Component("autoReplyBo")
 @Scope(value="prototype")

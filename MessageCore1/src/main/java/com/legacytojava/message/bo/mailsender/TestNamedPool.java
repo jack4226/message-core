@@ -5,7 +5,8 @@ import java.util.Vector;
 
 import com.legacytojava.jbatch.pool.NamedPools;
 import com.legacytojava.jbatch.pool.ObjectPool;
-import com.legacytojava.jbatch.smtp.SmtpConnection;
+
+import ltj.jbatch.smtp.SmtpConnection;
 
 public class TestNamedPool implements Runnable {
 

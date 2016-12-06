@@ -13,8 +13,6 @@ import org.junit.Test;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.Rollback;
 
-import com.legacytojava.jbatch.SpringUtil;
-import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.bo.TaskBaseBo;
 import com.legacytojava.message.bo.TaskScheduler;
@@ -25,6 +23,9 @@ import com.legacytojava.message.bo.template.RenderVariable;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.RuleNameType;
 import com.legacytojava.message.exception.DataValidationException;
+
+import ltj.jbatch.app.SpringUtil;
+import ltj.jbatch.queue.JmsProcessor;
 
 /*** Please start MailEngine and MailReader before running this test ***/
 public class BroadcastBoTest extends BoTestBase {

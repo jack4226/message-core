@@ -17,12 +17,13 @@ import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.legacytojava.jbatch.SpringUtil;
-import com.legacytojava.jbatch.queue.JmsProcessor;
 import com.legacytojava.message.bean.MessageBean;
 import com.legacytojava.message.dao.action.MsgActionDao;
 import com.legacytojava.message.exception.DataValidationException;
 import com.legacytojava.message.vo.action.MsgActionVo;
+
+import ltj.jbatch.app.SpringUtil;
+import ltj.jbatch.queue.JmsProcessor;
 
 /**
  * An Email Message Processor. It retrieve process class names or process bean

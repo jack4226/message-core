@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.dao.client.ClientDao;
 import com.legacytojava.message.dao.client.ReloadFlagsDao;
@@ -32,6 +31,8 @@ import com.legacytojava.message.vo.rule.RuleElementVo;
 import com.legacytojava.message.vo.rule.RuleLogicVo;
 import com.legacytojava.message.vo.rule.RuleSubRuleMapVo;
 import com.legacytojava.message.vo.rule.RuleVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 @Component("ruleLoader")
 @Scope(value="prototype")

@@ -7,7 +7,6 @@ import javax.mail.Part;
 
 import org.springframework.context.ApplicationContext;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.constant.CarrierCode;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
@@ -44,6 +43,8 @@ import com.legacytojava.message.vo.outbox.MsgStreamVo;
 import com.legacytojava.message.vo.template.BodyTemplateVo;
 import com.legacytojava.message.vo.template.MsgSourceVo;
 import com.legacytojava.message.vo.template.SubjTemplateVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class LoadInboxTables
 {

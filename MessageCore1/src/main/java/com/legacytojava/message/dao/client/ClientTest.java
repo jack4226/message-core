@@ -17,9 +17,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.legacytojava.jbatch.common.TimestampUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.vo.ClientVo;
+
+import ltj.jbatch.common.TimestampUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-common-config.xml"})

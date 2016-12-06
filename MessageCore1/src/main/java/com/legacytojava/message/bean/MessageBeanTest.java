@@ -11,9 +11,10 @@ import javax.mail.MessagingException;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.inbox.MsgStreamDao;
 import com.legacytojava.message.vo.outbox.MsgStreamVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class MessageBeanTest {
 	final static String LF = System.getProperty("line.separator","\n");

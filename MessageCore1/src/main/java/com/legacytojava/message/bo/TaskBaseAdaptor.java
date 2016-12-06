@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import com.legacytojava.jbatch.SpringUtil;
-import com.legacytojava.jbatch.queue.JmsProcessor;
+import ltj.jbatch.app.SpringUtil;
+import ltj.jbatch.queue.JmsProcessor;
 
 @Component("taskBaseBo")
 @Scope(value="prototype")

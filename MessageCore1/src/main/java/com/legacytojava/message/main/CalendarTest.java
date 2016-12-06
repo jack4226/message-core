@@ -6,12 +6,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.dao.emailaddr.EmailTemplateDao;
 import com.legacytojava.message.dao.emailaddr.SchedulesBlob;
 import com.legacytojava.message.dao.emailaddr.SchedulesBlob.DateWrapper;
 import com.legacytojava.message.util.BlobUtil;
 import com.legacytojava.message.vo.emailaddr.EmailTemplateVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public class CalendarTest {
 	protected static final Logger logger = Logger.getLogger(CalendarTest.class);

@@ -1,7 +1,7 @@
 package com.legacytojava.message.main;
 
-import com.legacytojava.jbatch.ProductUtil;
-import com.legacytojava.jbatch.common.ProductKey;
+import ltj.jbatch.app.ProductUtil;
+import ltj.jbatch.common.ProductKey;
 
 public class ProductKeyTest {
 	static final String LF = System.getProperty("line.separator", "\n");

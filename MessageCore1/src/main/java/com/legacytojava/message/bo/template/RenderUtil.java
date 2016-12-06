@@ -17,7 +17,6 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.SpringUtil;
 import com.legacytojava.message.bo.mailinglist.MailingListUtil;
 import com.legacytojava.message.constant.Constants;
 import com.legacytojava.message.constant.EmailAddressType;
@@ -46,6 +45,8 @@ import com.legacytojava.message.vo.template.BodyTemplateVo;
 import com.legacytojava.message.vo.template.ClientVariableVo;
 import com.legacytojava.message.vo.template.GlobalVariableVo;
 import com.legacytojava.message.vo.template.TemplateVariableVo;
+
+import ltj.jbatch.app.SpringUtil;
 
 public final class RenderUtil {
 	static final Logger logger = Logger.getLogger(RenderUtil.class);
