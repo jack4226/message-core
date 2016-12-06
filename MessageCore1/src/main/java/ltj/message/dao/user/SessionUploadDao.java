@@ -1,4 +1,4 @@
-package ltj.dao.user;
+package ltj.message.dao.user;
 
 import java.util.List;
 
