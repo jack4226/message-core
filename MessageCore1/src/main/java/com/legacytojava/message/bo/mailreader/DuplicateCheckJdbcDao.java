@@ -45,7 +45,7 @@ public class DuplicateCheckJdbcDao implements DuplicateCheckDao {
 	DROP TABLE MSGIDDUP;
 	CREATE TABLE MSGIDDUP (
 		message_id varchar(200) not null primary key,
-		add_time timestamp not null);
+		add_time timestamp(3) not null);
 	CREATE INDEX MSGIDDUP_index ON MSGIDDUP (
 		add_time);
 	
@@ -127,7 +127,7 @@ public class DuplicateCheckJdbcDao implements DuplicateCheckDao {
 					String sql_create =
 						"create table MSGIDDUP ("
 						+ "message_id varchar(200) not null primary key "
-						+ ",add_time timestamp not null"
+						+ ",add_time timestamp(3) not null"
 						+ ")";
 					getJdbcTemplate().update(sql_create);
 					logger.info("DuplicateCheck: table MSGIDDUP and its index created.");

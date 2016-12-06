@@ -94,7 +94,7 @@ public class ClientTable extends CreateTableBase {
 					+ "KeyFilePath varchar(200), " // Private Key file location
 					+ "SPF char(1), " // SPF check Y/N
 					// <- End
-					+ "UpdtTime datetime NOT NULL, "
+					+ "UpdtTime datetime(3) NOT NULL, "
 					+ "UpdtUserId char(10) NOT NULL, "
 					+ "PRIMARY KEY (RowId), "
 					//+ "UNIQUE INDEX (DomainName), "

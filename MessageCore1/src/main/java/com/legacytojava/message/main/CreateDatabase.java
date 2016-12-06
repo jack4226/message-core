@@ -218,7 +218,8 @@ public class CreateDatabase {
 	}
 	
 	private void createTables() throws SQLException, ClassNotFoundException {
-		CreateReleaseTables create = new CreateReleaseTables();
+		//CreateReleaseTables create = new CreateReleaseTables();
+		CreateAllTables create = new CreateAllTables();
 		create.init();
 		create.dropAllTables();
 		create.createAllTables(SpringUtil.getDaoAppContext());

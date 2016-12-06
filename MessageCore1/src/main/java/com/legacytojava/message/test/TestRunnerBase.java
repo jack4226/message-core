@@ -12,7 +12,7 @@ public class TestRunnerBase {
 	static Class<?>[] getAllDaoTestClasses(String pkgName) {
 		// looking for class name ending with "Test", for example CustomerTest.class
 		List<Class<?>> clsList = new ArrayList<Class<?>>();
-		String homeDir = System.getProperty("user.dir") + PS + "bin" + PS;
+		String homeDir = System.getProperty("user.dir") + PS + "target" + PS + "classes" + PS;
 		System.out.println("Working directory: " + homeDir);
 		List<File> files =  getClassesFromDirTree(new File(homeDir), "Test.class");
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();

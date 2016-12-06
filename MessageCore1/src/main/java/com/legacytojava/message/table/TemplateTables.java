@@ -117,7 +117,7 @@ public class TemplateTables extends CreateTableBase {
 			stm.execute("CREATE TABLE GLOBALVARIABLE ( "
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "VariableName varchar(26) NOT NULL, "
-				+ "StartTime timestamp NOT NULL, "
+				+ "StartTime timestamp(3) NOT NULL, "
 				+ "VariableFormat varchar(50), " 
 				+ "VariableType char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
@@ -146,7 +146,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "ClientId varchar(16) NOT NULL, "
 				+ "VariableName varchar(26) NOT NULL, "
-				+ "StartTime timestamp NOT NULL, "
+				+ "StartTime timestamp(3) NOT NULL, "
 				+ "VariableFormat varchar(50), "
 				+ "VariableType char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
@@ -177,7 +177,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "TemplateId varchar(16) NOT NULL, "
 				+ "ClientId varchar(16), "
 				+ "VariableName varchar(26) NOT NULL, "
-				+ "StartTime timestamp NOT NULL, "
+				+ "StartTime timestamp(3) NOT NULL, "
 				+ "VariableFormat varchar(50), "
 				+ "VariableType char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
@@ -225,7 +225,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "ArchiveInd char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
 				// Y - archive the rendered messages
 				+ "PurgeAfter int, " // in month
-				+ "UpdtTime datetime NOT NULL, "
+				+ "UpdtTime datetime(3) NOT NULL, "
 				+ "UpdtUserId varchar(10) NOT NULL, "
 				+ "PRIMARY KEY (RowId), "
 				+ "UNIQUE INDEX (MsgSourceId), "

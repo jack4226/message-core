@@ -88,7 +88,7 @@ public class ActionTables extends CreateTableBase
 			"ProcessBeanId varchar(50) NOT NULL, " +
 			"ProcessClassName varchar(100), " +
 			"DataType varchar(16), " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId varchar(10) NOT NULL, " +
 			"INDEX (DataType), " +
 			"FOREIGN KEY (DataType) REFERENCES MSGDATATYPE (DataType) ON DELETE CASCADE ON UPDATE CASCADE, " +
@@ -109,7 +109,7 @@ public class ActionTables extends CreateTableBase
 			"RowId int AUTO_INCREMENT not null, " +
 			"RuleName varchar(26) NOT NULL, " +
 			"ActionSeq int NOT NULL, " +
-			"StartTime datetime NOT NULL, " +
+			"StartTime datetime(3) NOT NULL, " +
 			"ClientId varchar(16), " + 
 			"StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " +
 			"ActionId varchar(16) NOT NULL, " +

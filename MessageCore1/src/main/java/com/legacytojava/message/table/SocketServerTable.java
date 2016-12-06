@@ -53,7 +53,7 @@ public class SocketServerTable extends CreateTableBase
 			"StatusId char(1) NOT NULL, " +
 			"ProcessorName varchar(100) NOT NULL, " +
 			"MessageCount integer NOT NULL, " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId char(10) NOT NULL, " +
 			"PRIMARY KEY (RowId), " +
 			"Constraint UNIQUE INDEX (ServerName), " +

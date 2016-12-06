@@ -85,9 +85,9 @@ public class CustomerTable extends CreateTableBase {
 					+ "EmailAddr varchar(255) NOT NULL, " // 35
 					+ "EmailAddrId bigint NOT NULL, "
 					+ "PrevEmailAddr varchar(255), "
-					+ "PasswordChangeTime datetime, "
+					+ "PasswordChangeTime datetime(3), "
 					+ "UserPassword varchar(32), "
-					+ "UpdtTime datetime NOT NULL, "  //40
+					+ "UpdtTime datetime(3) NOT NULL, "  //40
 					+ "UpdtUserId varchar(10) NOT NULL, "
 					+ "PRIMARY KEY (RowId), "
 					+ "UNIQUE INDEX (CustId), "

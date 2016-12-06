@@ -70,7 +70,7 @@ public class MetricsLogger implements java.io.Serializable {
 	 *  proctime_total bigint not null,
 	 *  worker_count bigint not null,
 	 *  proctime_count bigint not null,
-	 *  add_time datetime not null);
+	 *  add_time datetime(3) NOT NULL);
 	 * CREATE INDEX metrics_logger_index
 	 *  ON metrics_logger (server_name,server_id);
 	 * CREATE INDEX metrics_logger_index_2

@@ -93,7 +93,7 @@ public class MailboxTable extends CreateTableBase
 			"LogDuplicate varchar(3), " +
 			"PurgeDupsAfter integer, " +
 			"ProcessorName varchar(100) NOT NULL, " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId char(10) NOT NULL, " +
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (UserId, HostName) " +

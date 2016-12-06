@@ -34,11 +34,11 @@ public class TimerTable extends CreateTableBase
 			"TimerInterval Integer NOT NULL, " +
 			"TimerIntervalUnit varchar(6) NOT NULL, " +
 			"InitialDelay Integer NOT NULL, " +
-			"StartTime datetime, " +
+			"StartTime datetime(3), " +
 			"Threads Integer NOT NULL, " +
 			"StatusId char(1) NOT NULL, " +
 			"ProcessorName varchar(100) NOT NULL, " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId char(10) NOT NULL, " +
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (ServerName) " +

@@ -86,7 +86,7 @@ public class Resource implements java.io.Serializable {
 						+ "proctime_total bigint not null,"
 						+ "worker_count bigint not null,"
 						+ "proctime_count bigint not null,"
-						+ "add_time timestamp not null" + ")");
+						+ "add_time timestamp(3) not null" + ")");
 				pstmt.executeUpdate();
 				pstmt.close();
 

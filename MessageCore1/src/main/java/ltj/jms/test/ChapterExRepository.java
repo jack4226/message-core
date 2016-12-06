@@ -1,4 +1,4 @@
-package test;
+package ltj.jms.test;
 
 import java.io.IOException;
 import java.io.InputStream;

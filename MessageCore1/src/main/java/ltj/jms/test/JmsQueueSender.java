@@ -1,4 +1,4 @@
-package test;
+package ltj.jms.test;
 
 import javax.jms.JMSException;
 import javax.jms.Message;

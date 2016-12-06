@@ -54,8 +54,8 @@ public class UserTable extends CreateTableBase
 			"FirstName varchar(32), " +
 			"LastName varchar(32), " +
 			"MiddleInit char(1), " +
-			"CreateTime datetime NOT NULL, " +
-			"LastVisitTime datetime, " +
+			"CreateTime datetime(3) NOT NULL, " +
+			"LastVisitTime datetime(3), " +
 			"hits Integer NOT NULL DEFAULT 0, " +
 			"StatusId char(1) NOT NULL, " + // A - active, I - Inactive
 			"Role varchar(5) NOT NULL, " + // admin/user
@@ -85,7 +85,7 @@ public class UserTable extends CreateTableBase
 			"SessionName varchar(50), " +
 			"SessionValue text, " +
 			"UserId varchar(10) NOT NULL, " +
-			"CreateTime datetime NOT NULL, " +
+			"CreateTime datetime(3) NOT NULL, " +
 			"INDEX (UserId), " +
 			"PRIMARY KEY (SessionId, SessionName) " +
 			") ENGINE=InnoDB");
@@ -107,7 +107,7 @@ public class UserTable extends CreateTableBase
 			"FileName varchar(100) NOT NULL, " +
 			"ContentType varchar(100), " +
 			"UserId varchar(10) NOT NULL, " +
-			"CreateTime datetime NOT NULL, " +
+			"CreateTime datetime(3) NOT NULL, " +
 			"SessionValue mediumblob, " +
 			"INDEX (UserId), " +
 			"PRIMARY KEY (SessionId, SessionSeq) " +

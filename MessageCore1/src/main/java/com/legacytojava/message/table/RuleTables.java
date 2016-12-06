@@ -66,7 +66,7 @@ public class RuleTables extends CreateTableBase
 			"RuleSeq int NOT NULL, " +
 			"RuleType varchar(8) NOT NULL, " + // simple/or/and/none
 			"StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " +
-			"StartTime datetime NOT NULL, " +
+			"StartTime datetime(3) NOT NULL, " +
 			"MailType varchar(8) NOT NULL, " + // smtpmail, webmail, ...
 			"RuleCategory char(1) DEFAULT '" + RuleBase.MAIN_RULE + "', " + // E - Pre Scan, 'M' - Main Rule, P - Post Scan
 			"IsSubRule char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', " +

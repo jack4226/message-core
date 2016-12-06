@@ -38,7 +38,7 @@ public class IdTokensTable extends CreateTableBase
 			"XhdrBeginToken varchar(16), " +
 			"XhdrEndToken varchar(4), " +
 			"MaxLength integer NOT NULL, " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId char(10) NOT NULL, " +
 			"FOREIGN KEY (ClientId) REFERENCES Clients(ClientId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"PRIMARY KEY (RowId), " +

@@ -47,7 +47,7 @@ public class MailBoxTest {
 		vo.setUserId(vo2.getUserId());
 		assertTrue(vo.equalsTo(vo2));
 		int rowsUpdated = update(vo2);
-		assertEquals(rowsUpdated, 1);
+		assertEquals(1, rowsUpdated);
 		int rowsDeleted = delete(vo2);
 		assertEquals(rowsDeleted, 1);
 	}
@@ -82,6 +82,8 @@ public class MailBoxTest {
 		if (!StatusIdCode.ACTIVE.equals(mailBoxVo.getStatusId())) {
 			mailBoxVo.setStatusId(StatusIdCode.ACTIVE);
 		}
+		mailBoxVo.setAllowExtraWorkers(false);
+		mailBoxVo.setPurgeDupsAfter(365);
 		int rows = mailBoxDao.update(mailBoxVo);
 		System.out.println("MailBoxDao - update: rows updated "+ rows);
 		return rows;

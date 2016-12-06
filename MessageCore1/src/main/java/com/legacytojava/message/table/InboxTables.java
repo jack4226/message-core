@@ -147,11 +147,11 @@ public class InboxTables extends CreateTableBase
 			"MsgSourceId varchar(16) NOT NULL, " +
 			"SubjTemplateId varchar(16) NOT NULL, " +
 			"BodyTemplateId varchar(16) NOT NULL, " +
-			"StartTime datetime NOT NULL," +
+			"StartTime datetime(3) NOT NULL," +
 			"ClientId varchar(16), " +
 			"CustId varchar(16), " +
 			"PurgeAfter int, " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId varchar(10) NOT NULL, " +
 			"PRIMARY KEY (RenderId), " +
 			"INDEX (MsgSourceId) " +
@@ -266,22 +266,22 @@ public class InboxTables extends CreateTableBase
 			"RuleName varchar(26) NOT NULL, " + // link to RuleLogic.RuleName
 			"MsgSubject varchar(255), " +
 			"MsgPriority varchar(10), " + // 1 (High)/2 (Normal)/3 (Low)
-			"ReceivedTime datetime NOT NULL, " +
+			"ReceivedTime datetime(3) NOT NULL, " +
 			"FromAddrId bigint, " + // link to EmailAddr
 			"ReplyToAddrId bigint, " + // link to EmailAddr
 			"ToAddrId bigint, " + // link to EmailAddr
 			"ClientId varchar(16), " + // link to Clients - derived from OutMsgRefId
 			"CustId varchar(16), " + // link to Customers - derived from OutMsgRefId
 			"PurgeDate Date, " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId varchar(10) NOT NULL, " +
-			"LockTime datetime, " +
+			"LockTime datetime(3), " +
 			"LockId varchar(10), " +
 			"ReadCount int NOT NULL DEFAULT 0, " + // how many times it's been read
 			"ReplyCount int NOT NULL DEFAULT 0, " + // how many times it's been replied
 			"ForwardCount int NOT NULL DEFAULT 0, " + // how many times it's been forwarded
 			"Flagged char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', " +
-			"DeliveryTime datetime, " + // for out-bound messages only, updated by MailSender
+			"DeliveryTime datetime(3), " + // for out-bound messages only, updated by MailSender
 			"StatusId char(1) NOT NULL, " + // P - pending, D - delivered by MailSender, F - delivery failed, C/O - closed/Open (for received mail)
 			"SmtpMessageId varchar(255), " + // SMTP message Id, updated by MailSender once delivered
 			"RenderId bigint, " + // link to a MsgRendered record
@@ -405,7 +405,7 @@ public class InboxTables extends CreateTableBase
 			"FromAddrId bigint, " +
 			"ToAddrId bigint, " +
 			"MsgSubject varchar(255), " +
-			"AddTime datetime, " +
+			"AddTime datetime(3), " +
 			"MsgStream mediumblob, " +
 			"PRIMARY KEY (MsgId), " +
 			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE " +
@@ -431,7 +431,7 @@ public class InboxTables extends CreateTableBase
 			"DsnText text, " +
 			"DsnRfc822 text, " +
 			"DeliveryStatus text, " +
-			"AddTime datetime, " +
+			"AddTime datetime(3), " +
 			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (MsgId), " +
 			"FOREIGN KEY (FinalRecipientId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
@@ -453,7 +453,7 @@ public class InboxTables extends CreateTableBase
 			"LeadMsgId bigint NOT NULL, " + // message that started this thread
 			"ActionBo varchar(50) NOT NULL, " +
 			"Parameters varchar(255), " +
-			"AddTime datetime, " +
+			"AddTime datetime(3), " +
 			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			/* disable following foreign keys for performance reason */ 
 			//"FOREIGN KEY (MsgRefId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
@@ -478,10 +478,10 @@ public class InboxTables extends CreateTableBase
 			"SentCount int NOT NULL DEFAULT 0, " +
 			"OpenCount int NOT NULL DEFAULT 0, " +
 			"ClickCount int NOT NULL DEFAULT 0, " +
-			"LastOpenTime datetime DEFAULT NULL, " +
-			"LastClickTime datetime DEFAULT NULL, " +
-			"StartTime datetime DEFAULT NULL, " +
-			"EndTime datetime DEFAULT NULL, " +
+			"LastOpenTime datetime(3) DEFAULT NULL, " +
+			"LastClickTime datetime(3) DEFAULT NULL, " +
+			"StartTime datetime(3) DEFAULT NULL, " +
+			"EndTime datetime(3) DEFAULT NULL, " +
 			"UnsubscribeCount int NOT NULL DEFAULT 0, " +
 			"ComplaintCount int NOT NULL DEFAULT 0, " +
 			"ReferralCount int NOT NULL DEFAULT 0, " +
@@ -504,7 +504,7 @@ public class InboxTables extends CreateTableBase
 					+ "EmailAddrId bigint NOT NULL, "
 					+ "ListId varchar(8), "
 					+ "Comments varchar(500) NOT NULL, "
-					+ "AddTime datetime NOT NULL, "
+					+ "AddTime datetime(3) NOT NULL, "
 					+ "PRIMARY KEY (RowId), "
 					+ "FOREIGN KEY (MsgId) REFERENCES MSGCLICKCOUNTS (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "FOREIGN KEY (EmailAddrId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "

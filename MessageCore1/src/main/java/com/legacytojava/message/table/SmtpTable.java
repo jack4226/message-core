@@ -70,7 +70,7 @@ public class SmtpTable extends CreateTableBase
 			"AlertAfter integer, " +
 			"AlertLevel varchar(5), " +
 			"MessageCount integer NOT NULL, " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId char(10) NOT NULL, " +
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (ServerName) " +
@@ -99,7 +99,7 @@ public class SmtpTable extends CreateTableBase
 			"TestToAddr varchar(255) NOT NULL, " +
 			"TestReplytoAddr varchar(255), " + 
 			"IsVerpEnabled varchar(3) NOT NULL, " +
-			"UpdtTime datetime NOT NULL, " +
+			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId char(10) NOT NULL, " +
 			"PRIMARY KEY (RowId) " +
 			") ENGINE=InnoDB");

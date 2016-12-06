@@ -101,6 +101,7 @@ public class SpringAppConfig implements JmsListenerConfigurer {
     	registrar.setMessageHandlerMethodFactory(messageHandlerMethodFactory());
     	if (listenerQueues != null) {
 	    	for (String queueName : listenerQueues) {
+	    		logger.info("Register JMS endpoint for queue: " + queueName);
 	            SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 	            endpoint.setId(queueName + "_id");
 	            endpoint.setDestination(queueName);
