@@ -10,8 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 
-import com.legacytojava.message.bean.MessageBean;
-
+import ltj.message.bean.MessageBean;
 import ltj.spring.util.SpringAppConfig;
 
 public class JmsQueueReceiver {

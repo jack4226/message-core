@@ -27,13 +27,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.legacytojava.message.bo.mailreader.MailReaderBoImpl;
-import com.legacytojava.message.dao.mailbox.MailBoxDao;
-import com.legacytojava.message.dao.timer.TimerServerDao;
-import com.legacytojava.message.vo.MailBoxVo;
-import com.legacytojava.message.vo.ServerBaseVo;
-import com.legacytojava.message.vo.SocketServerVo;
-import com.legacytojava.message.vo.TimerServerVo;
+import ltj.message.bo.mailreader.MailReaderBoImpl;
+import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.dao.timer.TimerServerDao;
+import ltj.message.vo.MailBoxVo;
+import ltj.message.vo.ServerBaseVo;
+import ltj.message.vo.SocketServerVo;
+import ltj.message.vo.TimerServerVo;
 
 /**
  * JbMain class that loads resources, and starts and monitors servers.

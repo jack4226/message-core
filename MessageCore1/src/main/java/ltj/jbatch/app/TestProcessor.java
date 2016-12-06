@@ -15,8 +15,8 @@ import javax.jms.TextMessage;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.vo.ServerBaseVo;
-import com.legacytojava.message.vo.SocketServerVo;
+import ltj.message.vo.ServerBaseVo;
+import ltj.message.vo.SocketServerVo;
 
 /**
  * test processor
@@ -100,9 +100,9 @@ public class TestProcessor extends RunnableProcessor {
 	}
 
 	// implement a simple message consumer
-	// to be used by com.legacytojava.test.testQueueSvr
+	// to be used by ltj.test.testQueueSvr
 	void processMessage(Message msg) {
-		final Logger logger = Logger.getLogger("com.legacytojava.queueout");
+		final Logger logger = Logger.getLogger("ltj.queueout");
 		logger.info("JMS Message Received: " + msg);
 	}
 
@@ -164,7 +164,7 @@ public class TestProcessor extends RunnableProcessor {
 	}
 
 	// implement a simple echo server
-	// to be used by com.legacytojava.test.testSocketSvr
+	// to be used by ltj.test.testSocketSvr
 	void processSocket(Socket mySocket) throws IOException, InterruptedException {
 		final boolean AUTOFLASH = true;
 		String nextLine;

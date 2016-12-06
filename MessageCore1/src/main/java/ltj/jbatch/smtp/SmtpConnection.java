@@ -14,9 +14,9 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.constant.MailServerType;
-import com.legacytojava.message.util.EmailAddrUtil;
-import com.legacytojava.message.vo.SmtpConnVo;
+import ltj.message.constant.MailServerType;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.vo.SmtpConnVo;
 
 /** 
   * SmtpConnection initializes a SMTP connection and provides methods to send 

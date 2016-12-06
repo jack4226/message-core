@@ -1,11 +1,10 @@
 package ltj.jbatch.app;
 
 import junit.framework.TestCase;
+import ltj.jbatch.pool.NamedPools;
+import ltj.jbatch.pool.ObjectPool;
 import ltj.jbatch.smtp.SmtpConnection;
-
-import com.legacytojava.jbatch.pool.NamedPools;
-import com.legacytojava.jbatch.pool.ObjectPool;
-import com.legacytojava.message.bo.mailsender.SmtpWrapperUtil;
+import ltj.message.bo.mailsender.SmtpWrapperUtil;
 
 public class JBatchTest extends TestCase
 {

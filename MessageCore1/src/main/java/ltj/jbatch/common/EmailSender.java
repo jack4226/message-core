@@ -17,9 +17,9 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.constant.MailProtocol;
-import com.legacytojava.message.constant.XHeaderName;
-import com.legacytojava.message.util.StringUtil;
+import ltj.message.constant.MailProtocol;
+import ltj.message.constant.XHeaderName;
+import ltj.message.util.StringUtil;
 
 /**
  * A simple email sender that sends email off via SMTP server.

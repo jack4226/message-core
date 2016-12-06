@@ -108,7 +108,7 @@ set "JAVA_HOME=../../jdk1.6.0_37"
      <appender-ref ref="MSG_SENDER_FILE"/>
    </category>
 
-   <category name="com.legacytojava">
+   <category name="ltj">
      <priority value="DEBUG" />
      <appender-ref ref="MSG_ENGINE_FILE"/>
      <appender-ref ref="MSG_UI_FILE"/>

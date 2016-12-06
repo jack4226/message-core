@@ -24,13 +24,12 @@ import javax.mail.event.MessageCountEvent;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.bo.mailreader.DuplicateCheckDao;
-import com.legacytojava.message.bo.mailreader.MailProcessor;
-import com.legacytojava.message.constant.MailProtocol;
-import com.legacytojava.message.dao.mailbox.MailBoxDao;
-import com.legacytojava.message.vo.MailBoxVo;
-
 import ltj.jbatch.queue.JmsProcessor;
+import ltj.message.bo.mailreader.DuplicateCheckDao;
+import ltj.message.bo.mailreader.MailProcessor;
+import ltj.message.constant.MailProtocol;
+import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.vo.MailBoxVo;
 
 /**
  * <pre>

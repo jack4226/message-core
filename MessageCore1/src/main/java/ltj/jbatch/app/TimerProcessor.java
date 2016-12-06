@@ -6,8 +6,8 @@ import javax.jms.JMSException;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.bo.mailreader.DuplicateCheckDao;
-import com.legacytojava.message.bo.mailreader.DuplicateCheckJdbcDao;
+import ltj.message.bo.mailreader.DuplicateCheckDao;
+import ltj.message.bo.mailreader.DuplicateCheckJdbcDao;
 
 /**
  * test processor

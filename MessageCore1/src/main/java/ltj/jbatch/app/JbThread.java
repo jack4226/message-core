@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.vo.ServerBaseVo;
+import ltj.message.vo.ServerBaseVo;
 
 /**
  * provide common threading methods needed by JBatch servers

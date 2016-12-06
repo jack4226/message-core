@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.vo.SocketServerVo;
+import ltj.message.vo.SocketServerVo;
 
 /**
  * load application processor, and call its process() to perform real tasks.

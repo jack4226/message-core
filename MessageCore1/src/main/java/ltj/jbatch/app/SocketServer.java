@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.vo.SocketServerVo;
+import ltj.message.vo.SocketServerVo;
 
 /**
  * Socket server is responsible of accepting socket requests and dispatch the

@@ -49,7 +49,7 @@
 	
 	<aop:config>
 		<aop:pointcut id="emailAddrOperation"
-			expression="execution(* com.legacytojava.message.dao.emailaddr.EmailAddrDao.*(..))"/>
+			expression="execution(* ltj.message.dao.emailaddr.EmailAddrDao.*(..))"/>
 		<aop:advisor advice-ref="dsTxAdviceEmailAddr" pointcut-ref="emailAddrOperation"/>
 	</aop:config>
 	
@@ -64,7 +64,7 @@
 	</tx:advice>
 	
 	<!-- aop:config>
-		<aop:pointcut id="msgInboxOperation" expression="execution(* com.legacytojava.message.dao.inbox.MsgInboxDao.*(..))"/>
+		<aop:pointcut id="msgInboxOperation" expression="execution(* ltj.message.dao.inbox.MsgInboxDao.*(..))"/>
 		<aop:advisor advice-ref="dsTxAdvice" pointcut-ref="msgInboxOperation"/>
 		<aop:advisor advice-ref="dsTxAdvice" pointcut-ref="msgOutboxOperation"/>
 	</aop:config -->
@@ -72,19 +72,19 @@
 	<aop:config>
 		<!-- all DAO interfaces are bound to transaction advice -->
 		<aop:pointcut id="daoOperation" 
-			expression="execution(* com.legacytojava.message.dao..*Dao.*(..))"/>
+			expression="execution(* ltj.message.dao..*Dao.*(..))"/>
 		<aop:advisor advice-ref="dsTxAdvice" pointcut-ref="daoOperation"/>
 	</aop:config>
 	
 	<aop:config>
 		<aop:pointcut id="boOperation" 
-			expression="execution(* com.legacytojava.message.bo..*Bo.*(..))"/>
+			expression="execution(* ltj.message.bo..*Bo.*(..))"/>
 		<aop:advisor advice-ref="dsTxAdvice" pointcut-ref="boOperation"/>
 	</aop:config>
 	
 	<aop:config>
 		<aop:pointcut id="boBaseOperation" 
-			expression="execution(* com.legacytojava.message.bo.*Bo.*(..))"/>
+			expression="execution(* ltj.message.bo.*Bo.*(..))"/>
 		<aop:advisor advice-ref="dsTxAdvice" pointcut-ref="boBaseOperation"/>
 	</aop:config>
 	<!-- end of Advice -->

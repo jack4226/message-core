@@ -45,7 +45,7 @@
 	  <level value="INFO"/> 
    </logger>
 
-   <logger name="com.legacytojava">
+   <logger name="ltj">
 	  <level value="DEBUG"/>
    </logger>
 

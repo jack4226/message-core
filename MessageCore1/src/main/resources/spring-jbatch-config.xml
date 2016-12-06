@@ -126,7 +126,7 @@
 	 	allow_extra_workers - yes/no
 	 	delivery_count_reached - action to take when delivery count reached the threshold: stop_listener/error_queue
 	 -->
-	<bean id="queueReaderVo" class="com.legacytojava.message.vo.QueueReaderVo">
+	<bean id="queueReaderVo" class="ltj.message.vo.QueueReaderVo">
 		<constructor-arg>
 		<map>
 			<entry key="queue_name" value="mailSenderInput"></entry>
@@ -156,7 +156,7 @@
 		Mailbox (MailReader) Section
 	 -->
 	<!-- bean id="duplicateCheck" scope="prototype"
-		class="com.legacytojava.message.bo.mailreader.DuplicateCheckJdbcDao">
+		class="ltj.message.bo.mailreader.DuplicateCheckJdbcDao">
 		<property name="dataSource" ref="csDataSource"/>
 		<property name="purgeAfter" value="24"/>
 	</bean -->
@@ -178,7 +178,7 @@
 		SMTP (MailSender) Section
 	 -->
 	<bean id="mailSenderProcessor" lazy-init="true" scope="thread"
-	      class="com.legacytojava.message.bo.mailsender.MailSenderProcessor">
+	      class="ltj.message.bo.mailsender.MailSenderProcessor">
    		<property name="jmsProcessor" ref="jmsProcessor"/>
    		<property name="jmsTransactionManager" ref="jmsTransactionManager"/>
    		<property name="errorQueue" ref="unHandledOutput"/>
@@ -213,7 +213,7 @@
 	    <constructor-arg index="0" ref="smtpProperties"/>
 	</bean>
 	<bean id="simpleEmailSender" lazy-init="true"
-	      class="com.legacytojava.message.bean.SimpleEmailSender">
+	      class="ltj.message.bean.SimpleEmailSender">
 	    <constructor-arg index="0" ref="smtpProperties"/>
 	</bean>
 

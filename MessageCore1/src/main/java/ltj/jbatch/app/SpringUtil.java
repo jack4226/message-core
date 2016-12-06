@@ -13,7 +13,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.legacytojava.message.util.ServiceLocator;
+import ltj.message.util.ServiceLocator;
 
 public class SpringUtil {
 	static final Logger logger = Logger.getLogger(SpringUtil.class);

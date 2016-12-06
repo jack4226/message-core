@@ -2,7 +2,7 @@ package ltj.jbatch.smtp;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.pool.ObjectPool;
+import ltj.jbatch.pool.ObjectPool;
 
 /**
  * Provide call backs for ObjectPool to create SMTP Connections

@@ -65,7 +65,7 @@
 	</bean>
 	
 	<!-- override main configuration with TestProcessor for queue listener -->
-	<bean id="queueReaderVo" class="com.legacytojava.message.vo.QueueReaderVo">
+	<bean id="queueReaderVo" class="ltj.message.vo.QueueReaderVo">
 		<constructor-arg>
 		<map>
 			<entry key="queue_name" value="ruleEngineInput"></entry>
@@ -111,7 +111,7 @@
 		- priority: high/medium/low - server thread priority
 		- message_count: number of messages to be processed, 0=unlimited
 	-->
- 	<bean id="socketServerVo" class="com.legacytojava.message.vo.SocketServerVo">
+ 	<bean id="socketServerVo" class="ltj.message.vo.SocketServerVo">
 	    <constructor-arg>
 	    	<map>
 	    	<entry key="port" value="5444"></entry>
@@ -133,7 +133,7 @@
 	
 	<bean id="httpServer" lazy-init="true" scope="prototype"
 	      class="ltj.jbatch.app.HttpServer">
-	    <constructor-arg index="0" value="com/legacytojava/jbatch/htmldocs"/>
+	    <constructor-arg index="0" value="ltj/jbatch/htmldocs"/>
 	</bean>
 	
 </beans>

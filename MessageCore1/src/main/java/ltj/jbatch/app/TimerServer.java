@@ -8,8 +8,8 @@ import java.util.Timer;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.dao.timer.TimerServerDao;
-import com.legacytojava.message.vo.TimerServerVo;
+import ltj.message.dao.timer.TimerServerDao;
+import ltj.message.vo.TimerServerVo;
 
 /**
  * this class provide a Timer manager that initialize and schedule TimerTasks

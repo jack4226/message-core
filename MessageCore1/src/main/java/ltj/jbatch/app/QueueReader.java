@@ -17,9 +17,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.legacytojava.message.vo.QueueReaderVo;
-
 import ltj.jbatch.smtp.SmtpException;
+import ltj.message.vo.QueueReaderVo;
 
 /**
  * @deprecated - replaced by QueueListener

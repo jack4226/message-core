@@ -13,8 +13,8 @@ import org.apache.log4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
-import com.legacytojava.message.exception.DataValidationException;
-import com.legacytojava.message.vo.QueueReaderVo;
+import ltj.message.exception.DataValidationException;
+import ltj.message.vo.QueueReaderVo;
 
 /**
  * Queue Listener receives requests from a input queue and delegates the request

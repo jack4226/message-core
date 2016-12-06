@@ -5,7 +5,7 @@ import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.vo.TimerServerVo;
+import ltj.message.vo.TimerServerVo;
 
 /**
  * load application processor, and call its process() to perform real tasks.
