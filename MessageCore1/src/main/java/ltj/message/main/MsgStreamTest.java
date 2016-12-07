@@ -1,6 +1,10 @@
 package ltj.message.main;
 
+import static org.junit.Assert.*;
+
 import javax.mail.Message;
+
+import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.test.BoTestBase;
@@ -9,11 +13,13 @@ import ltj.vo.outbox.MsgStreamVo;
 
 public class MsgStreamTest extends BoTestBase {
 
+	@Test
 	public void testActivate() throws Exception {
-		MsgStreamDao msgStreamDao = (MsgStreamDao) factory.getBean("msgStreamDao");
+		MsgStreamDao msgStreamDao = factory.getBean(MsgStreamDao.class);
+		assertNotNull(msgStreamDao);
 
-		long msgId = 6L;
-		MsgStreamVo msgStreamVo = msgStreamDao.getByPrimaryKey(msgId);
+		MsgStreamVo msgStreamVo = msgStreamDao.getLastRecord();
+		assertNotNull(msgStreamVo);
 		
 		Message msg = createMimeMessage(msgStreamVo.getMsgStream());
 		MessageBean messageBean = createMessageBean(msg);

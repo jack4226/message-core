@@ -45,10 +45,13 @@ import ltj.message.exception.DataValidationException;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
+import ltj.spring.util.SpringAppConfig;
+import ltj.spring.util.SpringJmsConfig;
 import ltj.vo.outbox.MsgStreamVo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
+//@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
+@ContextConfiguration(classes={SpringAppConfig.class, SpringJmsConfig.class})
 @TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
 @Transactional
 public class BoTestBase {
@@ -117,7 +120,7 @@ public class BoTestBase {
 	}
 
 	protected MsgInboxVo selectMsgInboxByMsgId(long msgId) {
-		MsgInboxVo vo = (MsgInboxVo)msgInboxDao.getByPrimaryKey(msgId);
+		MsgInboxVo vo = msgInboxDao.getByPrimaryKey(msgId);
 		if (vo!=null) {
 			System.out.println("MsgInboxDao - selectMsgInboxByMsgId: "+LF+vo);
 		}
@@ -125,7 +128,7 @@ public class BoTestBase {
 	}
 
 	protected List<MsgInboxWebVo> selectMsgInboxByMsgRefId(long msgRefId) {
-		List<MsgInboxWebVo> list = (List<MsgInboxWebVo>)msgInboxDao.getByMsgRefId(msgRefId);
+		List<MsgInboxWebVo> list = msgInboxDao.getByMsgRefId(msgRefId);
 		for (MsgInboxWebVo vo : list) {
 			logger.info("MsgInboxDao - selectMsgInboxByMsgRefId: "+LF+vo);
 		}

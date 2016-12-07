@@ -19,6 +19,8 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
+import ltj.message.dao.emailaddr.EmailAddrDao;
+
 public class SpringAppConfigTest {
 	protected final static Logger logger = Logger.getLogger(SpringAppConfigTest.class);
 	
@@ -30,13 +32,21 @@ public class SpringAppConfigTest {
 	}
 	
 	@Test
-	public void testSpringAppConfig1() {
-		//AbstractApplicationContext ctx = null;
+	public void testSpingConfigBare() {
+		EmailAddrDao dao1 = context.getBean(EmailAddrDao.class);
+		assertNotNull(dao1);
+	}
+	
+	@Test
+	public void testSpringJmsConfig1() {
+		AnnotationConfigApplicationContext ctx = null;
 		javax.jms.Connection conn = null;
 		try {
-			//ctx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
-		
-			ConnectionFactory factory = context.getBean(ConnectionFactory.class);
+			ctx = new AnnotationConfigApplicationContext();
+			ctx.register(SpringAppConfig.class, SpringJmsConfig.class);
+			ctx.refresh();
+			
+			ConnectionFactory factory = ctx.getBean(ConnectionFactory.class);
 			assertNotNull(factory);
 			
 			conn = factory.createConnection();
@@ -53,22 +63,24 @@ public class SpringAppConfigTest {
 					// ignore
 				}
 			}
-			if (context != null) {
-				context.close();
+			if (ctx != null) {
+				ctx.close();
 			}
 		}
 	}
 	
 	@Test
-	public void testSpringAppConfig2() {
+	public void testSpringJmsConfig2() {
 		AnnotationConfigApplicationContext ctx = null;
 		javax.jms.Connection conn = null;
 		try {
-			ctx = new AnnotationConfigApplicationContext(); //SpringAppConfig.class);
+			ctx = new AnnotationConfigApplicationContext();
 		
+			// scan package
+			ctx.scan(new String[] {"ltj.jbatch.queue", "ltj.jbatch.smtp"});
 			// load various configuration classes:
 			ctx.register(SpringAppConfig.class);
-			//ctx.register(AdditionalConfig.class, OtherConfig.class);
+			ctx.register(SpringJmsConfig.class, JBatchConfig.class);
 			ctx.refresh();
 			
 			DefaultJmsListenerContainerFactory factory = ctx.getBean(DefaultJmsListenerContainerFactory.class);

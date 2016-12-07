@@ -1,10 +1,14 @@
 package ltj.message.main;
 
+import java.util.Arrays;
 import java.util.Calendar;
+
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
@@ -17,16 +21,18 @@ public class CalendarTest {
 	protected static final Logger logger = Logger.getLogger(CalendarTest.class);
 	private EmailTemplateDao emailTemplateDao;
 	
-	public static void main(String[] args) {
+	@Test
+	public void testTemplateCalendar() {
 		CalendarTest test = new CalendarTest();
 		test.startTasks();
 	}
 	
 	private void startTasks() {
-		emailTemplateDao = (EmailTemplateDao) SpringUtil.getDaoAppContext().getBean("emailTemplateDao");
+		emailTemplateDao = SpringUtil.getDaoAppContext().getBean(EmailTemplateDao.class);
 		List<EmailTemplateVo> templates = emailTemplateDao.getAll();
+		assertFalse(templates.isEmpty());
 		for (Iterator<EmailTemplateVo> it = templates.iterator(); it.hasNext();) {
-			EmailTemplateVo vo = (EmailTemplateVo) it.next();
+			EmailTemplateVo vo = it.next();
 			SchedulesBlob blob = vo.getSchedulesBlob();
 			if (blob == null) {
 				logger.info("scheduleTimerTasks() - SchedulesBlob is null for templateId: "
@@ -43,6 +49,7 @@ public class CalendarTest {
 					clone.setTimerEvent(SchedulesBlob.Events.WEEKLY);
 					logger.info("Added Timer for " + clone.getTemplateId() + " "
 							+ clone.getTimerEvent().toString() + " day " + clone.getWeekly()[i]);
+					assertEquals(Arrays.asList(blob.getWeekly()), Arrays.asList(clone.getWeekly()));
 				}
 			}
 			// schedule biweekly tasks
@@ -54,6 +61,7 @@ public class CalendarTest {
 					clone.setTimerEvent(SchedulesBlob.Events.BIWEEKLY);
 					logger.info("Added Timer for " + clone.getTemplateId() + " "
 							+ clone.getTimerEvent().toString() + " day " + clone.getBiweekly()[i]);
+					assertEquals(Arrays.asList(blob.getBiweekly()), Arrays.asList(clone.getBiweekly()));
 				}
 			}
 			// schedule monthly tasks
@@ -65,6 +73,7 @@ public class CalendarTest {
 					clone.setTimerEvent(SchedulesBlob.Events.MONTHLY);
 					logger.info("Added Timer for " + clone.getTemplateId() + " "
 							+ clone.getTimerEvent().toString() + " day " + clone.getMonthly()[i]);
+					assertEquals(Arrays.asList(blob.getMonthly()), Arrays.asList(clone.getMonthly()));
 				}
 			}
 			// schedule end of month tasks
@@ -75,6 +84,7 @@ public class CalendarTest {
 				clone.setTimerEvent(SchedulesBlob.Events.END_OF_MONTH);
 				logger.info("Added Timer for " + clone.getTemplateId() + " "
 						+ clone.getTimerEvent().toString() + " day " + dayOfMonth);
+				assertEquals(blob.getEndOfMonth(), clone.getEndOfMonth());
 			}
 			// schedule end of month minus 1 day tasks
 			if (blob.getEomMinus1Day()) {
@@ -84,6 +94,7 @@ public class CalendarTest {
 				clone.setTimerEvent(SchedulesBlob.Events.EOM_MINUS_1DAY);
 				logger.info("Added Timer for " + clone.getTemplateId() + " "
 						+ clone.getTimerEvent().toString() + " day " + dayOfMonth);
+				assertEquals(blob.getEomMinus1Day(), clone.getEomMinus1Day());
 			}
 			// schedule end of month minus 2 day tasks
 			if (blob.getEomMinus2Day()) {
@@ -93,6 +104,7 @@ public class CalendarTest {
 				clone.setTimerEvent(SchedulesBlob.Events.EOM_MINUS_2DAY);
 				logger.info("Added Timer for " + clone.getTemplateId() + " "
 						+ clone.getTimerEvent().toString() + " day " + dayOfMonth);
+				assertEquals(blob.getEomMinus2Day(), clone.getEomMinus2Day());
 			}
 			// schedule dates from the list
 			for (int i = 0; i < blob.getDateList().length; i++) {
@@ -108,6 +120,7 @@ public class CalendarTest {
 						logger.info("Added Timer for " + clone.getTemplateId() + " "
 								+ clone.getTimerEvent().toString() + " date: "
 								+ scheduledTime.getTime());
+						assertEquals(Arrays.asList(blob.getDateList()), Arrays.asList(clone.getDateList()));
 					}
 					else {
 						logger.warn(SchedulesBlob.Events.DATE_LIST.toString() + " - timer["
@@ -173,14 +186,6 @@ public class CalendarTest {
 	int currentHour() {
 		Calendar cal = Calendar.getInstance();
 		return cal.get(Calendar.HOUR_OF_DAY);
-	}
-
-	public EmailTemplateDao getEmailTemplateDao() {
-		return emailTemplateDao;
-	}
-
-	public void setEmailTemplateDao(EmailTemplateDao emailTemplateDao) {
-		this.emailTemplateDao = emailTemplateDao;
 	}
 
 }

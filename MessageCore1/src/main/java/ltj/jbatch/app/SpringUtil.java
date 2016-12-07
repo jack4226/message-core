@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -14,6 +15,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import ltj.message.util.ServiceLocator;
+import ltj.spring.util.SpringAppConfig;
+import ltj.spring.util.SpringJmsConfig;
 
 public class SpringUtil {
 	static final Logger logger = Logger.getLogger(SpringUtil.class);
@@ -37,6 +40,10 @@ public class SpringUtil {
 				if (JbMain.getNumberOfThreadAtStart() < 0) {
 					logger.info("getAppContext() - running standalone, load standalone xmls");
 					fileNames = getStandaloneConfigXmlFiles();
+					AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+					ctx.register(SpringAppConfig.class, SpringJmsConfig.class);
+					ctx.refresh();
+					return ctx;
 				}
 				else {
 					logger.info("getAppContext() - running batch standalone, load batch xmls");
@@ -84,12 +91,12 @@ public class SpringUtil {
 			if (isRunningInJBoss()) {
 				logger.info("getDaoAppContext() - Running under JBoss, load jndi_ds xmls");
 				fnames.add("classpath*:spring-jmsqueue_jee-config.xml");
+				daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
 			}
 			else {
 				logger.info("getDaoAppContext() - running standalone, load mysql_ds xmls");
-				fnames.add("classpath*:spring-mysql-config.xml");
+				daoAppCtx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
 			}
-			daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
 		}
 		return daoAppCtx;
 	}
