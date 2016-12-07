@@ -19,7 +19,7 @@ public class TestRunnerBase {
 		for (File file : files) {
 			String path = file.getPath();
 			String pkgPath = StringUtils.removeStart(path, homeDir);
-			String clsName = pkgPath.replace("\\", ".");
+			String clsName = pkgPath.replace(PS, ".");
 			try {
 				clsName = StringUtils.removeEnd(clsName,".class");
 				Class<?> testCls = loader.loadClass(clsName);

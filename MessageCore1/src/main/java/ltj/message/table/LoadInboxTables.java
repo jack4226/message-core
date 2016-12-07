@@ -252,7 +252,7 @@ public class LoadInboxTables
 	}
 	
 	protected byte[] loadFromSamples(String fileName) {
-		return FileUtil.loadFromFile("ltj/message/bo/inbox/bouncedmails", fileName);
+		return FileUtil.loadFromFile("bouncedmails", fileName);
 	}
 
 	

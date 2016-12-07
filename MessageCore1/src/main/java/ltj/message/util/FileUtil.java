@@ -15,6 +15,7 @@ public class FileUtil {
 	public static byte[] loadFromFile(String filePath, String fileName) {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		//loader = TestUtil.class.getClassLoader(); // works too
+		filePath = filePath == null ? "" : filePath;
 		if (!filePath.endsWith(File.separator) && !filePath.endsWith("/")) {
 			filePath += File.separator;
 		}
