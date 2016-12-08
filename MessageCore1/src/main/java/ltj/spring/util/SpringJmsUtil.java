@@ -13,7 +13,9 @@ public class SpringJmsUtil {
 	
 	static AbstractApplicationContext getApplicationContext() {
 		if (ctx == null) {
-			ctx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+			ctx = new AnnotationConfigApplicationContext();
+			ctx.register(SpringAppConfig.class, SpringJmsConfig.class);
+			ctx.refresh();
 		}
 		return ctx;
 	}
