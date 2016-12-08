@@ -7,7 +7,7 @@ public class TestCustSeqThreads implements Runnable {
 	static CustSequenceDao custSequenceDao = null;
 	
 	public static void main(String[] args) {
-		custSequenceDao = (CustSequenceDao) SpringUtil.getDaoAppContext().getBean("custSequenceDao");
+		custSequenceDao = SpringUtil.getDaoAppContext().getBean(CustSequenceDao.class);
 
 		try {
 			TestCustSeqThreads test = new TestCustSeqThreads();

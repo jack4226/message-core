@@ -6,29 +6,32 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import ltj.jbatch.app.SpringUtil;
+import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.SchedulesBlob;
 import ltj.message.dao.emailaddr.SchedulesBlob.DateWrapper;
 import ltj.message.util.BlobUtil;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 
-public class CalendarTest {
+public class CalendarTest extends DaoTestBase {
 	protected static final Logger logger = Logger.getLogger(CalendarTest.class);
+	
+	@Resource
 	private EmailTemplateDao emailTemplateDao;
 	
 	@Test
 	public void testTemplateCalendar() {
-		CalendarTest test = new CalendarTest();
-		test.startTasks();
+		assertNotNull(emailTemplateDao);
+		startTasks();
 	}
 	
 	private void startTasks() {
-		emailTemplateDao = SpringUtil.getDaoAppContext().getBean(EmailTemplateDao.class);
 		List<EmailTemplateVo> templates = emailTemplateDao.getAll();
 		assertFalse(templates.isEmpty());
 		for (Iterator<EmailTemplateVo> it = templates.iterator(); it.hasNext();) {

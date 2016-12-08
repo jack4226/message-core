@@ -26,7 +26,7 @@ public class MailingListTargetText implements RuleTargetProc {
 			logger.debug("Entering process() method...");
 		
 		StringBuffer sb = new StringBuffer();
-		MailingListDao dao = (MailingListDao) SpringUtil.getDaoAppContext().getBean("mailingListDao");
+		MailingListDao dao = SpringUtil.getDaoAppContext().getBean(MailingListDao.class);
 		List<MailingListVo> list = dao.getAll(false);
 		for (int i = 0; i < list.size(); i++) {
 			MailingListVo item = list.get(i);
