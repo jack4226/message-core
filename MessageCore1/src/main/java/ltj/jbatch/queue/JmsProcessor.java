@@ -11,8 +11,12 @@ import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.stereotype.Component;
 
 /**
  * <pre>
@@ -40,7 +44,9 @@ import org.springframework.jms.support.converter.MessageConverter;
  * Spring frameworks's MessageCreator to construct JMS message and JmsTemplate to
  * deliver the message. It is designed to be thread safe.
  */
-
+@Component
+@Scope("prototype")
+@Lazy(false)
 public class JmsProcessor {
 	
 	static final Logger logger = Logger.getLogger(JmsProcessor.class);
@@ -60,7 +66,9 @@ public class JmsProcessor {
 	 */
 	int ErrorMsgLimit = 0, ErrorMsgCount = 0, GoodMsgCount = 0;
 	
+	@Autowired
 	private JmsTemplate jmsTemplate;
+	
 	private JmsTemplate errorJmsTemplate;
 
 	/**
