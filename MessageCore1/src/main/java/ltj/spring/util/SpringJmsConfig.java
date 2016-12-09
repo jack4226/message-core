@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jms.annotation.JmsListenerConfigurer;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpointRegistrar;
@@ -45,6 +46,7 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
     }
 	
 	@Bean
+	@Scope("prototype")
     public JmsTemplate jmsTemplate() {
         JmsTemplate jmsTemplate = new JmsTemplate();
         //jmsTemplate.setDefaultDestination(new ActiveMQQueue("jms.queue"));
@@ -59,8 +61,13 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
         return jmsTemplate;
     }
 	
+	@Bean
+	public ltj.jbatch.queue.JmsListener jmsListener() {
+		return new ltj.jbatch.queue.JmsListener();
+	}
+	
 	@Bean(initMethod="initialize", destroyMethod="destroy")
-    public DefaultMessageListenerContainer messageListenerContainer() {
+    public DefaultMessageListenerContainer jmsListenerContainer() {
         DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
         try {
 			container.setConnectionFactory(connectionFactory());
@@ -73,7 +80,7 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
         	queueName = listenerQueueName;
         }
         container.setDestination(new ActiveMQQueue(queueName));
-        //container.setMessageListener(jmsReceiver());
+        container.setMessageListener(jmsListener());
         return container;
     }
 	
@@ -88,6 +95,7 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	
 	DestinationResolver destinationResolver() {
 		DestinationResolver destResolver = new DynamicDestinationResolver();
+		//destResolver = new JndiDestinationResolver();
 		return destResolver;
 	}
 	

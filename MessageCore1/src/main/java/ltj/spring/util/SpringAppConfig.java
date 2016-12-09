@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.jms.annotation.EnableJms;
 
 @Configuration
-@ComponentScan(basePackages = {"ltj.message.dao", "ltj.message.bo"})
+@ComponentScan(basePackages = {"ltj.message.dao", "ltj.message.bo", "ltj.jbatch"})
 //@org.springframework.context.annotation.Import(SpringJmsConfig.class)
 @ImportResource({"classpath:/properties-config.xml", "classpath:/spring-mysql-config.xml"})
 @EnableJms

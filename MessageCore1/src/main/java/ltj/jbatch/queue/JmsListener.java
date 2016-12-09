@@ -10,11 +10,11 @@ import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 import ltj.jbatch.app.JbMain;
-import ltj.jbatch.app.Processor;
 
 /**
  * Implements spring MessageListener
@@ -23,16 +23,8 @@ public class JmsListener implements MessageListener {
 	static final Logger logger = Logger.getLogger(JmsListener.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
+	@Autowired
 	private JmsProcessor jmsProcessor;
-	private Processor processor;
-
-	public JmsProcessor getJmsProcessor() {
-		return jmsProcessor;
-	}
-
-	public void setJmsProcessor(JmsProcessor jmsProcessor) {
-		this.jmsProcessor = jmsProcessor;
-	}
 
 	public void onMessage(Message message) {
 		logger.info("JMS Message Received: "+message);
@@ -61,7 +53,7 @@ public class JmsListener implements MessageListener {
 					logger.error("MessageFormatException caught, write to error queue...");
 					jmsProcessor.writeMsg(msgText,message.getJMSMessageID(),true);
 				}
-				throw new JMSException("Test");
+				//throw new JMSException("Test Exception");
 			}
 			else if (message instanceof BytesMessage) {
 				BytesMessage byteMsg = (BytesMessage) message;
@@ -173,13 +165,5 @@ public class JmsListener implements MessageListener {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	Processor getProcessor() {
-		return processor;
-	}
-
-	void setProcessor(Processor processor) {
-		this.processor = processor;
 	}
 }

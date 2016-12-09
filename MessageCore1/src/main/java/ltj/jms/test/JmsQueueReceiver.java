@@ -6,17 +6,16 @@ import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 
+import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
-import ltj.spring.util.SpringAppConfig;
 
 public class JmsQueueReceiver {
 
 	public static void main(String[] args) {
-		AbstractApplicationContext factory = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+		AbstractApplicationContext factory = SpringUtil.getAppContext();
 
 		try {
 			JmsQueueReceiver test = new JmsQueueReceiver();

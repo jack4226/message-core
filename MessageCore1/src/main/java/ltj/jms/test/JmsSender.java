@@ -5,19 +5,18 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.activemq.command.ActiveMQQueue;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
-import ltj.spring.util.SpringAppConfig;
+import ltj.jbatch.app.SpringUtil;
 
 public class JmsSender {
 
 	public static void main(String[] args) {
 		AbstractApplicationContext factory = null;
 		try {
-			factory = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+			factory = SpringUtil.getAppContext();
 			
 			JmsSender test = new JmsSender();
 			

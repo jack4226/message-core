@@ -6,10 +6,8 @@ import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.queue.JmsProcessor;
 
 @Component("taskBaseBo")
@@ -34,39 +32,23 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 	
 	protected void setTargetToMailSender() {
 		// send MailSender queue
-		JmsTemplate jmsTemplate = (JmsTemplate) TaskScheduler.getMailSenderFactory().getBean(
-				"mailSenderInputJmsTemplate");
-		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"unHandledOutputJmsTemplate");
-		jmsProcessor.setJmsTemplate(jmsTemplate);
-		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);
+		jmsProcessor.setQueueName("mailSenderInput");
 	}
 	
 	protected void setTargetToRuleEngine() {
 		// send RuleEngine queue
-		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"mailReaderOutputJmsTemplate");
-		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"unHandledOutputJmsTemplate");
-		jmsProcessor.setJmsTemplate(jmsTemplate);
-		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);
+		jmsProcessor.setQueueName("mailReaderOutput");
+
 	}
 	
 	protected void setTargetToCsrWorkQueue() {
-		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"ruleEngineOutputJmsTemplate");
-		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"unHandledOutputJmsTemplate");
-		jmsProcessor.setJmsTemplate(jmsTemplate);
-		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);
+		jmsProcessor.setQueueName("ruleEngineOutput");
+
 	}
 	
 	protected void setTargetToCsrWorkQueue(String templateName) {
-		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(templateName);
-		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"unHandledOutputJmsTemplate");
-		jmsProcessor.setJmsTemplate(jmsTemplate);
-		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);
+		jmsProcessor.setQueueName("csrWorkQueue");
+
 	}
 	
 	/*

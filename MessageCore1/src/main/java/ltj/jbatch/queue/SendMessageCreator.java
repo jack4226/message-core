@@ -11,15 +11,17 @@ import org.springframework.jms.core.MessageCreator;
  */
 public abstract class SendMessageCreator implements MessageCreator {
 	
-	private Message message; // make sure to set it in createMessage
+	private Message message; // XXX make sure to set it in createMessage
 	
 	public abstract Message createMessage(Session session) throws JMSException;
 	
 	public String getJMSMessageId() throws JMSException {
-		if (message!=null)
+		if (message!=null) {
 			return message.getJMSMessageID();
-		else
+		}
+		else {
 			return null;
+		}
 	}
 	
 	void setMessage(Message msg) {

@@ -7,20 +7,19 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
-import ltj.spring.util.SpringAppConfig;
+import ltj.jbatch.app.SpringUtil;
 
-public class JmsListener implements MessageListener {
-	static final Logger logger = Logger.getLogger(JmsListener.class);
+public class JmsQueueListener implements MessageListener {
+	static final Logger logger = Logger.getLogger(JmsQueueListener.class);
 	
 	public void onMessage(Message message) {
 		logger.info("Invoking onMessage Now ...");
 		if (message instanceof TextMessage) {
 			try {
-				logger.info(((TextMessage) message).getText());
+				logger.info("Text Message Received: " + ((TextMessage) message).getText());
 			} catch (JMSException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -31,9 +30,9 @@ public class JmsListener implements MessageListener {
 	}
 
 	public static void main(String[] args) {
-		AbstractApplicationContext factory = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+		AbstractApplicationContext factory = SpringUtil.getAppContext();
 
-		new JmsListener().startListener(factory);
+		new JmsQueueListener().startListener(factory);
 		
 		System.exit(0);
 	}

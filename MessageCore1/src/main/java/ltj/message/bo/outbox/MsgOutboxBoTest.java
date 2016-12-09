@@ -75,7 +75,7 @@ public class MsgOutboxBoTest {
 			assertNotNull(rsp2);
 			logger.info("RenderResponse2: ####################"+LF+rsp2);
 			
-			jmsProcessor.setJmsTemplate(jmsTemplate);
+			//jmsProcessor.setQueueName(""); // TODO set queue name
 			String msgWritten = jmsProcessor.writeMsg(rsp.getMessageBean());
 			assertNotNull(msgWritten);
 			logger.info("Message Written - JMS MessageId: " + msgWritten);

@@ -7,10 +7,8 @@ import javax.jms.JMSException;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MsgHeader;
 import ltj.message.constant.XHeaderName;
@@ -61,12 +59,8 @@ public class AssignRuleNameBoImpl extends TaskBaseAdaptor {
 			messageBean.setMsgRefId(messageBean.getMsgId());
 		}
 		// send the bean back to Rule Engine input queue
-		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"mailReaderOutputJmsTemplate");
-		JmsTemplate errorJmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"unHandledOutputJmsTemplate");
-		jmsProcessor.setJmsTemplate(jmsTemplate);
-		jmsProcessor.setErrorJmsTemplate(errorJmsTemplate);
+		jmsProcessor.setQueueName("mailReaderOutput");
+
 		
 		String correlid = "AssignRuleNameBo."
 				+ (messageBean.getMsgRefId() == null ? "-1" : messageBean.getMsgRefId());

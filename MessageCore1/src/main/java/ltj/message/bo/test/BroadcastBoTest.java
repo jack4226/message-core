@@ -10,10 +10,8 @@ import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
 
 import org.junit.Test;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.Rollback;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
@@ -86,9 +84,7 @@ public class BroadcastBoTest extends BoTestBase {
 		JmsProcessor jmsProcessor = (JmsProcessor) TaskScheduler.getMailSenderFactory().getBean(
 				"jmsProcessor");
 		// send the bean back to Rule Engine input queue
-		JmsTemplate jmsTemplate = (JmsTemplate) SpringUtil.getAppContext().getBean(
-				"mailReaderOutputJmsTemplate");
-		jmsProcessor.setJmsTemplate(jmsTemplate);
+		//jmsProcessor.setQueueName(""); // TODO set queue name
 		String jmsMsgId = jmsProcessor.writeMsg(messageBean);
 		logger.info("Jms Message Id returned: " + jmsMsgId);
 	}
