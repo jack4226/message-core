@@ -15,28 +15,20 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.VariableType;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class RenderTest {
+public class RenderTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(RenderTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final String LF = System.getProperty("line.separator","\n");
 	@Resource
 	private RenderBo util;
 	@Test
-	public void testRender1() throws Exception {
+	public void testRender1() {
 		try {
 			RenderRequest req = new RenderRequest(
 					"testMsgSource",
@@ -50,11 +42,11 @@ public class RenderTest {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	@Test
-	public void testRender2() throws Exception {
+	public void testRender2() {
 		try {
 			RenderRequest req = new RenderRequest(
 					"WeekendDeals",
@@ -68,7 +60,7 @@ public class RenderTest {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	private static HashMap<String, RenderVariable> buildTestVariables() {

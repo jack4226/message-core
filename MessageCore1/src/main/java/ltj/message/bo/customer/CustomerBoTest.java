@@ -5,34 +5,22 @@ import static org.junit.Assert.*;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.CustomerVo;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=false)
-@Transactional
-public class CustomerBoTest {
+public class CustomerBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(CustomerBoTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
 	@Resource
 	private CustomerBo customerBo;
-	@BeforeClass
-	public static void CustomerBoPrepare() {
-	}
 	@Test
 	@Rollback(true)
-	public void testCustomerBo() throws Exception {
+	public void testCustomerBo() {
 		try {
 			CustomerVo vo = selectByCustId("test");
 			assertNotNull(vo);
@@ -54,7 +42,7 @@ public class CustomerBoTest {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	CustomerVo selectByCustId(String custId) throws DataValidationException {

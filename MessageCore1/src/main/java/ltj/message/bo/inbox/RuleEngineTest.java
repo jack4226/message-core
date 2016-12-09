@@ -12,24 +12,15 @@ import javax.mail.MessagingException;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bo.TaskScheduler;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.exception.DataValidationException;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class RuleEngineTest {
+public class RuleEngineTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(RuleEngineTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
@@ -37,7 +28,6 @@ public class RuleEngineTest {
 	MsgInboxBo msgInboxBo;
 	@Resource
 	private MessageParser messageParser;
-	static AbstractApplicationContext factory = null;
 	final int startFrom = 1;
 	final int endTo = 1;
 	@BeforeClass

@@ -10,24 +10,16 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MsgHeader;
 import ltj.message.bo.outbox.MsgOutboxBo;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.RuleNameType;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.vo.inbox.MsgInboxVo;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class MsgInboxBoTest {
+public class MsgInboxBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MsgInboxBoTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
@@ -41,7 +33,7 @@ public class MsgInboxBoTest {
 	public static void  MsgInboxBoPrepare() {
 	}
 	@Test
-	public void testMsgInboxBo() throws Exception {
+	public void testMsgInboxBo() {
 		long msgId = 1L;
 		try {
 			MessageBean messageBean = msgOutboxBo.getMessageByPK(msgId);
@@ -72,7 +64,7 @@ public class MsgInboxBoTest {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 }

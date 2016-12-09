@@ -1,5 +1,7 @@
 package ltj.message.bo.mailreader;
 
+import static org.junit.Assert.*;
+
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -9,25 +11,17 @@ import javax.mail.internet.InternetAddress;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
+import ltj.message.bo.test.BoTestBase;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class MailReaderTest {
+public class MailReaderTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MailReaderTest.class);
 	@Resource
 	private SimpleEmailSender mSend;
 	@Test
-	public void testMailReader() throws Exception {
+	public void testMailReader() {
 		try {
 			int loops = 1; //Integer.MAX_VALUE;
 			for (int i = 0; i < loops; i++) {
@@ -46,7 +40,7 @@ public class MailReaderTest {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	

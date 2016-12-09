@@ -1,5 +1,7 @@
 package ltj.message.bo.rule;
 
+import static org.junit.Assert.*;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,25 +14,17 @@ import javax.mail.internet.InternetAddress;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageNode;
 import ltj.message.bean.MsgHeader;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.RuleNameType;
 import ltj.message.constant.XHeaderName;
 import ltj.message.vo.rule.RuleVo;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class RuleMatch2Test {
+public class RuleMatch2Test extends BoTestBase {
 	final static String LF = System.getProperty("line.separator", "\n");
 	static final Logger logger = Logger.getLogger(RuleMatch2Test.class);
 	@Resource
@@ -45,7 +39,7 @@ public class RuleMatch2Test {
 		matcher = new RuleMatcher();
 	}
 	@Test
-	public void testRuleMatcher() throws Exception {
+	public void testRuleMatcher() {
 		try {
 			RuleVo ruleVo = rulesDataBo.getRuleByPrimaryKey("HardBouce_WatchedMailbox");
 			System.out.println("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
@@ -212,7 +206,7 @@ public class RuleMatch2Test {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 }

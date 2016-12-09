@@ -1,5 +1,7 @@
 package ltj.message.bo.mailreader;
 
+import static org.junit.Assert.*;
+
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -9,20 +11,12 @@ import javax.mail.internet.InternetAddress;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
+import ltj.message.bo.test.BoTestBase;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class EmailSubscribeTest {
+public class EmailSubscribeTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(EmailSubscribeTest.class);
 	@Resource
 	private SimpleEmailSender mSend;
@@ -30,7 +24,7 @@ public class EmailSubscribeTest {
 	public static void EmailSubscribePrepare() {
 	}
 	@Test
-	public void testSendNotify() throws Exception {
+	public void testSendNotify() {
 		try {
 			String user = "demolist1@localhost";
 			sendNotify("subscribe", "Test Subscription Body Message", user);
@@ -38,7 +32,7 @@ public class EmailSubscribeTest {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	

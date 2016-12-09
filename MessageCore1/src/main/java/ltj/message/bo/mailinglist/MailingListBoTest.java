@@ -10,21 +10,13 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.exception.DataValidationException;
 import ltj.message.exception.OutOfServiceException;
 import ltj.message.exception.TemplateNotFoundException;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class MailingListBoTest {
+public class MailingListBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MailingListBoTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
@@ -34,7 +26,7 @@ public class MailingListBoTest {
 	public static void MailingListBoPrepare() {
 	}
 	@Test
-	public void testMailingListBo() throws Exception {
+	public void testMailingListBo() {
 		String mailingListId = "SMPLLST1";
 		String testEmailAddr = "test@test.com";
 		try {
@@ -50,7 +42,7 @@ public class MailingListBoTest {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	

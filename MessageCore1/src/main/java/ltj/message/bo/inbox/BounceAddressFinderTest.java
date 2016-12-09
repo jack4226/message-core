@@ -9,19 +9,11 @@ import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.util.StringUtil;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class BounceAddressFinderTest {
+public class BounceAddressFinderTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(BounceAddressFinderTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
@@ -64,6 +56,7 @@ public class BounceAddressFinderTest {
 		}
 		catch (IOException e) {
 			logger.error("Exception", e);
+			fail();
 		}
 	}
 

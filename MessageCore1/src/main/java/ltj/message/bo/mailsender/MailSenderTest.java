@@ -1,5 +1,7 @@
 package ltj.message.bo.mailsender;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 
 import javax.annotation.Resource;
@@ -11,40 +13,34 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.TaskScheduler;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.exception.DataValidationException;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class MailSenderTest  {
+public class MailSenderTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MailSenderTest.class);
 	@Resource
 	private TaskBaseBo sendMailBo;
+	@Autowired
 	private static JmsProcessor jmsProcessor;
 	@BeforeClass
-	public static void MailSenderPrepare() {
-		jmsProcessor = (JmsProcessor) TaskScheduler.getMailSenderFactory().getBean("jmsProcessor");
+	public static void MailSenderPrepare() { // TODO fix this
+		jmsProcessor = TaskScheduler.getMailSenderFactory().getBean(JmsProcessor.class);
 	}
 	@Test
-	public void testMailSender() throws Exception {
+	public void testMailSender() {
 		int loops = 2; //Integer.MAX_VALUE;
 		try {
 			testSendMail(loops);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	

@@ -14,24 +14,16 @@ import javax.mail.internet.InternetAddress;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageNode;
 import ltj.message.bean.MsgHeader;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.RuleNameType;
 import ltj.message.constant.XHeaderName;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class RuleMatchTest {
+public class RuleMatchTest extends BoTestBase {
 	final static String LF = System.getProperty("line.separator", "\n");
 	static final Logger logger = Logger.getLogger(RuleMatchTest.class);
 	

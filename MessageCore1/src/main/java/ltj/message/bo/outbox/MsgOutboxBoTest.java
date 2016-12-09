@@ -14,13 +14,8 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bo.template.RenderBo;
@@ -28,16 +23,13 @@ import ltj.message.bo.template.RenderRequest;
 import ltj.message.bo.template.RenderResponse;
 import ltj.message.bo.template.RenderVariable;
 import ltj.message.bo.template.Renderer;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class MsgOutboxBoTest {
+public class MsgOutboxBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MsgOutboxBoTest.class);
 	final static String LF = System.getProperty("line.separator","\n");
 	@Resource
@@ -53,7 +45,7 @@ public class MsgOutboxBoTest {
 	}
 	@Test
 	@Rollback(false) // must commit MsgRendered record for MailSender
-	public void testMsgOutboxBo() throws Exception {
+	public void testMsgOutboxBo() {
 		try {
 			RenderRequest req = new RenderRequest(
 					"testMsgSource",
@@ -82,7 +74,7 @@ public class MsgOutboxBoTest {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	
