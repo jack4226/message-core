@@ -1,51 +1,39 @@
-package ltj.message.bo.outbox;
+package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.annotation.Resource;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.test.annotation.Rollback;
 
-import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bo.template.RenderBo;
 import ltj.message.bo.template.RenderRequest;
 import ltj.message.bo.template.RenderResponse;
 import ltj.message.bo.template.RenderVariable;
 import ltj.message.bo.template.Renderer;
-import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
-import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
 
-public class MsgOutboxBoTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(MsgOutboxBoTest.class);
-	final static String LF = System.getProperty("line.separator","\n");
+public class RenderTest extends BoTestBase {
+	static final Logger logger = Logger.getLogger(RenderTest.class);
+	static final boolean isDebugEnabled = logger.isDebugEnabled();
+	
 	@Resource
-	private MsgOutboxBo msgOutboxBo;
-	@Resource
-	private RenderBo renderBo;
-	@Resource
-	private JmsProcessor jmsProcessor;
-	@Resource
-	private JmsTemplate jmsTemplate;
-	@BeforeClass
-	public static void  MsgOutboxBoPrepare() {
-	}
+	private RenderBo util;
+	
 	@Test
-	@Rollback(false) // must commit MsgRendered record for MailSender
-	public void testMsgOutboxBo() {
+	public void testRender1() {
 		try {
 			RenderRequest req = new RenderRequest(
 					"testMsgSource",
@@ -53,55 +41,51 @@ public class MsgOutboxBoTest extends BoTestBase {
 					new Timestamp(new java.util.Date().getTime()),
 					buildTestVariables()
 					);
-			RenderResponse rsp = renderBo.getRenderedEmail(req);
+			RenderResponse rsp = util.getRenderedEmail(req);
 			assertNotNull(rsp);
-			logger.info("Renderer Body: ####################" + LF + rsp.getMessageBean().getBody());
-			
-			long msgId = msgOutboxBo.saveRenderData(rsp);
-			assertTrue(msgId>0);
-			
-			RenderRequest req2 = msgOutboxBo.getRenderRequestByPK(msgId);
-			assertNotNull(req2);
-			logger.info("RenderRequest2: ####################"+LF+req2);
-			RenderResponse rsp2 = renderBo.getRenderedEmail(req2);
-			assertNotNull(rsp2);
-			logger.info("RenderResponse2: ####################"+LF+rsp2);
-			
-			//jmsProcessor.setQueueName(""); // TODO set queue name
-			String msgWritten = jmsProcessor.writeMsg(rsp.getMessageBean());
-			assertNotNull(msgWritten);
-			logger.info("Message Written - JMS MessageId: " + msgWritten);
+			logger.info(rsp);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			fail();
 		}
 	}
-	
+	@Test
+	public void testRender2() {
+		try {
+			RenderRequest req = new RenderRequest(
+					"WeekendDeals",
+					Constants.DEFAULT_CLIENTID,
+					new Timestamp(new java.util.Date().getTime()),
+					new HashMap<String, RenderVariable>()
+					);
+			RenderResponse rsp = util.getRenderedEmail(req);
+			assertNotNull(rsp);
+			logger.info(rsp);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
 	private static HashMap<String, RenderVariable> buildTestVariables() {
 		HashMap<String, RenderVariable> map=new HashMap<String, RenderVariable>();
 		
-		RenderVariable toAddr = new RenderVariable(
-				EmailAddressType.TO_ADDR, 
-				"testto@localhost",
-				null, 
-				VariableType.ADDRESS, 
-				"Y",
-				"N", 
-				null
-			);
-		map.put(toAddr.getVariableName(), toAddr);
-		
-		RenderVariable customer = new RenderVariable(
-				VariableName.CUSTOMER_ID, 
-				"test",
-				"maximum 16 characters", 
-				VariableType.TEXT, 
-				"Y",
-				"N", 
-				null
-			);
-		map.put(customer.getVariableName(), customer);
+		try {
+			RenderVariable toAddr = new RenderVariable(
+					EmailAddressType.TO_ADDR, 
+					new InternetAddress("testto@localhost"),
+					null, 
+					VariableType.ADDRESS, 
+					"Y",
+					"N", 
+					null
+				);
+			map.put(toAddr.getVariableName(), toAddr);
+		}
+		catch (AddressException e) {
+			logger.error("AddressException caught", e);
+		}
 		
 		RenderVariable req1 = new RenderVariable(
 				"name1", 
@@ -152,7 +136,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 		RenderVariable req6_1 = new RenderVariable(
 				"attachment1.txt", 
 				"Attachment Text ============================================", 
-				"text/plain; charset=\"iso-8859-1\"", 
+				"text/plain", 
 				VariableType.LOB, 
 				"Y",
 				"N", 
@@ -162,7 +146,10 @@ public class MsgOutboxBoTest extends BoTestBase {
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		java.net.URL url = loader.getResource("jndi.properties");
 		try {
+			//url = new java.net.URL("http://www.eos.ncsu.edu/soc/");
 			Object content = url.getContent();
+			if (isDebugEnabled)
+				logger.debug("AttachmentValue DataType: "+content.getClass().getName());
 			byte[] buffer = null;
 			if (content instanceof BufferedInputStream) {
 				BufferedInputStream bis = (BufferedInputStream)content;
@@ -171,10 +158,17 @@ public class MsgOutboxBoTest extends BoTestBase {
 				bis.read(buffer);
 				bis.close();
 			}
+			else if (content instanceof InputStream) {
+				BufferedInputStream bis = new BufferedInputStream((InputStream)content);
+				int len = bis.available();
+				buffer = new byte[len];
+				bis.read(buffer);
+				bis.close();
+			}
 			RenderVariable req6_2 = new RenderVariable(
-					"jndi.bin",
+					"jndi.txt",
 					buffer,
-					"application/octet-stream",
+					"text/plain",
 					VariableType.LOB, 
 					"Y",
 					"N", 
@@ -205,7 +199,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"N", 
 				null
 			);
-		List<HashMap<String, RenderVariable>> collection = new ArrayList<HashMap<String, RenderVariable>>();
+		ArrayList<HashMap<String, RenderVariable>> collection = new ArrayList<HashMap<String, RenderVariable>>();
 		HashMap<String, RenderVariable> row1 = new HashMap<String, RenderVariable>();	// a row
 		row1.put(req2.getVariableName(), req2_row1);
 		row1.put(req3.getVariableName(), req3);
@@ -235,4 +229,5 @@ public class MsgOutboxBoTest extends BoTestBase {
 		
 		return map;
 	}
+	
 }

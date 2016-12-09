@@ -1,6 +1,6 @@
-package ltj.message.bo.test;
+package ltj.message.task;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -12,14 +12,13 @@ import javax.mail.internet.AddressException;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
-import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.bo.TaskScheduler;
 import ltj.message.bo.template.RenderBo;
 import ltj.message.bo.template.RenderRequest;
 import ltj.message.bo.template.RenderResponse;
 import ltj.message.bo.template.RenderVariable;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.constant.RuleNameType;
 import ltj.message.exception.DataValidationException;
@@ -32,9 +31,10 @@ public class BroadcastBoTest extends BoTestBase {
 	private TaskBaseBo mailingListRegExBo;
 	@Resource
 	private RenderBo util;
+	
 	@Test
 	@Rollback(false)
-	public void broadcast() throws Exception {
+	public void broadcast() {
 		try {
 			MessageBean msgBean = buildMessageBeanFromMsgStream();
 			MessageBean messageBean = render();
@@ -46,17 +46,16 @@ public class BroadcastBoTest extends BoTestBase {
 			if (isDebugEnabled) {
 				logger.debug("MessageBean created:" + LF + messageBean);
 			}
-			JmsProcessor jmsProcessor = (JmsProcessor) TaskScheduler.getMailSenderFactory()
-					.getBean("jmsProcessor");
-			broadcastBo.setJmsProcessor(jmsProcessor);
+			broadcastBo.getJmsProcessor().setQueueName("mailSenderInput");
 			broadcastBo.setTaskArguments("SMPLLST2");
 			broadcastBo.process(messageBean);
 			String regEx = (String) mailingListRegExBo.process(messageBean);
 			logger.info("RegEx: " + regEx + ", " + "test-list@domain.com".matches(regEx));
+			// TODO verify results
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			fail();
 		}
 	}
 	
@@ -73,6 +72,7 @@ public class BroadcastBoTest extends BoTestBase {
 		return rsp.getMessageBean();
 	}
 
+	@Test
 	public void broadcastRuleEngine() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		messageBean.setRuleName(RuleNameType.BROADCAST.toString());
@@ -81,11 +81,10 @@ public class BroadcastBoTest extends BoTestBase {
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
-		JmsProcessor jmsProcessor = (JmsProcessor) TaskScheduler.getMailSenderFactory().getBean(
-				"jmsProcessor");
 		// send the bean back to Rule Engine input queue
-		//jmsProcessor.setQueueName(""); // TODO set queue name
-		String jmsMsgId = jmsProcessor.writeMsg(messageBean);
+		broadcastBo.getJmsProcessor().setQueueName("mailReaderOutput"); // TODO get from properties
+		String jmsMsgId = broadcastBo.getJmsProcessor().writeMsg(messageBean);
 		logger.info("Jms Message Id returned: " + jmsMsgId);
+		// TODO verify results
 	}
 }

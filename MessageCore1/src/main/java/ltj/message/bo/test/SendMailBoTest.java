@@ -8,28 +8,28 @@ import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
-import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.bo.TaskScheduler;
 import ltj.message.constant.RuleNameType;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 
+@FixMethodOrder
 public class SendMailBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo sendMailBo;
+	
 	final int loops = 1; //Integer.MAX_VALUE;
 	private static MessageBean messageBean = null;
 	private String testSubject = "Test Subject - ";
+	
 	@Test
 	@Rollback(false)
-	public void sendMail() throws Exception {
-		JmsProcessor jmsProcessor = (JmsProcessor) TaskScheduler.getMailSenderFactory().getBean(
-				"jmsProcessor");
-		sendMailBo.setJmsProcessor(jmsProcessor);
+	public void test1() throws Exception { // sendMail
+		sendMailBo.getJmsProcessor().setQueueName("mailSenderInput");
 		for (int i = 0; i < loops; i++) {
 			String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
 			String user = "user" + suffix;
@@ -58,9 +58,10 @@ public class SendMailBoTest extends BoTestBase {
 			sendMailBo.process(messageBean);
 		}
 	}
+	
 	@Test
 	@Rollback(false)
-	public void sendMailVERP() throws Exception {
+	public void test2() throws Exception { // sendMailVERP
 		if (messageBean==null) {
 			messageBean = buildMessageBeanFromMsgStream();
 		}
@@ -76,9 +77,7 @@ public class SendMailBoTest extends BoTestBase {
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
-		JmsProcessor jmsProcessor = (JmsProcessor) TaskScheduler.getMailSenderFactory().getBean(
-				"jmsProcessor");
-		sendMailBo.setJmsProcessor(jmsProcessor);
+		sendMailBo.getJmsProcessor().setQueueName("mailSenderInput");
 
 		String body = messageBean.getBody();
 		for (int i = 0; i < loops; i++) {
@@ -90,7 +89,7 @@ public class SendMailBoTest extends BoTestBase {
 		}
 	}
 	@Test
-	public void waitForMailEngine() {
+	public void test3() { // waitForMailEngine
 		// wait for the MailEngine to add a record to MsgInbox
 		try {
 			Thread.sleep(5 * 1000);
@@ -98,7 +97,7 @@ public class SendMailBoTest extends BoTestBase {
 		catch (InterruptedException e) {}
 	}
 	@Test
-	public void verifyDatabaseRecord() {
+	public void test4() { // verifyDatabaseRecord
 		List<MsgInboxWebVo> list = selectMsgInboxByMsgRefId(messageBean.getMsgId());
 		assertTrue(list.size()>0);
 		for (MsgInboxWebVo vo : list) {

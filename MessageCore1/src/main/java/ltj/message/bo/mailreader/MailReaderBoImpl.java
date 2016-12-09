@@ -26,11 +26,9 @@ import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
 import ltj.jbatch.app.RunnableProcessor;
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.constant.MailProtocol;
 import ltj.message.constant.MailServerType;
-import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.MailBoxVo;
 
@@ -57,7 +55,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	protected final String LF = System.getProperty("line.separator", "\n");
 	protected final String processorName;
 	protected final AbstractApplicationContext factory;
-	protected final AbstractApplicationContext ruleEngineFactory;
 	final Session session;
 	
 	private Store store = null;
@@ -91,11 +88,9 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 *            spring framework application factory for ruleEngineBean
 	 * @throws MessagingException
 	 */
-	public MailReaderBoImpl(MailBoxVo vo, AbstractApplicationContext factory,
-			AbstractApplicationContext ruleEngineFactory) {
+	public MailReaderBoImpl(MailBoxVo vo, AbstractApplicationContext factory) {
 		this.mailBoxVo = vo;
 		this.factory = factory;
-		this.ruleEngineFactory = ruleEngineFactory;
 		logger.info("in Constructor - MailBox Properties:" + LF + mailBoxVo);
 		processorName = mailBoxVo.getProcessorName(); // MailProcessor
 		if (processorName == null) {
@@ -190,24 +185,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		else {
 			session = Session.getInstance(m_props, null);
 		}
-	}
-	
-	public static void main(String[] args) {
-		AbstractApplicationContext factory = SpringUtil.getAppContext();
-		MailBoxDao mailBoxDao = (MailBoxDao) factory.getBean("mailBoxDao");
-		MailBoxVo vo = mailBoxDao.getByPrimaryKey("twang", "localhost");
-		if (vo == null) return;
-		vo.setFromTimer(true);
-		MailReaderBoImpl reader = new MailReaderBoImpl(vo, factory, factory);
-		try {
-				//reader.start();
-				//reader.join();
-				reader.readMail(vo.isFromTimer());
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.exit(0);
 	}
 
 	/**
@@ -544,10 +521,9 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	private void execute(Message[] msgs) throws InterruptedException, IOException, JMSException,
 			MessagingException {
 		if (msgs == null || msgs.length == 0) return;
-		JmsProcessor jmsProcessor = (JmsProcessor) SpringUtil
-				.getBean(ruleEngineFactory, "jmsProcessor");
-		DuplicateCheckDao duplicateCheck = (DuplicateCheckDao) SpringUtil.getBean(factory,
-				"duplicateCheck");
+		JmsProcessor jmsProcessor = factory.getBean(JmsProcessor.class);
+		jmsProcessor.setQueueName("mailReaderOutput");
+		DuplicateCheckDao duplicateCheck = (DuplicateCheckDao) factory.getBean("duplicateCheck");
 		MailProcessor processor = new MailProcessor(jmsProcessor, mailBoxVo, duplicateCheck);
 		processor.process(msgs);
 	}

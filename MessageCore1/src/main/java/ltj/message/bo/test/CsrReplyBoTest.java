@@ -9,23 +9,24 @@ import javax.annotation.Resource;
 import javax.mail.Address;
 import javax.mail.internet.InternetAddress;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 
-import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.bo.TaskScheduler;
 import ltj.message.constant.RuleNameType;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 
+@FixMethodOrder
 public class CsrReplyBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo csrReplyBo;
+	
 	private final String replyBodyText = "This is Reply from CSR.";
 	private final String replyToAddress = "testto@localhost";
 	private static Long msgRefId;
 	@Test
-	public void csrReply() throws Exception {
+	public void test1() throws Exception { // csrReply
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		Address[] from = InternetAddress.parse(replyToAddress);
 		messageBean.setFrom(from); // redirect to MailReader
@@ -40,9 +41,7 @@ public class CsrReplyBoTest extends BoTestBase {
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + mBean);
 		}
-		JmsProcessor jmsProcessor = (JmsProcessor) TaskScheduler.getMailSenderFactory().getBean(
-				"jmsProcessor");
-		csrReplyBo.setJmsProcessor(jmsProcessor);
+		csrReplyBo.getJmsProcessor().setQueueName("mailSenderInput");
 		/*
 		 * this step will place a MessageBean in a queue for MailEngine to
 		 * pickup, the MailEngine will then send an CsrReply email to the
@@ -51,7 +50,7 @@ public class CsrReplyBoTest extends BoTestBase {
 		csrReplyBo.process(mBean);
 	}
 	@Test
-	public void waitForMailEngine() {
+	public void test2() { // waitForMailEngine
 		// wait for the MailEngine to add a record to MsgInbox
 		try {
 			Thread.sleep(5 * 1000);
@@ -59,7 +58,7 @@ public class CsrReplyBoTest extends BoTestBase {
 		catch (InterruptedException e) {}
 	}
 	@Test
-	public void verifyDatabaseRecord() {
+	public void test3() { // verifyDatabaseRecord
 		// now verify the database record added
 		List<MsgInboxWebVo> list = selectMsgInboxByMsgRefId(msgRefId);
 		assertTrue(list.size()>0);

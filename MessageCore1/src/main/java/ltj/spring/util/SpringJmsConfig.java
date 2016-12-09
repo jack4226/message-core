@@ -27,9 +27,13 @@ import ltj.tomee.util.TomeeCtxUtil;
 public class SpringJmsConfig implements JmsListenerConfigurer {
 	protected final static Logger logger = Logger.getLogger(SpringJmsConfig.class);
 
-	private @Value("${Listener.QueueName}") String listenerQueueName;
+	private @Value("${test.Queue}") String listenerQueueName;
 	
 	private @Value("${listener.Queues}") String[] listenerQueues;
+	
+	private @Value("${mailReaderOutput.Queue}") String mailReaderOutputQueueName;
+	private @Value("${ruleEngineOutput.Queue}") String ruleEngineOutputQueueName;
+	private @Value("${mailSenderInput.Queue}") String mailSenderInputQueueName;
 	
 	@Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
@@ -80,6 +84,15 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
         	queueName = listenerQueueName;
         }
         container.setDestination(new ActiveMQQueue(queueName));
+        //container.setDestinationResolver(destinationResolver());
+        // set Listener properties
+        container.setAutoStartup(false);
+        container.setConcurrency("1-4");
+        container.setMaxConcurrentConsumers(4);
+        //container.setErrorHandler(null); // TODO add error handler
+        //container.setMessageSelector(null); // XXX implement
+        container.setSessionTransacted(true);
+        // end of properties
         container.setMessageListener(jmsListener());
         return container;
     }
@@ -94,41 +107,44 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	}
 	
 	DestinationResolver destinationResolver() {
-		DestinationResolver destResolver = new DynamicDestinationResolver();
-		//destResolver = new JndiDestinationResolver();
-		return destResolver;
+		DestinationResolver resolver = new DynamicDestinationResolver();
+		//resolver = new JndiDestinationResolver();
+		return resolver;
 	}
 	
     @Override
     public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
     	registrar.setMessageHandlerMethodFactory(messageHandlerMethodFactory());
-    	if (listenerQueues != null) {
+    	if (listenerQueues != null && listenerQueues.length > 0) {
 	    	for (String queueName : listenerQueues) {
 	    		logger.info("Register JMS endpoint for queue: " + queueName);
 	            SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 	            endpoint.setId(queueName + "_id");
 	            endpoint.setDestination(queueName);
+	            endpoint.setConcurrency("1-4");
+	            if (StringUtils.equals(queueName, mailReaderOutputQueueName)) {
+	            	// set listener
+	            }
+	            else if (StringUtils.equals(queueName, ruleEngineOutputQueueName)) {
+	            	//
+	            }
+	            else if (StringUtils.equals(queueName, mailSenderInputQueueName)) {
+	            	//
+	            }
 	            endpoint.setMessageListener(message -> {
-	                // TODO processing
+	                // TODO implement for each queue
 	            	logger.info("Received: " + message);
 	            });
 	            registrar.registerEndpoint(endpoint);
 	    	}
     	}
-        SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
-        endpoint.setId("myJmsEndpoint");
-        endpoint.setDestination("anotherQueue");
-        endpoint.setMessageListener(message -> {
-            // TODO processing
-        	logger.info("Received: " + message);
-        });
-        registrar.registerEndpoint(endpoint);
     }
     
     @Bean
     public DefaultMessageHandlerMethodFactory messageHandlerMethodFactory() {
         DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
-        //factory.setValidator(myValidator());
+        //factory.setValidator(myValidator()); // TODO implement
+        //factory.setMessageConverter(null); // TODO implement
         return factory;
     }
     

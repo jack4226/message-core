@@ -1,4 +1,4 @@
-package ltj.message.bo.rule;
+package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
@@ -12,27 +12,24 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageNode;
 import ltj.message.bean.MsgHeader;
-import ltj.message.bo.test.BoTestBase;
+import ltj.message.bo.rule.RuleLoader;
+import ltj.message.bo.rule.RuleMatcher;
 import ltj.message.constant.RuleNameType;
 import ltj.message.constant.XHeaderName;
 
 public class RuleMatchTest extends BoTestBase {
-	final static String LF = System.getProperty("line.separator", "\n");
 	static final Logger logger = Logger.getLogger(RuleMatchTest.class);
 	
-	Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 	@Resource
 	private RuleLoader loader;
-	@BeforeClass
-	public static void RuleMatchPrepare() {
-	}
+	
 	@Test
 	public void testRuleMatch() throws Exception {
 		RuleMatcher matcher = new RuleMatcher();

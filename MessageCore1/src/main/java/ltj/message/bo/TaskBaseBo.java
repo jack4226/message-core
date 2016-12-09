@@ -16,7 +16,7 @@ public interface TaskBaseBo {
 	public Object process(MessageBean messageBean) throws DataValidationException,
 			MessagingException, JMSException, IOException;
 	
-	public void setJmsProcessor(JmsProcessor jmsProcessor);
+	public JmsProcessor getJmsProcessor();
 
 	public String getTaskArguments();
 

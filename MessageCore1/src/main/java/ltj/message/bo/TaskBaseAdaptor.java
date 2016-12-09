@@ -16,16 +16,20 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 
 	@Autowired
 	protected JmsProcessor jmsProcessor;
+	
 	protected String taskArguments;
 	
-	public void setJmsProcessor(JmsProcessor jmsProcessor) {
-		this.jmsProcessor = jmsProcessor;
+	@Override
+	public JmsProcessor getJmsProcessor() {
+		return jmsProcessor;
 	}
 	
+	@Override
 	public String getTaskArguments() {
 		return taskArguments;
 	}
 	
+	@Override
 	public void setTaskArguments(String taskArguments) {
 		this.taskArguments = taskArguments;
 	}

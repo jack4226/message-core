@@ -21,7 +21,7 @@ import ltj.message.util.StringUtil;
 /**
  * Scan input string for RFC1893/RFC2821 mail status code
  */
-final class RfcCodeScan {
+public final class RfcCodeScan {
 	static final Logger logger = Logger.getLogger(RfcCodeScan.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final int maxLenToScan = 8192*4; // scan up to 32k
@@ -82,7 +82,7 @@ final class RfcCodeScan {
 	 *            message body
 	 * @return message id, null if not found
 	 */
-	String examineBody(String body) {
+	public String examineBody(String body) {
 		String RuleName = examineBody(body, 1);
 		if (RuleName == null) {
 			RuleName = examineBody(body, 2);

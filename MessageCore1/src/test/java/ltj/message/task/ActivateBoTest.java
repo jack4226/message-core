@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.task;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.vo.emailaddr.EmailAddrVo;

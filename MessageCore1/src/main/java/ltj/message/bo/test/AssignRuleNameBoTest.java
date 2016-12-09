@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
@@ -16,6 +17,7 @@ import ltj.message.constant.RuleNameType;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 /*** Please deploy MailEngine and start JBoss before running this test ***/
+@FixMethodOrder
 public class AssignRuleNameBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo assignRuleNameBo;
@@ -27,9 +29,10 @@ public class AssignRuleNameBoTest extends BoTestBase {
 		Random random = new Random();
 		testRuleName = RuleNames[random.nextInt(RuleNames.length - 1)];
 	}
+	
 	@Test
 	@Rollback(false)
-	public void assignRuleName() throws Exception {
+	public void test1() throws Exception { //assignRuleName
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		assignRuleNameBo.setTaskArguments(testRuleName.name());
 		if (isDebugEnabled) {
@@ -44,7 +47,7 @@ public class AssignRuleNameBoTest extends BoTestBase {
 		msgId = messageBean.getMsgId();
 	}
 	@Test
-	public void waitForMailEngine() {
+	public void test2() { // waitForMailEngine
 		// wait for the MailEngine to add a record with Assigned RuleName to MsgInbox
 		try {
 			Thread.sleep(5 * 1000);
@@ -52,7 +55,7 @@ public class AssignRuleNameBoTest extends BoTestBase {
 		catch (InterruptedException e) {}
 	}
 	@Test
-	public void verifyDatabaseRecord() {
+	public void test3() { // verifyDatabaseRecord
 		// now verify the database record added
 		MsgInboxVo vo1 = selectMsgInboxByMsgId(msgId);
 		assertTrue(vo1!=null);

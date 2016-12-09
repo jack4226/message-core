@@ -1,4 +1,4 @@
-package ltj.message.bo.rule;
+package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
@@ -19,20 +19,22 @@ import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageNode;
 import ltj.message.bean.MsgHeader;
-import ltj.message.bo.test.BoTestBase;
+import ltj.message.bo.rule.RuleLoader;
+import ltj.message.bo.rule.RuleMatcher;
+import ltj.message.bo.rule.RulesDataBo;
 import ltj.message.constant.RuleNameType;
 import ltj.message.constant.XHeaderName;
 import ltj.message.vo.rule.RuleVo;
 
 public class RuleMatch2Test extends BoTestBase {
-	final static String LF = System.getProperty("line.separator", "\n");
 	static final Logger logger = Logger.getLogger(RuleMatch2Test.class);
 	@Resource
 	private RulesDataBo rulesDataBo;
 	@Resource
 	private RuleLoader loader;
+	
 	private RuleMatcher matcher;
-	Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 
 	@Before
 	public void RuleMatcherPrepare() {

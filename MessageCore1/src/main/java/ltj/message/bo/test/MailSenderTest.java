@@ -1,4 +1,4 @@
-package ltj.message.bo.mailsender;
+package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
@@ -11,32 +11,23 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.bo.TaskScheduler;
-import ltj.message.bo.test.BoTestBase;
 import ltj.message.exception.DataValidationException;
 
 public class MailSenderTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MailSenderTest.class);
 	@Resource
 	private TaskBaseBo sendMailBo;
-	@Autowired
-	private static JmsProcessor jmsProcessor;
-	@BeforeClass
-	public static void MailSenderPrepare() { // TODO fix this
-		jmsProcessor = TaskScheduler.getMailSenderFactory().getBean(JmsProcessor.class);
-	}
+	
 	@Test
 	public void testMailSender() {
 		int loops = 2; //Integer.MAX_VALUE;
 		try {
 			testSendMail(loops);
+			// TODO verify results
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -46,7 +37,7 @@ public class MailSenderTest extends BoTestBase {
 	
 	private void testSendMail(int loops) throws DataValidationException, MessagingException,
 			JMSException, IOException {
-		sendMailBo.setJmsProcessor(jmsProcessor);
+		sendMailBo.getJmsProcessor().setQueueName("mailSenderOutput");
 		long startTime = new java.util.Date().getTime();
 		int i;
 		for (i = 0; i < loops; i++) {

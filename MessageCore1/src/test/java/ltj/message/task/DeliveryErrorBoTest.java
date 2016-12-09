@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.task;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.dao.outbox.DeliveryStatusDao;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.vo.outbox.DeliveryStatusVo;
@@ -20,8 +21,10 @@ public class DeliveryErrorBoTest extends BoTestBase {
 	private DeliveryStatusDao deliveryStatusDao;
 	@Resource
 	private TaskBaseBo deliveryErrorBo;
+	
 	private String rfc822Text = "RFC822";
 	private String dsnText = "test DSN Text - from BO Test";
+	
 	@Test
 	@Rollback(true)
 	public void deliveryError() throws Exception {

@@ -1,27 +1,15 @@
-package ltj.message.bo.inbox;
+package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
+import ltj.message.bo.inbox.RfcCodeScan;
 import ltj.message.constant.RuleNameType;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class RfcCodeScanTest {
-	final static String LF = System.getProperty("line.separator", "\n");
+public class RfcCodeScanTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(RfcCodeScanTest.class);
-	
-	public static void RfcCodeScanPrepres() {
-	}
 	
 	@Test
 	public void testSoftBounce() throws Exception {

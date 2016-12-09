@@ -1,4 +1,4 @@
-package ltj.message.bo.inbox;
+package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
@@ -13,8 +13,9 @@ import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MsgHeader;
+import ltj.message.bo.inbox.MessageParser;
+import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
-import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.RuleNameType;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.vo.inbox.MsgInboxVo;

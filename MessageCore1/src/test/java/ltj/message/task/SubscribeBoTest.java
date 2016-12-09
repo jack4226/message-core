@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.task;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +14,7 @@ import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
 import ltj.message.dao.emailaddr.MailingListDao;
@@ -31,6 +32,7 @@ public class SubscribeBoTest extends BoTestBase {
 	private SubscriptionDao subscriptionDao;
 	@Resource
 	private MailingListDao mailingListDao;
+	
 	private String testFromAddress = "test@test.com";
 	private String mailingListAddr = "demolist2@localhost";
 	private enum Action {

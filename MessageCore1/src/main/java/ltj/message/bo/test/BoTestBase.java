@@ -35,7 +35,6 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
-import ltj.message.bo.outbox.MsgOutboxBoTest;
 import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.idtokens.EmailIdParser;
@@ -73,10 +72,12 @@ public class BoTestBase {
 	protected MsgInboxDao msgInboxDao;
 	@Resource
 	protected EmailAddrDao emailAddrDao;
+	
 	@BeforeClass
 	public static void prepare() {
 		factory = SpringUtil.getAppContext();
 	}
+	
 	@Before
 	public void checkMsgrendered() throws AddressException, DataValidationException, ParseException {
 		if (msgOutboxBo.getMessageByPK(renderId)==null) {
@@ -86,6 +87,7 @@ public class BoTestBase {
 			}
 		}
 	}
+	
 	protected Message createMimeMessage(byte[] mailStream) throws MessagingException {
 		Message msg = MessageBeanUtil.createMimeMessage(mailStream);
 		return msg;
@@ -111,6 +113,9 @@ public class BoTestBase {
 		Message msg = createMimeMessage(msgStreamVo.getMsgStream());
 		MessageBean messageBean = createMessageBean(msg);
 		messageBean.setMsgId(msgStreamVo.getMsgId()); // to be converted as MsgRefId
+		if (messageBean.getMsgRefId() == null) { // TODO revisit with DeliveryErrorBoTest
+			messageBean.setMsgRefId(messageBean.getMsgId());
+		}
 		Address[] fromAddr = {new InternetAddress("botest.from@test.com")};
 		messageBean.setFrom(fromAddr);
 		Address[] toAddr = {new InternetAddress("botest.to@test.com")};
@@ -190,6 +195,5 @@ public class BoTestBase {
 			RuleNameType.VIRUS_BLOCK,
 			RuleNameType.CSR_REPLY,
 			RuleNameType.RMA_REQUEST
-
 	};
 }

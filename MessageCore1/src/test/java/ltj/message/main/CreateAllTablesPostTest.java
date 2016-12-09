@@ -10,13 +10,13 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.springframework.test.annotation.Rollback;
 
-import ltj.message.bo.inbox.RuleEngineTest;
-import ltj.message.bo.outbox.MsgOutboxBoTest;
+import ltj.message.bo.test.MsgOutboxBoTest;
+import ltj.message.bo.test.RuleEngineTest;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgStreamDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
 
-public class CreateAllTablesPostScript extends DaoTestBase {
+public class CreateAllTablesPostTest extends DaoTestBase {
 	@Resource
 	private MsgStreamDao msgStreamDao;
 	@Resource

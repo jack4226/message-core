@@ -1,4 +1,4 @@
-package ltj.message.bo.mailinglist;
+package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
@@ -8,10 +8,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ltj.message.bo.test.BoTestBase;
+import ltj.message.bo.mailinglist.MailingListBo;
 import ltj.message.exception.DataValidationException;
 import ltj.message.exception.OutOfServiceException;
 import ltj.message.exception.TemplateNotFoundException;
@@ -19,12 +18,9 @@ import ltj.message.exception.TemplateNotFoundException;
 public class MailingListBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MailingListBoTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
-	final static String LF = System.getProperty("line.separator","\n");
 	@Resource
 	private MailingListBo mlServiceBo;
-	@BeforeClass
-	public static void MailingListBoPrepare() {
-	}
+	
 	@Test
 	public void testMailingListBo() {
 		String mailingListId = "SMPLLST1";

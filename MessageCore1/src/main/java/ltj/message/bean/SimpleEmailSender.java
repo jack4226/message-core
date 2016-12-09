@@ -69,7 +69,9 @@ public class SimpleEmailSender implements java.io.Serializable {
 		   (make sure to exclude SendFailedException)
 		 - reissue transport.connect() and re-send the message
 		 */
-		if (persistent) initTransport();
+		if (persistent) {
+			initTransport();
+		}
 	}
 	
 	private void initTransport() throws NumberFormatException, MessagingException {
@@ -84,17 +86,21 @@ public class SimpleEmailSender implements java.io.Serializable {
 	}
 
 	public void sendMessage(MessageBean mBean) throws NumberFormatException, MessagingException {
-		if (persistent)
+		if (persistent) {
 			sendUsePersistent(mBean);
-		else
+		}
+		else {
 			sendUseTransient(mBean);
+		}
 	}
 
 	public void sendMessage(Message msg) throws NumberFormatException, MessagingException {
-		if (persistent)
+		if (persistent) {
 			sendUsePersistent(msg);
-		else
+		}
+		else {
 			sendUseTransient(msg);
+		}
 	}
 
 	/** 
@@ -106,9 +112,9 @@ public class SimpleEmailSender implements java.io.Serializable {
 			logger.debug("Entering sendUseTransient method");
 
 		Properties props = System.getProperties();
-		if (smtphost != null)
+		if (smtphost != null) {
 			props.put("mail.smtp.host", smtphost);
-
+		}
 		// Get a Session object
 		Session session = Session.getDefaultInstance(props, null);
 		if (debug) {

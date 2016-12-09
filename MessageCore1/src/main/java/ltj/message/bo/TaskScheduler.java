@@ -15,10 +15,8 @@ import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ltj.jbatch.app.SpringUtil;
-import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.exception.DataValidationException;
@@ -37,8 +35,7 @@ public class TaskScheduler {
 	private final AbstractApplicationContext factory;
 
 	private static Hashtable<String, String> mailSenderJndi = null;
-
-	private static AbstractApplicationContext mailSenderFactory = null;
+	
 	public TaskScheduler(AbstractApplicationContext factory) {
 		this.factory = factory;
 	}
@@ -103,9 +100,8 @@ public class TaskScheduler {
 			}
 			// jmsProcessor's JNDI must point to the location where MailSenderEar is
 			// deployed.
-			JmsProcessor jmsProcessor = (JmsProcessor) getMailSenderFactory().getBean(
-					"jmsProcessor");
-			bo.setJmsProcessor(jmsProcessor);
+			// TODO set queue name for jmsProcessor
+			//bo.getJmsProcessor().setQueueName("");
 			// invoke the processor
 			bo.process(msgBean);
 		}
@@ -135,20 +131,7 @@ public class TaskScheduler {
 		}
 	}
 
-	public static AbstractApplicationContext getMailSenderFactory() {
-		if (mailSenderFactory == null) {
-			if (SpringUtil.isRunningInJBoss()) {
-				mailSenderFactory = new ClassPathXmlApplicationContext("spring-taskscheduler-jee.xml");
-			}
-			else {
-				mailSenderFactory = new ClassPathXmlApplicationContext("spring-taskscheduler-jms.xml");
-			}
-		}
-		return mailSenderFactory;
-	}
-
 	public static void main(String[] args) {
-		getMailSenderFactory();
 		System.out.println(getMailSenderJndi());
 
 		System.exit(0);
