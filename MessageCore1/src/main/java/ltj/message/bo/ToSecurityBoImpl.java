@@ -22,7 +22,7 @@ import ltj.message.vo.ClientVo;
 
 @Component("toSecurityBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class ToSecurityBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(ToSecurityBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

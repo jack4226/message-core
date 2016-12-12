@@ -15,7 +15,7 @@ import ltj.message.util.StringUtil;
 
 @Component("csrReplyBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class CsrReplyBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(CsrReplyBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

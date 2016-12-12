@@ -19,6 +19,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
+import ltj.message.bean.SimpleEmailSender;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 
 public class SpringAppConfigTest {
@@ -35,6 +36,9 @@ public class SpringAppConfigTest {
 	public void testSpingConfigBare() {
 		EmailAddrDao dao1 = context.getBean(EmailAddrDao.class);
 		assertNotNull(dao1);
+		
+		SimpleEmailSender emailsender = context.getBean(SimpleEmailSender.class);
+		assertNotNull(emailsender);
 	}
 	
 	@Test

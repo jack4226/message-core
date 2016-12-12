@@ -20,8 +20,10 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.smtp.SmtpException;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
@@ -63,16 +65,25 @@ public abstract class MailSenderBase {
 	protected boolean debugSession = false;
 	protected ClientVo clientVo = null;
 
-	protected MsgInboxBo msgInboxBo = null;
-	protected MsgInboxDao msgInboxDao = null;
-	protected MsgOutboxBo msgOutboxBo = null;
-	protected DeliveryStatusDao deliveryStatusDao = null;
-	protected EmailAddrDao emailAddrDao = null;
-	protected MsgStreamDao msgStreamDao = null;
-	protected MsgSequenceDao msgSequenceDao = null;
+	@Autowired
+	protected MsgInboxBo msgInboxBo;
+	@Autowired
+	protected MsgInboxDao msgInboxDao;
+	@Autowired
+	protected MsgOutboxBo msgOutboxBo;
+	@Autowired
+	protected DeliveryStatusDao deliveryStatusDao;
+	@Autowired
+	protected EmailAddrDao emailAddrDao;
+	@Autowired
+	protected MsgStreamDao msgStreamDao;
+	@Autowired
+	protected MsgSequenceDao msgSequenceDao;
 	
-	private AbstractApplicationContext factory;
-	private MessageParser parser = null;
+	protected AbstractApplicationContext factory;
+	
+	//@Autowired // XXX Disabled auto wire to prevent spring circular dependency
+	private MessageParser parser;
 
 	//private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected static final String LF = System.getProperty("line.separator", "\n");
@@ -83,17 +94,6 @@ public abstract class MailSenderBase {
 	}
 	
 	protected abstract AbstractApplicationContext loadFactory();
-
-	protected void loadBosAndDaos() {
-		factory = loadFactory();
-		msgInboxBo = (MsgInboxBo) factory.getBean("msgInboxBo");
-		msgOutboxBo = (MsgOutboxBo) factory.getBean("msgOutboxBo");
-		msgInboxDao = (MsgInboxDao) factory.getBean("msgInboxDao");
-		deliveryStatusDao = (DeliveryStatusDao) factory.getBean("deliveryStatusDao");
-		emailAddrDao = (EmailAddrDao) factory.getBean("emailAddrDao");
-		msgStreamDao = (MsgStreamDao) factory.getBean("msgStreamDao");
-		msgSequenceDao = (MsgSequenceDao) factory.getBean("msgSequenceDao");
-	}
 
 	/**
 	 * send a message off and update delivery status and message tables.
@@ -179,8 +179,9 @@ public abstract class MailSenderBase {
 			// failed to send the message to certain recipients
 			logger.error("SendFailedException caught: " + sfex);
 			updtDlvrStatAndLoopback(msgBean, sfex, errors);
-			if (errors.containsKey("validSent"))
+			if (errors.containsKey("validSent")) {
 				sendDeliveryReport(msgBean);
+			}
 		}
 		// save message raw stream to database
 		if (msgBean.getSaveMsgStream()) {
@@ -588,6 +589,9 @@ public abstract class MailSenderBase {
 		// use MessageProcessorBo to invoke rule engine
 		getMessageParser().parse(loopBackBean);
 		// use TaskScheduler to schedule tasks
+		if (factory == null) {
+			factory = loadFactory();
+		}
 		TaskScheduler scheduler = new TaskScheduler(factory);
 		scheduler.scheduleTasks(loopBackBean);
 	}
@@ -626,61 +630,33 @@ public abstract class MailSenderBase {
 		return deliveryStatusDao;
 	}
 
-	public void setDeliveryStatusDao(DeliveryStatusDao deliveryStatusDao) {
-		this.deliveryStatusDao = deliveryStatusDao;
-	}
-
 	public MsgInboxBo getMsgInboxBo() {
 		return msgInboxBo;
-	}
-
-	public void setMsgInboxBo(MsgInboxBo msgInboxBo) {
-		this.msgInboxBo = msgInboxBo;
 	}
 
 	public MsgInboxDao getMsgInboxDao() {
 		return msgInboxDao;
 	}
 
-	public void setMsgInboxDao(MsgInboxDao msgInboxDao) {
-		this.msgInboxDao = msgInboxDao;
-	}
-
 	public EmailAddrDao getEmailAddrDao() {
 		return emailAddrDao;
-	}
-
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
 	}
 
 	public MsgStreamDao getMsgStreamDao() {
 		return msgStreamDao;
 	}
 
-	public void setMsgOBStreamDao(MsgStreamDao msgStreamDao) {
-		this.msgStreamDao = msgStreamDao;
-	}
-
 	public MsgOutboxBo getMsgOutboxBo() {
 		return msgOutboxBo;
-	}
-
-	public void setMsgOutboxBo(MsgOutboxBo msgOutboxBo) {
-		this.msgOutboxBo = msgOutboxBo;
 	}
 
 	public MsgSequenceDao getMsgSequenceDao() {
 		return msgSequenceDao;
 	}
 
-	public void setMsgSequenceDao(MsgSequenceDao msgSequenceDao) {
-		this.msgSequenceDao = msgSequenceDao;
-	}
-
 	public MessageParser getMessageParser() {
-		if (parser== null) {
-			parser = (MessageParser) factory.getBean("messageParser");
+		if (parser == null) {
+			parser = SpringUtil.getAppContext().getBean(MessageParser.class);
 		}
 		return parser;
 	}

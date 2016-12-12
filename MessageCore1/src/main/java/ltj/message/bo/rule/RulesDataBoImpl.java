@@ -14,6 +14,7 @@ import ltj.message.vo.rule.RuleElementVo;
 import ltj.message.vo.rule.RuleVo;
 
 @Component("rulesDataBo")
+@org.springframework.context.annotation.Scope(value="singleton")
 public final class RulesDataBoImpl implements RulesDataBo {
 	static final Logger logger = Logger.getLogger(RulesDataBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
@@ -145,7 +146,7 @@ public final class RulesDataBoImpl implements RulesDataBo {
 	}
 	
 	public static void main(String[] args) {
-		RulesDataBo bo = (RulesDataBo) SpringUtil.getAppContext().getBean("rulesDataBo");
+		RulesDataBo bo = SpringUtil.getAppContext().getBean(RulesDataBo.class);
 		bo.getCurrentRules();
 	}
 }

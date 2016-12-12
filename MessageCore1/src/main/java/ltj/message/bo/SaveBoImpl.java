@@ -12,7 +12,7 @@ import ltj.message.exception.DataValidationException;
 
 @Component("saveBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class SaveBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(SaveBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

@@ -31,7 +31,7 @@ import ltj.message.vo.emailaddr.TemplateRenderVo;
 
 @Component("autoReplyBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class AutoReplyBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(AutoReplyBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

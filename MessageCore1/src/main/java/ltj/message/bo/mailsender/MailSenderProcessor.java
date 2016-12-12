@@ -80,8 +80,8 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 			throw new IllegalArgumentException("Request was not a JMS Message as expected.");
 		}
 
-		if (msgInboxBo == null) { // first time 
-			loadBosAndDaos();
+		if (factory == null) { // first time 
+			loadFactory();
 		}
 		
 		// define transaction properties

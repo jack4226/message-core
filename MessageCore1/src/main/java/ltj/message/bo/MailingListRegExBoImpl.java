@@ -17,7 +17,7 @@ import ltj.message.vo.emailaddr.MailingListVo;
 
 @Component("mailingListRegExBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class MailingListRegExBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(MailingListRegExBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

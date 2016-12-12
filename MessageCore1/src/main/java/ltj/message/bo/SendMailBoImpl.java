@@ -19,7 +19,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 
 @Component("sendMailBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class SendMailBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(SendMailBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

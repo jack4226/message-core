@@ -48,8 +48,8 @@ import org.springframework.stereotype.Component;
  * deliver the message. It is designed to be thread safe.
  */
 @Component
-@Scope("prototype")
-@Lazy(false)
+@Scope(value="prototype")
+@Lazy(value=false)
 public class JmsProcessor {
 	
 	static final Logger logger = Logger.getLogger(JmsProcessor.class);

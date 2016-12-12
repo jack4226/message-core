@@ -522,7 +522,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 			MessagingException {
 		if (msgs == null || msgs.length == 0) return;
 		JmsProcessor jmsProcessor = factory.getBean(JmsProcessor.class);
-		jmsProcessor.setQueueName("mailReaderOutput");
+		jmsProcessor.setQueueName("mailReaderOutput"); // TODO get from properties
 		DuplicateCheckDao duplicateCheck = (DuplicateCheckDao) factory.getBean("duplicateCheck");
 		MailProcessor processor = new MailProcessor(jmsProcessor, mailBoxVo, duplicateCheck);
 		processor.process(msgs);

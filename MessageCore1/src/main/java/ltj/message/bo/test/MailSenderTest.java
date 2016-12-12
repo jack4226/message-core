@@ -13,14 +13,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import ltj.jbatch.smtp.SmtpException;
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.mailsender.MailSenderBoImpl;
 import ltj.message.exception.DataValidationException;
 
 public class MailSenderTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MailSenderTest.class);
 	@Resource
-	private TaskBaseBo sendMailBo;
+	private MailSenderBoImpl mailSenderBo;
 	
 	@Test
 	public void testMailSender() {
@@ -37,7 +38,6 @@ public class MailSenderTest extends BoTestBase {
 	
 	private void testSendMail(int loops) throws DataValidationException, MessagingException,
 			JMSException, IOException {
-		sendMailBo.getJmsProcessor().setQueueName("mailSenderOutput");
 		long startTime = new java.util.Date().getTime();
 		int i;
 		for (i = 0; i < loops; i++) {
@@ -57,8 +57,13 @@ public class MailSenderTest extends BoTestBase {
 			messageBean.setFrom(InternetAddress.parse("testfrom@localhost", false));
 			messageBean.setTo(InternetAddress.parse(user, false));
 			logger.info("testSendMail() - before calling for " + user);
-			Long mailsSent = (Long) sendMailBo.process(messageBean);
-			logger.info("Emails Queued: " + mailsSent);
+			try {
+				mailSenderBo.process(messageBean);
+			} catch (SmtpException | InterruptedException e) {
+				logger.error("Exception caught", e);
+				fail();
+			}
+			logger.info("Email saved and sent!");
 		}
 		logger.info("Total Emails Queued: " + i + ", Time taken: "
 				+ (new java.util.Date().getTime() - startTime) / 1000 + " seconds");

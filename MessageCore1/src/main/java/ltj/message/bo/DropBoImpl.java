@@ -10,7 +10,7 @@ import ltj.message.exception.DataValidationException;
 
 @Component("dropBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class DropBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(DropBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

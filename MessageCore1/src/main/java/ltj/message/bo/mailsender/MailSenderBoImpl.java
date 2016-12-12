@@ -8,6 +8,7 @@ import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.stereotype.Component;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.pool.NamedPools;
@@ -19,6 +20,7 @@ import ltj.jbatch.smtp.SmtpException;
  * 
  * @author Administrator
  */
+@Component("mailSenderBo")
 public class MailSenderBoImpl extends MailSenderBase {
 	static final Logger logger = Logger.getLogger(MailSenderBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
@@ -29,7 +31,6 @@ public class MailSenderBoImpl extends MailSenderBase {
 	public MailSenderBoImpl() {
 		if (isDebugEnabled)
 			logger.debug("Entering constructor...");
-		loadBosAndDaos();
 	}
 
 	protected AbstractApplicationContext loadFactory() {

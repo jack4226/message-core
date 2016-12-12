@@ -21,6 +21,7 @@ import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
+import ltj.jbatch.queue.MailSenderListener;
 import ltj.tomee.util.TomeeCtxUtil;
 
 @Configuration
@@ -50,7 +51,7 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
     }
 	
 	@Bean
-	@Scope("prototype")
+	@Scope(value="prototype")
     public JmsTemplate jmsTemplate() {
         JmsTemplate jmsTemplate = new JmsTemplate();
         //jmsTemplate.setDefaultDestination(new ActiveMQQueue("jms.queue"));
@@ -112,6 +113,11 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 		return resolver;
 	}
 	
+	@Bean
+	public MailSenderListener mailSenderListener() {
+		return new MailSenderListener();
+	}
+	
     @Override
     public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
     	registrar.setMessageHandlerMethodFactory(messageHandlerMethodFactory());
@@ -123,18 +129,26 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	            endpoint.setDestination(queueName);
 	            endpoint.setConcurrency("1-4");
 	            if (StringUtils.equals(queueName, mailReaderOutputQueueName)) {
-	            	// set listener
+	            	endpoint.setMessageListener(message -> {
+		                // TODO implement for each queue
+		            	logger.info("Received: " + message);
+		            });
 	            }
 	            else if (StringUtils.equals(queueName, ruleEngineOutputQueueName)) {
-	            	//
+	            	endpoint.setMessageListener(message -> {
+		                // TODO implement for each queue
+		            	logger.info("Received: " + message);
+		            });
 	            }
 	            else if (StringUtils.equals(queueName, mailSenderInputQueueName)) {
-	            	//
+	            	endpoint.setMessageListener(mailSenderListener());
 	            }
-	            endpoint.setMessageListener(message -> {
-	                // TODO implement for each queue
-	            	logger.info("Received: " + message);
-	            });
+	            else {
+		            endpoint.setMessageListener(message -> {
+		                // TODO implement for each queue
+		            	logger.info("Received: " + message);
+		            });
+	            }
 	            registrar.registerEndpoint(endpoint);
 	    	}
     	}

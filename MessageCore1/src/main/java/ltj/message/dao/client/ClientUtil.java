@@ -104,7 +104,7 @@ public final class ClientUtil {
 	
 	private static ClientDao getClientDao() {
 		if (clientDao == null) {
-			clientDao = (ClientDao)SpringUtil.getDaoAppContext().getBean("clientDao");
+			clientDao = SpringUtil.getDaoAppContext().getBean(ClientDao.class);
 		}
 		return clientDao;
 	}

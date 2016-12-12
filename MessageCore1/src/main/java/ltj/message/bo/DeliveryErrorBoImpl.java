@@ -24,7 +24,7 @@ import ltj.vo.outbox.DeliveryStatusVo;
 
 @Component("deliveryErrorBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class DeliveryErrorBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(DeliveryErrorBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

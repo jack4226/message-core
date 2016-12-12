@@ -18,11 +18,16 @@ import ltj.message.util.ServiceLocator;
 import ltj.spring.util.SpringAppConfig;
 import ltj.spring.util.SpringJmsConfig;
 
-public class SpringUtil {
+public final class SpringUtil {
 	static final Logger logger = Logger.getLogger(SpringUtil.class);
 	
 	private static AbstractApplicationContext applContext = null;
+
 	private static AbstractApplicationContext daoAppCtx = null;
+	
+	private static AnnotationConfigApplicationContext configCtx = null;
+	
+	private SpringUtil() {}
 	
 	/**
 	 * If it's running in JBoss server, it loads a set of xmls using JNDI's,
@@ -38,12 +43,13 @@ public class SpringUtil {
 			}
 			else {
 				if (JbMain.getNumberOfThreadAtStart() < 0) {
-					logger.info("getAppContext() - running standalone, load standalone xmls");
-					fileNames = getStandaloneConfigXmlFiles();
-					AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-					ctx.register(SpringAppConfig.class, SpringJmsConfig.class);
-					ctx.refresh();
-					return ctx;
+					logger.info("getAppContext() - running standalone, load java config");
+					if (configCtx == null) {
+						configCtx = new AnnotationConfigApplicationContext();
+						configCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
+						configCtx.refresh();
+					}
+					return configCtx;
 				}
 				else {
 					logger.info("getAppContext() - running batch standalone, load batch xmls");
@@ -86,15 +92,15 @@ public class SpringUtil {
 			return applContext;
 		}
 		else if (daoAppCtx == null) {
-			List<String> fnames = new ArrayList<String>();
-			fnames.add("classpath*:spring-common-config.xml");
 			if (isRunningInJBoss()) {
 				logger.info("getDaoAppContext() - Running under JBoss, load jndi_ds xmls");
+				List<String> fnames = new ArrayList<String>();
+				fnames.add("classpath*:spring-common-config.xml");
 				fnames.add("classpath*:spring-jmsqueue_jee-config.xml");
 				daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
 			}
 			else {
-				logger.info("getDaoAppContext() - running standalone, load mysql_ds xmls");
+				logger.info("getDaoAppContext() - running standalone, load mysql_ds java config");
 				daoAppCtx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
 			}
 		}

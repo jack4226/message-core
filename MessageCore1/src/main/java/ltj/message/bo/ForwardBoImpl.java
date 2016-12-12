@@ -28,7 +28,7 @@ import ltj.message.vo.ClientVo;
 
 @Component("forwardBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class ForwardBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(ForwardBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

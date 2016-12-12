@@ -26,6 +26,7 @@ public class JmsListener implements MessageListener {
 	@Autowired
 	private JmsProcessor jmsProcessor;
 
+	@Override
 	public void onMessage(Message message) {
 		logger.info("JMS Message Received: "+message);
 		try {

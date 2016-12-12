@@ -14,7 +14,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 
 @Component("closeBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class CloseBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(CloseBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

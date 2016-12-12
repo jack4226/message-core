@@ -27,7 +27,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 
 @Component("suspendBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class SuspendBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(SuspendBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

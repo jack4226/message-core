@@ -16,7 +16,7 @@ import ltj.message.exception.DataValidationException;
 
 @Component("assignRuleNameBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class AssignRuleNameBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(AssignRuleNameBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

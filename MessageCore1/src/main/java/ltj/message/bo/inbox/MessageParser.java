@@ -16,6 +16,7 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +45,8 @@ import ltj.vo.outbox.MsgRenderedVo;
  * Scan email header and body, and match rules to determine the ruleName.
  */
 @Component("messageParser")
-@Scope(value="prototype")
+@Scope(value="singleton")
+@Lazy(value=true)
 public final class MessageParser {
 	static final Logger logger = Logger.getLogger(MessageParser.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
@@ -69,6 +71,8 @@ public final class MessageParser {
 	 * default constructor
 	 */
 	public MessageParser() throws IOException {
+		if (isDebugEnabled)
+			logger.debug("Entering constructor...");
 		rfcScan = RfcCodeScan.getInstance();
 		ruleMatcher = new RuleMatcher();
 	}

@@ -25,7 +25,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 
 @Component("activateBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class ActivateBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(ActivateBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

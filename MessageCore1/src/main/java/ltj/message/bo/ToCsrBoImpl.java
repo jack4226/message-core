@@ -18,7 +18,7 @@ import ltj.message.vo.action.MsgDataTypeVo;
 
 @Component("toCsrBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class ToCsrBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(ToCsrBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

@@ -38,7 +38,7 @@ import ltj.message.vo.emailaddr.TemplateRenderVo;
 
 @Component("mailingListBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class MailingListBoImpl implements MailingListBo {
 	static final Logger logger = Logger.getLogger(MailingListBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

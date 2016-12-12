@@ -21,7 +21,7 @@ import ltj.message.vo.emailaddr.MailingListVo;
 
 @Component("unsubscribeBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class UnsubscribeBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(UnsubscribeBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

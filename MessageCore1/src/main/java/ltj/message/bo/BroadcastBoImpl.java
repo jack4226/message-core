@@ -36,7 +36,7 @@ import ltj.message.vo.emailaddr.TemplateRenderVo;
 
 @Component("broadcastBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class BroadcastBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(BroadcastBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

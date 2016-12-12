@@ -21,7 +21,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 
 @Component("bounceBo")
 @Scope(value="prototype")
-@Lazy(true)
+@Lazy(value=true)
 public class BounceBoImpl extends TaskBaseAdaptor {
 	static final Logger logger = Logger.getLogger(BounceBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

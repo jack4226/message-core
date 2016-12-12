@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import ltj.jbatch.app.SpringUtil;
@@ -34,7 +34,8 @@ import ltj.message.vo.rule.RuleSubRuleMapVo;
 import ltj.message.vo.rule.RuleVo;
 
 @Component("ruleLoader")
-@Scope(value="prototype")
+@org.springframework.context.annotation.Scope(value="singleton")
+@Lazy(value=true)
 public final class RuleLoader implements java.io.Serializable {
 	private static final long serialVersionUID = 5251082728950956779L;
 	static final Logger logger = Logger.getLogger(RuleLoader.class);
@@ -432,7 +433,8 @@ public final class RuleLoader implements java.io.Serializable {
 	private ClientDao clientDao = null;
 	private ClientDao getClientDao() {
 		if (clientDao == null) {
-			clientDao = (ClientDao)SpringUtil.getDaoAppContext().getBean("clientDao");
+			logger.error("ClientDao is null, loading... ########## instance: " + this);
+			clientDao = SpringUtil.getDaoAppContext().getBean(ClientDao.class);
 		}
 		return clientDao;
 	}
@@ -440,7 +442,7 @@ public final class RuleLoader implements java.io.Serializable {
 	private MailingListDao mailingListDao = null;
 	private MailingListDao getMailingListDao() {
 		if (mailingListDao == null) {
-			mailingListDao = (MailingListDao)SpringUtil.getDaoAppContext().getBean("mailingListDao");
+			mailingListDao = SpringUtil.getDaoAppContext().getBean(MailingListDao.class);
 		}
 		return mailingListDao;
 	}
@@ -448,7 +450,7 @@ public final class RuleLoader implements java.io.Serializable {
 	private ReloadFlagsDao reloadFlagsDao = null;
 	private ReloadFlagsDao getReloadFlagsDao() {
 		if (reloadFlagsDao == null) {
-			reloadFlagsDao = (ReloadFlagsDao) SpringUtil.getDaoAppContext().getBean("reloadFlagsDao");
+			reloadFlagsDao = SpringUtil.getDaoAppContext().getBean(ReloadFlagsDao.class);
 		}
 		return reloadFlagsDao;
 	}
