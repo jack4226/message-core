@@ -14,7 +14,10 @@ import javax.jms.JMSException;
 import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.stereotype.Component;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
@@ -27,11 +30,19 @@ import ltj.message.vo.action.MsgActionVo;
  * id's from MsgAction table and MsgActionDetail table by the rule name, and
  * process the message by invoking the classes or beans.
  */
+@Component("taskScheduler")
+@Lazy(value=true)
 public class TaskScheduler {
 	static final Logger logger = Logger.getLogger(TaskScheduler.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	static final String LF = System.getProperty("line.separator", "\n");
+	
+	@Autowired
+	private MsgActionDao msgActionDao;
+	@Autowired
+	private SaveBoImpl saveBo;
+	
 	private final AbstractApplicationContext factory;
 
 	private static Hashtable<String, String> mailSenderJndi = null;
@@ -48,7 +59,7 @@ public class TaskScheduler {
 			throw new DataValidationException("RuleName is not valued");
 		}
 		
-		MsgActionDao msgActionDao = (MsgActionDao) SpringUtil.getBean(factory, "msgActionDao");
+		//MsgActionDao msgActionDao = (MsgActionDao) SpringUtil.getBean(factory, "msgActionDao");
 		List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null,
 				msgBean.getClientId());
 		if (actions == null || actions.isEmpty()) {
@@ -56,7 +67,7 @@ public class TaskScheduler {
 			String processBeanId = "saveBo";
 			logger.warn("scheduleTasks() - No Actions found for ruleName: " + msgBean.getRuleName()
 					+ ", ProcessBeanId [0]: " + processBeanId);
-			TaskBaseBo bo = (TaskBaseBo) SpringUtil.getBean(factory, processBeanId);
+			TaskBaseBo bo = (TaskBaseBo) saveBo; //SpringUtil.getBean(factory, processBeanId);
 			bo.process(msgBean);
 			return;
 		}

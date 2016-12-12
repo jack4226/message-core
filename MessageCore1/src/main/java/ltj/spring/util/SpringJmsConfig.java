@@ -130,13 +130,13 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	            endpoint.setConcurrency("1-4");
 	            if (StringUtils.equals(queueName, mailReaderOutputQueueName)) {
 	            	endpoint.setMessageListener(message -> {
-		                // TODO implement for each queue
+		                // TODO implement
 		            	logger.info("Received: " + message);
 		            });
 	            }
 	            else if (StringUtils.equals(queueName, ruleEngineOutputQueueName)) {
 	            	endpoint.setMessageListener(message -> {
-		                // TODO implement for each queue
+		                // TODO implement
 		            	logger.info("Received: " + message);
 		            });
 	            }
@@ -145,7 +145,7 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	            }
 	            else {
 		            endpoint.setMessageListener(message -> {
-		                // TODO implement for each queue
+		            	// default 
 		            	logger.info("Received: " + message);
 		            });
 	            }
