@@ -16,7 +16,6 @@ import javax.mail.MessagingException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Component;
 
 import ltj.jbatch.app.SpringUtil;
@@ -40,17 +39,12 @@ public class TaskScheduler {
 	
 	@Autowired
 	private MsgActionDao msgActionDao;
-	@Autowired
-	private SaveBoImpl saveBo;
 	
-	private final AbstractApplicationContext factory;
-
 	private static Hashtable<String, String> mailSenderJndi = null;
 	
-	public TaskScheduler(AbstractApplicationContext factory) {
-		this.factory = factory;
+	public TaskScheduler() {
 	}
-
+	
 	public void scheduleTasks(MessageBean msgBean) throws DataValidationException,
 			MessagingException, JMSException, IOException {
 		if (isDebugEnabled)
@@ -59,7 +53,6 @@ public class TaskScheduler {
 			throw new DataValidationException("RuleName is not valued");
 		}
 		
-		//MsgActionDao msgActionDao = (MsgActionDao) SpringUtil.getBean(factory, "msgActionDao");
 		List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null,
 				msgBean.getClientId());
 		if (actions == null || actions.isEmpty()) {
@@ -67,7 +60,7 @@ public class TaskScheduler {
 			String processBeanId = "saveBo";
 			logger.warn("scheduleTasks() - No Actions found for ruleName: " + msgBean.getRuleName()
 					+ ", ProcessBeanId [0]: " + processBeanId);
-			TaskBaseBo bo = (TaskBaseBo) saveBo; //SpringUtil.getBean(factory, processBeanId);
+			TaskBaseBo bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
 			bo.process(msgBean);
 			return;
 		}
@@ -98,7 +91,7 @@ public class TaskScheduler {
 			else { // use process bean
 				String processBeanId = msgActionVo.getProcessBeanId();
 				logger.info("scheduleTasks() - ProcessBeanId [" + i + "]: " + processBeanId);
-				bo = (TaskBaseBo) SpringUtil.getBean(factory, processBeanId);
+				bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
 			}
 			/*
 			 * retrieve arguments

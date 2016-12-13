@@ -21,13 +21,11 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.bean.MessageBeanUtil;
@@ -59,7 +57,6 @@ public class BoTestBase {
 	protected final static String LF = System.getProperty("line.separator","\n");
 	protected final long renderId = 1L;
 
-	protected static AbstractApplicationContext factory;
 	@Resource
 	protected MsgInboxBo msgInboxBo;
 	@Resource
@@ -75,7 +72,6 @@ public class BoTestBase {
 	
 	@BeforeClass
 	public static void prepare() {
-		factory = SpringUtil.getAppContext();
 	}
 	
 	@Before

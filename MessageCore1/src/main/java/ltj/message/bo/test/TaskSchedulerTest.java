@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.TaskScheduler;
 import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -17,9 +18,12 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 public class TaskSchedulerTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo activateBo;
+	@Resource
+	private TaskScheduler scheduler;
 	
 	@Test
-	public void activate() throws Exception {
+	public void testTaskScheduler() throws Exception {
+		assertNotNull(scheduler);
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		activateBo.setTaskArguments("$"+EmailAddressType.FINAL_RCPT_ADDR+",$"+EmailAddressType.FROM_ADDR);
 		if (isDebugEnabled) {

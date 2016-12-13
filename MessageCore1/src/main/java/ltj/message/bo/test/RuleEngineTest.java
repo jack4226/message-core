@@ -25,6 +25,8 @@ public class RuleEngineTest extends BoTestBase {
 	MsgInboxBo msgInboxBo;
 	@Resource
 	private MessageParser messageParser;
+	@Resource
+	private TaskScheduler taskScheduler;
 	
 	final int startFrom = 1;
 	final int endTo = 1;
@@ -37,7 +39,6 @@ public class RuleEngineTest extends BoTestBase {
 			MessageBean messageBean = MessageBeanUtil.createBeanFromStream(mailStream);
 			messageBean.setIsReceived(true);
 			messageParser.parse(messageBean);
-			TaskScheduler taskScheduler = new TaskScheduler(factory);
 			taskScheduler.scheduleTasks(messageBean);
 			// TODO verify results
 		}

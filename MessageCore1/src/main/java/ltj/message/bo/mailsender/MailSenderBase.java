@@ -21,7 +21,6 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.AbstractApplicationContext;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.smtp.SmtpException;
@@ -79,8 +78,8 @@ public abstract class MailSenderBase {
 	protected MsgStreamDao msgStreamDao;
 	@Autowired
 	protected MsgSequenceDao msgSequenceDao;
-	
-	protected AbstractApplicationContext factory;
+	@Autowired
+	protected TaskScheduler scheduler;
 	
 	//@Autowired // XXX Disabled auto wire to prevent spring circular dependency
 	private MessageParser parser;
@@ -92,8 +91,6 @@ public abstract class MailSenderBase {
 		if (isDebugEnabled)
 			logger.debug("Entering constructor...");
 	}
-	
-	protected abstract AbstractApplicationContext loadFactory();
 
 	/**
 	 * send a message off and update delivery status and message tables.
@@ -589,10 +586,6 @@ public abstract class MailSenderBase {
 		// use MessageProcessorBo to invoke rule engine
 		getMessageParser().parse(loopBackBean);
 		// use TaskScheduler to schedule tasks
-		if (factory == null) {
-			factory = loadFactory();
-		}
-		TaskScheduler scheduler = new TaskScheduler(factory);
 		scheduler.scheduleTasks(loopBackBean);
 	}
 

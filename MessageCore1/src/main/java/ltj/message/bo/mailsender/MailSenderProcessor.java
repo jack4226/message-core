@@ -16,13 +16,11 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import ltj.jbatch.app.JbMain;
 import ltj.jbatch.app.Processor;
 import ltj.jbatch.pool.NamedPools;
 import ltj.jbatch.queue.JmsProcessor;
@@ -53,10 +51,6 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 		logger.info("Entering constructor...");
 	}
 
-	protected AbstractApplicationContext loadFactory() {
-		return JbMain.getBatchAppContext();
-	}
-
 	/**
 	 * process request. Either a ObjectMessage contains a MessageBean or a
 	 * BytesMessage contains a SMTP raw stream.
@@ -78,10 +72,6 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 		if (!(req instanceof Message)) {
 			logger.error("Request received was not a JMS Message.");
 			throw new IllegalArgumentException("Request was not a JMS Message as expected.");
-		}
-
-		if (factory == null) { // first time 
-			loadFactory();
 		}
 		
 		// define transaction properties

@@ -4,42 +4,27 @@ import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskScheduler;
 import ltj.message.bo.inbox.MessageParser;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.RuleNameType;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
-@Transactional
-public class BroadcastTest {
+public class BroadcastTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(BroadcastTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
 	
-	private static AbstractApplicationContext factory;
 	//@Resource
 	//private MsgInboxBo msgInboxBo;
 	@Resource
 	private MessageParser messageParser;
+	@Resource
+	private TaskScheduler taskScheduler;
 	
-	@BeforeClass
-	public static void BroadcastoPrepare() {
-		factory = SpringUtil.getAppContext();
-	}
-
 	@Test
 	@Rollback(false)
 	public void broadcast() throws Exception {
@@ -57,7 +42,6 @@ public class BroadcastTest {
 		messageBean.setBody("Dear ${CustomerName}:" + LF + messageBean.getBody());
 		messageParser.parse(messageBean);
 		System.out.println("MessageBean:" + LF + messageBean);
-		TaskScheduler taskScheduler = new TaskScheduler(factory);
 		taskScheduler.scheduleTasks(messageBean);
 	}
 	
@@ -73,7 +57,6 @@ public class BroadcastTest {
 		messageBean.setSubject("subscribe");
 		messageBean.setBody("sign me up to the email mailing list");
 		messageParser.parse(messageBean);
-		TaskScheduler taskScheduler = new TaskScheduler(factory);
 		taskScheduler.scheduleTasks(messageBean);
 	}
 
@@ -89,7 +72,6 @@ public class BroadcastTest {
 		messageBean.setSubject("unsubscribe");
 		messageBean.setBody("remove mefrom the email mailing list");
 		messageParser.parse(messageBean);
-		TaskScheduler taskScheduler = new TaskScheduler(factory);
 		taskScheduler.scheduleTasks(messageBean);
 	}
 }

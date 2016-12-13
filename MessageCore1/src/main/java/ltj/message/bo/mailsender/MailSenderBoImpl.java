@@ -7,10 +7,8 @@ import javax.mail.Address;
 import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.pool.NamedPools;
 import ltj.jbatch.smtp.SmtpConnection;
 import ltj.jbatch.smtp.SmtpException;
@@ -33,10 +31,6 @@ public class MailSenderBoImpl extends MailSenderBase {
 			logger.debug("Entering constructor...");
 	}
 
-	protected AbstractApplicationContext loadFactory() {
-		return SpringUtil.getAppContext();
-	}
-	
 	/**
 	 * send the email off via SMTP server.
 	 * 
