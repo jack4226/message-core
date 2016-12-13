@@ -88,6 +88,6 @@ public class SubscribeBoTest extends BoTestBase {
 		assertTrue(list.size()>0);
 		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
 		assertNotNull(vo);
-		assertTrue(subscribed.equals(vo.getSubscribed()));
+		assertEquals(subscribed, vo.getSubscribed());
 	}
 }

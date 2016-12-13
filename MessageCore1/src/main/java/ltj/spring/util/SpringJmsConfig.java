@@ -22,6 +22,7 @@ import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
 import ltj.jbatch.queue.MailSenderListener;
+import ltj.jbatch.queue.RuleEngineListener;
 import ltj.tomee.util.TomeeCtxUtil;
 
 @Configuration
@@ -35,6 +36,8 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	private @Value("${mailReaderOutput.Queue}") String mailReaderOutputQueueName;
 	private @Value("${ruleEngineOutput.Queue}") String ruleEngineOutputQueueName;
 	private @Value("${mailSenderInput.Queue}") String mailSenderInputQueueName;
+	private @Value("${customerCareInput.Queue}") String customerCareInputQueueName;
+	private @Value("${rmaRequestInput.Queue}") String rmaRequestInputQueueName;
 	
 	@Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
@@ -118,6 +121,11 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 		return new MailSenderListener();
 	}
 	
+	@Bean
+	public RuleEngineListener ruleEngineListener() {
+		return new RuleEngineListener();
+	}
+	
     @Override
     public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
     	registrar.setMessageHandlerMethodFactory(messageHandlerMethodFactory());
@@ -129,10 +137,8 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	            endpoint.setDestination(queueName);
 	            endpoint.setConcurrency("1-4");
 	            if (StringUtils.equals(queueName, mailReaderOutputQueueName)) {
-	            	endpoint.setMessageListener(message -> {
-		                // TODO implement
-		            	logger.info("Received: " + message);
-		            });
+	            	// Rule Engine input
+	            	endpoint.setMessageListener(ruleEngineListener());
 	            }
 	            else if (StringUtils.equals(queueName, ruleEngineOutputQueueName)) {
 	            	endpoint.setMessageListener(message -> {
@@ -142,6 +148,18 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	            }
 	            else if (StringUtils.equals(queueName, mailSenderInputQueueName)) {
 	            	endpoint.setMessageListener(mailSenderListener());
+	            }
+	            else if (StringUtils.equals(queueName, customerCareInputQueueName)) {
+	            	endpoint.setMessageListener(message -> {
+		                // TODO implement
+		            	logger.info("Received: " + message);
+		            });
+	            }
+	            else if (StringUtils.equals(queueName, rmaRequestInputQueueName)) {
+	            	endpoint.setMessageListener(message -> {
+		                // TODO implement
+		            	logger.info("Received: " + message);
+		            });
 	            }
 	            else {
 		            endpoint.setMessageListener(message -> {

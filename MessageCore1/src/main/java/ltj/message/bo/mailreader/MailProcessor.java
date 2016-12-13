@@ -45,8 +45,7 @@ public class MailProcessor extends RunnableProcessor {
 	/**
 	 * must use constructor with following parameters
 	 */
-	public MailProcessor(JmsProcessor jmsProcessor, MailBoxVo mailBoxVo,
-			DuplicateCheckDao duplicateCheck) {
+	public MailProcessor(JmsProcessor jmsProcessor, MailBoxVo mailBoxVo, DuplicateCheckDao duplicateCheck) {
 		this.jmsProcessor = jmsProcessor;
 		this.mailBoxVo = mailBoxVo;
 		this.duplicateCheck = duplicateCheck;
@@ -70,8 +69,7 @@ public class MailProcessor extends RunnableProcessor {
 			Message[] msgs = (Message[]) req;
 			// Just dump out the new messages and set the delete flags
 			for (int i = 0; i < msgs.length; i++) {
-				if (msgs[i] != null && !msgs[i].isSet(Flags.Flag.SEEN)
-						&& !msgs[i].isSet(Flags.Flag.DELETED)) {
+				if (msgs[i] != null && !msgs[i].isSet(Flags.Flag.SEEN) && !msgs[i].isSet(Flags.Flag.DELETED)) {
 					processPart(msgs[i]);
 					if (ClientUtil.isTrialPeriodEnded() && !ClientUtil.isProductKeyValid()) {
 						try {
@@ -143,8 +141,7 @@ public class MailProcessor extends RunnableProcessor {
 				Integer objSize = (Integer) msgBean.getComponentsSize().get(i);
 				if (objSize.intValue() > MAX_INBOUND_CMPT_SIZE) {
 					tooLarge = true;
-					logger.warn("Message component(" + i + ") exceeded limit: "
-							+ objSize.intValue());
+					logger.warn("Message component(" + i + ") exceeded limit: " + objSize.intValue());
 					break;
 				}
 			}
@@ -164,8 +161,7 @@ public class MailProcessor extends RunnableProcessor {
 		else { // email size within the limit
 			boolean isDuplicate = false;
 			// check for duplicate
-			if (msgBean.getSmtpMessageId() != null
-					&& "yes".equalsIgnoreCase(mailBoxVo.getCheckDuplicate())) {
+			if (msgBean.getSmtpMessageId() != null && "yes".equalsIgnoreCase(mailBoxVo.getCheckDuplicate())) {
 				isDuplicate = duplicateCheck.isDuplicate(msgBean.getSmtpMessageId());
 			}
 			else {
@@ -187,8 +183,8 @@ public class MailProcessor extends RunnableProcessor {
 				if ("yes".equalsIgnoreCase(mailBoxVo.getLogDuplicate())) {
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					p.writeTo(baos);
-					duplicateReport.info("<========== Message-id: " + msgBean.getSmtpMessageId()
-							+ ", DateTime: " + (new Date()) + " ==========>");
+					duplicateReport.info("<========== Message-id: " + msgBean.getSmtpMessageId() + ", DateTime: "
+							+ (new Date()) + " ==========>");
 					duplicateReport.info(baos.toString());
 					logger.error("The duplicate Message has been written to report file");
 				}

@@ -27,6 +27,7 @@ import ltj.message.vo.inbox.SearchFieldsVo;
 @Component("msgInboxDao")
 public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 
+	@Override
 	public MsgInboxVo getByPrimaryKey(long msgId) {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
@@ -44,6 +45,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 	}
 	
+	@Override
 	public MsgInboxVo getLastRecord() {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
@@ -58,6 +60,37 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			return null;
 	}
 	
+	@Override
+	public MsgInboxVo getLastReceivedRecord() {
+		String sql = 
+			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"from " +
+				"MsgInbox " +
+			" where msgId = (select max(MsgId) from MsgInbox where MsgDirection = 'R') ";
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, 
+				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
+		if (list.size()>0)
+			return list.get(0);
+		else
+			return null;
+	}
+	
+	@Override
+	public MsgInboxVo getLastSentRecord() {
+		String sql = 
+			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"from " +
+				"MsgInbox " +
+			" where msgId = (select max(MsgId) from MsgInbox where MsgDirection = 'S') ";
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, 
+				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
+		if (list.size()>0)
+			return list.get(0);
+		else
+			return null;
+	}
+	
+	@Override
 	public List<MsgInboxWebVo> getByLeadMsgId(long leadMsgId) {
 		String sql = 
 			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
@@ -71,6 +104,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return list;
 	}
 	
+	@Override
 	public List<MsgInboxWebVo> getByMsgRefId(long msgRefId) {
 		String sql = 
 			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
@@ -84,6 +118,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return list;
 	}
 	
+	@Override
 	public List<MsgInboxVo> getByFromAddrId(long addrId) {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
@@ -97,6 +132,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return list;
 	}
 	
+	@Override
 	public List<MsgInboxVo> getByToAddrId(long addrId) {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
@@ -110,6 +146,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return list;
 	}
 	
+	@Override
 	public List<MsgInboxVo> getRecent(int days) {
 		if (days < 0) days = 365 * 20; // retrieve all mails
 		Calendar cal = Calendar.getInstance();
@@ -120,6 +157,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	/**
 	 * retrieve up to 100 rows
 	 */
+	@Override
 	public List<MsgInboxVo> getRecent(Date date) {
 		if (date == null) {
 			date = new java.util.Date();
@@ -136,18 +174,22 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return list;
 	}
 	
+	@Override
 	public int getInboxUnreadCount() {
 		return getMsgUnreadCountDao().selectInboxUnreadCount();
 	}
 	
+	@Override
 	public int getSentUnreadCount() {
 		return getMsgUnreadCountDao().selectSentUnreadCount();
 	}
 	
+	@Override
 	public int getAllUnreadCount() {
 		return getInboxUnreadCount() + getSentUnreadCount();
 	}
 	
+	@Override
 	public int resetInboxUnreadCount() {
 		String sql = 
 			"select count(*) " +
@@ -164,6 +206,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return inboxUnreadCount;
 	}
 	
+	@Override
 	public int resetSentUnreadCount() {
 		String sql = 
 			"select count(*) " +
@@ -183,6 +226,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and ", " and ",
 		" and ", " and ", " and ", " and " };
 
+	@Override
 	public int getRowCountForWeb(SearchFieldsVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = getWhereSqlForWeb(vo, parms);
@@ -195,6 +239,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return rowCount;
 	}
 	
+	@Override
 	public List<MsgInboxWebVo> getListForWeb(SearchFieldsVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = getWhereSqlForWeb(vo, parms);
@@ -382,6 +427,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return whereSql;
 	}
 
+	@Override
 	public int update(MsgInboxWebVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgInboxVo);
@@ -401,6 +447,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return rowsUpadted;
 	}
 
+	@Override
 	public int updateCounts(MsgInboxWebVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 		
@@ -492,6 +539,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 	}
 	
+	@Override
 	public int updateCounts(MsgInboxVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 		
@@ -531,6 +579,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return rowsUpadted;
 	}
 
+	@Override
 	public int updateStatusId(MsgInboxVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 		
@@ -563,6 +612,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int updateStatusIdByLeadMsgId(MsgInboxVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 		
@@ -590,6 +640,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int update(MsgInboxVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgInboxVo);
@@ -608,6 +659,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId) {
 		MsgInboxVo msgInboxVo = getByPrimaryKey(msgId);
 		if (msgInboxVo == null) {
@@ -633,6 +685,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgInboxVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgInboxVo);
@@ -653,7 +706,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	}
 
 	@Autowired
-	private MsgUnreadCountDao msgUnreadCountDao = null;
+	private MsgUnreadCountDao msgUnreadCountDao;
 	MsgUnreadCountDao getMsgUnreadCountDao() {
 		return msgUnreadCountDao;
 	}

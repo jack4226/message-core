@@ -58,12 +58,12 @@ public class AssignRuleNameBoTest extends BoTestBase {
 	public void test3() { // verifyDatabaseRecord
 		// now verify the database record added
 		MsgInboxVo vo1 = selectMsgInboxByMsgId(msgId);
-		assertTrue(vo1!=null);
-		MsgInboxVo vo2 = selectLastMsgInboxRecord();
+		assertNotNull(vo1);
+		MsgInboxVo vo2 = selectLastReceivedMessage();
 		assertTrue(testRuleName.name().equals(vo2.getRuleName()));
 	}
-	private MsgInboxVo selectLastMsgInboxRecord() {
-		MsgInboxVo vo = (MsgInboxVo)msgInboxDao.getLastRecord();
+	private MsgInboxVo selectLastReceivedMessage() {
+		MsgInboxVo vo = (MsgInboxVo)msgInboxDao.getLastReceivedRecord();
 		if (vo!=null) {
 			System.out.println("MsgInboxDao - selectLastRecord: "+LF+vo);
 		}

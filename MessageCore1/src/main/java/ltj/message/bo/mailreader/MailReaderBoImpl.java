@@ -3,7 +3,6 @@ package ltj.message.bo.mailreader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -23,9 +22,9 @@ import javax.mail.event.StoreEvent;
 import javax.mail.event.StoreListener;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.support.AbstractApplicationContext;
 
 import ltj.jbatch.app.RunnableProcessor;
+import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.constant.MailProtocol;
 import ltj.message.constant.MailServerType;
@@ -45,8 +44,7 @@ import ltj.message.vo.MailBoxVo;
  * 	. set DELETE flag for the message and issue folder.close()
  * </pre>
  */
-public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
-		ConnectionListener, StoreListener {
+public class MailReaderBoImpl extends RunnableProcessor implements Serializable, ConnectionListener, StoreListener {
 	private static final long serialVersionUID = -9061869821061961065L;
 	private static final Logger logger = Logger.getLogger(MailReaderBoImpl.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
@@ -54,7 +52,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	protected final MailBoxVo mailBoxVo;
 	protected final String LF = System.getProperty("line.separator", "\n");
 	protected final String processorName;
-	protected final AbstractApplicationContext factory;
+
 	final Session session;
 	
 	private Store store = null;
@@ -88,14 +86,13 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 *            spring framework application factory for ruleEngineBean
 	 * @throws MessagingException
 	 */
-	public MailReaderBoImpl(MailBoxVo vo, AbstractApplicationContext factory) {
+	public MailReaderBoImpl(MailBoxVo vo) {
 		this.mailBoxVo = vo;
-		this.factory = factory;
+
 		logger.info("in Constructor - MailBox Properties:" + LF + mailBoxVo);
 		processorName = mailBoxVo.getProcessorName(); // MailProcessor
 		if (processorName == null) {
-			throw new IllegalArgumentException(
-					"processor name must be defined in mailbox Properties");
+			throw new IllegalArgumentException("processor name must be defined in mailbox Properties");
 		}
 		MESSAGE_COUNT = mailBoxVo.getMessageCount();
 
@@ -244,8 +241,8 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @throws InterruptedException
 	 * @throws DataValidationException
 	 */
-	public void readMail(boolean fromTimer) throws MessagingException, IOException,
-			JMSException, InterruptedException, DataValidationException {
+	public void readMail(boolean fromTimer)
+			throws MessagingException, IOException, JMSException, InterruptedException, DataValidationException {
 		session.setDebug(true); // DON'T CHANGE THIS
 		if (fromTimer) {
 			MESSAGE_COUNT = 500; // not to starve other mailboxes
@@ -253,8 +250,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		}
 		logger.info("MESSAGE_COUNT has been set to " + MESSAGE_COUNT);
 		String protocol = mailBoxVo.getProtocol();
-		if (!MailProtocol.IMAP.equalsIgnoreCase(protocol)
-				&& !MailProtocol.POP3.equalsIgnoreCase(protocol)) {
+		if (!MailProtocol.IMAP.equalsIgnoreCase(protocol) && !MailProtocol.POP3.equalsIgnoreCase(protocol)) {
 			throw new DataValidationException("Invalid protocol " + protocol);
 		}
 		if (store == null) {
@@ -305,14 +301,13 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 				logger.error("Exception caught", e);
 			}
 		}
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("MailReaderBoImpl ended");
-		
-		start_idling = new Date().getTime();
+		}
+		start_idling = System.currentTimeMillis();
 	} // end of run()
 
-	private void pop3(boolean fromTimer) throws InterruptedException, MessagingException,
-			IOException, JMSException {
+	private void pop3(boolean fromTimer) throws InterruptedException, MessagingException, IOException, JMSException {
 		final String _user = mailBoxVo.getUserId();
 		final String _host = mailBoxVo.getHostName();
 		final String _folder = mailBoxVo.getFolderName();
@@ -343,8 +338,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 					else {
 						sleepFor = RETRY_FREQ;
 					}
-					logger.error("Exception caught during folder.open(), retry(=" + retries
-							+ ") in " + sleepFor + " seconds");
+					logger.error("Failed to open folder, retry(=" + retries + ") in " + sleepFor + " seconds");
 					Thread.sleep(sleepFor * 1000);
 						// terminate if interrupted
 					continue;
@@ -355,15 +349,13 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 				}
 			}
 			if (retries > 0) {
-				logger.error("Opened " + _user + "@" + _host + ":" + _folder + " after " + retries
-						+ " retries");
+				logger.error("Opened " + _user + "@" + _host + ":" + _folder + " after " + retries + " retries");
 				retries = 0; // reset retry counter
 			}
-			Date start_tms = new Date();
+			long start_tms = System.currentTimeMillis();
 			int msgCount = 0;
 			if ((msgCount = folder.getMessageCount()) > 0) {
-				logger.info(mailBoxVo.getUserId() + "'s " + _folder + " has " + msgCount
-						+ " messages.");
+				logger.info(mailBoxVo.getUserId() + "'s " + _folder + " has " + msgCount + " messages.");
 				// "readPerPass" is used so the flagged messages will be
 				// purged more often
 				int msgToProc = Math.min(msgCount, readPerPass);
@@ -399,9 +391,10 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 				folder.close(true); // "true" to delete the flagged messages
 				logger.info(msgs.length + " messages have been purged from pop3 mailbox.");
 				messagesProcessed += msgs.length;
-				long proc_time = new Date().getTime() - start_tms.getTime();
-				if (isDebugEnabled)
+				long proc_time = System.currentTimeMillis() - start_tms;
+				if (isDebugEnabled) {
 					logger.debug(msgs.length+ " messages processed, time taken: " + proc_time);
+				}
 				if (MESSAGE_COUNT > 0 && messagesProcessed > MESSAGE_COUNT) {
 					keepRunning = false;
 				}
@@ -412,8 +405,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		} while (keepRunning); // end of do-while
 	}
 	
-	private void imap(boolean fromTimer) throws MessagingException, InterruptedException,
-			IOException, JMSException {
+	private void imap(boolean fromTimer) throws MessagingException, InterruptedException, IOException, JMSException {
 		boolean keepRunning = true;
 		folder.open(Folder.READ_WRITE);
 		/*
@@ -422,16 +414,17 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		 * correctly for iPlanet.
 		 */
 		if (folder.getMessageCount() > 0) {
-			logger.info(mailBoxVo.getUserId() + "'s " + mailBoxVo.getFolderName() + " has "
-					+ folder.getMessageCount() + " messages.");
-			Date start_tms = new Date();
+			logger.info(mailBoxVo.getUserId() + "'s " + mailBoxVo.getFolderName() + " has " + folder.getMessageCount()
+					+ " messages.");
+			long start_tms = System.currentTimeMillis();
 			Message msgs[] = folder.getMessages();
 			execute(msgs);
 			folder.expunge(); // remove messages marked as DELETED
 			logger.info(msgs.length + " messages have been expunged from imap mailbox.");
-			long proc_time = new Date().getTime() - start_tms.getTime();
-			if (isDebugEnabled)
+			long proc_time = System.currentTimeMillis() - start_tms;
+			if (isDebugEnabled) {
 				logger.debug(msgs.length+ " messages processed, time took: " + proc_time);
+			}
 		}
 		/* end of fix for iPlanet */
 		while (keepRunning) {
@@ -453,14 +446,13 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @param _folder -
 	 *            folder name
 	 */
-	private void addMsgCountListener(final Folder folder, final String _folder,
-			final boolean fromTimer) {
+	private void addMsgCountListener(final Folder folder, final String _folder, final boolean fromTimer) {
 		folder.addMessageCountListener(new MessageCountAdapter() {
 			private final Logger logger = Logger.getLogger(MessageCountAdapter.class);
 			public void messagesAdded(MessageCountEvent ev) {
 				Message[] msgs = ev.getMessages();
 				logger.info("Got " + msgs.length + " new messages from " + _folder);
-				Date start_tms = new Date();
+				long start_tms = System.currentTimeMillis();
 				try {
 					execute(msgs);
 					// remove messages marked DELETED
@@ -485,9 +477,10 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 					throw new RuntimeException(ex.getMessage());
 				}
 				finally {
-					long proc_time = new Date().getTime() - start_tms.getTime();
-					if (isDebugEnabled)
+					long proc_time = System.currentTimeMillis() - start_tms;
+					if (isDebugEnabled) {
 						logger.debug(msgs.length+ " messages processed, time took: " + proc_time);
+					}
 					//update(MetricsLogger.PROC_TIME, (int) proc_time, msgs.length);
 				}
 				if (MESSAGE_COUNT > 0 && messagesProcessed > MESSAGE_COUNT) {
@@ -498,7 +491,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	}
 	
 	private long waitTime(int freq) {
-		long diff = new Date().getTime() - start_idling;
+		long diff = System.currentTimeMillis() - start_idling;
 		if (freq > diff) {
 			return (freq - diff);
 		}
@@ -518,12 +511,13 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @throws JMSException
 	 * @throws IOException
 	 */
-	private void execute(Message[] msgs) throws InterruptedException, IOException, JMSException,
-			MessagingException {
-		if (msgs == null || msgs.length == 0) return;
-		JmsProcessor jmsProcessor = factory.getBean(JmsProcessor.class);
+	private void execute(Message[] msgs) throws InterruptedException, IOException, JMSException, MessagingException {
+		if (msgs == null || msgs.length == 0) {
+			return;
+		}
+		JmsProcessor jmsProcessor = SpringUtil.getAppContext().getBean(JmsProcessor.class);
 		jmsProcessor.setQueueName("mailReaderOutput"); // TODO get from properties
-		DuplicateCheckDao duplicateCheck = (DuplicateCheckDao) factory.getBean("duplicateCheck");
+		DuplicateCheckDao duplicateCheck = SpringUtil.getAppContext().getBean(DuplicateCheckDao.class);
 		MailProcessor processor = new MailProcessor(jmsProcessor, mailBoxVo, duplicateCheck);
 		processor.process(msgs);
 	}
@@ -582,8 +576,9 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	void connect(Store store, int retries, int RETRY_MAX) throws MessagingException {
 		int portnbr = mailBoxVo.getPortNumber();
 		// -1 to use the default port
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Port used: " + portnbr);
+		}
 		if (retries > 0) { // retrying, close store first
 			try {
 				store.close();
@@ -604,8 +599,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 				else {
 					sleepFor = RETRY_FREQ;
 				}
-				logger.error("MessagingException caught during store.connect, retry(=" + retries
-						+ ") in " + sleepFor + " seconds");
+				logger.error("Failed to connect to store, retry(=" + retries + ") in " + sleepFor + " seconds");
 				try {
 					Thread.sleep(sleepFor * 1000);
 				}
@@ -652,14 +646,13 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 				else {
 					sleepFor = RETRY_FREQ;
 				}
-				logger.error("MessagingException caught during store.getFolder, retry(=" + retries
-						+ ") in " + sleepFor + " seconds");
+				logger.error("Failed to get folder, retry(=" + retries + ") in " + sleepFor + " seconds");
 				try {
 					Thread.sleep(sleepFor * 1000);
 				}
 				catch (InterruptedException e) {
 					logger.warn("InterruptedException caught", e);
-				}				
+				}
 				return getFolder(store, ++retries, RETRY_MAX);
 			}
 			else {

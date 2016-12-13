@@ -433,7 +433,6 @@ public final class RuleLoader implements java.io.Serializable {
 	private ClientDao clientDao = null;
 	private ClientDao getClientDao() {
 		if (clientDao == null) {
-			logger.error("ClientDao is null, loading... ########## instance: " + this);
 			clientDao = SpringUtil.getDaoAppContext().getBean(ClientDao.class);
 		}
 		return clientDao;

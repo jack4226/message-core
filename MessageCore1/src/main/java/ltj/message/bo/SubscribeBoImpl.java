@@ -72,8 +72,7 @@ public class SubscribeBoImpl extends TaskBaseAdaptor {
 				int rowsAffected = 0;
 				for (MailingListVo item : mlist) {
 					messageBean.setMailingListId(item.getListId());
-					rowsAffected += subscriptionDao.subscribe(emailAddrVo.getEmailAddrId(), item
-							.getListId());
+					rowsAffected += subscriptionDao.subscribe(emailAddrVo.getEmailAddrId(), item.getListId());
 					logger.info(addr + " subscribed to: " + item.getListId());
 				}
 				if (rowsAffected > 0) {

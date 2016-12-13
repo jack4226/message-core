@@ -779,7 +779,7 @@ public final class JbMain implements Runnable, JbMainMBean {
 			mboxVo.setFromTimer(false);
 			String readerName = mboxVo.getServerName();
 			logger.info("Creating MailReader for " + readerName);
-			MailReaderBoImpl mt = new MailReaderBoImpl(mboxVo, getBatchAppContext());
+			MailReaderBoImpl mt = new MailReaderBoImpl(mboxVo);
 			//Future<?> future = 
 				threadPool.submit(mt);
 			//mailboxThreadStarted.put(mt,future);

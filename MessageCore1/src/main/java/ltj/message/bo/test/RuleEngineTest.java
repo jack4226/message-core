@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
-import ltj.message.bo.TaskScheduler;
+import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.exception.DataValidationException;
@@ -26,7 +26,7 @@ public class RuleEngineTest extends BoTestBase {
 	@Resource
 	private MessageParser messageParser;
 	@Resource
-	private TaskScheduler taskScheduler;
+	private TaskDispatcher taskDispatcher;
 	
 	final int startFrom = 1;
 	final int endTo = 1;
@@ -39,7 +39,7 @@ public class RuleEngineTest extends BoTestBase {
 			MessageBean messageBean = MessageBeanUtil.createBeanFromStream(mailStream);
 			messageBean.setIsReceived(true);
 			messageParser.parse(messageBean);
-			taskScheduler.scheduleTasks(messageBean);
+			taskDispatcher.dispatchTasks(messageBean);
 			// TODO verify results
 		}
 	}

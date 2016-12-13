@@ -80,9 +80,9 @@ public class LoadActionTables {
 		msgDataTypeDao.insert(vo);
 		vo = new MsgDataTypeVo("EMAIL_ADDRESS", "$" + TableColumnName.CHALLENGE_HANDLER_ADDR, "clientDao");
 		msgDataTypeDao.insert(vo);
-		vo = new MsgDataTypeVo("QUEUE_NAME", "$RMA_REQUEST_INPUT", "rmaRequestInputJmsTemplate");
+		vo = new MsgDataTypeVo("QUEUE_NAME", "$RMA_REQUEST_INPUT", "rmaRequestInput");
 		msgDataTypeDao.insert(vo);
-		vo = new MsgDataTypeVo("QUEUE_NAME", "$CUSTOMER_CARE_INPUT", "customerCareInputJmsTemplate");
+		vo = new MsgDataTypeVo("QUEUE_NAME", "$CUSTOMER_CARE_INPUT", "customerCareInput");
 		msgDataTypeDao.insert(vo);
 		vo = new MsgDataTypeVo(MsgDataType.TEMPLATE_ID, "SubscribeByEmailReply", jndiProperties);
 		msgDataTypeDao.insert(vo);

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.jms.annotation.EnableJms;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import ltj.message.bean.SimpleEmailSender;
 
@@ -18,6 +19,7 @@ import ltj.message.bean.SimpleEmailSender;
 //@org.springframework.context.annotation.Import(SpringJmsConfig.class)
 @ImportResource({"classpath:/properties-config.xml", "classpath:/spring-mysql-config.xml"})
 @EnableJms
+@EnableScheduling
 public class SpringAppConfig {
 	protected final static Logger logger = Logger.getLogger(SpringAppConfig.class);
 

@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.jms.JMSException;
 import javax.mail.MessagingException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -29,10 +30,10 @@ import ltj.message.vo.action.MsgActionVo;
  * id's from MsgAction table and MsgActionDetail table by the rule name, and
  * process the message by invoking the classes or beans.
  */
-@Component("taskScheduler")
+@Component("taskDispatcher")
 @Lazy(value=true)
-public class TaskScheduler {
-	static final Logger logger = Logger.getLogger(TaskScheduler.class);
+public class TaskDispatcher {
+	static final Logger logger = Logger.getLogger(TaskDispatcher.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	static final String LF = System.getProperty("line.separator", "\n");
@@ -42,10 +43,10 @@ public class TaskScheduler {
 	
 	private static Hashtable<String, String> mailSenderJndi = null;
 	
-	public TaskScheduler() {
+	public TaskDispatcher() {
 	}
 	
-	public void scheduleTasks(MessageBean msgBean) throws DataValidationException,
+	public void dispatchTasks(MessageBean msgBean) throws DataValidationException,
 			MessagingException, JMSException, IOException {
 		if (isDebugEnabled)
 			logger.debug("Entering scheduleTasks() method. MessageBean:" + LF + msgBean);
@@ -53,8 +54,7 @@ public class TaskScheduler {
 			throw new DataValidationException("RuleName is not valued");
 		}
 		
-		List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null,
-				msgBean.getClientId());
+		List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null, msgBean.getClientId());
 		if (actions == null || actions.isEmpty()) {
 			// actions not defined, save the message.
 			String processBeanId = "saveBo";
@@ -65,13 +65,12 @@ public class TaskScheduler {
 			return;
 		}
 		for (int i = 0; i < actions.size(); i++) {
-			MsgActionVo msgActionVo = (MsgActionVo) actions.get(i);
+			MsgActionVo msgActionVo = actions.get(i);
 			TaskBaseBo bo = null;
 			String processClassName = msgActionVo.getProcessClassName();
-			if (processClassName != null && processClassName.trim().length() > 0) {
+			if (StringUtils.isNotBlank(processClassName)) {
 				// use process class
-				logger.info("scheduleTasks() - ProcessClassName [" + i + "]: "
-						+ processClassName);
+				logger.info("scheduleTasks() - ProcessClassName [" + i + "]: " + processClassName);
 				try {
 					bo = (TaskBaseBo) Class.forName(processClassName).newInstance();
 				}
@@ -102,8 +101,6 @@ public class TaskScheduler {
 			else {
 				bo.setTaskArguments(null);
 			}
-			// jmsProcessor's JNDI must point to the location where MailSenderEar is
-			// deployed.
 			// TODO set queue name for jmsProcessor
 			//bo.getJmsProcessor().setQueueName("");
 			// invoke the processor

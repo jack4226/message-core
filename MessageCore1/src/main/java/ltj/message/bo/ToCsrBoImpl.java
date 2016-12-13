@@ -2,14 +2,13 @@ package ltj.message.bo;
 
 import javax.jms.JMSException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.dao.action.MsgDataTypeDao;
 import ltj.message.exception.DataValidationException;
@@ -49,14 +48,14 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 			logger.debug("Arguments passed: " + taskArguments);
 		}
 		
-		String templateName = null;
+		String queueName = null;
 		if (taskArguments != null && taskArguments.trim().length() > 0) {
 			if (taskArguments.startsWith("$")) { // variable name
 				// retrieve the real queue name (Spring JMS template) from database:
 				MsgDataTypeVo vo = msgDataTypeDao.getByTypeValuePair("QUEUE_NAME", taskArguments);
 				if (vo != null) {
 					if (!StringUtil.isEmpty(vo.getMiscProperties())) {
-						templateName = vo.getMiscProperties();
+						queueName = vo.getMiscProperties();
 					}
 				}
 				else {
@@ -65,21 +64,12 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 				}
 			}
 			else { // should be a JMS template name
-				templateName = taskArguments;
+				queueName = taskArguments;
 			}
 		}
 		// Configure JmsProcessor to use provided JMS template
-		if (templateName != null) {
-			if (SpringUtil.getAppContext().getBean(templateName) == null) {
-				throw new DataValidationException(templateName + " not found in Spring xmls.");
-			}
-			else {
-				Object obj = SpringUtil.getAppContext().getBean(templateName);
-				if (!(obj instanceof JmsTemplate)) {
-					throw new DataValidationException(templateName + " is not expected type.");
-				}
-			}
-			setTargetToCsrWorkQueue(templateName);
+		if (StringUtils.isNotBlank(queueName)) {
+			setTargetToCsrWorkQueue(queueName);
 		}
 		else {
 			setTargetToCsrWorkQueue(); // use default queue

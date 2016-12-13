@@ -28,7 +28,7 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bean.MsgHeader;
-import ltj.message.bo.TaskScheduler;
+import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
@@ -79,7 +79,7 @@ public abstract class MailSenderBase {
 	@Autowired
 	protected MsgSequenceDao msgSequenceDao;
 	@Autowired
-	protected TaskScheduler scheduler;
+	protected TaskDispatcher dispatcher;
 	
 	//@Autowired // XXX Disabled auto wire to prevent spring circular dependency
 	private MessageParser parser;
@@ -585,8 +585,8 @@ public abstract class MailSenderBase {
 		}
 		// use MessageProcessorBo to invoke rule engine
 		getMessageParser().parse(loopBackBean);
-		// use TaskScheduler to schedule tasks
-		scheduler.scheduleTasks(loopBackBean);
+		// use TaskDispatcher to schedule tasks
+		dispatcher.dispatchTasks(loopBackBean);
 	}
 
 	/**

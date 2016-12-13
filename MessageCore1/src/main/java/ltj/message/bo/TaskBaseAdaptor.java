@@ -42,17 +42,14 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 	protected void setTargetToRuleEngine() {
 		// send RuleEngine queue
 		jmsProcessor.setQueueName("mailReaderOutput");
-
 	}
 	
 	protected void setTargetToCsrWorkQueue() {
-		jmsProcessor.setQueueName("ruleEngineOutput");
-
+		jmsProcessor.setQueueName("customerCareInput");
 	}
 	
-	protected void setTargetToCsrWorkQueue(String templateName) {
-		jmsProcessor.setQueueName("csrWorkQueue");
-
+	protected void setTargetToCsrWorkQueue(String queueName) {
+		jmsProcessor.setQueueName(queueName);
 	}
 	
 	/*

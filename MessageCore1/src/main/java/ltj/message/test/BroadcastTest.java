@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskScheduler;
+import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.RuleNameType;
@@ -23,7 +23,7 @@ public class BroadcastTest extends BoTestBase {
 	@Resource
 	private MessageParser messageParser;
 	@Resource
-	private TaskScheduler taskScheduler;
+	private TaskDispatcher taskDispatcher;
 	
 	@Test
 	@Rollback(false)
@@ -42,7 +42,7 @@ public class BroadcastTest extends BoTestBase {
 		messageBean.setBody("Dear ${CustomerName}:" + LF + messageBean.getBody());
 		messageParser.parse(messageBean);
 		System.out.println("MessageBean:" + LF + messageBean);
-		taskScheduler.scheduleTasks(messageBean);
+		taskDispatcher.dispatchTasks(messageBean);
 	}
 	
 	@Test
@@ -57,7 +57,7 @@ public class BroadcastTest extends BoTestBase {
 		messageBean.setSubject("subscribe");
 		messageBean.setBody("sign me up to the email mailing list");
 		messageParser.parse(messageBean);
-		taskScheduler.scheduleTasks(messageBean);
+		taskDispatcher.dispatchTasks(messageBean);
 	}
 
 	@Test
@@ -72,6 +72,6 @@ public class BroadcastTest extends BoTestBase {
 		messageBean.setSubject("unsubscribe");
 		messageBean.setBody("remove mefrom the email mailing list");
 		messageParser.parse(messageBean);
-		taskScheduler.scheduleTasks(messageBean);
+		taskDispatcher.dispatchTasks(messageBean);
 	}
 }

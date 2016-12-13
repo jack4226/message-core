@@ -16,7 +16,7 @@ public class MailReaderApp {
 		MailBoxVo vo = mailBoxDao.getByPrimaryKey("jwang", "localhost");
 		if (vo == null) return;
 		vo.setFromTimer(true);
-		MailReaderBoImpl reader = new MailReaderBoImpl(vo, factory);
+		MailReaderBoImpl reader = new MailReaderBoImpl(vo);
 		try {
 				//reader.start();
 				//reader.join();

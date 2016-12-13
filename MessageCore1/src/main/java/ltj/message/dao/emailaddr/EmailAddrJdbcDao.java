@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -246,8 +247,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			synchronized (lock) {
 				// concurrency issue still pops up but it is much better
 				// controlled
-				Timestamp updtTime = new Timestamp(
-						new java.util.Date().getTime());
+				Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 				EmailAddrVo emailAddrVo = new EmailAddrVo();
 				emailAddrVo.setEmailAddr(address);
 				emailAddrVo.setBounceCount(0);
@@ -273,12 +273,9 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 					}
 				} catch (DataIntegrityViolationException e) {
 					// shouldn't reach here, should be caught by DuplicateKeyException
-					logger.error(
-							"findByAddress() - DataIntegrityViolationException caught",
-							e);
+					logger.error("findByAddress() - DataIntegrityViolationException caught", e);
 					String err = e.toString() + "";
-					if (err.toLowerCase().indexOf("duplicate entry") > 0
-							&& retries < 0) {
+					if (err.toLowerCase().indexOf("duplicate entry") > 0 && retries < 0) {
 						// retry once may overcome concurrency issue. (the retry
 						// never worked and the reason might be that it is under
 						// a same transaction). So no retry from now on.
@@ -287,6 +284,9 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 					} else {
 						throw e;
 					}
+				} catch (CannotAcquireLockException e) {
+					logger.error("findByAddress() - CannotAcquireLockException caught", e);
+					throw e;
 				}
 			} // end of synchronized block
 		} else { // found a record
