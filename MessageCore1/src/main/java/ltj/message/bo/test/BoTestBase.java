@@ -189,7 +189,7 @@ public class BoTestBase {
 			RuleNameType.MAIL_BLOCK,
 			RuleNameType.SPAM_BLOCK,
 			RuleNameType.VIRUS_BLOCK,
-			RuleNameType.CSR_REPLY,
+			//RuleNameType.CSR_REPLY, // TODO must add "Original Message" to message bean
 			RuleNameType.RMA_REQUEST
 	};
 }
