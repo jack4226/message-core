@@ -52,12 +52,13 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			"from " +
 				"MsgInbox " +
 			" where msgId = (select max(MsgId) from MsgInbox) ";
-		List<MsgInboxVo> list = getJdbcTemplate().query(sql, 
-				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
-		if (list.size()>0)
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
+		if (list.size()>0) {
 			return list.get(0);
-		else
+		}
+		else {
 			return null;
+		}
 	}
 	
 	@Override
@@ -67,12 +68,13 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			"from " +
 				"MsgInbox " +
 			" where msgId = (select max(MsgId) from MsgInbox where MsgDirection = 'R') ";
-		List<MsgInboxVo> list = getJdbcTemplate().query(sql, 
-				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
-		if (list.size()>0)
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
+		if (list.size()>0) {
 			return list.get(0);
-		else
+		}
+		else {
 			return null;
+		}
 	}
 	
 	@Override
@@ -82,12 +84,13 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			"from " +
 				"MsgInbox " +
 			" where msgId = (select max(MsgId) from MsgInbox where MsgDirection = 'S') ";
-		List<MsgInboxVo> list = getJdbcTemplate().query(sql, 
-				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
-		if (list.size()>0)
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
+		if (list.size()>0) {
 			return list.get(0);
-		else
+		}
+		else {
 			return null;
+		}
 	}
 	
 	@Override
@@ -99,7 +102,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			" where leadMsgId=? " +
 			" order by msgId";
 		Object[] parms = new Object[] {leadMsgId};
-		List<MsgInboxWebVo> list = getJdbcTemplate().query(sql, parms, 
+		List<MsgInboxWebVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgInboxWebVo>(MsgInboxWebVo.class));
 		return list;
 	}
@@ -348,10 +351,12 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		// msgDirection
 		String direction = null;
 		if (vo.getMsgType() != null) {
-			if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Received))
+			if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Received)) {
 				direction = MsgDirectionCode.MSG_RECEIVED;
-			else if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Sent))
+			}
+			else if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Sent)) {
 				direction = MsgDirectionCode.MSG_SENT;
+			}
 		}
 		if (direction != null && closed == null) { // and not closed
 			whereSql += CRIT[parms.size()] + " a.MsgDirection = ? ";
@@ -376,10 +381,12 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		// readCount
 		if (vo.getRead() != null) {
-			if (vo.getRead().booleanValue())
+			if (vo.getRead().booleanValue()) {
 				whereSql += CRIT[parms.size()] + " a.ReadCount > ? ";
-			else
+			}
+			else {
 				whereSql += CRIT[parms.size()] + " a.ReadCount <= ? ";
+			}
 			parms.add(0);
 		}
 		// msgFlag
@@ -489,35 +496,39 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 
 	private void adjustUnreadCounts(MsgInboxWebVo msgInboxVo) {
 		if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getOrigStatusId())) { // Was Open
-			if (msgInboxVo.getOrigReadCount() == 0 && msgInboxVo.getReadCount() > 0)
+			if (msgInboxVo.getOrigReadCount() == 0 && msgInboxVo.getReadCount() > 0) {
 				updateCounts(msgInboxVo, -1);
-			else if (msgInboxVo.getOrigReadCount() > 0 && msgInboxVo.getReadCount() == 0)
+			}
+			else if (msgInboxVo.getOrigReadCount() > 0 && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, 1);
-			else if (MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())
-					&& msgInboxVo.getReadCount() == 0)
+			}
+			else if (MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, -1);
+			}
 		}
 		else { // Was Closed
-			if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())
-					&& msgInboxVo.getReadCount() == 0)
+			if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, 1);
+			}
 		}
 	}
 	
 	private void adjustUnreadCounts(MsgInboxVo msgInboxVo) {
 		if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getOrigStatusId())) { // Was Open
-			if (msgInboxVo.getOrigReadCount() == 0 && msgInboxVo.getReadCount() > 0)
+			if (msgInboxVo.getOrigReadCount() == 0 && msgInboxVo.getReadCount() > 0) {
 				updateCounts(msgInboxVo, -1);
-			else if (msgInboxVo.getOrigReadCount() > 0 && msgInboxVo.getReadCount() == 0)
+			}
+			else if (msgInboxVo.getOrigReadCount() > 0 && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, 1);
-			else if (MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())
-					&& msgInboxVo.getReadCount() == 0)
+			}
+			else if (MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, -1);
+			}
 		}
 		else { // Was Closed
-			if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())
-					&& msgInboxVo.getReadCount() == 0)
+			if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, 1);
+			}
 		}
 	}
 	
@@ -667,7 +678,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		
 		String sql = 
-			"delete from MsgInbox where msgId=? ";
+			"delete from MsgInbox where msgId=? "; // TODO only refMsgId is null or orphaned
 		
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
