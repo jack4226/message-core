@@ -59,7 +59,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	private final boolean debugSession = false;
 
 	protected int MAX_CLIENTS = 0;
-	protected int MESSAGE_COUNT = 0;
+	protected int MESSAGE_COUNT = 0; // when > 0 -> total messages to read in this run
 	private final int MAX_MESSAGE_COUNT = 6000;
 	private final int MAX_READ_PER_PASS = 500;
 	private int RETRY_MAX = 10; // , default to 10, -1 -> infinite retry
@@ -74,7 +74,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	private final int MAX_NUM_THREADS = 20; // limit to 20 threads
 	private int sleepFor = 0;
 
-	private long start_idling = 0;
 	/**
 	 * create a MailReaderBoImpl instance
 	 * 
@@ -245,7 +244,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 			throws MessagingException, IOException, JMSException, InterruptedException, DataValidationException {
 		session.setDebug(true); // DON'T CHANGE THIS
 		if (fromTimer) {
-			MESSAGE_COUNT = 500; // not to starve other mailboxes
+			MESSAGE_COUNT = 500; // not to starve other mailbox readers
 			messagesProcessed = 0; // reset this count
 		}
 		logger.info("MESSAGE_COUNT has been set to " + MESSAGE_COUNT);
@@ -304,7 +303,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		if (isDebugEnabled) {
 			logger.debug("MailReaderBoImpl ended");
 		}
-		start_idling = System.currentTimeMillis();
 	} // end of run()
 
 	private void pop3(boolean fromTimer) throws InterruptedException, MessagingException, IOException, JMSException {
@@ -491,13 +489,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	}
 	
 	private long waitTime(int freq) {
-		long diff = System.currentTimeMillis() - start_idling;
-		if (freq > diff) {
-			return (freq - diff);
-		}
-		else {
-			return 0;
-		}
+		return freq;
 	}
 	
 	/**

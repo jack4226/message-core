@@ -49,7 +49,7 @@ public class TaskDispatcher {
 	public void dispatchTasks(MessageBean msgBean) throws DataValidationException,
 			MessagingException, JMSException, IOException {
 		if (isDebugEnabled)
-			logger.debug("Entering scheduleTasks() method. MessageBean:" + LF + msgBean);
+			logger.debug("Entering dispatchTasks() method. MessageBean:" + LF + msgBean);
 		if (msgBean.getRuleName() == null) {
 			throw new DataValidationException("RuleName is not valued");
 		}
@@ -58,7 +58,7 @@ public class TaskDispatcher {
 		if (actions == null || actions.isEmpty()) {
 			// actions not defined, save the message.
 			String processBeanId = "saveBo";
-			logger.warn("scheduleTasks() - No Actions found for ruleName: " + msgBean.getRuleName()
+			logger.warn("dispatchTasks() - No Actions found for ruleName: " + msgBean.getRuleName()
 					+ ", ProcessBeanId [0]: " + processBeanId);
 			TaskBaseBo bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
 			bo.process(msgBean);
@@ -70,7 +70,7 @@ public class TaskDispatcher {
 			String processClassName = msgActionVo.getProcessClassName();
 			if (StringUtils.isNotBlank(processClassName)) {
 				// use process class
-				logger.info("scheduleTasks() - ProcessClassName [" + i + "]: " + processClassName);
+				logger.info("dispatchTasks() - ProcessClassName [" + i + "]: " + processClassName);
 				try {
 					bo = (TaskBaseBo) Class.forName(processClassName).newInstance();
 				}
@@ -89,7 +89,7 @@ public class TaskDispatcher {
 			}
 			else { // use process bean
 				String processBeanId = msgActionVo.getProcessBeanId();
-				logger.info("scheduleTasks() - ProcessBeanId [" + i + "]: " + processBeanId);
+				logger.info("dispatchTasks() - ProcessBeanId [" + i + "]: " + processBeanId);
 				bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
 			}
 			/*

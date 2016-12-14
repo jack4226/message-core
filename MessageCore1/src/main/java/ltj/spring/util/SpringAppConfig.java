@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import ltj.message.bean.SimpleEmailSender;
 
@@ -38,5 +40,14 @@ public class SpringAppConfig {
 		} catch (MessagingException e) {
 			throw new java.lang.IllegalStateException(e);
 		}
+	}
+	
+	@Bean
+	public TaskExecutor taskExecuter() {
+		ThreadPoolTaskExecutor task = new ThreadPoolTaskExecutor();
+		task.setCorePoolSize(5);
+		task.setMaxPoolSize(10);
+		task.setQueueCapacity(25);
+		return task;
 	}
 }

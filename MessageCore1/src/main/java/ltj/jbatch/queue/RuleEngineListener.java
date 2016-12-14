@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskDispatcher;
+import ltj.message.bo.inbox.MessageParser;
 import ltj.message.exception.DataValidationException;
 
 public class RuleEngineListener implements MessageListener {
@@ -24,6 +25,8 @@ public class RuleEngineListener implements MessageListener {
 	private JmsProcessor jmsProcessor;
 	@Autowired
 	private TaskDispatcher dispatcher;
+	@Autowired
+	private MessageParser parser;
 	
 	private @Value("${errorOutput.Queue}") String errorQueueName;
 	
@@ -42,6 +45,7 @@ public class RuleEngineListener implements MessageListener {
 				Object obj = ((ObjectMessage)message).getObject();
 				if (obj instanceof MessageBean) {
 					MessageBean messageBean = (MessageBean) obj;
+					parser.parse(messageBean); // for RuleName
 					try {
 						dispatcher.dispatchTasks(messageBean);
 					} catch (MessagingException e) {
