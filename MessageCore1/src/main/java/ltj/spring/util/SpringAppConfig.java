@@ -10,18 +10,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.jms.annotation.EnableJms;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import ltj.message.bean.SimpleEmailSender;
 
 @Configuration
-@ComponentScan(basePackages = {"ltj.message.dao", "ltj.message.bo", "ltj.jbatch"})
+@ComponentScan(basePackages = {"ltj.message.dao"})
 //@org.springframework.context.annotation.Import(SpringJmsConfig.class)
 @ImportResource({"classpath:/properties-config.xml", "classpath:/spring-mysql-config.xml"})
-@EnableJms
-@EnableScheduling
 public class SpringAppConfig {
 	protected final static Logger logger = Logger.getLogger(SpringAppConfig.class);
 

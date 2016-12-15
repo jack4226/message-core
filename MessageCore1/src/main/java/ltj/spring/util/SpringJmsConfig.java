@@ -9,8 +9,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListenerConfigurer;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpointRegistrar;
@@ -20,12 +22,16 @@ import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import ltj.jbatch.queue.MailSenderListener;
 import ltj.jbatch.queue.RuleEngineListener;
 import ltj.tomee.util.TomeeCtxUtil;
 
 @Configuration
+@ComponentScan(basePackages = {"ltj.message.bo", "ltj.jbatch"})
+@EnableJms
+@EnableScheduling
 public class SpringJmsConfig implements JmsListenerConfigurer {
 	protected final static Logger logger = Logger.getLogger(SpringJmsConfig.class);
 

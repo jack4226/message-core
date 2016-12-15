@@ -31,7 +31,7 @@ public class MailReaderTaskExr {
 	
 	boolean runWithFixedThreadPool = false;
 	
-	@Scheduled(initialDelay=1000, fixedDelay=5000)
+	@Scheduled(initialDelay=30000, fixedDelay=5000) // delay for 30 seconds for testing
 	public void startMailReaders() {
 		logger.info("startMailReaders() - entering...");
 		List<MailBoxVo> mailBoxList = mailBoxDao.getAll(true);
