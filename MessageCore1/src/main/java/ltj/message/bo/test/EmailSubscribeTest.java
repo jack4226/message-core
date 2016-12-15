@@ -39,7 +39,7 @@ public class EmailSubscribeTest extends BoTestBase {
 			sendNotify("subscribe", "Test Subscription Body Message", mailingListAddr);
 			//sendNotify("unsubscribe", "Test Subscription Body Message", mailingListAddr);
 			// TODO verify results
-			Thread.sleep(12000L);
+			Thread.sleep(60000L);
 			verifyDataRecord();
 		}
 		catch (Exception e) {

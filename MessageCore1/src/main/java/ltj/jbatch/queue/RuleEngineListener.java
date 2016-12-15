@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskDispatcher;
@@ -57,6 +58,8 @@ public class RuleEngineListener implements MessageListener {
 					} catch (DataValidationException e) {
 						logger.error("onMessage() - DataValidationException caught", e);
 						jmsProcessor.writeMsg(messageBean, JmsMessageId, true);
+					} catch (DuplicateKeyException e) {
+						logger.error("onMessage() - DuplicateKeyException caught, message ignored.", e);
 					}
 				}
 				else {

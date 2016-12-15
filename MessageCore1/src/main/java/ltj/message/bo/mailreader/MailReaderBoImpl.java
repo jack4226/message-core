@@ -191,9 +191,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		try {
 			readMail(mailBoxVo.isFromTimer());
 		}
-		catch (InterruptedException e) {
-			logger.info("InterruptedException caught. Process exiting...", e);
-		}
 		catch (MessagingException e) {
 			logger.fatal("MessagingException caught, exiting...", e);
 			throw new RuntimeException(e.getMessage());
@@ -241,7 +238,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @throws DataValidationException
 	 */
 	public void readMail(boolean fromTimer)
-			throws MessagingException, IOException, JMSException, InterruptedException, DataValidationException {
+			throws MessagingException, IOException, JMSException, DataValidationException {
 		session.setDebug(true); // DON'T CHANGE THIS
 		if (fromTimer) {
 			MESSAGE_COUNT = 500; // not to starve other mailbox readers
@@ -283,12 +280,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 				imap(fromTimer);
 			}
 		}
-		catch (InterruptedException e) {
-			logger.info("InterruptedException caught. Process exiting...", e);
-			if (!fromTimer) {
-				throw e;
-			}
-		}
 		finally {
 			try {
 				if (folder != null && folder.isOpen()) {
@@ -305,7 +296,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		}
 	} // end of run()
 
-	private void pop3(boolean fromTimer) throws InterruptedException, MessagingException, IOException, JMSException {
+	private void pop3(boolean fromTimer) throws MessagingException, IOException, JMSException {
 		final String _user = mailBoxVo.getUserId();
 		final String _host = mailBoxVo.getHostName();
 		final String _folder = mailBoxVo.getFolderName();
@@ -325,6 +316,11 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 				// reopen the folder in order to pick up the new messages
 				folder.open(Folder.READ_WRITE);
 			}
+			catch (InterruptedException e) {
+				logger.warn("pop3 thread interrupted, exiting...");
+				keepRunning = false;
+				break;
+			}
 			catch (MessagingException e) {
 				logger.error("Failed to open folder " + _user + "@" + _host + ":" + _folder);
 				logger.error("MessagingException caught", e);
@@ -337,8 +333,12 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 						sleepFor = RETRY_FREQ;
 					}
 					logger.error("Failed to open folder, retry(=" + retries + ") in " + sleepFor + " seconds");
-					Thread.sleep(sleepFor * 1000);
-						// terminate if interrupted
+					try {
+						Thread.sleep(sleepFor * 1000);
+					} catch (InterruptedException e1) {
+						keepRunning = false; // terminate if interrupted
+						break;
+					}
 					continue;
 				}
 				else {
@@ -403,7 +403,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		} while (keepRunning); // end of do-while
 	}
 	
-	private void imap(boolean fromTimer) throws MessagingException, InterruptedException, IOException, JMSException {
+	private void imap(boolean fromTimer) throws MessagingException, IOException, JMSException {
 		boolean keepRunning = true;
 		folder.open(Folder.READ_WRITE);
 		/*
@@ -426,7 +426,14 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		}
 		/* end of fix for iPlanet */
 		while (keepRunning) {
-			Thread.sleep(waitTime(freq)); // sleep for "freq" milliseconds
+			try {
+				Thread.sleep(waitTime(freq)); // sleep for "freq" milliseconds
+			}
+			catch (InterruptedException e) {
+				logger.warn("imap thread interrupted, exiting...");
+				keepRunning = false;
+				continue;
+			}
 			// This is to force the IMAP server to send us
 			// EXISTS notifications.
 			int msgCount = folder.getMessageCount();
@@ -457,10 +464,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 					folder.expunge();
 					logger.info(msgs.length + " messages have been expunged from imap mailbox.");
 					messagesProcessed += msgs.length;
-				}
-				catch (InterruptedException e) {
-					logger.info("InterruptedException caught. Process exiting...", e);
-					Thread.currentThread().interrupt();
 				}
 				catch (MessagingException ex) {
 					logger.fatal("MessagingException caught", ex);
@@ -503,7 +506,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @throws JMSException
 	 * @throws IOException
 	 */
-	private void execute(Message[] msgs) throws InterruptedException, IOException, JMSException, MessagingException {
+	private void execute(Message[] msgs) throws IOException, JMSException, MessagingException {
 		if (msgs == null || msgs.length == 0) {
 			return;
 		}
