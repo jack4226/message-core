@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
@@ -46,8 +47,9 @@ public class TaskDispatcher {
 	public TaskDispatcher() {
 	}
 	
+	@Transactional
 	public void dispatchTasks(MessageBean msgBean) throws DataValidationException,
-			MessagingException, JMSException, IOException {
+			MessagingException, JMSException {
 		if (isDebugEnabled)
 			logger.debug("Entering dispatchTasks() method. MessageBean:" + LF + msgBean);
 		if (msgBean.getRuleName() == null) {

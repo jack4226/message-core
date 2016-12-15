@@ -21,7 +21,7 @@ public class ClientTest extends DaoTestBase {
 	final String DefaultClientId = Constants.DEFAULT_CLIENTID;
 
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void insertSelectDelete() {
 		try {
 			ClientVo vo = insert();

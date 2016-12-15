@@ -27,7 +27,7 @@ public class SendMailBoTest extends BoTestBase {
 	private String testSubject = "Test Subject - ";
 	
 	@Test
-	@Rollback(false)
+	@Rollback(value=false)
 	public void test1() throws Exception { // sendMail
 		sendMailBo.getJmsProcessor().setQueueName("mailSenderInput");
 		for (int i = 0; i < loops; i++) {
@@ -60,7 +60,7 @@ public class SendMailBoTest extends BoTestBase {
 	}
 	
 	@Test
-	@Rollback(false)
+	@Rollback(value=false)
 	public void test2() throws Exception { // sendMailVERP
 		if (messageBean==null) {
 			messageBean = buildMessageBeanFromMsgStream();

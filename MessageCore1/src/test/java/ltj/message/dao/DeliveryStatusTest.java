@@ -29,7 +29,7 @@ public class DeliveryStatusTest extends DaoTestBase {
 	private String testEmailAddr = "demolist1@localhost";
 
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void testDeliveryStatus() {
 		try {
 			if (msgInboxDao.getByPrimaryKey(testMsgId)==null) {

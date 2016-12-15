@@ -22,7 +22,7 @@ public class MsgUnsubCommentsTest extends DaoTestBase {
 	private EmailAddrDao emailAddrDao;
 	
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void testUnsubComments() {
 		//insertToEmptyTable();
 		List<MsgUnsubCommentsVo> list = selectAll();

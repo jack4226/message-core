@@ -33,7 +33,7 @@ public class BroadcastBoTest extends BoTestBase {
 	private RenderBo util;
 	
 	@Test
-	@Rollback(false)
+	@Rollback(value=false)
 	public void broadcast() {
 		try {
 			MessageBean msgBean = buildMessageBeanFromMsgStream();

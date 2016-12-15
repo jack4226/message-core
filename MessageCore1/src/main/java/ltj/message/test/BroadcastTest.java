@@ -26,7 +26,7 @@ public class BroadcastTest extends BoTestBase {
 	private TaskDispatcher taskDispatcher;
 	
 	@Test
-	@Rollback(false)
+	@Rollback(value=false)
 	public void broadcast() throws Exception {
 		logger.info("=================================================");
 		logger.info("Testing Broadcast ###############################");

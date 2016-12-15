@@ -4,11 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
@@ -30,11 +32,15 @@ public class EmailSubscribeTest extends BoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
 	
-	private String testFromAddress = "testfrom@localhost";
+	private String testFromAddress; // = "testfrom@localhost";
 	private String mailingListAddr = "demolist1@localhost";
 
 	@Test
 	public void testSendNotify() {
+		
+		String digits = StringUtils.leftPad("" + new Random().nextInt(1000), 4, "0");
+		testFromAddress = "sbsr" + digits + "@localhost";
+		
 		try {
 			sendNotify("subscribe", "Test Subscription Body Message", mailingListAddr);
 			//sendNotify("unsubscribe", "Test Subscription Body Message", mailingListAddr);

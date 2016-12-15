@@ -37,7 +37,7 @@ public class MsgActionTest extends DaoTestBase {
 	}
 
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void insertSelectDelete() {
 		MsgActionVo msgActionVo = insert();
 		assertNotNull(msgActionVo);

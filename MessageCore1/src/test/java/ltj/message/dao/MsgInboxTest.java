@@ -36,7 +36,7 @@ public class MsgInboxTest extends DaoTestBase {
 	static long testFromMsgId = 1L;
 	
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void testMessageInbox() {
 		try {
 			MsgInboxVo msgInboxVo = selectByMsgId(testMsgId);
@@ -70,7 +70,7 @@ public class MsgInboxTest extends DaoTestBase {
 	}
 	
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void testBroadCastAndClickCounts() {
 		try {
 			MsgInboxWebVo webvo = selectBroadcastMsg();

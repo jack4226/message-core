@@ -80,7 +80,7 @@ public class MsgStreamTest extends DaoTestBase {
 	}
 
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void testMsgStream() throws MessagingException {
 		MsgStreamVo msgStreamVo = selectLastRecord();
 		assertNotNull(msgStreamVo);

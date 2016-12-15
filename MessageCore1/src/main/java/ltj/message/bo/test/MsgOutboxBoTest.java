@@ -40,7 +40,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 	private JmsTemplate jmsTemplate;
 	
 	@Test
-	@Rollback(false) // must commit MsgRendered record for MailSender
+	@Rollback(value=false) // must commit MsgRendered record for MailSender
 	public void testMsgOutboxBo() {
 		try {
 			RenderRequest req = new RenderRequest(

@@ -27,7 +27,7 @@ public class AutoReplyBoTest extends BoTestBase {
 	private static Long msgRefId;
 	
 	@Test
-	@Rollback(false)
+	@Rollback(value=false)
 	public void test1() throws Exception { // autoReply
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		messageBean.setMailingListId("SMPLLST1");

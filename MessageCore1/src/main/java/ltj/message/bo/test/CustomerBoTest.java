@@ -19,7 +19,7 @@ public class CustomerBoTest extends BoTestBase {
 	@Resource
 	private CustomerBo customerBo;
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void testCustomerBo() {
 		try {
 			CustomerVo vo = selectByCustId("test");

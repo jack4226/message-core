@@ -26,7 +26,7 @@ public class DeliveryErrorBoTest extends BoTestBase {
 	private String dsnText = "test DSN Text - from BO Test";
 	
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void deliveryError() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		messageBean.setFinalRcpt("testto@localhost");

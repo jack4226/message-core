@@ -1,7 +1,5 @@
 package ltj.jbatch.queue;
 
-import java.io.IOException;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -51,9 +49,6 @@ public class RuleEngineListener implements MessageListener {
 						dispatcher.dispatchTasks(messageBean);
 					} catch (MessagingException e) {
 						logger.error("onMessage() - MessageFormatException caught", e);
-						jmsProcessor.writeMsg(messageBean, JmsMessageId, true);
-					} catch (IOException e) {
-						logger.error("onMessage() - IOException caught", e);
 						jmsProcessor.writeMsg(messageBean, JmsMessageId, true);
 					} catch (DataValidationException e) {
 						logger.error("onMessage() - DataValidationException caught", e);

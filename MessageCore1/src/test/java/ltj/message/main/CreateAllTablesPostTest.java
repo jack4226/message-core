@@ -22,7 +22,7 @@ public class CreateAllTablesPostTest extends DaoTestBase {
 	@Resource
 	private MsgRenderedDao msgRenderedDao;
 	@Test
-	@Rollback(false)
+	@Rollback(value=false)
 	public void insertMsgStream() {
 		if (msgStreamDao.getLastRecord()==null) {
 			Result result = JUnitCore.runClasses(RuleEngineTest.class);
@@ -34,7 +34,7 @@ public class CreateAllTablesPostTest extends DaoTestBase {
 		assertNotNull(msgStreamDao.getLastRecord());
 	}
 	@Test
-	@Rollback(false)
+	@Rollback(value=false)
 	public void insertMsgRendered() {
 		if (msgRenderedDao.getLastRecord()==null) {
 			Result result = JUnitCore.runClasses(MsgOutboxBoTest.class);

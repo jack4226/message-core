@@ -1,6 +1,5 @@
 package ltj.message.bo.mailinglist;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.jms.JMSException;
@@ -173,9 +172,6 @@ public class MailingListBoImpl implements MailingListBo {
 		catch (JMSException e) {
 			throw new OutOfServiceException("JMSException caught",e);
 		}
-		catch (IOException e) {
-			throw new OutOfServiceException("IOException caught",e);
-		}
 		return mailsSent.intValue();
 	}
 	
@@ -194,9 +190,6 @@ public class MailingListBoImpl implements MailingListBo {
 		}
 		catch (JMSException e) {
 			throw new OutOfServiceException("JMSException caught",e);
-		}
-		catch (IOException e) {
-			throw new OutOfServiceException("IOException caught",e);
 		}
 		return (jmsMsgId == null ? 0 : 1);
 	}

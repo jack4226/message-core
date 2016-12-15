@@ -1,6 +1,5 @@
 package ltj.message.bo;
 
-import java.io.IOException;
 import java.util.StringTokenizer;
 
 import javax.jms.JMSException;
@@ -36,7 +35,7 @@ public class ToSecurityBoImpl extends TaskBaseAdaptor {
 	 *         been forwarded to.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException,
-			MessagingException, JMSException, IOException {
+			MessagingException, JMSException {
 		if (isDebugEnabled)
 			logger.debug("Entering process() method...");
 		if (messageBean==null) {

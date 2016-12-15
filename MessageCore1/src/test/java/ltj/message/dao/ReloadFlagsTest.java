@@ -16,7 +16,7 @@ public class ReloadFlagsTest extends DaoTestBase {
 	private ReloadFlagsDao reloadDao;
 	
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void testReloadFlags() {
 		ReloadFlagsVo vo = select();
 		assertNotNull(vo);

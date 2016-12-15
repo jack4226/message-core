@@ -40,7 +40,7 @@ public class SubscribeBoTest extends BoTestBase {
 	}
 	
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void unsubscribe() throws Exception {
 		prepare(Action.Subscribe);
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
@@ -55,7 +55,7 @@ public class SubscribeBoTest extends BoTestBase {
 		verifyDataRecord(Constants.NO_CODE);
 	}
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void subscribe() throws Exception {
 		prepare(Action.Unsubscribe);
 		MessageBean messageBean = buildMessageBeanFromMsgStream();

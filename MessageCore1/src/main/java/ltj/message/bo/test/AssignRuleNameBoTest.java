@@ -31,7 +31,7 @@ public class AssignRuleNameBoTest extends BoTestBase {
 	}
 	
 	@Test
-	@Rollback(false)
+	@Rollback(value=false)
 	public void test1() throws Exception { //assignRuleName
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		assignRuleNameBo.setTaskArguments(testRuleName.name());

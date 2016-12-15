@@ -25,7 +25,7 @@ public class UnsubCommentsTest extends DaoTestBase {
 	private EmailAddrDao emailAddrDao;
 
 	@Test
-	@Rollback(true)
+	@Rollback(value=true)
 	public void testUnsubComments() {
 		List<UnsubCommentsVo> list = selectAll();
 		if (list.size()==0) {
