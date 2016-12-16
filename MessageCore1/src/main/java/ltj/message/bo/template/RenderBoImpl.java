@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.mail.Address;
@@ -214,7 +215,7 @@ public class RenderBoImpl implements RenderBo {
 
 	private void buildRenderedAttachments(RenderRequest req, RenderResponse rsp) {
 		logger.info("in buildRenderedAttachments()...");
-		HashMap<String, RenderVariable> varbls = rsp.variableFinal;
+		Map<String, RenderVariable> varbls = rsp.variableFinal;
 		MessageBean mBean = rsp.messageBean;
 		Collection<RenderVariable> c = varbls.values();
 		for (Iterator<RenderVariable> it = c.iterator(); it.hasNext();) {
@@ -238,14 +239,14 @@ public class RenderBoImpl implements RenderBo {
 		}
 	}
 	
-	private String render(String templateText, HashMap<String, RenderVariable> varbls,
-			HashMap<String, RenderVariable> errors) throws DataValidationException, ParseException {
+	private String render(String templateText, Map<String, RenderVariable> varbls,
+			Map<String, RenderVariable> errors) throws DataValidationException, ParseException {
 		return render.render(templateText, varbls, errors);
 	}
 	
 	private void buildRenderedAddrs(RenderRequest req, RenderResponse rsp) throws AddressException {
 		logger.info("in buildRenderedAddrs()...");
-		HashMap<String, RenderVariable> varbls = rsp.variableFinal;
+		Map<String, RenderVariable> varbls = rsp.variableFinal;
 		MessageBean mBean = rsp.messageBean;
 
 		// variableValue could be type of: String/Address
@@ -295,7 +296,7 @@ public class RenderBoImpl implements RenderBo {
 	private void buildRenderedMisc(RenderRequest req, RenderResponse rsp) {
 		logger.info("in buildRenderedMisc()...");
 		MsgSourceVo src = rsp.msgSourceVo;
-		HashMap<String, RenderVariable> varbls = rsp.variableFinal;
+		Map<String, RenderVariable> varbls = rsp.variableFinal;
 		MessageBean mBean = rsp.messageBean;
 
 		Collection<RenderVariable> c = varbls.values();
@@ -385,7 +386,7 @@ public class RenderBoImpl implements RenderBo {
 	private void buildRenderedXHdrs(RenderRequest req, RenderResponse rsp) {
 		logger.info("in buildRenderedXHdrs()...");
 		// MsgSourceVo src = rsp.msgSourceVo;
-		HashMap<String, RenderVariable> varbls = rsp.variableFinal;
+		Map<String, RenderVariable> varbls = rsp.variableFinal;
 		MessageBean mBean = rsp.messageBean;
 
 		List<MsgHeader> headers = new ArrayList<MsgHeader>();
@@ -425,13 +426,13 @@ public class RenderBoImpl implements RenderBo {
 		Collection<TemplateVariableVo> templateVariables = getTemplateVariableDao()
 				.getCurrentByTemplateId(msgSourceVo.getTemplateVariableId(), req.clientId);
 		
-		// convert variables into HashMap
-		HashMap<String, RenderVariable> g_ht = GlobalVariablesToHashMap(globalVariables);
-		HashMap<String, RenderVariable> c_ht = ClientVariablesToHashMap(clientVariables);
-		HashMap<String, RenderVariable> t_ht = TemplateVariablesToHashMap(templateVariables);
+		// convert variables into Map
+		Map<String, RenderVariable> g_ht = GlobalVariablesToHashMap(globalVariables);
+		Map<String, RenderVariable> c_ht = ClientVariablesToHashMap(clientVariables);
+		Map<String, RenderVariable> t_ht = TemplateVariablesToHashMap(templateVariables);
 		
 		// variables from req and MsgSource table
-		HashMap<String, RenderVariable> s_ht = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> s_ht = new HashMap<String, RenderVariable>();
 		RenderVariable vreq = new RenderVariable(
 				VariableName.CLIENT_ID,
 				req.clientId,
@@ -465,11 +466,11 @@ public class RenderBoImpl implements RenderBo {
 		}
 		
 		// get Runtime variables
-		HashMap<String, RenderVariable> r_ht = req.variableOverrides;
+		Map<String, RenderVariable> r_ht = req.variableOverrides;
 		if (r_ht==null) r_ht = new HashMap<String, RenderVariable>();
 		
 		// error hash table
-		HashMap<String, RenderVariable> err_ht = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> err_ht = new HashMap<String, RenderVariable>();
 		
 		// merge variable hash tables
 		mergeHashMaps(s_ht, g_ht, err_ht);
@@ -483,8 +484,8 @@ public class RenderBoImpl implements RenderBo {
 		rsp.variableErrors.putAll(err_ht);
 	}
 	
-	private void mergeHashMaps(HashMap<String, RenderVariable> from,
-			HashMap<String, RenderVariable> to, HashMap<String, RenderVariable> error) {
+	private void mergeHashMaps(Map<String, RenderVariable> from,
+			Map<String, RenderVariable> to, Map<String, RenderVariable> error) {
 		Set<String> keys = from.keySet();
 		for (Iterator<String> it=keys.iterator(); it.hasNext();) {
 			String name = it.next();
@@ -506,8 +507,8 @@ public class RenderBoImpl implements RenderBo {
 		}
 	}
 	
-	private void verifyHashMap(HashMap<String, RenderVariable> ht,
-			HashMap<String, RenderVariable> error) {
+	private void verifyHashMap(Map<String, RenderVariable> ht,
+			Map<String, RenderVariable> error) {
 		Set<String> keys = ht.keySet();
 		for (Iterator<String> it=keys.iterator(); it.hasNext();) {
 			String name = it.next();
@@ -519,8 +520,8 @@ public class RenderBoImpl implements RenderBo {
 		}
 	}
 	
-	private HashMap<String, RenderVariable> GlobalVariablesToHashMap(Collection<GlobalVariableVo> c) {
-		HashMap<String, RenderVariable> ht = new HashMap<String, RenderVariable>();
+	private Map<String, RenderVariable> GlobalVariablesToHashMap(Collection<GlobalVariableVo> c) {
+		Map<String, RenderVariable> ht = new HashMap<String, RenderVariable>();
 		for (Iterator<GlobalVariableVo> it = c.iterator(); it.hasNext();) {
 			GlobalVariableVo req = it.next();
 			RenderVariable r = new RenderVariable(
@@ -537,8 +538,8 @@ public class RenderBoImpl implements RenderBo {
 		return ht;
 	}
 	
-	private HashMap<String, RenderVariable> ClientVariablesToHashMap(Collection<ClientVariableVo> c) {
-		HashMap<String, RenderVariable> ht = new HashMap<String, RenderVariable>();
+	private Map<String, RenderVariable> ClientVariablesToHashMap(Collection<ClientVariableVo> c) {
+		Map<String, RenderVariable> ht = new HashMap<String, RenderVariable>();
 		for (Iterator<ClientVariableVo> it = c.iterator(); it.hasNext();) {
 			ClientVariableVo req = it.next();
 			RenderVariable r = new RenderVariable(
@@ -555,9 +556,9 @@ public class RenderBoImpl implements RenderBo {
 		return ht;
 	}
 	
-	private HashMap<String, RenderVariable> TemplateVariablesToHashMap(
+	private Map<String, RenderVariable> TemplateVariablesToHashMap(
 			Collection<TemplateVariableVo> c) {
-		HashMap<String, RenderVariable> ht = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> ht = new HashMap<String, RenderVariable>();
 		for (Iterator<TemplateVariableVo> it = c.iterator(); it.hasNext();) {
 			TemplateVariableVo req = it.next();
 			RenderVariable r = new RenderVariable(

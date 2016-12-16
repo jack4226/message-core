@@ -42,6 +42,8 @@ public class MailingListBoTest extends BoTestBase {
 		}
 	}
 	
+	// TODO verify results
+	
 	int broadcast(String templateId) throws OutOfServiceException, TemplateNotFoundException,
 			DataValidationException {
 		int mailsSent = mlServiceBo.broadcast(templateId);

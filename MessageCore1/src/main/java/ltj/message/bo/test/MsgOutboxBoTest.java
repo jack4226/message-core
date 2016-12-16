@@ -8,15 +8,19 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.jbatch.queue.JmsProcessor;
+import ltj.message.bean.MessageBean;
 import ltj.message.bo.outbox.MsgOutboxBo;
 import ltj.message.bo.template.RenderBo;
 import ltj.message.bo.template.RenderRequest;
@@ -27,7 +31,11 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
+import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.inbox.MsgInboxVo;
 
+@FixMethodOrder
 public class MsgOutboxBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MsgOutboxBoTest.class);
 	@Resource
@@ -38,10 +46,15 @@ public class MsgOutboxBoTest extends BoTestBase {
 	private JmsProcessor jmsProcessor;
 	@Resource
 	private JmsTemplate jmsTemplate;
+	@Resource
+	private MsgInboxDao inboxDao;
+	
+	private static MessageBean msgBean;
 	
 	@Test
-	@Rollback(value=false) // must commit MsgRendered record for MailSender
-	public void testMsgOutboxBo() {
+	// must commit MsgRendered record for MailSender
+	@Rollback(value=false)
+	public void test1() { // testMailOutboxBo
 		try {
 			RenderRequest req = new RenderRequest(
 					"testMsgSource",
@@ -59,11 +72,37 @@ public class MsgOutboxBoTest extends BoTestBase {
 			RenderRequest req2 = msgOutboxBo.getRenderRequestByPK(msgId);
 			assertNotNull(req2);
 			logger.info("RenderRequest2: ####################"+LF+req2);
+			
 			RenderResponse rsp2 = renderBo.getRenderedEmail(req2);
 			assertNotNull(rsp2);
 			logger.info("RenderResponse2: ####################"+LF+rsp2);
 			
-			//jmsProcessor.setQueueName(""); // TODO set queue name
+			Map<String, RenderVariable> req2Vars = req2.getVariableOverrides();
+			
+			Map<String, RenderVariable> rsp2Vars = rsp2.getVariableFinal();
+			
+			//assertTrue(rsp2.getVariableErrors().isEmpty());
+			
+			assertEquals(req2Vars.get("DomainName"), rsp2Vars.get("DomainName"));
+			assertEquals(req2Vars.get("From"), rsp2Vars.get("From"));
+			assertEquals(req2Vars.get("To"), rsp2Vars.get("To"));
+			assertEquals(req2Vars.get("CustId"), rsp2Vars.get("CustId"));
+			assertEquals(req2Vars.get("ClientId"), rsp2Vars.get("ClientId"));
+			
+			assertEquals(req2Vars.get("name1"), rsp2Vars.get("name1"));
+			assertEquals(req2Vars.get("name2"), rsp2Vars.get("name2"));
+			assertEquals(req2Vars.get("name3"), rsp2Vars.get("name3"));
+			
+			msgBean = rsp.getMessageBean();
+			assertNotNull(msgBean);
+			
+			String body = msgBean.getBody();
+			assertNotNull(body);
+			assertTrue(body.indexOf((String)rsp2Vars.get("name1").getVariableValue()) > 0 );
+			assertTrue(body.indexOf((String)rsp2Vars.get("name2").getVariableValue()) > 0 );
+			assertTrue(body.indexOf((String)rsp2Vars.get("name3").getVariableValue()) > 0 );
+			
+			jmsProcessor.setQueueName("mailSenderOutput"); // TODO set queue name from property
 			String msgWritten = jmsProcessor.writeMsg(rsp.getMessageBean());
 			assertNotNull(msgWritten);
 			logger.info("Message Written - JMS MessageId: " + msgWritten);
@@ -74,8 +113,43 @@ public class MsgOutboxBoTest extends BoTestBase {
 		}
 	}
 	
-	private static HashMap<String, RenderVariable> buildTestVariables() {
-		HashMap<String, RenderVariable> map=new HashMap<String, RenderVariable>();
+	@Test
+	public void test2() { // wait for 5 seconds
+		try {
+			Thread.sleep(WaitTimeInMillis);
+		} catch (InterruptedException e) {
+			//
+		}
+	}
+
+	@Test
+	public void test3() { // verify results
+		
+		EmailAddrVo from = selectEmailAddrByAddress(msgBean.getFromAsString());
+		EmailAddrVo to = selectEmailAddrByAddress(msgBean.getToAsString());
+		
+		assertNotNull(from);
+		assertNotNull(to);
+		
+		List<MsgInboxVo> msgFromList = inboxDao.getByFromAddrId(from.getEmailAddrId());
+		assertTrue(msgFromList.size() > 0);
+		
+		List<MsgInboxVo> msgToList = inboxDao.getByToAddrId(to.getEmailAddrId());
+		assertTrue(msgToList.size() > 0);
+		
+		boolean subjectFound = false;
+		for (MsgInboxVo vo : msgFromList) {
+			if (StringUtils.equals(msgBean.getSubject(), vo.getMsgSubject())) {
+				subjectFound = true;
+				break;
+			}
+		}
+		assertEquals(true, subjectFound);
+	}
+	
+	
+	private static Map<String, RenderVariable> buildTestVariables() {
+		Map<String, RenderVariable> map=new HashMap<String, RenderVariable>();
 		
 		RenderVariable toAddr = new RenderVariable(
 				EmailAddressType.TO_ADDR, 
@@ -201,12 +275,12 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"N", 
 				null
 			);
-		List<HashMap<String, RenderVariable>> collection = new ArrayList<HashMap<String, RenderVariable>>();
-		HashMap<String, RenderVariable> row1 = new HashMap<String, RenderVariable>();	// a row
+		List<Map<String, RenderVariable>> collection = new ArrayList<Map<String, RenderVariable>>();
+		Map<String, RenderVariable> row1 = new HashMap<String, RenderVariable>();	// a row
 		row1.put(req2.getVariableName(), req2_row1);
 		row1.put(req3.getVariableName(), req3);
 		collection.add(row1);
-		HashMap<String, RenderVariable> row2 = new HashMap<String, RenderVariable>();	// a row
+		Map<String, RenderVariable> row2 = new HashMap<String, RenderVariable>();	// a row
 		row2.put(req2.getVariableName(), req2_row2);
 		row2.put(req3.getVariableName(), req3);
 		collection.add(row2);

@@ -2,6 +2,9 @@ package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.jms.JMSException;
 import javax.mail.MessagingException;
@@ -21,11 +24,17 @@ public class MailSenderTest extends BoTestBase {
 	@Resource
 	private MailSenderBoImpl mailSenderBo;
 	
+	private static List<String> suffixes = new ArrayList<>();
+	
 	@Test
 	public void testMailSender() {
 		int loops = 2; //Integer.MAX_VALUE;
+		for (int i=0; i<loops; i++) {
+			String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
+			suffixes.add(suffix);
+		}
 		try {
-			testSendMail(loops);
+			testSendMail(suffixes);
 			// TODO verify results
 		}
 		catch (Exception e) {
@@ -34,12 +43,12 @@ public class MailSenderTest extends BoTestBase {
 		}
 	}
 	
-	private void testSendMail(int loops) throws DataValidationException, MessagingException,
+	private void testSendMail(List<String> suffixes) throws DataValidationException, MessagingException,
 			JMSException {
 		long startTime = new java.util.Date().getTime();
 		int i;
-		for (i = 0; i < loops; i++) {
-			String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
+		for (i = 0; i < suffixes.size(); i++) {
+			String suffix = suffixes.get(i);
 			String user = "user" + suffix + "@localhost";
 			if (i % 13 == 0) {
 				try {

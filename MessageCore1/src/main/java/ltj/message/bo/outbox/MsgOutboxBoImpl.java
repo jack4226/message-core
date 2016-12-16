@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.Address;
 import javax.mail.Part;
@@ -181,7 +182,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 		msgBean.setRenderId(Long.valueOf(msgVo.getRenderId()));
 		
 		// save Render Attachments & Render Variables
-		HashMap<?, ?> varbls = rsp.getVariableFinal();
+		Map<?, ?> varbls = rsp.getVariableFinal();
 		if (varbls!=null && !varbls.isEmpty()) {
 			Collection<?> c = varbls.values();
 			int i=0;
@@ -346,7 +347,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 		}
 		
 		// populate variableFinal
-		HashMap<String, RenderVariable> varblFinal = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> varblFinal = new HashMap<String, RenderVariable>();
 		List<RenderVariableVo> renderVariables = renderVariableDao.getByRenderId(renderId);
 		if (renderVariables != null && !renderVariables.isEmpty()) {
 			Iterator<RenderVariableVo> it = renderVariables.iterator();

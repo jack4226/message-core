@@ -57,7 +57,7 @@ public class EmailSubscribeTest extends BoTestBase {
 	@Test
 	public void test2() {
 		try {
-			Thread.sleep(60000L);
+			Thread.sleep(60 * 1000L);
 		} catch (InterruptedException e) {
 		}
 	}

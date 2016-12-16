@@ -2,9 +2,11 @@ package ltj.message.bo.template;
 	
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
-import ltj.message.bean.*;
+import ltj.message.bean.MessageBean;
 import ltj.vo.template.MsgSourceVo;
 
 public class RenderResponse implements Serializable {
@@ -12,16 +14,16 @@ public class RenderResponse implements Serializable {
 	MsgSourceVo msgSourceVo;
 	String clientId;
 	Timestamp startTime;
-	HashMap<String, RenderVariable> variableFinal;
-	HashMap<String, RenderVariable> variableErrors;
+	Map<String, RenderVariable> variableFinal;
+	Map<String, RenderVariable> variableErrors;
 	MessageBean messageBean;
 
 	RenderResponse(
 			MsgSourceVo msgSourceVo,
 			String clientId,
 			Timestamp startTime,
-			HashMap<String, RenderVariable> variableFinal,
-			HashMap<String, RenderVariable> variableErrors,
+			Map<String, RenderVariable> variableFinal,
+			Map<String, RenderVariable> variableErrors,
 			MessageBean messageBean)
 		{
 			this.msgSourceVo=msgSourceVo;
@@ -84,11 +86,11 @@ public class RenderResponse implements Serializable {
 		return msgSourceVo;
 	}
 
-	public HashMap<String, RenderVariable> getVariableErrors() {
+	public Map<String, RenderVariable> getVariableErrors() {
 		return variableErrors;
 	}
 
-	public HashMap<String, RenderVariable> getVariableFinal() {
+	public Map<String, RenderVariable> getVariableFinal() {
 		return variableFinal;
 	}
 

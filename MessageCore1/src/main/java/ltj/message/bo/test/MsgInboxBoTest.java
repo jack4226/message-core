@@ -8,7 +8,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
@@ -16,7 +15,6 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.vo.inbox.MsgInboxVo;
 
@@ -30,9 +28,7 @@ public class MsgInboxBoTest extends BoTestBase {
 	private MsgOutboxBo msgOutboxBo;
 	@Resource
 	private MessageParser parser;
-	@BeforeClass
-	public static void  MsgInboxBoPrepare() {
-	}
+	
 	@Test
 	public void testMsgInboxBo() {
 		long msgId = 1L;
@@ -42,7 +38,7 @@ public class MsgInboxBoTest extends BoTestBase {
 			if (isDebugEnabled) {
 				logger.debug("MessageBean returned:" + LF + messageBean);
 			}
-			parser.parse(messageBean);
+			String ruleName = parser.parse(messageBean);
 			
 			// build MsgHeader
 			MsgHeader header = new MsgHeader();
@@ -55,13 +51,12 @@ public class MsgInboxBoTest extends BoTestBase {
 			if (isDebugEnabled) {
 				logger.debug("MessageBean After:" + LF + messageBean);
 			}
-			if (messageBean.getRuleName()==null) {
-				messageBean.setRuleName(RuleNameType.GENERIC.toString());
-			}
+			messageBean.setRuleName(ruleName);
 			msgId = msgInboxBo.saveMessage(messageBean);
 			logger.info("msgInboxBo.saveMessage - MsgId returned: " + msgId);
 			MsgInboxVo vo = msgInboxBo.getAllDataByMsgId(msgId);
 			assertNotNull(vo);
+			assertEquals(ruleName, vo.getRuleName());
 		}
 		catch (Exception e) {
 			e.printStackTrace();

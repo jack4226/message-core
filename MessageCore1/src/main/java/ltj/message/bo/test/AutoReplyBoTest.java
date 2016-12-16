@@ -50,7 +50,7 @@ public class AutoReplyBoTest extends BoTestBase {
 	public void test2() { // waitForMailEngine
 		// wait for the MailEngine to add a record to MsgInbox
 		try {
-			Thread.sleep(5 * 1000);
+			Thread.sleep(WaitTimeInMillis);
 		}
 		catch (InterruptedException e) {}
 	}

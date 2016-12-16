@@ -2,20 +2,20 @@ package ltj.message.bo.template;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.HashMap;
+import java.util.Map;
 
 public class RenderRequest implements Serializable {
 	private static final long serialVersionUID = 1682554017067987597L;
 	String msgSourceId;
 	String clientId;
 	Timestamp startTime;
-	HashMap<String, RenderVariable> variableOverrides;
+	Map<String, RenderVariable> variableOverrides;
 
 	public RenderRequest(
 			String msgSourceId,
 			String clientId,
 			Timestamp effectiveDate,
-			HashMap<String, RenderVariable> variableOverrides) {
+			Map<String, RenderVariable> variableOverrides) {
 		this.msgSourceId = msgSourceId;
 		this.clientId = clientId;
 		this.startTime = effectiveDate;
@@ -32,5 +32,9 @@ public class RenderRequest implements Serializable {
 				+ LF);
 		sb.append("VariableOverrides: " + variableOverrides + LF);
 		return sb.toString();
+	}
+	
+	public Map<String, RenderVariable> getVariableOverrides() {
+		return variableOverrides;
 	}
 }

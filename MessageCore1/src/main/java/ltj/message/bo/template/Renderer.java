@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,25 +89,25 @@ public final class Renderer implements java.io.Serializable {
 		return renderer;
 	}
 	
-	public String render(String templateText, HashMap<String, RenderVariable> variables,
-			HashMap<String, RenderVariable> errors) throws DataValidationException, ParseException {
+	public String render(String templateText, Map<String, RenderVariable> variables,
+			Map<String, RenderVariable> errors) throws DataValidationException, ParseException {
 		return renderTemplate(templateText, variables, errors);
 	}
 
-	private String renderTemplate(String templateText, HashMap<String, RenderVariable> variables,
-			HashMap<String, RenderVariable> errors) throws DataValidationException, ParseException {
+	private String renderTemplate(String templateText, Map<String, RenderVariable> variables,
+			Map<String, RenderVariable> errors) throws DataValidationException, ParseException {
 		return renderTemplate(templateText, variables, errors, false);
 	}
 
-	private String renderTemplate(String templateText, HashMap<String, RenderVariable> variables,
-			HashMap<String, RenderVariable> errors, boolean isOptionalSection)
+	private String renderTemplate(String templateText, Map<String, RenderVariable> variables,
+			Map<String, RenderVariable> errors, boolean isOptionalSection)
 			throws DataValidationException, ParseException {
 		return renderTemplate(templateText, variables, errors, isOptionalSection, 0);
 	}
 
 	@SuppressWarnings("unchecked")
-	private String renderTemplate(String templateText, HashMap<String, RenderVariable> variables,
-			HashMap<String, RenderVariable> errors, boolean isOptionalSection, int loopCount)
+	private String renderTemplate(String templateText, Map<String, RenderVariable> variables,
+			Map<String, RenderVariable> errors, boolean isOptionalSection, int loopCount)
 			throws DataValidationException, ParseException {
 		
 		if (templateText==null) {
@@ -158,9 +159,9 @@ public final class Renderer implements java.io.Serializable {
 					if (r != null && r.getVariableValue() != null
 							&& VariableType.COLLECTION.equals(r.getVariableType())
 							&& r.getVariableValue() instanceof Collection) {
-						Collection<HashMap<String, RenderVariable>> c = (Collection<HashMap<String, RenderVariable>>) r.getVariableValue();
-						for (Iterator<HashMap<String, RenderVariable>> it = c.iterator(); it.hasNext();) {
-							HashMap<String, RenderVariable> row = new HashMap<String, RenderVariable>();
+						Collection<Map<String, RenderVariable>> c = (Collection<Map<String, RenderVariable>>) r.getVariableValue();
+						for (Iterator<Map<String, RenderVariable>> it = c.iterator(); it.hasNext();) {
+							Map<String, RenderVariable> row = new HashMap<String, RenderVariable>();
 							row.putAll(variables); // add main variables first
 							row.putAll(it.next());
 							sb.append(renderTemplate(arrayRow, row, errors, isOptionalSection));
@@ -350,7 +351,7 @@ public final class Renderer implements java.io.Serializable {
 			+ "${name4}\n"
 			+ "$EndTemplate\n";
 		
-		HashMap<String, RenderVariable> map=new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> map=new HashMap<String, RenderVariable>();
 		
 		RenderVariable currentDate = new RenderVariable(
 				"CurrentDate", 
@@ -505,12 +506,12 @@ public final class Renderer implements java.io.Serializable {
 				"N", 
 				null
 			);
-		ArrayList<HashMap<String, RenderVariable>> collection = new ArrayList<HashMap<String, RenderVariable>>();
-		HashMap<String, RenderVariable> row1 = new HashMap<String, RenderVariable>(); // a row
+		ArrayList<Map<String, RenderVariable>> collection = new ArrayList<Map<String, RenderVariable>>();
+		Map<String, RenderVariable> row1 = new HashMap<String, RenderVariable>(); // a row
 		row1.put(req2.getVariableName(), req2_row1);
 		row1.put(req3.getVariableName(), req3);
 		collection.add(row1);
-		HashMap<String, RenderVariable> row2 = new HashMap<String, RenderVariable>(); // a row
+		Map<String, RenderVariable> row2 = new HashMap<String, RenderVariable>(); // a row
 		row2.put(req2.getVariableName(), req2_row2);
 		row2.put(req3.getVariableName(), req3);
 		collection.add(row2);
@@ -539,7 +540,7 @@ public final class Renderer implements java.io.Serializable {
 
 		Renderer tmp=new Renderer();
 		try {
-			HashMap<String, RenderVariable> errors = new HashMap<String, RenderVariable>();
+			Map<String, RenderVariable> errors = new HashMap<String, RenderVariable>();
 			String text = tmp.render(tmplt, map, errors);
 			logger.info("++++++++++ Rendered Text++++++++++\n" + text);
 			if (!errors.isEmpty()) {

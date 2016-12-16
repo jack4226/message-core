@@ -36,7 +36,7 @@ public class TaskDispatcherTest extends BoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
 
-	private static String testFromAddress; // = "testfrom@localhost";
+	private static String testFromAddress;
 	private static String mailingListAddr = "demolist1@localhost";
 	
 	@Test
@@ -65,7 +65,7 @@ public class TaskDispatcherTest extends BoTestBase {
 	@Test
 	public void test2() { // wait for 5 seconds
 		try {
-			Thread.sleep(5000L);
+			Thread.sleep(WaitTimeInMillis);
 		} catch (InterruptedException e) {
 			//
 		}

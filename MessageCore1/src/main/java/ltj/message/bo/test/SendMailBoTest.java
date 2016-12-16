@@ -92,7 +92,7 @@ public class SendMailBoTest extends BoTestBase {
 	public void test3() { // waitForMailEngine
 		// wait for the MailEngine to add a record to MsgInbox
 		try {
-			Thread.sleep(5 * 1000);
+			Thread.sleep(WaitTimeInMillis);
 		}
 		catch (InterruptedException e) {}
 	}

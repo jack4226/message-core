@@ -69,6 +69,8 @@ public class BoTestBase {
 	@Resource
 	protected EmailAddrDao emailAddrDao;
 	
+	protected static long WaitTimeInMillis = 2 * 1000L; // 5 * 1000L
+	
 	@BeforeClass
 	public static void prepare() {
 	}

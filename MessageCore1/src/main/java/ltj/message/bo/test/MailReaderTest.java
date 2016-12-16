@@ -37,7 +37,7 @@ public class MailReaderTest extends BoTestBase {
 				}
 				sendNotify("Test MailReader - " + suffix, "Test MailReader Body Message - " + suffix, user);
 			}
-			// TODO implement
+			// TODO verify results
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -59,12 +59,7 @@ public class MailReaderTest extends BoTestBase {
 			}
 			mBean.setSubject(subject + " " + new Date());
 			mBean.setValue(body);
-			if (mSend != null) {
-				mSend.sendMessage(mBean);
-			}
-			else {
-				logger.info("JbMain.sendNotify(): message not sent, mSend not initialized.");
-			}
+			mSend.sendMessage(mBean);
 		}
 		catch (Exception e) {
 			logger.error("Exception caught during sendNotify()", e);
