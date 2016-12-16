@@ -21,7 +21,6 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.smtp.SmtpException;
@@ -102,87 +101,98 @@ public abstract class MailSenderBase {
 	 * @throws SmtpException
 	 * @throws DataValidationException 
 	 */
-	@Transactional
+	//@Transactional
 	public void process(MessageBean msgBean) throws MessagingException, SmtpException,
 			DataValidationException {
 
 		if (msgBean == null) {
 			throw new DataValidationException("Input MessageBean is null");
 		}
-		if (ClientUtil.isTrialPeriodEnded() && !ClientUtil.isProductKeyValid()) {
-			try {
-				Thread.sleep(1000); // delay for 1 second
-			}
-			catch (InterruptedException e) {}
-		}
-		// was the outgoing message rendered?
-		if (msgBean.getRenderId() == null) {
-			logger.warn("process() - Render Id is null, the message was not rendered");
-		}
-		// set rule name to SEND_MAIL
-		msgBean.setRuleName(RuleNameType.SEND_MAIL.toString());
-		clientVo = ClientUtil.getClientVo(msgBean.getClientId());
-		msgBean.setIsReceived(false); // out going message
-		if (msgBean.getEmBedEmailId() == null) { // not provided by calling program
-			// use system default
-			msgBean.setEmBedEmailId(Boolean.valueOf(clientVo.getIsEmbedEmailId()));
-		}
-		getMsgInboxBo().saveMessage(msgBean);
-		// check if VERP is enabled
-		if (clientVo.getIsVerpAddressEnabled()) {
-			// set return path with VERP, msgBean.msgId must be valued.
-			String emailId = EmailIDToken.XHDR_BEGIN + MsgIdCipher.encode(msgBean.getMsgId())
-					+ EmailIDToken.XHDR_END;
-			Address[] addrs = msgBean.getTo();
-			if (addrs == null || addrs.length == 0 || addrs[0] == null) {
-				throw new DataValidationException("TO address is not provided.");
-			}
-			String recipient = EmailAddrUtil.removeDisplayName(addrs[0].toString());
-			if (StringUtil.isEmpty(clientVo.getVerpInboxName())) {
-				throw new DataValidationException("VERP inbox name is blank in Client table.");
-			}
-			String left = clientVo.getVerpInboxName() + "-" + emailId + "-"
-					+ recipient.replaceAll("@", "=");
-			String verpDomain = clientVo.getDomainName();
-			if (!StringUtil.isEmpty(clientVo.getVerpSubDomain())) {
-				verpDomain = clientVo.getVerpSubDomain() + "." + verpDomain;
-			}
-			msgBean.setReturnPath("<" + left + "@" + verpDomain + ">");
-			// set List-Unsubscribe VERP header
-			if (!StringUtil.isEmpty(msgBean.getMailingListId())) {
-				if (StringUtil.isEmpty(clientVo.getVerpRemoveInbox())) {
-					throw new DataValidationException("VERP remove inbox is blank in Client table.");
-				}
-				left = clientVo.getVerpRemoveInbox() + "-" + msgBean.getMailingListId() + "-"
-						+ recipient.replaceAll("@", "=");
-				MsgHeader header = new MsgHeader();
-				header.setName("List-Unsubscribe");
-				header.setValue("<mailto:" + left + "@" + verpDomain + ">");
-				msgBean.getHeaders().add(header);
-			}
-		}
-		// build a MimeMessage from the MessageBean
-		javax.mail.Message mimeMsg = MessageBeanUtil.createMimeMessage(msgBean);
-		// override mimeMessage.TO with test address if this is a test run
-		rebuildAddresses(mimeMsg, msgBean.getOverrideTestAddr());
-		// send the message off
-		Map<String, Address[]> errors = new HashMap<String, Address[]>();
+		
 		try {
-			sendMail(mimeMsg, msgBean.isUseSecureServer(), errors);
-			/* Update message delivery status */
-			updateMsgStatus(msgBean.getMsgId());
-		}
-		catch (SendFailedException sfex) {
-			// failed to send the message to certain recipients
-			logger.error("SendFailedException caught: " + sfex);
-			updtDlvrStatAndLoopback(msgBean, sfex, errors);
-			if (errors.containsKey("validSent")) {
-				sendDeliveryReport(msgBean);
+			SpringUtil.beginTransaction();
+			
+			if (ClientUtil.isTrialPeriodEnded() && !ClientUtil.isProductKeyValid()) {
+				try {
+					Thread.sleep(1000); // delay for 1 second
+				}
+				catch (InterruptedException e) {}
 			}
+			// was the outgoing message rendered?
+			if (msgBean.getRenderId() == null) {
+				logger.warn("process() - Render Id is null, the message was not rendered");
+			}
+			// set rule name to SEND_MAIL
+			msgBean.setRuleName(RuleNameType.SEND_MAIL.toString());
+			clientVo = ClientUtil.getClientVo(msgBean.getClientId());
+			msgBean.setIsReceived(false); // out going message
+			if (msgBean.getEmBedEmailId() == null) { // not provided by calling program
+				// use system default
+				msgBean.setEmBedEmailId(Boolean.valueOf(clientVo.getIsEmbedEmailId()));
+			}
+			getMsgInboxBo().saveMessage(msgBean);
+			// check if VERP is enabled
+			if (clientVo.getIsVerpAddressEnabled()) {
+				// set return path with VERP, msgBean.msgId must be valued.
+				String emailId = EmailIDToken.XHDR_BEGIN + MsgIdCipher.encode(msgBean.getMsgId())
+						+ EmailIDToken.XHDR_END;
+				Address[] addrs = msgBean.getTo();
+				if (addrs == null || addrs.length == 0 || addrs[0] == null) {
+					throw new DataValidationException("TO address is not provided.");
+				}
+				String recipient = EmailAddrUtil.removeDisplayName(addrs[0].toString());
+				if (StringUtil.isEmpty(clientVo.getVerpInboxName())) {
+					throw new DataValidationException("VERP inbox name is blank in Client table.");
+				}
+				String left = clientVo.getVerpInboxName() + "-" + emailId + "-"
+						+ recipient.replaceAll("@", "=");
+				String verpDomain = clientVo.getDomainName();
+				if (!StringUtil.isEmpty(clientVo.getVerpSubDomain())) {
+					verpDomain = clientVo.getVerpSubDomain() + "." + verpDomain;
+				}
+				msgBean.setReturnPath("<" + left + "@" + verpDomain + ">");
+				// set List-Unsubscribe VERP header
+				if (!StringUtil.isEmpty(msgBean.getMailingListId())) {
+					if (StringUtil.isEmpty(clientVo.getVerpRemoveInbox())) {
+						throw new DataValidationException("VERP remove inbox is blank in Client table.");
+					}
+					left = clientVo.getVerpRemoveInbox() + "-" + msgBean.getMailingListId() + "-"
+							+ recipient.replaceAll("@", "=");
+					MsgHeader header = new MsgHeader();
+					header.setName("List-Unsubscribe");
+					header.setValue("<mailto:" + left + "@" + verpDomain + ">");
+					msgBean.getHeaders().add(header);
+				}
+			}
+			// build a MimeMessage from the MessageBean
+			javax.mail.Message mimeMsg = MessageBeanUtil.createMimeMessage(msgBean);
+			// override mimeMessage.TO with test address if this is a test run
+			rebuildAddresses(mimeMsg, msgBean.getOverrideTestAddr());
+			// send the message off
+			Map<String, Address[]> errors = new HashMap<String, Address[]>();
+			try {
+				sendMail(mimeMsg, msgBean.isUseSecureServer(), errors);
+				/* Update message delivery status */
+				updateMsgStatus(msgBean.getMsgId());
+			}
+			catch (SendFailedException sfex) {
+				// failed to send the message to certain recipients
+				logger.error("SendFailedException caught: " + sfex);
+				updtDlvrStatAndLoopback(msgBean, sfex, errors);
+				if (errors.containsKey("validSent")) {
+					sendDeliveryReport(msgBean);
+				}
+			}
+			// save message raw stream to database
+			if (msgBean.getSaveMsgStream()) {
+				saveMsgStream(mimeMsg, msgBean.getMsgId());
+			}
+			
+			SpringUtil.commitTransaction();
 		}
-		// save message raw stream to database
-		if (msgBean.getSaveMsgStream()) {
-			saveMsgStream(mimeMsg, msgBean.getMsgId());
+		catch (MessagingException | SmtpException | DataValidationException e) {
+			SpringUtil.rollbackTransaction();
+			throw e;
 		}
 	}
 	
@@ -195,25 +205,30 @@ public abstract class MailSenderBase {
 	 * @throws SmtpException
 	 * @throws DataValidationException 
 	 */
-	@Transactional
+	//@Transactional
 	public void process(byte[] msgStream) throws MessagingException, SmtpException,
 			DataValidationException {
 
-		javax.mail.Message mimeMsg = MessageBeanUtil.createMimeMessage(msgStream);
-		
-		/*
-		 * In order to save the message to database, a MessageBean is required
-		 * by saveMessage method. So first we convert the JavaMail message to a
-		 * MessageBean and save it. Second we convert the MessageBean back to
-		 * JavaMail message again and send it off (as an Email_Id may have been
-		 * added to the message body and X-header).
-		 */
-		// convert the JavaMail message to a MessageBean
-		MessageBean msgBean = MessageBeanBuilder.processPart(mimeMsg, null);
-		// convert extra mimeMessage headers
-		addXHeadersToBean(msgBean, mimeMsg);
-		// save the message and send it off
-		process(msgBean);
+		try {
+			javax.mail.Message mimeMsg = MessageBeanUtil.createMimeMessage(msgStream);
+			
+			/*
+			 * In order to save the message to database, a MessageBean is required
+			 * by saveMessage method. So first we convert the JavaMail message to a
+			 * MessageBean and save it. Second we convert the MessageBean back to
+			 * JavaMail message again and send it off (as an Email_Id may have been
+			 * added to the message body and X-header).
+			 */
+			// convert the JavaMail message to a MessageBean
+			MessageBean msgBean = MessageBeanBuilder.processPart(mimeMsg, null);
+			// convert extra mimeMessage headers
+			addXHeadersToBean(msgBean, mimeMsg);
+			// save the message and send it off
+			process(msgBean);
+		}
+		catch (MessagingException | SmtpException | DataValidationException e) {
+			throw e;
+		}
 	}
 	
 	private void addXHeadersToBean(MessageBean msgBean, javax.mail.Message mimeMsg)
