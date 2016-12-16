@@ -35,11 +35,10 @@ public class MailReaderReply {
 	 *            body
 	 * @return reply message
 	 * @throws MessagingException
-	 * @throws IOException
 	 * @throws ParserException 
 	 */
 	public Message composeReply(Message msg, String body, String contentType)
-			throws MessagingException, IOException {
+			throws MessagingException {
 		String LF = System.getProperty("line.separator","\n");
 		// return the mail
 		MimeMessage reply = (MimeMessage)msg.reply(false);	// reply to sender only
@@ -105,8 +104,13 @@ public class MailReaderReply {
 		if (body.length() > 10 * 1024) { // allow up to 10k to be attached
 			body = body.substring(0, 10 * 1024) + LF + Constants.MESSAGE_TRUNCATED;
 		}
-		ByteArrayDataSource bads = new ByteArrayDataSource(rfc822Str + body, "message/rfc822");
-		mbp2.setDataHandler(new DataHandler(bads));
+		ByteArrayDataSource bads;
+		try {
+			bads = new ByteArrayDataSource(rfc822Str + body, "message/rfc822");
+			mbp2.setDataHandler(new DataHandler(bads));
+		} catch (IOException e) {
+			logger.error("IOException caught, ignore.", e);			
+		}
 		//mbp2.setContent(rfc822Str + body, "message/rfc822");
 		
 		Multipart mp = new MimeMultipart("mixed");

@@ -21,6 +21,7 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.smtp.SmtpException;
@@ -98,12 +99,12 @@ public abstract class MailSenderBase {
 	 * @param msgBean -
 	 *            a MessageBean object
 	 * @throws MessagingException
-	 * @throws IOException
 	 * @throws SmtpException
 	 * @throws InterruptedException
 	 * @throws DataValidationException 
 	 */
-	public void process(MessageBean msgBean) throws MessagingException, IOException, SmtpException,
+	@Transactional
+	public void process(MessageBean msgBean) throws MessagingException, SmtpException,
 			InterruptedException, DataValidationException {
 
 		if (msgBean == null) {
@@ -192,12 +193,12 @@ public abstract class MailSenderBase {
 	 * @param msgStream -
 	 *            an email raw stream
 	 * @throws MessagingException
-	 * @throws IOException
 	 * @throws SmtpException
 	 * @throws InterruptedException
 	 * @throws DataValidationException 
 	 */
-	public void process(byte[] msgStream) throws MessagingException, IOException, SmtpException,
+	@Transactional
+	public void process(byte[] msgStream) throws MessagingException, SmtpException,
 			InterruptedException, DataValidationException {
 
 		javax.mail.Message mimeMsg = MessageBeanUtil.createMimeMessage(msgStream);
@@ -380,10 +381,8 @@ public abstract class MailSenderBase {
 	 * @param msgId -
 	 *            primary key of the database table.
 	 * @throws MessagingException
-	 * @throws IOException
 	 */
-	protected void saveMsgStream(javax.mail.Message msg, long msgId) throws MessagingException,
-			IOException {
+	protected void saveMsgStream(javax.mail.Message msg, long msgId) throws MessagingException {
 		if (isDebugEnabled)
 			logger.debug("saveMsgStream() - msgId: " + msgId);
 		MsgInboxVo msgInboxVo = getMsgInboxDao().getByPrimaryKey(msgId);
@@ -405,9 +404,13 @@ public abstract class MailSenderBase {
 		}
 		msgStreamVo.setMsgSubject(msg.getSubject());
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		msg.writeTo(baos);
-		msgStreamVo.setMsgStream(baos.toByteArray());
-		getMsgStreamDao().insert(msgStreamVo);
+		try {
+			msg.writeTo(baos);
+			msgStreamVo.setMsgStream(baos.toByteArray());
+			getMsgStreamDao().insert(msgStreamVo);
+		} catch (IOException e) {
+			logger.error("IOException caught, ignored", e);
+		}
 	}
 	
 	/**
@@ -422,11 +425,10 @@ public abstract class MailSenderBase {
 	 *            error map
 	 * @throws InterruptedException
 	 * @throws SmtpException
-	 * @throws IOException
 	 * @throws MessagingException
 	 */
 	public void updtDlvrStatAndLoopback(MessageBean msgBean, SendFailedException exp,
-			Map<String, ?> errors) throws MessagingException, IOException {
+			Map<String, ?> errors) throws MessagingException {
 		if (errors.get("validUnsent") != null) {
 			Address[] validUnsent = (Address[]) errors.get("validUnsent");
 			validUnsent(msgBean, exp, validUnsent);
@@ -438,7 +440,7 @@ public abstract class MailSenderBase {
 	}
 
 	protected void validUnsent(MessageBean msgBean, SendFailedException exp, Address[] validUnsent)
-			throws MessagingException, IOException {
+			throws MessagingException {
 		
 		MsgInboxVo msgInboxVo = getMsgInboxDao().getByPrimaryKey(msgBean.getMsgId());
 		if (msgInboxVo == null) {
@@ -469,7 +471,7 @@ public abstract class MailSenderBase {
 	}
 	
 	protected void invalid(MessageBean msgBean, SendFailedException exp, Address[] invalid)
-			throws MessagingException, IOException {
+			throws MessagingException {
 		
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgBean.getMsgId());
 		if (msgInboxVo == null) {
@@ -553,13 +555,12 @@ public abstract class MailSenderBase {
 	 *            error text
 	 * @param reason -
 	 *            DSN reason code
-	 * @throws IOException
 	 * @throws MessagingException
 	 * @throws DataValidationException 
 	 * @throws JMSException 
 	 */
 	protected void loopbackMail(MessageBean msgBean, String errmsg, Address failedAddr,
-			String reason) throws MessagingException, IOException, DataValidationException,
+			String reason) throws MessagingException, DataValidationException,
 			JMSException {
 		
 		logger.info("Entering LoopbackMail method, error message: " + errmsg);
@@ -599,12 +600,11 @@ public abstract class MailSenderBase {
 	 * @param errors -
 	 *            any errors from the SMTP server
 	 * @throws MessagingException
-	 * @throws IOException
 	 * @throws SmtpException
 	 * @throws InterruptedException
 	 */
 	public abstract void sendMail(Message msg, boolean isSecure, Map<String, Address[]> errors)
-		throws MessagingException, IOException, SmtpException, InterruptedException;
+		throws MessagingException, SmtpException, InterruptedException;
 
 	/**
 	 * send the email off via unsecured SMTP server. to be implemented by

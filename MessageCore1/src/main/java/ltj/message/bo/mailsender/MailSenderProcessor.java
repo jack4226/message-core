@@ -1,7 +1,6 @@
 package ltj.message.bo.mailsender;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
@@ -57,13 +56,12 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 	 * 
 	 * @param req -
 	 *            a JMS message
-	 * @throws IOException 
 	 * @throws JMSException 
 	 * @throws InterruptedException 
 	 * @throws SmtpException 
 	 * @throws MessagingException 
 	 */
-	public void process(Object req) throws IOException, JMSException, MessagingException,
+	public void process(Object req) throws JMSException, MessagingException,
 			SmtpException, InterruptedException {
 		if (req == null) {
 			logger.error("a null request was received.");
@@ -205,7 +203,7 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 	 * @throws MessagingException
 	 */
 	public void sendMail(javax.mail.Message msg, boolean isSecure, Map<String, Address[]> errors)
-			throws MessagingException, IOException, SmtpException, InterruptedException {
+			throws MessagingException, SmtpException, InterruptedException {
 		NamedPools smtp = SmtpWrapperUtil.getSmtpNamedPools();
 		NamedPools secu = SmtpWrapperUtil.getSecuNamedPools();
 		/* Send Message */

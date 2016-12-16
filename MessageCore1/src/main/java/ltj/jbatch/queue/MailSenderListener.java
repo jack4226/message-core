@@ -1,7 +1,6 @@
 package ltj.jbatch.queue;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
@@ -51,9 +50,6 @@ public class MailSenderListener implements MessageListener {
 					} catch (MessagingException e) {
 						logger.error("onMessage() - MessageFormatException caught", e);
 						jmsProcessor.writeMsg(messageBean, JmsMessageId, true);
-					} catch (IOException e) {
-						logger.error("onMessage() - IOException caught", e);
-						jmsProcessor.writeMsg(messageBean, JmsMessageId, true);
 					} catch (DataValidationException e) {
 						logger.error("onMessage() - DataValidationException caught", e);
 						jmsProcessor.writeMsg(messageBean, JmsMessageId, true);
@@ -79,9 +75,6 @@ public class MailSenderListener implements MessageListener {
 					mailSenderBo.process(mailStream);
 				} catch (MessagingException e) {
 					logger.error("onMessage() - MessageFormatException caught", e);
-					jmsProcessor.writeMsg(mailStream, JmsMessageId, true);
-				} catch (IOException e) {
-					logger.error("onMessage() - IOException caught", e);
 					jmsProcessor.writeMsg(mailStream, JmsMessageId, true);
 				} catch (DataValidationException e) {
 					logger.error("onMessage() - DataValidationException caught", e);

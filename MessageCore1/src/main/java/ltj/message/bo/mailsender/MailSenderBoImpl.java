@@ -1,6 +1,5 @@
 package ltj.message.bo.mailsender;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.mail.Address;
@@ -45,7 +44,7 @@ public class MailSenderBoImpl extends MailSenderBase {
 	 * @throws MessagingException
 	 */
 	public void sendMail(javax.mail.Message msg, boolean isSecure, Map<String, Address[]> errors)
-			throws MessagingException, IOException, SmtpException, InterruptedException {
+			throws MessagingException, SmtpException, InterruptedException {
 		NamedPools smtp = SmtpWrapperUtil.getSmtpNamedPools();
 		NamedPools secu = SmtpWrapperUtil.getSecuNamedPools();
 		/* Send the Message */

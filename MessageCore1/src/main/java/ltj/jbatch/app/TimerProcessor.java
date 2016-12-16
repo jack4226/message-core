@@ -1,8 +1,7 @@
 package ltj.jbatch.app;
 
-import java.io.IOException;
-
 import javax.jms.JMSException;
+import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 
@@ -23,7 +22,7 @@ public class TimerProcessor extends RunnableProcessor {
 		logger.info("Entering Constructor...");
 	}
 
-	public void process(Object req) throws JMSException, IOException {
+	public void process(Object req) throws JMSException, MessagingException {
 		logger.info("Entering process() method...");
 		if (req == null) {
 			logger.warn("request object is null.");
@@ -37,7 +36,7 @@ public class TimerProcessor extends RunnableProcessor {
 			}
 			catch (Exception e) {
 				logger.error("Exception caught", e);
-				throw new IOException(e.toString());
+				throw new MessagingException(e.toString());
 			}
 		}
 		else {

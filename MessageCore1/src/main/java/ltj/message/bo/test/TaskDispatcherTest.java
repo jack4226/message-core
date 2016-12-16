@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
@@ -24,6 +25,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
 
+@FixMethodOrder
 public class TaskDispatcherTest extends BoTestBase {
 	@Resource
 	private TaskDispatcher dispr;
@@ -34,12 +36,12 @@ public class TaskDispatcherTest extends BoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
 
-	private String testFromAddress; // = "testfrom@localhost";
-	private String mailingListAddr = "demolist1@localhost";
+	private static String testFromAddress; // = "testfrom@localhost";
+	private static String mailingListAddr = "demolist1@localhost";
 	
 	@Test
 	@Rollback(value=false)
-	public void testTaskScheduler() throws Exception {
+	public void test1() throws Exception { // testTaskScheduler
 		assertNotNull(dispr);
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		
@@ -58,11 +60,19 @@ public class TaskDispatcherTest extends BoTestBase {
 		
 		dispr.dispatchTasks(messageBean);
 		// TODO verify results
-		Thread.sleep(5000L);
-		verifyDataRecord();
 	}
 	
-	private void verifyDataRecord() {
+	@Test
+	public void test2() { // wait for 5 seconds
+		try {
+			Thread.sleep(5000L);
+		} catch (InterruptedException e) {
+			//
+		}
+	}
+	
+	@Test
+	public void test3() { // verifyDataRecord
 		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);
 		assertNotNull(addrVo);
 		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);

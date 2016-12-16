@@ -1,6 +1,5 @@
 package ltj.message.bo.mailreader;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -203,10 +202,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 			logger.fatal("JMSException caught, exiting...", e);
 			throw new RuntimeException(e.getMessage());
 		}
-		catch (IOException e) {
-			logger.fatal("IOException caught, exiting...", e);
-			throw new RuntimeException(e.getMessage());
-		}
 		finally {
 			try {
 				if (folder != null && folder.isOpen()) {
@@ -221,7 +216,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		logger.info("MailReader thread " + Thread.currentThread().getName() + " ended");
 	}
 	
-	public void process(Object req) throws IOException, JMSException, MessagingException {
+	public void process(Object req) throws JMSException, MessagingException {
 		// dummy method to satisfy super class
 	}
 	
@@ -232,13 +227,12 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 *            true if called from EJBTimer
 	 * @throws MessagingException
 	 * @throws JMSException
-	 * @throws IOException
 	 * @throws ExecutionException
 	 * @throws InterruptedException
 	 * @throws DataValidationException
 	 */
 	public void readMail(boolean fromTimer)
-			throws MessagingException, IOException, JMSException, DataValidationException {
+			throws MessagingException, JMSException, DataValidationException {
 		session.setDebug(true); // DON'T CHANGE THIS
 		if (fromTimer) {
 			MESSAGE_COUNT = 500; // not to starve other mailbox readers
@@ -296,7 +290,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		}
 	} // end of run()
 
-	private void pop3(boolean fromTimer) throws MessagingException, IOException, JMSException {
+	private void pop3(boolean fromTimer) throws MessagingException, JMSException {
 		final String _user = mailBoxVo.getUserId();
 		final String _host = mailBoxVo.getHostName();
 		final String _folder = mailBoxVo.getFolderName();
@@ -403,7 +397,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		} while (keepRunning); // end of do-while
 	}
 	
-	private void imap(boolean fromTimer) throws MessagingException, IOException, JMSException {
+	private void imap(boolean fromTimer) throws MessagingException, JMSException {
 		boolean keepRunning = true;
 		folder.open(Folder.READ_WRITE);
 		/*
@@ -473,10 +467,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 					logger.fatal("JMSException caught", ex);
 					throw new RuntimeException(ex.getMessage());
 				}
-				catch (IOException ex) {
-					logger.fatal("IOException caught", ex);
-					throw new RuntimeException(ex.getMessage());
-				}
 				finally {
 					long proc_time = System.currentTimeMillis() - start_tms;
 					if (isDebugEnabled) {
@@ -504,17 +494,26 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @throws InterruptedException
 	 * @throws MessagingException
 	 * @throws JMSException
-	 * @throws IOException
 	 */
-	private void execute(Message[] msgs) throws IOException, JMSException, MessagingException {
+	//@Transactional
+	private void execute(Message[] msgs) throws JMSException, MessagingException {
 		if (msgs == null || msgs.length == 0) {
 			return;
 		}
-		JmsProcessor jmsProcessor = SpringUtil.getAppContext().getBean(JmsProcessor.class);
-		jmsProcessor.setQueueName("mailReaderOutput"); // TODO get from properties
-		DuplicateCheckDao duplicateCheck = SpringUtil.getAppContext().getBean(DuplicateCheckDao.class);
-		MailProcessor processor = new MailProcessor(jmsProcessor, mailBoxVo, duplicateCheck);
-		processor.process(msgs);
+		try {
+			SpringUtil.beginTransaction();
+			
+			JmsProcessor jmsProcessor = SpringUtil.getAppContext().getBean(JmsProcessor.class);
+			jmsProcessor.setQueueName("mailReaderOutput"); // TODO get from properties
+			DuplicateCheckDao duplicateCheck = SpringUtil.getAppContext().getBean(DuplicateCheckDao.class);
+			MailProcessor processor = new MailProcessor(jmsProcessor, mailBoxVo, duplicateCheck);
+			processor.process(msgs);
+			
+			SpringUtil.commitTransaction();
+		}
+		catch (JMSException | MessagingException e) {
+			SpringUtil.rollbackTransaction();
+		}
 	}
 	
 	/**

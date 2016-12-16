@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
@@ -23,6 +24,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
 
+@FixMethodOrder
 public class EmailSubscribeTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(EmailSubscribeTest.class);
 	@Resource
@@ -32,11 +34,11 @@ public class EmailSubscribeTest extends BoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
 	
-	private String testFromAddress; // = "testfrom@localhost";
-	private String mailingListAddr = "demolist1@localhost";
+	private static String testFromAddress; // = "testfrom@localhost";
+	private static String mailingListAddr = "demolist1@localhost";
 
 	@Test
-	public void testSendNotify() {
+	public void test1() {
 		
 		String digits = StringUtils.leftPad("" + new Random().nextInt(1000), 4, "0");
 		testFromAddress = "sbsr" + digits + "@localhost";
@@ -45,13 +47,30 @@ public class EmailSubscribeTest extends BoTestBase {
 			sendNotify("subscribe", "Test Subscription Body Message", mailingListAddr);
 			//sendNotify("unsubscribe", "Test Subscription Body Message", mailingListAddr);
 			// TODO verify results
-			Thread.sleep(60000L);
-			verifyDataRecord();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			fail();
 		}
+	}
+	
+	@Test
+	public void test2() {
+		try {
+			Thread.sleep(60000L);
+		} catch (InterruptedException e) {
+		}
+	}
+	
+	@Test
+	public void test3() { // verifyDataRecord
+		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);
+		assertNotNull(addrVo);
+		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);
+		assertTrue(list.size()>0);
+		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
+		assertNotNull(vo);
+		assertEquals(Constants.YES_CODE, vo.getSubscribed());
 	}
 	
 	void sendNotify(String subject, String body, String user) {
@@ -66,26 +85,11 @@ public class EmailSubscribeTest extends BoTestBase {
 			}
 			mBean.setSubject(subject);
 			mBean.setValue(body + " " + new Date());
-			if (mSend != null) {
-				mSend.sendMessage(mBean);
-			}
-			else {
-				logger.info("JbMain.sendNotify(): message not sent, mSend not initialized.");
-			}
+			mSend.sendMessage(mBean);
 		}
 		catch (Exception e) {
 			logger.error("Exception caught during sendNotify()", e);
 		}
-	}
-	
-	private void verifyDataRecord() {
-		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);
-		assertNotNull(addrVo);
-		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);
-		assertTrue(list.size()>0);
-		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
-		assertNotNull(vo);
-		assertEquals(Constants.YES_CODE, vo.getSubscribed());
 	}
 
 }

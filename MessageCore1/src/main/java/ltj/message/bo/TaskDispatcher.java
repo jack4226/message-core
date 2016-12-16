@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
@@ -47,66 +46,77 @@ public class TaskDispatcher {
 	public TaskDispatcher() {
 	}
 	
-	@Transactional
+	//@org.springframework.transaction.annotation.Transactional
 	public void dispatchTasks(MessageBean msgBean) throws DataValidationException,
 			MessagingException, JMSException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering dispatchTasks() method. MessageBean:" + LF + msgBean);
+		}
 		if (msgBean.getRuleName() == null) {
 			throw new DataValidationException("RuleName is not valued");
 		}
 		
-		List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null, msgBean.getClientId());
-		if (actions == null || actions.isEmpty()) {
-			// actions not defined, save the message.
-			String processBeanId = "saveBo";
-			logger.warn("dispatchTasks() - No Actions found for ruleName: " + msgBean.getRuleName()
-					+ ", ProcessBeanId [0]: " + processBeanId);
-			TaskBaseBo bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
-			bo.process(msgBean);
-			return;
-		}
-		for (int i = 0; i < actions.size(); i++) {
-			MsgActionVo msgActionVo = actions.get(i);
-			TaskBaseBo bo = null;
-			String processClassName = msgActionVo.getProcessClassName();
-			if (StringUtils.isNotBlank(processClassName)) {
-				// use process class
-				logger.info("dispatchTasks() - ProcessClassName [" + i + "]: " + processClassName);
-				try {
-					bo = (TaskBaseBo) Class.forName(processClassName).newInstance();
-				}
-				catch (ClassNotFoundException e) {
-					logger.error("ClassNotFoundException caught", e);
-					throw new DataValidationException(e.getMessage());
-				}
-				catch (InstantiationException e) {
-					logger.error("InstantiationException caught", e);
-					throw new DataValidationException(e.getMessage());
-				}
-				catch (IllegalAccessException e) {
-					logger.error("IllegalAccessException caught", e);
-					throw new DataValidationException(e.getMessage());
-				}
+		SpringUtil.beginTransaction();
+		
+		try{
+			List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null, msgBean.getClientId());
+			if (actions == null || actions.isEmpty()) {
+				// actions not defined, save the message.
+				String processBeanId = "saveBo";
+				logger.warn("dispatchTasks() - No Actions found for ruleName: " + msgBean.getRuleName()
+						+ ", ProcessBeanId [0]: " + processBeanId);
+				TaskBaseBo bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
+				bo.process(msgBean);
+				return;
 			}
-			else { // use process bean
-				String processBeanId = msgActionVo.getProcessBeanId();
-				logger.info("dispatchTasks() - ProcessBeanId [" + i + "]: " + processBeanId);
-				bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
+			for (int i = 0; i < actions.size(); i++) {
+				MsgActionVo msgActionVo = actions.get(i);
+				TaskBaseBo bo = null;
+				String processClassName = msgActionVo.getProcessClassName();
+				if (StringUtils.isNotBlank(processClassName)) {
+					// use process class
+					logger.info("dispatchTasks() - ProcessClassName [" + i + "]: " + processClassName);
+					try {
+						bo = (TaskBaseBo) Class.forName(processClassName).newInstance();
+					}
+					catch (ClassNotFoundException e) {
+						logger.error("ClassNotFoundException caught", e);
+						throw new DataValidationException(e.getMessage());
+					}
+					catch (InstantiationException e) {
+						logger.error("InstantiationException caught", e);
+						throw new DataValidationException(e.getMessage());
+					}
+					catch (IllegalAccessException e) {
+						logger.error("IllegalAccessException caught", e);
+						throw new DataValidationException(e.getMessage());
+					}
+				}
+				else { // use process bean
+					String processBeanId = msgActionVo.getProcessBeanId();
+					logger.info("dispatchTasks() - ProcessBeanId [" + i + "]: " + processBeanId);
+					bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
+				}
+				/*
+				 * retrieve arguments
+				 */
+				if (msgActionVo.getDataTypeValues() != null) {
+					bo.setTaskArguments(msgActionVo.getDataTypeValues());
+				}
+				else {
+					bo.setTaskArguments(null);
+				}
+				// TODO set queue name for jmsProcessor
+				//bo.getJmsProcessor().setQueueName("");
+				// invoke the processor
+				bo.process(msgBean);
 			}
-			/*
-			 * retrieve arguments
-			 */
-			if (msgActionVo.getDataTypeValues() != null) {
-				bo.setTaskArguments(msgActionVo.getDataTypeValues());
-			}
-			else {
-				bo.setTaskArguments(null);
-			}
-			// TODO set queue name for jmsProcessor
-			//bo.getJmsProcessor().setQueueName("");
-			// invoke the processor
-			bo.process(msgBean);
+			
+			SpringUtil.commitTransaction();
+			
+		} catch (DataValidationException | MessagingException | JMSException e) {
+			SpringUtil.rollbackTransaction();
+			throw e;
 		}
 	}
 

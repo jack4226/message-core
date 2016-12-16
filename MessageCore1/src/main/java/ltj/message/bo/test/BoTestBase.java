@@ -2,7 +2,6 @@ package ltj.message.bo.test;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,13 +89,8 @@ public class BoTestBase {
 	}
 
 	protected MessageBean createMessageBean(Message msg) throws MessagingException {
-		try {
-			MessageBean msgBean = MessageBeanBuilder.processPart(msg, null);
-			return msgBean;
-		}
-		catch (IOException e) {
-			throw new MessagingException(e.toString());
-		}
+		MessageBean msgBean = MessageBeanBuilder.processPart(msg, null);
+		return msgBean;
 	}
 	
 	protected MessageBean buildMessageBeanFromMsgStream() throws Exception {

@@ -524,7 +524,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	}
 
 	public int insert(EmailAddrVo emailAddrVo) {
-		return insert(emailAddrVo, false);
+		return insert(emailAddrVo, true);
 	}
 
 	/*

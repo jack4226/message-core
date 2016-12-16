@@ -12,6 +12,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
+import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 
@@ -33,7 +34,7 @@ public class TestProcessor extends RunnableProcessor {
 		logger.info("Entering Constructor...");
 	}
 
-	public void process(Object req) throws JMSException, IOException {
+	public void process(Object req) throws JMSException, MessagingException {
 		logger.info("Entering process() method...");
 		if (req == null) {
 			logger.warn("request object is null.");
@@ -80,8 +81,8 @@ public class TestProcessor extends RunnableProcessor {
 				try {
 					processSocket(skt);
 				}
-				catch (InterruptedException e) {
-					throw new IOException("InterruptedException caught, " + e);
+				catch (Exception e) {
+					throw new MessagingException("InterruptedException caught, " + e);
 				}
 			}
 		}

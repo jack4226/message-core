@@ -142,13 +142,7 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 		Message msg = null;
 		byte[] stream = (byte[]) messageBean.getHashMap().get(MessageBeanBuilder.MSG_RAW_STREAM);
 		if (stream == null) { // just for safety
-			try {
-				msg = MessageBeanUtil.createMimeMessage(messageBean);
-			}
-			catch (IOException e) {
-				logger.error("IOException caught", e);
-				throw new MessagingException("IOException caught, " + e);
-			}
+			msg = MessageBeanUtil.createMimeMessage(messageBean);
 		}
 		else {
 			msg = MessageBeanUtil.createMimeMessage(stream);

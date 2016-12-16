@@ -1,6 +1,5 @@
 package ltj.jbatch.app;
 
-import java.io.IOException;
 import java.lang.Object;
 
 import javax.jms.JMSException;
@@ -45,5 +44,5 @@ public abstract class RunnableProcessor implements Processor, Runnable {
 	 * @param req -
 	 *            request
 	 */
-	public abstract void process(Object req) throws IOException, JMSException, MessagingException;
+	public abstract void process(Object req) throws JMSException, MessagingException;
 }

@@ -56,10 +56,8 @@ public final class MessageBeanUtil {
 	 *            a MessageBean object
 	 * @return JavaMail Message
 	 * @throws MessagingException
-	 * @throws IOException 
 	 */
-	public static Message createMimeMessage(MessageBean msgBean) throws MessagingException,
-			IOException {
+	public static Message createMimeMessage(MessageBean msgBean) throws MessagingException {
 		javax.mail.Session session = Session.getDefaultInstance(System.getProperties());
 		if (debugSession)
 			session.setDebug(true);
@@ -234,8 +232,8 @@ public final class MessageBeanUtil {
 			MessageBean msgBean = MessageBeanBuilder.processPart(msg, null);
 			return msgBean;
 		}
-		catch (IOException e) {
-			logger.error("IOException caught", e);
+		catch (Exception e) {
+			logger.error("Exception caught", e);
 			throw new MessagingException(e.toString());
 		}
 	}
@@ -275,7 +273,7 @@ public final class MessageBeanUtil {
 	}
 	
 	private static void constructMultiPart(Multipart mp, BodypartBean aNode, int level)
-			throws MessagingException, IOException {
+			throws MessagingException {
 		
 		if (isDebugEnabled) {
 			logger.debug("constructMultiPart() - MultipartHL - " + StringUtil.getDots(level)
@@ -314,7 +312,7 @@ public final class MessageBeanUtil {
 	}
 	
 	private static void constructSinglePart(Part part, BodypartBean aNode, int level)
-			throws MessagingException, IOException {
+			throws MessagingException {
 		// Set All Headers
 		List<MsgHeader> headers = aNode.getHeaders();
 		if (headers != null) {
@@ -366,11 +364,9 @@ public final class MessageBeanUtil {
 	 * @param loopbackText -
 	 *            loop-back message text
 	 * @throws MessagingException
-	 * @throws IOException
-	 *             from ByteArrayDataSource
 	 */
 	public static Message createMimeMessage(MessageBean msgBean, Address failedAddr,
-			String loopbackText) throws MessagingException, IOException {
+			String loopbackText) throws MessagingException {
 		if (isDebugEnabled)
 			logger.debug("Entering createMimeMessage() for email loopback");
 		javax.mail.Session session = Session.getDefaultInstance(System.getProperties());
@@ -447,10 +443,15 @@ public final class MessageBeanUtil {
 
 		MimeBodyPart mbp2 = new MimeBodyPart();
 		mbp2.setDisposition(Part.INLINE);
-		ByteArrayDataSource bads = new ByteArrayDataSource(rfc822Str + body, "message/rfc822");
-		mbp2.setDataHandler(new DataHandler(bads));
-		mp.addBodyPart(mbp2);
-		msg.saveChanges();
+		ByteArrayDataSource bads;
+		try {
+			bads = new ByteArrayDataSource(rfc822Str + body, "message/rfc822");
+			mbp2.setDataHandler(new DataHandler(bads));
+			mp.addBodyPart(mbp2);
+			msg.saveChanges();
+		} catch (IOException e) { // should never happen
+			logger.error("IOException caught, ignored", e);
+		}
 
 		return msg;
 	}
@@ -459,7 +460,7 @@ public final class MessageBeanUtil {
 	 * a code sample for constructing a multipart/related message
 	 */
 	static void constructMultiPartRelated(Message msg, MessageBean msgBean, List<MessageNode> mNodes)
-			throws MessagingException, IOException {
+			throws MessagingException {
 		// create wrapper multipart/mixed part
 		Multipart mp = new MimeMultipart("alternative");
 		msg.setContent(mp);
@@ -472,8 +473,13 @@ public final class MessageBeanUtil {
 			msgBody.setContent(body, contentType);
 		}
 		else {
-			ByteArrayDataSource bads = new ByteArrayDataSource(body, contentType);
-			msgBody.setDataHandler(new DataHandler(bads));
+			ByteArrayDataSource bads;
+			try {
+				bads = new ByteArrayDataSource(body, contentType);
+				msgBody.setDataHandler(new DataHandler(bads));
+			} catch (IOException e) {
+				logger.error("IOException caught, ignored", e);
+			}
 		}
 		mp.addBodyPart(msgBody);
 

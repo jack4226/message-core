@@ -60,7 +60,7 @@ public class MailProcessor extends RunnableProcessor {
 	 * @throws MessagingException
 	 *             if any error
 	 */
-	public void process(Object req) throws JMSException, MessagingException, IOException {
+	public void process(Object req) throws JMSException, MessagingException {
 		logger.info("Entering process() method...");
 
 		//jmsProcessor.getJmsTemplate().setDefaultDestination(queue);
@@ -94,11 +94,10 @@ public class MailProcessor extends RunnableProcessor {
 	 * @param p -
 	 *            part
 	 * @throws MessagingException 
-	 * @throws IOException 
 	 * @throws JMSException 
 	 *             if any error
 	 */
-	MessageBean processPart(Part p) throws IOException, MessagingException, JMSException {
+	MessageBean processPart(Part p) throws MessagingException, JMSException {
 		Date start_tms = new Date();
 		
 		// parse the MimeMessage to MessageBean
@@ -182,7 +181,11 @@ public class MailProcessor extends RunnableProcessor {
 				// write raw stream to logging file
 				if ("yes".equalsIgnoreCase(mailBoxVo.getLogDuplicate())) {
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					p.writeTo(baos);
+					try {
+						p.writeTo(baos);
+					} catch (IOException e) {
+						logger.error("IOException caught, ignored", e);
+					}
 					duplicateReport.info("<========== Message-id: " + msgBean.getSmtpMessageId() + ", DateTime: "
 							+ (new Date()) + " ==========>");
 					duplicateReport.info(baos.toString());

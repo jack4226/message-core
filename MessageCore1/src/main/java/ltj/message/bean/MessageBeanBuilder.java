@@ -67,11 +67,9 @@ public final class MessageBeanBuilder {
 	 *            code will try to find a TO address that its domain name
 	 *            matches one of the names from the list.
 	 * @throws MessagingException
-	 * @throws IOException
 	 *             if any error
 	 */
-	public static MessageBean processPart(Part p, String toAddrDomain) throws IOException,
-			MessagingException {
+	public static MessageBean processPart(Part p, String toAddrDomain) throws MessagingException {
 		// make sure it's a message
 		if (!(p instanceof Message) && !(p instanceof MimeMessage)) {
 			// not a known message type
@@ -1017,14 +1015,16 @@ public final class MessageBeanBuilder {
 	 * @param msgBean -
 	 *            MessageBean object
 	 * @throws MessagingException
-	 * @throws IOException
 	 *             if any error
 	 */
-	private static void saveMsgStream(Part p, MessageBean msgBean) throws IOException,
-			MessagingException {
+	private static void saveMsgStream(Part p, MessageBean msgBean) throws MessagingException {
 		/* save the message in its raw format to the HashMap */
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		p.writeTo(baos);
+		try {
+			p.writeTo(baos);
+		} catch (IOException e) {
+			logger.error("IOException caught, ignored.", e);
+		}
 		msgBean.getHashMap().put(MSG_RAW_STREAM, baos.toByteArray());
 	}
 
