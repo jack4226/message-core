@@ -228,7 +228,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @throws MessagingException
 	 * @throws JMSException
 	 * @throws ExecutionException
-	 * @throws InterruptedException
 	 * @throws DataValidationException
 	 */
 	public void readMail(boolean fromTimer)

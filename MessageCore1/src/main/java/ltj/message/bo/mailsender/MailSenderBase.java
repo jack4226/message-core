@@ -100,12 +100,11 @@ public abstract class MailSenderBase {
 	 *            a MessageBean object
 	 * @throws MessagingException
 	 * @throws SmtpException
-	 * @throws InterruptedException
 	 * @throws DataValidationException 
 	 */
 	@Transactional
 	public void process(MessageBean msgBean) throws MessagingException, SmtpException,
-			InterruptedException, DataValidationException {
+			DataValidationException {
 
 		if (msgBean == null) {
 			throw new DataValidationException("Input MessageBean is null");
@@ -194,12 +193,11 @@ public abstract class MailSenderBase {
 	 *            an email raw stream
 	 * @throws MessagingException
 	 * @throws SmtpException
-	 * @throws InterruptedException
 	 * @throws DataValidationException 
 	 */
 	@Transactional
 	public void process(byte[] msgStream) throws MessagingException, SmtpException,
-			InterruptedException, DataValidationException {
+			DataValidationException {
 
 		javax.mail.Message mimeMsg = MessageBeanUtil.createMimeMessage(msgStream);
 		
@@ -423,7 +421,6 @@ public abstract class MailSenderBase {
 	 *            exception
 	 * @param errors -
 	 *            error map
-	 * @throws InterruptedException
 	 * @throws SmtpException
 	 * @throws MessagingException
 	 */
@@ -601,10 +598,9 @@ public abstract class MailSenderBase {
 	 *            any errors from the SMTP server
 	 * @throws MessagingException
 	 * @throws SmtpException
-	 * @throws InterruptedException
 	 */
 	public abstract void sendMail(Message msg, boolean isSecure, Map<String, Address[]> errors)
-		throws MessagingException, SmtpException, InterruptedException;
+		throws MessagingException, SmtpException;
 
 	/**
 	 * send the email off via unsecured SMTP server. to be implemented by
@@ -612,12 +608,11 @@ public abstract class MailSenderBase {
 	 * 
 	 * @param msg -
 	 *            a JavaMail message object
-	 * @throws InterruptedException
 	 * @throws SmtpException
 	 * @throws MessagingException
 	 */
 	public abstract void sendMail(Message msg, Map<String, Address[]> errors)
-			throws MessagingException, SmtpException, InterruptedException;
+			throws MessagingException, SmtpException;
 
 	public DeliveryStatusDao getDeliveryStatusDao() {
 		return deliveryStatusDao;

@@ -125,10 +125,6 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 				logger.info("Messages written to Queue were committed.");
 			}
 		}
-		catch (InterruptedException e) {
-			logger.error("MailSenderProcessor thread was interrupted. Process exiting...");
-			tStatus.setRollbackOnly(); // message will be re-delivered
-		}
 		catch (DataValidationException dex) {
 			// failed to send the message
 			logger.error("DataValidationException caught", dex);
@@ -203,7 +199,7 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 	 * @throws MessagingException
 	 */
 	public void sendMail(javax.mail.Message msg, boolean isSecure, Map<String, Address[]> errors)
-			throws MessagingException, SmtpException, InterruptedException {
+			throws MessagingException, SmtpException {
 		NamedPools smtp = SmtpWrapperUtil.getSmtpNamedPools();
 		NamedPools secu = SmtpWrapperUtil.getSecuNamedPools();
 		/* Send Message */
@@ -243,7 +239,7 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 	 * @throws MessagingException 
 	 */
 	public void sendMail(javax.mail.Message msg, Map<String, Address[]> errors)
-			throws MessagingException, SmtpException, InterruptedException {
+			throws MessagingException, SmtpException {
 		NamedPools smtp = SmtpWrapperUtil.getSmtpNamedPools();
 		if (smtp.isEmpty()) {
 			smtp = SmtpWrapperUtil.getSecuNamedPools();

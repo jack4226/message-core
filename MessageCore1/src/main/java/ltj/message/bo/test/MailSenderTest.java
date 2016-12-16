@@ -2,8 +2,6 @@ package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import javax.annotation.Resource;
 import javax.jms.JMSException;
 import javax.mail.MessagingException;
@@ -37,7 +35,7 @@ public class MailSenderTest extends BoTestBase {
 	}
 	
 	private void testSendMail(int loops) throws DataValidationException, MessagingException,
-			JMSException, IOException {
+			JMSException {
 		long startTime = new java.util.Date().getTime();
 		int i;
 		for (i = 0; i < loops; i++) {
@@ -59,7 +57,7 @@ public class MailSenderTest extends BoTestBase {
 			logger.info("testSendMail() - before calling for " + user);
 			try {
 				mailSenderBo.process(messageBean);
-			} catch (SmtpException | InterruptedException e) {
+			} catch (SmtpException e) {
 				logger.error("Exception caught", e);
 				fail();
 			}

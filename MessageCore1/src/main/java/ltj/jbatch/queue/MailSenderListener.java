@@ -89,9 +89,6 @@ public class MailSenderListener implements MessageListener {
 		} catch (SmtpException e) {
 			logger.error("onMessage() - SmtpException caught", e);
 			throw new RuntimeException(e);
-		} catch (InterruptedException e) {
-			logger.error("onMessage() - InterruptedException caught", e);
-			throw new RuntimeException(e);
 		} catch (JMSException je) {
 			logger.error("onMessage() - JMSException caught", je);
 			throw new RuntimeException(je);

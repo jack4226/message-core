@@ -44,7 +44,7 @@ public class MailSenderBoImpl extends MailSenderBase {
 	 * @throws MessagingException
 	 */
 	public void sendMail(javax.mail.Message msg, boolean isSecure, Map<String, Address[]> errors)
-			throws MessagingException, SmtpException, InterruptedException {
+			throws MessagingException, SmtpException {
 		NamedPools smtp = SmtpWrapperUtil.getSmtpNamedPools();
 		NamedPools secu = SmtpWrapperUtil.getSecuNamedPools();
 		/* Send the Message */
@@ -83,7 +83,7 @@ public class MailSenderBoImpl extends MailSenderBase {
 	 * @throws MessagingException 
 	 */
 	public void sendMail(javax.mail.Message msg, Map<String, Address[]> errors)
-			throws MessagingException, SmtpException, InterruptedException {
+			throws MessagingException, SmtpException {
 		NamedPools smtp = SmtpWrapperUtil.getSmtpNamedPools();
 		if (smtp.isEmpty()) {
 			// for secure server only shop
