@@ -10,6 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.jdbc.support.lob.DefaultLobHandler;
+import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import ltj.message.bean.SimpleEmailSender;
@@ -43,7 +45,12 @@ public class SpringAppConfig {
 		ThreadPoolTaskExecutor task = new ThreadPoolTaskExecutor();
 		task.setCorePoolSize(5);
 		task.setMaxPoolSize(10);
-		task.setQueueCapacity(25);
+		task.setQueueCapacity(100);
 		return task;
+	}
+	
+	@Bean
+	public LobHandler lobHandler() {
+		return new DefaultLobHandler();
 	}
 }

@@ -32,6 +32,8 @@ public class EmailAddrTest extends DaoTestBase {
 			assertTrue(vo.equalsTo(vo2));
 			int rowsUpdated = update(vo2);
 			assertEquals(rowsUpdated, 4);
+			rowsUpdated = emailAddrDao.updateBounceCount(vo2.getEmailAddrId(), 0);
+			assertTrue(rowsUpdated > 0);
 			int rowsDeleted = delete(vo);
 			assertEquals(rowsDeleted, 1);
 		}

@@ -20,6 +20,7 @@ public interface EmailAddrDao {
 	public int updateLastRcptTime(long addrId);
 	public int updateLastSentTime(long addrId);
 	public int updateAcceptHtml(long addrId, boolean acceptHtml);
+	public int updateBounceCount(long emailAddrId, int count);
 	public int updateBounceCount(EmailAddrVo emailAddrVo);
 	public EmailAddrVo saveEmailAddress(String address);
 	public int update(EmailAddrVo emailAddrVo);

@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DeadlockLoserDataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -46,6 +47,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	static final Logger logger = Logger.getLogger(EmailAddrJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
+	@Override
 	public EmailAddrVo getByAddrId(long addrId) {
 		String sql = "select *, EmailAddr as CurrEmailAddr, UpdtTime as OrigUpdtTime " +
 				"from EmailAddr where emailAddrId=?";
@@ -60,6 +62,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		}
 	}
 
+	@Override
 	public EmailAddrVo getByAddress(String address) {
 		String sql = "select *, EmailAddr as CurrEmailAddr, UpdtTime as OrigUpdtTime " +
 				"from EmailAddr where EmailAddr=?";
@@ -74,6 +77,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		}
 	}
 
+	@Override
 	public int getEmailAddressCount(PagingVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
@@ -82,6 +86,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return rowCount;
 	}
 
+	@Override
 	public List<EmailAddrVo> getEmailAddrsWithPaging(PagingVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
@@ -185,6 +190,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return whereSql;
 	}
 
+	@Override
 	public long getEmailAddrIdForPreview() {
 		String sql = "SELECT min(e.emailaddrid) as emailaddrid "
 				+ " FROM emailaddr e, customers c "
@@ -218,6 +224,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	 * not SERIALIZABLE. But this requires an extra trip to the DB to query the
 	 * current isolation level. � David Parks
 	 */
+	@Override
 	public EmailAddrVo findByAddress(String address) {
 		return findByAddress(address, 0);
 		// return findByAddressSP(address);
@@ -297,7 +304,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	EmailAddrVo findByAddress_deadlock(String address, int retries) {
 		EmailAddrVo vo = getByAddress(address);
 		if (vo == null) { // record not found, insert one
-			Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+			Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 			EmailAddrVo emailAddrVo = new EmailAddrVo();
 			emailAddrVo.setEmailAddr(address);
 			emailAddrVo.setBounceCount(0);
@@ -382,6 +389,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return vo;
 	}
 
+	@Override
 	public EmailAddrVo getFromByMsgRefId(Long msgRefId) {
 		String sql = "select a.*, b.RuleName " + " from " + " EmailAddr a "
 				+ " inner join MsgInbox b on a.EmailAddrId = b.FromAddrId "
@@ -396,6 +404,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		}
 	}
 
+	@Override
 	public EmailAddrVo getToByMsgRefId(Long msgRefId) {
 		String sql = "select a.*, b.RuleName " + " from " + " EmailAddr a "
 				+ " inner join MsgInbox b on a.EmailAddrId = b.ToAddrId "
@@ -410,10 +419,12 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		}
 	}
 
+	@Override
 	public EmailAddrVo saveEmailAddress(String address) {
 		return findByAddress(address);
 	}
 
+	@Override
 	public int update(EmailAddrVo emailAddrVo) {
 		emailAddrVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		emailAddrVo.setOrigEmailAddr(emailAddrVo.getEmailAddr());
@@ -424,15 +435,23 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			sql += " and UpdtTime=:origUpdtTime ";
 		}
 
-		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
-		emailAddrVo.setCurrEmailAddr(emailAddrVo.getEmailAddr());
-		emailAddrVo.setOrigUpdtTime(emailAddrVo.getUpdtTime());
+		int rowsUpadted = 0;
+		try { 
+			rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
+			emailAddrVo.setCurrEmailAddr(emailAddrVo.getEmailAddr());
+			emailAddrVo.setOrigUpdtTime(emailAddrVo.getUpdtTime());
+		}
+		catch (DeadlockLoserDataAccessException e) {
+			logger.error("DeadlockLoserDataAccessException caught", e) ;
+			// TODO what to do with this?
+		}
 		return rowsUpadted;
 	}
 
+	@Override
 	public int updateLastRcptTime(long addrId) {
 		ArrayList<Object> keys = new ArrayList<Object>();
-		keys.add(new Timestamp(new java.util.Date().getTime()));
+		keys.add(new Timestamp(System.currentTimeMillis()));
 		keys.add(addrId);
 
 		String sql = "update EmailAddr set " + " LastRcptTime=? "
@@ -442,9 +461,10 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return rowsUpadted;
 	}
 
+	@Override
 	public int updateLastSentTime(long addrId) {
 		ArrayList<Object> keys = new ArrayList<Object>();
-		keys.add(new Timestamp(new java.util.Date().getTime()));
+		keys.add(new Timestamp(System.currentTimeMillis()));
 		keys.add(addrId);
 
 		String sql = "update EmailAddr set " + " LastSentTime=? "
@@ -454,8 +474,9 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return rowsUpadted;
 	}
 
+	@Override
 	public int updateAcceptHtml(long addrId, boolean acceptHtml) {
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<Object>();
 		keys.add(acceptHtml ? Constants.YES_CODE : Constants.NO_CODE);
 		keys.add(addrId);
 
@@ -466,9 +487,18 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return rowsUpadted;
 	}
 
+	@Override
+	public int updateBounceCount(long emailAddrId, int count) {
+		String sql = "update EmailAddr set BounceCount=?, UpdtTime=? where emailAddrId=?";
+		Object[] parms = new Object[] { count, new Timestamp(System.currentTimeMillis()), emailAddrId };
+		int rowsUpadted = getJdbcTemplate().update(sql, parms);
+		return rowsUpadted;
+	}
+	
+	@Override
 	public int updateBounceCount(EmailAddrVo emailAddrVo) {
-		emailAddrVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
-		ArrayList<Object> keys = new ArrayList<Object>();
+		emailAddrVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+		List<Object> keys = new ArrayList<Object>();
 
 		String sql = "update EmailAddr set BounceCount=?,";
 		emailAddrVo.setBounceCount(emailAddrVo.getBounceCount() + 1);
@@ -509,6 +539,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return rowsUpadted;
 	}
 
+	@Override
 	public int deleteByAddrId(long addrId) {
 		String sql = "delete from EmailAddr where emailAddrId=?";
 		Object[] parms = new Object[] { addrId + "" };
@@ -516,6 +547,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return rowsDeleted;
 	}
 
+	@Override
 	public int deleteByAddress(String address) {
 		String sql = "delete from EmailAddr where emailAddr=?";
 		Object[] parms = new Object[] { address };
@@ -523,6 +555,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		return rowsDeleted;
 	}
 
+	@Override
 	public int insert(EmailAddrVo emailAddrVo) {
 		return insert(emailAddrVo, true);
 	}
@@ -557,8 +590,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		int rowsInserted = getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				emailAddrVo.setUpdtTime(new Timestamp(new java.util.Date()
-						.getTime()));
+				emailAddrVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 				ArrayList<Object> keys = new ArrayList<Object>();
 				keys.add(EmailAddrUtil.removeDisplayName(emailAddrVo
 						.getEmailAddr()));

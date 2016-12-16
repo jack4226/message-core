@@ -494,7 +494,6 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @throws MessagingException
 	 * @throws JMSException
 	 */
-	//@Transactional
 	private void execute(Message[] msgs) throws JMSException, MessagingException {
 		if (msgs == null || msgs.length == 0) {
 			return;
@@ -512,6 +511,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		}
 		catch (JMSException | MessagingException e) {
 			SpringUtil.rollbackTransaction();
+			throw e;
 		}
 	}
 	

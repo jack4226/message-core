@@ -22,7 +22,7 @@ public class MailBoxTest extends DaoTestBase {
 	
 	@Test
 	public void testMailbox() {
-		List<MailBoxVo> list = selectForTrail(testOnlyActive);
+		List<MailBoxVo> list = selectForTrial(testOnlyActive);
 		assertTrue(list.size()==1);
 		List<MailBoxVo> list2 = select(!testOnlyActive);
 		assertTrue(list2.size()>1);
@@ -42,7 +42,7 @@ public class MailBoxTest extends DaoTestBase {
 		assertEquals(rowsDeleted, 1);
 	}
 	
-	private List<MailBoxVo> selectForTrail(boolean onlyActive) {
+	private List<MailBoxVo> selectForTrial(boolean onlyActive) {
 		List<MailBoxVo> mailBoxes = mailBoxDao.getAllForTrial(onlyActive);
 		for (Iterator<MailBoxVo> it=mailBoxes.iterator(); it.hasNext();) {
 			MailBoxVo mailBoxVo = it.next();

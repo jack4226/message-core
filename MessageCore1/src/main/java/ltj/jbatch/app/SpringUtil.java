@@ -29,12 +29,34 @@ public final class SpringUtil {
 	
 	private SpringUtil() {}
 	
+	public static AbstractApplicationContext getAppContext() {
+		if (configCtx == null) {
+			logger.info("getAppContext() - load application and datasource config");
+			configCtx = new AnnotationConfigApplicationContext();
+			configCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
+			configCtx.refresh();
+		}
+		return configCtx;
+	}
+	
+	public static AbstractApplicationContext getDaoAppContext() {
+		if (configCtx != null) {
+			return configCtx;
+		}
+		else if (daoAppCtx == null) {
+			logger.info("getDaoAppContext() - load datasource config");
+			daoAppCtx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+		}
+		return daoAppCtx;
+	}
+	
+	
 	/**
 	 * If it's running in JBoss server, it loads a set of xmls using JNDI's,
 	 * otherwise loads a set of xmls using mysql data source.
 	 * @return ApplicationContext
 	 */
-	public static AbstractApplicationContext getAppContext() {
+	public static AbstractApplicationContext getAppContext_v0() {
 		if (applContext == null) {
 			String[] fileNames = null;
 			if (isRunningInJBoss()) {
@@ -87,7 +109,7 @@ public final class SpringUtil {
 	 * This method is intended to be used by table creation classes.
 	 * @return ApplicationContext
 	 */
-	public static AbstractApplicationContext getDaoAppContext() {
+	public static AbstractApplicationContext getDaoAppContext_v0() {
 		if (applContext != null) {
 			return applContext;
 		}
@@ -107,19 +129,6 @@ public final class SpringUtil {
 		return daoAppCtx;
 	}
 
-	public static Object getBean(AbstractApplicationContext factory, String name) {
-		try {
-			return factory.getBean(name);
-		}
-		catch (IllegalStateException e) {
-			logger.error("IllegalStateException caught, call 'refresh'", e);
-			//String err = e.toString();
-			//String regex = ".*BeanFactory.*refresh.*ApplicationContext.*";
-			factory.refresh();
-			return factory.getBean(name);
-		}
-	}
-	
 	private static String[] getBatchConfigXmlFiles() {
 		ClassLoader loader = JbMain.class.getClassLoader();
 		List<String> cfgFileNames = new ArrayList<String>();

@@ -1,6 +1,8 @@
 package ltj.message.bo.mailreader;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -9,6 +11,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -29,39 +32,104 @@ public class MailReaderTaskExr {
 	@Autowired
 	private MailBoxDao mailBoxDao;
 	
-	boolean runWithFixedThreadPool = false;
+	boolean runWithFixedThreadPool = true;
 	
-	@Scheduled(initialDelay=30000, fixedDelay=5000) // delay for 30 seconds for testing
+	// for test only, set to true to read from test user accounts
+	public static boolean readTestUserAccounts = false;
+	
+	@Scheduled(initialDelay=20000, fixedDelay=5000) // delay for 20 seconds for testing
 	public void startMailReaders() {
 		logger.info("startMailReaders() - entering...");
+		
+		if (readTestUserAccounts) { // for test only
+			readTestUserAccounts();
+			return;
+		}
+		
 		List<MailBoxVo> mailBoxList = mailBoxDao.getAll(true);
-		ExecutorService executor = null; 
-		if (runWithFixedThreadPool) {
-			Executors.newFixedThreadPool(mailBoxList.size());
-		}
-		else {
-			executor = new ThreadPoolExecutor(5, mailBoxList.size(), 1000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(15));
-		}
-		for (MailBoxVo vo : mailBoxList) {
-			vo.setFromTimer(true);
-			MailReaderBoImpl reader = new MailReaderBoImpl(vo);
-			Future<?> future = executor.submit(reader);
-			try {
-				future.get();
-			} catch (InterruptedException | ExecutionException e) {
-				logger.error("Exception caught during future.get()", e);
+		logger.info("Number of mailbox to start: " + mailBoxList.size());
+		ExecutorService executor = null;
+		try {
+			if (runWithFixedThreadPool) {
+				executor = Executors.newFixedThreadPool(mailBoxList.size());
+			}
+			else {
+				executor = new ThreadPoolExecutor(5, mailBoxList.size(), 1000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(15));
+			}
+			List<Future<?>> futureList = new ArrayList<>();
+			for (MailBoxVo vo : mailBoxList) {
+				vo.setFromTimer(true);
+				MailReaderBoImpl reader = new MailReaderBoImpl(vo);
+				Future<?> future = executor.submit(reader);
+				futureList.add(future);
+			}
+			for (Future<?> future : futureList) {
+				try {
+					future.get();
+				} catch (InterruptedException | ExecutionException e) {
+					logger.error("Exception caught during future.get()", e);
+				}
 			}
 		}
-		executor.shutdown();
+		finally {
+			if (executor != null) {
+				executor.shutdown();
+			}
+		}
+	}
+	
+	
+	private void readTestUserAccounts() {
+		ExecutorService executor = new ThreadPoolExecutor(5, 25, 2000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(75));
+		List<Future<?>> futureList = new ArrayList<>();
+		try {
+			for (int i = 0; i < 25; i++) {
+				String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
+				String user = "user" + suffix;
+				MailBoxVo vo = new MailBoxVo();
+				vo.setUserId(user);
+				vo.setUserPswd(user);
+				vo.setHostName("localhost");
+				vo.setProtocol("pop3");
+				vo.setReadPerPass(10);
+				vo.setUseSsl("no");
+				vo.setFromTimer(true);
+				MailReaderBoImpl reader = new MailReaderBoImpl(vo);
+				try {
+					Thread.sleep(new Random().nextInt(500));
+				} catch (InterruptedException e) {}
+				Future<?> future = executor.submit(reader);
+				futureList.add(future);
+			}
+			for (Future<?> future : futureList) {
+				try {
+					future.get();
+				} catch (InterruptedException | ExecutionException e) {
+					logger.error("Exception caught during future.get()", e);
+				}
+			}
+		}
+		finally {
+			executor.shutdown();
+		}
 	}
 	
 	
 	void testRunWithSpringTaskExecutor() {
-		List<MailBoxVo> mailBoxList = mailBoxDao.getAll(true);
-		for (MailBoxVo vo : mailBoxList) {
-			vo.setFromTimer(true);
-			MailReaderBoImpl reader = new MailReaderBoImpl(vo);
-			taskExecutor.execute(reader);
+		boolean readUserAccts = true;
+		boolean readConfAccts = false;
+		// read from user accounts
+		if (readUserAccts) {
+			readTestUserAccounts();
+		}
+		// read from configured accounts
+		if (readConfAccts) {
+			List<MailBoxVo> mailBoxList = mailBoxDao.getAll(true);
+			for (MailBoxVo vo : mailBoxList) {
+				vo.setFromTimer(true);
+				MailReaderBoImpl reader = new MailReaderBoImpl(vo);
+				taskExecutor.execute(reader);
+			}
 		}
 	}
 	
@@ -80,7 +148,7 @@ public class MailReaderTaskExr {
 		}
 	}
 	
-	static boolean testSpringTaskExecutor = false;
+	static boolean testSpringTaskExecutor = true;
 	static boolean testReadFromOneMailbox = false;
 	
 	public static void main(String[] args) {
@@ -88,7 +156,7 @@ public class MailReaderTaskExr {
 		
 		if (testSpringTaskExecutor) {
 			MailReaderTaskExr taskExr = factory.getBean(MailReaderTaskExr.class);
-			taskExr.startMailReaders();
+			taskExr.testRunWithSpringTaskExecutor();
 		}
 		
 		if (testReadFromOneMailbox) {
@@ -97,7 +165,7 @@ public class MailReaderTaskExr {
 		}
 		
 		try {
-			Thread.sleep(60000L);
+			Thread.sleep(40000L);
 		} catch (InterruptedException e) {
 			// ignore
 		}

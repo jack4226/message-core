@@ -113,9 +113,9 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 					emailAddrVo.setStatusChangeTime(updtTime);
 					emailAddrDao.update(emailAddrVo);
 				}
-				else { // email address already active, reset bounce count
-					emailAddrVo.setBounceCount(0); // reset bounce count
-					emailAddrDao.update(emailAddrVo);
+				else if (emailAddrVo.getBounceCount() > 0) {
+					// email address already active, reset bounce count
+					emailAddrDao.updateBounceCount(emailAddrVo.getEmailAddrId(), 0);
 				}
 				addrsActiveted++;
 			}

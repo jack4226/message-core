@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -418,7 +419,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			}
 		}
 		// from address
-		if (vo.getFromAddr() != null && vo.getFromAddr().trim().length() > 0) {
+		if (StringUtils.isNotBlank(vo.getFromAddr())) {
 			if (vo.getFromAddrId() == null) {
 				String from = vo.getFromAddr().trim();
 				if (from.indexOf(" ") < 0) {
@@ -718,6 +719,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 
 	@Autowired
 	private MsgUnreadCountDao msgUnreadCountDao;
+	
 	MsgUnreadCountDao getMsgUnreadCountDao() {
 		return msgUnreadCountDao;
 	}
