@@ -65,49 +65,51 @@ public final class RenderUtil {
 	}
 	
 	static GlobalVariableDao getGlobalVariableDao() {
-		if (globalVariableDao == null)
-			globalVariableDao = (GlobalVariableDao) SpringUtil.getDaoAppContext().getBean(
-					"globalVariableDao");
+		if (globalVariableDao == null) {
+			globalVariableDao = SpringUtil.getDaoAppContext().getBean(GlobalVariableDao.class);
+		}
 		return globalVariableDao;
 	}
 
 	static ClientVariableDao getClientVariableDao() {
-		if (clientVariableDao == null)
-			clientVariableDao = (ClientVariableDao) SpringUtil.getDaoAppContext().getBean(
-					"clientVariableDao");
+		if (clientVariableDao == null) {
+			clientVariableDao = SpringUtil.getDaoAppContext().getBean(ClientVariableDao.class);
+		}
 		return clientVariableDao;
 	}
 
 	static TemplateVariableDao getTemplateVariableDao() {
-		if (templateVariableDao == null)
-			templateVariableDao = (TemplateVariableDao) SpringUtil.getDaoAppContext().getBean(
-					"templateVariableDao");
+		if (templateVariableDao == null) {
+			templateVariableDao = SpringUtil.getDaoAppContext().getBean(TemplateVariableDao.class);
+		}
 		return templateVariableDao;
 	}
 
 	static BodyTemplateDao getBodyTemplateDao() {
-		if (bodyTemplateDao == null)
-			bodyTemplateDao = (BodyTemplateDao) SpringUtil.getDaoAppContext()
-					.getBean("bodyTemplateDao");
+		if (bodyTemplateDao == null) {
+			bodyTemplateDao = SpringUtil.getDaoAppContext().getBean(BodyTemplateDao.class);
+		}
 		return bodyTemplateDao;
 	}
 
 	static EmailTemplateDao getEmailTemplateDao() {
-		if (emailTemplateDao == null)
-			emailTemplateDao = (EmailTemplateDao) SpringUtil.getDaoAppContext().getBean(
-					"emailTemplateDao");
+		if (emailTemplateDao == null) {
+			emailTemplateDao = SpringUtil.getDaoAppContext().getBean(EmailTemplateDao.class);
+		}
 		return emailTemplateDao;
 	}
 
 	static MailingListDao getMailingListDao() {
-		if (mailingListDao == null)
-			mailingListDao = (MailingListDao) SpringUtil.getDaoAppContext().getBean("mailingListDao");
+		if (mailingListDao == null) {
+			mailingListDao = SpringUtil.getDaoAppContext().getBean(MailingListDao.class);
+		}
 		return mailingListDao;
 	}
 
 	static EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null)
-			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
+		if (emailAddrDao == null) {
+			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+		}
 		return emailAddrDao;
 	}
 

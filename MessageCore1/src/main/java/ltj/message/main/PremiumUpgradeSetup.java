@@ -41,7 +41,7 @@ public class PremiumUpgradeSetup {
 	// 2) insert bounce rules and actions
 	public PremiumUpgradeSetup() {
 		context = SpringUtil.getDaoAppContext();
-		emailTemplateDao = (EmailTemplateDao) context.getBean("emailTemplateDao");
+		emailTemplateDao = context.getBean(EmailTemplateDao.class);
 	}
 	
 	void insertEmailTemplate() {

@@ -285,14 +285,14 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	
 	private EmailAddrDao getEmailAddrDao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
+			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
 		}
 		return emailAddrDao;
 	}
 	
 	private MsgStreamDao getMsgStreamDao() {
 		if (msgStreamDao == null) {
-			msgStreamDao = (MsgStreamDao) SpringUtil.getDaoAppContext().getBean("msgStreamDao");
+			msgStreamDao = SpringUtil.getDaoAppContext().getBean(MsgStreamDao.class);
 		}
 		return msgStreamDao;
 	}

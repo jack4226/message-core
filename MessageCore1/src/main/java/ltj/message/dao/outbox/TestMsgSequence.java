@@ -7,7 +7,7 @@ public class TestMsgSequence implements Runnable {
 	static MsgSequenceDao msgSequenceDao = null;
 	
 	public static void main(String[] args) {
-		msgSequenceDao = (MsgSequenceDao) SpringUtil.getDaoAppContext().getBean("msgSequenceDao");
+		msgSequenceDao = SpringUtil.getDaoAppContext().getBean(MsgSequenceDao.class);
 
 		try {
 			TestMsgSequence test = new TestMsgSequence();

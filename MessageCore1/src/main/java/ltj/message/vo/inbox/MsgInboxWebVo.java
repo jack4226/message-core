@@ -107,7 +107,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	
 	private EmailAddrDao getEmailAddrDao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
+			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
 		}
 		return emailAddrDao;
 	}

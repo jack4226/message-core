@@ -17,8 +17,7 @@ public class CustomerNameResolver implements VariableResolver {
 				" FROM customers c, emailaddr e " +
 				" where e.emailaddrId=c.emailAddrId and e.emailAddrId=?";
 		
-		EmailVariableDao dao = (EmailVariableDao) SpringUtil.getDaoAppContext().getBean(
-				"emailVariableDao");
+		EmailVariableDao dao = SpringUtil.getDaoAppContext().getBean(EmailVariableDao.class);
 		String result = dao.getByQuery(query, addrId);
 		
 		return result;

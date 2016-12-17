@@ -1,0 +1,28 @@
+Sample Footer (note Mailing address, opt out instructions and dedicated UNSUBSCRIBE email address):
+
+You have received this Email because EXAMPLE COMPANY would like to offer you our services. To avoid future contact from EXAMPLE COMPANY, please e-mail UNSUBSCRIBE@EXAMPLE-URL.com, or reply to this e-mail with the word 'UNSUBSCRIBE' as the subject line of your message. Your request will be honored, we do not buy or sell email addresses. Our mailing address is EXAMPLE COMPANY, ADDRESS1, CITY ST 12345. Our Phone number is (888) 888-88888 (toll free). Thank You.
+
+
+
+
+
+
+CAN-SPAM Best Practices
+
+The following are considered deceptive e-mail marketing practices. Under CAN-SPAM, they're all officially illegal:
+
+    * Falsifying headers (the part of an e-mail message that specifies where it came from)
+    * Using deceptive subject lines to trick people into opening messages
+    * "Hijacking" other peoples' e-mail accounts or computers to send spam
+    * Creating e-mail or IP addresses specifically to send spam
+    * Sending unsolicited e-mail with sexual content
+    * Sending e-mail to people who've requested to be removed from your list
+    * Neglecting to include a physical mailing address in commercial e-mail messages 
+
+The following are considered best practices:
+
+    * Do not break any of the above rules
+    * Use a footer in emails that allow for opt out of future emails. See example footer that follows.
+    * Keep a company wide DO NOT EMAIL list
+    * Honor request to NOT use an Email address
+    * If possible include an email address specific code in each email to aid in identification of DO NOT EMAIL requests 

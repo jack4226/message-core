@@ -1,0 +1,24 @@
+==========================================
+------- *** Friendly Reminder *** -------
+==========================================
+
+Thank you for being a valued member of the
+Absolutely Essential Guitar mailing list!
+
+You are receiving this email because you
+signed up for and confirmed your request
+for information. Your details are as follows:
+
+Date you subscribed: {!signdate ss}
+
+Name submitted: {!name_fix}
+
+Email Address submitted: {!email}
+
+Your IP address at that time: {!add_ip}
+
+==========================================
+This email is ONLY sent to people who have
+requested info and confirmed that request.
+Seriously, I hate spam as much as you do!
+==========================================

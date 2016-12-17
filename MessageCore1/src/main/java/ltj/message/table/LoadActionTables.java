@@ -38,10 +38,9 @@ public class LoadActionTables {
 		if (factory == null) {
 			factory = SpringUtil.getDaoAppContext();
 		}
-		MsgDataTypeDao msgDataTypeDao = (MsgDataTypeDao) factory.getBean("msgDataTypeDao");
-		MsgActionDao msgActionDao = (MsgActionDao) factory.getBean("msgActionDao");
-		MsgActionDetailDao msgActionDetailDao = (MsgActionDetailDao) factory
-				.getBean("msgActionDetailDao");
+		MsgDataTypeDao msgDataTypeDao = factory.getBean(MsgDataTypeDao.class);
+		MsgActionDao msgActionDao = factory.getBean(MsgActionDao.class);
+		MsgActionDetailDao msgActionDetailDao = factory.getBean(MsgActionDetailDao.class);
 		load(msgDataTypeDao);
 		load(msgActionDetailDao);
 		load(msgActionDao);

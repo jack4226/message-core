@@ -6,13 +6,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.constant.StatusIdCode;
@@ -27,6 +27,9 @@ import ltj.message.vo.emailaddr.SubscriptionVo;
 public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao {
 	static final Logger logger = Logger.getLogger(SubscriptionJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
+	
+	@Autowired
+	private EmailAddrDao emailAddrDao;
 	
 	/**
 	 * Set Subscribed field to "Yes". Called when an subscription is received
@@ -481,11 +484,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsInserted;
 	}
 	
-	private EmailAddrDao emailAddrDao = null;
 	private EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
-		}
 		return emailAddrDao;
 	}
 }

@@ -75,15 +75,15 @@ public class LoadInboxTables
 		if (factory == null) {
 			factory = SpringUtil.getDaoAppContext();
 		}
-		msgSequenceDao = (MsgSequenceDao)factory.getBean("msgSequenceDao");
-		emailAddrDao = (EmailAddrDao)factory.getBean("emailAddrDao");
-		msgClickCountsDao = (MsgClickCountsDao)factory.getBean("msgClickCountsDao");
-		MsgInboxDao msgInboxDao = (MsgInboxDao)factory.getBean("msgInboxDao");
-		MsgAddrsDao msgAddrsDao = (MsgAddrsDao)factory.getBean("msgAddrsDao");
-		AttachmentsDao attachmentsDao = (AttachmentsDao)factory.getBean("attachmentsDao");
-		MsgHeadersDao msgHeadersDao = (MsgHeadersDao)factory.getBean("msgHeadersDao");
-		RfcFieldsDao rfcFieldsDao = (RfcFieldsDao)factory.getBean("rfcFieldsDao");
-		MsgStreamDao msgStreamDao = (MsgStreamDao)factory.getBean("msgStreamDao");
+		msgSequenceDao = factory.getBean(MsgSequenceDao.class);
+		emailAddrDao = factory.getBean(EmailAddrDao.class);
+		msgClickCountsDao = factory.getBean(MsgClickCountsDao.class);
+		MsgInboxDao msgInboxDao = factory.getBean(MsgInboxDao.class);
+		MsgAddrsDao msgAddrsDao = factory.getBean(MsgAddrsDao.class);
+		AttachmentsDao attachmentsDao = factory.getBean(AttachmentsDao.class);
+		MsgHeadersDao msgHeadersDao = factory.getBean(MsgHeadersDao.class);
+		RfcFieldsDao rfcFieldsDao = factory.getBean(RfcFieldsDao.class);
+		MsgStreamDao msgStreamDao = factory.getBean(MsgStreamDao.class);
 		
 		msgId = load(msgInboxDao);
 		load(msgAddrsDao);

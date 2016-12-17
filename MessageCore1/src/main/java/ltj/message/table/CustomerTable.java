@@ -120,7 +120,7 @@ public class CustomerTable extends CreateTableBase {
 	}
 	
 	public void loadTestData() throws SQLException {
-		EmailAddrDao dao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
+		EmailAddrDao dao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
 		String emailAddr = "jsmith@test.com";
 		EmailAddrVo vo = dao.findByAddress(emailAddr);
 		// 41 fields

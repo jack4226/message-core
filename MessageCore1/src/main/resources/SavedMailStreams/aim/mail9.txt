@@ -1,0 +1,39 @@
+Return-Path: <erskiiadour@aol.com>
+Received: from WEBMAIL-MB21 (webmail-mb21.webmail.aol.com [64.12.170.169]) by ciaaol-d02.mail.aol.com (v115.11) with ESMTP id MAILCIAAOLD028-cc624645023314a; Fri, 11 May 2007 19:54:27 -0400
+To: df153@aim.com
+Subject: Hi
+Date: Fri, 11 May 2007 19:54:27 -0400
+X-MB-Message-Source: WebUI
+X-MB-Message-Type: User
+MIME-Version: 1.0
+From: erskiiadour@aol.com
+Content-Type: multipart/alternative; 
+ boundary="--------MB_8C9623ED834F411_E40_151EE_WEBMAIL-MB21.sysops.aol.com"
+X-Mailer: AOL WebMail 25698
+Received: from 89.155.118.97 by WEBMAIL-MB21.sysops.aol.com (64.12.170.169) with HTTP (WebMailUI); Fri, 11 May 2007 19:54:27 -0400
+Message-Id: <8C9623ED834F411-E40-B419@WEBMAIL-MB21.sysops.aol.com>
+X-AOL-IP: 64.12.170.169
+
+----------MB_8C9623ED834F411_E40_151EE_WEBMAIL-MB21.sysops.aol.com
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+
+ava a bgd.
+________________________________________________________________________
+AOL now offers free email to everyone.  Find out more about what's free from AOL at AOL.com.
+
+----------MB_8C9623ED834F411_E40_151EE_WEBMAIL-MB21.sysops.aol.com
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="us-ascii"
+
+<HTML><BODY>
+<div>ava a bgd.</div>
+
+<div class="AOLPromoFooter">
+<hr style="margin-top:10px;" />
+AOL now offers free email to everyone.  Find out more about what's free from AOL at <a href="http://www.aol.com?ncid=AOLAOF00020000000437" target="_blank"><b>AOL.com</b></a>.<br />
+</div>
+
+</BODY></HTML>
+
+----------MB_8C9623ED834F411_E40_151EE_WEBMAIL-MB21.sysops.aol.com--

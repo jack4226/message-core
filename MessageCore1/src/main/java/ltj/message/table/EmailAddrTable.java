@@ -1485,7 +1485,7 @@ DELIMITER ;
 	private EmailTemplateDao emailTemplateDao = null;
 	private EmailTemplateDao getEmailTemplateDao() {
 		if (emailTemplateDao == null) {
-			emailTemplateDao = (EmailTemplateDao) SpringUtil.getDaoAppContext().getBean("emailTemplateDao");
+			emailTemplateDao = SpringUtil.getDaoAppContext().getBean(EmailTemplateDao.class);
 		}
 		return emailTemplateDao;
 	}

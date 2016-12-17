@@ -263,7 +263,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	}
 
 	@Autowired
-	private MsgDataTypeDao msgDataTypeDao = null;
+	private MsgDataTypeDao msgDataTypeDao;
 	MsgDataTypeDao getMsgDataTypeDao() {
 		return msgDataTypeDao;
 	}

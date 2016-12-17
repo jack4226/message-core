@@ -507,7 +507,7 @@ public class MailboxTable extends CreateTableBase
 	private MailBoxDao mailBoxDao = null;
 	private MailBoxDao getMailBoxDao() {
 		if (mailBoxDao == null) {
-			mailBoxDao = (MailBoxDao) SpringUtil.getDaoAppContext().getBean("mailBoxDao");
+			mailBoxDao = SpringUtil.getDaoAppContext().getBean(MailBoxDao.class);
 		}
 		return mailBoxDao;
 	}
@@ -515,7 +515,7 @@ public class MailboxTable extends CreateTableBase
 	private EmailAddrDao emailAddrDao = null;
 	private EmailAddrDao getEmailAddrdao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getDaoAppContext().getBean("emailAddrDao");
+			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
 		}
 		return emailAddrDao;
 	}

@@ -1,0 +1,62 @@
+Return-Path: <katjnivdenel@gmail.com>
+Received: from rly-me01.mx.aol.com (rly-me01.mail.aol.com [172.20.83.34]) by air-me10.mail.aol.com (v115.17) with ESMTP id MAILINME103-99a466d56501d2; Mon, 11 Jun 2007 10:04:06 -0400
+Received: from qb-out-0506.google.com (qb-out-0506.google.com [72.14.204.229]) by rly-me01.mx.aol.com (v115.17) with ESMTP id MAILRELAYINME016-99a466d56501d2; Mon, 11 Jun 2007 10:04:00 -0400
+Received: by qb-out-0506.google.com with SMTP id q12so1913563qbq
+        for <df153@aol.com>; Mon, 11 Jun 2007 07:04:00 -0700 (PDT)
+DKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        b=nY6jrZh3OEzKJlM12lfSKi4m/BKR8fwvitwlqbqjWhl9hpKznyeGGJIrOP+FX2UkIcRNxntJ3c0aURddJsztSrXErGwAfADpTp0mbtZwwh/NJdaQXSQ0klm36TRrMbjDC7qgIJWymxnnTmbDMF5f4MgbaPq9+eFA0E4zp7ubi34=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=j9uLeJTIldq/Xr3740q9gZsws9tOa42ql1U/xiFXNX2GhduJHgS5lGFKO3XiH+hoSgwuEb6IddqlNPhzwc6XnIeIMkVKGbmtl51rxblIIZpBJkH+KINaNx1AWkD+JX+2+7f4mBw7uKZyv/46XwMHlEXiYRUxodzdikBqGAGzveo=
+Received: by 10.100.143.11 with SMTP id q11mr2666027and.1181570639979;
+        Mon, 11 Jun 2007 07:03:59 -0700 (PDT)
+Received: by 10.100.165.14 with HTTP; Mon, 11 Jun 2007 07:03:59 -0700 (PDT)
+Message-ID: <e89e4e360706110703y25fae8admefb1699af9f27045@mail.gmail.com>
+Date: Mon, 11 Jun 2007 16:03:59 +0200
+From: "Katja Gooden" <katjnivdenel@gmail.com>
+To: df153@aol.com
+Subject: hi
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_76563_23818939.1181570639961"
+X-AOL-IP: 72.14.204.229
+X-Mailer: Unknown (No Version)
+
+------=_Part_76563_23818939.1181570639961
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Hello,
+
+*Vl fwq AG yib RA $3, 5 ste 0*
+*Cl muv AL puv lS $4, 3 zpx 5*
+
+And ma axb ny othe mrz r, http://www.pilonmdefunhawuide.com
+
+
+------------------------------
+turned on the TV, checked that the faucets worked in the bathroom,
+particles. But Madonette, ever resourceful, had done a bit of work
+Dont these sheot shepherds ever wash? Tremearne asked.
+
+------=_Part_76563_23818939.1181570639961
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+<div style="BORDER-RIGHT: 0px; PADDING-RIGHT: 10px; BORDER-TOP: 0px; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 10px; BORDER-BOTTOM: 0px; BACKGROUND-COLOR: #ffff77"><font face="Arial" size="3">
+Hello,<br><br><strong>Vl<font style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; FLOAT: right; MARGIN: 0px; BORDER-LEFT: 0px; COLOR: #ffff77; BORDER-BOTTOM: 0px; TEXT-DECORATION: none" face="Arial"> fwq </font>AG<font style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; FLOAT: right; MARGIN: 0px; BORDER-LEFT: 0px; COLOR: #ffff77; BORDER-BOTTOM: 0px; TEXT-DECORATION: none" face="Arial">
+ yib </font>RA $3, 5<font style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; FLOAT: right; MARGIN: 0px; BORDER-LEFT: 0px; COLOR: #ffff77; BORDER-BOTTOM: 0px; TEXT-DECORATION: none" face="Arial"> ste </font>0</strong><br><strong>Cl
+<font style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; FLOAT: right; MARGIN: 0px; BORDER-LEFT: 0px; COLOR: #ffff77; BORDER-BOTTOM: 0px; TEXT-DECORATION: none" face="Arial"> muv </font>AL<font style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; FLOAT: right; MARGIN: 0px; BORDER-LEFT: 0px; COLOR: #ffff77; BORDER-BOTTOM: 0px; TEXT-DECORATION: none" face="Arial">
+ puv </font>lS $4, 3<font style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; FLOAT: right; MARGIN: 0px; BORDER-LEFT: 0px; COLOR: #ffff77; BORDER-BOTTOM: 0px; TEXT-DECORATION: none" face="Arial"> zpx </font>5</strong><br><br>And ma
+<font style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; FLOAT: right; MARGIN: 0px; BORDER-LEFT: 0px; COLOR: #ffff77; BORDER-BOTTOM: 0px; TEXT-DECORATION: none" face="Arial"> axb </font>ny othe<font style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; FLOAT: right; MARGIN: 0px; BORDER-LEFT: 0px; COLOR: #ffff77; BORDER-BOTTOM: 0px; TEXT-DECORATION: none" face="Arial">
+ mrz </font>r, <a href="http://www.pilonmdefunhawuide.com">http://www.pilonmdefunhawuide.com</a></font></div>
+<div><br><br>
+<hr>
+turned on the TV, checked that the faucets worked in the bathroom,<br>particles. But Madonette, ever resourceful, had done a bit of work<br>Dont these sheot shepherds ever wash? Tremearne asked. <br>&nbsp;</div>
+
+------=_Part_76563_23818939.1181570639961--

@@ -51,15 +51,12 @@ public class LoadTemplateTables
 		if (factory == null) {
 			factory = SpringUtil.getDaoAppContext();
 		}
-		GlobalVariableDao globalVariableDao = (GlobalVariableDao) factory
-				.getBean("globalVariableDao");
-		ClientVariableDao clientVariableDao = (ClientVariableDao) factory
-				.getBean("clientVariableDao");
-		TemplateVariableDao templateVariableDao = (TemplateVariableDao) factory
-				.getBean("templateVariableDao");
-		SubjTemplateDao subjTemplateDao = (SubjTemplateDao) factory.getBean("subjTemplateDao");
-		BodyTemplateDao bodyTemplateDao = (BodyTemplateDao) factory.getBean("bodyTemplateDao");
-		MsgSourceDao msgSourceDao = (MsgSourceDao) factory.getBean("msgSourceDao");
+		GlobalVariableDao globalVariableDao = factory.getBean(GlobalVariableDao.class);
+		ClientVariableDao clientVariableDao = factory.getBean(ClientVariableDao.class);
+		TemplateVariableDao templateVariableDao = factory.getBean(TemplateVariableDao.class);
+		SubjTemplateDao subjTemplateDao = factory.getBean(SubjTemplateDao.class);
+		BodyTemplateDao bodyTemplateDao = factory.getBean(BodyTemplateDao.class);
+		MsgSourceDao msgSourceDao = factory.getBean(MsgSourceDao.class);
 
 		load(globalVariableDao);
 		load5(globalVariableDao);

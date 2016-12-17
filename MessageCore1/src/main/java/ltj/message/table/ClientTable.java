@@ -272,7 +272,7 @@ public class ClientTable extends CreateTableBase {
 	}
 
 	public int updateClient4Prod() {
-		ClientDao dao = (ClientDao) SpringUtil.getDaoAppContext().getBean("clientDao");
+		ClientDao dao = SpringUtil.getDaoAppContext().getBean(ClientDao.class);
 		ClientVo vo = dao.getByClientId(Constants.DEFAULT_CLIENTID);
 		vo.setClientName("Emailsphere");
 		vo.setClientType(null);
@@ -313,7 +313,7 @@ public class ClientTable extends CreateTableBase {
 	 * ClientVariable table.
 	 */
 	public void updateAllClients() {
-		ClientDao dao = (ClientDao) SpringUtil.getDaoAppContext().getBean("clientDao");
+		ClientDao dao = SpringUtil.getDaoAppContext().getBean(ClientDao.class);
 		int rowsUpdated = 0;
 		List<ClientVo> list = dao.getAll();
 		for (ClientVo vo : list) {
