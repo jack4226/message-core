@@ -109,6 +109,9 @@ public class MailReaderTaskExr {
 				}
 			}
 		}
+		catch (Exception e) {
+			logger.error("Exception caught", e);
+		}
 		finally {
 			executor.shutdown();
 		}
