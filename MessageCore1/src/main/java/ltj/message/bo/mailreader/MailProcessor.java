@@ -70,7 +70,13 @@ public class MailProcessor extends RunnableProcessor {
 			// Just dump out the new messages and set the delete flags
 			for (int i = 0; i < msgs.length; i++) {
 				if (msgs[i] != null && !msgs[i].isSet(Flags.Flag.SEEN) && !msgs[i].isSet(Flags.Flag.DELETED)) {
-					processPart(msgs[i]);
+					try {
+						processPart(msgs[i]);
+					}
+					catch (IllegalStateException e) {
+						logger.error("IllegalStateException caught: " + e.getMessage());
+						continue;
+					}
 					if (ClientUtil.isTrialPeriodEnded() && !ClientUtil.isProductKeyValid()) {
 						try {
 							Thread.sleep(1000); // delay for 1 second
@@ -98,7 +104,7 @@ public class MailProcessor extends RunnableProcessor {
 	 *             if any error
 	 */
 	MessageBean processPart(Part p) throws MessagingException, JMSException {
-		Date start_tms = new Date();
+		long start_tms = System.currentTimeMillis();
 		
 		// parse the MimeMessage to MessageBean
 		MessageBean msgBean = MessageBeanBuilder.processPart(p, mailBoxVo.getToAddrDomain());
@@ -208,7 +214,7 @@ public class MailProcessor extends RunnableProcessor {
 			// prevent from producing duplicate messages
 		}
 
-		long time_spent = new Date().getTime() - start_tms.getTime();
+		long time_spent = System.currentTimeMillis()- start_tms;
 		logger.info("Msg from " + msgBean.getFromAsString() + " processed, milliseconds: "
 				+ time_spent);
 		

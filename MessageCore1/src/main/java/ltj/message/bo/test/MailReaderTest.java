@@ -74,7 +74,7 @@ public class MailReaderTest extends BoTestBase {
 	public void test2() {
 		MailReaderTaskExr.readTestUserAccounts = true;
 		try {
-			Thread.sleep(120 * 1000L);
+			Thread.sleep(60 * 1000L);
 		} catch (InterruptedException e) {
 		}
 	}

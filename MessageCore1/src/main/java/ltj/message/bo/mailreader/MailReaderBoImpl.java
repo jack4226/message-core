@@ -379,7 +379,10 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 					logger.info("Retry with folder.getMessages() is successful.");
 				}
 				execute(msgs); // process the messages
-				folder.close(true); // "true" to delete the flagged messages
+				if (folder.isOpen()) { // handle bugs from James gracefully.
+					// "true" to delete the flagged messages
+					folder.close(true);
+				}
 				logger.info(msgs.length + " messages have been purged from pop3 mailbox.");
 				messagesProcessed += msgs.length;
 				long proc_time = System.currentTimeMillis() - start_tms;

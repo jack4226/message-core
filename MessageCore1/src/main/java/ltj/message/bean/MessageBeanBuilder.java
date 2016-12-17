@@ -53,6 +53,9 @@ public final class MessageBeanBuilder {
 	
 	private static String hostName = null;
 	
+	// XXX set to true to log "Folder not Open" error from Apache James
+	public static boolean logFolderClosedStacktrace = false;
+	
 	private MessageBeanBuilder() {
 		// make it static only
 	}
@@ -182,7 +185,7 @@ public final class MessageBeanBuilder {
 			}
 		}
 		catch (Exception e) {
-			logger.error("Exception caught from getAllHeaderLines()", e);
+			logger.error("Exception caught from getAllHeaderLines(): " + e.getMessage());
 		}
 
 		// If Received Date not found from envelope, use current time
@@ -502,7 +505,7 @@ public final class MessageBeanBuilder {
 		}
 		catch (Exception e) {
 			contentType = "text/plain"; // failed to get content type, use default
-			logger.error("Exception caught during getContentType()", e);
+			logger.error("Exception caught during getContentType(): " + e.getMessage());
 		}
 		// get disposition
 		try {
@@ -523,7 +526,7 @@ public final class MessageBeanBuilder {
 			}
 		}
 		catch (Exception e) {
-			logger.error("Exception caught during getDisposition()", e);
+			logger.error("Exception caught during getDisposition(): " + e.getMessage());
 		}
 		// get description
 		try {
@@ -540,21 +543,21 @@ public final class MessageBeanBuilder {
 			}
 		}
 		catch (Exception e) {
-			logger.error("Exception caught during getDescription()", e);
+			logger.error("Exception caught during getDescription(): " + e.getMessage());
 		}
 		// get file name
 		try {
 			fileName = p.getFileName();
 		}
 		catch (Exception e) {
-			logger.error("Exception caught during getFileName()", e);
+			logger.error("Exception caught during getFileName(): " + e.getMessage());
 		}
 		// get part size
 		try {
 			partSize = p.getSize();
 		}
 		catch (Exception e) {
-			logger.error("Exception caught during getSize()", e);
+			logger.error("Exception caught during getSize(): " + e.getMessage());
 		}
 		// display some key information
 		if (isDebugEnabled) {
@@ -680,6 +683,15 @@ public final class MessageBeanBuilder {
 			}
 			subNode.setDisposition(aNode.getDisposition());
 			subNode.setDescription(aNode.getDescription());
+		}
+		catch (javax.mail.FolderClosedException | java.io.EOFException | IllegalStateException e) {
+			// Encountered following errors from Apache James:
+			// "Folder is not Open"
+			// "Software caused connection abort: recv failed"
+			if (logFolderClosedStacktrace) {
+				logger.error("FolderClosedException caught", e);
+			}
+			throw new IllegalStateException(e);
 		}
 		catch (MessagingException e) {
 			/*
