@@ -211,10 +211,10 @@ public class MailingListBoImpl implements MailingListBo {
 		msgBean.setOverrideTestAddr(false);
 		msgBean.setRuleName(RuleNameType.BROADCAST.toString());
 		if (Constants.YES_CODE.equalsIgnoreCase(tmpltVo.getEmbedEmailId())) {
-			msgBean.setEmBedEmailId(Boolean.valueOf(true));
+			msgBean.setEmBedEmailId(Boolean.TRUE);
 		}
 		else if (Constants.NO_CODE.equalsIgnoreCase(tmpltVo.getEmbedEmailId())) {
-			msgBean.setEmBedEmailId(Boolean.valueOf(false));
+			msgBean.setEmBedEmailId(Boolean.FALSE);
 		}
 		msgBean.setToCustomersOnly(MailingListDeliveryOption.CUSTOMERS_ONLY.equals(tmpltVo.getDeliveryOption()));
 		msgBean.setToProspectsOnly(MailingListDeliveryOption.PROSPECTS_ONLY.equals(tmpltVo.getDeliveryOption()));

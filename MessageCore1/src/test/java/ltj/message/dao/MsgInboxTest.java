@@ -51,7 +51,7 @@ public class MsgInboxTest extends DaoTestBase {
 			int unreadCountAfter = unreadCountDao.selectInboxUnreadCount();
 			assertNotNull(msgvo);
 			if (msgvo.getReadCount() == 0) {
-				assertTrue(unreadCountAfter == (unreadCountBefore + 1));
+				assertEquals(unreadCountAfter, (unreadCountBefore + 1));
 			}
 			else {
 				assertTrue(unreadCountAfter == unreadCountBefore);
@@ -78,7 +78,7 @@ public class MsgInboxTest extends DaoTestBase {
 			int unreadCountBefore = unreadCountDao.selectInboxUnreadCount();
 			MsgInboxVo msgvo = insert(webvo.getMsgId());
 			int unreadCountAfter = unreadCountDao.selectInboxUnreadCount();
-			assertTrue(unreadCountAfter == unreadCountBefore);
+			assertEquals(unreadCountAfter, unreadCountBefore);
 			assertNotNull(msgvo);
 			MsgClickCountsVo ccvo = insertClickCount(msgvo, testMsgId);
 			assertNotNull(ccvo);
