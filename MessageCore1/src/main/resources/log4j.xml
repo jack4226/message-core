@@ -49,9 +49,24 @@
    </logger>
 
    <logger name="org.apache.activemq.ActiveMQSession">
-   <!-- suppress messages: [DEBUG,org.apache.activemq.ActiveMQSession:572] ID:Mac-H97I.nc.rr.com-57359-1482084873564-1:5:1 Transaction Commit :null -->
+   <!-- set level to INFO to suppress messages:
+   	[DEBUG,org.apache.activemq.ActiveMQSession:572] ID:Mac-H97I.nc.rr.com-57359-1482084873564-1:5:1 Transaction Commit :null 
+   	[DEBUG,org.apache.activemq.ActiveMQSession:572] ID:twang-pc-52098-1482089241059-1:4:1 Transaction Commit :TX:ID:twang-pc-52098-1482089241059-1:4:5
+   	[DEBUG,org.apache.activemq.ActiveMQSession:593] ID:twang-pc-52098-1482089241059-3:4:4 Transaction Rollback, txid:TX:ID:twang-pc-52098-1482089241059-3:4:4
+   -->
+	  <level value="INFO"/> 
+   </logger>
+   
+   <logger name="org.apache.activemq.TransactionContext">
+   <!-- set level to INFO to suppress messages:
+   	[DEBUG,org.apache.activemq.TransactionContext:249] Begin:TX:ID:twang-pc-53168-1482094267152-1:5:3
+	[DEBUG,org.apache.activemq.TransactionContext:318] Commit: TX:ID:twang-pc-53168-1482094267152-1:5:1 syncCount: 1
+   	[DEBUG,org.apache.activemq.TransactionContext:276] Rollback: TX:ID:twang-pc-52098-1482089241059-3:4:4 syncCount: 1
+   	[DEBUG,org.apache.activemq.ActiveMQMessageConsumer:848] on close, rollback duplicate: ID:twang-pc-52098-1482089241059-1:17:1:1:1
+   -->
 	  <level value="DEBUG"/> 
    </logger>
+
 
    <logger name="ltj">
 	  <level value="DEBUG"/>
