@@ -1,7 +1,7 @@
 1) Unzip Noninstall zip file to "mysql" folder
 2) create mydb/data directory
 
-3) place my.ini to mydb folder:
+3) place my.ini to mydb folder: (for OSx, /usr/local/mysql/etc/my.cnf)
 [mysqld]
 # set basedir to your installation path
 basedir=C:/pkgs_as71/mysql
@@ -9,6 +9,14 @@ basedir=C:/pkgs_as71/mysql
 datadir=C:/pkgs_as71/mydb/data
 #
 sql-mode="ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+#
+# MySQL default is REPEATABLE-READ
+transaction-isolation=READ-COMMITTED
+#
+
+
+Query to find out isolation levels:
+SELECT @@GLOBAL.tx_isolation, @@tx_isolation, @@session.tx_isolation;
 
 
 4) initialize data directory

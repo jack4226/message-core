@@ -6,9 +6,9 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     
     <tx:annotation-driven transaction-manager="mysqlTransactionManager"/>
     
@@ -44,7 +44,9 @@
 		<!-- the transactional semantics... -->
 		<tx:attributes>
 			<!-- all methods use the default transaction settings (see below) -->
-			<tx:method name="findByAddress"/>
+			<tx:method name="findByAddress" isolation="READ_UNCOMMITTED"/>
+			<tx:method name="insert,update" isolation="READ_COMMITTED"/>
+			<tx:method name="*" timeout="30" isolation="READ_COMMITTED"/>
 		</tx:attributes>
 	</tx:advice>
 	
@@ -58,9 +60,9 @@
 		<!-- the transactional semantics... -->
 		<tx:attributes>
 			<!-- all methods starting with 'get' are read-only -->
-			<tx:method name="get*" read-only="true"/>
+			<tx:method name="get*" read-only="true" isolation="READ_UNCOMMITTED"/>
 			<!-- other methods use the default transaction settings (see below) -->
-			<tx:method name="*"/>
+			<tx:method name="*" isolation="READ_COMMITTED"/>
 		</tx:attributes>
 	</tx:advice>
 	
