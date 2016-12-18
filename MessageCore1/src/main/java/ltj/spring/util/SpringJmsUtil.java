@@ -21,7 +21,7 @@ public class SpringJmsUtil {
 	}
 	
 	public static AbstractMessageListenerContainer getJmsListenerContainer() {
-		DefaultMessageListenerContainer container = getApplicationContext().getBean(DefaultMessageListenerContainer.class);
+		DefaultMessageListenerContainer container = (DefaultMessageListenerContainer) getApplicationContext().getBean("jmsListenerContainer");
 		return container;
 	}
 }

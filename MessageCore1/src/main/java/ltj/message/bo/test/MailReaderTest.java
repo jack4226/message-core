@@ -38,13 +38,15 @@ public class MailReaderTest extends BoTestBase {
 	
 	private static String testFromAddr = "testfrom@localhost";
 	
-	private static Map<String, Integer> msgCountMap = new LinkedHashMap<>();;
+	private static Map<String, Integer> msgCountMap = new LinkedHashMap<>();
+	
+	private static int start = 75;
+	private static int loops = 25; //Integer.MAX_VALUE;
  	
 	@Test
 	public void test1() { // MailReader
 		try {
-			int loops = 25; //Integer.MAX_VALUE;
-			for (int i = 0; i < loops; i++) {
+			for (int i = start; i < (start + loops); i++) {
 				String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
 				String user = "user" + suffix + "@localhost";
 				if (msgCountMap.containsKey(user)) {

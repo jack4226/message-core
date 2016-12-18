@@ -1,6 +1,7 @@
 package ltj.spring.util;
 
 import javax.jms.ConnectionFactory;
+import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
@@ -132,6 +133,50 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 		return new RuleEngineListener();
 	}
 	
+	@Bean(initMethod="initialize", destroyMethod="destroy")
+    public DefaultMessageListenerContainer ruleEngineJmsListener() {
+        DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
+        try {
+			container.setConnectionFactory(connectionFactory());
+		} catch (NamingException e) {
+			logger.error("NamingException caught", e);
+			throw new java.lang.IllegalStateException("NamingException caught", e);
+		}
+        container.setDestination(new ActiveMQQueue(mailReaderOutputQueueName));
+        // set Listener properties
+        container.setAutoStartup(true);
+        container.setConcurrency("1-4");
+        container.setMaxConcurrentConsumers(4);
+        //container.setErrorHandler(null); // TODO add error handler
+        //container.setMessageSelector(null); // XXX implement
+        container.setSessionTransacted(true);
+        container.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
+        // end of properties
+        container.setMessageListener(ruleEngineListener());
+        return container;
+    }
+	
+	@Bean(initMethod="initialize", destroyMethod="destroy")
+    public DefaultMessageListenerContainer mailSenderJmsListener() {
+        DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
+        try {
+			container.setConnectionFactory(connectionFactory());
+		} catch (NamingException e) {
+			logger.error("NamingException caught", e);
+			throw new java.lang.IllegalStateException("NamingException caught", e);
+		}
+        container.setDestination(new ActiveMQQueue(mailSenderInputQueueName));
+        // set Listener properties
+        container.setAutoStartup(true);
+        container.setConcurrency("1-4");
+        container.setMaxConcurrentConsumers(4);
+        //container.setErrorHandler(null); // TODO add error handler
+        container.setSessionTransacted(true);
+        // end of properties
+        container.setMessageListener(mailSenderListener());
+        return container;
+    }
+	
     @Override
     public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
     	registrar.setMessageHandlerMethodFactory(messageHandlerMethodFactory());
@@ -142,18 +187,11 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	            endpoint.setId(queueName + "_id");
 	            endpoint.setDestination(queueName);
 	            endpoint.setConcurrency("1-4");
-	            if (StringUtils.equals(queueName, mailReaderOutputQueueName)) {
-	            	// Rule Engine input
-	            	endpoint.setMessageListener(ruleEngineListener());
-	            }
-	            else if (StringUtils.equals(queueName, ruleEngineOutputQueueName)) {
+	            if (StringUtils.equals(queueName, ruleEngineOutputQueueName)) {
 	            	endpoint.setMessageListener(message -> {
 		                // TODO implement
 		            	logger.info("Received: " + message);
 		            });
-	            }
-	            else if (StringUtils.equals(queueName, mailSenderInputQueueName)) {
-	            	endpoint.setMessageListener(mailSenderListener());
 	            }
 	            else if (StringUtils.equals(queueName, customerCareInputQueueName)) {
 	            	endpoint.setMessageListener(message -> {

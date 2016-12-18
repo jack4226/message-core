@@ -48,6 +48,11 @@
 	  <level value="INFO"/> 
    </logger>
 
+   <logger name="org.apache.activemq.ActiveMQSession">
+   <!-- suppress messages: [DEBUG,org.apache.activemq.ActiveMQSession:572] ID:Mac-H97I.nc.rr.com-57359-1482084873564-1:5:1 Transaction Commit :null -->
+	  <level value="DEBUG"/> 
+   </logger>
+
    <logger name="ltj">
 	  <level value="DEBUG"/>
    </logger>

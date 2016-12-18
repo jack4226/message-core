@@ -62,9 +62,14 @@ public class RuleEngineListener implements MessageListener {
 					logger.warn("Message object is not a MessageBean, cless name: " + obj.getClass().getName());
 					jmsProcessor.writeMsg(message, JmsMessageId, true);
 				}
-			} catch (JMSException je) {
+			}
+			catch (JMSException je) {
 				logger.error("onMessage() - JMSException caught", je);
 				throw new RuntimeException(je);
+			}
+			catch (Throwable e) {
+				logger.error("onMessage() - Throwable caught", e);
+				throw new RuntimeException(e);
 			}
 			finally {
 				/* Message processed, update processing time */

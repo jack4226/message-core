@@ -90,7 +90,7 @@ public class SpringAppConfigTest {
 			DefaultJmsListenerContainerFactory factory = ctx.getBean(DefaultJmsListenerContainerFactory.class);
 			assertNotNull(factory);
 			
-			DefaultMessageListenerContainer listener = ctx.getBean(DefaultMessageListenerContainer.class);
+			DefaultMessageListenerContainer listener = (DefaultMessageListenerContainer) ctx.getBean("jmsListenerContainer");
 			assertNotNull(listener);
 			logger.info("Original listener destination: " + listener.getDestination());
 			listener.setDestination(new ActiveMQQueue("newQueue"));

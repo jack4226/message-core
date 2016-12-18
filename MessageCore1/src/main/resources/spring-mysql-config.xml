@@ -16,6 +16,7 @@
 	<bean id="mysqlTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="mysqlDataSource"/>
+		<!-- property name="defaultTimeout" value="30"/ --> <!-- 30 seconds -->
 		<property name="globalRollbackOnParticipationFailure" value="true"/>
 	</bean>
     <!-- end of Transaction Managers -->

@@ -42,7 +42,7 @@ public class MailReaderTaskExr {
 		logger.info("startMailReaders() - entering...");
 		
 		if (readTestUserAccounts) { // for test only
-			readTestUserAccounts();
+			readTestUserAccounts(75, 25);
 			return;
 		}
 		
@@ -79,11 +79,11 @@ public class MailReaderTaskExr {
 	}
 	
 	
-	private void readTestUserAccounts() {
+	private void readTestUserAccounts(int fromIdx, int nbrUsers) {
 		ExecutorService executor = new ThreadPoolExecutor(5, 25, 2000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(75));
 		List<Future<?>> futureList = new ArrayList<>();
 		try {
-			for (int i = 0; i < 25; i++) {
+			for (int i = fromIdx; i < (fromIdx + nbrUsers); i++) {
 				String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
 				String user = "user" + suffix;
 				MailBoxVo vo = new MailBoxVo();
@@ -123,7 +123,7 @@ public class MailReaderTaskExr {
 		boolean readConfAccts = false;
 		// read from user accounts
 		if (readUserAccts) {
-			readTestUserAccounts();
+			readTestUserAccounts(0, 100);
 		}
 		// read from configured accounts
 		if (readConfAccts) {
