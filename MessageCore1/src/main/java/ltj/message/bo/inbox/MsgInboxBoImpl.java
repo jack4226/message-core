@@ -108,13 +108,12 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (msgBean.getRuleName() == null) {
 			throw new DataValidationException("MessageBean.getRuleName() returns a null");
 		}
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 
 		MsgInboxVo msgVo = new MsgInboxVo();
 		long msgId = msgSequenceDao.findNextValue();
 		msgBean.setMsgId(Long.valueOf(msgId));
-		logger.info("saveMessage() - MsgId to be saved: " + msgId + ", From MailReader: "
-				+ msgBean.getIsReceived());
+		logger.info("saveMessage() - MsgId to be saved: " + msgId + ", From MailReader: " + msgBean.getIsReceived());
 		msgVo.setMsgId(msgId);
 		msgVo.setMsgRefId(msgBean.getMsgRefId());
 		if (msgBean.getCarrierCode() == null) {
@@ -124,16 +123,22 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		msgVo.setCarrierCode(StringUtils.left(msgBean.getCarrierCode(),1));
 		msgVo.setMsgSubject(StringUtils.left(msgBean.getSubject(),255));
 		msgVo.setMsgPriority(MessageBeanUtil.getMsgPriority(msgBean.getPriority()));
-		Timestamp ts = msgBean.getSendDate() == null ? updtTime : new Timestamp(msgBean
-				.getSendDate().getTime());
+		Timestamp ts = msgBean.getSendDate() == null ? updtTime : new Timestamp(msgBean.getSendDate().getTime());
 		msgVo.setReceivedTime(ts);
 		
-		Long fromAddrId = getEmailAddrId(msgBean.getFrom());
-		msgVo.setFromAddrId(fromAddrId);
-		Long replyToAddrId = getEmailAddrId(msgBean.getReplyto());
+		/* insert email addresses */
+		EmailAddrVo fromAddrVo = getEmailAddrVo(msgBean.getFrom());
+		if (fromAddrVo != null) { // should always be true
+			msgVo.setFromAddrId(fromAddrVo.getEmailAddrId());
+		}
+		EmailAddrVo replaToVo = getEmailAddrVo(msgBean.getReplyto());
+		Long replyToAddrId = replaToVo == null ? null : replaToVo.getEmailAddrId();
 		msgVo.setReplyToAddrId(replyToAddrId);
-		Long toAddrId = getEmailAddrId(msgBean.getTo());
-		msgVo.setToAddrId(toAddrId);
+		EmailAddrVo toAddrVo = getEmailAddrVo(msgBean.getTo());
+		if (toAddrVo != null) { // should always be true
+			msgVo.setToAddrId(toAddrVo.getEmailAddrId());
+		}
+		/* end of email addresses */
 		
 		Calendar cal = Calendar.getInstance();
 		if (msgBean.getPurgeAfter() != null) {
@@ -149,8 +154,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (msgBean.getMsgRefId() != null) {
 			MsgInboxVo origVo = msgInboxDao.getByPrimaryKey(msgBean.getMsgRefId());
 			if (origVo == null) { // could be deleted by User or purged by Purge routine
-				logger.warn("saveMessage() - MsgInbox record not found by MsgRefId: "
-						+ msgBean.getMsgRefId());
+				logger.warn("saveMessage() - MsgInbox record not found by MsgRefId: " + msgBean.getMsgRefId());
 			}
 			else {
 				msgVo.setLeadMsgId(origVo.getLeadMsgId());
@@ -168,6 +172,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		msgVo.setMsgContentType(StringUtils.left(msgBean.getContentType(),100));
 		String contentType = msgBean.getBodyContentType();
 		msgVo.setBodyContentType(StringUtils.left(contentType,50));
+		
 		if (msgBean.getIsReceived()) {
 			/* from MailReader */
 			msgVo.setMsgDirection(MsgDirectionCode.MSG_RECEIVED);
@@ -177,11 +182,10 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			msgVo.setMsgBody(msgBody);
 			msgVo.setMsgBodySize(msgBody == null ? 0 : msgBody.length());
 			// update "Last Received" time
-			if (msgVo.getFromAddrId() != null) {
-				EmailAddrVo lastRcptVo = emailAddrDao.getByAddrId(msgVo.getFromAddrId());
-				long minutes = 10 * 60 * 1000; // 10 minutes
-				if (lastRcptVo.getLastRcptTime() == null
-						|| lastRcptVo.getLastRcptTime().getTime() < (updtTime.getTime() - minutes)) {
+			if (msgVo.getFromAddrId() != null && fromAddrVo != null) {
+				long minutesInMillis = 10 * 60 * 1000; // 10 minutes
+				if (fromAddrVo.getLastRcptTime() == null
+						|| fromAddrVo.getLastRcptTime().getTime() < (updtTime.getTime() - minutesInMillis)) {
 					emailAddrDao.updateLastRcptTime(msgVo.getFromAddrId());
 				}
 			}
@@ -192,8 +196,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			msgVo.setSmtpMessageId(null);
 			msgVo.setDeliveryTime(null); // delivery time
 			msgVo.setStatusId(MsgStatusCode.PENDING);
-			if (msgBean.getRenderId() != null
-					&& msgRenderedDao.getByPrimaryKey(msgBean.getRenderId()) != null) {
+			if (msgBean.getRenderId() != null && msgRenderedDao.getByPrimaryKey(msgBean.getRenderId()) != null) {
 				msgVo.setRenderId(msgBean.getRenderId());
 			}
 			msgVo.setOverrideTestAddr(msgBean.getOverrideTestAddr() ? Constants.YES_CODE : Constants.NO_CODE);
@@ -222,8 +225,12 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 				bodyNode.setValue(msgVo.getMsgBody().getBytes());
 			}
 			// update "Last Sent" time
-			if (msgVo.getToAddrId() != null) {
-				emailAddrDao.updateLastSentTime(msgVo.getToAddrId());
+			if (msgVo.getToAddrId() != null && toAddrVo != null) {
+				long minutesInMillis = 10 * 60 * 1000; // 10 minutes
+				if (toAddrVo.getLastSentTime() == null
+						|| toAddrVo.getLastSentTime().getTime() < (updtTime.getTime() - minutesInMillis)) {
+					emailAddrDao.updateLastSentTime(msgVo.getToAddrId());
+				}
 			}
 		}
 		
@@ -253,6 +260,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (isDebugEnabled) {
 			logger.debug("Message to insert" + LF + StringUtil.prettyPrint(msgVo));
 		}
+		// save to message_inbox table
 		msgInboxDao.insert(msgVo);
 		
 		// insert click count record for Broadcasting e-mail
@@ -350,8 +358,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		
 		// we could have found a final recipient without delivery reports
 		if (msgBean.getReport() == null && msgBean.getRfc822() == null) {
-			if (!StringUtil.isEmpty(msgBean.getFinalRcpt())
-					|| !StringUtil.isEmpty(msgBean.getOrigRcpt())) {
+			if (!StringUtil.isEmpty(msgBean.getFinalRcpt()) || !StringUtil.isEmpty(msgBean.getOrigRcpt())) {
 				RfcFieldsVo rfcFieldsVo = new RfcFieldsVo();
 				rfcFieldsVo.setMsgId(msgVo.getMsgId());
 				rfcFieldsVo.setRfcType(StringUtils.left(msgBean.getContentType(),30));
@@ -371,8 +378,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		saveAddress(msgBean.getBcc(), EmailAddressType.BCC_ADDR, msgVo.getMsgId());
 		
 		// save message raw stream if received by MailReader
-		if (msgBean.getHashMap().containsKey(MessageBeanBuilder.MSG_RAW_STREAM)
-				&& msgBean.getIsReceived()) {
+		if (msgBean.getHashMap().containsKey(MessageBeanBuilder.MSG_RAW_STREAM) && msgBean.getIsReceived()) {
 			// save raw stream for in-bound mails only
 			// out-bound raw stream is saved in MailSender
 			MsgStreamVo msgStreamVo = new MsgStreamVo();
@@ -380,14 +386,12 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			msgStreamVo.setFromAddrId(msgVo.getFromAddrId());
 			msgStreamVo.setToAddrId(msgVo.getToAddrId());
 			msgStreamVo.setMsgSubject(msgVo.getMsgSubject());
-			msgStreamVo.setMsgStream((byte[]) msgBean.getHashMap().get(
-					MessageBeanBuilder.MSG_RAW_STREAM));
+			msgStreamVo.setMsgStream((byte[]) msgBean.getHashMap().get(MessageBeanBuilder.MSG_RAW_STREAM));
 			msgStreamDao.insert(msgStreamVo);
 		}
 		
 		if (isDebugEnabled) {
-			logger.debug("saveMessage() - Message has been saved to database, MsgId: "
-					+ msgVo.getMsgId());
+			logger.debug("saveMessage() - Message has been saved to database, MsgId: " + msgVo.getMsgId());
 		}
 		return msgVo.getMsgId();
 	}
@@ -404,8 +408,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (msgBean.getMsgRefId() != null) {
 			List<MsgActionLogsVo> list = msgActionLogsDao.getByMsgId(msgBean.getMsgRefId());
 			if (list == null || list.size() == 0) {
-				logger.error("saveMessageFlowLogs() - record not found for MsgRefId: "
-						+ msgBean.getMsgRefId());
+				logger.error("saveMessageFlowLogs() - record not found for MsgRefId: " + msgBean.getMsgRefId());
 			}
 			else {
 				MsgActionLogsVo vo = list.get(0);
@@ -455,8 +458,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			List<DeliveryStatusVo> deliveryStatus = deliveryStatusDao.getByMsgId(msgId);
 			msgInboxVo.setDeliveryStatus(deliveryStatus);
 			if (msgInboxVo.getRenderId() != null) {
-				MsgRenderedVo msgRenderedVo = msgRenderedDao.getByPrimaryKey(msgInboxVo
-						.getRenderId());
+				MsgRenderedVo msgRenderedVo = msgRenderedDao.getByPrimaryKey(msgInboxVo.getRenderId());
 				msgInboxVo.setMsgRenderedVo(msgRenderedVo);
 			}
 			MsgStreamVo msgStreamVo = msgStreamDao.getByPrimaryKey(msgId);
@@ -483,27 +485,34 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	}
 	
 	// get the first email address from the list and return its EmailAddrId
-	private Long getEmailAddrId(Address[] addrs) {
-		Long id = null;
-		if (addrs != null && addrs.length > 0) {
-			for (int i = 0; i < addrs.length; i++) {
-				id = getEmailAddrId(addrs[i].toString());
-				if (id != null)
+	private EmailAddrVo getEmailAddrVo(Address[] addrs) {
+		EmailAddrVo emailAddrVo = null;
+		for (int i = 0; addrs != null && i < addrs.length; i++) {
+			Address addr = addrs[i];
+			if (addr != null) {
+				emailAddrVo = getEmailAddrVo(addr.toString());
+				if (emailAddrVo != null) {
 					break;
+				}
 			}
 		}
-		return id;
+		return emailAddrVo;
 	}
 	
-	private Long getEmailAddrId(String addr) {
-		Long id = null;
-		if (addr != null && addr.trim().length() > 0) {
-			EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(addr.trim());
-			if (emailAddrVo != null) {
-				id = Long.valueOf(emailAddrVo.getEmailAddrId());
-			}
+	private EmailAddrVo getEmailAddrVo(String addr) {
+		EmailAddrVo emailAddrVo = null;
+		if (StringUtils.isNotBlank(addr)) {
+			emailAddrVo = emailAddrDao.findByAddress(addr.trim());
 		}
-		return id;
+		return emailAddrVo;
+	}
+
+	private Long getEmailAddrId(String addr) {
+		EmailAddrVo vo = getEmailAddrVo(addr);
+		if (vo != null) {
+			return vo.getEmailAddrId();
+		}
+		return null;
 	}
 
 	public MsgSequenceDao getMsgSequenceDao() {

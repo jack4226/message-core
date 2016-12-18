@@ -42,7 +42,7 @@ public class MailReaderTaskExr {
 		logger.info("startMailReaders() - entering...");
 		
 		if (readTestUserAccounts) { // for test only
-			readTestUserAccounts(75, 25);
+			readTestUserAccounts(50, 25);
 			return;
 		}
 		

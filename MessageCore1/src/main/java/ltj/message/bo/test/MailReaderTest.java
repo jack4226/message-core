@@ -40,7 +40,7 @@ public class MailReaderTest extends BoTestBase {
 	
 	private static Map<String, Integer> msgCountMap = new LinkedHashMap<>();
 	
-	private static int start = 75;
+	private static int start = 50;
 	private static int loops = 25; //Integer.MAX_VALUE;
  	
 	@Test
