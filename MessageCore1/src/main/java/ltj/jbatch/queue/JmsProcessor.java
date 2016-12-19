@@ -107,8 +107,7 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public String writeMsg(Object msgBean, String useThisCorrelId)
-			throws JMSException {
+	public String writeMsg(Object msgBean, String useThisCorrelId) throws JMSException {
 		return writeMsg(msgBean, useThisCorrelId, false);
 	}
 
@@ -125,8 +124,8 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public synchronized String writeMsg(final Object msgBean, final String useThisCorrelId,
-			final boolean toErrorQue) throws JMSException {
+	public synchronized String writeMsg(final Object msgBean, final String useThisCorrelId, final boolean toErrorQue)
+			throws JMSException {
 		String rtnMessageId = null;
 		try {
 			if (isDebugEnabled)
@@ -199,8 +198,7 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public String writeMsg(String mStr, String useThisCorrelId)
-			throws JMSException {
+	public String writeMsg(String mStr, String useThisCorrelId) throws JMSException {
 		return writeMsg(mStr, useThisCorrelId, false);
 	}
 
@@ -217,8 +215,8 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public synchronized String writeMsg(final String mStr, final String useThisCorrelId,
-			final boolean toErrorQue) throws JMSException {
+	public synchronized String writeMsg(final String mStr, final String useThisCorrelId, final boolean toErrorQue)
+			throws JMSException {
 		String rtnMessageId = null;
 		try {
 			if (isDebugEnabled)
@@ -276,8 +274,7 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public String writeMsg(javax.jms.Message msg)
-			throws JMSException {
+	public String writeMsg(javax.jms.Message msg) throws JMSException {
 		return writeMsg(msg, false);
 	}
 	
@@ -292,8 +289,7 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public synchronized String writeMsg(javax.jms.Message msg, boolean toErrorQue)
-			throws JMSException {
+	public synchronized String writeMsg(javax.jms.Message msg, boolean toErrorQue) throws JMSException {
 		String rtnMessageId = null;
 		MessageConverter converter = getJmsTemplate().getMessageConverter();
 		try {
@@ -340,8 +336,7 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public String writeJmsMsg(javax.jms.Message msg)
-			throws JMSException {
+	public String writeJmsMsg(javax.jms.Message msg) throws JMSException {
 		return writeJmsMsg(msg, false);
 	}
 	
@@ -356,8 +351,7 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public synchronized String writeJmsMsg(final javax.jms.Message msg, boolean toErrorQue)
-			throws JMSException {
+	public synchronized String writeJmsMsg(final javax.jms.Message msg, boolean toErrorQue) throws JMSException {
 		String rtnMessageId = null;
 		MessageConverter converter = getJmsTemplate().getMessageConverter();
 		try {
@@ -371,7 +365,6 @@ public class JmsProcessor {
 				}
 			};
 			
-			getJmsTemplate().send(getJmsTemplate().getDefaultDestination(), msgCreator);
 			// Ask the QueueSender to send the message we have created
 			if (!toErrorQue) {
 				if (isDebugEnabled) {
@@ -428,8 +421,8 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public synchronized String writeBytesMsg(final byte[] bytes, final String useThisCorrelId,
-			final boolean toErrorQue) throws JMSException {
+	public synchronized String writeBytesMsg(final byte[] bytes, final String useThisCorrelId, final boolean toErrorQue)
+			throws JMSException {
 		/* StreamMessage was tried and JMS inserts xml tags into the message */
 		String rtnMessageId = null;
 		try {
