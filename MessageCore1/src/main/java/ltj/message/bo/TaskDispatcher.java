@@ -11,6 +11,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.jms.JMSException;
+import javax.mail.Address;
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.dao.action.MsgActionDao;
+import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.action.MsgActionVo;
 
@@ -40,6 +42,8 @@ public class TaskDispatcher {
 	
 	@Autowired
 	private MsgActionDao msgActionDao;
+	@Autowired
+	private EmailAddrDao emailAddrDao;
 	
 	private static Hashtable<String, String> mailSenderJndi = null;
 	
@@ -47,13 +51,27 @@ public class TaskDispatcher {
 	}
 	
 	//@org.springframework.transaction.annotation.Transactional
-	public void dispatchTasks(MessageBean msgBean) throws DataValidationException,
-			MessagingException, JMSException {
+	public void dispatchTasks(MessageBean msgBean) throws DataValidationException, MessagingException, JMSException {
 		if (isDebugEnabled) {
 			logger.debug("Entering dispatchTasks() method. MessageBean:" + LF + msgBean);
 		}
 		if (msgBean.getRuleName() == null) {
 			throw new DataValidationException("RuleName is not valued");
+		}
+		
+		/* Save addresses first to resolve MySQL error - Lock wait timeout exceeded; */
+		SpringUtil.beginTransaction();
+		try {
+			/* insert email addresses */
+			saveEmailAddr(msgBean.getFrom());
+			saveEmailAddr(msgBean.getTo());
+			saveEmailAddr(msgBean.getReplyto());
+			/* end of email addresses */
+			SpringUtil.commitTransaction();
+		}
+		catch (Exception e) {
+			logger.error("Exception during saving email addrs: " + e.getMessage());
+			SpringUtil.rollbackTransaction();
 		}
 		
 		SpringUtil.beginTransaction();
@@ -120,6 +138,15 @@ public class TaskDispatcher {
 		}
 	}
 
+	private void saveEmailAddr(Address[] addrs) {
+		for (int i = 0; addrs != null && i < addrs.length; i++) {
+			Address addr = addrs[i];
+			if (addr != null && StringUtils.isNotBlank(addr.toString())) {
+				emailAddrDao.findByAddress(addr.toString().trim());
+			}
+		}
+	}
+	
 	private synchronized static Map<String, String> getMailSenderJndi() {
 		if (mailSenderJndi != null) {
 			return Collections.unmodifiableMap(mailSenderJndi);

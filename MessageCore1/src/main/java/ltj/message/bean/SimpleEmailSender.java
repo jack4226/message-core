@@ -124,8 +124,8 @@ public class SimpleEmailSender implements java.io.Serializable {
 		// send the thing off
 		transportSend(msg, 0);
 		if (isDebugEnabled) {
-			logger.debug("Mail To " + msg.getRecipients(RecipientType.TO)[0] + " - "
-					+ msg.getSubject() + " was sent successfully.");
+			logger.debug("Mail To " + msg.getRecipients(RecipientType.TO)[0] + " - " + msg.getSubject()
+					+ " was sent successfully.");
 		}
 	}
 	
@@ -174,8 +174,8 @@ public class SimpleEmailSender implements java.io.Serializable {
 		// send the thing off
 		transportSend(msg, 0);
 		if (isDebugEnabled) {
-			logger.debug("Mail TO " + msg.getRecipients(RecipientType.TO)[0] + " - "
-					+ m.getSubject() + " was sent successfully.");
+			logger.debug("Mail TO " + msg.getRecipients(RecipientType.TO)[0] + " - " + m.getSubject()
+					+ " was sent successfully.");
 		}
 		// IMAP
 		String url = null;
@@ -221,8 +221,8 @@ public class SimpleEmailSender implements java.io.Serializable {
 			msgs[0] = msg;
 			folder.appendMessages(msgs);
 			if (isDebugEnabled) {
-				logger.debug("Mail TO " + msg.getRecipients(RecipientType.TO)[0] + " - "
-						+ m.getSubject() + " was recorded successfully.");
+				logger.debug("Mail TO " + msg.getRecipients(RecipientType.TO)[0] + " - " + m.getSubject()
+						+ " was recorded successfully.");
 			}
 		}
 	}
@@ -233,8 +233,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 		}
 		catch (MessagingException e) {
 			String err = e.toString();
-			if (err.indexOf("Could not connect") > 0 && err.indexOf("Address already in use") > 0
-					&& retries < 10) {
+			if (err.indexOf("Could not connect") > 0 && err.indexOf("Address already in use") > 0 && retries < 10) {
 				try {
 					Thread.sleep(1000);
 				}
@@ -262,8 +261,8 @@ public class SimpleEmailSender implements java.io.Serializable {
 			// send the thing off
 			transport.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
 			if (isDebugEnabled) {
-				logger.debug("Mail TO " + msg.getRecipients(Message.RecipientType.TO)[0] + " - "
-						+ msg.getSubject() + " was sent successfully.");
+				logger.debug("Mail TO " + msg.getRecipients(Message.RecipientType.TO)[0] + " - " + msg.getSubject()
+						+ " was sent successfully.");
 			}
 		}
 		catch (MessagingException e) {
@@ -310,8 +309,8 @@ public class SimpleEmailSender implements java.io.Serializable {
 			// send the thing off
 			transport.sendMessage(msg, obtainAddrArray(m));
 			if (isDebugEnabled) {
-				logger.debug("Mail TO " + msg.getRecipients(Message.RecipientType.TO)[0] + " - "
-						+ m.getSubject() + " was sent successfully.");
+				logger.debug("Mail TO " + msg.getRecipients(Message.RecipientType.TO)[0] + " - " + m.getSubject()
+						+ " was sent successfully.");
 			}
 		}
 		catch (MessagingException e) {

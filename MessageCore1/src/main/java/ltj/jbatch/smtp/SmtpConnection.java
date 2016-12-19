@@ -115,9 +115,9 @@ public final class SmtpConnection implements java.io.Serializable {
 		
 		// Get a Session object
 		session = Session.getInstance(sys_props);
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			session.setDebug(true);
-
+		}
 		int extraRetryTime = 0;
 		extraRetryTime = vo.getRetries();
 		retryFreq = vo.getRetryFreq();
@@ -129,8 +129,8 @@ public final class SmtpConnection implements java.io.Serializable {
 		if (retryFreq > 30) {
 			retryFreq = 30; // up to 30 minutes
 		}
-		logger.info("Extra SMTP retries to be attempted for " + smtpHost + ": " + extraRetryTime
-				+ " minutes, freq=" + retryFreq);
+		logger.info("Extra SMTP retries to be attempted for " + smtpHost + ": " + extraRetryTime + " minutes, freq="
+				+ retryFreq);
 
 		if (TIME_TO_ISSUE_ALERT < 5) {
 			TIME_TO_ISSUE_ALERT = 5; // at least 5 minutes
@@ -152,8 +152,8 @@ public final class SmtpConnection implements java.io.Serializable {
 
 		if (extraRetryTime >= 0) {
 			totalRetries += Math.round((float)extraRetryTime / (float)retryFreq);
-			logger.info(smtpHost + " - will retry for up to "
-					+ (default_retry_time / 60 + extraRetryTime) + " minutes.");
+			logger.info(
+					smtpHost + " - will retry for up to " + (default_retry_time / 60 + extraRetryTime) + " minutes.");
 			logger.info(smtpHost + " - maximum retry attempts " + totalRetries);
 		}
 		else {
@@ -173,8 +173,9 @@ public final class SmtpConnection implements java.io.Serializable {
 			persistent = true;
 		}
 		logger.info("Persistent SMTP Connection used for " + smtpHost + "? " + persistent);
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Smtp Properties:" + vo);
+		}
 	}
 	
 	/**
@@ -249,14 +250,12 @@ public final class SmtpConnection implements java.io.Serializable {
 	 * @throws SmtpException
 	 * @throws MessagingException
 	 */
-	public void sendMail(Message msg, Map<String, Address[]> errors) throws SmtpException,
-			MessagingException {
+	public void sendMail(Message msg, Map<String, Address[]> errors) throws SmtpException, MessagingException {
 		try {
 			// use a Transport instance to send message via a specified SMTP
 			// server
 			if (isDebugEnabled) {
-				logger.debug("sendMail() - Message Content Type: "
-						+ ((MimeMessage) msg).getContentType());
+				logger.debug("sendMail() - Message Content Type: " + ((MimeMessage) msg).getContentType());
 			}
 			// get the SMTP transport
 			obtainTransport(0); // with retry logic
@@ -291,12 +290,10 @@ public final class SmtpConnection implements java.io.Serializable {
 				obtainTransport(0, true); // with retry logic
 				try {
 					transport.sendMessage(msg, msg.getAllRecipients());
-					logger.info("sendMail() - Retry was successfully, mail sent via " + smtpHost
-							+ ", " + new Date());
+					logger.info("sendMail() - Retry was successfully, mail sent via " + smtpHost + ", " + new Date());
 				}
 				catch (SendFailedException sfex) {
-					logger.error("SendFailedException caught during resend: (" + smtpHost + ")",
-							sfex);
+					logger.error("SendFailedException caught during resend: (" + smtpHost + ")", sfex);
 					getUnsentAddresses(sfex, errors);
 					// re-throw the SendFailedException back to caller
 					throw sfex;
@@ -304,16 +301,16 @@ public final class SmtpConnection implements java.io.Serializable {
 			}
 			else {
 				// throw SmtpException back to caller
-				throw new SmtpException("MessagingException caught during send mail, "
-						+ mex.getMessage());
+				throw new SmtpException("MessagingException caught during send mail, " + mex.getMessage());
 			}
 		}
 		finally {
 			if (!persistent) {
 				try {
 					if (transport != null) {
-						if (isDebugEnabled)
+						if (isDebugEnabled) {
 							logger.debug("sendMail() - closing transport...");
+						}
 						transport.close();
 					}
 				}
@@ -344,8 +341,9 @@ public final class SmtpConnection implements java.io.Serializable {
 			obtainTransport(0, forceConnect);
 		}
 		finally {
-			if (transport != null)
+			if (transport != null) {
 				transport.close();
+			}
 		}
 	}
 
@@ -422,8 +420,9 @@ public final class SmtpConnection implements java.io.Serializable {
 			// get a transport
 			transport = session.getTransport(protocol);
 			try {
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("Obtaining SMTP Transport... (" + smtpHost + "/" + smtpPort + ")");
+				}
 				String user_id = userId;
 				String pass_wd = password;
 				if (smtpPort > 0) {
@@ -449,8 +448,8 @@ public final class SmtpConnection implements java.io.Serializable {
 					else {
 						sleep_for = retryFreq * 60;
 					}
-					logger.error("Failed to connect to smtp server " + smtpHost + ", retry after "
-							+ sleep_for + " seconds.");
+					logger.error("Failed to connect to smtp server " + smtpHost + ", retry after " + sleep_for
+							+ " seconds.");
 					try {
 						Thread.sleep(sleep_for * 1000);
 					}
@@ -458,8 +457,7 @@ public final class SmtpConnection implements java.io.Serializable {
 						logger.error("ObtainTransport().sleep() was interrupted", ie);
 						throw e;
 					}
-					logger.error("Connecting to " + smtpHost + ", number of retries attempted: "
-							+ retries);
+					logger.error("Connecting to " + smtpHost + ", number of retries attempted: " + retries);
 					time_stopped_session += sleep_for;
 					time_stopped_total += sleep_for;
 					retries++;
@@ -469,8 +467,8 @@ public final class SmtpConnection implements java.io.Serializable {
 //									JbMain.SMTP_ALERT,
 //									"Couldn't connect to smtp for " + time_stopped_total
 //											+ " seconds, target host " + smtpHost, e);
-							logger.warn("Couldn't connect to smtp for " + time_stopped_total
-									+ " seconds, target host " + smtpHost, e);
+							logger.warn("Couldn't connect to smtp for " + time_stopped_total + " seconds, target host "
+									+ smtpHost, e);
 						}
 						time_stopped_session = 0;
 					}
@@ -481,8 +479,9 @@ public final class SmtpConnection implements java.io.Serializable {
 //							JbMain.SMTP_ALERT,
 //							"All smtp retries failed (for " + time_stopped_total
 //									+ " seconds), target host " + smtpHost, e);
-					logger.warn("All smtp retries failed (for " + time_stopped_total
-							+ " seconds), target host " + smtpHost, e);
+					logger.warn(
+							"All smtp retries failed (for " + time_stopped_total + " seconds), target host " + smtpHost,
+							e);
 					throw e;
 				}
 			}

@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import ltj.jbatch.app.SpringUtil;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.constant.CarrierCode;
@@ -173,7 +175,9 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		List<MsgHeadersVo> headers = getMsgHeaders();
 		for (MsgHeadersVo header : headers) {
 			if (EmailAddressType.TO_ADDR.equalsIgnoreCase(header.getHeaderName())) {
-				return header.getHeaderValue();
+				if (StringUtils.isNotBlank(header.getHeaderValue())) {
+					return header.getHeaderValue();
+				}
 			}
 		}
 		// if not found from header, get from toAddrId

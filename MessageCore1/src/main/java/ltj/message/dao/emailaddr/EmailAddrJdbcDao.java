@@ -334,20 +334,14 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			declareParameter(new SqlParameter("iOrigEmailAddr", Types.VARCHAR));
 			declareParameter(new SqlOutParameter("oEmailAddrId", Types.DECIMAL));
 			declareParameter(new SqlOutParameter("oEmailAddr", Types.VARCHAR));
-			declareParameter(new SqlOutParameter("oOrigEmailAddr",
-					Types.VARCHAR));
+			declareParameter(new SqlOutParameter("oOrigEmailAddr", Types.VARCHAR));
 			declareParameter(new SqlOutParameter("oStatusId", Types.CHAR));
-			declareParameter(new SqlOutParameter("oStatusChangeTime",
-					Types.TIMESTAMP));
-			declareParameter(new SqlOutParameter("oStatusChangeUserId",
-					Types.VARCHAR));
+			declareParameter(new SqlOutParameter("oStatusChangeTime", Types.TIMESTAMP));
+			declareParameter(new SqlOutParameter("oStatusChangeUserId", Types.VARCHAR));
 			declareParameter(new SqlOutParameter("oBounceCount", Types.INTEGER));
-			declareParameter(new SqlOutParameter("oLastBounceTime",
-					Types.TIMESTAMP));
-			declareParameter(new SqlOutParameter("oLastSentTime",
-					Types.TIMESTAMP));
-			declareParameter(new SqlOutParameter("oLastRcptTime",
-					Types.TIMESTAMP));
+			declareParameter(new SqlOutParameter("oLastBounceTime", Types.TIMESTAMP));
+			declareParameter(new SqlOutParameter("oLastSentTime", Types.TIMESTAMP));
+			declareParameter(new SqlOutParameter("oLastRcptTime", Types.TIMESTAMP));
 			declareParameter(new SqlOutParameter("oAcceptHtml", Types.CHAR));
 			declareParameter(new SqlOutParameter("oUpdtTime", Types.TIMESTAMP));
 			declareParameter(new SqlOutParameter("oUpdtUserId", Types.VARCHAR));
@@ -367,8 +361,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	 * The stored procedure did not resolve the "Duplicate Key" problem.
 	 */
 	EmailAddrVo findByAddressSP(String address) {
-		FindByAddressProcedure sp = new FindByAddressProcedure(
-				getJdbcTemplate().getDataSource(), "FindByAddress");
+		FindByAddressProcedure sp = new FindByAddressProcedure(getJdbcTemplate().getDataSource(), "FindByAddress");
 		Map<String, Object> map = sp.execute(address);
 		EmailAddrVo vo = new EmailAddrVo();
 		vo.setEmailAddrId(((BigDecimal) map.get("oEmailAddrId")).longValue());
@@ -508,15 +501,12 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			if (!StatusIdCode.SUSPENDED.equals(emailAddrVo.getStatusId())) {
 				emailAddrVo.setStatusId(StatusIdCode.SUSPENDED);
 				if (!StringUtil.isEmpty(emailAddrVo.getUpdtUserId())) {
-					emailAddrVo.setStatusChangeUserId(emailAddrVo
-							.getUpdtUserId());
+					emailAddrVo.setStatusChangeUserId(emailAddrVo.getUpdtUserId());
 				} else {
-					emailAddrVo
-							.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
+					emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 				}
 				emailAddrVo.setStatusChangeTime(emailAddrVo.getUpdtTime());
-				sql += "StatusId=?," + "StatusChangeUserId=?,"
-						+ "StatusChangeTime=?,";
+				sql += "StatusId=?," + "StatusChangeUserId=?," + "StatusChangeTime=?,";
 				keys.add(emailAddrVo.getStatusId());
 				keys.add(emailAddrVo.getStatusChangeUserId());
 				keys.add(emailAddrVo.getStatusChangeTime());
@@ -584,16 +574,13 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	/**
 	 * use KeyHolder to get generated Row Id.
 	 */
-	public int insert_keyholder(final EmailAddrVo emailAddrVo,
-			final boolean withUpdate) {
+	public int insert_keyholder(final EmailAddrVo emailAddrVo, final boolean withUpdate) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		int rowsInserted = getJdbcTemplate().update(new PreparedStatementCreator() {
-			public PreparedStatement createPreparedStatement(
-					Connection connection) throws SQLException {
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				emailAddrVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 				ArrayList<Object> keys = new ArrayList<Object>();
-				keys.add(EmailAddrUtil.removeDisplayName(emailAddrVo
-						.getEmailAddr()));
+				keys.add(EmailAddrUtil.removeDisplayName(emailAddrVo.getEmailAddr()));
 				keys.add(emailAddrVo.getEmailAddr());
 				keys.add(emailAddrVo.getStatusId());
 				keys.add(emailAddrVo.getStatusChangeTime());
@@ -617,8 +604,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 					sql += " ON duplicate KEY UPDATE UpdtTime=?";
 					keys.add(emailAddrVo.getUpdtTime());
 				}
-				PreparedStatement ps = connection.prepareStatement(sql,
-						new String[] { "id" });
+				PreparedStatement ps = connection.prepareStatement(sql, new String[] { "id" });
 				for (int i = 0; i < keys.size(); i++) {
 					ps.setObject(i + 1, keys.get(i));
 				}

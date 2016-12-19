@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
@@ -40,14 +41,15 @@ public class MailReaderTest extends BoTestBase {
 	
 	private static Map<String, Integer> msgCountMap = new LinkedHashMap<>();
 	
-	private static int start = 0;
+	private static int start = 50;
 	private static int loops = 25; //Integer.MAX_VALUE;
  	
 	@Test
+	@Rollback(value=false)
 	public void test1() { // MailReader
 		try {
 			for (int i = start; i < (start + loops); i++) {
-				String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
+				String suffix = StringUtils.leftPad(""+(i % 100), 2, "0");
 				String user = "user" + suffix + "@localhost";
 				if (msgCountMap.containsKey(user)) {
 					msgCountMap.put(user, msgCountMap.get(user) + 1);
@@ -73,21 +75,24 @@ public class MailReaderTest extends BoTestBase {
 	}
 	
 	@Test
+	@Rollback(value=false)
 	public void test2() {
 		MailReaderTaskExr.readTestUserAccounts = true;
+		MailReaderTaskExr.testStartingUser = start;
+		MailReaderTaskExr.testLoops = loops;
 		try {
 			Thread.sleep(60 * 1000L);
-		} catch (InterruptedException e) {
-		}
+		} catch (InterruptedException e) {}
 	}
 	
 	@Test
+	@Rollback(value=false)
 	public void test3() { //verify results
 		for (Iterator<String> it=msgCountMap.keySet().iterator(); it.hasNext();) {
 			String toAddr = it.next();
 			Integer count = msgCountMap.get(toAddr);
 			EmailAddrVo toAddrVo = addrDao.getByAddress(toAddr);
-			assertNotNull(toAddrVo);
+			assertNotNull("Could not find email address: " + toAddr, toAddrVo);
 			SearchFieldsVo vo = new SearchFieldsVo();
 			vo.setFromAddr(testFromAddr);
 			vo.setToAddrId(toAddrVo.getEmailAddrId());

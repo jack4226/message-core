@@ -11,7 +11,6 @@ import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,6 +75,7 @@ public class JmsProcessor {
 	private JmsTemplate jmsTemplateError;
 	
 	private @Value("${mailReaderOutput.Queue}") String queueName;
+	private @Value("${errorOutput.Queue}") String errorQueueName;
 
 	/**
 	 * Constructor
@@ -146,23 +146,7 @@ public class JmsProcessor {
 				}
 			};
 
-			// Ask the QueueSender to send the message we have created
-			if (!toErrorQue) {
-				if (isDebugEnabled) {
-					logger.debug("Sending the MessageBean message to "
-							+ getJmsTemplate().getDefaultDestination());
-				}
-				getJmsTemplate().send(getJmsTemplate().getDefaultDestination(), msgCreator);
-			}
-			else {
-				if (isDebugEnabled) {
-					logger.debug("Sending the MessageBean message to "
-							+ getJmsTemplateError().getDefaultDestination());
-				}
-				getJmsTemplateError().send(getJmsTemplateError().getDefaultDestination(), msgCreator);
-			}
-
-			rtnMessageId = msgCreator.getJMSMessageId();
+			rtnMessageId = writeToQueue(msgCreator, toErrorQue, "MessageBean");
 		}
 		catch (Exception e) {
 			logger.error("Exception Caught", e);
@@ -237,23 +221,7 @@ public class JmsProcessor {
 				}
 			};
 
-			// Ask the QueueSender to send the message we have created
-			if (!toErrorQue) {
-				if (isDebugEnabled) {
-					logger.debug("Sending the String message to "
-							+ getJmsTemplate().getDefaultDestination());
-				}
-				getJmsTemplate().send(getJmsTemplate().getDefaultDestination(), msgCreator);
-			}
-			else {
-				if (isDebugEnabled) {
-					logger.debug("Sending the String message to "
-							+ getJmsTemplateError().getDefaultDestination());
-				}
-				getJmsTemplateError().send(getJmsTemplateError().getDefaultDestination(), msgCreator);
-			}
-
-			rtnMessageId = msgCreator.getJMSMessageId();
+			rtnMessageId = writeToQueue(msgCreator, toErrorQue, "String");
 		}
 		catch (Exception e) {
 			logger.error("Exception Caught", e);
@@ -306,8 +274,7 @@ public class JmsProcessor {
 			}
 			else {
 				if (isDebugEnabled) {
-					logger.debug("Sending the message to "
-							+ getJmsTemplateError().getDefaultDestination());
+					logger.debug("Sending the message to " + getJmsTemplateError().getDefaultDestination());
 				}
 				getJmsTemplateError().convertAndSend(getJmsTemplateError().getDefaultDestination(), msg);
 			}
@@ -365,22 +332,7 @@ public class JmsProcessor {
 				}
 			};
 			
-			// Ask the QueueSender to send the message we have created
-			if (!toErrorQue) {
-				if (isDebugEnabled) {
-					logger.debug("Sending the message to " + getJmsTemplate().getDefaultDestination());
-				}
-				getJmsTemplate().send(getJmsTemplate().getDefaultDestination(), msgCreator);
-			}
-			else {
-				if (isDebugEnabled) {
-					logger.debug("Sending the message to "
-							+ getJmsTemplateError().getDefaultDestination());
-				}
-				getJmsTemplateError().send(getJmsTemplate().getDefaultDestination(), msgCreator);
-			}
-			
-			rtnMessageId = msg.getJMSMessageID();
+			rtnMessageId = writeToQueue(msgCreator, toErrorQue, "JMS");
 		}
 		catch (Exception e) {
 			logger.error("Exception Caught", e);
@@ -443,23 +395,7 @@ public class JmsProcessor {
 				}
 			};
 
-			// Ask the QueueSender to send the message we have created
-			if (!toErrorQue) {
-				if (isDebugEnabled) {
-					logger.debug("Sending the StructNode message to "
-							+ getJmsTemplate().getDefaultDestination());
-				}
-				getJmsTemplate().send(getJmsTemplate().getDefaultDestination(), msgCreator);
-			}
-			else {
-				if (isDebugEnabled) {
-					logger.debug("Sending the StructNode message to "
-							+ getJmsTemplateError().getDefaultDestination());
-				}
-				getJmsTemplateError().send(getJmsTemplateError().getDefaultDestination(), msgCreator);
-			}
-
-			rtnMessageId = msgCreator.getJMSMessageId();
+			rtnMessageId = writeToQueue(msgCreator, toErrorQue, "StructNode");
 		}
 		catch (Exception e) {
 			logger.error("Exception Caught", e);
@@ -506,23 +442,7 @@ public class JmsProcessor {
 				}
 			};
 
-			// Ask the QueueSender to send the message we have created
-			if (!toErrorQue) {
-				if (isDebugEnabled) {
-					logger.debug("Sending the Stream message to "
-							+ getJmsTemplate().getDefaultDestination());
-				}
-				getJmsTemplate().send(getJmsTemplate().getDefaultDestination(), msgCreator);
-			}
-			else {
-				if (isDebugEnabled) {
-					logger.debug("Sending the Stream message to "
-							+ getJmsTemplateError().getDefaultDestination());
-				}
-				getJmsTemplateError().send(getJmsTemplateError().getDefaultDestination(), msgCreator);
-			}
-
-			rtnMessageId = msgCreator.getJMSMessageId();
+			rtnMessageId = writeToQueue(msgCreator, toErrorQue, "Stream");
 		}
 		catch (Exception e) {
 			logger.error("Exception Caught", e);
@@ -546,6 +466,26 @@ public class JmsProcessor {
 		return message;
 	}
 
+	private String writeToQueue(SendMessageCreator msgCreator, boolean toErrorQue, String msgType) throws JMSException {
+
+		// Ask the QueueSender to send the message we have created
+		if (!toErrorQue) {
+			if (isDebugEnabled) {
+				logger.debug("Sending the " + msgType + " message to " + getJmsTemplate().getDefaultDestination());
+			}
+			getJmsTemplate().send(getJmsTemplate().getDefaultDestination(), msgCreator);
+		}
+		else {
+			if (isDebugEnabled) {
+				logger.debug("Sending the " + msgType + " message to " + getJmsTemplateError().getDefaultDestination());
+			}
+			getJmsTemplateError().send(getJmsTemplateError().getDefaultDestination(), msgCreator);
+		}
+
+		String rtnMessageId = msgCreator.getJMSMessageId();
+		return rtnMessageId;
+	}
+	
 	private void setCorrelationId(Message outMsg, String useThisCorrelId) throws JMSException {
 		if (useThisCorrelId != null) {
 			if (useThisCorrelId.toUpperCase().startsWith("ID:")) {
@@ -616,15 +556,12 @@ public class JmsProcessor {
 	
 	public synchronized JmsTemplate getJmsTemplateError() {
 		if (jmsTemplateError.getDefaultDestination() == null) {
-			jmsTemplateError.setDefaultDestination(new ActiveMQQueue("jms.error.queue"));
+			jmsTemplateError.setDefaultDestination(new ActiveMQQueue(errorQueueName));
 		}
 		return jmsTemplateError;
 	}
 	
 	public String getQueueName() {
-		if (StringUtils.isBlank(queueName)) {
-			queueName = "testQueue"; // TODO get queue name from properties
-		}
 		return queueName;
 	}
 

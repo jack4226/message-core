@@ -47,8 +47,7 @@ public final class MessageBodyBuilder {
 		String msgBody = msgBean.getBody();
 		if (msgBody != null) {
 			if (msgBody.length() > MAX_OUTBOUND_BODY_SIZE) {
-				msgBody = msgBody.substring(0, MAX_OUTBOUND_BODY_SIZE) + LF
-						+ Constants.MESSAGE_TRUNCATED;
+				msgBody = msgBody.substring(0, MAX_OUTBOUND_BODY_SIZE) + LF + Constants.MESSAGE_TRUNCATED;
 			}
 			//msgBody = EmailIdParser.getDefaultParser().removeEmailId(msgBody);
 		}
@@ -61,8 +60,7 @@ public final class MessageBodyBuilder {
 		if (orig != null && orig.getBodyContentType() != null) {
 			origContentType = orig.getBodyContentType();
 		}
-		if (msgBean.getBodyContentType().indexOf("html") >= 0
-				|| origContentType.indexOf("html") >= 0) {
+		if (msgBean.getBodyContentType().indexOf("html") >= 0 || origContentType.indexOf("html") >= 0) {
 			// either the reply or the original message is HTML
 			if (msgBean.getBodyContentType().indexOf("html") < 0) {
 				// reply message is plain text
@@ -153,8 +151,7 @@ public final class MessageBodyBuilder {
 			int pos2 = body.indexOf(Constants.MSG_DELIMITER_END, pos1 + 1);
 			if (pos1 >=0 && pos2 > pos1 && (pos2 - pos1) <= 255) {
 				// a reply email, insert Email_Id before the original message
-				body = body.substring(0, pos1) + emailIdSec + (isHtml ? "<br>" : Constants.CRLF)
-						+ body.substring(pos1);
+				body = body.substring(0, pos1) + emailIdSec + (isHtml ? "<br>" : Constants.CRLF) + body.substring(pos1);
 			}
 			else {
 				// a new email, append Email_Id to the end
@@ -263,8 +260,7 @@ public final class MessageBodyBuilder {
 	 */
 	private static String getEmailIdSection(MessageBean msgBean, boolean isHtml) {
 		String section = "";
-		if (!CarrierCode.WEBMAIL.equalsIgnoreCase(msgBean.getCarrierCode())
-				&& msgBean.getMsgId() != null) {
+		if (!CarrierCode.WEBMAIL.equalsIgnoreCase(msgBean.getCarrierCode()) && msgBean.getMsgId() != null) {
 			if (isHtml) {
 				section += LF + "<div style='color: darkgray;'><p>";
 				section += EmailIdParser.getDefaultParser().wrapupEmailId(msgBean.getMsgId())
@@ -275,8 +271,8 @@ public final class MessageBodyBuilder {
 						+ EmailIdParser.getDefaultParser().wrapupEmailId(msgBean.getMsgId());
 			}
 			if (isDebugEnabled) {
-				logger.debug("getEmailIdSection() - MsgId: " + msgBean.getMsgId()
-						+ ", EmailId: " + EmailAddrUtil.removeCRLFTabs(section));
+				logger.debug("getEmailIdSection() - MsgId: " + msgBean.getMsgId() + ", EmailId: "
+						+ EmailAddrUtil.removeCRLFTabs(section));
 			}
 		}
 		return section;
@@ -386,8 +382,7 @@ public final class MessageBodyBuilder {
 	private static String checkHtmlTag(String body) {
 		if (body==null) body = "";
 		
-		if (body.toUpperCase().indexOf(OPEN_HTML_TAG) < 0
-				|| body.toUpperCase().indexOf(CLOSE_HTML_TAG) < 0) {
+		if (body.toUpperCase().indexOf(OPEN_HTML_TAG) < 0 || body.toUpperCase().indexOf(CLOSE_HTML_TAG) < 0) {
 			// remove HTML and body tags, just for safety
 			body = removeHtmlBodyTags(body);
 			// add missing HTML tags
@@ -416,15 +411,16 @@ public final class MessageBodyBuilder {
 
 		try {
 			start_pos = bodyUpperCase.indexOf(startStr.toUpperCase());
-			end_pos = bodyUpperCase.indexOf(endStr.toUpperCase(), start_pos
-					+ startStr.length());
+			end_pos = bodyUpperCase.indexOf(endStr.toUpperCase(), start_pos + startStr.length());
 			if (start_pos >= 0 && end_pos > start_pos) {
 				String body1 = body.substring(0, start_pos);
 
-				if ((end_pos + 1) <= body.length())
+				if ((end_pos + 1) <= body.length()) {
 					body = body1 + body.substring(end_pos + 1);
-				else
+				}
+				else {
 					body = body1;
+				}
 			}
 		}
 		catch (Exception e) {

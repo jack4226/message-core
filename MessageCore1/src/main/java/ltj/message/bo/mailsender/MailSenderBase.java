@@ -19,6 +19,7 @@ import javax.mail.SendFailedException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -101,7 +102,6 @@ public abstract class MailSenderBase {
 	 * @throws SmtpException
 	 * @throws DataValidationException 
 	 */
-	//@Transactional
 	public void process(MessageBean msgBean) throws MessagingException, SmtpException,
 			DataValidationException {
 
@@ -109,15 +109,31 @@ public abstract class MailSenderBase {
 			throw new DataValidationException("Input MessageBean is null");
 		}
 		
+		/* Save addresses first to resolve MySQL error - Lock wait timeout exceeded; */
+		SpringUtil.beginTransaction();
+		try {
+			/* insert email addresses */
+			saveEmailAddr(msgBean.getFrom());
+			saveEmailAddr(msgBean.getTo());
+			saveEmailAddr(msgBean.getReplyto());
+			/* end of email addresses */
+			SpringUtil.commitTransaction();
+		}
+		catch (Exception e) {
+			logger.error("Exception during saving email addrs: " + e.getMessage());
+			SpringUtil.rollbackTransaction();
+		}
+
 		try {
 			SpringUtil.beginTransaction();
-			
+			/*
 			if (ClientUtil.isTrialPeriodEnded() && !ClientUtil.isProductKeyValid()) {
 				try {
 					Thread.sleep(1000); // delay for 1 second
 				}
 				catch (InterruptedException e) {}
 			}
+			*/
 			// was the outgoing message rendered?
 			if (msgBean.getRenderId() == null) {
 				logger.warn("process() - Render Id is null, the message was not rendered");
@@ -130,6 +146,7 @@ public abstract class MailSenderBase {
 				// use system default
 				msgBean.setEmBedEmailId(Boolean.valueOf(clientVo.getIsEmbedEmailId()));
 			}
+			// save the message to database
 			getMsgInboxBo().saveMessage(msgBean);
 			// check if VERP is enabled
 			if (clientVo.getIsVerpAddressEnabled()) {
@@ -144,8 +161,7 @@ public abstract class MailSenderBase {
 				if (StringUtil.isEmpty(clientVo.getVerpInboxName())) {
 					throw new DataValidationException("VERP inbox name is blank in Client table.");
 				}
-				String left = clientVo.getVerpInboxName() + "-" + emailId + "-"
-						+ recipient.replaceAll("@", "=");
+				String left = clientVo.getVerpInboxName() + "-" + emailId + "-" + recipient.replaceAll("@", "=");
 				String verpDomain = clientVo.getDomainName();
 				if (!StringUtil.isEmpty(clientVo.getVerpSubDomain())) {
 					verpDomain = clientVo.getVerpSubDomain() + "." + verpDomain;
@@ -196,6 +212,15 @@ public abstract class MailSenderBase {
 		}
 	}
 	
+	private void saveEmailAddr(Address[] addrs) {
+		for (int i = 0; addrs != null && i < addrs.length; i++) {
+			Address addr = addrs[i];
+			if (addr != null && StringUtils.isNotBlank(addr.toString())) {
+				emailAddrDao.findByAddress(addr.toString().trim());
+			}
+		}
+	}
+
 	/**
 	 * send a message off and update delivery status and message tables.
 	 * 
@@ -205,9 +230,7 @@ public abstract class MailSenderBase {
 	 * @throws SmtpException
 	 * @throws DataValidationException 
 	 */
-	//@Transactional
-	public void process(byte[] msgStream) throws MessagingException, SmtpException,
-			DataValidationException {
+	public void process(byte[] msgStream) throws MessagingException, SmtpException, DataValidationException {
 
 		try {
 			javax.mail.Message mimeMsg = MessageBeanUtil.createMimeMessage(msgStream);
@@ -231,8 +254,7 @@ public abstract class MailSenderBase {
 		}
 	}
 	
-	private void addXHeadersToBean(MessageBean msgBean, javax.mail.Message mimeMsg)
-			throws MessagingException {
+	private void addXHeadersToBean(MessageBean msgBean, javax.mail.Message mimeMsg) throws MessagingException {
 		String[] renderId = mimeMsg.getHeader(XHeaderName.XHEADER_RENDER_ID);
 		if (renderId != null && renderId.length > 0) {
 			String renderIdStr = renderId[0];
@@ -274,22 +296,26 @@ public abstract class MailSenderBase {
 		
 		String[] overrideTestAddr = mimeMsg.getHeader(XHeaderName.XHEADER_OVERRIDE_TEST_ADDR);
 		if (overrideTestAddr != null && overrideTestAddr.length > 0) {
-			if (YES.equalsIgnoreCase(overrideTestAddr[0]))
+			if (YES.equalsIgnoreCase(overrideTestAddr[0])) {
 				msgBean.setOverrideTestAddr(true);
+			}
 		}
 		
 		String[] saveRawStream = mimeMsg.getHeader(XHeaderName.XHEADER_SAVE_RAW_STREAM);
 		if (saveRawStream != null && saveRawStream.length > 0) {
-			if (NO.equalsIgnoreCase(saveRawStream[0]))
+			if (NO.equalsIgnoreCase(saveRawStream[0])) {
 				msgBean.setSaveMsgStream(false);
+			}
 		}
 		
 		String[] embedEmailId = mimeMsg.getHeader(XHeaderName.XHEADER_EMBED_EMAILID);
 		if (embedEmailId != null && embedEmailId.length > 0) {
-			if (NO.equalsIgnoreCase(embedEmailId[0]))
+			if (NO.equalsIgnoreCase(embedEmailId[0])) {
 				msgBean.setEmBedEmailId(Boolean.valueOf(false));
-			else if (YES.equalsIgnoreCase(embedEmailId[0]))
+			}
+			else if (YES.equalsIgnoreCase(embedEmailId[0])) {
 				msgBean.setEmBedEmailId(Boolean.valueOf(true));
+			}
 		}
 	}
 	
@@ -307,8 +333,7 @@ public abstract class MailSenderBase {
 	 *            if true, do not convert original addresses.
 	 * @throws MessagingException
 	 */
-	protected void rebuildAddresses(javax.mail.Message m, boolean overrideTestAddr)
-			throws MessagingException {
+	protected void rebuildAddresses(javax.mail.Message m, boolean overrideTestAddr) throws MessagingException {
 		if (isDebugEnabled) {
 			logger.debug("Entering rebuildAddresses method...");
 		}
@@ -316,8 +341,7 @@ public abstract class MailSenderBase {
 		if (clientVo.getUseTestAddress() && !overrideTestAddr) {
 			if (isDebugEnabled) {
 				logger.debug("rebuildAddresses() - Replace original TO: "
-						+ EmailAddrUtil.emailAddrToString(m
-								.getRecipients(javax.mail.Message.RecipientType.TO))
+						+ EmailAddrUtil.emailAddrToString(m.getRecipients(javax.mail.Message.RecipientType.TO))
 						+ ", with testing address: " + clientVo.getTestToAddr());
 			}
 			boolean toAddrIsLocal = false;
@@ -337,8 +361,7 @@ public abstract class MailSenderBase {
 			}
 			if (!toAddrIsLocal) { // DO NOT override if TO address is local
 				if (displayName == null) {
-					m.setRecipients(RecipientType.TO, InternetAddress.parse(clientVo
-							.getTestToAddr()));
+					m.setRecipients(RecipientType.TO, InternetAddress.parse(clientVo.getTestToAddr()));
 				}
 				else {
 					m.setRecipients(RecipientType.TO, InternetAddress.parse("\""
@@ -348,23 +371,20 @@ public abstract class MailSenderBase {
 			}
 		}
 		// validate TO address
-		if (m.getRecipients(RecipientType.TO) == null
-				|| m.getRecipients(RecipientType.TO).length == 0) {
+		if (m.getRecipients(RecipientType.TO) == null || m.getRecipients(RecipientType.TO).length == 0) {
 			throw new AddressException("TO address is blank!");
 		}
 		// Set From address to Test Address if it's a test run and not provided
-		if (clientVo.getUseTestAddress() && !overrideTestAddr
-				&& (m.getFrom() == null || m.getFrom().length == 0)) {
+		if (clientVo.getUseTestAddress() && !overrideTestAddr && (m.getFrom() == null || m.getFrom().length == 0)) {
 			if (isDebugEnabled) {
 				logger.debug("rebuildAddresses() - Original From is missing, use testing address: "
-						+  clientVo.getTestFromAddr());
+						+ clientVo.getTestFromAddr());
 			}
 			if (EmailAddrUtil.hasDisplayName(clientVo.getTestFromAddr())) {
 				m.setFrom(InternetAddress.parse(clientVo.getTestFromAddr())[0]);
 			}
 			else {
-				m.setFrom(InternetAddress.parse("\"MailSender\" <" + clientVo.getTestFromAddr()
-						+ ">")[0]);
+				m.setFrom(InternetAddress.parse("\"MailSender\" <" + clientVo.getTestFromAddr() + ">")[0]);
 			}
 		}
 		// validate FROM address
@@ -379,8 +399,8 @@ public abstract class MailSenderBase {
 					m.setReplyTo(InternetAddress.parse(clientVo.getTestReplytoAddr()));
 				}
 				else {
-					m.setReplyTo(InternetAddress.parse("\"MailSender Reply\" " + "<"
-							+ clientVo.getTestReplytoAddr() + ">"));
+					m.setReplyTo(
+							InternetAddress.parse("\"MailSender Reply\" " + "<" + clientVo.getTestReplytoAddr() + ">"));
 				}
 			}
 		}
@@ -396,8 +416,9 @@ public abstract class MailSenderBase {
 	 * @throws MessagingException
 	 */
 	protected void saveMsgStream(javax.mail.Message msg, long msgId) throws MessagingException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveMsgStream() - msgId: " + msgId);
+		}
 		MsgInboxVo msgInboxVo = getMsgInboxDao().getByPrimaryKey(msgId);
 		if (msgInboxVo == null) {
 			logger.error("saveMsgStream() - MsgInbox record not found by MsgId: " + msgId);
@@ -439,8 +460,8 @@ public abstract class MailSenderBase {
 	 * @throws SmtpException
 	 * @throws MessagingException
 	 */
-	public void updtDlvrStatAndLoopback(MessageBean msgBean, SendFailedException exp,
-			Map<String, ?> errors) throws MessagingException {
+	public void updtDlvrStatAndLoopback(MessageBean msgBean, SendFailedException exp, Map<String, ?> errors)
+			throws MessagingException {
 		if (errors.get("validUnsent") != null) {
 			Address[] validUnsent = (Address[]) errors.get("validUnsent");
 			validUnsent(msgBean, exp, validUnsent);
@@ -456,15 +477,13 @@ public abstract class MailSenderBase {
 		
 		MsgInboxVo msgInboxVo = getMsgInboxDao().getByPrimaryKey(msgBean.getMsgId());
 		if (msgInboxVo == null) {
-			logger.error("validUnsent() - MsgInbox record not found for MsgId: "
-					+ msgBean.getMsgId());
+			logger.error("validUnsent() - MsgInbox record not found for MsgId: " + msgBean.getMsgId());
 			return;
 		}
-		String reason = "4.1.0 Mail unsent to the address due to following error: "
-				+ exp.toString();
+		String reason = "4.1.0 Mail unsent to the address due to following error: " + exp.toString();
 		for (int i = 0; i < validUnsent.length; i++) {
-			logger.info("validUnsent() - Addr [" + i + "]: " + validUnsent[i]
-					+ ", insert into DeliveryStatus msgId=" + msgBean.getMsgId());
+			logger.info("validUnsent() - Addr [" + i + "]: " + validUnsent[i] + ", insert into DeliveryStatus msgId="
+					+ msgBean.getMsgId());
 			Address failedAddr = validUnsent[i];
 			if (failedAddr == null || StringUtil.isEmpty(failedAddr.toString())) {
 				continue;
@@ -482,8 +501,7 @@ public abstract class MailSenderBase {
 		}
 	}
 	
-	protected void invalid(MessageBean msgBean, SendFailedException exp, Address[] invalid)
-			throws MessagingException {
+	protected void invalid(MessageBean msgBean, SendFailedException exp, Address[] invalid) throws MessagingException {
 		
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgBean.getMsgId());
 		if (msgInboxVo == null) {
@@ -492,8 +510,8 @@ public abstract class MailSenderBase {
 		}
 		String reason = "5.1.1 Invalid Destination Mailbox Address: " + exp.toString();
 		for (int i = 0; i < invalid.length; i++) {
-			logger.info("invalid() -  Addr [" + i + "]: " + invalid[i]
-					+ ", insert into DeliveryStatus msgId=" + msgBean.getMsgId());
+			logger.info("invalid() -  Addr [" + i + "]: " + invalid[i] + ", insert into DeliveryStatus msgId="
+					+ msgBean.getMsgId());
 			Address failedAddr = invalid[i];
 			if (failedAddr == null || StringUtil.isEmpty(failedAddr.toString())) {
 				continue;
@@ -571,9 +589,8 @@ public abstract class MailSenderBase {
 	 * @throws DataValidationException 
 	 * @throws JMSException 
 	 */
-	protected void loopbackMail(MessageBean msgBean, String errmsg, Address failedAddr,
-			String reason) throws MessagingException, DataValidationException,
-			JMSException {
+	protected void loopbackMail(MessageBean msgBean, String errmsg, Address failedAddr, String reason)
+			throws MessagingException, DataValidationException, JMSException {
 		
 		logger.info("Entering LoopbackMail method, error message: " + errmsg);
 		// generate delivery failure report
@@ -586,15 +603,14 @@ public abstract class MailSenderBase {
 		
 		// assign loop-back address, for reference only, not used to deliver the message.
 		msgBean.setTo(InternetAddress.parse("loopback@localhost"));
-		logger.info("loopbackMail() - Undelivered message has been routed to "
-				+ "loopback@localhost");
+		logger.info("loopbackMail() - Undelivered message has been routed to " + "loopback@localhost");
 		Message msg = MessageBeanUtil.createMimeMessage(msgBean, failedAddr, loopbackText);
 		MessageBean loopBackBean = MessageBeanBuilder.processPart(msg, null);
 		loopBackBean.setMsgRefId(msgBean.getMsgId());
 		loopBackBean.setIsReceived(true);
 		if (isDebugEnabled) {
-			logger.debug("loopbackMail() - The loopback MessageBean:" + LF + "<----" + LF
-					+ loopBackBean + LF + "---->");
+			logger.debug(
+					"loopbackMail() - The loopback MessageBean:" + LF + "<----" + LF + loopBackBean + LF + "---->");
 		}
 		// use MessageProcessorBo to invoke rule engine
 		getMessageParser().parse(loopBackBean);
@@ -615,7 +631,7 @@ public abstract class MailSenderBase {
 	 * @throws SmtpException
 	 */
 	public abstract void sendMail(Message msg, boolean isSecure, Map<String, Address[]> errors)
-		throws MessagingException, SmtpException;
+			throws MessagingException, SmtpException;
 
 	/**
 	 * send the email off via unsecured SMTP server. to be implemented by
@@ -626,8 +642,7 @@ public abstract class MailSenderBase {
 	 * @throws SmtpException
 	 * @throws MessagingException
 	 */
-	public abstract void sendMail(Message msg, Map<String, Address[]> errors)
-			throws MessagingException, SmtpException;
+	public abstract void sendMail(Message msg, Map<String, Address[]> errors) throws MessagingException, SmtpException;
 
 	public DeliveryStatusDao getDeliveryStatusDao() {
 		return deliveryStatusDao;

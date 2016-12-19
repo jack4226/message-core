@@ -131,13 +131,13 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (fromAddrVo != null) { // should always be true
 			msgVo.setFromAddrId(fromAddrVo.getEmailAddrId());
 		}
-		EmailAddrVo replaToVo = getEmailAddrVo(msgBean.getReplyto());
-		Long replyToAddrId = replaToVo == null ? null : replaToVo.getEmailAddrId();
-		msgVo.setReplyToAddrId(replyToAddrId);
 		EmailAddrVo toAddrVo = getEmailAddrVo(msgBean.getTo());
 		if (toAddrVo != null) { // should always be true
 			msgVo.setToAddrId(toAddrVo.getEmailAddrId());
 		}
+		EmailAddrVo replaToVo = getEmailAddrVo(msgBean.getReplyto());
+		Long replyToAddrId = replaToVo == null ? null : replaToVo.getEmailAddrId();
+		msgVo.setReplyToAddrId(replyToAddrId);
 		/* end of email addresses */
 		
 		Calendar cal = Calendar.getInstance();

@@ -36,13 +36,16 @@ public class MailReaderTaskExr {
 	
 	// for test only, set to true to read from test user accounts
 	public static boolean readTestUserAccounts = false;
+	public static int testStartingUser = 0;
+	public static int testLoops = 25;
+	// end of test variables
 	
 	@Scheduled(initialDelay=20000, fixedDelay=5000) // delay for 20 seconds for testing
 	public void startMailReaders() {
 		logger.info("startMailReaders() - entering...");
 		
 		if (readTestUserAccounts) { // for test only
-			readTestUserAccounts(0, 25);
+			readTestUserAccounts(testStartingUser, testLoops);
 			return;
 		}
 		

@@ -145,8 +145,8 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
         container.setDestination(new ActiveMQQueue(mailReaderOutputQueueName));
         // set Listener properties
         container.setAutoStartup(true);
-        container.setConcurrency("1-4");
-        container.setMaxConcurrentConsumers(4);
+        container.setConcurrency("1-2");
+        container.setMaxConcurrentConsumers(2);
         //container.setErrorHandler(null); // TODO add error handler
         //container.setMessageSelector(null); // XXX implement
         container.setSessionTransacted(true);
@@ -190,25 +190,25 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	            if (StringUtils.equals(queueName, ruleEngineOutputQueueName)) {
 	            	endpoint.setMessageListener(message -> {
 		                // TODO implement
-		            	logger.info("Received: " + message);
+	            		logger.info("Received from " + queueName + ": " + message);
 		            });
 	            }
 	            else if (StringUtils.equals(queueName, customerCareInputQueueName)) {
 	            	endpoint.setMessageListener(message -> {
 		                // TODO implement
-		            	logger.info("Received: " + message);
+		            	logger.info("Received from " + queueName + ": " + message);
 		            });
 	            }
 	            else if (StringUtils.equals(queueName, rmaRequestInputQueueName)) {
 	            	endpoint.setMessageListener(message -> {
 		                // TODO implement
-		            	logger.info("Received: " + message);
+	            		logger.info("Received from " + queueName + ": " + message);
 		            });
 	            }
 	            else {
 		            endpoint.setMessageListener(message -> {
 		            	// default 
-		            	logger.info("Received: " + message);
+		            	logger.info("Received from " + queueName + ": " + message);
 		            });
 	            }
 	            registrar.registerEndpoint(endpoint);
