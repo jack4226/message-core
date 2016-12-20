@@ -7,7 +7,7 @@ import ltj.msgui.corejsf.model.SortFilterModel;
 import javax.faces.model.ArrayDataModel;
 
 public class TableData {
-	private DataModel filterModel = null;
+	private DataModel<?> filterModel = null;
 	private boolean editable = false;
 	private boolean markedForDeletion = false;
 	private static final Name[] names = {
@@ -18,10 +18,10 @@ public class TableData {
 		};
 
 	public TableData() {
-		filterModel = new SortFilterModel(new ArrayDataModel(names));
+		filterModel = new SortFilterModel(new ArrayDataModel<>(names));
 	}
 
-	public DataModel getNames() {
+	public DataModel<?> getNames() {
 		return filterModel;
 	}
 

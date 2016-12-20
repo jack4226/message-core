@@ -14,14 +14,14 @@ public class MsgBuiltInRulesBean extends MsgRulesBean {
 	protected static final Logger logger = Logger.getLogger(MsgBuiltInRulesBean.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	public DataModel getAll() {
+	public DataModel<?> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (ruleLogics == null) {
 			List<RuleLogicVo> ruleLogicList = getRuleLogicDao().getAll(true);
-			ruleLogics = new ListDataModel(ruleLogicList);
+			ruleLogics = new ListDataModel<>(ruleLogicList);
 		}
 		return ruleLogics;
 	}

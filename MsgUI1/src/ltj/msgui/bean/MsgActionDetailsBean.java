@@ -31,7 +31,7 @@ public class MsgActionDetailsBean {
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 
 	private MsgActionDetailDao msgActionDetailDao = null;
-	private DataModel actionDetails = null;
+	private DataModel<?> actionDetails = null;
 	private MsgActionDetailVo actionDetail = null;
 	private boolean editMode = true;
 	
@@ -46,14 +46,14 @@ public class MsgActionDetailsBean {
 	private static String TO_DELETED = "actiondetail.deleted";
 	private static String TO_CANCELED = "actiondetail.canceled";
 
-	public DataModel getAll() {
+	public DataModel<?> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (actionDetails == null) {
 			List<MsgActionDetailVo> MsgActionDetailList = getMsgActionDetailDao().getAll();
-			actionDetails = new ListDataModel(MsgActionDetailList);
+			actionDetails = new ListDataModel<>(MsgActionDetailList);
 		}
 		return actionDetails;
 	}

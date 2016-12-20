@@ -23,14 +23,14 @@ public class CustomersBean {
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 
 	private CustomerDao customerDao = null;
-	private DataModel customers = null;
+	private DataModel<?> customers = null;
 	private CustomerVo customer = null;
 	private boolean editMode = true;
 
-	public DataModel getAll() {
+	public DataModel<?> getAll() {
 		if (customers == null) {
 			List<CustomerVo> customerList = getCustomerDao().getAll();
-			customers = new ListDataModel(customerList);
+			customers = new ListDataModel<>(customerList);
 		}
 		return customers;
 	}

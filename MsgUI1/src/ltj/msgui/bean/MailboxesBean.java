@@ -35,7 +35,7 @@ public class MailboxesBean {
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 
 	private MailBoxDao mailBoxDao = null;
-	private DataModel mailBoxes = null;
+	private DataModel<?> mailBoxes = null;
 	private MailBoxVo mailbox = null;
 	private boolean editMode = true;
 	
@@ -70,7 +70,7 @@ public class MailboxesBean {
 		this.mailBoxDao = mailBoxDao;
 	}
 	
-	public DataModel getAll() {
+	public DataModel<?> getAll() {
 		if (mailBoxes == null) {
 			List<MailBoxVo> mailBoxList = null;
 			if (!ClientUtil.isProductKeyValid() && ClientUtil.isTrialPeriodEnded()) {
@@ -79,7 +79,7 @@ public class MailboxesBean {
 			else {
 				mailBoxList = getMailBoxDao().getAll(false);
 			}
-			mailBoxes = new ListDataModel(mailBoxList);
+			mailBoxes = new ListDataModel<>(mailBoxList);
 		}
 		return mailBoxes;
 	}

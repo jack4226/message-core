@@ -40,7 +40,7 @@ public class MsgRulesBean {
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	protected RuleLogicDao ruleLogicDao = null;
-	protected DataModel ruleLogics = null;
+	protected DataModel<?> ruleLogics = null;
 	protected RuleLogicVo ruleLogic = null;
 	protected boolean editMode = true;
 	
@@ -53,9 +53,9 @@ public class MsgRulesBean {
 	protected RuleElementDao ruleElementDao = null;
 	protected RuleSubRuleMapDao ruleSubRuleMapDao = null;
 	protected MsgActionDao msgActionDao = null;
-	protected DataModel ruleElements = null;
-	protected DataModel subRules = null;
-	protected DataModel msgActions = null;
+	protected DataModel<?> ruleElements = null;
+	protected DataModel<?> subRules = null;
+	protected DataModel<?> msgActions = null;
 	
 	protected RuleElementVo ruleElement = null;
 	protected RuleElementVo origRuleElement = null;
@@ -97,14 +97,14 @@ public class MsgRulesBean {
 	 * Main Page Section 
 	 */
 	
-	public DataModel getAll() {
+	public DataModel<?> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (ruleLogics == null) {
 			List<RuleLogicVo> ruleLogicList = getRuleLogicDao().getAll(false);
-			ruleLogics = new ListDataModel(ruleLogicList);
+			ruleLogics = new ListDataModel<>(ruleLogicList);
 		}
 		return ruleLogics;
 	}
@@ -476,7 +476,7 @@ public class MsgRulesBean {
 		return "";
 	}
 	
-	public DataModel getRuleElements() {
+	public DataModel<?> getRuleElements() {
 		if (isDebugEnabled)
 			logger.debug("getRuleElement() - Entering...");
 		if (ruleLogic == null) {
@@ -486,7 +486,7 @@ public class MsgRulesBean {
 		if (ruleElements == null) {
 			String key = ruleLogic.getRuleName();
 			List<RuleElementVo> list = getRuleElementDao().getByRuleName(key);
-			ruleElements = new ListDataModel(list);
+			ruleElements = new ListDataModel<>(list);
 		}
 		return ruleElements;
 	}
@@ -589,7 +589,7 @@ public class MsgRulesBean {
 		return "";
 	}
 	
-	public DataModel getSubRules() {
+	public DataModel<?> getSubRules() {
 		if (isDebugEnabled)
 			logger.debug("getSubRules() - Entering...");
 		if (ruleLogic == null) {
@@ -599,7 +599,7 @@ public class MsgRulesBean {
 		if (subRules == null) {
 			String key = ruleLogic.getRuleName();
 			List<RuleSubRuleMapVo> list = getRuleSubRuleMapDao().getByRuleName(key);
-			subRules = new ListDataModel(list);
+			subRules = new ListDataModel<>(list);
 		}
 		return subRules;
 	}
@@ -766,7 +766,7 @@ public class MsgRulesBean {
 		return "";
 	}
 	
-	public DataModel getMsgActions() {
+	public DataModel<?> getMsgActions() {
 		if (isDebugEnabled)
 			logger.debug("getMsgActions() - Entering...");
 		if (ruleLogic == null) {
@@ -781,7 +781,7 @@ public class MsgRulesBean {
 				MsgActionUIVo vo2 = new MsgActionUIVo(list.get(i));
 				list2.add(vo2);
 			}
-			msgActions = new ListDataModel(list2);
+			msgActions = new ListDataModel<>(list2);
 		}
 		return msgActions;
 	}
@@ -1116,7 +1116,7 @@ public class MsgRulesBean {
 		this.actionFailure = actionFailure;
 	}
 
-	public DataModel getRuleLogics() {
+	public DataModel<?> getRuleLogics() {
 		return ruleLogics;
 	}
 

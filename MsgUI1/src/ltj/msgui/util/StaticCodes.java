@@ -102,8 +102,9 @@ public class StaticCodes {
 			URL url = loader.getResource("WEB-INF/lib");
 			if (url != null) {
 				File file = new File(url.getFile());
+				JarFile jarFile = null;
 				try {
-					JarFile jarFile = new JarFile(file);
+					jarFile = new JarFile(file);
 					Enumeration<JarEntry> entries = jarFile.entries();
 					while (entries.hasMoreElements()) {
 						JarEntry entry = entries.nextElement();
@@ -112,6 +113,13 @@ public class StaticCodes {
 				}
 				catch (IOException e) {
 					e.printStackTrace();
+				}
+				finally {
+					if (jarFile != null) {
+						try {
+							jarFile.close();
+						} catch (IOException e) {}
+					}
 				}
 			}
 		}

@@ -63,7 +63,7 @@ public class MsgInboxBean {
 	private MsgInboxDao msgInboxDao = null;
 	private MsgInboxBo msgInboxBo = null;
 	private SessionUploadDao sessionUploadDao = null;
-	private DataModel folder = null;
+	private DataModel<?> folder = null;
 	private MsgInboxVo message = null;
 	private boolean editMode = true;
 	private boolean isHtml = false;
@@ -161,7 +161,7 @@ public class MsgInboxBean {
 		return searchVo;
 	}
 	
-	public DataModel getAll() {
+	public DataModel<?> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			resetSearchVo();

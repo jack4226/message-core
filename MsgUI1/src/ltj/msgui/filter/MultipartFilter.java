@@ -171,7 +171,6 @@ public class MultipartFilter implements Filter {
 	 * @throws ServletException
 	 *             If parsing of the given HttpServletRequest fails.
 	 */
-    @SuppressWarnings("unchecked")
     private HttpServletRequest parseRequest(HttpServletRequest request) throws ServletException {
         // Check if the request is actually a multipart/form-data request
         if (!ServletFileUpload.isMultipartContent(request)) {

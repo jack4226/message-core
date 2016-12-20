@@ -36,7 +36,7 @@ public class CustomersListBean {
 
 	private CustomerDao customerDao = null;
 	private CustomerBo customerBo = null;
-	private DataModel customers = null;
+	private DataModel<?> customers = null;
 	private CustomerVo customer = null;
 	private boolean editMode = true;
 
@@ -67,7 +67,7 @@ public class CustomersListBean {
 	private static String TO_SELF = "customerlist.toself";
 	private static String TO_PAGING = "customerlist.paging";
 
-	public DataModel getCustomers() {
+	public DataModel<?> getCustomers() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			resetPagingVo();
