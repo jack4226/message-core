@@ -54,12 +54,12 @@
     </context-param>
 
 	<!-- use JBoss Serialization provider to speed up client-side state saving -->
-	<context-param>
+	<!-- context-param>
 		<param-name>com.sun.faces.serializationProvider</param-name>
 		<param-value>
 			org.jboss.web.jsf.integration.serialization.JBossSerializationProvider
 		</param-value>
-	</context-param>
+	</context-param -->
 
 	<!-- define welcome pages -->
 	<welcome-file-list>
