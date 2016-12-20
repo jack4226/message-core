@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page trimDirectiveWhitespaces="true" %>
 <%
 // set cookie
 if ("yes".equals(request.getParameter("remember"))) {
@@ -209,7 +210,8 @@ if ("yes".equals(request.getParameter("remember"))) {
  	boolean hasError = errorMsg.trim().length() > 0;
  	%>
 
-<table width="100%" class="headerMenuContent" style="background: white;" border="0" cellspacing="0" cellpadding="0">
+<table style="width: 100%; border: none; border-collapse: separate; border-spacing: 0px; border-collapse: collapse; border-spacing: 0px; padding: 0px;" 
+	class="headerMenuContent" style="background: white;">
 	<tr>
 		<td colspan="2">
 		<table class="gettingStartedHeader">
@@ -223,7 +225,7 @@ if ("yes".equals(request.getParameter("remember"))) {
 	</tr>
  	<tr>
 	 	<td align="center" colspan="2">
-		 	<table width="80%" border="0">
+		 	<table style="width: 80%; border: none;">
 			<tr>
 				<td colspan="2"><img src="./images/space.gif" height="10" style="border: 0px"></td>
 			</tr>
@@ -411,7 +413,8 @@ if ("yes".equals(request.getParameter("remember"))) {
 	%>
 	<tr>
 		<td style="width: 80%;" align="center" colspan="2">
-		<table style="width: 80%; background: #E5F3FF;" class="jsfDataTable" border="1" cellspacing="0" cellpadding="8">
+		<table style="width: 80%; background: #E5F3FF; border-spacing: 0px; padding: 8px;" 
+			class="jsfDataTable" border="1">
 			<tr>
 				<th style="width: 80%;">List Name</th>
 				<th style="width: 20%;">Subscribe</th>
@@ -430,7 +433,7 @@ if ("yes".equals(request.getParameter("remember"))) {
 	</tr>
 	<tr>
 		<td align="center" colspan="2">
-		<table style="width: 80%;" border="0" cellspacing="2" cellpadding="2">
+		<table style="width: 80%; border: none; border-spacing: 2px; padding: 2px;">
 			<tr>
 				<td><b>Email Type:&nbsp;</b> 
 				<input type="radio" name="emailtype" value="html" checked>&nbsp;HTML&nbsp;&nbsp;&nbsp;&nbsp;
@@ -442,7 +445,7 @@ if ("yes".equals(request.getParameter("remember"))) {
 	</tr>
 	<tr>
 		<td align="center" colspan="2">
-		<table style="width: 90%;" border="0" cellspacing="2" cellpadding="2">
+		<table style="width: 90%; border: none; border-spacing: 2px; padding: 2px;">
 			<tr>
 				<td><img src="./images/space.gif" height="10" style="border: 0px"></td>
 			</tr>
