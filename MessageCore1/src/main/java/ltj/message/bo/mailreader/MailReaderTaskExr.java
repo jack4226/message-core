@@ -63,6 +63,9 @@ public class MailReaderTaskExr {
 			for (MailBoxVo vo : mailBoxList) {
 				vo.setFromTimer(true);
 				MailReaderBoImpl reader = new MailReaderBoImpl(vo);
+				try {
+					Thread.sleep(new Random().nextInt(1000));
+				} catch (InterruptedException e) {}
 				Future<?> future = executor.submit(reader);
 				futureList.add(future);
 			}
@@ -86,7 +89,8 @@ public class MailReaderTaskExr {
 		ExecutorService executor = new ThreadPoolExecutor(5, 25, 2000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(75));
 		List<Future<?>> futureList = new ArrayList<>();
 		try {
-			for (int i = fromIdx; i < (fromIdx + nbrUsers); i++) {
+			int endIdx = Math.min(100, fromIdx + nbrUsers); 
+			for (int i = fromIdx; i < endIdx; i++) {
 				String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
 				String user = "user" + suffix;
 				MailBoxVo vo = new MailBoxVo();
@@ -99,7 +103,7 @@ public class MailReaderTaskExr {
 				vo.setFromTimer(true);
 				MailReaderBoImpl reader = new MailReaderBoImpl(vo);
 				try {
-					Thread.sleep(new Random().nextInt(500));
+					Thread.sleep(new Random().nextInt(1000));
 				} catch (InterruptedException e) {}
 				Future<?> future = executor.submit(reader);
 				futureList.add(future);
