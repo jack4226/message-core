@@ -7,22 +7,22 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.web.context.WebApplicationContext;
 
-import com.legacytojava.message.constant.Constants;
-import com.legacytojava.message.constant.VariableName;
-import com.legacytojava.message.dao.action.MsgActionDetailDao;
-import com.legacytojava.message.dao.action.MsgDataTypeDao;
-import com.legacytojava.message.dao.client.ClientDao;
-import com.legacytojava.message.dao.emailaddr.EmailTemplateDao;
-import com.legacytojava.message.dao.emailaddr.EmailVariableDao;
-import com.legacytojava.message.dao.emailaddr.MailingListDao;
-import com.legacytojava.message.dao.rule.RuleLogicDao;
-import com.legacytojava.message.dao.template.ClientVariableDao;
-import com.legacytojava.message.vo.ClientVo;
-import com.legacytojava.message.vo.emailaddr.EmailTemplateVo;
-import com.legacytojava.message.vo.emailaddr.EmailVariableVo;
-import com.legacytojava.message.vo.emailaddr.MailingListVo;
-import com.legacytojava.message.vo.rule.RuleLogicVo;
-import com.legacytojava.message.vo.template.ClientVariableVo;
+import ltj.message.constant.Constants;
+import ltj.message.constant.VariableName;
+import ltj.message.dao.action.MsgActionDetailDao;
+import ltj.message.dao.action.MsgDataTypeDao;
+import ltj.message.dao.client.ClientDao;
+import ltj.message.dao.emailaddr.EmailTemplateDao;
+import ltj.message.dao.emailaddr.EmailVariableDao;
+import ltj.message.dao.emailaddr.MailingListDao;
+import ltj.message.dao.rule.RuleLogicDao;
+import ltj.message.dao.template.ClientVariableDao;
+import ltj.message.vo.ClientVo;
+import ltj.message.vo.emailaddr.EmailTemplateVo;
+import ltj.message.vo.emailaddr.EmailVariableVo;
+import ltj.message.vo.emailaddr.MailingListVo;
+import ltj.message.vo.rule.RuleLogicVo;
+import ltj.vo.template.ClientVariableVo;
 
 public class DynamicCodes {
 	static WebApplicationContext webContext = null;

@@ -19,7 +19,7 @@
 <body>
 <div align="center">
 <jsp:useBean id="customerBean"
-	class="com.legacytojava.message.vo.CustomerVo" scope="request" />
+	class="ltj.message.vo.CustomerVo" scope="request" />
 <jsp:setProperty name="customerBean" property="*" />
 
 <jsp:useBean id="staticCodes"
@@ -30,8 +30,8 @@
 <form action="usersignup.jsp" method="post" onsubmit="return validateInputs(this);">
 <input type="hidden" name="frompage" value="<c:out value="${param.frompage}"/>">
 
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="com.legacytojava.message.vo.CustomerVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.vo.CustomerVo"%>
 <%@page import="javax.faces.model.SelectItem"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");

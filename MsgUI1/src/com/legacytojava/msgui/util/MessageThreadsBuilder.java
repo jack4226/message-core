@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.legacytojava.message.dao.inbox.MsgInboxDao;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.inbox.MsgInboxWebVo;
+import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.inbox.MsgInboxWebVo;
 
 public class MessageThreadsBuilder {
 
@@ -117,7 +117,7 @@ public class MessageThreadsBuilder {
 	public static void main(String[] args) {
 		try {
 			long threadId = 3L;
-			MsgInboxDao msgInboxDao = (MsgInboxDao) com.legacytojava.jbatch.SpringUtil.getDaoAppContext().getBean("msgInboxDao");
+			MsgInboxDao msgInboxDao = (MsgInboxDao) ltj.jbatch.app.SpringUtil.getDaoAppContext().getBean("msgInboxDao");
 			List<MsgInboxWebVo> list = msgInboxDao.getByLeadMsgId(threadId);
 			List<MsgInboxWebVo> threads = buildThreads(list);
 			for (int i = 0; i < threads.size(); i++) {

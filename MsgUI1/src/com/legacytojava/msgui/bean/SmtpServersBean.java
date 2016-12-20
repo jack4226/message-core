@@ -20,12 +20,12 @@ import javax.mail.Transport;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.constant.Constants;
-import com.legacytojava.message.constant.MailServerType;
-import com.legacytojava.message.dao.client.ClientUtil;
-import com.legacytojava.message.dao.smtp.SmtpServerDao;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.SmtpConnVo;
+import ltj.message.constant.Constants;
+import ltj.message.constant.MailServerType;
+import ltj.message.dao.client.ClientUtil;
+import ltj.message.dao.smtp.SmtpServerDao;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.SmtpConnVo;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 

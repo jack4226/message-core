@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import com.legacytojava.message.util.StringUtil;
+import ltj.message.util.StringUtil;
 
 public class PasswordValidator implements Validator {
 

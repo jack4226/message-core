@@ -66,10 +66,10 @@ function checkLength(element, maxvalue) {
 <input type="hidden" name="sbsrid" value="<%= request.getParameter("sbsrid") %>"/>
 <input type="hidden" name="listid" value="<%= request.getParameter("listid") %>"/>
 
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="com.legacytojava.message.util.StringUtil"%>
-<%@page import="com.legacytojava.message.constant.Constants"%>
-<%@page import="com.legacytojava.message.constant.EmailAddressType"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.util.StringUtil"%>
+<%@page import="ltj.message.constant.Constants"%>
+<%@page import="ltj.message.constant.EmailAddressType"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	//String serverInfo = application.getServerInfo();

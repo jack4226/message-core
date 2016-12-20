@@ -14,9 +14,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.constant.Constants;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.UserVo;
+import ltj.message.constant.Constants;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.UserVo;
 
 /**
  * The UserVo filter.

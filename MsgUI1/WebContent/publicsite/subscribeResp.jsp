@@ -52,8 +52,8 @@
 			</table>
 	 	</td>
  	</tr>
-<%@page import="com.legacytojava.message.dao.idtokens.MsgIdCipher"%>
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.dao.idtokens.MsgIdCipher"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;

@@ -3,9 +3,9 @@
 
 <%@ include file="./loadSbsrDaos.jsp" %>
 
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="com.legacytojava.message.vo.inbox.MsgClickCountsVo"%>
-<%@page import="com.legacytojava.message.util.StringUtil"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.vo.inbox.MsgClickCountsVo"%>
+<%@page import="ltj.message.util.StringUtil"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;

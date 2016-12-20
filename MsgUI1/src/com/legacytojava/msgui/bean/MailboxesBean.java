@@ -20,12 +20,12 @@ import javax.mail.Store;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.constant.CarrierCode;
-import com.legacytojava.message.constant.Constants;
-import com.legacytojava.message.dao.client.ClientUtil;
-import com.legacytojava.message.dao.mailbox.MailBoxDao;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.MailBoxVo;
+import ltj.message.constant.CarrierCode;
+import ltj.message.constant.Constants;
+import ltj.message.dao.client.ClientUtil;
+import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.MailBoxVo;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 

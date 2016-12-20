@@ -32,9 +32,9 @@
 
 <%@ include file="./loadSbsrDaos.jsp" %>
 
-<%@page import="com.legacytojava.message.dao.idtokens.MsgIdCipher"%>
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="com.legacytojava.message.util.EmailAddrUtil"%>
+<%@page import="ltj.message.dao.idtokens.MsgIdCipher"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.util.EmailAddrUtil"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;

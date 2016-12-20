@@ -6,8 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.dao.user.UserDao;
-import com.legacytojava.message.vo.UserVo;
+import ltj.message.dao.user.UserDao;
+import ltj.message.vo.UserVo;
 import com.legacytojava.msgui.filter.SessionTimeoutFilter;
 import com.legacytojava.msgui.util.SpringUtil;
 

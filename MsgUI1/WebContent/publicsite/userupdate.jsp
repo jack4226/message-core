@@ -36,11 +36,11 @@ if ("yes".equals(request.getParameter("remember"))) {
 <form action="userupdate.jsp" method="post" onsubmit="return validateInputs(this);">
 <input type="hidden" name="frompage" value="<c:out value="${param.frompage}"/>">
 
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
 <%@page import="javax.faces.model.SelectItem"%>
-<%@page import="com.legacytojava.message.vo.CustomerVo"%>
-<%@page import="com.legacytojava.message.util.StringUtil"%>
-<%@page import="com.legacytojava.message.dao.idtokens.MsgIdCipher"%>
+<%@page import="ltj.message.vo.CustomerVo"%>
+<%@page import="ltj.message.util.StringUtil"%>
+<%@page import="ltj.message.dao.idtokens.MsgIdCipher"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	//String serverInfo = application.getServerInfo();

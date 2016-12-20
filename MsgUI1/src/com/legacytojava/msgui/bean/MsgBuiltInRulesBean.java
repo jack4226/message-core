@@ -7,7 +7,7 @@ import javax.faces.model.ListDataModel;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.vo.rule.RuleLogicVo;
+import ltj.message.vo.rule.RuleLogicVo;
 import com.legacytojava.msgui.util.FacesUtil;
 
 public class MsgBuiltInRulesBean extends MsgRulesBean {

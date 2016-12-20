@@ -14,7 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.legacytojava.message.vo.UserVo;
+import ltj.message.vo.UserVo;
 import com.legacytojava.msgui.filter.SessionTimeoutFilter;
 
 public class FacesUtil {

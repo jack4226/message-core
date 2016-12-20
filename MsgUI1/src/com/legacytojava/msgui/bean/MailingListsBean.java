@@ -19,11 +19,11 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.dao.client.ClientUtil;
-import com.legacytojava.message.dao.emailaddr.MailingListDao;
-import com.legacytojava.message.util.EmailAddrUtil;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.emailaddr.MailingListVo;
+import ltj.message.dao.client.ClientUtil;
+import ltj.message.dao.emailaddr.MailingListDao;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.emailaddr.MailingListVo;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 

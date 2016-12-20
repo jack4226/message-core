@@ -15,18 +15,18 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.bo.customer.CustomerBo;
-import com.legacytojava.message.constant.Constants;
-import com.legacytojava.message.constant.MobileCarrier;
-import com.legacytojava.message.dao.customer.CustomerDao;
-import com.legacytojava.message.exception.DataValidationException;
-import com.legacytojava.message.util.EmailAddrUtil;
-import com.legacytojava.message.util.PhoneNumberUtil;
-import com.legacytojava.message.util.SsnNumberUtil;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.CustomerVo;
-import com.legacytojava.message.vo.PagingCustomerVo;
-import com.legacytojava.message.vo.PagingVo;
+import ltj.message.bo.customer.CustomerBo;
+import ltj.message.constant.Constants;
+import ltj.message.constant.MobileCarrier;
+import ltj.message.dao.customer.CustomerDao;
+import ltj.message.exception.DataValidationException;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.PhoneNumberUtil;
+import ltj.message.util.SsnNumberUtil;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.CustomerVo;
+import ltj.message.vo.PagingCustomerVo;
+import ltj.message.vo.PagingVo;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 

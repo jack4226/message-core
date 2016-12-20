@@ -17,22 +17,22 @@ import java.util.jar.JarFile;
 
 import javax.faces.model.SelectItem;
 
-import com.legacytojava.message.bean.MessageBeanUtil;
-import com.legacytojava.message.bo.rule.RuleBase;
-import com.legacytojava.message.constant.CarrierCode;
-import com.legacytojava.message.constant.Constants;
-import com.legacytojava.message.constant.MailProtocol;
-import com.legacytojava.message.constant.MailServerType;
-import com.legacytojava.message.constant.MailingListDeliveryOption;
-import com.legacytojava.message.constant.MailingListType;
-import com.legacytojava.message.constant.MobileCarrier;
-import com.legacytojava.message.constant.MsgStatusCode;
-import com.legacytojava.message.constant.StatusIdCode;
-import com.legacytojava.message.constant.VariableName;
-import com.legacytojava.message.dao.emailaddr.EmailVariableDao;
-import com.legacytojava.message.external.RuleTargetProc;
-import com.legacytojava.message.external.VariableResolver;
-import com.legacytojava.message.vo.inbox.SearchFieldsVo;
+import ltj.message.bean.MessageBeanUtil;
+import ltj.message.bo.rule.RuleBase;
+import ltj.message.constant.CarrierCode;
+import ltj.message.constant.Constants;
+import ltj.message.constant.MailProtocol;
+import ltj.message.constant.MailServerType;
+import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MailingListType;
+import ltj.message.constant.MobileCarrier;
+import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.VariableName;
+import ltj.message.dao.emailaddr.EmailVariableDao;
+import ltj.message.external.RuleTargetProc;
+import ltj.message.external.VariableResolver;
+import ltj.message.vo.inbox.SearchFieldsVo;
 
 public class StaticCodes {
 
@@ -74,7 +74,7 @@ public class StaticCodes {
 				if (dir != null && dir.isDirectory()) {
 					String[] fileNames = dir.list();
 					for (String fileName : fileNames) {
-						String pkgName = "com.legacytojava.message.external";
+						String pkgName = "ltj.message.external";
 						String className = fileName.replaceAll("\\.class", "");
 						String fullName = pkgName + "." + className;
 						try {
@@ -140,7 +140,7 @@ public class StaticCodes {
 				if (dir != null && dir.isDirectory()) {
 					String[] fileNames = dir.list();
 					for (String fileName : fileNames) {
-						String pkgName = "com.legacytojava.message.external";
+						String pkgName = "ltj.message.external";
 						String className = fileName.replaceAll("\\.class", "");
 						String fullName = pkgName + "." + className;
 						try {

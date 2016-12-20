@@ -32,10 +32,10 @@
 
 <%@ include file="./loadSbsrDaos.jsp" %>
 
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="com.legacytojava.message.vo.inbox.MsgClickCountsVo"%>
-<%@page import="com.legacytojava.message.dao.inbox.MsgUnsubCommentsDao"%>
-<%@page import="com.legacytojava.message.vo.inbox.MsgUnsubCommentsVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.vo.inbox.MsgClickCountsVo"%>
+<%@page import="ltj.message.dao.inbox.MsgUnsubCommentsDao"%>
+<%@page import="ltj.message.vo.inbox.MsgUnsubCommentsVo"%>
 <%!
 MsgUnsubCommentsDao unsubCommentsDao = null;
 MsgUnsubCommentsDao getMsgUnsubCommentsDao(ServletContext ctx) {

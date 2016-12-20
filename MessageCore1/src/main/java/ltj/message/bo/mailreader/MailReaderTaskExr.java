@@ -36,8 +36,8 @@ public class MailReaderTaskExr {
 	
 	// for test only, set to true to read from test user accounts
 	public static boolean readTestUserAccounts = false;
-	public static int testStartingUser = 0;
-	public static int testLoops = 25;
+	public static int testStartUser = 0;
+	public static int testEndUser = 25;
 	// end of test variables
 	
 	@Scheduled(initialDelay=20000, fixedDelay=5000) // delay for 20 seconds for testing
@@ -45,7 +45,7 @@ public class MailReaderTaskExr {
 		logger.info("startMailReaders() - entering...");
 		
 		if (readTestUserAccounts) { // for test only
-			readTestUserAccounts(testStartingUser, testLoops);
+			readTestUserAccounts(testStartUser, testEndUser);
 			return;
 		}
 		
@@ -85,12 +85,11 @@ public class MailReaderTaskExr {
 	}
 	
 	
-	private void readTestUserAccounts(int fromIdx, int nbrUsers) {
+	private void readTestUserAccounts(int startIdx, int endIdx) {
 		ExecutorService executor = new ThreadPoolExecutor(5, 25, 2000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(75));
 		List<Future<?>> futureList = new ArrayList<>();
 		try {
-			int endIdx = Math.min(100, fromIdx + nbrUsers); 
-			for (int i = fromIdx; i < endIdx; i++) {
+			for (int i = startIdx; i < endIdx; i++) {
 				String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
 				String user = "user" + suffix;
 				MailBoxVo vo = new MailBoxVo();

@@ -2,8 +2,8 @@ package com.legacytojava.msgui.bean;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.jbatch.common.ProductKey;
-import com.legacytojava.message.dao.client.ClientDao;
+import ltj.jbatch.common.ProductKey;
+import ltj.message.dao.client.ClientDao;
 import com.legacytojava.msgui.util.SpringUtil;
 
 public class EnterProductKeyBean {

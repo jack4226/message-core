@@ -16,10 +16,10 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.dao.user.UserDao;
-import com.legacytojava.message.util.EmailAddrUtil;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.UserVo;
+import ltj.message.dao.user.UserDao;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.UserVo;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 

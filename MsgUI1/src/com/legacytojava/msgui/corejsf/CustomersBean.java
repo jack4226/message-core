@@ -14,8 +14,8 @@ import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.legacytojava.message.dao.customer.CustomerDao;
-import com.legacytojava.message.vo.CustomerVo;
+import ltj.message.dao.customer.CustomerDao;
+import ltj.message.vo.CustomerVo;
 
 public class CustomersBean {
 	static final Logger logger = Logger.getLogger(CustomersBean.class);

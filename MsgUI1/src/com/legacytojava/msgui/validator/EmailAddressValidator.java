@@ -6,7 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import com.legacytojava.message.util.EmailAddrUtil;
+import ltj.message.util.EmailAddrUtil;
 
 public class EmailAddressValidator implements Validator {
    public void validate(FacesContext context, UIComponent component, Object value) {

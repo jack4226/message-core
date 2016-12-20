@@ -89,8 +89,8 @@ function checkLength(element, maxvalue) {
 		</table>
 		</td>
 	</tr>
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="com.legacytojava.message.dao.idtokens.MsgIdCipher"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.dao.idtokens.MsgIdCipher"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;

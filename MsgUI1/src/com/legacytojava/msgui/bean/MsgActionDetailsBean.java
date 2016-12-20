@@ -17,11 +17,11 @@ import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.legacytojava.message.bo.TaskBaseBo;
-import com.legacytojava.message.constant.Constants;
-import com.legacytojava.message.dao.action.MsgActionDetailDao;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.action.MsgActionDetailVo;
+import ltj.message.bo.TaskBaseBo;
+import ltj.message.constant.Constants;
+import ltj.message.dao.action.MsgActionDetailDao;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.action.MsgActionDetailVo;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 

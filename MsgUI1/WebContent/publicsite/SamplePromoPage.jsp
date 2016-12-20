@@ -18,7 +18,7 @@
 <div align="left">
 
 <%@ include file="./loadSbsrDaos.jsp" %>
-<%@page import="com.legacytojava.message.util.StringUtil"%>
+<%@page import="ltj.message.util.StringUtil"%>
 <%
 /**
  *	sbsrid, listid and msgid should be passed from http query string

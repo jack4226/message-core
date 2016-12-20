@@ -13,13 +13,13 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.constant.Constants;
-import com.legacytojava.message.constant.MsgStatusCode;
-import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
-import com.legacytojava.message.dao.emailaddr.SubscriptionDao;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.PagingVo;
-import com.legacytojava.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.constant.Constants;
+import ltj.message.constant.MsgStatusCode;
+import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.SubscriptionDao;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingVo;
+import ltj.message.vo.emailaddr.SubscriptionVo;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 

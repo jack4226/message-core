@@ -8,13 +8,13 @@ import java.util.StringTokenizer;
 import javax.faces.component.UIInput;
 import javax.faces.model.SelectItem;
 
-import com.legacytojava.message.constant.MsgDataType;
-import com.legacytojava.message.dao.action.MsgActionDetailDao;
-import com.legacytojava.message.dao.action.MsgDataTypeDao;
-import com.legacytojava.message.vo.BaseVo;
-import com.legacytojava.message.vo.action.MsgActionDetailVo;
-import com.legacytojava.message.vo.action.MsgActionVo;
-import com.legacytojava.message.vo.action.MsgDataTypeVo;
+import ltj.message.constant.MsgDataType;
+import ltj.message.dao.action.MsgActionDetailDao;
+import ltj.message.dao.action.MsgDataTypeDao;
+import ltj.message.vo.BaseVo;
+import ltj.message.vo.action.MsgActionDetailVo;
+import ltj.message.vo.action.MsgActionVo;
+import ltj.message.vo.action.MsgDataTypeVo;
 import com.legacytojava.msgui.util.SpringUtil;
 
 public class MsgActionUIVo extends BaseVo {

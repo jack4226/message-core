@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.dao.inbox.AttachmentsDao;
-import com.legacytojava.message.vo.inbox.AttachmentsVo;
+import ltj.message.dao.inbox.AttachmentsDao;
+import ltj.message.vo.inbox.AttachmentsVo;
 import com.legacytojava.msgui.util.SpringUtil;
 
 /**

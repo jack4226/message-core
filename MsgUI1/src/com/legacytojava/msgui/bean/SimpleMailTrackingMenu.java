@@ -8,13 +8,13 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
-import com.legacytojava.message.dao.inbox.MsgInboxDao;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.UserVo;
-import com.legacytojava.message.vo.emailaddr.EmailAddrVo;
-import com.legacytojava.message.vo.inbox.SearchFieldsVo;
-import com.legacytojava.message.vo.inbox.SearchFieldsVo.RuleName;
+import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.UserVo;
+import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.inbox.SearchFieldsVo;
+import ltj.message.vo.inbox.SearchFieldsVo.RuleName;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 

@@ -41,15 +41,16 @@ public class MailReaderTest extends BoTestBase {
 	
 	private static Map<String, Integer> msgCountMap = new LinkedHashMap<>();
 	
-	private static int start = 50;
-	private static int loops = 25; //Integer.MAX_VALUE;
+	private static int startUser = 25;
+	private static int endUser = 50;
+	private static int loops = 100; //Integer.MAX_VALUE;
  	
 	@Test
 	@Rollback(value=false)
 	public void test1() { // MailReader
 		try {
-			for (int i = start; i < (start + loops); i++) {
-				String suffix = StringUtils.leftPad(""+(i % 100), 2, "0");
+			for (int i = 0; i < loops; i++) {
+				String suffix = StringUtils.leftPad((i % (endUser - startUser)) + startUser + "", 2, "0");
 				String user = "user" + suffix + "@localhost";
 				if (msgCountMap.containsKey(user)) {
 					msgCountMap.put(user, msgCountMap.get(user) + 1);
@@ -57,14 +58,14 @@ public class MailReaderTest extends BoTestBase {
 				else {
 					msgCountMap.put(user, 1);
 				}
-//				if (i % 13 == 0) {
-//					try {
-//						Thread.sleep(1 * 1000);
-//					}
-//					catch (InterruptedException e) {
-//						break;
-//					}
-//				}
+				if (i % 13 == 0) {
+					try {
+						Thread.sleep(1 * 1000);
+					}
+					catch (InterruptedException e) {
+						break;
+					}
+				}
 				sendNotify("Test MailReader - " + suffix, "Test MailReader Body Message - " + suffix, user);
 			}
 		}
@@ -78,8 +79,8 @@ public class MailReaderTest extends BoTestBase {
 	@Rollback(value=false)
 	public void test2() {
 		MailReaderTaskExr.readTestUserAccounts = true;
-		MailReaderTaskExr.testStartingUser = start;
-		MailReaderTaskExr.testLoops = loops;
+		MailReaderTaskExr.testStartUser = startUser;
+		MailReaderTaskExr.testEndUser = endUser;
 		try {
 			Thread.sleep(60 * 1000L);
 		} catch (InterruptedException e) {}

@@ -19,10 +19,10 @@
 
 <%@ include file="./loadSbsrDaos.jsp" %>
 
-<%@page import="com.legacytojava.message.dao.idtokens.MsgIdCipher"%>
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="com.legacytojava.message.dao.emailaddr.UnsubCommentsDao"%>
-<%@page import="com.legacytojava.message.vo.emailaddr.UnsubCommentsVo"%>
+<%@page import="ltj.message.dao.idtokens.MsgIdCipher"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.dao.emailaddr.UnsubCommentsDao"%>
+<%@page import="ltj.message.vo.emailaddr.UnsubCommentsVo"%>
 <%!
 UnsubCommentsDao unsubCommentsDao = null;
 UnsubCommentsDao getUnsubCommentsDao(ServletContext ctx) {

@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<%@page import="com.legacytojava.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -34,9 +34,9 @@ function checkInput(myform) {
 <form action="userprofile.jsp" method="post" onsubmit="return checkInput(this);">
 <input type="hidden" name="frompage" value="<c:out value="${param.frompage}"/>">
 
-<%@page import="com.legacytojava.message.util.StringUtil"%>
-<%@page import="com.legacytojava.message.util.EmailAddrUtil"%>
-<%@page import="com.legacytojava.message.vo.CustomerVo"%>
+<%@page import="ltj.message.util.StringUtil"%>
+<%@page import="ltj.message.util.EmailAddrUtil"%>
+<%@page import="ltj.message.vo.CustomerVo"%>
 <%!
 boolean isEmpty(String str) {
 	return StringUtil.isEmpty(str);

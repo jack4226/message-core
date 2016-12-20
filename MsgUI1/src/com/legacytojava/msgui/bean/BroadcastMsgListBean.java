@@ -9,13 +9,13 @@ import javax.faces.model.DataModel;
 
 import org.apache.log4j.Logger;
 
-import com.legacytojava.message.dao.emailaddr.EmailAddrDao;
-import com.legacytojava.message.dao.inbox.MsgClickCountsDao;
-import com.legacytojava.message.dao.inbox.MsgInboxDao;
-import com.legacytojava.message.util.StringUtil;
-import com.legacytojava.message.vo.PagingVo;
-import com.legacytojava.message.vo.inbox.MsgClickCountsVo;
-import com.legacytojava.message.vo.inbox.MsgInboxVo;
+import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.inbox.MsgClickCountsDao;
+import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingVo;
+import ltj.message.vo.inbox.MsgClickCountsVo;
+import ltj.message.vo.inbox.MsgInboxVo;
 import com.legacytojava.msgui.util.FacesUtil;
 import com.legacytojava.msgui.util.SpringUtil;
 
