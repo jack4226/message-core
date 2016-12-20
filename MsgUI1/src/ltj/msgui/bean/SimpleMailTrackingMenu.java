@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -15,8 +15,8 @@ import ltj.message.vo.UserVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
 import ltj.message.vo.inbox.SearchFieldsVo.RuleName;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 /**
  * This is a request scoped bean that holds search fields from HTTP request.
@@ -156,8 +156,8 @@ public class SimpleMailTrackingMenu {
 		
 		EmailAddrVo vo = getEmailAddrDao().getByAddress(addr);
 		if (vo == null) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "emailAddressNotFound", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "emailAddressNotFound", null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 	        throw new ValidatorException(message);
 		}

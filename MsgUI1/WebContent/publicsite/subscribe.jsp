@@ -8,7 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setBundle basename="com.legacytojava.msgui.publicsite.messages" var="bndl"/>
+<fmt:setBundle basename="ltj.msgui.publicsite.messages" var="bndl"/>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link href="./styles.css" rel="stylesheet" type="text/css">
@@ -53,7 +53,7 @@ function validateListSelection(myform) {
 </script>
 <div align="center">
 <jsp:useBean id="subscribersBean"
-	class="com.legacytojava.msgui.publicsite.SubscribersBean" scope="request" />
+	class="ltj.msgui.publicsite.SubscribersBean" scope="request" />
 <jsp:setProperty name="subscribersBean" property="*" />
 
 <%@ include file="./loadSbsrDaos.jsp" %>

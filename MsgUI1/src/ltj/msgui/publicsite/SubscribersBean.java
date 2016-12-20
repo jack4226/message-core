@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.publicsite;
+package ltj.msgui.publicsite;
 
 import org.apache.log4j.Logger;
 

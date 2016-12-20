@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.servlet;
+package ltj.msgui.servlet;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 
 import ltj.message.dao.inbox.AttachmentsDao;
 import ltj.message.vo.inbox.AttachmentsVo;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.SpringUtil;
 
 /**
  * The File Servlet that serves files from database.

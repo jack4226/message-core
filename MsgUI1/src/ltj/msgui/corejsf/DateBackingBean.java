@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf;
+package ltj.msgui.corejsf;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -46,8 +46,8 @@ public class DateBackingBean {
 
       if (!isValidDate(d, m, y)) {
          FacesMessage message 
-            = com.legacytojava.msgui.util.Messages.getMessage(
-               "com.legacytojava.msgui.messages", "invalidDate", null);
+            = ltj.msgui.util.Messages.getMessage(
+               "ltj.msgui.messages", "invalidDate", null);
          message.setSeverity(FacesMessage.SEVERITY_ERROR);
          throw new ValidatorException(message);
       }

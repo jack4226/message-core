@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf.model;
+package ltj.msgui.corejsf.model;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -6,7 +6,7 @@ import java.util.Comparator;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelListener;
 
-import com.legacytojava.msgui.corejsf.Name;
+import ltj.msgui.corejsf.Name;
 
 public class SortFilterModel extends DataModel {
    private DataModel model;

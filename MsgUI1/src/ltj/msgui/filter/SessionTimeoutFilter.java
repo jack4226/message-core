@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.filter;
+package ltj.msgui.filter;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf;
+package ltj.msgui.corejsf;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,8 +43,8 @@ public class PaymentBean {
 		else
 			expr = getDate(value.toString());
 		if (expr==null || expired(expr)) {
-			FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "cardExpired", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "cardExpired", null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(message);
 		}

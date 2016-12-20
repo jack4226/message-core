@@ -72,7 +72,7 @@
 
 	<servlet>
 	    <servlet-name>File Servlet</servlet-name>
-	    <servlet-class>com.legacytojava.msgui.servlet.FileServlet</servlet-class>
+	    <servlet-class>ltj.msgui.servlet.FileServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 	    <servlet-name>File Servlet</servlet-name>
@@ -99,7 +99,7 @@
 	        value of a form file field can be an instance of FileItem or FileUploadException.
 	    </description>
 	    <filter-name>multipartFilter</filter-name>
-	    <filter-class>com.legacytojava.msgui.servlet.MultipartFilter</filter-class>
+	    <filter-class>ltj.msgui.servlet.MultipartFilter</filter-class>
 	    <init-param>
 	        <description>
 	            Sets the maximum file size of the uploaded file in bytes. Set to 0 to indicate an

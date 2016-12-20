@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.listener;
+package ltj.msgui.listener;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;

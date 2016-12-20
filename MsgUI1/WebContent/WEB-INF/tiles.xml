@@ -28,7 +28,7 @@
    </definition>
    
    <definition name="library" template="/libraryLayout.jsp"
-         preparer="com.legacytojava.msgui.tiles.LibraryTilePreparer">
+         preparer="ltj.msgui.tiles.LibraryTilePreparer">
       <put-attribute name="header" value="/bookSelector.jsp"/>
       <put-attribute name="book" value="book4Lib"/>
    </definition>

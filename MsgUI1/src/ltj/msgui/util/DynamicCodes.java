@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.util;
+package ltj.msgui.util;
 
 import java.util.ArrayList;
 import java.util.List;

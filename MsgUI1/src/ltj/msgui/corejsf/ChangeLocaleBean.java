@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf;
+package ltj.msgui.corejsf;
 
 import java.util.Locale;
 import java.util.Map;

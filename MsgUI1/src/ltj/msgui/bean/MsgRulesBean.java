@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -31,9 +31,9 @@ import ltj.message.vo.action.MsgActionVo;
 import ltj.message.vo.rule.RuleElementVo;
 import ltj.message.vo.rule.RuleLogicVo;
 import ltj.message.vo.rule.RuleSubRuleMapVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
-import com.legacytojava.msgui.vo.MsgActionUIVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
+import ltj.msgui.vo.MsgActionUIVo;
 
 public class MsgRulesBean {
 	protected static final Logger logger = Logger.getLogger(MsgRulesBean.class);
@@ -691,8 +691,8 @@ public class MsgRulesBean {
 		if (hasDuplicateSubRules(list)) {
 			testResult = "duplicateSubRuleFound";
 			/* Add to Face message queue. Not working. */
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", testResult, null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", testResult, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
@@ -997,15 +997,15 @@ public class MsgRulesBean {
 		RuleLogicVo vo = getRuleLogicDao().getByPrimaryKey(ruleName, seq);
 		if (editMode == true && vo == null) {
 			// ruleLogic does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "ruleLogicDoesNotExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "ruleLogicDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// ruleLogic already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "ruleLogicAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "ruleLogicAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -1025,8 +1025,8 @@ public class MsgRulesBean {
 			Pattern.compile(regex);
 		}
 		catch (PatternSyntaxException e) {
-			FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidRegex", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidRegex", null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			//context.addMessage(component.getClientId(context), message);
 			throw new ValidatorException(message);
@@ -1049,8 +1049,8 @@ public class MsgRulesBean {
 			return;
 		}
 		((UIInput)component).setValid(false);
-		FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-				"com.legacytojava.msgui.messages", "invalidDate", null);
+		FacesMessage message = ltj.msgui.util.Messages.getMessage(
+				"ltj.msgui.messages", "invalidDate", null);
 		message.setSeverity(FacesMessage.SEVERITY_ERROR);
 		context.addMessage(component.getClientId(context), message);
 	}

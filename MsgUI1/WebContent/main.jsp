@@ -13,7 +13,7 @@
 	<body>
 	<div align="center">
 	<jsp:useBean id="loginBean"
-		class="com.legacytojava.msgui.bean.LoginBean" scope="request" />
+		class="ltj.msgui.bean.LoginBean" scope="request" />
 	
 	<h:form id="main">
 	<h:panelGrid columns="1" styleClass="headerMenuContent">

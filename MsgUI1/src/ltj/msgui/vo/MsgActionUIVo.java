@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.vo;
+package ltj.msgui.vo;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -15,7 +15,7 @@ import ltj.message.vo.BaseVo;
 import ltj.message.vo.action.MsgActionDetailVo;
 import ltj.message.vo.action.MsgActionVo;
 import ltj.message.vo.action.MsgDataTypeVo;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class MsgActionUIVo extends BaseVo {
 	private static final long serialVersionUID = 7955771124737863106L;

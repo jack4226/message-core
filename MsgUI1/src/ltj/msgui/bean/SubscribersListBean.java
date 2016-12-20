@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,8 +20,8 @@ import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class SubscribersListBean {
 	static final Logger logger = Logger.getLogger(SubscribersListBean.class);
@@ -285,15 +285,15 @@ public class SubscribersListBean {
 		SubscriptionVo vo = getSubscriptionDao().getByAddrAndListId(subId, listId);
 		if (editMode == true && vo == null) {
 			// subscriber does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "subscriberDoesNotExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "subscriberDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// subscriber already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "subscriberAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "subscriberAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

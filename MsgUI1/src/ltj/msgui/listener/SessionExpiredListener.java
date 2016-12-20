@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.listener;
+package ltj.msgui.listener;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 import ltj.message.dao.user.SessionUploadDao;
 import ltj.message.dao.user.UserDao;
 import ltj.message.vo.UserVo;
-import com.legacytojava.msgui.filter.SessionTimeoutFilter;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.filter.SessionTimeoutFilter;
+import ltj.msgui.util.SpringUtil;
 
 /**
  * When a user session times out, the sessionDestroyed() method will be invoked.

@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf;
+package ltj.msgui.corejsf;
 
 import javax.faces.event.ActionEvent;
  
@@ -47,19 +47,19 @@ public class TabbedPane {
    // methods that get tool tips for titles
 
    public String getJeffersonTooltip() { 
-      return com.legacytojava.msgui.util.Messages.getString(
-            "com.legacytojava.msgui.messages", tabTooltips[JEFFERSON_INDEX], null); 
+      return ltj.msgui.util.Messages.getString(
+            "ltj.msgui.messages", tabTooltips[JEFFERSON_INDEX], null); 
    }
    public String getRooseveltTooltip() { 
-      return com.legacytojava.msgui.util.Messages.getString(
-            "com.legacytojava.msgui.messages", tabTooltips[ROOSEVELT_INDEX], null); 
+      return ltj.msgui.util.Messages.getString(
+            "ltj.msgui.messages", tabTooltips[ROOSEVELT_INDEX], null); 
    }
    public String getLincolnTooltip() { 
-      return com.legacytojava.msgui.util.Messages.getString(
-            "com.legacytojava.msgui.messages", tabTooltips[LINCOLN_INDEX], null); 
+      return ltj.msgui.util.Messages.getString(
+            "ltj.msgui.messages", tabTooltips[LINCOLN_INDEX], null); 
    }
    public String getWashingtonTooltip() { 
-      return com.legacytojava.msgui.util.Messages.getString(
-            "com.legacytojava.msgui.messages", tabTooltips[WASHINGTON_INDEX], null); 
+      return ltj.msgui.util.Messages.getString(
+            "ltj.msgui.messages", tabTooltips[WASHINGTON_INDEX], null); 
    }
 }

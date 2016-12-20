@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf.tabbedpane;
+package ltj.msgui.corejsf.tabbedpane;
 
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;

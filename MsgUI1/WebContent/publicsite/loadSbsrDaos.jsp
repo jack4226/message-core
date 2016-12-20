@@ -2,7 +2,7 @@
 <%@page import="ltj.message.dao.emailaddr.EmailAddrDao"%>
 <%@page import="ltj.message.dao.emailaddr.SubscriptionDao"%>
 <%@page import="ltj.message.bo.mailinglist.MailingListBo"%>
-<%@page import="com.legacytojava.msgui.util.SpringUtil"%>
+<%@page import="ltj.msgui.util.SpringUtil"%>
 <%@page import="ltj.message.vo.emailaddr.MailingListVo"%>
 <%@page import="ltj.message.vo.emailaddr.EmailVariableVo"%>
 <%@page import="ltj.message.dao.emailaddr.EmailVariableDao"%>

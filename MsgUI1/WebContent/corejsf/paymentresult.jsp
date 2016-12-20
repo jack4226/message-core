@@ -18,7 +18,7 @@
 
                <h:outputText value="#{msgs.creditCard}"/>
                <h:outputText value="#{payment.card}">
-               	<f:converter converterId="com.legacytojava.msgui.CreditCard"/>
+               	<f:converter converterId="ltj.msgui.CreditCard"/>
                	<f:attribute name="separator" value="-"/>
                </h:outputText>
 

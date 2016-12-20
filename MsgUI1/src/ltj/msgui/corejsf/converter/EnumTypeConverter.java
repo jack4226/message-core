@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf.converter;
+package ltj.msgui.corejsf.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

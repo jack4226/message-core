@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.validator;
+package ltj.msgui.validator;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -14,8 +14,8 @@ public class EmailAddressValidator implements Validator {
 		if (emailAddr == null || emailAddr.trim().length() == 0)
 			return;
 		if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
-			FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidEmailAddress", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidEmailAddress", null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(message);
 		}

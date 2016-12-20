@@ -7,8 +7,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setBundle basename="com.legacytojava.msgui.publicsite.messages" var="bndl"/>
-<fmt:setBundle basename="com.legacytojava.msgui.messages" var="bndl2"/>
+<fmt:setBundle basename="ltj.msgui.publicsite.messages" var="bndl"/>
+<fmt:setBundle basename="ltj.msgui.messages" var="bndl2"/>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link href="./styles.css" rel="stylesheet" type="text/css">
@@ -23,7 +23,7 @@
 <jsp:setProperty name="customerBean" property="*" />
 
 <jsp:useBean id="staticCodes"
-	class="com.legacytojava.msgui.util.StaticCodes" scope="request" />
+	class="ltj.msgui.util.StaticCodes" scope="request" />
 
 <%@ include file="./loadSbsrDaos.jsp" %>
 

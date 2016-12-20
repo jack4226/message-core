@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.listener;
+package ltj.msgui.listener;
 
 import java.io.IOException;
 import java.util.ArrayList;

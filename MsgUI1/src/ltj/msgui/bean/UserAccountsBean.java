@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,8 +20,8 @@ import ltj.message.dao.user.UserDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.UserVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class UserAccountsBean {
 	static final Logger logger = Logger.getLogger(UserAccountsBean.class);
@@ -221,15 +221,15 @@ public class UserAccountsBean {
 		UserVo vo = getUserDao().getByPrimaryKey(userId);
 		if (editMode == true && vo == null) {
 			// user does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "userDoesNotExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "userDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// user already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "userAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "userAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

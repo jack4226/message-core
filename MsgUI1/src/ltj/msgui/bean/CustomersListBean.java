@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,8 +27,8 @@ import ltj.message.util.StringUtil;
 import ltj.message.vo.CustomerVo;
 import ltj.message.vo.PagingCustomerVo;
 import ltj.message.vo.PagingVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class CustomersListBean {
 	static final Logger logger = Logger.getLogger(CustomersListBean.class);
@@ -369,16 +369,16 @@ public class CustomersListBean {
 		CustomerVo vo = getCustomerDao().getByCustId(custId);
 		if (editMode == true && vo != null && customer != null
 				&& vo.getRowId() != customer.getRowId()) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					//"com.legacytojava.msgui.messages", "customerDoesNotExist", null);
-	        		"com.legacytojava.msgui.messages", "customerAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					//"ltj.msgui.messages", "customerDoesNotExist", null);
+	        		"ltj.msgui.messages", "customerAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// customer already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "customerAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "customerAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -391,16 +391,16 @@ public class CustomersListBean {
 		if (!StringUtil.isEmpty(emailAddr)) {
 			if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 				// invalid email address
-		        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-						"com.legacytojava.msgui.messages", "invalidEmailAddress", null);
+		        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+						"ltj.msgui.messages", "invalidEmailAddress", null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
 			else {
 				CustomerVo vo = getCustomerDao().getByEmailAddress(emailAddr);
 				if (vo != null && customer != null && !vo.getCustId().equals(customer.getCustId())) {
-					FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-							"com.legacytojava.msgui.messages", "emailAddressAlreadyUsed", null);
+					FacesMessage message = ltj.msgui.util.Messages.getMessage(
+							"ltj.msgui.messages", "emailAddressAlreadyUsed", null);
 					message.setSeverity(FacesMessage.SEVERITY_WARN);
 					throw new ValidatorException(message);
 				}
@@ -413,8 +413,8 @@ public class CustomersListBean {
 		if (isDebugEnabled)
 			logger.debug("validateSsnNumber() - SSN: " + ssn);
 		if (!StringUtil.isEmpty(ssn) && !SsnNumberUtil.isValidSSN(ssn)) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidSsnNumber", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidSsnNumber", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -424,8 +424,8 @@ public class CustomersListBean {
 		if (isDebugEnabled)
 			logger.debug("validateDate() - date = " + value);
 		if (value != null && !(value instanceof Date)) {
-			FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidDate", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidDate", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -436,8 +436,8 @@ public class CustomersListBean {
 		if (isDebugEnabled)
 			logger.debug("validatePhoneNumber() - Phone Number: " + phone);
 		if (!StringUtil.isEmpty(phone) && !PhoneNumberUtil.isValidPhoneNumber(phone)) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidPhoneNumber", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidPhoneNumber", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -452,8 +452,8 @@ public class CustomersListBean {
 				MobileCarrier.getByValue(carrier);
 			}
 			catch (IllegalArgumentException e) {
-		        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-						"com.legacytojava.msgui.messages", "invalidMobileCarrier", null);
+		        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+						"ltj.msgui.messages", "invalidMobileCarrier", null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -465,8 +465,8 @@ public class CustomersListBean {
 		if (isDebugEnabled)
 			logger.debug("validateZipCode5() - Zip Code: " + zip5);
 		if (!StringUtil.isEmpty(zip5) && !zip5.matches("\\d{5}")) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-	        		"com.legacytojava.msgui.messages", "invalideZipCode", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+	        		"ltj.msgui.messages", "invalideZipCode", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -477,8 +477,8 @@ public class CustomersListBean {
 		if (isDebugEnabled)
 			logger.debug("validateZipCode4() - Zip Code: " + zip4);
 		if (!StringUtil.isEmpty(zip4) && !zip4.matches("\\d{4}")) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-	        		"com.legacytojava.msgui.messages", "invalideZipCode", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+	        		"ltj.msgui.messages", "invalideZipCode", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

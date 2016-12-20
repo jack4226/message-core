@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.util;
+package ltj.msgui.util;
 
 import java.text.MessageFormat;
 import java.util.Locale;

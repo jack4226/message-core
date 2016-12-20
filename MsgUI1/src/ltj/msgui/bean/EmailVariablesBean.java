@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,8 +23,8 @@ import ltj.message.exception.DataValidationException;
 import ltj.message.external.VariableResolver;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.emailaddr.EmailVariableVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class EmailVariablesBean {
 	static final Logger logger = Logger.getLogger(EmailVariablesBean.class);
@@ -300,15 +300,15 @@ public class EmailVariablesBean {
 		EmailVariableVo vo = getEmailVariableDao().getByName(variableName);
 		if (editMode == true && vo == null) {
 			// emailVariable does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "emailVariableDoesNotExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "emailVariableDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// emailVariable already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "emailVariableAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "emailVariableAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

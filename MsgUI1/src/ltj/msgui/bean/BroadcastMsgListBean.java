@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,8 +16,8 @@ import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.inbox.MsgClickCountsVo;
 import ltj.message.vo.inbox.MsgInboxVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class BroadcastMsgListBean {
 	static final Logger logger = Logger.getLogger(BroadcastMsgListBean.class);

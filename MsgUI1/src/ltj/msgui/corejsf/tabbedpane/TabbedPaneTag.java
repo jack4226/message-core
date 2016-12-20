@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf.tabbedpane;
+package ltj.msgui.corejsf.tabbedpane;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -28,11 +28,11 @@ public class TabbedPaneTag extends UIComponentELTag {
 	private MethodExpression actionListener;
 
 	public String getRendererType() {
-		return "com.legacytojava.msgui.TabbedPane";
+		return "ltj.msgui.TabbedPane";
 	}
 
 	public String getComponentType() {
-		return "com.legacytojava.msgui.TabbedPane";
+		return "ltj.msgui.TabbedPane";
 	}
 
 	public void setTabClass(ValueExpression newValue) {

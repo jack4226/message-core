@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,8 +26,8 @@ import ltj.message.dao.client.ClientUtil;
 import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.MailBoxVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class MailboxesBean {
 	static final Logger logger = Logger.getLogger(MailboxesBean.class);
@@ -211,8 +211,8 @@ public class MailboxesBean {
 			}
 		}
 		/* Add to Face message queue. Not working. */
-        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-				"com.legacytojava.msgui.messages", testResult, null);
+        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+				"ltj.msgui.messages", testResult, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		
 		return null;
@@ -303,14 +303,14 @@ public class MailboxesBean {
 		MailBoxVo vo = (MailBoxVo) getMailBoxDao().getByPrimaryKey(userId, mailbox.getHostName());
 		if (editMode == true && vo != null && mailbox != null
 				&& vo.getRowId() != mailbox.getRowId()) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "mailboxAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "mailboxAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "mailboxAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "mailboxAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import static ltj.message.constant.Constants.DASHES_OF_33;
 import static ltj.message.constant.Constants.MSG_DELIMITER_BEGIN;
@@ -49,9 +49,9 @@ import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.RfcFieldsVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
 import ltj.message.vo.inbox.SearchFieldsVo.PageAction;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.MessageThreadsBuilder;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.MessageThreadsBuilder;
+import ltj.msgui.util.SpringUtil;
 
 public class MsgInboxBean {
 	static final Logger logger = Logger.getLogger(MsgInboxBean.class);
@@ -922,8 +922,8 @@ public class MsgInboxBean {
 		String fromAddr = (String) value;
 		if (!isValidEmailAddress(fromAddr)) {
 			// invalid email address
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidEmailAddress", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidEmailAddress", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -941,8 +941,8 @@ public class MsgInboxBean {
 		String toAddr = (String) value;
 		if (!isValidEmailAddress(toAddr)) {
 			// invalid email address
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidEmailAddress", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidEmailAddress", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

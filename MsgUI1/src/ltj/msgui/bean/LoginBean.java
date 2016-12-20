@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -10,9 +10,9 @@ import ltj.message.constant.Constants;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.dao.user.UserDao;
 import ltj.message.vo.UserVo;
-import com.legacytojava.msgui.filter.SessionTimeoutFilter;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.filter.SessionTimeoutFilter;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class LoginBean {
 	static final Logger logger = Logger.getLogger(LoginBean.class);

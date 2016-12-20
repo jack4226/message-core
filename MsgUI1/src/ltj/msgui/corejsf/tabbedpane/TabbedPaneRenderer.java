@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf.tabbedpane;
+package ltj.msgui.corejsf.tabbedpane;
 
 import java.io.IOException;
 import java.util.Map;
@@ -19,7 +19,7 @@ import javax.servlet.ServletResponse;
 // Renderer for the UITabbedPane component
 
 public class TabbedPaneRenderer extends Renderer {
-   private static final Logger logger = Logger.getLogger("com.legacytojava.msgui.util");
+   private static final Logger logger = Logger.getLogger("ltj.msgui.util");
 
    // By default, getRendersChildren() returns false, so encodeChildren()
    // won't be invoked unless we override getRendersChildren() to return true
@@ -94,7 +94,7 @@ public class TabbedPaneRenderer extends Renderer {
       writer.startElement("tbody", component);
       writer.startElement("tr", component);
 
-      for (SelectItem item : com.legacytojava.msgui.util.Renderers.getSelectItems(component))
+      for (SelectItem item : ltj.msgui.util.Renderers.getSelectItems(component))
          encodeTab(context, writer, item, component);
       
       writer.endElement("tr");
@@ -178,7 +178,7 @@ public class TabbedPaneRenderer extends Renderer {
       writer.writeAttribute("href", "#", "href");
 
       String clientId = component.getClientId(context);
-      String formId = com.legacytojava.msgui.util.Renderers.getFormId(context, component);
+      String formId = ltj.msgui.util.Renderers.getFormId(context, component);
 
       writer.writeAttribute("onclick",
       // write value for hidden field whose name is the tabbedpane's client Id
@@ -220,7 +220,7 @@ public class TabbedPaneRenderer extends Renderer {
       String localizedText = null;
 
       if (bundle != null) {
-         localizedText = com.legacytojava.msgui.util.Messages.getString(bundle, key, null);
+         localizedText = ltj.msgui.util.Messages.getString(bundle, key, null);
       }
       if (localizedText == null)
          localizedText = key;

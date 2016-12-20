@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import javax.faces.model.ListDataModel;
 import org.apache.log4j.Logger;
 
 import ltj.message.vo.rule.RuleLogicVo;
-import com.legacytojava.msgui.util.FacesUtil;
+import ltj.msgui.util.FacesUtil;
 
 public class MsgBuiltInRulesBean extends MsgRulesBean {
 	protected static final Logger logger = Logger.getLogger(MsgBuiltInRulesBean.class);

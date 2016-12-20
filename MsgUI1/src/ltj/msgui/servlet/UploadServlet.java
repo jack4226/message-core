@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.servlet;
+package ltj.msgui.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,13 +29,13 @@ import ltj.message.util.StringUtil;
 import ltj.message.vo.SessionUploadVo;
 import ltj.message.vo.UserVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
-import com.legacytojava.msgui.bean.FileUploadForm;
-import com.legacytojava.msgui.bean.MailingListComposeBean;
-import com.legacytojava.msgui.bean.MsgInboxBean;
-import com.legacytojava.msgui.filter.MultipartFilter;
-import com.legacytojava.msgui.filter.SessionTimeoutFilter;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.bean.FileUploadForm;
+import ltj.msgui.bean.MailingListComposeBean;
+import ltj.msgui.bean.MsgInboxBean;
+import ltj.msgui.filter.MultipartFilter;
+import ltj.msgui.filter.SessionTimeoutFilter;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = -4905340132022275056L;

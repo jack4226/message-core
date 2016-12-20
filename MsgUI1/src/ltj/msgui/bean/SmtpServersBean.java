@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,8 +26,8 @@ import ltj.message.dao.client.ClientUtil;
 import ltj.message.dao.smtp.SmtpServerDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.SmtpConnVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class SmtpServersBean {
 	static final Logger logger = Logger.getLogger(SmtpServersBean.class);
@@ -298,15 +298,15 @@ public class SmtpServersBean {
 		SmtpConnVo vo = getSmtpServerDao().getByPrimaryKey(serverName);
 		if (editMode == true && vo == null) {
 			// smtpServer does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "smtpServerDoesNotExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "smtpServerDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// smtpServer already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "smtpServerAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "smtpServerAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

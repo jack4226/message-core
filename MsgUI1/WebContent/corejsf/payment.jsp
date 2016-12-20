@@ -23,9 +23,9 @@
                <h:inputText id="card" value="#{payment.card}" label="#{msgs.creditCard}"
                		required="true">
                   <f:validateLength minimum="13"/>
-                  <f:converter converterId="com.legacytojava.msgui.CreditCard"/>
+                  <f:converter converterId="ltj.msgui.CreditCard"/>
                   <f:attribute name="separator" value="-"/>
-                  <f:validator validatorId="com.legacytojava.msgui.CreditCard"/>
+                  <f:validator validatorId="ltj.msgui.CreditCard"/>
                </h:inputText>
                <h:message for="card" styleClass="errorMessage"/>
 

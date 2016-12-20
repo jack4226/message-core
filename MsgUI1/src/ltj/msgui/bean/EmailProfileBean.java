@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,8 +20,8 @@ import ltj.message.dao.client.ClientUtil;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.ClientVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class EmailProfileBean {
 	static final Logger logger = Logger.getLogger(EmailProfileBean.class);
@@ -250,8 +250,8 @@ public class EmailProfileBean {
 			logger.debug("validateEmailAddress() - addr: " + emailAddr);
 		if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 			// invalid email address
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidEmailAddress", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidEmailAddress", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -262,8 +262,8 @@ public class EmailProfileBean {
 		if (isDebugEnabled)
 			logger.debug("validateEmailLocalPart() - local part: " + localPart);
 		if (!EmailAddrUtil.isValidEmailLocalPart(localPart)) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidEmailLocalPart", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidEmailLocalPart", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -275,15 +275,15 @@ public class EmailProfileBean {
 			logger.debug("validatePrimaryKey() - clientId: " + clientId);
 		ClientVo vo = getClientDao().getByClientId(clientId);
 		if (editMode == true && vo != null && client != null && vo.getRowId() != client.getRowId()) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-	        		"com.legacytojava.msgui.messages", "siteProfileAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+	        		"ltj.msgui.messages", "siteProfileAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// mailingList already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "siteProfileAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "siteProfileAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

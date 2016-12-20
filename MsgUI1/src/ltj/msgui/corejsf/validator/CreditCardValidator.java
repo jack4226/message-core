@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf.validator;
+package ltj.msgui.corejsf.validator;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -6,7 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import com.legacytojava.msgui.corejsf.CreditCard;
+import ltj.msgui.corejsf.CreditCard;
 
 public class CreditCardValidator implements Validator {
    public void validate(FacesContext context, UIComponent component, 
@@ -19,8 +19,8 @@ public class CreditCardValidator implements Validator {
          cardNumber = getDigitsOnly(value.toString());
       if(!luhnCheck(cardNumber)) {
          FacesMessage message 
-            = com.legacytojava.msgui.util.Messages.getMessage(
-               "com.legacytojava.msgui.messages", "badLuhnCheck", null);
+            = ltj.msgui.util.Messages.getMessage(
+               "ltj.msgui.messages", "badLuhnCheck", null);
          message.setSeverity(FacesMessage.SEVERITY_ERROR);
          throw new ValidatorException(message);
       }

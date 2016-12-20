@@ -20,7 +20,7 @@
    <managed-bean>
    	<managed-bean-name>debug</managed-bean-name>
    	<managed-bean-class>
-   		com.legacytojava.msgui.bean.DebugBean
+   		ltj.msgui.bean.DebugBean
    	</managed-bean-class>
    	<managed-bean-scope>application</managed-bean-scope>
    </managed-bean>
@@ -28,7 +28,7 @@
    <managed-bean>
    	<managed-bean-name>codes</managed-bean-name>
    	<managed-bean-class>
-   		com.legacytojava.msgui.util.StaticCodes
+   		ltj.msgui.util.StaticCodes
    	</managed-bean-class>
    	<managed-bean-scope>application</managed-bean-scope>
    </managed-bean>
@@ -36,7 +36,7 @@
    <managed-bean>
    	<managed-bean-name>dynacodes</managed-bean-name>
    	<managed-bean-class>
-   		com.legacytojava.msgui.util.DynamicCodes
+   		ltj.msgui.util.DynamicCodes
    	</managed-bean-class>
    	<managed-bean-scope>application</managed-bean-scope>
    </managed-bean>
@@ -45,7 +45,7 @@
    <managed-bean>
    	<managed-bean-name>user</managed-bean-name>
    	<managed-bean-class>
-   		com.legacytojava.msgui.corejsf.UserBean
+   		ltj.msgui.corejsf.UserBean
    	</managed-bean-class>
    	<managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
@@ -53,63 +53,63 @@
    <managed-bean>
    	<managed-bean-name>quiz</managed-bean-name>
    	<managed-bean-class>
-   		com.legacytojava.msgui.corejsf.QuizBean
+   		ltj.msgui.corejsf.QuizBean
    	</managed-bean-class>
    	<managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <managed-bean> 
       <managed-bean-name>localeChanger</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.corejsf.ChangeLocaleBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.corejsf.ChangeLocaleBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope> 
    </managed-bean>
    
    <managed-bean>
       <managed-bean-name>form</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.corejsf.RegisterForm</managed-bean-class>
+      <managed-bean-class>ltj.msgui.corejsf.RegisterForm</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <managed-bean>
       <managed-bean-name>tableData</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.corejsf.TableData</managed-bean-class>
+      <managed-bean-class>ltj.msgui.corejsf.TableData</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <managed-bean> 
       <managed-bean-name>payment</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.corejsf.PaymentBean</managed-bean-class> 
+      <managed-bean-class>ltj.msgui.corejsf.PaymentBean</managed-bean-class> 
       <managed-bean-scope>session</managed-bean-scope> 
    </managed-bean>
 
    <managed-bean> 
       <managed-bean-name>datebb</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.corejsf.DateBackingBean</managed-bean-class> 
+      <managed-bean-class>ltj.msgui.corejsf.DateBackingBean</managed-bean-class> 
       <managed-bean-scope>session</managed-bean-scope> 
    </managed-bean>
 
    <managed-bean> 
       <managed-bean-name>rushmore</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.corejsf.Rushmore</managed-bean-class> 
+      <managed-bean-class>ltj.msgui.corejsf.Rushmore</managed-bean-class> 
       <managed-bean-scope>session</managed-bean-scope> 
    </managed-bean>
 
    <managed-bean> 
       <managed-bean-name>phaseform</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.PhaseTrackerSetterBean</managed-bean-class> 
+      <managed-bean-class>ltj.msgui.bean.PhaseTrackerSetterBean</managed-bean-class> 
       <managed-bean-scope>session</managed-bean-scope> 
    </managed-bean>
    
    <managed-bean>
       <managed-bean-name>tp</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.corejsf.TabbedPane</managed-bean-class>
+      <managed-bean-class>ltj.msgui.corejsf.TabbedPane</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- The book -->
    <managed-bean>
       <managed-bean-name>book</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.corejsf.Book</managed-bean-class>
+      <managed-bean-class>ltj.msgui.corejsf.Book</managed-bean-class>
       <managed-bean-scope>none</managed-bean-scope>
       
       <managed-property>
@@ -145,7 +145,7 @@
 	<!-- define managed beans for Getting Started page -->
    <managed-bean>
       <managed-bean-name>gettingStarted</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.GettingStarted</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.GettingStarted</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
       <managed-property>
          <property-name>titleKey</property-name>
@@ -160,55 +160,55 @@
    <!-- define managed beans for Customer pages -->
    <managed-bean>
       <managed-bean-name>customers</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.CustomersListBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.CustomersListBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Mailbox pages -->
    <managed-bean>
       <managed-bean-name>mailboxes</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MailboxesBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MailboxesBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Smtp Servers pages -->
    <managed-bean>
       <managed-bean-name>smtpsvrs</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.SmtpServersBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.SmtpServersBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Message Rule pages -->
    <managed-bean>
       <managed-bean-name>msgrules</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MsgRulesBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MsgRulesBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <managed-bean>
       <managed-bean-name>builtinrules</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MsgBuiltInRulesBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MsgBuiltInRulesBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Message Action Class pages -->
    <managed-bean>
       <managed-bean-name>actiondetails</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MsgActionDetailsBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MsgActionDetailsBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed beans for Message Inbox/Outbox Class pages -->
    <managed-bean>
       <managed-bean-name>msgfolder</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MsgInboxBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MsgInboxBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed beans for Simple Mail Tracking Class pages -->
    <managed-bean>
       <managed-bean-name>mailtracking</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.SimpleMailTrackingMenu</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.SimpleMailTrackingMenu</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
@@ -216,15 +216,15 @@
    <!-- define custom component and renderer for tabbedpane -->
    <component>
       <description>A tabbed pane</description>
-      <component-type>com.legacytojava.msgui.TabbedPane</component-type>
-      <component-class>com.legacytojava.msgui.corejsf.tabbedpane.UITabbedPane</component-class>
+      <component-type>ltj.msgui.TabbedPane</component-type>
+      <component-class>ltj.msgui.corejsf.tabbedpane.UITabbedPane</component-class>
    </component>
 
    <render-kit>
       <renderer>
          <component-family>javax.faces.Command</component-family>
-         <renderer-type>com.legacytojava.msgui.TabbedPane</renderer-type>
-         <renderer-class>com.legacytojava.msgui.corejsf.tabbedpane.TabbedPaneRenderer</renderer-class>
+         <renderer-type>ltj.msgui.TabbedPane</renderer-type>
+         <renderer-class>ltj.msgui.corejsf.tabbedpane.TabbedPaneRenderer</renderer-class>
       </renderer>
    </render-kit>
    
@@ -528,44 +528,44 @@
    <!-- define converters -->
    <!-- converter id="for_jsf1.1">
   	<converter-for-class>java.lang.Enum</converter-for-class>
-  	<converter-class>com.legacytojava.msgui.converter.EnumTypeConverter</converter-class>
+  	<converter-class>ltj.msgui.converter.EnumTypeConverter</converter-class>
    </converter -->
    
    <converter>
-    <converter-id>com.legacytojava.msgui.CreditCard</converter-id>
-  	<converter-class>com.legacytojava.msgui.corejsf.converter.CreditCardConverter</converter-class>
+    <converter-id>ltj.msgui.CreditCard</converter-id>
+  	<converter-class>ltj.msgui.corejsf.converter.CreditCardConverter</converter-class>
    </converter>
    
    <!-- converter>
-  	<converter-for-class>com.legacytojava.msgui.bean.CreditCard</converter-for-class>
-  	<converter-class>com.legacytojava.msgui.converter.CreditCardConverter</converter-class>
+  	<converter-for-class>ltj.msgui.bean.CreditCard</converter-for-class>
+  	<converter-class>ltj.msgui.converter.CreditCardConverter</converter-class>
    </converter -->
    
    <converter>
     <converter-id>NullableStringConverter</converter-id>
-  	<converter-class>com.legacytojava.msgui.converter.NullableStringConverter</converter-class>
+  	<converter-class>ltj.msgui.converter.NullableStringConverter</converter-class>
    </converter>
    
    <!-- define validators -->
    <validator> 
-      <validator-id>com.legacytojava.msgui.CreditCard</validator-id>
-      <validator-class>com.legacytojava.msgui.corejsf.validator.CreditCardValidator</validator-class> 
+      <validator-id>ltj.msgui.CreditCard</validator-id>
+      <validator-class>ltj.msgui.corejsf.validator.CreditCardValidator</validator-class> 
    </validator>
    
    <!-- define PhaseTracker listener -->
    <lifecycle>
-      <phase-listener>com.legacytojava.msgui.listener.PhaseTracker</phase-listener>
+      <phase-listener>ltj.msgui.listener.PhaseTracker</phase-listener>
    </lifecycle>
    
    <!-- define PostRedirectGet listener -->
    <!-- lifecycle>
-      <phase-listener>com.legacytojava.msgui.util.PostRedirectGetListener</phase-listener>
+      <phase-listener>ltj.msgui.util.PostRedirectGetListener</phase-listener>
    </lifecycle -->
    
    <!-- define messages resource bundle -->
    <application>
       <resource-bundle>
-         <base-name>com.legacytojava.msgui.messages</base-name>
+         <base-name>ltj.msgui.messages</base-name>
          <var>msgs</var>
       </resource-bundle>
    </application>

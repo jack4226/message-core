@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.validator;
+package ltj.msgui.validator;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -24,8 +24,8 @@ public class PasswordValidator implements Validator {
 		// Check if the first password is actually entered and compare it with
 		// second password.
 		if (!StringUtil.isEmpty(password) && !password.equals(confirm)) {
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "passwordsNotEqual", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "passwordsNotEqual", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

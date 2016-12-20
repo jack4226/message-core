@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,8 +21,8 @@ import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.MailingListVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class EmailAddrsListBean {
 	static final Logger logger = Logger.getLogger(EmailAddrsListBean.class);
@@ -349,16 +349,16 @@ public class EmailAddrsListBean {
 		if (editMode == true && vo != null && emailAddr != null
 				&& vo.getEmailAddrId() != emailAddr.getEmailAddrId()) {
 			// emailAddr does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					//"com.legacytojava.msgui.messages", "emailAddrDoesNotExist", null);
-	        		"com.legacytojava.msgui.messages", "emailAddrAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					//"ltj.msgui.messages", "emailAddrDoesNotExist", null);
+	        		"ltj.msgui.messages", "emailAddrAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// emailAddr already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "emailAddrAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "emailAddrAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

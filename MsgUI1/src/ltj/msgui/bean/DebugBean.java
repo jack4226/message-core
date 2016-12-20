@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 public class DebugBean {
 	private boolean showMessages = true;

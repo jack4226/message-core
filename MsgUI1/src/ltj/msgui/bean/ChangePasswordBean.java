@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -8,8 +8,8 @@ import org.apache.log4j.Logger;
 
 import ltj.message.dao.user.UserDao;
 import ltj.message.vo.UserVo;
-import com.legacytojava.msgui.filter.SessionTimeoutFilter;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.filter.SessionTimeoutFilter;
+import ltj.msgui.util.SpringUtil;
 
 public class ChangePasswordBean {
 	static final Logger logger = Logger.getLogger(ChangePasswordBean.class);

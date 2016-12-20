@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.listener;
+package ltj.msgui.listener;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +9,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletResponse;
 
-import com.legacytojava.msgui.util.FacesUtil;
+import ltj.msgui.util.FacesUtil;
 
 public class CacheControlPhaseListener implements PhaseListener {
 	private static final long serialVersionUID = -2166859627692568459L;

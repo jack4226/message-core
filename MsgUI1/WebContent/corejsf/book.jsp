@@ -4,7 +4,7 @@
    <%@ taglib uri="http://java.sun.com/jsf/html"  prefix="h" %>
 
    <f:view>
-      <!-- f:loadBundle basename="com.legacytojava.msgui.messages" var="msgs"/ -->
+      <!-- f:loadBundle basename="ltj.msgui.messages" var="msgs"/ -->
       <head>
          <link href="styles.css" rel="stylesheet" type="text/css"/>
          <title><h:outputText value="#{msgs.bookWindowTitle}"/></title>

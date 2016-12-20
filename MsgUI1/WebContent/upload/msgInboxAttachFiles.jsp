@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setBundle basename="com.legacytojava.msgui.messages" var="bndl"/>
+<fmt:setBundle basename="ltj.msgui.messages" var="bndl"/>
 <head>
 <link href="../styles.css" rel="stylesheet" type="text/css" />
 <title><fmt:message key="uploadAttachmentsPageTitle" bundle="${bndl}"/></title>
@@ -11,10 +11,10 @@
 <body>
 <div align="center">
 <jsp:useBean id="uploadForm"
-	class="com.legacytojava.msgui.bean.FileUploadForm" scope="request" />
+	class="ltj.msgui.bean.FileUploadForm" scope="request" />
 <jsp:setProperty name="uploadForm" property="*" />
 <jsp:useBean id="staticCodes"
-	class="com.legacytojava.msgui.util.StaticCodes" scope="page" />
+	class="ltj.msgui.util.StaticCodes" scope="page" />
 
 <form action="uploadServlet" method="post" enctype="multipart/form-data">
 <input type="hidden" name="frompage" value="<c:out value="${param.frompage}"/>"/>

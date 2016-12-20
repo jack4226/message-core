@@ -82,7 +82,7 @@
 	<!-- define file download servlet -->
 	<servlet>
 	    <servlet-name>File Servlet</servlet-name>
-	    <servlet-class>com.legacytojava.msgui.servlet.FileServlet</servlet-class>
+	    <servlet-class>ltj.msgui.servlet.FileServlet</servlet-class>
 	    <load-on-startup>3</load-on-startup>
 	</servlet>
 	<servlet-mapping>
@@ -93,7 +93,7 @@
 	<!-- define attachment upload servlet -->
 	<servlet>
 		<servlet-name>Upload Servlet</servlet-name>
-		<servlet-class>com.legacytojava.msgui.servlet.UploadServlet</servlet-class>
+		<servlet-class>ltj.msgui.servlet.UploadServlet</servlet-class>
 		<load-on-startup>4</load-on-startup>
 	</servlet>
 	<servlet-mapping>
@@ -115,14 +115,14 @@
 	<!-- define session expired listener -->
 	<listener>
 		<listener-class>
-			com.legacytojava.msgui.listener.SessionExpiredListener
+			ltj.msgui.listener.SessionExpiredListener
 		</listener-class>
 	</listener>
 	
 	<!-- define session timeout filter -->
 	<filter>
 		<filter-name>SessionTimeoutFilter</filter-name>
-		<filter-class>com.legacytojava.msgui.filter.SessionTimeoutFilter</filter-class>
+		<filter-class>ltj.msgui.filter.SessionTimeoutFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>SessionTimeoutFilter</filter-name>
@@ -140,7 +140,7 @@
 	    	can be an instance of FileItem or FileUploadException.
 	    </description>
 	    <filter-name>multipartFilter</filter-name>
-	    <filter-class>com.legacytojava.msgui.filter.MultipartFilter</filter-class>
+	    <filter-class>ltj.msgui.filter.MultipartFilter</filter-class>
 	    <init-param>
 	        <description>
 	        	Sets the maximum file size of the uploaded file in

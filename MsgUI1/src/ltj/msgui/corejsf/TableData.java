@@ -1,9 +1,10 @@
-package com.legacytojava.msgui.corejsf;
+package ltj.msgui.corejsf;
 
 import javax.faces.model.DataModel;
-import javax.faces.model.ArrayDataModel;
 
-import com.legacytojava.msgui.corejsf.model.SortFilterModel;
+import ltj.msgui.corejsf.model.SortFilterModel;
+
+import javax.faces.model.ArrayDataModel;
 
 public class TableData {
 	private DataModel filterModel = null;

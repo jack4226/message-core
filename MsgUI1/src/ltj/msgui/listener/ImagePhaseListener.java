@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.listener;
+package ltj.msgui.listener;
 
 import java.io.File;
 
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  </context-param>
  * and the following to faces-config.xml
  <lifecycle>
-         <phase-listener>com.legacytojava.msgui.listener.ImagePhaseListener</phase-listener>
+         <phase-listener>ltj.msgui.listener.ImagePhaseListener</phase-listener>
  </lifecycle>
  *
  * Now, if you have the image /MsgUI/images/img1.jpg you can render it via 
@@ -42,7 +42,7 @@ public class ImagePhaseListener implements PhaseListener {
     }
  
     public void beforePhase(PhaseEvent event) {
-        // Do nothing here…
+        // Do nothing hereï¿½
     }
  
     public PhaseId getPhaseId() {

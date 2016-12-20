@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,8 +22,8 @@ import ltj.message.constant.Constants;
 import ltj.message.dao.action.MsgActionDetailDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.action.MsgActionDetailVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class MsgActionDetailsBean {
 	static final Logger logger = Logger.getLogger(MsgActionDetailsBean.class);
@@ -229,15 +229,15 @@ public class MsgActionDetailsBean {
 		MsgActionDetailVo vo = getMsgActionDetailDao().getByActionId(actionDetailId);
 		if (editMode && vo == null) {
 			// MsgActionDetail does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "MsgActionIdDoesNotExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "MsgActionIdDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		if (!editMode && vo != null) {
 			// MsgActionDetail already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "MsgActionIdAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "MsgActionIdAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

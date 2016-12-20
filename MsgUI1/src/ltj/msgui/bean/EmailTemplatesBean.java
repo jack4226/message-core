@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,9 +28,9 @@ import ltj.message.util.BlobUtil;
 import ltj.message.util.HtmlTags;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
-import com.legacytojava.msgui.util.DynamicCodes;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.DynamicCodes;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class EmailTemplatesBean {
 	static final Logger logger = Logger.getLogger(EmailTemplatesBean.class);
@@ -274,16 +274,16 @@ public class EmailTemplatesBean {
 		if (editMode == true && vo != null && emailTemplate != null
 				&& vo.getRowId() != emailTemplate.getRowId()) {
 			// emailTemplate does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					//"com.legacytojava.msgui.messages", "emailTemplateDoesNotExist", null);
-	        		"com.legacytojava.msgui.messages", "emailTemplateAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					//"ltj.msgui.messages", "emailTemplateDoesNotExist", null);
+	        		"ltj.msgui.messages", "emailTemplateAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// emailTemplate already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "emailTemplateAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "emailTemplateAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -299,8 +299,8 @@ public class EmailTemplatesBean {
 			return;
 		}
 		((UIInput)component).setValid(false);
-		FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-				"com.legacytojava.msgui.messages", "invalidDate", null);
+		FacesMessage message = ltj.msgui.util.Messages.getMessage(
+				"ltj.msgui.messages", "invalidDate", null);
 		message.setSeverity(FacesMessage.SEVERITY_ERROR);
 		context.addMessage(component.getClientId(context), message);
 	}

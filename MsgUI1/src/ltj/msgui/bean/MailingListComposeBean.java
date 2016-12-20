@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,8 +39,8 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.TemplateRenderVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class MailingListComposeBean {
 	static final Logger logger = Logger.getLogger(MailingListComposeBean.class);
@@ -356,8 +356,8 @@ public class MailingListComposeBean {
 		String fromAddr = (String) value;
 		if (!isValidEmailAddress(fromAddr)) {
 			// invalid email address
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "invalidEmailAddress", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "invalidEmailAddress", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

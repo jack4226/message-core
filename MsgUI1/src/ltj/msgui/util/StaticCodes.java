@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.util;
+package ltj.msgui.util;
 
 import java.io.File;
 import java.io.IOException;

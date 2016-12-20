@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.util;
+package ltj.msgui.util;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;

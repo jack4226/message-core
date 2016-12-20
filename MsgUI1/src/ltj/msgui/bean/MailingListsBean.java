@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.emailaddr.MailingListVo;
-import com.legacytojava.msgui.util.FacesUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 public class MailingListsBean {
 	static final Logger logger = Logger.getLogger(MailingListsBean.class);
@@ -243,16 +243,16 @@ public class MailingListsBean {
 		if (editMode == true && vo != null && mailingList != null
 				&& vo.getRowId() != mailingList.getRowId()) {
 			// mailingList does not exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-	        		"com.legacytojava.msgui.messages", "mailingListAlreadyExist", null);
-					//"com.legacytojava.msgui.messages", "mailingListDoesNotExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+	        		"ltj.msgui.messages", "mailingListAlreadyExist", null);
+					//"ltj.msgui.messages", "mailingListDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// mailingList already exist
-	        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-					"com.legacytojava.msgui.messages", "mailingListAlreadyExist", null);
+	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+					"ltj.msgui.messages", "mailingListAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -265,8 +265,8 @@ public class MailingListsBean {
 		if (!StringUtil.isEmpty(emailAddr)) {
 			if (!EmailAddrUtil.isRemoteOrLocalEmailAddress(emailAddr)) {
 				// invalid email address
-		        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-						"com.legacytojava.msgui.messages", "invalidEmailAddress", null);
+		        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+						"ltj.msgui.messages", "invalidEmailAddress", null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -280,8 +280,8 @@ public class MailingListsBean {
 		if (!StringUtil.isEmpty(acctUserName)) {
 			if (!acctUserName.matches("^(?i)([a-z0-9\\.\\_\\%\\+\\-])+$")) {
 				// invalid email address
-		        FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-						"com.legacytojava.msgui.messages", "invalidAccountUserName", null);
+		        FacesMessage message = ltj.msgui.util.Messages.getMessage(
+						"ltj.msgui.messages", "invalidAccountUserName", null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}

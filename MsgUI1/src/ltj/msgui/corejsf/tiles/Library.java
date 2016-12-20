@@ -1,10 +1,11 @@
-package com.legacytojava.msgui.corejsf.tiles;
+package ltj.msgui.corejsf.tiles;
 
 import java.util.*;
 import javax.faces.model.SelectItem;
-import javax.faces.event.ValueChangeEvent;
 
-import com.legacytojava.msgui.corejsf.Book;
+import ltj.msgui.corejsf.Book;
+
+import javax.faces.event.ValueChangeEvent;
 
 public class Library {
 	private Map<String, Book> bookMap = new HashMap<String, Book>();
@@ -66,7 +67,7 @@ public class Library {
 	}
 
 	private String getBookTitle(String key) {
-		return com.legacytojava.msgui.util.Messages.getString("com.legacytojava.msgui.messages",
+		return ltj.msgui.util.Messages.getString("ltj.msgui.messages",
 				key, null);
 	}
 }

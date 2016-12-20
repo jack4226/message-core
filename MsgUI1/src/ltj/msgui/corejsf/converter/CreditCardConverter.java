@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf.converter;
+package ltj.msgui.corejsf.converter;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -6,7 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import com.legacytojava.msgui.corejsf.CreditCard;
+import ltj.msgui.corejsf.CreditCard;
 
 public class CreditCardConverter implements Converter {
    public Object getAsObject(FacesContext context, UIComponent component,
@@ -28,8 +28,8 @@ public class CreditCardConverter implements Converter {
       }
 
       if (foundInvalidCharacter) {
-         FacesMessage message = com.legacytojava.msgui.util.Messages.getMessage(
-               "com.legacytojava.msgui.messages", "badCreditCardCharacter",
+         FacesMessage message = ltj.msgui.util.Messages.getMessage(
+               "ltj.msgui.messages", "badCreditCardCharacter",
                new Object[]{ Character.valueOf(invalidCharacter) });
          message.setSeverity(FacesMessage.SEVERITY_ERROR);
          throw new ConverterException(message);

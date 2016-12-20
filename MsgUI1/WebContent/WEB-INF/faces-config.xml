@@ -19,32 +19,32 @@
 	<!-- Define Application scoped beans -->
 	<managed-bean>
 		<managed-bean-name>debug</managed-bean-name>
-		<managed-bean-class>com.legacytojava.msgui.bean.DebugBean</managed-bean-class>
+		<managed-bean-class>ltj.msgui.bean.DebugBean</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
 
 	<managed-bean>
 		<managed-bean-name>codes</managed-bean-name>
-		<managed-bean-class>com.legacytojava.msgui.util.StaticCodes</managed-bean-class>
+		<managed-bean-class>ltj.msgui.util.StaticCodes</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
 
 	<managed-bean>
 		<managed-bean-name>dynacodes</managed-bean-name>
-		<managed-bean-class>com.legacytojava.msgui.util.DynamicCodes</managed-bean-class>
+		<managed-bean-class>ltj.msgui.util.DynamicCodes</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
 	<!-- end application scoped beans -->
    
    <managed-bean> 
       <managed-bean-name>phaseform</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.PhaseTrackerSetterBean</managed-bean-class> 
+      <managed-bean-class>ltj.msgui.bean.PhaseTrackerSetterBean</managed-bean-class> 
       <managed-bean-scope>session</managed-bean-scope> 
    </managed-bean>
    
    <managed-bean> 
       <managed-bean-name>login</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.LoginBean</managed-bean-class> 
+      <managed-bean-class>ltj.msgui.bean.LoginBean</managed-bean-class> 
       <managed-bean-scope>request</managed-bean-scope> 
       <managed-property>
          <property-name>source</property-name>
@@ -54,20 +54,20 @@
    
    <managed-bean> 
       <managed-bean-name>changePassword</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.ChangePasswordBean</managed-bean-class> 
+      <managed-bean-class>ltj.msgui.bean.ChangePasswordBean</managed-bean-class> 
       <managed-bean-scope>request</managed-bean-scope>
    </managed-bean>
    
    <managed-bean> 
       <managed-bean-name>enterProductKey</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.EnterProductKeyBean</managed-bean-class> 
+      <managed-bean-class>ltj.msgui.bean.EnterProductKeyBean</managed-bean-class> 
       <managed-bean-scope>request</managed-bean-scope>
    </managed-bean>
    
 	<!-- define managed beans for Getting Started page -->
    <managed-bean>
       <managed-bean-name>gettingStarted</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.GettingStarted</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.GettingStarted</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
       <managed-property>
          <property-name>titleKey</property-name>
@@ -82,118 +82,118 @@
    <!-- define managed beans for Customer pages -->
    <managed-bean>
    	<managed-bean-name>customers</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.CustomersListBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.CustomersListBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Mailbox pages -->
    <managed-bean>
       <managed-bean-name>mailboxes</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MailboxesBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MailboxesBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Smtp Servers pages -->
    <managed-bean>
       <managed-bean-name>smtpsvrs</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.SmtpServersBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.SmtpServersBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Message Rule pages -->
    <managed-bean>
       <managed-bean-name>msgrules</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MsgRulesBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MsgRulesBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <managed-bean>
       <managed-bean-name>builtinrules</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MsgBuiltInRulesBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MsgBuiltInRulesBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Message Action Class pages -->
    <managed-bean>
       <managed-bean-name>actiondetails</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MsgActionDetailsBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MsgActionDetailsBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed beans for Mailing Lists pages -->
    <managed-bean>
       <managed-bean-name>maillsts</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MailingListsBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MailingListsBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed beans for Email Variable Class pages -->
    <managed-bean>
       <managed-bean-name>emailvariables</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.EmailVariablesBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.EmailVariablesBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed beans for Email Template Class pages -->
    <managed-bean>
       <managed-bean-name>emailtemplates</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.EmailTemplatesBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.EmailTemplatesBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed beans for Message Inbox/Outbox Class pages -->
    <managed-bean>
       <managed-bean-name>msgfolder</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MsgInboxBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MsgInboxBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed beans for Simple Mail Tracking Class pages -->
    <managed-bean>
       <managed-bean-name>mailtracking</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.SimpleMailTrackingMenu</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.SimpleMailTrackingMenu</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed beans for Mailing List Composition pages -->
    <managed-bean>
       <managed-bean-name>maillistcomp</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.MailingListComposeBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.MailingListComposeBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed beans for Managing User Accounts pages -->
    <managed-bean>
       <managed-bean-name>useraccounts</managed-bean-name>
-      <managed-bean-class>com.legacytojava.msgui.bean.UserAccountsBean</managed-bean-class>
+      <managed-bean-class>ltj.msgui.bean.UserAccountsBean</managed-bean-class>
       <managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed bean for site profile pages -->
    <managed-bean>
    	<managed-bean-name>profileBean</managed-bean-name>
-   	<managed-bean-class>com.legacytojava.msgui.bean.EmailProfileBean</managed-bean-class>
+   	<managed-bean-class>ltj.msgui.bean.EmailProfileBean</managed-bean-class>
    	<managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
    
    <!-- define managed bean for subscriber list page -->
    <managed-bean>
    	<managed-bean-name>subscribersListBean</managed-bean-name>
-   	<managed-bean-class>com.legacytojava.msgui.bean.SubscribersListBean</managed-bean-class>
+   	<managed-bean-class>ltj.msgui.bean.SubscribersListBean</managed-bean-class>
    	<managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed bean for email address list pages -->
    <managed-bean>
    	<managed-bean-name>emailAddrsBean</managed-bean-name>
-   	<managed-bean-class>com.legacytojava.msgui.bean.EmailAddrsListBean</managed-bean-class>
+   	<managed-bean-class>ltj.msgui.bean.EmailAddrsListBean</managed-bean-class>
    	<managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
    <!-- define managed bean for subscriber list page -->
    <managed-bean>
    	<managed-bean-name>broadcastsListBean</managed-bean-name>
-   	<managed-bean-class>com.legacytojava.msgui.bean.BroadcastMsgListBean</managed-bean-class>
+   	<managed-bean-class>ltj.msgui.bean.BroadcastMsgListBean</managed-bean-class>
    	<managed-bean-scope>session</managed-bean-scope>
    </managed-bean>
 
@@ -853,39 +853,39 @@
    <!-- define converters -->
    <converter>
     <converter-id>NullableStringConverter</converter-id>
-  	<converter-class>com.legacytojava.msgui.converter.NullableStringConverter</converter-class>
+  	<converter-class>ltj.msgui.converter.NullableStringConverter</converter-class>
    </converter>
    
    <!-- define validators -->
    <validator>
    	<validator-id>msgui.EmailAddressValidator</validator-id>
-   	<validator-class>com.legacytojava.msgui.validator.EmailAddressValidator</validator-class>
+   	<validator-class>ltj.msgui.validator.EmailAddressValidator</validator-class>
    </validator>
 
    <validator>
    	<validator-id>passwordValidator</validator-id>
-   	<validator-class>com.legacytojava.msgui.validator.PasswordValidator</validator-class>
+   	<validator-class>ltj.msgui.validator.PasswordValidator</validator-class>
    </validator>
 
    <!-- define PhaseTracker listener -->
    <lifecycle>
-      <phase-listener>com.legacytojava.msgui.listener.PhaseTracker</phase-listener>
+      <phase-listener>ltj.msgui.listener.PhaseTracker</phase-listener>
    </lifecycle>
    
    <!-- define PostRedirectGet listener -->
    <!-- lifecycle>
-      <phase-listener>com.legacytojava.msgui.listener.PostRedirectGetListener</phase-listener>
+      <phase-listener>ltj.msgui.listener.PostRedirectGetListener</phase-listener>
    </lifecycle -->
 
    <!-- define Back Button phase listener -->
    <lifecycle>
-   	<phase-listener>com.legacytojava.msgui.listener.CacheControlPhaseListener</phase-listener>
+   	<phase-listener>ltj.msgui.listener.CacheControlPhaseListener</phase-listener>
    </lifecycle>
 
    <!-- define messages resource bundle -->
    <application>
       <resource-bundle>
-         <base-name>com.legacytojava.msgui.messages</base-name>
+         <base-name>ltj.msgui.messages</base-name>
          <var>msgs</var>
       </resource-bundle>
    </application>

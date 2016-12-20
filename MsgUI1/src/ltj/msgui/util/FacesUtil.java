@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.util;
+package ltj.msgui.util;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ltj.message.vo.UserVo;
-import com.legacytojava.msgui.filter.SessionTimeoutFilter;
+import ltj.msgui.filter.SessionTimeoutFilter;
 
 public class FacesUtil {
 	

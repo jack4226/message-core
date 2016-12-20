@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.filter;
+package ltj.msgui.filter;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -19,8 +19,8 @@ import org.apache.log4j.Logger;
 import ltj.message.dao.user.UserDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.UserVo;
-import com.legacytojava.msgui.util.HttpServletUtil;
-import com.legacytojava.msgui.util.SpringUtil;
+import ltj.msgui.util.HttpServletUtil;
+import ltj.msgui.util.SpringUtil;
 
 /**
  * The UserVo filter. A specific user id is saved in a long-living cookie so

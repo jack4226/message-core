@@ -3,7 +3,7 @@
    <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
    <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
    <!-- JSF 1.1
-   <f:loadBundle basename="com.legacytojava.msgui.messages" var="msgs"/>
+   <f:loadBundle basename="ltj.msgui.messages" var="msgs"/>
    -->
    <f:view>
       <head>

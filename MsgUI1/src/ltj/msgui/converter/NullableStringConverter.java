@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.converter;
+package ltj.msgui.converter;
 
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;

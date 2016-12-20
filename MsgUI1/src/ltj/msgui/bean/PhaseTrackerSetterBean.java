@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.bean;
+package ltj.msgui.bean;
 
 import javax.faces.FactoryFinder;
 import javax.faces.event.PhaseEvent;
@@ -30,8 +30,8 @@ public class PhaseTrackerSetterBean {
       PhaseListener[] listeners = lifecycle.getPhaseListeners();
       for (int i = 0; i < listeners.length; i++) {
          PhaseListener listener = listeners[i]; 
-         if (listener instanceof com.legacytojava.msgui.listener.PhaseTracker)
-            ((com.legacytojava.msgui.listener.PhaseTracker) listener).setPhase(
+         if (listener instanceof ltj.msgui.listener.PhaseTracker)
+            ((ltj.msgui.listener.PhaseTracker) listener).setPhase(
                   (String) e.getNewValue());
       }
    }

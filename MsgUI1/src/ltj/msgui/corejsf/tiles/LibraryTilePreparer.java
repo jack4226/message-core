@@ -1,4 +1,4 @@
-package com.legacytojava.msgui.corejsf.tiles;
+package ltj.msgui.corejsf.tiles;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import org.apache.tiles.context.TilesRequestContext;
 import org.apache.tiles.preparer.PreparerException;
 import org.apache.tiles.preparer.ViewPreparer;
 
-import com.legacytojava.msgui.corejsf.Book;
+import ltj.msgui.corejsf.Book;
 
 public class LibraryTilePreparer implements ViewPreparer {
 	public void execute(TilesRequestContext tilesContext, AttributeContext attributeContext)
