@@ -27,6 +27,7 @@ public class MailSenderListener implements MessageListener {
 	@Autowired
 	private MailSenderBoImpl mailSenderBo;
 	
+	private @Value("${mailSenderOutput.Queue}") String mailSenderOutputQueue;
 	private @Value("${errorOutput.Queue}") String errorQueueName;
 	
 	public MailSenderListener() {
@@ -36,7 +37,7 @@ public class MailSenderListener implements MessageListener {
 	@Override
 	public void onMessage(Message message) {
 		logger.info("JMS Message Received: " + message);
-		jmsProcessor.setQueueName(errorQueueName);
+		jmsProcessor.setQueueName(mailSenderOutputQueue);
 		long start = System.currentTimeMillis();
 		try {
 			String JmsMessageId = message.getJMSMessageID();

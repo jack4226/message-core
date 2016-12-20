@@ -27,6 +27,7 @@ public class RuleEngineListener implements MessageListener {
 	@Autowired
 	private MessageParser parser;
 	
+	private @Value("${ruleEngineOutput.Queue}") String ruleEngineOutputQueue;
 	private @Value("${errorOutput.Queue}") String errorQueueName;
 	
 	public RuleEngineListener() {
@@ -36,11 +37,11 @@ public class RuleEngineListener implements MessageListener {
 	@Override
 	public void onMessage(Message message) {
 		logger.info("JMS Message Received: " + message);
-		jmsProcessor.setQueueName(errorQueueName);
+		jmsProcessor.setQueueName(ruleEngineOutputQueue);
 		long start = System.currentTimeMillis();
-		if (message instanceof ObjectMessage) {
-			try {
-				String JmsMessageId = message.getJMSMessageID();
+		try {
+			String JmsMessageId = message.getJMSMessageID();
+			if (message instanceof ObjectMessage) {
 				Object obj = ((ObjectMessage)message).getObject();
 				if (obj instanceof MessageBean) {
 					MessageBean messageBean = (MessageBean) obj;
@@ -63,23 +64,23 @@ public class RuleEngineListener implements MessageListener {
 					jmsProcessor.writeMsg(message, JmsMessageId, true);
 				}
 			}
-			catch (JMSException je) {
-				logger.error("onMessage() - JMSException caught", je);
-				throw new RuntimeException(je);
-			}
-			catch (Throwable e) {
-				logger.error("onMessage() - Throwable caught", e);
-				throw new RuntimeException(e);
-			}
-			finally {
-				/* Message processed, update processing time */
-				long proc_time = System.currentTimeMillis() - start;
-				logger.info("onMessage() ended. Time spent in milliseconds: " + proc_time);
+			else {
+				// Not an Object Message
+				logger.warn("Message received is not an ObjectMessage: " + message.getClass().getName());
 			}
 		}
-		else {
-			// Not an Object Message
-			logger.warn("Message received is not an ObjectMessage: " + message.getClass().getName());
+		catch (JMSException je) {
+			logger.error("onMessage() - JMSException caught", je);
+			throw new RuntimeException(je);
+		}
+		catch (Throwable e) {
+			logger.error("onMessage() - Throwable caught", e);
+			throw new RuntimeException(e);
+		}
+		finally {
+			/* Message processed, update processing time */
+			long proc_time = System.currentTimeMillis() - start;
+			logger.info("onMessage() ended. Time spent in milliseconds: " + proc_time);
 		}
 	}
 
