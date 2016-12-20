@@ -28,7 +28,8 @@ public class EmailProfileBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private ClientDao clientDao = null;
-	private DataModel<?> siteProfiles = null;
+	@SuppressWarnings("rawtypes")
+	private DataModel siteProfiles = null;
 	private ClientVo client = null;
 	private boolean editMode = true;
 	
@@ -45,7 +46,8 @@ public class EmailProfileBean {
 		getData();
 	}
 	
-	public DataModel<?> getAll() {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
@@ -67,7 +69,7 @@ public class EmailProfileBean {
 				}
 			}
 			systemAtTop.addAll(clientList);
-			siteProfiles = new ListDataModel<>(systemAtTop);
+			siteProfiles = new ListDataModel(systemAtTop);
 		}
 		return siteProfiles;
 	}
@@ -355,11 +357,12 @@ public class EmailProfileBean {
 		this.actionFailure = actionFailure;
 	}
 
-	public DataModel<?> getSiteProfiles() {
+	@SuppressWarnings("rawtypes")
+	public DataModel getSiteProfiles() {
 		return siteProfiles;
 	}
 
-	public void setSiteProfiles(DataModel<?> siteProfiles) {
+	public void setSiteProfiles(@SuppressWarnings("rawtypes") DataModel siteProfiles) {
 		this.siteProfiles = siteProfiles;
 	}
 

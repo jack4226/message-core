@@ -28,7 +28,8 @@ public class UserAccountsBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private UserDao userDao = null;
-	private DataModel<?> users = null;
+	@SuppressWarnings("rawtypes")
+	private DataModel users = null;
 	private UserVo user = null;
 	private boolean editMode = true;
 	
@@ -37,14 +38,15 @@ public class UserAccountsBean {
 	private String testResult = null;
 	private String actionFailure = null;
 	
-	public DataModel<?> getAll() {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (users == null) {
 			List<UserVo> userList = getUserDao().getAll(false);
-			users = new ListDataModel<>(userList);
+			users = new ListDataModel(userList);
 		}
 		return users;
 	}

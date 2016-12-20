@@ -29,7 +29,8 @@ public class SubscribersListBean {
 
 	private SubscriptionDao subscriberDao = null;
 	private EmailAddrDao emailAddrDao = null;
-	private DataModel<?> subscribers = null;
+	@SuppressWarnings("rawtypes")
+	private DataModel subscribers = null;
 	private SubscriptionVo subscriber = null;
 	private boolean editMode = true;
 	private String listId = null;
@@ -48,7 +49,8 @@ public class SubscribersListBean {
 	static final String TO_EDIT = "subscriberlist.edit";
 	static final String TO_CANCELED = "subscriberlist.canceled";
 
-	public DataModel<?> getSubscribers() {
+	@SuppressWarnings("rawtypes")
+	public DataModel getSubscribers() {
 		if (FacesUtil.getRequestParameter("listId") != null) {
 			listId = FacesUtil.getRequestParameter("listId");
 			resetPagingVo();

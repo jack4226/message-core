@@ -13,7 +13,8 @@ public class GettingStarted {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private String titleKey;
-	private DataModel<?> functionKeys = null;
+	@SuppressWarnings("rawtypes")
+	private DataModel functionKeys = null;
 	private String functionKey = null;
 	private String jspPageLink = null;
 	
@@ -46,13 +47,14 @@ public class GettingStarted {
 	}
 
 	// PROPERTY: functionKeys
-	public DataModel<?> getFunctionKeys() {
+	@SuppressWarnings("rawtypes")
+	public DataModel getFunctionKeys() {
 		if (functionKeys == null) {
 			List<String> functionList = new LinkedList<String>();
 			for (int i = 0; i < menuTooltips.length; i++) {
 				functionList.add(menuTooltips[i]);
 			}
-			functionKeys = new ListDataModel<>();
+			functionKeys = new ListDataModel();
 			functionKeys.setWrappedData(functionList);
 		}
 		return functionKeys;

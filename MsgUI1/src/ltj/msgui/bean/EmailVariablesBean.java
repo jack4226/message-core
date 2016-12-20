@@ -31,7 +31,8 @@ public class EmailVariablesBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private EmailVariableDao emailVariableDao = null;
-	private DataModel<?> emailVariables = null;
+	@SuppressWarnings("rawtypes")
+	private DataModel emailVariables = null;
 	private EmailVariableVo emailVariable = null;
 	private boolean editMode = true;
 	
@@ -47,7 +48,8 @@ public class EmailVariablesBean {
 	final static String TO_DELETED = "emailvariable.deleted";
 	final static String TO_CANCELED = "emailvariable.canceled";
 	
-	public DataModel<?> getAll() {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public DataModel getAll() {
 		if (emailVariables == null) {
 			List<EmailVariableVo> emailVariableList = null;
 			if (!ClientUtil.isProductKeyValid() && ClientUtil.isTrialPeriodEnded()) {
@@ -56,7 +58,7 @@ public class EmailVariablesBean {
 			else {
 				emailVariableList = getEmailVariableDao().getAll();
 			}
-			emailVariables = new ListDataModel<>(emailVariableList);
+			emailVariables = new ListDataModel(emailVariableList);
 		}
 		return emailVariables;
 	}

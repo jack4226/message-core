@@ -46,19 +46,14 @@ public class UploadServlet extends HttpServlet {
 	
 	public void init() throws ServletException {
 		ServletContext ctx = getServletContext();
-		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Name: "
-				+ ctx.getServletContextName());
-		sessionUploadDao = (SessionUploadDao) SpringUtil.getWebAppContext(ctx).getBean(
-				"sessionUploadDao");
-		subscriptionDao = (SubscriptionDao) SpringUtil.getWebAppContext(ctx).getBean(
-				"subscriptionDao");
+		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Name: " + ctx.getServletContextName());
+		sessionUploadDao = SpringUtil.getWebAppContext(ctx).getBean(SessionUploadDao.class);
+		subscriptionDao = SpringUtil.getWebAppContext(ctx).getBean(SubscriptionDao.class);
 		// initialize unread counts
-		MsgInboxDao msgInboxDao = (MsgInboxDao) SpringUtil.getWebAppContext(ctx).getBean(
-				"msgInboxDao");
+		MsgInboxDao msgInboxDao = SpringUtil.getWebAppContext(ctx).getBean(MsgInboxDao.class);
 		int initInboxCount = msgInboxDao.resetInboxUnreadCount();
 		int initSentCount = msgInboxDao.resetSentUnreadCount();
-		logger.info("init() - InboxUnreadCount = " + initInboxCount + ", SentUnreadCount = "
-				+ initSentCount);
+		logger.info("init() - InboxUnreadCount = " + initInboxCount + ", SentUnreadCount = " + initSentCount);
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -88,8 +83,8 @@ public class UploadServlet extends HttpServlet {
 			// calculate total file size
 			long size = getTotalFileSize(request, uploadForm);
 			if (MultipartFilter.getTotalFileSize() > 0 && size > MultipartFilter.getTotalFileSize()) {
-				uploadForm.setError("size", "Total file size exceeded maximum amount of "
-						+ MultipartFilter.getTotalFileSize() + " bytes.");
+				uploadForm.setError("size",
+						"Total file size exceeded maximum amount of " + MultipartFilter.getTotalFileSize() + " bytes.");
 			}
 			// Process request
 			for (int i = 1; i <= 10; i++) {
@@ -108,8 +103,8 @@ public class UploadServlet extends HttpServlet {
 		}
 	}
 	
-	private void redirect(HttpServletRequest request, HttpServletResponse response, String action,
-			String fromPage) throws IOException {
+	private void redirect(HttpServletRequest request, HttpServletResponse response, String action, String fromPage)
+			throws IOException {
 		String targetPage = "/msgInboxList.faces";
 		if ("msgreply".equals(fromPage)) {
 			targetPage = "/msgInboxSend.faces";
@@ -129,14 +124,14 @@ public class UploadServlet extends HttpServlet {
 		}
 	}
 
-	private void redirectOnly(HttpServletRequest request, HttpServletResponse response,
-			String targetPage) throws IOException {
+	private void redirectOnly(HttpServletRequest request, HttpServletResponse response, String targetPage)
+			throws IOException {
 		String url = request.getContextPath() + targetPage;
 		response.sendRedirect(response.encodeRedirectURL(url));
 	}
 	
-	private void redirectWithUpload(HttpServletRequest request, HttpServletResponse response,
-			String targetPage) throws IOException {
+	private void redirectWithUpload(HttpServletRequest request, HttpServletResponse response, String targetPage)
+			throws IOException {
 		String fromPage = request.getParameter("frompage");
 		FacesContext facesContext = FacesUtil.getFacesContext(request, response);
 		if ("mailinglist".equals(fromPage)) { // from mailing list compose
@@ -204,8 +199,8 @@ public class UploadServlet extends HttpServlet {
 	    return fileSize;
 	}
 	
-	private void uploadToSessionTable(HttpServletRequest request, FileUploadForm uploadForm,
-			int fileSeq, FileItem fileItem) throws IOException {
+	private void uploadToSessionTable(HttpServletRequest request, FileUploadForm uploadForm, int fileSeq,
+			FileItem fileItem) throws IOException {
         String fileName = FilenameUtils.getName(fileItem.getName());
         String contentType = fileItem.getContentType();
     	String sessionId = request.getRequestedSessionId();
@@ -230,8 +225,8 @@ public class UploadServlet extends HttpServlet {
         uploadForm.setMessage(fileName, "File succesfully uploaded.");		
 	}
 	
-	private void uploadEmailsToList(HttpServletRequest request, FileUploadForm uploadForm,
-			int fileSeq, FileItem fileItem) throws IOException {
+	private void uploadEmailsToList(HttpServletRequest request, FileUploadForm uploadForm, int fileSeq,
+			FileItem fileItem) throws IOException {
 		String listId = request.getParameter("listid");
 		if (StringUtil.isEmpty(listId)) {
 			logger.error("uploadEmailsToList() - listid parameter was not valued.");

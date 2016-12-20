@@ -140,6 +140,6 @@ public class SessionTimeoutRestoreFilter implements Filter {
 	
 	private static UserDao getUserDao(HttpSession httpSession) {
 		ServletContext ctx = httpSession.getServletContext();
-		return (UserDao) SpringUtil.getWebAppContext(ctx).getBean("userDao");
+		return SpringUtil.getWebAppContext(ctx).getBean(UserDao.class);
 	}
 }

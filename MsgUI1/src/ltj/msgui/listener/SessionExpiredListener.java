@@ -80,11 +80,11 @@ public class SessionExpiredListener implements HttpSessionListener {
 
 	private static UserDao getUserDao(HttpSession httpSession) {
 		ServletContext ctx = httpSession.getServletContext();
-		return (UserDao) SpringUtil.getWebAppContext(ctx).getBean("userDao");
+		return SpringUtil.getWebAppContext(ctx).getBean(UserDao.class);
 	}
 
 	private static SessionUploadDao getSessionUploadDao(HttpSession httpSession) {
 		ServletContext ctx = httpSession.getServletContext();
-		return (SessionUploadDao) SpringUtil.getWebAppContext(ctx).getBean("sessionUploadDao");
+		return SpringUtil.getWebAppContext(ctx).getBean(SessionUploadDao.class);
 	}
 }

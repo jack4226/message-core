@@ -17,19 +17,19 @@
    </definition>
    
    <definition name="book" extends="header-menu-content">
-      <put-attribute name="header"  value="/bookHeader.jsp"/>
-      <put-attribute name="menu"    value="/bookMenu.jsp"/>
-      <put-attribute name="content" value="/bookContent.jsp"/>
+      <put-attribute name="header"  value="/corejsf/bookHeader.jsp"/>
+      <put-attribute name="menu"    value="/corejsf/bookMenu.jsp"/>
+      <put-attribute name="content" value="/corejsf/bookContent.jsp"/>
    </definition>
    
    <definition name="book4Lib" extends="book">
-      <put-attribute name="header"  value="/bookHeader2.jsp"/>
-      <put-attribute name="content" value="/bookContent2.jsp"/>
+      <put-attribute name="header"  value="/corejsf/bookHeader2.jsp"/>
+      <put-attribute name="content" value="/corejsf/bookContent2.jsp"/>
    </definition>
    
-   <definition name="library" template="/libraryLayout.jsp"
-         preparer="ltj.msgui.tiles.LibraryTilePreparer">
-      <put-attribute name="header" value="/bookSelector.jsp"/>
+   <definition name="library" template="/corejsf/libraryLayout.jsp"
+         preparer="ltj.msgui.corejsf.tiles.LibraryTilePreparer">
+      <put-attribute name="header" value="/corejsf/bookSelector.jsp"/>
       <put-attribute name="book" value="book4Lib"/>
    </definition>
 </tiles-definitions>

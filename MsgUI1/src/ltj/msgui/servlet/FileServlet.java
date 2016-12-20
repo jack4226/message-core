@@ -28,10 +28,8 @@ public class FileServlet extends HttpServlet {
 	
 	public void init() throws ServletException {
 		ServletContext ctx = getServletContext();
-		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Path: "
-				+ ctx.getContextPath());
-		attachmentsDao = (AttachmentsDao) SpringUtil.getWebAppContext(ctx)
-				.getBean("attachmentsDao");
+		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Path: " + ctx.getContextPath());
+		attachmentsDao = SpringUtil.getWebAppContext(ctx).getBean(AttachmentsDao.class);
 	}
 	
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -65,8 +63,8 @@ public class FileServlet extends HttpServlet {
         }
 		AttachmentsVo fileData = null;
         try {
-        	fileData = attachmentsDao.getByPrimaryKey(msgId, attchmntDepth,
-					attchmntSeq); // returns null if no result is found.
+        	// returns null if no result is found.
+			fileData = attachmentsDao.getByPrimaryKey(msgId, attchmntDepth, attchmntSeq);
         }
         catch (Throwable e) {
             logger.error("Throwable caught", e);
@@ -93,8 +91,7 @@ public class FileServlet extends HttpServlet {
             response.reset();
             response.setContentLength(contentLength);
             response.setContentType(fileData.getAttchmntType());
-            response.setHeader("Content-disposition",
-                "attachment; filename=\"" + fileData.getAttchmntName() + "\"");
+			response.setHeader("Content-disposition", "attachment; filename=\"" + fileData.getAttchmntName() + "\"");
             output = new BufferedOutputStream(response.getOutputStream());
             // Write file contents to response
             while (contentLength-- > 0) {

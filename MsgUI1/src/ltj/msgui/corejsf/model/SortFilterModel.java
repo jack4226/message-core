@@ -8,8 +8,9 @@ import javax.faces.model.DataModelListener;
 
 import ltj.msgui.corejsf.Name;
 
-public class SortFilterModel extends DataModel<Object> {
-   private DataModel<Object> model;
+@SuppressWarnings("rawtypes")
+public class SortFilterModel extends DataModel {
+   private DataModel model;
    private Row[] rows;
 
    private static Comparator<Row> byLast = new
@@ -50,7 +51,7 @@ public class SortFilterModel extends DataModel<Object> {
    public SortFilterModel(Name[] names) { // recommended by JSF spec
       setWrappedData(names);
    }
-   public SortFilterModel(DataModel<Object> model) {
+   public SortFilterModel(DataModel model) {
       this.model = model;
       initializeRows();
    }

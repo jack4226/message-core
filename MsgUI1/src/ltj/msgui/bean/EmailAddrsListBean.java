@@ -30,7 +30,8 @@ public class EmailAddrsListBean {
 
 	private EmailAddrDao emailAddrDao = null;
 	private MailingListDao mailingListDao = null;
-	private DataModel<?> emailAddrs = null;
+	@SuppressWarnings("rawtypes")
+	private DataModel emailAddrs = null;
 	private EmailAddrVo emailAddr = null;
 	private boolean editMode = true;
 
@@ -51,7 +52,8 @@ public class EmailAddrsListBean {
 	private static String TO_PAGING = "emailAddrlist.paging";
 	private static String TO_SELF = "emailAddrlist.toself";
 	
-	public DataModel<?> getEmailAddrs() {
+	@SuppressWarnings("rawtypes")
+	public DataModel getEmailAddrs() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			resetPagingVo();

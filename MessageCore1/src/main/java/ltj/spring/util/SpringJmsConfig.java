@@ -33,6 +33,7 @@ import ltj.tomee.util.TomeeCtxUtil;
 @ComponentScan(basePackages = {"ltj.message.bo", "ltj.jbatch"})
 @EnableJms
 @EnableScheduling
+//@EnableWebMvc
 public class SpringJmsConfig implements JmsListenerConfigurer {
 	protected final static Logger logger = Logger.getLogger(SpringJmsConfig.class);
 
