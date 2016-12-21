@@ -11,6 +11,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PreDestroy;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class MailReaderTaskExr {
 	private MailBoxDao mailBoxDao;
 	
 	boolean runWithFixedThreadPool = true;
+	
+	private final List<Future<?>> futureList = new ArrayList<>();
 	
 	// for test only, set to true to read from test user accounts
 	public static boolean readTestUserAccounts = false;
@@ -59,7 +63,7 @@ public class MailReaderTaskExr {
 			else {
 				executor = new ThreadPoolExecutor(5, mailBoxList.size(), 1000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(15));
 			}
-			List<Future<?>> futureList = new ArrayList<>();
+			//List<Future<?>> futureList = new ArrayList<>();
 			for (MailBoxVo vo : mailBoxList) {
 				vo.setFromTimer(true);
 				MailReaderBoImpl reader = new MailReaderBoImpl(vo);
@@ -84,6 +88,13 @@ public class MailReaderTaskExr {
 		}
 	}
 	
+	@PreDestroy
+	public void cancelTasks() {
+		for (Future<?> future : futureList) {
+			if (!future.isDone() || !future.isCancelled())
+				future.cancel(true);
+		}
+	}
 	
 	private void readTestUserAccounts(int startIdx, int endIdx) {
 		ExecutorService executor = new ThreadPoolExecutor(5, 25, 2000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(75));

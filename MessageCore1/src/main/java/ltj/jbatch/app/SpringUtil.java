@@ -35,6 +35,7 @@ public final class SpringUtil {
 			configCtx = new AnnotationConfigApplicationContext();
 			configCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
 			configCtx.refresh();
+			configCtx.registerShutdownHook();
 		}
 		return configCtx;
 	}
@@ -46,6 +47,7 @@ public final class SpringUtil {
 		else if (daoAppCtx == null) {
 			logger.info("getDaoAppContext() - load datasource config");
 			daoAppCtx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+			daoAppCtx.registerShutdownHook();
 		}
 		return daoAppCtx;
 	}
