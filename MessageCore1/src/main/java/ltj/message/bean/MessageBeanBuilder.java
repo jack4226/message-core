@@ -184,7 +184,7 @@ public final class MessageBeanBuilder {
 				}
 			}
 		}
-		catch (Exception e) {
+		catch (MessagingException e) {
 			logger.error("Exception caught from getAllHeaderLines(): " + e.getMessage());
 		}
 
@@ -406,9 +406,9 @@ public final class MessageBeanBuilder {
 			logger.error("MessagingException caught during getSubject()", e);
 		}
 		msgBean.setSubject(subject);
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Email Subject: [" + subject + "]");
-
+		}
 		// X-MAILER
 		try {
 			String[] hdrs = msg.getHeader(XHeaderName.XHEADER_MAILER);
@@ -503,7 +503,7 @@ public final class MessageBeanBuilder {
 		try {
 			contentType = p.getContentType();
 		}
-		catch (Exception e) {
+		catch (MessagingException e) {
 			contentType = "text/plain"; // failed to get content type, use default
 			logger.error("Exception caught during getContentType(): " + e.getMessage());
 		}
@@ -525,7 +525,7 @@ public final class MessageBeanBuilder {
 				disp = dispOrig;
 			}
 		}
-		catch (Exception e) {
+		catch (MessagingException e) {
 			logger.error("Exception caught during getDisposition(): " + e.getMessage());
 		}
 		// get description
@@ -542,21 +542,21 @@ public final class MessageBeanBuilder {
 				desc = descOrig;
 			}
 		}
-		catch (Exception e) {
+		catch (MessagingException e) {
 			logger.error("Exception caught during getDescription(): " + e.getMessage());
 		}
 		// get file name
 		try {
 			fileName = p.getFileName();
 		}
-		catch (Exception e) {
+		catch (MessagingException e) {
 			logger.error("Exception caught during getFileName(): " + e.getMessage());
 		}
 		// get part size
 		try {
 			partSize = p.getSize();
 		}
-		catch (Exception e) {
+		catch (MessagingException e) {
 			logger.error("Exception caught during getSize(): " + e.getMessage());
 		}
 		// display some key information
@@ -575,8 +575,7 @@ public final class MessageBeanBuilder {
 			aNode.setDescription(desc);
 			aNode.setFileName(fileName);
 			// update attachment count
-			if (Part.ATTACHMENT.equalsIgnoreCase(disp) 
-					|| (Part.INLINE.equalsIgnoreCase(disp) && desc != null)
+			if (Part.ATTACHMENT.equalsIgnoreCase(disp) || (Part.INLINE.equalsIgnoreCase(disp) && desc != null)
 					|| getFileName(contentType) != null) {
 				
 				msgBean.updateAttachCount(1);

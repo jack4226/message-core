@@ -40,7 +40,7 @@ public class MailReaderTaskExr {
 	public static int testEndUser = 25;
 	// end of test variables
 	
-	@Scheduled(initialDelay=20000, fixedDelay=5000) // delay for 20 seconds for testing
+	@Scheduled(initialDelay=60000, fixedDelay=60000) // delay for 20 seconds for testing
 	public void startMailReaders() {
 		logger.info("startMailReaders() - entering...");
 		

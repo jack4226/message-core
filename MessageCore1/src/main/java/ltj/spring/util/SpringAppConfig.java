@@ -20,7 +20,6 @@ import ltj.message.bean.SimpleEmailSender;
 @ComponentScan(basePackages = {"ltj.message.dao"})
 //@org.springframework.context.annotation.Import(SpringJmsConfig.class)
 @ImportResource({"classpath:/properties-config.xml", "classpath:/spring-mysql-config.xml"})
-//@EnableWebMvc
 public class SpringAppConfig {
 	protected final static Logger logger = Logger.getLogger(SpringAppConfig.class);
 
