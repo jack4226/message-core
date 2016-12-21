@@ -1,5 +1,6 @@
 package ltj.jbatch.queue;
 
+import javax.annotation.PreDestroy;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -84,4 +85,8 @@ public class RuleEngineListener implements MessageListener {
 		}
 	}
 
+	@PreDestroy
+	public void destroy() {
+		logger.warn("Entering @PreDestroy destroy() method...");
+	}
 }

@@ -2,6 +2,7 @@ package ltj.jbatch.queue;
 
 import java.io.ByteArrayOutputStream;
 
+import javax.annotation.PreDestroy;
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -101,4 +102,8 @@ public class MailSenderListener implements MessageListener {
 		}
 	}
 
+	@PreDestroy
+	public void destroy() {
+		logger.warn("Entering @PreDestroy destroy() method...");
+	}
 }

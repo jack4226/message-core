@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	id="WebApp_ID" version="2.5">
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
 	<display-name>MsgUI1</display-name>
+	
 	<!-- define spring context listener -->
 	<!-- Configure ContextLoaderListener to use AnnotationConfigWebApplicationContext
 	       instead of the default XmlWebApplicationContext -->
-	<context-param>
+	<!-- context-param>
 	    <param-name>contextClass</param-name>
 	    <param-value>
 	        org.springframework.web.context.support.AnnotationConfigWebApplicationContext
 	    </param-value>
-	</context-param>
+	</context-param -->
 	
 	<!-- Configuration locations must consist of one or more comma- or space-delimited
 	     fully-qualified @Configuration classes. Fully-qualified packages may also be
 	     specified for component-scanning -->
-	<context-param>
+	<!-- context-param>
 	    <param-name>contextConfigLocation</param-name>
 	    <param-value>ltj.spring.util.SpringAppConfig, ltj.spring.util.SpringJmsConfig</param-value>
 	</context-param>
@@ -27,17 +28,9 @@
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
-	</listener>
-	<!-- define spring config file location -->
-	<!-- context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			classpath:spring-common-config.xml
-			classpath:spring-jmsqueue_jee-config.xml
-		</param-value>
-	</context-param -->
+	</listener -->
 
-	<!-- define phase paremeter for Phase Tracker -->
+	<!-- define phase parameter for Phase Tracker -->
 	<context-param>
 		<param-name>listener.phaseTracker.phase</param-name>
 		<param-value>INVOKE_APPLICATION</param-value>
@@ -52,14 +45,6 @@
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>client</param-value>
     </context-param>
-
-	<!-- use JBoss Serialization provider to speed up client-side state saving -->
-	<!-- context-param>
-		<param-name>com.sun.faces.serializationProvider</param-name>
-		<param-value>
-			org.jboss.web.jsf.integration.serialization.JBossSerializationProvider
-		</param-value>
-	</context-param -->
 
 	<!-- define welcome pages -->
 	<welcome-file-list>

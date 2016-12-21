@@ -37,6 +37,7 @@ public class MailReaderTaskExr {
 	boolean runWithFixedThreadPool = true;
 	
 	private final List<Future<?>> futureList = new ArrayList<>();
+	private ExecutorService executor;
 	
 	// for test only, set to true to read from test user accounts
 	public static boolean readTestUserAccounts = false;
@@ -55,7 +56,7 @@ public class MailReaderTaskExr {
 		
 		List<MailBoxVo> mailBoxList = mailBoxDao.getAll(true);
 		logger.info("Number of mailbox to start: " + mailBoxList.size());
-		ExecutorService executor = null;
+		//ExecutorService executor = null;
 		try {
 			if (runWithFixedThreadPool) {
 				executor = Executors.newFixedThreadPool(mailBoxList.size());
@@ -90,9 +91,14 @@ public class MailReaderTaskExr {
 	
 	@PreDestroy
 	public void cancelTasks() {
+		logger.warn("Entering @PreDestroy cancelTasks() method...");
 		for (Future<?> future : futureList) {
-			if (!future.isDone() || !future.isCancelled())
+			if (!future.isDone() || !future.isCancelled()) {
 				future.cancel(true);
+			}
+		}
+		if (executor != null && !executor.isShutdown()) {
+			executor.shutdown();
 		}
 	}
 	
