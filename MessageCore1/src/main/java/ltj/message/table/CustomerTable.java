@@ -5,13 +5,13 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MobileCarrier;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.spring.util.SpringUtil;
 
 public class CustomerTable extends CreateTableBase {
 	/**

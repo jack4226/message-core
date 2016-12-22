@@ -3,12 +3,12 @@ package ltj.message.vo.inbox;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirectionCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.vo.BaseVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.spring.util.SpringUtil;
 
 public class MsgInboxWebVo extends BaseVo implements Serializable {
 	private static final long serialVersionUID = 4827192283916378782L;

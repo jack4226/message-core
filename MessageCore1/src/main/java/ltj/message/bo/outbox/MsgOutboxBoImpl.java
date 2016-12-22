@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.template.RenderBo;
 import ltj.message.bo.template.RenderRequest;
@@ -43,6 +42,7 @@ import ltj.message.dao.outbox.RenderObjectDao;
 import ltj.message.dao.outbox.RenderVariableDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.MsgRenderedVo;
 import ltj.vo.outbox.RenderAttachmentVo;
 import ltj.vo.outbox.RenderObjectVo;

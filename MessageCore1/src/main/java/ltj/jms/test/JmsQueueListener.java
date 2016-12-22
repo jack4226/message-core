@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
-import ltj.jbatch.app.SpringUtil;
+import ltj.spring.util.SpringUtil;
 
 public class JmsQueueListener implements MessageListener {
 	static final Logger logger = Logger.getLogger(JmsQueueListener.class);

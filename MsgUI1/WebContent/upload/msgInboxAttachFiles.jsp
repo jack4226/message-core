@@ -36,7 +36,7 @@
 	<tr>
 		<td>
 			<span style="text-align: left;">
-			<img src="/MsgUI/images/space.gif" height="1" style="border: 0px" width="10" />
+			<img src="/MsgUI1/images/space.gif" height="1" style="border: 0px" width="10" />
 			</span>
 			<span class="gridHeader">Attach Files</span><p/>
 		</td>
@@ -44,7 +44,7 @@
 	<tr>
 		<td>
 			<span style="text-align: left;">
-			<img src="/MsgUI/images/space.gif" height="1" style="border: 0px" width="10" />
+			<img src="/MsgUI1/images/space.gif" height="1" style="border: 0px" width="10" />
 			</span>
 			<span style="font-size: large;">
 			<fmt:message key="browseAndSelectAttachFilesLabel" bundle="${bndl}"/>

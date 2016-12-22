@@ -34,6 +34,7 @@ import ltj.message.vo.MailBoxVo;
 import ltj.message.vo.ServerBaseVo;
 import ltj.message.vo.SocketServerVo;
 import ltj.message.vo.TimerServerVo;
+import ltj.spring.util.SpringUtil;
 
 /**
  * JbMain class that loads resources, and starts and monitors servers.

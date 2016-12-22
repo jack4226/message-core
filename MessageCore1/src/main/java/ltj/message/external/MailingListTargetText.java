@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.emailaddr.MailingListVo;
+import ltj.spring.util.SpringUtil;
 
 public class MailingListTargetText implements RuleTargetProc {
 	static final Logger logger = Logger.getLogger(MailingListTargetText.class);

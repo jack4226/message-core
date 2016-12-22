@@ -8,11 +8,11 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import ltj.jbatch.app.ProductUtil;
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.common.ProductKey;
 import ltj.jbatch.common.TimestampUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.ClientVo;
+import ltj.spring.util.SpringUtil;
 
 public final class ClientUtil {
 	static final Logger logger = Logger.getLogger(ClientUtil.class);

@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.spring.util;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,42 +14,54 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import ltj.jbatch.app.JbMain;
 import ltj.message.util.ServiceLocator;
-import ltj.spring.util.SpringAppConfig;
-import ltj.spring.util.SpringJmsConfig;
 
 public final class SpringUtil {
 	static final Logger logger = Logger.getLogger(SpringUtil.class);
 	
 	private static AbstractApplicationContext applContext = null;
 
-	private static AbstractApplicationContext daoAppCtx = null;
+	private static AnnotationConfigApplicationContext AppConfCtx = null;
 	
-	private static AnnotationConfigApplicationContext configCtx = null;
+	private static AbstractApplicationContext daoConfCtx = null;
+	
+	private static AnnotationConfigApplicationContext taskConfCtx = null;
 	
 	private SpringUtil() {}
 	
 	public static AbstractApplicationContext getAppContext() {
-		if (configCtx == null) {
+		if (AppConfCtx == null) {
 			logger.info("getAppContext() - load application and datasource config");
-			configCtx = new AnnotationConfigApplicationContext();
-			configCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
-			configCtx.refresh();
-			configCtx.registerShutdownHook();
+			AppConfCtx = new AnnotationConfigApplicationContext();
+			AppConfCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
+			AppConfCtx.refresh();
+			AppConfCtx.registerShutdownHook();
 		}
-		return configCtx;
+		return AppConfCtx;
 	}
 	
 	public static AbstractApplicationContext getDaoAppContext() {
-		if (configCtx != null) {
-			return configCtx;
+		if (AppConfCtx != null) {
+			return AppConfCtx;
 		}
-		else if (daoAppCtx == null) {
+		else if (daoConfCtx == null) {
 			logger.info("getDaoAppContext() - load datasource config");
-			daoAppCtx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
-			daoAppCtx.registerShutdownHook();
+			daoConfCtx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+			daoConfCtx.registerShutdownHook();
 		}
-		return daoAppCtx;
+		return daoConfCtx;
+	}
+	
+	public static AbstractApplicationContext getTaskAppContext() {
+		if (taskConfCtx == null) {
+			logger.info("getTaskAppContext() - load application, datasource, and task config");
+			taskConfCtx = new AnnotationConfigApplicationContext();
+			taskConfCtx.register(SpringAppConfig.class, SpringJmsConfig.class, SpringTaskConfig.class);
+			taskConfCtx.refresh();
+			taskConfCtx.registerShutdownHook();
+		}
+		return taskConfCtx;
 	}
 	
 	
@@ -68,12 +80,12 @@ public final class SpringUtil {
 			else {
 				if (JbMain.getNumberOfThreadAtStart() < 0) {
 					logger.info("getAppContext() - running standalone, load java config");
-					if (configCtx == null) {
-						configCtx = new AnnotationConfigApplicationContext();
-						configCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
-						configCtx.refresh();
+					if (AppConfCtx == null) {
+						AppConfCtx = new AnnotationConfigApplicationContext();
+						AppConfCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
+						AppConfCtx.refresh();
 					}
-					return configCtx;
+					return AppConfCtx;
 				}
 				else {
 					logger.info("getAppContext() - running batch standalone, load batch xmls");
@@ -115,20 +127,20 @@ public final class SpringUtil {
 		if (applContext != null) {
 			return applContext;
 		}
-		else if (daoAppCtx == null) {
+		else if (daoConfCtx == null) {
 			if (isRunningInJBoss()) {
 				logger.info("getDaoAppContext() - Running under JBoss, load jndi_ds xmls");
 				List<String> fnames = new ArrayList<String>();
 				fnames.add("classpath*:spring-common-config.xml");
 				fnames.add("classpath*:spring-jmsqueue_jee-config.xml");
-				daoAppCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
+				daoConfCtx = new ClassPathXmlApplicationContext(fnames.toArray(new String[]{}));
 			}
 			else {
 				logger.info("getDaoAppContext() - running standalone, load mysql_ds java config");
-				daoAppCtx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+				daoConfCtx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
 			}
 		}
-		return daoAppCtx;
+		return daoConfCtx;
 	}
 
 	private static String[] getBatchConfigXmlFiles() {

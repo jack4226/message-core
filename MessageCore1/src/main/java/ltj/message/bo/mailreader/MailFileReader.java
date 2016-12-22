@@ -16,13 +16,13 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.BodypartUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bean.MessageNode;
 import ltj.message.constant.CarrierCode;
+import ltj.spring.util.SpringUtil;
 
 public class MailFileReader {
 	final static String LF = System.getProperty("line.separator","\n");

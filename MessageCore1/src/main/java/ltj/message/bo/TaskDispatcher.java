@@ -20,12 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.action.MsgActionVo;
+import ltj.spring.util.SpringUtil;
 
 /**
  * An Email Message Processor. It retrieve process class names or process bean

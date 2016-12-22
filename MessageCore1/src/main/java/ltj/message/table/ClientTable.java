@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import ltj.jbatch.app.ProductUtil;
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.common.ProductKey;
 import ltj.jbatch.common.TimestampUtil;
 import ltj.message.constant.Constants;
@@ -15,6 +14,7 @@ import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.client.ClientDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.ClientVo;
+import ltj.spring.util.SpringUtil;
 
 public class ClientTable extends CreateTableBase {
 	/** Creates a new instance of ClientTables 

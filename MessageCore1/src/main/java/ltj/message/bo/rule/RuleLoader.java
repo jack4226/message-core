@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.constant.Constants;
 import ltj.message.dao.client.ClientDao;
 import ltj.message.dao.client.ReloadFlagsDao;
@@ -32,6 +31,7 @@ import ltj.message.vo.rule.RuleElementVo;
 import ltj.message.vo.rule.RuleLogicVo;
 import ltj.message.vo.rule.RuleSubRuleMapVo;
 import ltj.message.vo.rule.RuleVo;
+import ltj.spring.util.SpringUtil;
 
 @Component("ruleLoader")
 @org.springframework.context.annotation.Scope(value="singleton")

@@ -7,7 +7,7 @@
 <body>
 <%
 	response.setStatus(301);
-	response.setHeader( "Location", "/MsgUI/main.faces" );
+	response.setHeader( "Location", "/MsgUI1/main.faces" );
 	response.setHeader( "Connection", "close" );
 %>
 </body>

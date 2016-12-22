@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import ltj.message.bo.mailreader.DuplicateCheckDao;
 import ltj.message.bo.mailreader.DuplicateCheckJdbcDao;
+import ltj.spring.util.SpringUtil;
 
 /**
  * test processor

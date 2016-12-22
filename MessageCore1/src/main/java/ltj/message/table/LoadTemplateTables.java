@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 
 import org.springframework.context.ApplicationContext;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
@@ -19,6 +18,7 @@ import ltj.message.dao.template.GlobalVariableDao;
 import ltj.message.dao.template.MsgSourceDao;
 import ltj.message.dao.template.SubjTemplateDao;
 import ltj.message.dao.template.TemplateVariableDao;
+import ltj.spring.util.SpringUtil;
 import ltj.vo.template.BodyTemplateVo;
 import ltj.vo.template.ClientVariableVo;
 import ltj.vo.template.GlobalVariableVo;

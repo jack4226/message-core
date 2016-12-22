@@ -7,7 +7,7 @@
 	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 	<META HTTP-EQUIV="Expires" CONTENT="-1">
 	<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
-	<link href="/MsgUI/styles.css" rel="stylesheet" type="text/css" />
+	<link href="/MsgUI1/styles.css" rel="stylesheet" type="text/css" />
 	<title><h:outputText value="#{msgs.mainPageTitle}" /></title>
 	</head>
 	<body>

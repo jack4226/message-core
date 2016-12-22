@@ -7,7 +7,6 @@ import javax.mail.Part;
 
 import org.springframework.context.ApplicationContext;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
@@ -39,6 +38,7 @@ import ltj.message.vo.inbox.MsgClickCountsVo;
 import ltj.message.vo.inbox.MsgHeadersVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.RfcFieldsVo;
+import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.MsgRenderedVo;
 import ltj.vo.outbox.MsgStreamVo;
 import ltj.vo.template.BodyTemplateVo;

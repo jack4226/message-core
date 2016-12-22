@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <f:view>
 	<head>
-	<link href="/MsgUI/styles.css" rel="stylesheet" type="text/css" />
+	<link href="/MsgUI1/styles.css" rel="stylesheet" type="text/css" />
 	<title><h:outputText value="#{msgs.changePassword}" /></title>
 	</head>
 	<body onLoad="document.getElementById('changepswd:currpswd').focus();">

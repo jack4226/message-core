@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
          <phase-listener>ltj.msgui.listener.ImagePhaseListener</phase-listener>
  </lifecycle>
  *
- * Now, if you have the image /MsgUI/images/img1.jpg you can render it via 
- * http://www.yourdomain.com/MsgUI/images/img1.jsf
+ * Now, if you have the image /MsgUI1/images/img1.jpg you can render it via 
+ * http://www.yourdomain.com/MsgUI1/images/img1.jsf
  * Or access image from your page:
  * <img src="#{facesContext.externalContext.request.contextPath}/images/img1.jsf" alt="" />
  */

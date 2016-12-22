@@ -9,7 +9,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
-import ltj.jbatch.app.SpringUtil;
+import ltj.spring.util.SpringUtil;
 
 public class JmsSender {
 

@@ -11,6 +11,7 @@ import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -246,6 +247,10 @@ public class JmsProcessor {
 		return writeMsg(msg, false);
 	}
 	
+	public synchronized String writeMsg(javax.jms.Message msg, boolean toErrorQue) throws JMSException {
+		return writeMsg(msg, null, toErrorQue);
+	}
+	
 	/**
 	 * write a JMS message to queue, using PassThroughMessageConverter class.
 	 * 
@@ -257,7 +262,7 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public synchronized String writeMsg(javax.jms.Message msg, boolean toErrorQue) throws JMSException {
+	public synchronized String writeMsg(javax.jms.Message msg, final String useThisCorrelId, boolean toErrorQue) throws JMSException {
 		String rtnMessageId = null;
 		MessageConverter converter = getJmsTemplate().getMessageConverter();
 		try {
@@ -265,6 +270,10 @@ public class JmsProcessor {
 				logger.debug("Creating a Message");
 
 			getJmsTemplate().setMessageConverter(new PassThroughMessageConverter());
+			if (StringUtils.isBlank(msg.getJMSCorrelationID())) {
+				setCorrelationId(msg, useThisCorrelId);
+			}
+			
 			// Ask the QueueSender to send the message we have created
 			if (!toErrorQue) {
 				if (isDebugEnabled) {
@@ -487,7 +496,7 @@ public class JmsProcessor {
 	}
 	
 	private void setCorrelationId(Message outMsg, String useThisCorrelId) throws JMSException {
-		if (useThisCorrelId != null) {
+		if (StringUtils.isNotBlank(useThisCorrelId)) {
 			if (useThisCorrelId.toUpperCase().startsWith("ID:")) {
 				try {
 					outMsg.setJMSCorrelationIDAsBytes(getCorrelationIDAsBytes(useThisCorrelId));

@@ -17,7 +17,6 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bo.mailinglist.MailingListUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
@@ -42,6 +41,7 @@ import ltj.message.vo.emailaddr.EmailTemplateVo;
 import ltj.message.vo.emailaddr.EmailVariableVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.TemplateRenderVo;
+import ltj.spring.util.SpringUtil;
 import ltj.vo.template.BodyTemplateVo;
 import ltj.vo.template.ClientVariableVo;
 import ltj.vo.template.GlobalVariableVo;

@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.BodypartUtil;
 import ltj.message.bean.MessageBean;
@@ -39,6 +38,7 @@ import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
+import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.MsgRenderedVo;
 
 /**

@@ -9,8 +9,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.spring.util.SpringAppConfig;
+import ltj.spring.util.SpringUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={SpringAppConfig.class})

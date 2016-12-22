@@ -86,7 +86,7 @@ public class MailSenderListener implements MessageListener {
 			else {
 				// Not an Object Message nor a Bytes Message
 				logger.warn("Message received is not an ObjectMessage nor a BytesMessage: " + message.getClass().getName());
-				jmsProcessor.writeMsg(message, JmsMessageId, true);
+				jmsProcessor.writeMsg(message, true);
 			}
 		} catch (SmtpException e) {
 			logger.error("onMessage() - SmtpException caught", e);

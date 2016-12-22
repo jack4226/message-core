@@ -1,4 +1,4 @@
-package ltj.message.bo.mailreader;
+package ltj.jbatch.app;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,10 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
+import ltj.message.bo.mailreader.MailReaderBoImpl;
 import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.vo.MailBoxVo;
+import ltj.spring.util.SpringUtil;
 
 @Component
 public class MailReaderTaskExr {
@@ -45,7 +46,7 @@ public class MailReaderTaskExr {
 	public static int testEndUser = 25;
 	// end of test variables
 	
-	@Scheduled(initialDelay=60000, fixedDelay=60000) // delay for 20 seconds for testing
+	@Scheduled(initialDelay=20000, fixedDelay=30000) // delay for 20 seconds for testing
 	public void startMailReaders() {
 		logger.info("startMailReaders() - entering...");
 		

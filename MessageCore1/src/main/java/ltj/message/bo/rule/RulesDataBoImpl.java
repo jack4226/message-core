@@ -6,12 +6,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.dao.rule.RuleDao;
 import ltj.message.external.RuleTargetProc;
 import ltj.message.vo.rule.RuleElementVo;
 import ltj.message.vo.rule.RuleVo;
+import ltj.spring.util.SpringUtil;
 
 @Component("rulesDataBo")
 @org.springframework.context.annotation.Scope(value="singleton")

@@ -117,7 +117,7 @@ public class MessageThreadsBuilder {
 	public static void main(String[] args) {
 		try {
 			long threadId = 3L;
-			MsgInboxDao msgInboxDao = (MsgInboxDao) ltj.jbatch.app.SpringUtil.getDaoAppContext().getBean("msgInboxDao");
+			MsgInboxDao msgInboxDao = (MsgInboxDao) ltj.spring.util.SpringUtil.getDaoAppContext().getBean("msgInboxDao");
 			List<MsgInboxWebVo> list = msgInboxDao.getByLeadMsgId(threadId);
 			List<MsgInboxWebVo> threads = buildThreads(list);
 			for (int i = 0; i < threads.size(); i++) {

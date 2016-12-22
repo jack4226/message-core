@@ -8,6 +8,8 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import ltj.spring.util.SpringUtil;
+
 /**
  * provide a repository for storing and fetching resources.
  */

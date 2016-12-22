@@ -19,6 +19,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
+import ltj.jbatch.app.MailReaderTaskExr;
 import ltj.message.bean.SimpleEmailSender;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 
@@ -81,10 +82,10 @@ public class SpringAppConfigTest {
 			ctx = new AnnotationConfigApplicationContext();
 		
 			// scan package
-			ctx.scan(new String[] {"ltj.jbatch.queue", "ltj.jbatch.smtp"});
+			ctx.scan(new String[] {"ltj.jbatch.queue", "ltj.jbatch.app"});
 			// load various configuration classes:
 			ctx.register(SpringAppConfig.class);
-			ctx.register(SpringJmsConfig.class, JBatchConfig.class);
+			ctx.register(SpringJmsConfig.class, SpringTaskConfig.class);
 			ctx.refresh();
 			
 			DefaultJmsListenerContainerFactory factory = ctx.getBean(DefaultJmsListenerContainerFactory.class);
@@ -102,6 +103,10 @@ public class SpringAppConfigTest {
 			JmsTemplate template = ctx.getBean(JmsTemplate.class);
 			assertNotNull(template);
 			template.setDefaultDestination(new ActiveMQQueue("testQueue"));
+			
+			MailReaderTaskExr taskExr = ctx.getBean(MailReaderTaskExr.class);
+			assertNotNull(taskExr);
+			taskExr.cancelTasks();
 		}
 		finally {
 			if (conn != null) {

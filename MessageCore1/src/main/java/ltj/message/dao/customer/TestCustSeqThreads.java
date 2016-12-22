@@ -1,6 +1,6 @@
 package ltj.message.dao.customer;
 
-import ltj.jbatch.app.SpringUtil;
+import ltj.spring.util.SpringUtil;
 
 public class TestCustSeqThreads implements Runnable {
 	final static String LF = System.getProperty("line.separator", "\n");

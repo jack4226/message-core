@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailProtocol;
@@ -16,6 +15,7 @@ import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.MailBoxVo;
+import ltj.spring.util.SpringUtil;
 public class MailboxTable extends CreateTableBase
 {
 	/** Creates a new instance of MailTables 

@@ -3,13 +3,13 @@ package ltj.message.bo.mailsender;
 import java.util.ArrayList;
 import java.util.List;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.pool.NamedPools;
 import ltj.jbatch.pool.ObjectPool;
 import ltj.jbatch.smtp.SmtpConnection;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.dao.smtp.SmtpServerDao;
 import ltj.message.vo.SmtpConnVo;
+import ltj.spring.util.SpringUtil;
 
 public class SmtpWrapperUtil {
 	private static SmtpServerDao smtpServerDao = null;

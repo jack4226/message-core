@@ -23,17 +23,14 @@ import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 import ltj.jbatch.queue.MailSenderListener;
 import ltj.jbatch.queue.RuleEngineListener;
 import ltj.tomee.util.TomeeCtxUtil;
 
 @Configuration
-@ComponentScan(basePackages = {"ltj.message.bo", "ltj.jbatch"})
+@ComponentScan(basePackages = {"ltj.message.bo", "ltj.jbatch.queue"})
 @EnableJms
-@EnableScheduling
-//@EnableWebMvc
 public class SpringJmsConfig implements JmsListenerConfigurer {
 	protected final static Logger logger = Logger.getLogger(SpringJmsConfig.class);
 

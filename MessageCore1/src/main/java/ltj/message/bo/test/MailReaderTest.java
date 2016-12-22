@@ -17,16 +17,21 @@ import org.apache.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
 
+import ltj.jbatch.app.MailReaderTaskExr;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
-import ltj.message.bo.mailreader.MailReaderTaskExr;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
+import ltj.spring.util.SpringAppConfig;
+import ltj.spring.util.SpringJmsConfig;
+import ltj.spring.util.SpringTaskConfig;
 
+@ContextConfiguration(classes={SpringAppConfig.class, SpringJmsConfig.class, SpringTaskConfig.class})
 @FixMethodOrder
 public class MailReaderTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MailReaderTest.class);

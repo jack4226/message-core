@@ -23,12 +23,12 @@ import javax.mail.event.StoreListener;
 import org.apache.log4j.Logger;
 
 import ltj.jbatch.app.RunnableProcessor;
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.constant.MailProtocol;
 import ltj.message.constant.MailServerType;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.MailBoxVo;
+import ltj.spring.util.SpringUtil;
 
 /**
  * <pre>

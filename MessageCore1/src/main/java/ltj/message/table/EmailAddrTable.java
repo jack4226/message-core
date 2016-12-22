@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailingListDeliveryOption;
 import ltj.message.constant.MailingListType;
@@ -18,6 +17,7 @@ import ltj.message.dao.emailaddr.SchedulesBlob;
 import ltj.message.main.CreateTableBase;
 import ltj.message.util.BlobUtil;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
+import ltj.spring.util.SpringUtil;
 
 public class EmailAddrTable extends CreateTableBase {
 

@@ -23,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.jbatch.smtp.SmtpException;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
@@ -51,6 +50,7 @@ import ltj.message.util.StringUtil;
 import ltj.message.vo.ClientVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
+import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.MsgStreamVo;
 
 /**

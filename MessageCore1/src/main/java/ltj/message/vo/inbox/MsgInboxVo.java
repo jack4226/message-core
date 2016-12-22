@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ltj.jbatch.app.SpringUtil;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
@@ -20,6 +19,7 @@ import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.BaseVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.DeliveryStatusVo;
 import ltj.vo.outbox.MsgRenderedVo;
 import ltj.vo.outbox.MsgStreamVo;
