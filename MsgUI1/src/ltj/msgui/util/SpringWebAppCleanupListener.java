@@ -25,12 +25,14 @@ public class SpringWebAppCleanupListener extends ContextCleanupListener {
 		
 		try {
 			if (ruleEngineListener.isRunning()) {
+				logger.warn("Stop and Shutdown ruleEngineJmsListener...");
 				ruleEngineListener.stop();
 				ruleEngineListener.shutdown();
 				ruleEngineListener.destroy();
 			}
 			
 			if (mailSenderListener.isRunning()) {
+				logger.warn("Stop and Shutdown mailSenderJmsListener...");
 				mailSenderListener.stop();
 				mailSenderListener.shutdown();
 				mailSenderListener.destroy();
