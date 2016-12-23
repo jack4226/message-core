@@ -16,7 +16,7 @@ public class SpringWebAppCleanupListener extends ContextCleanupListener {
 
 	@Override
     public void contextDestroyed(ServletContextEvent event) {
-		logger.warn("Entring Spring contextDestroyed() method..."); 
+		logger.warn("Entring Spring contextDestroyed() method...");
         // put your shutdown code in here
 		WebApplicationContext context = SpringUtil.getWebAppContext(event.getServletContext());
 		
@@ -51,8 +51,10 @@ public class SpringWebAppCleanupListener extends ContextCleanupListener {
 		}
 		catch (NoSuchBeanDefinitionException e) {}
 		
-		// did not work
 		((ConfigurableApplicationContext) context).stop();
 		((ConfigurableApplicationContext) context).close();
+		
+		// Shutdown Spring Application contexts in MessageCore
+		ltj.spring.util.SpringUtil.shutDownConfigContexts();
     }
 }

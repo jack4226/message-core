@@ -22,7 +22,7 @@ public final class SpringUtil {
 	
 	private static AbstractApplicationContext applContext = null;
 
-	private static AnnotationConfigApplicationContext AppConfCtx = null;
+	private static AnnotationConfigApplicationContext appConfCtx = null;
 	
 	private static AbstractApplicationContext daoConfCtx = null;
 	
@@ -31,19 +31,19 @@ public final class SpringUtil {
 	private SpringUtil() {}
 	
 	public static AbstractApplicationContext getAppContext() {
-		if (AppConfCtx == null) {
+		if (appConfCtx == null) {
 			logger.info("getAppContext() - load application and datasource config");
-			AppConfCtx = new AnnotationConfigApplicationContext();
-			AppConfCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
-			AppConfCtx.refresh();
-			AppConfCtx.registerShutdownHook();
+			appConfCtx = new AnnotationConfigApplicationContext();
+			appConfCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
+			appConfCtx.refresh();
+			appConfCtx.registerShutdownHook();
 		}
-		return AppConfCtx;
+		return appConfCtx;
 	}
 	
 	public static AbstractApplicationContext getDaoAppContext() {
-		if (AppConfCtx != null) {
-			return AppConfCtx;
+		if (appConfCtx != null) {
+			return appConfCtx;
 		}
 		else if (daoConfCtx == null) {
 			logger.info("getDaoAppContext() - load datasource config");
@@ -64,6 +64,20 @@ public final class SpringUtil {
 		return taskConfCtx;
 	}
 	
+	public static void shutDownConfigContexts() {
+		if (appConfCtx != null) {
+			appConfCtx.stop();
+			appConfCtx.close();
+		}
+		if (daoConfCtx != null) {
+			daoConfCtx.stop();
+			daoConfCtx.close();
+		}
+		if (taskConfCtx != null) {
+			taskConfCtx.stop();
+			taskConfCtx.close();
+		}
+	}
 	
 	/**
 	 * If it's running in JBoss server, it loads a set of xmls using JNDI's,
@@ -80,12 +94,12 @@ public final class SpringUtil {
 			else {
 				if (JbMain.getNumberOfThreadAtStart() < 0) {
 					logger.info("getAppContext() - running standalone, load java config");
-					if (AppConfCtx == null) {
-						AppConfCtx = new AnnotationConfigApplicationContext();
-						AppConfCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
-						AppConfCtx.refresh();
+					if (appConfCtx == null) {
+						appConfCtx = new AnnotationConfigApplicationContext();
+						appConfCtx.register(SpringAppConfig.class, SpringJmsConfig.class);
+						appConfCtx.refresh();
 					}
-					return AppConfCtx;
+					return appConfCtx;
 				}
 				else {
 					logger.info("getAppContext() - running batch standalone, load batch xmls");

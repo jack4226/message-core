@@ -9,6 +9,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 
 import ltj.spring.util.SpringAppConfig;
 import ltj.spring.util.SpringJmsConfig;
+import ltj.spring.util.SpringTaskConfig;
 
 public class SpringWebAppInitializer implements WebApplicationInitializer {
 
@@ -17,6 +18,8 @@ public class SpringWebAppInitializer implements WebApplicationInitializer {
 		// Create the 'root' Spring application context
 		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
 	    rootContext.register(SpringAppConfig.class, SpringJmsConfig.class);
+	    rootContext.register(SpringTaskConfig.class);
+	    rootContext.refresh();
 	    rootContext.registerShutdownHook();
 		
 	    // Manage the life cycle of the root application context
