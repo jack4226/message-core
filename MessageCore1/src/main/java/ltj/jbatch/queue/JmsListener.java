@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
-import ltj.jbatch.app.JbMain;
+import ltj.spring.util.SpringUtil;
 
 /**
  * Implements spring MessageListener
@@ -25,7 +25,7 @@ public class JmsListener implements MessageListener {
 	
 	@Autowired
 	private JmsProcessor jmsProcessor;
-
+	
 	@Override
 	public void onMessage(Message message) {
 		logger.info("JMS Message Received: "+message);
@@ -90,10 +90,7 @@ public class JmsListener implements MessageListener {
 								+ message.getClass().getName());
 			}
 		}
-		catch (JmsException ex) {
-			throw new RuntimeException(ex);
-		}
-		catch (JMSException ex) {
+		catch (JmsException | JMSException ex) {
 			throw new RuntimeException(ex);
 		}
 		finally {
@@ -102,69 +99,15 @@ public class JmsListener implements MessageListener {
 	}
 	
 	public static void main(String[] args) {
-		new JmsListener().startListener();
-		boolean start = false;
-		if (start) {
-			new JmsListener().start();
-		}
+		DefaultMessageListenerContainer listener = (DefaultMessageListenerContainer) 
+				SpringUtil.getAppContext().getBean("jmsListenerContainer");
+		listener.start();
+		try {
+			Thread.sleep(10 * 1000);
+		} catch (InterruptedException e) {}
+		listener.stop();
+		
 		System.exit(0);
 	}
-	
-	private void start() {
-		try {
-			DefaultMessageListenerContainer listener = (DefaultMessageListenerContainer)
-				JbMain.getBatchAppContext().getBean("jmsListenerContainer");
-			
-			//listener.start();
-			try {
-				while (true) {
-					Thread.sleep(60*1000);
-				}
-			}
-			catch (InterruptedException e) {
-				logger.info("Listener Interrupted.");
-			}
-			finally {
-				try {
-					if (listener.isActive()) {
-						listener.stop();
-						//listener.shutdown();
-						logger.info("Listener stopped.");
-					}
-				}
-				catch (Exception e) {}
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-	private void startListener() {
-		try {
-			DefaultMessageListenerContainer listener = (DefaultMessageListenerContainer)
-				JbMain.getBatchAppContext().getBean("jmsListenerContainer");
-			
-			JbMain.getBatchAppContext().getBean("smtpPool");
-			JbMain.getBatchAppContext().getBean("exchPool");
-			JbMain.getBatchAppContext().getBean("namedPools");
-			JbMain.getBatchAppContext().getBean("session");
-			//JbMain.getFactory().getBean("ctgPool");
-			JbMain.getBatchAppContext().getBean("mailReader");
-			JbMain.getBatchAppContext().getBean("queueReader");
-			
-			listener.start();
-			System.out.println("Press any key to stop the Listener...");
-			try {
-				System.in.read();
-			}
-			finally {
-				listener.stop();
-				logger.info("Listener stopped.");
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
