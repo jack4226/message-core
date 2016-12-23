@@ -13,7 +13,6 @@ public class GettingStarted {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private String titleKey;
-	@SuppressWarnings("rawtypes")
 	private DataModel functionKeys = null;
 	private String functionKey = null;
 	private String jspPageLink = null;
@@ -47,7 +46,6 @@ public class GettingStarted {
 	}
 
 	// PROPERTY: functionKeys
-	@SuppressWarnings("rawtypes")
 	public DataModel getFunctionKeys() {
 		if (functionKeys == null) {
 			List<String> functionList = new LinkedList<String>();

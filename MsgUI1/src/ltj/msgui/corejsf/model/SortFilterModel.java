@@ -8,7 +8,6 @@ import javax.faces.model.DataModelListener;
 
 import ltj.msgui.corejsf.Name;
 
-@SuppressWarnings("rawtypes")
 public class SortFilterModel extends DataModel {
    private DataModel model;
    private Row[] rows;

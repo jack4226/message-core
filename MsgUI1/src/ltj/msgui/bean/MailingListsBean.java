@@ -32,7 +32,6 @@ public class MailingListsBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private MailingListDao mailingListDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel mailingLists = null;
 	private MailingListVo mailingList = null;
 	private boolean editMode = true;
@@ -41,7 +40,6 @@ public class MailingListsBean {
 	private String testResult = null;
 	private String actionFailure = null;
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {

@@ -35,7 +35,6 @@ public class MailboxesBean {
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 
 	private MailBoxDao mailBoxDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel mailBoxes = null;
 	private MailBoxVo mailbox = null;
 	private boolean editMode = true;
@@ -71,7 +70,6 @@ public class MailboxesBean {
 		this.mailBoxDao = mailBoxDao;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getAll() {
 		if (mailBoxes == null) {
 			List<MailBoxVo> mailBoxList = null;

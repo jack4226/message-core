@@ -37,11 +37,9 @@ public class EmailTemplatesBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private EmailTemplateDao emailTemplateDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel emailTemplates = null;
 	private EmailTemplateVo emailTemplate = null;
 	private boolean editMode = true;
-	@SuppressWarnings("rawtypes")
 	private DataModel dateList = null;
 	
 	private UIInput templateIdInput = null;
@@ -57,7 +55,6 @@ public class EmailTemplatesBean {
 	final static String TO_SCHEDULE_EDIT = "emailschedules.edit";
 	final static String TO_SCHEDULE_SAVED = "emailschedules.saved";
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
@@ -159,7 +156,6 @@ public class EmailTemplatesBean {
 		return TO_SAVED;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String editSchedules() {
 		if (isDebugEnabled)
 			logger.debug("editSchedules() - Entering...");
@@ -401,12 +397,11 @@ public class EmailTemplatesBean {
 		this.actionFailure = actionFailure;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public DataModel getDateList() {
 		return dateList;
 	}
 
-	public void setDateList(@SuppressWarnings("rawtypes") DataModel schedulesBlob) {
+	public void setDateList(DataModel schedulesBlob) {
 		this.dateList = schedulesBlob;
 	}
 }

@@ -31,7 +31,6 @@ public class MsgActionDetailsBean {
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 
 	private MsgActionDetailDao msgActionDetailDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel actionDetails = null;
 	private MsgActionDetailVo actionDetail = null;
 	private boolean editMode = true;
@@ -47,7 +46,6 @@ public class MsgActionDetailsBean {
 	private static String TO_DELETED = "actiondetail.deleted";
 	private static String TO_CANCELED = "actiondetail.canceled";
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {

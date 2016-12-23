@@ -31,7 +31,6 @@ public class EmailVariablesBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private EmailVariableDao emailVariableDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel emailVariables = null;
 	private EmailVariableVo emailVariable = null;
 	private boolean editMode = true;
@@ -48,7 +47,6 @@ public class EmailVariablesBean {
 	final static String TO_DELETED = "emailvariable.deleted";
 	final static String TO_CANCELED = "emailvariable.canceled";
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getAll() {
 		if (emailVariables == null) {
 			List<EmailVariableVo> emailVariableList = null;

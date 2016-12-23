@@ -14,7 +14,6 @@ public class MsgBuiltInRulesBean extends MsgRulesBean {
 	protected static final Logger logger = Logger.getLogger(MsgBuiltInRulesBean.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {

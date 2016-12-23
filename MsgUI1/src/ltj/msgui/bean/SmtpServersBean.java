@@ -34,7 +34,6 @@ public class SmtpServersBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private SmtpServerDao smtpServerDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel smtpServers = null;
 	private SmtpConnVo smtpServer = null;
 	private boolean editMode = true;
@@ -46,7 +45,6 @@ public class SmtpServersBean {
 	private String testResult = null;
 	private String actionFailure = null;
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {

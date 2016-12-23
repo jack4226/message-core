@@ -63,7 +63,6 @@ public class MsgInboxBean {
 	private MsgInboxDao msgInboxDao = null;
 	private MsgInboxBo msgInboxBo = null;
 	private SessionUploadDao sessionUploadDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel folder = null;
 	private MsgInboxVo message = null;
 	private boolean editMode = true;
@@ -162,7 +161,6 @@ public class MsgInboxBean {
 		return searchVo;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {

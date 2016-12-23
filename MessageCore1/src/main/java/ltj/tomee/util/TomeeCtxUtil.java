@@ -53,6 +53,9 @@ public class TomeeCtxUtil {
 				"org.apache.activemq.jndi.ActiveMQInitialContextFactory");
 		props.setProperty(javax.naming.Context.PROVIDER_URL, "tcp://127.0.0.1:61616");
 		
+		// trust all packages for ActiveMQ
+		props.setProperty("trustAllPackages", "true");
+		
 		//specify queue property name as queue.jndiname
 		if (queueNames != null && queueNames.length > 0) {
 			for (String queueName : queueNames) {
@@ -121,9 +124,9 @@ public class TomeeCtxUtil {
 
 	public static void main(String[] args) {
 		try {
-			logger.info("port found: " + findHttpPort(new int[] {8181,8080}));
-			// test EJB remote access
-			Context ctx = getRemoteContext();
+			logger.info("port found: " + findHttpPort(new int[] {8181,8080,8161}));
+			// test JMS remote access
+			Context ctx = getActiveMQContext((String[])null);
 			listContext(ctx, "");
 		}
 		catch (Exception e) {

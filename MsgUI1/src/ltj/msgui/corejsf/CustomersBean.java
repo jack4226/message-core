@@ -23,12 +23,10 @@ public class CustomersBean {
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 
 	private CustomerDao customerDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel customers = null;
 	private CustomerVo customer = null;
 	private boolean editMode = true;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getAll() {
 		if (customers == null) {
 			List<CustomerVo> customerList = getCustomerDao().getAll();

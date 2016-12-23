@@ -15,7 +15,7 @@
     <javax.faces-version>1.2-20</javax.faces-version>
     <apache.tiles-version>2.2.2</apache.tiles-version>
     <javax.mail.version>1.4.7</javax.mail.version>
-    <tomee.version>1.7.4</tomee.version>
+    <tomcat.version>7.0.72</tomcat.version>
   </properties>
   
   
@@ -24,19 +24,6 @@
 		<groupId>MessageCore1</groupId>
 		<artifactId>MessageCore1</artifactId>
 		<version>${message-core-version}</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>commons-digester</groupId>
-	    <artifactId>commons-digester</artifactId>
-	    <version>${commons-digester-version}</version>
-	    <exclusions>
-	    	<exclusion>
-	    		<groupId>commons-logging</groupId>
-  				<artifactId>commons-logging</artifactId>
-	    	</exclusion>
-	    </exclusions>
-	    <scope>provided</scope>
 	</dependency>
 	
 	<dependency>
@@ -108,22 +95,31 @@
 	</dependency>
 	
 	<dependency>
-		<groupId>org.apache.openejb</groupId>
-		<artifactId>tomee-embedded</artifactId>
-		<version>${tomee.version}</version>
-		<scope>provided</scope>
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-catalina</artifactId>
+	    <version>${tomcat.version}</version>
+	    <scope>provided</scope>
 	</dependency>
+	
 	<dependency>
-		<groupId>org.apache.openejb</groupId>
-		<artifactId>tomee-jaxrs</artifactId>
-		<version>${tomee.version}</version>
-		<scope>provided</scope>
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-servlet-api</artifactId>
+	    <version>${tomcat.version}</version>
+	    <scope>provided</scope>
 	</dependency>
+	
 	<dependency>
-		<groupId>org.apache.openejb</groupId>
-		<artifactId>tomee-webservices</artifactId>
-		<version>${tomee.version}</version>
-		<scope>provided</scope>
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-coyote</artifactId>
+	    <version>${tomcat.version}</version>
+	    <scope>provided</scope>
+	</dependency>
+
+	<dependency>
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-jasper</artifactId>
+	    <version>${tomcat.version}</version>
+	    <scope>provided</scope>
 	</dependency>
 	
   </dependencies>

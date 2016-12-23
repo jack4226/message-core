@@ -3,7 +3,6 @@ package ltj.msgui.bean;
 import java.util.List;
 import javax.faces.model.DataModel;
 
-@SuppressWarnings("rawtypes")
 public class PagedListDataModel extends DataModel {
 
 	private int rowIndex = -1;

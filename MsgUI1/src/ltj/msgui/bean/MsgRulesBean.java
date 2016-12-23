@@ -40,7 +40,6 @@ public class MsgRulesBean {
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	protected RuleLogicDao ruleLogicDao = null;
-	@SuppressWarnings("rawtypes")
 	protected DataModel ruleLogics = null;
 	protected RuleLogicVo ruleLogic = null;
 	protected boolean editMode = true;
@@ -54,11 +53,8 @@ public class MsgRulesBean {
 	protected RuleElementDao ruleElementDao = null;
 	protected RuleSubRuleMapDao ruleSubRuleMapDao = null;
 	protected MsgActionDao msgActionDao = null;
-	@SuppressWarnings("rawtypes")
 	protected DataModel ruleElements = null;
-	@SuppressWarnings("rawtypes")
 	protected DataModel subRules = null;
-	@SuppressWarnings("rawtypes")
 	protected DataModel msgActions = null;
 	
 	protected RuleElementVo ruleElement = null;
@@ -101,7 +97,6 @@ public class MsgRulesBean {
 	 * Main Page Section 
 	 */
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
@@ -481,7 +476,6 @@ public class MsgRulesBean {
 		return "";
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getRuleElements() {
 		if (isDebugEnabled)
 			logger.debug("getRuleElement() - Entering...");
@@ -595,7 +589,6 @@ public class MsgRulesBean {
 		return "";
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getSubRules() {
 		if (isDebugEnabled)
 			logger.debug("getSubRules() - Entering...");
@@ -773,7 +766,6 @@ public class MsgRulesBean {
 		return "";
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public DataModel getMsgActions() {
 		if (isDebugEnabled)
 			logger.debug("getMsgActions() - Entering...");
@@ -1124,7 +1116,6 @@ public class MsgRulesBean {
 		this.actionFailure = actionFailure;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public DataModel getRuleLogics() {
 		return ruleLogics;
 	}

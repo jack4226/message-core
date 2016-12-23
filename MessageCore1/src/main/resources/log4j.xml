@@ -67,6 +67,9 @@
 	  <level value="DEBUG"/> 
    </logger>
 
+	<logger name="org.apache.activemq.transport.AbstractInactivityMonitor">
+		 <level value="INFO"/>
+	</logger>
 
    <logger name="ltj">
 	  <level value="DEBUG"/>

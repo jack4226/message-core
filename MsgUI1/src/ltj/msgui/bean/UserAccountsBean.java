@@ -28,7 +28,6 @@ public class UserAccountsBean {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private UserDao userDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel users = null;
 	private UserVo user = null;
 	private boolean editMode = true;
@@ -38,7 +37,6 @@ public class UserAccountsBean {
 	private String testResult = null;
 	private String actionFailure = null;
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {

@@ -26,7 +26,6 @@ public class BroadcastMsgListBean {
 	private MsgClickCountsDao msgClickCountsDao = null;
 	private EmailAddrDao emailAddrDao = null;
 	private MsgInboxDao msgInboxDao = null;
-	@SuppressWarnings("rawtypes")
 	private DataModel broadcasts = null;
 	private MsgClickCountsVo broadcast = null;
 	private boolean editMode = true;
@@ -45,7 +44,6 @@ public class BroadcastMsgListBean {
 	static final String TO_SAVED = "broadcastlist.saved";
 	static final String TO_CANCELED = "broadcastlist.canceled";
 
-	@SuppressWarnings("rawtypes")
 	public DataModel getBroadcasts() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
