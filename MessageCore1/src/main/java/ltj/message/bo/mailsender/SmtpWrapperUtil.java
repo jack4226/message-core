@@ -57,16 +57,18 @@ public class SmtpWrapperUtil {
 
 	public synchronized static void clearSmtpNamedPools() {
 		if (smtpPools != null) {
-			if (!smtpPools.isEmpty())
+			if (!smtpPools.isEmpty()) {
 				smtpPools.close();
+			}
 			smtpPools = null;
 		}
 	}
 
 	public synchronized static void clearSecuNamedPools() {
 		if (secuPools != null) {
-			if (!secuPools.isEmpty())
+			if (!secuPools.isEmpty()) {
 				secuPools.close();
+			}
 			secuPools = null;
 		}
 	}
@@ -115,7 +117,7 @@ public class SmtpWrapperUtil {
 	
 	public static SmtpServerDao getSmtpServerDao() {
 		if (smtpServerDao == null) {
-			smtpServerDao = (SmtpServerDao) SpringUtil.getDaoAppContext().getBean("smtpServerDao");
+			smtpServerDao = SpringUtil.getDaoAppContext().getBean(SmtpServerDao.class);
 		}
 		return smtpServerDao;
 	}

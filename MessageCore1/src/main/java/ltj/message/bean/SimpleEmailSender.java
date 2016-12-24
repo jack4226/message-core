@@ -61,7 +61,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 		password = this.smtpProps.getProperty("password", "jwang");
 		host = this.smtpProps.getProperty("host", smtphost);
 		
-		persistent = "yes".equalsIgnoreCase(this.smtpProps.getProperty("persistent"));
+		persistent = "yes".equalsIgnoreCase(this.smtpProps.getProperty("persistent", "yes"));
 		/*	need to handle connection time out in sendMail method:
 		
 		 - MessagingException is thrown during transport.sendMessage()
@@ -77,8 +77,11 @@ public class SimpleEmailSender implements java.io.Serializable {
 	private void initTransport() throws NumberFormatException, MessagingException {
 		Properties props = System.getProperties();
 		// could use Session.getTransport() and Transport.connect()
-		props.put("mail.smtp.host", smtphost);
-
+		props.setProperty("mail.smtp.host", smtphost);
+		props.setProperty("mail.smtp.port", smtpport);
+		props.setProperty("mail.user", user);
+		props.setProperty("mail.password", password);
+		
 		session = Session.getDefaultInstance(props);
 		// get the smtp transport
 		transport = session.getTransport(MailServerType.SMTP);
@@ -115,6 +118,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 		if (smtphost != null) {
 			props.put("mail.smtp.host", smtphost);
 		}
+		
 		// Get a Session object
 		Session session = Session.getDefaultInstance(props, null);
 		if (debug) {
@@ -147,6 +151,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 		}
 		// Get a Session object
 		Session session = Session.getDefaultInstance(props, null);
+		
 		if (debug) {
 			session.setDebug(true);
 		}
@@ -363,4 +368,5 @@ public class SimpleEmailSender implements java.io.Serializable {
 			logger.error("Exception caught", e);
 		}
 	}
+	
 }

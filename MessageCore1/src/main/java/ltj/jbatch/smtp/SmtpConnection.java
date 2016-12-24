@@ -12,6 +12,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import ltj.message.constant.MailServerType;
@@ -80,35 +81,38 @@ public final class SmtpConnection implements java.io.Serializable {
 		*/
 		
 		Properties sys_props = (Properties) System.getProperties().clone();
-		if (smtpHost != null) {
-			sys_props.put("mail.smtp.host", smtpHost);
+		if (StringUtils.isNotBlank(smtpHost)) {
+			sys_props.setProperty("mail.smtp.host", smtpHost);
 		}
 		if ("yes".equalsIgnoreCase(vo.getUseSsl())) {
-			sys_props.put("mail.smtps.auth", "true");
-			sys_props.put("mail.user", userId);
+			sys_props.setProperty("mail.smtps.auth", "true");
 			protocol = MailServerType.SMTPS;
+			sys_props.setProperty("mail.user", userId);
+			sys_props.setProperty("mail.password", password);
 		}
 		else {
-			if ("yes".equalsIgnoreCase(vo.getUseAuth())) {
-				sys_props.put("mail.smtp.auth", "true");
-			}
 			protocol = MailServerType.SMTP;
+			if ("yes".equalsIgnoreCase(vo.getUseAuth())) {
+				sys_props.setProperty("mail.smtp.auth", "true");
+				sys_props.setProperty("mail.user", userId);
+				sys_props.setProperty("mail.password", password);
+			}
 		}
 
 		// javamail set the default mail host to localhost, however a 
 		// windows box does not have a SMTP server installed.
-		sys_props.put("mail.host", vo.getSmtpHost());
+		sys_props.setProperty("mail.host", vo.getSmtpHost());
 
 		// properties of com.sun.mail.smtp 
-		sys_props.put("mail.smtp.connectiontimeout", String.valueOf(3 * 60 * 1000));
+		sys_props.setProperty("mail.smtp.connectiontimeout", String.valueOf(3 * 60 * 1000));
 			// socket connection timeout value in milliseconds
-		sys_props.put("mail.smtp.timeout", String.valueOf(5 * 60 * 1000));
+		sys_props.setProperty("mail.smtp.timeout", String.valueOf(5 * 60 * 1000));
 			// socket i/o timeout value in milliseconds
 		
 		// Certain IMAP servers do not implement the IMAP Partial FETCH
 		// functionality properly
 		// set Partial fetch to false to workaround exchange server 5.5 bug
-		sys_props.put("mail.smtp.sendpartial", "false");
+		sys_props.setProperty("mail.smtp.sendpartial", "false");
 
 		// mail.smtp.dsn.notify
 		// mail.smtp.dsn.ret
@@ -210,6 +214,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		vo.setServerType(props.getProperty("server_type", MailServerType.SMTP));
 		vo.setUseSsl(props.getProperty("use_ssl"));
 		vo.setPersistence(props.getProperty("persistence"));
+		vo.setUseAuth(props.getProperty("use_auth"));
 		
 		try {
 			vo.setThreads(Integer.parseInt(props.getProperty("threads", "2")));
@@ -239,7 +244,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		
 		return vo;
 	}
-
+ 
 	/**
 	 * sendMail method to actually send an email off via a SMTP server.
 	 * 
