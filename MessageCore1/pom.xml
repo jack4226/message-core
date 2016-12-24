@@ -28,8 +28,6 @@
     <slf4j.version>1.7.21</slf4j.version>
     <junit.version>4.12</junit.version>
     <htmlparser.version>2.1</htmlparser.version>
-    <faces-api.version>2.2</faces-api.version>
-    <javaee-api.version>7.0</javaee-api.version>
     <aspectjrt.version>1.8.9</aspectjrt.version>
     <activemq-version>5.14.2</activemq-version>
   </properties>
@@ -126,14 +124,6 @@
 			</exclusions>
 	</dependency>
 
-	<!-- JSF -->
-	<dependency>
-		<groupId>javax.faces</groupId>
-		<artifactId>javax.faces-api</artifactId>
-		<version>${faces-api.version}</version>
-		<scope>provided</scope>
-	</dependency>
-	
 	<!-- Apache Commons -->
 	<dependency>
 		<groupId>commons-beanutils</groupId>
@@ -247,15 +237,7 @@
 		<groupId>javax.mail</groupId>
 		<artifactId>mail</artifactId>
 		<version>${javax.mail.version}</version>
-		<scope>provided</scope>
 	</dependency>
-
-	<!-- dependency>
-	    <groupId>javax</groupId>
-	    <artifactId>javaee-api</artifactId>
-	    <version>${javaee-api.version}</version>
-	    <scope>provided</scope>
-	</dependency -->
 
 	<dependency>
 	   <groupId>org.glassfish.external</groupId>
