@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.util.Calendar;
 import java.util.Date;

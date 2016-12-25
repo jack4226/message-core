@@ -6,9 +6,9 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 
-import ltj.jbatch.app.ProductUtil;
 import ltj.jbatch.common.ProductKey;
 import ltj.jbatch.common.TimestampUtil;
+import ltj.jbatch.obsolete.ProductUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.client.ClientDao;

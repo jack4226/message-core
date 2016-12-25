@@ -4,7 +4,7 @@
  *	@author:	Jack Wang
  * 
  */
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -17,6 +17,9 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import ltj.jbatch.app.JbEvent;
+import ltj.jbatch.app.JbEventBroker;
+import ltj.jbatch.app.JbEventListener;
 import ltj.jbatch.smtp.SmtpException;
 import ltj.message.vo.QueueReaderVo;
 

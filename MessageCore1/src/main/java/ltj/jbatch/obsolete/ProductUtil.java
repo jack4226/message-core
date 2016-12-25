@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.io.BufferedReader;
 import java.io.IOException;

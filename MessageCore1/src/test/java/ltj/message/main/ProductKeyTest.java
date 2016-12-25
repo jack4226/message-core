@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ltj.jbatch.app.ProductUtil;
 import ltj.jbatch.common.ProductKey;
+import ltj.jbatch.obsolete.ProductUtil;
 
 public class ProductKeyTest {
 	static final String LF = System.getProperty("line.separator", "\n");

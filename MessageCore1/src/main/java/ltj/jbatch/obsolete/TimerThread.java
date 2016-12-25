@@ -1,10 +1,11 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.util.Date;
 import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 
+import ltj.jbatch.app.Processor;
 import ltj.message.vo.TimerServerVo;
 
 /**

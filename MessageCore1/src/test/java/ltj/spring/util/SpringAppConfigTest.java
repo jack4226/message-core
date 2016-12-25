@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
@@ -40,6 +41,21 @@ public class SpringAppConfigTest {
 		
 		SimpleEmailSender emailsender = context.getBean(SimpleEmailSender.class);
 		assertNotNull(emailsender);
+		
+		// test custom "thread" scope
+		final LobHandler lob1 = context.getBean(LobHandler.class);
+		LobHandler lob2 = context.getBean(LobHandler.class);
+		assertEquals(lob1, lob2); // from same thread
+		
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				LobHandler lob3 = context.getBean(LobHandler.class);
+				assertNotNull(lob3);
+				assertNotEquals(lob1, lob3);
+			}
+		};
+		t.start();
 	}
 	
 	@Test

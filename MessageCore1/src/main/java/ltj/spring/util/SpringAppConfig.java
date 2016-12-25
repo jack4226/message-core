@@ -9,9 +9,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.jdbc.support.lob.LobHandler;
 
+import ltj.jbatch.smtp.SmtpConnection;
 import ltj.message.bean.SimpleEmailSender;
 
 @Configuration
@@ -39,7 +41,30 @@ public class SpringAppConfig {
 	}
 	
 	@Bean
+	@Scope(value="thread") // custom "thread" scope
 	public LobHandler lobHandler() {
 		return new DefaultLobHandler();
 	}
+	
+	@Bean
+	@Scope(value="prototype")
+	public SmtpConnection smtpConnection() {
+		Properties props = new Properties();
+		props.setProperty("smtphost", "localhost");
+		props.setProperty("smtpport", "-1");
+		props.setProperty("default", "localhost");
+		props.setProperty("use_ssl", "no");
+		props.setProperty("userid", "jwang");
+		props.setProperty("password", "jwang");
+		props.setProperty("persistence", "yes");
+		props.setProperty("server_type", "smtp");
+		props.setProperty("threads", "2");
+		props.setProperty("retry", "10");
+		props.setProperty("freq", "5");
+		props.setProperty("alert_after", "15");
+		props.setProperty("alert_level", "error");
+		props.setProperty("message_count", "0");
+		return new SmtpConnection(props);
+	}
+
 }

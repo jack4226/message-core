@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;

@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
+import ltj.jbatch.app.Processor;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.QueueReaderVo;
 

@@ -14,8 +14,9 @@
 
 	<!-- context:property-placeholder ignore-resource-not-found="true" 
 		location="classpath:/META-INF/message-core.${env:dev}.properties,classpath:/META-INF/message-core-test.properties"/ -->
-	<context:property-placeholder ignore-resource-not-found="true" 
-		location="classpath:/META-INF/message-core.${env:dev}.properties"/>
+	<context:property-placeholder
+		ignore-resource-not-found="true"
+		location="classpath:/META-INF/message-core.${env:dev}.properties" />
 
 	<context:component-scan base-package="ltj.message.dao, ltj.message.bo" />
 	<context:annotation-config/>

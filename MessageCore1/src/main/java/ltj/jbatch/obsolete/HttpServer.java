@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -19,6 +19,8 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+
+import ltj.jbatch.app.Processor;
 
 /**
  * A simple HTTP static file processor

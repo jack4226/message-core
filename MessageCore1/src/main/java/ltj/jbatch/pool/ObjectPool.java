@@ -7,10 +7,10 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import ltj.jbatch.app.JbMain;
 import ltj.jbatch.smtp.SmtpConnection;
 import ltj.message.constant.MailServerType;
 import ltj.message.vo.SmtpConnVo;
+import ltj.spring.util.SpringUtil;
 
 /**
  * a common object pool.
@@ -96,7 +96,7 @@ public class ObjectPool implements java.io.Serializable {
 
 		// Put our pool of Connections in the Vector
 		for (int i = 0; i < initialItems; i++) {
-			Object obj = JbMain.getBatchAppContext().getBean(poolItemName);
+			Object obj = SpringUtil.getAppContext().getBean(poolItemName);
 			// Class cls = obj.getClass();
 			freeConns.addElement(obj);
 		}
@@ -186,7 +186,7 @@ public class ObjectPool implements java.io.Serializable {
 		if (freeConns.size() + inUse.size() < maxConns) {
 			for (int i = 0; i < increment; i++) {
 				if (smtpConnVo == null) {
-					freeConns.addElement(JbMain.getBatchAppContext().getBean(poolItemName));
+					freeConns.addElement(SpringUtil.getAppContext().getBean(poolItemName));
 				}
 				else {
 					freeConns.addElement(new SmtpConnection(smtpConnVo));

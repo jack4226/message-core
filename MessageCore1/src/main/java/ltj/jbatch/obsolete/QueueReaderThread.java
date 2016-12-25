@@ -1,9 +1,12 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
+
+import ltj.jbatch.app.JbEventBroker;
+import ltj.jbatch.app.Processor;
 
 /**
  * @deprecated - replaced by QueueListener

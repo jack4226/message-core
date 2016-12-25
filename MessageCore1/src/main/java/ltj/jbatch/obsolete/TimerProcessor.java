@@ -1,10 +1,11 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import javax.jms.JMSException;
 import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 
+import ltj.jbatch.app.RunnableProcessor;
 import ltj.message.bo.mailreader.DuplicateCheckDao;
 import ltj.message.bo.mailreader.DuplicateCheckJdbcDao;
 import ltj.spring.util.SpringUtil;

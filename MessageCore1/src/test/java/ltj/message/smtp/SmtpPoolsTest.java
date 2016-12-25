@@ -1,4 +1,6 @@
-package ltj.jbatch.pool;
+package ltj.message.smtp;
+
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -6,26 +8,19 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
-import ltj.jbatch.app.JbMain;
+import org.junit.Test;
+
+import ltj.jbatch.pool.NamedPools;
+import ltj.jbatch.pool.ObjectPool;
 import ltj.jbatch.smtp.SmtpConnection;
 import ltj.message.bo.mailsender.SmtpWrapperUtil;
 
-public class PoolsJUnitTest extends TestCase {
+public class SmtpPoolsTest {
 	static int init_count = 0;
 
 	final static String LF = System.getProperty("line.separator", "\n");
 
-	/**
-	 * Constructor for TemplateTest.
-	 * 
-	 * @param arg0
-	 */
-	public PoolsJUnitTest(String arg0) throws Exception {
-		super(arg0);
-		JbMain.getInstance(); // to tell the system this is a JBatch run
-	}
-
+	@Test
 	public void testDistribution() throws Exception {
 		System.out.println(LF + "********** Starting testDistribution **********");
 
@@ -59,6 +54,7 @@ public class PoolsJUnitTest extends TestCase {
 		pools.close();
 	}
 
+	@Test
 	public void testSmtpConnection() throws Exception {
 		System.out.println(LF + "********** Starting testSmtpConnection **********");
 		{
@@ -106,6 +102,7 @@ public class PoolsJUnitTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testAllSmtpPools() throws Exception {
 		System.out.println(LF + "********** Starting testAllSmtpPools **********");
 		NamedPools pools = SmtpWrapperUtil.getSmtpNamedPools();
@@ -121,6 +118,7 @@ public class PoolsJUnitTest extends TestCase {
 		SmtpWrapperUtil.clearSmtpNamedPools();
 	}
 
+	@Test
 	public void testPostSmtpPools() throws Exception {
 		System.out.println(LF + "********** Starting testPostSmtpPools **********");
 		ArrayList<ObjectPool> poolItems = new ArrayList<ObjectPool>();
@@ -138,6 +136,7 @@ public class PoolsJUnitTest extends TestCase {
 		pools.close();
 	}
 
+	@Test
 	public void testExchSmtpPools() throws Exception {
 		System.out.println(LF + "********** Starting testExchSmtpPools **********");
 		ArrayList<ObjectPool> poolItems = new ArrayList<ObjectPool>();

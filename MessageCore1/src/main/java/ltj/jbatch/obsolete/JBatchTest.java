@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import junit.framework.TestCase;
 import ltj.jbatch.pool.NamedPools;

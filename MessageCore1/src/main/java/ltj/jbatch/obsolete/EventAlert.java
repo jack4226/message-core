@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.util.Collections;
 import java.util.Date;
@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
+import ltj.jbatch.app.HostUtil;
 import ltj.jbatch.common.EmailSender;
 import ltj.jbatch.common.SimpleEmailVo;
 import ltj.jbatch.smtp.SmtpException;

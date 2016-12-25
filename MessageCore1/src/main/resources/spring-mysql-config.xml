@@ -12,7 +12,18 @@
     
     <tx:annotation-driven transaction-manager="mysqlTransactionManager"/>
     
-     <!-- Transaction Managers -->
+	<!-- define custom scope bean for thread scope -->
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+		<map>
+			<entry key="thread">
+				<bean class="ltj.jbatch.common.SpringThreadScope"/>
+			</entry>
+		</map>
+		</property>
+	</bean>
+	
+    <!-- Transaction Managers -->
 	<bean id="mysqlTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="mysqlDataSource"/>

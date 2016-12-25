@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import ltj.jbatch.app.HostUtil;
 import ltj.message.bo.mailreader.MailReaderBoImpl;
 import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.dao.timer.TimerServerDao;

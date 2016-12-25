@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +24,9 @@ import javax.mail.event.MessageCountEvent;
 
 import org.apache.log4j.Logger;
 
+import ltj.jbatch.app.JbEvent;
+import ltj.jbatch.app.JbEventBroker;
+import ltj.jbatch.app.JbEventListener;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bo.mailreader.DuplicateCheckDao;
 import ltj.message.bo.mailreader.MailProcessor;

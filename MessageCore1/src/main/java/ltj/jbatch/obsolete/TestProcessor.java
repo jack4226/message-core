@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +16,8 @@ import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 
+import ltj.jbatch.app.HostUtil;
+import ltj.jbatch.app.RunnableProcessor;
 import ltj.message.vo.ServerBaseVo;
 import ltj.message.vo.SocketServerVo;
 

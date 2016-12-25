@@ -1,4 +1,4 @@
-package ltj.jbatch.app;
+package ltj.jbatch.obsolete;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,6 +7,8 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import ltj.jbatch.app.JbEventBroker;
+import ltj.jbatch.app.Processor;
 import ltj.message.vo.SocketServerVo;
 
 /**
