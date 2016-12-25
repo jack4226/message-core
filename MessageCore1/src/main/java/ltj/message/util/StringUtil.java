@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 public final class StringUtil {
 	static final Logger logger = Logger.getLogger(StringUtil.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
-	static final String LF = System.getProperty("line.separator", "\n");
+	public static final String LF = System.getProperty("line.separator", "\n");
 
     private StringUtil() {
         // static only

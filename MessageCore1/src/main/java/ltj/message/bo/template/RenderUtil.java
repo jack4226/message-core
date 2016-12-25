@@ -5,7 +5,6 @@ import static ltj.message.constant.Constants.DEFAULT_CLIENTID;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -49,7 +48,7 @@ import ltj.vo.template.TemplateVariableVo;
 
 public final class RenderUtil {
 	static final Logger logger = Logger.getLogger(RenderUtil.class);
-	static final boolean isDebugEnabled = logger.isDebugEnabled();
+	public static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final String LF = System.getProperty("line.separator", "\n");
 	
 	private static GlobalVariableDao globalVariableDao = null;
@@ -126,23 +125,22 @@ public final class RenderUtil {
 	 * @throws DataValidationException
 	 * @throws ParseException
 	 */
-	public static String renderTemplateId(String templateId, String clientId,
-			HashMap<String, RenderVariable> variables) throws DataValidationException,
-			ParseException {
+	public static String renderTemplateId(String templateId, String clientId, Map<String, RenderVariable> variables)
+			throws DataValidationException, ParseException {
 		if (StringUtil.isEmpty(clientId)) {
 			clientId = DEFAULT_CLIENTID;
 		}
-		Timestamp startTime = new Timestamp(new Date().getTime());
+		Timestamp startTime = new Timestamp(System.currentTimeMillis());
 		BodyTemplateVo bodyVo = getBodyTemplateDao().getByBestMatch(templateId, clientId, startTime);
 		if (bodyVo == null) {
-			throw new DataValidationException("BodyTemplate not found for: " + templateId + "/"
-					+ clientId + "/" + startTime);
+			throw new DataValidationException(
+					"BodyTemplate not found for: " + templateId + "/" + clientId + "/" + startTime);
 		}
 		else if (isDebugEnabled) {
 			logger.debug("Template to render:" + LF + bodyVo.getTemplateValue());
 		}
 		
-		HashMap<String, RenderVariable> map = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> map = new HashMap<String, RenderVariable>();
 
 		List<TemplateVariableVo> tmpltList = getTemplateVariableDao().getByTemplateId(templateId);
 		for (Iterator<TemplateVariableVo> it = tmpltList.iterator(); it.hasNext();) {
@@ -199,9 +197,8 @@ public final class RenderUtil {
 	 * @throws DataValidationException
 	 * @throws ParseException
 	 */
-	public static String renderTemplateText(String templateText, String clientId,
-			HashMap<String, RenderVariable> variables) throws DataValidationException,
-			ParseException {
+	public static String renderTemplateText(String templateText, String clientId, Map<String, RenderVariable> variables)
+			throws DataValidationException, ParseException {
 		if (templateText == null || templateText.trim().length() == 0) {
 			return templateText;
 		}
@@ -209,7 +206,7 @@ public final class RenderUtil {
 			clientId = DEFAULT_CLIENTID;
 		}
 		
-		HashMap<String, RenderVariable> map = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> map = new HashMap<String, RenderVariable>();
 
 		List<GlobalVariableVo> globalList = getGlobalVariableDao().getCurrent();
 		for (Iterator<GlobalVariableVo> it = globalList.iterator(); it.hasNext();) {
@@ -266,7 +263,7 @@ public final class RenderUtil {
 			}
 		}
 		
-		HashMap<String, RenderVariable> errors = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> errors = new HashMap<String, RenderVariable>();
 		String text = Renderer.getInstance().render(templateText, map, errors);
 		return text;
 	}
@@ -331,11 +328,20 @@ public final class RenderUtil {
 	 * @throws DataValidationException
 	 */
 	public static void checkVariableLoop(String text) throws DataValidationException {
+		checkVariableLoop(text, (Map<String, RenderVariable>)null);
+	}
+	
+	public static void checkVariableLoop(String text, Map<String, RenderVariable> vars) throws DataValidationException {
 		List<String> varNames = retrieveVariableNames(text);
+		if (vars != null) {
+			for (String var : vars.keySet()) {
+				varNames.add(var);
+			}
+		}
 		for (String loopName : varNames) {
 			EmailVariableVo vo = getEmailVariableDao().getByName(loopName);
 			if (vo != null) {
-				checkVariableLoop(vo.getDefaultValue(), loopName);
+				checkVariableLoop(vo.getDefaultValue(), loopName, vars);
 			}
 		}
 	}
@@ -356,10 +362,14 @@ public final class RenderUtil {
 	 *            variable name to match
 	 * @throws DataValidationException
 	 */
-	public static void checkVariableLoop(String text, String loopName)
+	public static void checkVariableLoop(String text, String loopName) throws DataValidationException {
+		checkVariableLoop(text, loopName, null);
+	}
+	
+	public static void checkVariableLoop(String text, String loopName, Map<String, RenderVariable> vars)
 			throws DataValidationException {
 		List<String> varNames = new ArrayList<String>();
-		checkVariableLoop(text, loopName, varNames, 0);
+		checkVariableLoop(text, loopName, varNames, 0, vars);
 	}
 	
 	/**
@@ -379,10 +389,11 @@ public final class RenderUtil {
 	 *            number of recursive loops
 	 * @throws DataValidationException
 	 */
-	static void checkVariableLoop(String text, String loopName, List<String> varNames, int loops)
+	static void checkVariableLoop(String text, String loopName, List<String> varNames, int loops, Map<String, RenderVariable> vars)
 			throws DataValidationException {
-		if (text == null || text.trim().length() == 0)
+		if (text == null || text.trim().length() == 0) {
 			return;
+		}
 		text = Renderer.convertUrlBraces(text);
 		int bgnPos = 0;
 		int nextPos;
@@ -393,14 +404,13 @@ public final class RenderUtil {
 					int _openPos = text.indexOf(VariableDelimiter.OPEN_DELIMITER, bgnPos + VariableDelimiter.OPEN_DELIMITER.length());
 					if (_openPos > 0 && _openPos < nextPos) {
 						int _endPos = Math.min(text.length(), bgnPos + 26);
-						throw new DataValidationException("Missing " + VariableDelimiter.CLOSE_DELIMITER + " in ${"
-								+ loopName + "} from position " + bgnPos + ", around: "
-								+ text.substring(bgnPos, _endPos));
+						throw new DataValidationException(
+								"Missing " + VariableDelimiter.CLOSE_DELIMITER + " in ${" + loopName
+										+ "} from position " + bgnPos + ", around: " + text.substring(bgnPos, _endPos));
 					}
 					else {
-						throw new DataValidationException("Variable name: ${" + name
-								+ "} exceeded maximum length: " + VariableDelimiter.VARIABLE_NAME_LENGTH
-								+ " in ${" + loopName + "}");
+						throw new DataValidationException("Variable name: ${" + name + "} exceeded maximum length: "
+								+ VariableDelimiter.VARIABLE_NAME_LENGTH + " in ${" + loopName + "}");
 					}
 				}
 				bgnPos = nextPos + VariableDelimiter.CLOSE_DELIMITER.length();
@@ -408,33 +418,39 @@ public final class RenderUtil {
 				if (!varNames.contains(name)) {
 					varNames.add(name);
 					if (varNames.contains(loopName)) {
-						throw new DataValidationException("Loop found, please check ${" + loopName
-								+ "} and its contents.");
+						throw new DataValidationException(
+								"Loop found, please check ${" + loopName + "} and its contents.");
 					}
 					if (isListVariable(name)) {
 						continue;
 					}
-					EmailVariableVo vo = getEmailVariableDao().getByName(name);
-					if (vo != null) {
-						String newText = vo.getDefaultValue();
-						checkVariableLoop(newText, loopName, varNames, ++loops);
+					RenderVariable var = vars == null ? null : vars.get(name);
+					if (var != null && VariableType.TEXT.equals(var.getVariableType())) {
+						String newText = (String) vars.get(name).getVariableValue();
+						checkVariableLoop(newText, loopName, varNames, ++loops, vars);
+					}
+					else {
+						EmailVariableVo vo = getEmailVariableDao().getByName(name);
+						if (vo != null) {
+							String newText = vo.getDefaultValue();
+							checkVariableLoop(newText, loopName, varNames, ++loops, vars);
+						}
 					}
 				}
 			}
 			else {
 				int _endPos = Math.min(text.length(), bgnPos + 26);
-				throw new DataValidationException("Missing " + VariableDelimiter.CLOSE_DELIMITER + " in ${"
-						+ loopName + "} from position " + bgnPos + ", around: "
-						+ text.substring(bgnPos, _endPos));
+				throw new DataValidationException("Missing " + VariableDelimiter.CLOSE_DELIMITER + " in ${" + loopName
+						+ "} from position " + bgnPos + ", around: " + text.substring(bgnPos, _endPos));
 			}
 		}
 	}
 
 	private static EmailVariableDao emailVariableDao = null;
 	static EmailVariableDao getEmailVariableDao() {
-		if (emailVariableDao == null)
-			emailVariableDao = (EmailVariableDao) SpringUtil.getDaoAppContext().getBean(
-					"emailVariableDao");
+		if (emailVariableDao == null) {
+			emailVariableDao = SpringUtil.getDaoAppContext().getBean(EmailVariableDao.class);
+		}
 		return emailVariableDao;
 	}
 	
@@ -449,17 +465,15 @@ public final class RenderUtil {
 	 *            email address id
 	 * @return a map of rendered variables.
 	 */
-	static HashMap<String, RenderVariable> renderEmailVariables(List<String> variables,
-			long addrId) {
-		HashMap<String, RenderVariable> vars = new HashMap<String, RenderVariable>();
+	static Map<String, RenderVariable> renderEmailVariables(List<String> variables, long addrId) {
+		Map<String, RenderVariable> vars = new HashMap<String, RenderVariable>();
 		for (String name : variables) {
 			if (isListVariable(name)) {
 				continue;
 			}
 			EmailVariableVo vo = getEmailVariableDao().getByName(name);
 			if (vo == null) {
-				logger.info("renderEmailVariables() - EmailVariable record not found, "
-						+ "variable name: " + name);
+				logger.info("renderEmailVariables() - EmailVariable record not found, " + "variable name: " + name);
 				continue;
 			}
 			String query = vo.getVariableQuery();
@@ -492,8 +506,8 @@ public final class RenderUtil {
 				value = vo.getDefaultValue();
 			}
 			logger.info("renderEmailVariables() - name=" + name + ", value=" + value);
-			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT,
-					Constants.YES_CODE, Constants.NO_CODE, null);
+			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT, Constants.YES_CODE,
+					Constants.NO_CODE, null);
 			vars.put(name, var);
 		}
 		return vars;
@@ -510,10 +524,10 @@ public final class RenderUtil {
  	}
 	
 	/* experimental */
-	static String renderEmailVariable(String emailVariableName, Long sbsrId) throws DataValidationException {
+	public static String renderEmailVariable(String emailVariableName, Long sbsrId) throws DataValidationException {
 		String renderedValue = "";
 		EmailVariableVo vo = getEmailVariableDao().getByName(emailVariableName);
-		HashMap<String, RenderVariable> vars = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> vars = new HashMap<String, RenderVariable>();
 		if (sbsrId != null) {
 			RenderVariable var = new RenderVariable(
 					"SubscriberAddressId",
@@ -553,8 +567,8 @@ public final class RenderUtil {
 	 * @throws DataValidationException
 	 * @throws TemplateNotFoundException
 	 */
-	public static TemplateRenderVo renderEmailTemplate(String toAddr, Map<String, String> variables,
-			String templateId) throws DataValidationException, TemplateNotFoundException {
+	public static TemplateRenderVo renderEmailTemplate(String toAddr, Map<String, String> variables, String templateId)
+			throws DataValidationException, TemplateNotFoundException {
 		return renderEmailTemplate(toAddr, variables, templateId, null);
 	}
 	
@@ -578,9 +592,8 @@ public final class RenderUtil {
 	 * @throws DataValidationException
 	 * @throws TemplateNotFoundException
 	 */
-	public static TemplateRenderVo renderEmailTemplate(String toAddr, Map<String, String> variables,
-			String templateId, String listIdOverride) throws DataValidationException,
-			TemplateNotFoundException {
+	public static TemplateRenderVo renderEmailTemplate(String toAddr, Map<String, String> variables, String templateId,
+			String listIdOverride) throws DataValidationException, TemplateNotFoundException {
 		if (templateId == null) {
 			throw new DataValidationException("Input templateId is null.");
 		}
@@ -594,8 +607,7 @@ public final class RenderUtil {
 			// try the list id from input parameters first
 			listVo = getMailingListDao().getByListId(listIdOverride);
 			if (listVo == null) {
-				logger.warn("renderEmailTemplate() - Failed to find List by override list Id: "
-								+ listIdOverride);
+				logger.warn("renderEmailTemplate() - Failed to find List by override list Id: " + listIdOverride);
 			}
 		}
 		if (listVo == null) {
@@ -603,8 +615,7 @@ public final class RenderUtil {
 			listVo = getMailingListDao().getByListId(tmpltVo.getListId());
 		}
 		if (listVo == null) {
-			throw new DataValidationException("Could not find Mailing List by Id: "
-					+ tmpltVo.getListId());
+			throw new DataValidationException("Could not find Mailing List by Id: " + tmpltVo.getListId());
 		}
 		TemplateRenderVo renderVo = new TemplateRenderVo();
 		renderVo.setToAddr(toAddr);
@@ -627,14 +638,13 @@ public final class RenderUtil {
 		}
 		EmailAddrVo addrVo = getEmailAddrDao().findByAddress(toAddr);
 		// render email variables using TO emailAddrId
-		HashMap<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames, addrVo
-				.getEmailAddrId());
+		Map<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames, addrVo.getEmailAddrId());
 		// include render variables from input data
 		if (variables != null) {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
-				RenderVariable var = new RenderVariable(key, variables.get(key), null,
-						VariableType.TEXT, Constants.YES_CODE, Constants.NO_CODE, null);
+				RenderVariable var = new RenderVariable(key, variables.get(key), null, VariableType.TEXT,
+						Constants.YES_CODE, Constants.NO_CODE, null);
 				vars.put(key, var);
 			}
 		}
@@ -654,30 +664,28 @@ public final class RenderUtil {
 		if (vars.containsKey(EmailAddressType.CC_ADDR)) {
 			// set CC if it was passed as an input variable
 			RenderVariable cc = vars.get(EmailAddressType.CC_ADDR);
-			if (cc != null && VariableType.TEXT.equals(cc.getVariableType())
-					&& cc.getVariableValue() != null) {
+			if (cc != null && VariableType.TEXT.equals(cc.getVariableType()) && cc.getVariableValue() != null) {
 				try {
 					validateFromAddress((String) cc.getVariableValue());
 					renderVo.setCcAddr((String) cc.getVariableValue());
 				}
 				catch (Exception e) {
-					logger.error("renderEmailTemplate() - Failed to parse CC address: "
-							+ cc.getVariableValue() + LF + e.getMessage());
+					logger.error("renderEmailTemplate() - Failed to parse CC address: " + cc.getVariableValue() + LF
+							+ e.getMessage());
 				}
 			}
 		}
 		if (vars.containsKey(EmailAddressType.BCC_ADDR)) {
 			// set BCC if it was passed as an input variable
 			RenderVariable bcc = vars.get(EmailAddressType.BCC_ADDR);
-			if (bcc != null && VariableType.TEXT.equals(bcc.getVariableType())
-					&& bcc.getVariableValue() != null) {
+			if (bcc != null && VariableType.TEXT.equals(bcc.getVariableType()) && bcc.getVariableValue() != null) {
 				try {
 					validateFromAddress((String) bcc.getVariableValue());
 					renderVo.setBccAddr((String) bcc.getVariableValue());
 				}
 				catch (Exception e) {
-					logger.error("renderEmailTemplate() - Failed to parse BCC address: "
-							+ bcc.getVariableValue() + LF + e.getMessage());
+					logger.error("renderEmailTemplate() - Failed to parse BCC address: " + bcc.getVariableValue() + LF
+							+ e.getMessage());
 				}
 			}
 		}
@@ -706,8 +714,8 @@ public final class RenderUtil {
 	 * @return A TemplateRenderVo instance
 	 * @throws DataValidationException
 	 */
-	public static TemplateRenderVo renderEmailText(String toAddr, Map<String, String> variables,
-			String subj, String body, String listId) throws DataValidationException {
+	public static TemplateRenderVo renderEmailText(String toAddr, Map<String, String> variables, String subj,
+			String body, String listId) throws DataValidationException {
 		return renderEmailText(toAddr, variables, subj, body, listId, null);
 	}
 	
@@ -738,9 +746,8 @@ public final class RenderUtil {
 	 * @return A TemplateRenderVo instance
 	 * @throws DataValidationException
 	 */
-	public static TemplateRenderVo renderEmailText(String toAddr, Map<String, String> variables,
-			String subj, String body, String listId, List<String> variableNames)
-			throws DataValidationException {
+	public static TemplateRenderVo renderEmailText(String toAddr, Map<String, String> variables, String subj,
+			String body, String listId, List<String> variableNames) throws DataValidationException {
 		// first check input TO address
 		validateToAddress(toAddr);
 		MailingListVo listVo = getMailingListDao().getByListId(listId);
@@ -778,8 +785,7 @@ public final class RenderUtil {
 		}
 		EmailAddrVo addrVo = getEmailAddrDao().findByAddress(toAddr);
 		// retrieve variable values by variable name and email address id
-		HashMap<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames,
-				addrVo.getEmailAddrId());
+		Map<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames, addrVo.getEmailAddrId());
 		// include render variables from input data
 		if (variables != null) {
 			Set<String> keys = variables.keySet();
@@ -790,8 +796,7 @@ public final class RenderUtil {
 			}
 		}
 		// include mailing list variables
-		vars.putAll(MailingListUtil.renderListVariables(listVo, addrVo.getEmailAddr(), addrVo
-				.getEmailAddrId()));
+		vars.putAll(MailingListUtil.renderListVariables(listVo, addrVo.getEmailAddr(), addrVo.getEmailAddrId()));
 		try {
 			String bodyText = RenderUtil.renderTemplateText(body, listVo.getClientId(), vars);
 			String subjText = RenderUtil.renderTemplateText(subj, listVo.getClientId(), vars);
