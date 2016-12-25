@@ -1,4 +1,4 @@
-package ltj.message.bo.inbox;
+package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import ltj.message.bo.inbox.BounceAddressFinder;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.util.StringUtil;
 
