@@ -9,10 +9,10 @@ import javax.annotation.Resource;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
-import ltj.jbatch.common.TimestampUtil;
 import ltj.message.constant.Constants;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.client.ClientDao;
+import ltj.message.util.TimestampUtil;
 import ltj.message.vo.ClientVo;
 
 public class ClientTest extends DaoTestBase {

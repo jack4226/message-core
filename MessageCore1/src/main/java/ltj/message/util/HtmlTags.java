@@ -16,11 +16,8 @@
  */
 package ltj.message.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,34 +28,27 @@ public class HtmlTags extends LinkedHashMap<String, Boolean> {
 	static final Logger logger = Logger.getLogger(HtmlTags.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	private final String fileName = "htmlTags.txt";
+	private final String fileName = "META-INF/htmlTags.txt";
 	private Pattern pattern = Pattern.compile("<([a-zA-Z]{1,10}|H[1-6])\\s?(\\.{3})?>");
 	private static boolean debug = false;
 	
 	public HtmlTags() {
 		super();
-		InputStream is = getClass().getResourceAsStream(fileName);
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String line = null;
-		try {
-			while ((line = br.readLine()) != null) {
-				Matcher m = pattern.matcher(line);
-				if (m.find()) {
-					if (debug && isDebugEnabled) {
-						for (int i = 0; i <= m.groupCount(); i++) {
-							logger.debug(i + " " + m.group(i));
-						}
-					}
-					if (m.groupCount() == 2) {
-						String tag = m.group(1);
-						boolean hasAttributes = m.group(2) == null ? false : true;
-						this.put(tag, hasAttributes);
+		List<String> fileLines = FileUtil.loadFromTextFile(fileName);
+		for(String line : fileLines) {
+			Matcher m = pattern.matcher(line);
+			if (m.find()) {
+				if (debug && isDebugEnabled) {
+					for (int i = 0; i <= m.groupCount(); i++) {
+						logger.debug(i + " " + m.group(i));
 					}
 				}
+				if (m.groupCount() == 2) {
+					String tag = m.group(1);
+					boolean hasAttributes = m.group(2) == null ? false : true;
+					this.put(tag, hasAttributes);
+				}
 			}
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e.toString());
 		}
 	}
 	

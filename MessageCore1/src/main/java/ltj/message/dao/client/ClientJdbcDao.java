@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.common.TimestampUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.constant.VariableType;
@@ -22,6 +21,7 @@ import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.template.ClientVariableDao;
 import ltj.message.util.BlobUtil;
 import ltj.message.util.StringUtil;
+import ltj.message.util.TimestampUtil;
 import ltj.message.vo.ClientVo;
 import ltj.vo.template.ClientVariableVo;
 

@@ -1,4 +1,4 @@
-package ltj.jbatch.common;
+package ltj.message.util;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;

@@ -8,9 +8,9 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import ltj.jbatch.common.ProductKey;
-import ltj.jbatch.common.TimestampUtil;
 import ltj.jbatch.obsolete.ProductUtil;
 import ltj.message.util.StringUtil;
+import ltj.message.util.TimestampUtil;
 import ltj.message.vo.ClientVo;
 import ltj.spring.util.SpringUtil;
 

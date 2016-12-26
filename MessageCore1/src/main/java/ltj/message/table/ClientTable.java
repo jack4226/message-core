@@ -7,12 +7,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import ltj.jbatch.common.ProductKey;
-import ltj.jbatch.common.TimestampUtil;
 import ltj.jbatch.obsolete.ProductUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.client.ClientDao;
 import ltj.message.main.CreateTableBase;
+import ltj.message.util.TimestampUtil;
 import ltj.message.vo.ClientVo;
 import ltj.spring.util.SpringUtil;
 

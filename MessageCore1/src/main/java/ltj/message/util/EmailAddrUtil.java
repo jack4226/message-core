@@ -229,7 +229,7 @@ public class EmailAddrUtil {
 	 */
 	public static boolean isInternetEmailAddress(String string) {
 		if (string == null) return false;
-		Matcher matcher = remotePattern.matcher(string);
+		Matcher matcher = remotePattern.matcher(removeDisplayName(string));
 		return matcher.matches();
 	    //return string.matches(
 	    //    "(?i)^[a-z0-9-~#&\\_]+(?:\\.[a-z0-9-~#&\\_]+)*@(?:[a-z0-9-]+\\.)+[a-z]{2,5}$");
@@ -247,7 +247,7 @@ public class EmailAddrUtil {
 	public static boolean isRemoteEmailAddress(String string) {
 		if (string == null) return false;
 		if (isInternetEmailAddress(string)) return true;
-		Matcher matcher = intraPattern.matcher(string);
+		Matcher matcher = intraPattern.matcher(removeDisplayName(string));
 		return matcher.matches();
 	    //return string.matches(
 	    //    "(?i)^[a-z0-9-~#&\\_]+(?:\\.[a-z0-9-~#&\\_]+)*@(?:[a-z0-9-]+)$");
@@ -264,12 +264,12 @@ public class EmailAddrUtil {
 	public static boolean isRemoteOrLocalEmailAddress(String string) {
 		if (string == null) return false;
 		if (isRemoteEmailAddress(string)) return true;
-		Matcher matcher = localPattern.matcher(string);
+		Matcher matcher = localPattern.matcher(removeDisplayName(string));
 		return matcher.matches();
 	}
 
 	public static boolean isValidEmailLocalPart(String string) {
-		Matcher matcher = localPattern.matcher(string);
+		Matcher matcher = localPattern.matcher(removeDisplayName(string));
 		return matcher.matches();
 	}
 

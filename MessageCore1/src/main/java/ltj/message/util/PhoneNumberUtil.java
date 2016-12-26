@@ -41,8 +41,8 @@ public class PhoneNumberUtil {
 		alphaMap.put("Z", 9);
 	}
 	
-    private static final String phoneRegex = "^(?:1[ -]?)?((?:\\(\\d{3}\\)|\\d{3}))[ -]?((?:\\d{3}|[a-z]{3}))[ -]?((?:\\d{4}|[a-z]{4}))$";
-    private final static Pattern phonePattern = Pattern.compile(phoneRegex, Pattern.CASE_INSENSITIVE);
+    private static final String phoneRegex = "^(?:1[ -]?)?((?:\\(\\d{3}\\)|\\d{3}))[ -]?((?:[\\da-z]{3}))[ -]?((?:[\\da-z]{4}))$";
+    private final static Pattern phonePattern = Pattern.compile(phoneRegex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
     
     /*
      * Matches: 2405525009 | (240)552-5009 | 1(240) 552-5009 | 240 JOE-CELL
