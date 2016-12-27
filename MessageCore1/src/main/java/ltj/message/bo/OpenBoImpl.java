@@ -46,8 +46,9 @@ public class OpenBoImpl extends TaskBaseAdaptor {
 				msgInboxVo.setStatusId(MsgStatusCode.OPENED);
 				rowsUpdated = msgInboxDao.updateStatusId(msgInboxVo);
 			}
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Rows updated to Opened status: " + rowsUpdated);
+			}
 		}
 		return Long.valueOf(msgId);
 	}	

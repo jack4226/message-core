@@ -43,8 +43,9 @@ public class CloseBoImpl extends TaskBaseAdaptor {
 			msgId = msgInboxVo.getMsgId();
 			msgInboxVo.setStatusId(MsgStatusCode.CLOSED);
 			int rowsUpdated = msgInboxDao.updateStatusId(msgInboxVo);
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Rows updated to Closed status: " + rowsUpdated);
+			}
 		}
 		return Long.valueOf(msgId);
 	}

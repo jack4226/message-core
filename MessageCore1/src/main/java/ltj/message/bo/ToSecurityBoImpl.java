@@ -34,8 +34,7 @@ public class ToSecurityBoImpl extends TaskBaseAdaptor {
 	 * @return a Long value representing number of addresses the message has
 	 *         been forwarded to.
 	 */
-	public Long process(MessageBean messageBean) throws DataValidationException,
-			MessagingException, JMSException {
+	public Long process(MessageBean messageBean) throws DataValidationException, MessagingException, JMSException {
 		if (isDebugEnabled)
 			logger.debug("Entering process() method...");
 		if (messageBean==null) {
@@ -119,9 +118,9 @@ public class ToSecurityBoImpl extends TaskBaseAdaptor {
 		if (forwardAddrs == null || forwardAddrs.trim().length() == 0) {
 			forwardAddrs = clientVo.getSecurityEmail();
 		}
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Address(es) to forward to: " + forwardAddrs);
-		
+		}
 		if (forwardAddrs == null || forwardAddrs.trim().length() == 0) {
 			throw new DataValidationException("forward address is not provided");
 		}
@@ -140,8 +139,9 @@ public class ToSecurityBoImpl extends TaskBaseAdaptor {
 		mBean.setOriginalMail(messageBean);
 
 		String jmsMsgId = jmsProcessor.writeMsg(mBean);
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Jms Message Id returned: " + jmsMsgId);
+		}
 		return Long.valueOf(addresses.length);
 	}
 }

@@ -69,8 +69,7 @@ public class DeliveryErrorBoImpl extends TaskBaseAdaptor {
 		EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(messageBean.getFinalRcpt());
 		if (msgInboxVo.getToAddrId().longValue() != emailAddrVo.getEmailAddrId()) {
 			logger.warn("Final Recipient <" + messageBean.getFinalRcpt()
-					+ "> is different from original email's TO address <"
-					+ msgInboxVo.getToAddress() + ">");
+					+ "> is different from original email's TO address <" + msgInboxVo.getToAddress() + ">");
 		}
 		
 		// insert into deliveryStatus

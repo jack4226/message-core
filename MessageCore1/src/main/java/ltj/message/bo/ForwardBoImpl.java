@@ -42,8 +42,7 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 	 * @return a Long value representing number of addresses the message is
 	 *         forwarded to.
 	 */
-	public Long process(MessageBean messageBean) throws DataValidationException,
-			MessagingException, JMSException {
+	public Long process(MessageBean messageBean) throws DataValidationException, MessagingException, JMSException {
 		if (isDebugEnabled)
 			logger.debug("Entering process() method...");
 		if (messageBean==null) {
@@ -162,8 +161,9 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 			setTargetToMailSender();
 			String jmsMsgId = jmsProcessor.writeMsg(baos.toByteArray());
 			baos.close();
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Jms Message Id returned: " + jmsMsgId);
+			}
 		} catch (IOException e) {
 			logger.error("IOException caught", e);
 		}

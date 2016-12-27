@@ -11,8 +11,7 @@ public interface TaskBaseBo {
 
 	static final String LF = System.getProperty("line.separator", "\n");
 	
-	public Object process(MessageBean messageBean) throws DataValidationException,
-			MessagingException, JMSException;
+	public Object process(MessageBean messageBean) throws DataValidationException, MessagingException, JMSException;
 	
 	public JmsProcessor getJmsProcessor();
 

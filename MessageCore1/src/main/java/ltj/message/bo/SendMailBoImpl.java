@@ -36,8 +36,7 @@ public class SendMailBoImpl extends TaskBaseAdaptor {
 	 * @return a Long value representing number of addresses the message has
 	 *         been sent to.
 	 */
-	public Long process(MessageBean messageBean) throws DataValidationException,
-			AddressException, JMSException {
+	public Long process(MessageBean messageBean) throws DataValidationException, AddressException, JMSException {
 		if (isDebugEnabled)
 			logger.debug("Entering process() method...");
 		if (messageBean==null) {
@@ -56,13 +55,16 @@ public class SendMailBoImpl extends TaskBaseAdaptor {
 		Address[] addrs = InternetAddress.parse(messageBean.getToAsString());
 		int mailsSent = 0;
 		for (Address addr : addrs) {
-			if (addr == null) continue;
+			if (addr == null) {
+				continue;
+			}
 			EmailAddrVo vo = emailAddrDao.findByAddress(addr.toString());
 			if (StatusIdCode.ACTIVE.equalsIgnoreCase(vo.getStatusId())) {
 				String jmsMsgId = jmsProcessor.writeMsg(messageBean);
 				mailsSent++;
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("Jms Message Id returned: " + jmsMsgId);
+				}
 			}
 		}
 		return Long.valueOf(mailsSent);

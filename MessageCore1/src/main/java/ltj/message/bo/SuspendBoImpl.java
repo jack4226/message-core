@@ -111,8 +111,9 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 				String addr = st2.nextToken();
 				EmailAddrVo emailAddrVo = emailAddrDao.getByAddress(addr);
 				if (emailAddrVo != null && !StatusIdCode.SUSPENDED.equals(emailAddrVo.getStatusId())) {
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("Suspending EmailAddr: " + addr);
+					}
 					emailAddrVo.setStatusId(StatusIdCode.SUSPENDED);
 					emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 					emailAddrVo.setStatusChangeTime(updtTime);
@@ -141,15 +142,15 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 			logger.warn("Failed to find MsgInbox record by MsgId: " + msgId);
 		}
 		else if (!RuleNameType.SEND_MAIL.toString().equals(msgInboxVo.getRuleName())) {
-			logger.error("Message from MsgRefId is not a 'SEND_MAIL', ignored." + LF
-					+ messageBean);
+			logger.error("Message from MsgRefId is not a 'SEND_MAIL', ignored." + LF + messageBean);
 		}
 		else if (msgInboxVo.getToAddrId() != null) { // should always valued
 			long toAddr = msgInboxVo.getToAddrId().longValue();
 			EmailAddrVo emailAddrVo = emailAddrDao.getByAddrId(toAddr);
 			if (!StatusIdCode.SUSPENDED.equals(emailAddrVo.getStatusId())) {
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("Suspending EmailAddr: " + emailAddrVo.getEmailAddr());
+				}
 				emailAddrVo.setStatusId(StatusIdCode.SUSPENDED);
 				emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 				emailAddrVo.setStatusChangeTime(updtTime);

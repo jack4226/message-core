@@ -72,8 +72,7 @@ public class UnsubscribeBoImpl extends TaskBaseAdaptor {
 				int rowsAffected = 0;
 				for (MailingListVo item : mlist) {
 					messageBean.setMailingListId(item.getListId());
-					rowsAffected += subscriptionDao.unsubscribe(emailAddrVo.getEmailAddrId(), item
-							.getListId());
+					rowsAffected += subscriptionDao.unsubscribe(emailAddrVo.getEmailAddrId(), item.getListId());
 					logger.info(addr + " unsubscribed from: " + item.getListId());
 				}
 				if (rowsAffected > 0) {

@@ -59,8 +59,7 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 					}
 				}
 				else {
-					throw new DataValidationException("Record not found by: QUEUE_NAME/"
-							+ taskArguments);
+					throw new DataValidationException("Record not found by: QUEUE_NAME/" + taskArguments);
 				}
 			}
 			else { // should be a JMS template name
@@ -74,8 +73,7 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 		else {
 			setTargetToCsrWorkQueue(); // use default queue
 		}
-		String correlid = "ToCsrBo."
-				+ (messageBean.getMsgRefId() == null ? "-1" : messageBean.getMsgRefId());
+		String correlid = "ToCsrBo." + (messageBean.getMsgRefId() == null ? "-1" : messageBean.getMsgRefId());
 			// set correlation id. To be used in the future.
 		String jmsMsgId = jmsProcessor.writeMsg(messageBean, correlid, false);
 		/*

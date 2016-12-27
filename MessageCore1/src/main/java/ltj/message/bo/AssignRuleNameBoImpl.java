@@ -62,16 +62,16 @@ public class AssignRuleNameBoImpl extends TaskBaseAdaptor {
 		jmsProcessor.setQueueName("mailReaderOutput");
 
 		
-		String correlid = "AssignRuleNameBo."
-				+ (messageBean.getMsgRefId() == null ? "-1" : messageBean.getMsgRefId());
+		String correlid = "AssignRuleNameBo." + (messageBean.getMsgRefId() == null ? "-1" : messageBean.getMsgRefId());
 			// set correlation id. To be used in the future.
 		String jmsMsgId = jmsProcessor.writeMsg(messageBean, correlid, false);
 		/*
 		 * jmsMsgId returned from the 1st message could be used as correlation id
 		 * by the subsequent messages in the same group
 		 */
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Jms Message Id returned: " + jmsMsgId);
+		}
 		return jmsMsgId;
 	}
 }

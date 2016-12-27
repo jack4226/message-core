@@ -31,8 +31,7 @@ public class CsrReplyBoImpl extends TaskBaseAdaptor {
 	 * @return a Long value representing number of addresses the message has
 	 *         been replied to.
 	 */
-	public Long process(MessageBean messageBean) throws DataValidationException,
-			AddressException, JMSException {
+	public Long process(MessageBean messageBean) throws DataValidationException, AddressException, JMSException {
 		if (isDebugEnabled)
 			logger.debug("Entering process() method...");
 		if (messageBean==null) {

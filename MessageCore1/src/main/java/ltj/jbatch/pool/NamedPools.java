@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public final class NamedPools {
 	static final Logger logger = Logger.getLogger(NamedPools.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private final LinkedHashMap<String, ObjectPool> pools;
+	private final Map<String, ObjectPool> pools;
 	private ArrayList<String> nameList;
 	private Set<String> nameSet;
 	private final Hashtable<Object, String> inUseConns;
@@ -117,10 +118,12 @@ public final class NamedPools {
 		}
 		else {
 			ObjectPool pool = (ObjectPool) pools.get(name);
-			if (pool == null)
+			if (pool == null) {
 				throw new IllegalArgumentException("ObjectPool " + name + " does not exist.");
-			else
+			}
+			else {
 				pool.returnItem(conn);
+			}
 		}
 	}
 
@@ -153,8 +156,9 @@ public final class NamedPools {
 			logger.debug("getConnection() - All pools are empty, entering wait()...");
 		try {
 			wait();
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("getConnection() - Notified by return(), exiting the wait()...");
+			}
 		}
 		catch (InterruptedException e) {
 			logger.error("getConnection() - InterruptedException caught. " + new java.util.Date());
@@ -269,10 +273,12 @@ public final class NamedPools {
 	 */
 	public int getDistribution(String name) {
 		ObjectPool pool = getPool(name);
-		if (pool != null)
+		if (pool != null) {
 			return pool.getDistribution();
-		else
+		}
+		else {
 			return -1;
+		}
 	}
 
 	/**
@@ -354,8 +360,9 @@ public final class NamedPools {
 		if ((name = getNextName()) != null) {
 			return getPool(name);
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	/**
@@ -368,8 +375,9 @@ public final class NamedPools {
 			if (useDist) {
 				int range = random.nextInt(distSum);
 				for (int i = 0; i < distArray.length; i++) {
-					if (range < distArray[i])
+					if (range < distArray[i]) {
 						return (String) nameList.get(i);
+					}
 				}
 				throw new RuntimeException("Internal error, contact programming");
 			}

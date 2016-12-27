@@ -2,6 +2,7 @@ package ltj.message.bo;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jms.JMSException;
 import javax.mail.Address;
@@ -58,8 +59,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 	 * @return a Long value representing number of addresses the message has
 	 *         been sent to.
 	 */
-	public Long process(MessageBean msgBean) throws DataValidationException,
-			AddressException, JMSException {
+	public Long process(MessageBean msgBean) throws DataValidationException, AddressException, JMSException {
 		if (isDebugEnabled)
 			logger.debug("Entering process() method...");
 		if (msgBean==null) {
@@ -112,15 +112,17 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		msgClickCountsDao.updateStartTime(msgBean.getMsgId());
 		// extract variables from message body
 		List<String> varNames = RenderUtil.retrieveVariableNames(bodyText);
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Body Variable names: " + varNames);
+		}
 		// extract variables from message subject
 		String subjText = msgBean.getSubject() == null ? "" : msgBean.getSubject();
 		List<String> subjVarNames = RenderUtil.retrieveVariableNames(subjText);
 		if (!subjVarNames.isEmpty()) {
 			varNames.addAll(subjVarNames);
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Subject Variable names: " + subjVarNames);
+			}
 		}
 		// get subscribers
 		List<SubscriptionVo> subs = null;
@@ -148,8 +150,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		return Long.valueOf(mailsSent);
 	}
 	
-	private int constructAndSendMessage(MessageBean msgBean,
-			SubscriptionVo sub, MailingListVo listVo, String bodyText,
+	private int constructAndSendMessage(MessageBean msgBean, SubscriptionVo sub, MailingListVo listVo, String bodyText,
 			List<String> varNames, Boolean saveEmbedEmailId, boolean isText)
 			throws JMSException, DataValidationException {
 		String listId = msgBean.getMailingListId();
@@ -159,8 +160,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		try {
 			if (isText) {
 				CustomerVo custVo = customerDao.getByEmailAddrId(sub.getEmailAddrId());
-				if (custVo != null
-						&& StringUtils.isNotBlank(custVo.getMobilePhone())
+				if (custVo != null && StringUtils.isNotBlank(custVo.getMobilePhone())
 						&& StringUtils.isNotBlank(custVo.getMobileCarrier())) {
 					try {
 						MobileCarrier mc = MobileCarrier.getByValue(custVo.getMobileCarrier());
@@ -196,20 +196,19 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 			continue;
 		}
 		*/
-		HashMap<String, String> variables = new HashMap<String, String>();
+		Map<String, String> variables = new HashMap<String, String>();
 		if (msgBean.getMsgId() != null) {
 			String varName = VariableName.LIST_VARIABLE_NAME.BroadcastMsgId.toString();
 			variables.put(varName, String.valueOf(msgBean.getMsgId()));
 		}
 		logger.info("Sending Broadcast Email to: " + toAddress);
 		TemplateRenderVo renderVo = null;
-		renderVo = RenderUtil.renderEmailText(toAddress, variables, subjText,
-				bodyText, listId, varNames);
+		renderVo = RenderUtil.renderEmailText(toAddress, variables, subjText, bodyText, listId, varNames);
 		// set TO to subscriber address
 		msgBean.setTo(to);
 		String body = renderVo.getBody();
-		if ("text/html".equals(msgBean.getBodyContentType())
-				&& Constants.NO_CODE.equals(sub.getAcceptHtml()) || isText) {
+		if ("text/html".equals(msgBean.getBodyContentType()) && Constants.NO_CODE.equals(sub.getAcceptHtml())
+				|| isText) {
 			// convert to plain text
 			try {
 				body = HtmlConverter.getInstance().convertToText(body);
@@ -231,8 +230,9 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		}
 		// write to mail sender queue
 		String jmsMsgId = jmsProcessor.writeMsg(msgBean);
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Jms Message Id returned: " + jmsMsgId);
+		}
 		int mailsSent = msgBean.getTo().length;
 		return mailsSent;
 	}

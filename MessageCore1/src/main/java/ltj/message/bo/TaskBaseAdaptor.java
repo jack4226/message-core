@@ -60,13 +60,14 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 	}
 	
 	public static List<String> getArgumentList(String taskArguments) {
-		ArrayList<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		if (taskArguments != null) {
 			StringTokenizer st = new StringTokenizer(taskArguments, ",");
 			while (st.hasMoreTokens()) {
 				String token = st.nextToken();
-				if (token != null && token.trim().length() > 0)
+				if (token != null && token.trim().length() > 0) {
 					list.add(token);
+				}
 			}
 		}
 		return list;

@@ -49,8 +49,7 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 	 * @throws AddressException
 	 * @throws JMSException
 	 */
-	public Long process(MessageBean messageBean) throws DataValidationException,
-			AddressException, JMSException {
+	public Long process(MessageBean messageBean) throws DataValidationException, AddressException, JMSException {
 		if (isDebugEnabled)
 			logger.debug("Entering process() method...");
 		if (messageBean==null) {
@@ -117,8 +116,7 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 						messageBean.getMailingListId());
 			}
 			catch (TemplateNotFoundException e) {
-				throw new DataValidationException("Email Template not found by Id: "
-						+ taskArguments);
+				throw new DataValidationException("Email Template not found by Id: " + taskArguments);
 			}
 			replyBean.setSubject(renderVo.getSubject());
 			String body = renderVo.getBody();
