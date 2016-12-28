@@ -1,14 +1,12 @@
 package ltj.message.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ltj.jbatch.app.HostUtil;
@@ -68,11 +66,17 @@ public class MultiUtilsTest {
 	}
 	
 	@Test
-	public void testHostUtil() {
+	public void testHostUtilBasic() {
 		
-		logger.info("Host Address: " + HostUtil.getHostIpAddress());
+		assertNotNull(HostUtil.getHostIpAddress());
 		
-		logger.info("Host Name: " + HostUtil.getHostName());
+		assertNotNull(HostUtil.getHostName());
+		
+	}
+	
+	@Test
+	@Ignore
+	public void testHostUtilAdvanced() {
 		
 		List<String> nmList = HostUtil.getNetworkInterfaceNames(true);
 		if (nmList.isEmpty()) {
@@ -80,6 +84,7 @@ public class MultiUtilsTest {
 			nmList = HostUtil.getNetworkInterfaceNames(false);
 		}
 		assertFalse(nmList.isEmpty());
+		logger.info("Network Interface names: " + nmList);
 		
 		for (String name : nmList) {
 			List<String> ipList = HostUtil.getByNetworkInterfaceName(name);
@@ -87,7 +92,7 @@ public class MultiUtilsTest {
 			logger.info(name + " IPs: " + ipList);
 			List<String> ipv4List = HostUtil.getIPListByNetworkInterfaces();
 			assertFalse(ipv4List.isEmpty());
-			logger.info("IPv4 list: " + ipList);
+			logger.info("IPv4 list: " + ipv4List);
 			boolean found = false;
 			for (String ip : ipList) {
 				if (found == false) {
@@ -97,4 +102,5 @@ public class MultiUtilsTest {
 			assertEquals(true, found);
 		}
 	}
+
 }

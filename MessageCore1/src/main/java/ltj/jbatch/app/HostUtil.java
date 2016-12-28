@@ -10,7 +10,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import ltj.message.util.PrintUtil;
@@ -147,14 +146,19 @@ public class HostUtil {
 		try {
 			NetworkInterface ni = NetworkInterface.getByName(name);
 			if (ni != null) {
+				//logger.info(name + " (Network Interface): " + PrintUtil.prettyPrint(ni, 3));
 				Enumeration<InetAddress> addrs = ni.getInetAddresses();
 				while (addrs.hasMoreElements()) {
-					String addr = addrs.nextElement().toString();
-					addr = StringUtils.replace(addr, "/", "");
-					ipList.add(addr);
+					InetAddress addr = addrs.nextElement();
+					if (addr instanceof Inet6Address) {
+						addr = Inet6Address.getLocalHost();
+					}
+					//logger.info(name + " (InetAddress): " + PrintUtil.prettyPrint(addr, 3));
+					String addrStr = addr.getHostAddress();
+					ipList.add(addrStr);
 				}
 			}
-		} catch (SocketException e) {
+		} catch (SocketException | UnknownHostException e) {
 			logger.error("SocketException caught", e);
 		}
 		return ipList;
