@@ -41,6 +41,7 @@ import ltj.message.dao.outbox.DeliveryStatusDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
 import ltj.message.dao.outbox.MsgSequenceDao;
 import ltj.message.exception.DataValidationException;
+import ltj.message.util.PrintUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.AttachmentsVo;
@@ -258,7 +259,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		}
 		msgVo.setAttachmentSize(attachmentSize);
 		if (isDebugEnabled) {
-			logger.debug("Message to insert" + LF + StringUtil.prettyPrint(msgVo));
+			logger.debug("Message to insert" + LF + PrintUtil.prettyPrint(msgVo));
 		}
 		// save to message_inbox table
 		msgInboxDao.insert(msgVo);

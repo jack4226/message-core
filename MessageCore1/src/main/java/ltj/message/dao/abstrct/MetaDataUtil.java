@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import ltj.message.util.StringUtil;
+import ltj.message.util.PrintUtil;
 import ltj.message.vo.BaseVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.inbox.AttachmentsVo;
@@ -190,7 +190,7 @@ public class MetaDataUtil {
 
 	public static void main(String[] args) {
 		Table msg_inbox = MetaDataUtil.getTableMetaData("MsgInbox");
-		logger.info("Table Metadata:" + StringUtil.prettyPrint(msg_inbox));
+		logger.info("Table Metadata:" + PrintUtil.prettyPrint(msg_inbox));
 		logger.info(buildUpdateStatement("Msg_Inbox", new MsgInboxVo()));
 		logger.info(buildInsertStatement("Mailing_List", new MailingListVo()));
 		logger.info(buildUpdateStatement("Msg_Attachment", new AttachmentsVo()));

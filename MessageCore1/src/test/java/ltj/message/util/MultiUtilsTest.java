@@ -5,10 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import ltj.jbatch.app.HostUtil;
 import ltj.jbatch.common.ProductKey;
 import ltj.message.bean.HtmlConverter;
 
@@ -62,5 +65,36 @@ public class MultiUtilsTest {
 		assertEquals(true, HtmlTags.isHTML("plain no html text <nonhtml abc> tag<a abc>def"));
 		assertEquals(true, HtmlTags.isHTML("plain no html text <!DOCTYPE abcde> tag<aa abc>"));
 		assertEquals(true, HtmlTags.isHTML("<H1 LAST_MODIFIED=\"1194988178\">Bookmarks</H1>"));
+	}
+	
+	@Test
+	public void testHostUtil() {
+		
+		logger.info("Host Address: " + HostUtil.getHostIpAddress());
+		
+		logger.info("Host Name: " + HostUtil.getHostName());
+		
+		List<String> nmList = HostUtil.getNetworkInterfaceNames(true);
+		if (nmList.isEmpty()) {
+			logger.warn("Failed to find a \"Up\" interface!!!!! get all interfaces instead:");
+			nmList = HostUtil.getNetworkInterfaceNames(false);
+		}
+		assertFalse(nmList.isEmpty());
+		
+		for (String name : nmList) {
+			List<String> ipList = HostUtil.getByNetworkInterfaceName(name);
+			assertFalse(ipList.isEmpty());
+			logger.info(name + " IPs: " + ipList);
+			List<String> ipv4List = HostUtil.getIPListByNetworkInterfaces();
+			assertFalse(ipv4List.isEmpty());
+			logger.info("IPv4 list: " + ipList);
+			boolean found = false;
+			for (String ip : ipList) {
+				if (found == false) {
+					found = ipv4List.contains(ip);
+				}
+			}
+			assertEquals(true, found);
+		}
 	}
 }

@@ -138,7 +138,7 @@ public final class ServiceLocator {
 		NamingEnumeration<?> enu = ctx.listBindings(name);
 		while (enu.hasMore()) {
 			Object obj = enu.next();
-			logger.info("Binding : " + StringUtil.prettyPrint(obj));
+			logger.info("Binding : " + PrintUtil.prettyPrint(obj));
 			if (obj instanceof NameClassPair) {
 				NameClassPair ncp = (NameClassPair)obj;
 				//System.out.println("NameClassPair classname/name: "+ncp.getClassName()+"/"+ncp.getName());
