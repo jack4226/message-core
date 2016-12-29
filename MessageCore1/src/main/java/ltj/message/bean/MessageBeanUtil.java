@@ -59,8 +59,9 @@ public final class MessageBeanUtil {
 	 */
 	public static Message createMimeMessage(MessageBean msgBean) throws MessagingException {
 		javax.mail.Session session = Session.getDefaultInstance(System.getProperties());
-		if (debugSession)
+		if (debugSession) {
 			session.setDebug(true);
+		}
 		Message msg = new MimeMessage(session);
 
 		// First Set All Headers from a header List
@@ -72,8 +73,7 @@ public final class MessageBeanUtil {
 					msg.setHeader(header.getName(), header.getValue());
 				}
 				if (isDebugEnabled) {
-					logger.debug("createMimeMessage() - Header Line - " + header.getName() + ": "
-							+ header.getValue());
+					logger.debug("createMimeMessage() - Header Line - " + header.getName() + ": " + header.getValue());
 				}
 			}
 		}
@@ -130,13 +130,14 @@ public final class MessageBeanUtil {
 				String[] values = msg.getHeader(xHeaderName);
 				String valueStr = null;
 				for (int i = 0; values != null && i < values.length; i++) {
-					if (i == 0)
+					if (i == 0) {
 						valueStr = values[i];
-					else
+					}
+					else {
 						valueStr = valueStr + "," + values[i];
+					}
 				}
-				logger.debug("createMimeMessage() - X-Header Line - " + xHeaderName + ": "
-						+ valueStr);
+				logger.debug("createMimeMessage() - X-Header Line - " + xHeaderName + ": " + valueStr);
 			}
 		}
 
@@ -171,8 +172,7 @@ public final class MessageBeanUtil {
 	 * @param msg
 	 * @throws MessagingException
 	 */
-	public static void addBeanFieldsToHeader(MessageBean messageBean, Message msg)
-			throws MessagingException {
+	public static void addBeanFieldsToHeader(MessageBean messageBean, Message msg) throws MessagingException {
 		if (messageBean.getClientId() != null) {
 			msg.setHeader(XHeaderName.XHEADER_CLIENT_ID, messageBean.getClientId());
 		}
@@ -261,8 +261,7 @@ public final class MessageBeanUtil {
 	 * @throws MessagingException
 	 * @throws FileNotFoundException
 	 */
-	public static Message createMimeMessage(String filePath) throws MessagingException,
-			FileNotFoundException {
+	public static Message createMimeMessage(String filePath) throws MessagingException, FileNotFoundException {
 		javax.mail.Session session = Session.getDefaultInstance(System.getProperties());
 		session.setDebug(true);
 		FileInputStream fis = new FileInputStream(filePath);
@@ -272,12 +271,11 @@ public final class MessageBeanUtil {
 		return msg;
 	}
 	
-	private static void constructMultiPart(Multipart mp, BodypartBean aNode, int level)
-			throws MessagingException {
+	private static void constructMultiPart(Multipart mp, BodypartBean aNode, int level) throws MessagingException {
 		
 		if (isDebugEnabled) {
-			logger.debug("constructMultiPart() - MultipartHL - " + StringUtil.getDots(level)
-					+ "Content Type: " + mp.getContentType());
+			logger.debug("constructMultiPart() - MultipartHL - " + StringUtil.getDots(level) + "Content Type: "
+					+ mp.getContentType());
 		}
 		List<BodypartBean> aNodes = aNode.getNodes();
 		for (int i = 0; aNodes != null && i < aNodes.size(); i++) {
@@ -311,8 +309,7 @@ public final class MessageBeanUtil {
 		return reservedHeaders;
 	}
 	
-	private static void constructSinglePart(Part part, BodypartBean aNode, int level)
-			throws MessagingException {
+	private static void constructSinglePart(Part part, BodypartBean aNode, int level) throws MessagingException {
 		// Set All Headers
 		List<MsgHeader> headers = aNode.getHeaders();
 		if (headers != null) {
@@ -322,9 +319,8 @@ public final class MessageBeanUtil {
 					part.setHeader(header.getName(), header.getValue());
 				}
 				if (isDebugEnabled) {
-					logger.debug("constructSinglePart() - Header Line - "
-							+ StringUtil.getDots(level) + header.getName() + ": "
-							+ header.getValue());
+					logger.debug("constructSinglePart() - Header Line - " + StringUtil.getDots(level) + header.getName()
+							+ ": " + header.getValue());
 				}
 			}
 		}
@@ -365,13 +361,14 @@ public final class MessageBeanUtil {
 	 *            loop-back message text
 	 * @throws MessagingException
 	 */
-	public static Message createMimeMessage(MessageBean msgBean, Address failedAddr,
-			String loopbackText) throws MessagingException {
+	public static Message createMimeMessage(MessageBean msgBean, Address failedAddr, String loopbackText)
+			throws MessagingException {
 		if (isDebugEnabled)
 			logger.debug("Entering createMimeMessage() for email loopback");
 		javax.mail.Session session = Session.getDefaultInstance(System.getProperties());
-		if (debugSession)
+		if (debugSession) {
 			session.setDebug(true);
+		}
 		Message msg = new MimeMessage(session);
 
 		Address[] fromAddr = InternetAddress.parse("postmaster@localhost");
@@ -503,8 +500,7 @@ public final class MessageBeanUtil {
 			BodyPart img = new MimeBodyPart();
 			img.setHeader("Content-ID", "0001");
 			img.setDisposition(Part.INLINE);
-			ByteArrayDataSource bads = new ByteArrayDataSource(aNode.getValue(), aNode
-					.getContentType());
+			ByteArrayDataSource bads = new ByteArrayDataSource(aNode.getValue(), aNode.getContentType());
 			img.setDataHandler(new DataHandler(bads));
 			mr.addBodyPart(img);
 		}
@@ -515,12 +511,15 @@ public final class MessageBeanUtil {
 		String outPriority = "2 (Normal)";
 		if (priority != null && priority[0] != null) {
 			String in_p = priority[0].trim();
-			if (in_p.equalsIgnoreCase("HIGH"))
+			if (in_p.equalsIgnoreCase("HIGH")) {
 				outPriority = "1 (High)";
-			else if (in_p.equalsIgnoreCase("NORM"))
+			}
+			else if (in_p.equalsIgnoreCase("NORM")) {
 				outPriority = "2 (Normal)";
-			else if (in_p.equalsIgnoreCase("LOW"))
+			}
+			else if (in_p.equalsIgnoreCase("LOW")) {
 				outPriority = "3 (Low)";
+			}
 		}
 		return (outPriority);
 	}
@@ -535,8 +534,7 @@ public final class MessageBeanUtil {
 			Class<?> parmTypes[] = method.getParameterTypes();
 			int mod = method.getModifiers();
 			if (Modifier.isPublic(mod) && !Modifier.isAbstract(mod) && !Modifier.isStatic(mod)) {
-				if (method.getName().length() > 3 && method.getName().startsWith("get")
-						&& parmTypes.length == 0) {
+				if (method.getName().length() > 3 && method.getName().startsWith("get") && parmTypes.length == 0) {
 					String name = method.getName().substring(3);
 					
 					if (method.getReturnType().getName().equals("java.lang.String")

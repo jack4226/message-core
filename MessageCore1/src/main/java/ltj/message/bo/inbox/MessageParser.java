@@ -147,8 +147,8 @@ public final class MessageParser {
 				byte[] attchValue = (byte[]) aNode.getValue();
 				if (attchValue != null) {
 					if (isDebugEnabled) {
-						logger.debug("parse() - scan message/report status -----<" + LF
-								+ new String(attchValue) + ">-----");
+						logger.debug(
+								"parse() - scan message/report status -----<" + LF + new String(attchValue) + ">-----");
 					}
 					if (ruleName == null) {
 						ruleName = rfcScan.examineBody(new String(attchValue));
@@ -157,14 +157,13 @@ public final class MessageParser {
 					msgBean.setDsnDlvrStat(new String(attchValue));
 				}
 			}
-			else if ((aNode = BodypartUtil.retrieveMDNReceipt(mNode.getBodypartNode(), mNode
-					.getLevel())) != null) {
+			else if ((aNode = BodypartUtil.retrieveMDNReceipt(mNode.getBodypartNode(), mNode.getLevel())) != null) {
 				// got message/disposition-notification
 				byte[] attchValue = (byte[]) aNode.getValue();
 				if (attchValue != null) {
 					if (isDebugEnabled) {
-						logger.debug("parse() - display message/report status -----<" + LF
-								+ new String(attchValue) + ">-----");
+						logger.debug("parse() - display message/report status -----<" + LF + new String(attchValue)
+								+ ">-----");
 					}
 					if (ruleName == null) {
 						ruleName = RuleNameType.MDN_RECEIPT.toString();
@@ -176,8 +175,7 @@ public final class MessageParser {
 			}
 			else {
 				// missing message/* section, try text/plain
-				List<BodypartBean> nodes = BodypartUtil.retrieveReportText(mNode
-						.getBodypartNode(), mNode.getLevel());
+				List<BodypartBean> nodes = BodypartUtil.retrieveReportText(mNode.getBodypartNode(), mNode.getLevel());
 				if (!nodes.isEmpty()) {
 					ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
 					for (BodypartBean bodyPart : nodes) {
@@ -196,8 +194,8 @@ public final class MessageParser {
 					byte[] attchValue = baos.toByteArray();
 					if (attchValue != null) {
 						if (isDebugEnabled) {
-							logger.debug("parse() - scan message/report text -----<" + LF
-									+ new String(attchValue) + ">-----");
+							logger.debug("parse() - scan message/report text -----<" + LF + new String(attchValue)
+									+ ">-----");
 						}
 						if (ruleName == null) {
 							ruleName = rfcScan.examineBody(new String(attchValue));
@@ -239,8 +237,7 @@ public final class MessageParser {
 				if (!StringUtil.isEmpty(rfcHeaders)) {
 					// rfc822 headers
 					if (isDebugEnabled) {
-						logger.debug("parse() - scan rfc822 headers -----<" + LF + rfcHeaders
-								+ ">-----");
+						logger.debug("parse() - scan rfc822 headers -----<" + LF + rfcHeaders + ">-----");
 					}
 					foundAll = parseRfc(rfcHeaders, msgBean);
 					msgBean.setDsnRfc822(rfcHeaders);
@@ -254,8 +251,7 @@ public final class MessageParser {
 					if (mtype.startsWith("text/") || mtype.startsWith("message/")) {
 						if (foundAll == false) {
 							if (isDebugEnabled) {
-								logger.debug("parse() - scan rfc822 text -----<" + LF + rfcText
-										+ ">-----");
+								logger.debug("parse() - scan rfc822 text -----<" + LF + rfcText + ">-----");
 							}
 							parseRfc(rfcText, msgBean);
 							msgBean.setDsnRfc822(sb.toString());
@@ -265,8 +261,7 @@ public final class MessageParser {
 						msgBean.setDsnText(rfcText);
 					}
 					else {
-						msgBean.setDsnText(msgBean.getDsnText() + LF + LF + "RFC822 Text:" + LF
-								+ rfcText);
+						msgBean.setDsnText(msgBean.getDsnText() + LF + LF + "RFC822 Text:" + LF + rfcText);
 					}
 				}
 				if (ruleName == null) {
@@ -279,8 +274,9 @@ public final class MessageParser {
 		if (msgBean.getRfc822() != null && ruleName == null) {
 			// message/rfc822 is present, scan message body for rfc1893 status code
 			// TODO: may cause false positives. need to revisit this.
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("parse() - scan body text -----<" + LF + body + ">-----");
+			}
 			ruleName = rfcScan.examineBody(body);
 		}
 
@@ -291,8 +287,7 @@ public final class MessageParser {
 			for (int i = 0; msgBean.getTo() != null && i < msgBean.getTo().length; i++) {
 				Address to = msgBean.getTo()[i];
 				if (containsNoAddress(msgBean.getToEnvelope(), to)) {
-					if (containsAddress(msgBean.getCc(), to)
-							|| containsAddress(msgBean.getBcc(), to)) {
+					if (containsAddress(msgBean.getCc(), to) || containsAddress(msgBean.getBcc(), to)) {
 						ruleName = RuleNameType.CC_USER.toString();
 						break;
 					}
@@ -323,8 +318,8 @@ public final class MessageParser {
 					msgBean.setOrigRcpt(header.getValue());
 				}
 				else {
-					logger.warn("parse() - " + Constants.VERP_BOUNCE_ADDR_XHEADER
-							+ " Header found, but it has no value.");
+					logger.warn(
+							"parse() - " + Constants.VERP_BOUNCE_ADDR_XHEADER + " Header found, but it has no value.");
 				}
 				if (ruleName == null) {
 					// a bounced mail shouldn't have Return-Path
@@ -342,8 +337,9 @@ public final class MessageParser {
 		// (Mailing List address)
 		String clientId = ruleLoader.findClientIdByAddr(msgBean.getToAsString());
 		if (clientId != null) {
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("parse() - Client Id found by matching TO address: " + clientId);
+			}
 			if (StringUtil.isEmpty(msgBean.getClientId())) {
 				msgBean.setClientId(clientId);
 			}
@@ -360,22 +356,19 @@ public final class MessageParser {
 			if (addrVo != null) {
 				if (RuleNameType.SEND_MAIL.toString().equals(addrVo.getRuleName())) {
 					// only if the original message is an "sent" message
-					if (StringUtil.isEmpty(msgBean.getFinalRcpt())
-							&& StringUtil.isEmpty(msgBean.getOrigRcpt())) {
+					if (StringUtil.isEmpty(msgBean.getFinalRcpt()) && StringUtil.isEmpty(msgBean.getOrigRcpt())) {
 						// and nothing was found from delivery status or rfc822
 						msgBean.setFinalRcpt(addrVo.getEmailAddr());
 					}
 				}
 			}
 			else {
-				logger.warn("parse() - EmailAddr record not found by MsgRefId: "
-						+ msgBean.getMsgRefId());
+				logger.warn("parse() - EmailAddr record not found by MsgRefId: " + msgBean.getMsgRefId());
 			}
 			// find original client id
 			MsgInboxVo origVo = msgInboxDao.getByPrimaryKey(msgBean.getMsgRefId());
 			if (origVo == null) { // could be deleted by User or purged by Purge routine
-				logger.warn("parse() - MsgInbox record not found by MsgId: "
-						+ msgBean.getMsgRefId());
+				logger.warn("parse() - MsgInbox record not found by MsgId: " + msgBean.getMsgRefId());
 			}
 			else {
 				if (StringUtil.isEmpty(msgBean.getClientId())) {
@@ -397,8 +390,7 @@ public final class MessageParser {
 		// message body for final recipient using known patterns.
 		if (RuleNameType.HARD_BOUNCE.toString().equals(ruleName)
 				|| RuleNameType.SOFT_BOUNCE.toString().equals(ruleName)) {
-			if (StringUtil.isEmpty(msgBean.getFinalRcpt())
-					&& StringUtil.isEmpty(msgBean.getOrigRcpt())) {
+			if (StringUtil.isEmpty(msgBean.getFinalRcpt()) && StringUtil.isEmpty(msgBean.getOrigRcpt())) {
 				String finalRcpt = BounceAddressFinder.getInstance().find(body);
 				if (!StringUtil.isEmpty(finalRcpt)) {
 					logger.info("parse() - Final Recipient found from message body: " + finalRcpt);
@@ -466,8 +458,9 @@ public final class MessageParser {
 		String line = null;
 		try {
 			while ((line = br.readLine()) != null) {
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("parseDsn() - Line: " + line);
+				}
 				line = line.trim();
 				if (line.toLowerCase().startsWith("final-recipient:")) {
 					// "Final-Recipient" ":" address-type ";" generic-address
@@ -489,8 +482,7 @@ public final class MessageParser {
 						String token = st.nextToken().trim();
 						if (token.indexOf("@") > 0) {
 							msgBean.setOrigRcpt(token);
-							logger.info("parseDsn() - Original_Recipient found: ==>" + token
-									+ "<==");
+							logger.info("parseDsn() - Original_Recipient found: ==>" + token + "<==");
 							break;
 						}
 					}
@@ -508,8 +500,9 @@ public final class MessageParser {
 					 */ 
 					String action = line.substring(7).trim();
 					msgBean.setDsnAction(action);
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("parseDsn() - Action found: ==>" + action + "<==");
+					}
 				}
 				else if (line.toLowerCase().startsWith("status:")) {
 					// "Status" ":" status-code (digit "." 1*3digit "." 1*3 digit)
@@ -518,15 +511,17 @@ public final class MessageParser {
 						status = status.substring(0, status.indexOf(" "));
 					}
 					msgBean.setDsnStatus(status);
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("parseDsn() - Status found: ==>" + status + "<==");
+					}
 				}
 				else if (line.toLowerCase().startsWith("diagnostic-code:")) {
 					// "Diagnostic-Code" ":" diagnostic-code
 					String diagcode = line.substring(16).trim();
 					msgBean.setDiagnosticCode(diagcode);
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("parseDsn() - Diagnostic-Code: found: ==>" + diagcode + "<==");
+					}
 				}
 			}
 		}
@@ -555,8 +550,9 @@ public final class MessageParser {
 		String line = null;
 		try {
 			while ((line = br.readLine()) != null) {
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("parseRfc() - Line: " + line);
+				}
 				line = line.trim();
 				if (line.toLowerCase().startsWith("to:")) {
 					// "To" ":" generic-address
@@ -565,11 +561,10 @@ public final class MessageParser {
 						msgBean.setFinalRcpt(token);
 					}
 					else if (EmailAddrUtil.compareEmailAddrs(msgBean.getFinalRcpt(), token) != 0) {
-						logger.error("parseRfc() - Final_Rcpt from RFC822: " + token
-								+ " is different from DSN's: " + msgBean.getFinalRcpt());
+						logger.error("parseRfc() - Final_Rcpt from RFC822: " + token + " is different from DSN's: "
+								+ msgBean.getFinalRcpt());
 					}
-					logger.info("parseRfc() - Final_Recipient(RFC822 To) found: ==>" + token
-							+ "<==");
+					logger.info("parseRfc() - Final_Recipient(RFC822 To) found: ==>" + token + "<==");
 					gotToAddr = true;
 				}
 				else if (line.toLowerCase().startsWith("subject:")) {
@@ -578,8 +573,7 @@ public final class MessageParser {
 					if (StringUtil.isEmpty(msgBean.getOrigSubject())) {
 						msgBean.setOrigSubject(token);
 					}
-					logger.info("parseRfc() - Original_Subject(RFC822 To) found: ==>" + token
-							+ "<==");
+					logger.info("parseRfc() - Original_Subject(RFC822 To) found: ==>" + token + "<==");
 					gotSubj = true;
 				}
 				else if (line.toLowerCase().startsWith("message-id:")) {
@@ -588,8 +582,7 @@ public final class MessageParser {
 					if (StringUtil.isEmpty(msgBean.getSmtpMessageId())) {
 						msgBean.setRfcMessageId(token);
 					}
-					logger.info("parseRfc() - Smtp Message-Id(RFC822 To) found: ==>" + token
-							+ "<==");
+					logger.info("parseRfc() - Smtp Message-Id(RFC822 To) found: ==>" + token + "<==");
 					gotSmtpId = true;
 				}
 				if (gotToAddr && gotSubj && gotSmtpId) {
@@ -649,8 +642,8 @@ public final class MessageParser {
 				logger.info("parseEmailId() - MsgRefId found: " + msgRefId);
 			}
 			catch (Exception e) { // should never happen
-				logger.error("parseEmailId() - Programming Error, invalid EmailId: " + emailId
-						+ ", please investigate", e);
+				logger.error("parseEmailId() - Programming Error, invalid EmailId: " + emailId + ", please investigate",
+						e);
 				throw new NumberFormatException(e.toString());
 			}
 		}

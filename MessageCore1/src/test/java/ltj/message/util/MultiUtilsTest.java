@@ -48,7 +48,7 @@ public class MultiUtilsTest {
 			byte[] bytes = FileUtil.loadFromFile("htmldocs/","index.html");
 			HtmlConverter parser = HtmlConverter.getInstance();
 			String text = parser.convertToText(new String(bytes));
-			//System.out.println(text);
+			System.out.println(text);
 			assertTrue(StringUtils.startsWith(text.trim(), "Java Agent Container"));
 			assertTrue(StringUtils.contains(text, "low level JMS logic"));
 			assertTrue(StringUtils.endsWith(StringUtil.trimRight(text), "Agent's runtime <status>status."));

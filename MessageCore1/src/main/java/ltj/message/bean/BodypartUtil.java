@@ -42,8 +42,7 @@ public final class BodypartUtil implements Serializable {
 		return msgBean.getAttachments();
 	}
 
-	private static List<MessageNode> retrieveAttachments(BodypartBean aNode, MessageBean msgBean,
-			int level) {
+	private static List<MessageNode> retrieveAttachments(BodypartBean aNode, MessageBean msgBean, int level) {
 		if (level <= 1) {
 			msgBean.setRfc822(null);
 			msgBean.setReport(null);
@@ -59,8 +58,8 @@ public final class BodypartUtil implements Serializable {
 			String mtype = subNode.getMimeType();
 
 			String nullInd = subNode.getValue() == null ? "null" : "not null";
-			logger.info("retrieveAttachments(): level=" + level + ", mtype=" + mtype + ", "
-					+ ", disp=" + disp + ", desc=" + desc + ", " + nullInd);
+			logger.info("retrieveAttachments(): level=" + level + ", mtype=" + mtype + ", " + ", disp=" + disp
+					+ ", desc=" + desc + ", " + nullInd);
 
 			if (Part.ATTACHMENT.equalsIgnoreCase(disp)
 					|| (Part.INLINE.equalsIgnoreCase(disp) && desc != null)
@@ -77,10 +76,12 @@ public final class BodypartUtil implements Serializable {
 			}
 
 			// save the node that contains status report
-			if (mtype.startsWith("message/rfc822") && msgBean.getRfc822() == null)
+			if (mtype.startsWith("message/rfc822") && msgBean.getRfc822() == null) {
 				msgBean.setRfc822(new MessageNode(subNode, level));
-			if (mtype.startsWith("multipart/report") && msgBean.getReport() == null)
+			}
+			if (mtype.startsWith("multipart/report") && msgBean.getReport() == null) {
 				msgBean.setReport(new MessageNode(subNode, level));
+			}
 		}
 
 		// root node could also be multipart/report content type
@@ -88,8 +89,8 @@ public final class BodypartUtil implements Serializable {
 		if (mtype.startsWith("multipart/report") && msgBean.getReport() == null) {
 			String disp = aNode.getDisposition();
 			String desc = aNode.getDescription();
-			logger.info("retrieveAttachments(): level=" + (level - 1) + ", mtype=" + mtype
-					+ ", disp=" + disp + ", desc=" + desc);
+			logger.info("retrieveAttachments(): level=" + (level - 1) + ", mtype=" + mtype + ", disp=" + disp
+					+ ", desc=" + desc);
 			msgBean.setReport(new MessageNode(aNode, level));
 		}
 
@@ -133,11 +134,9 @@ public final class BodypartUtil implements Serializable {
 			BodypartBean subNode = sNode.get(0); // only the first node
 			String mtype = subNode.getMimeType();
 			String disp = subNode.getDisposition();
-			logger.info("retrieveRFC822Text() - proceeded to level " + level + ", mtype="
-					+ mtype + ", disp=" + disp);
+			logger.info("retrieveRFC822Text() - proceeded to level " + level + ", mtype=" + mtype + ", disp=" + disp);
 			if (mtype.startsWith("text")) {
-				logger.info("retrieveRFC822Text() - found the child bodypart from level "
-						+ level);
+				logger.info("retrieveRFC822Text() - found the child bodypart from level " + level);
 				logRfcHeadersAndText(subNode);
 				return subNode;
 			}
@@ -149,11 +148,9 @@ public final class BodypartUtil implements Serializable {
 			logger.info("retrieveRFC822Text() - missing the lower level node, check if it's a text/rfc822-headers.");
 			String mtype = aNode.getMimeType();
 			String disp = aNode.getDisposition();
-			logger.info("retrieveRFC822Text() - proceeded to level " + level + ", mtype="
-					+ mtype + ", disp=" + disp);
+			logger.info("retrieveRFC822Text() - proceeded to level " + level + ", mtype=" + mtype + ", disp=" + disp);
 			if (mtype.startsWith("text/rfc822-headers")) {
-				logger.info("retrieveRFC822Text() - found the text/rfc822-headers from level "
-								+ level);
+				logger.info("retrieveRFC822Text() - found the text/rfc822-headers from level " + level);
 				logRfcHeadersAndText(aNode);
 				return aNode;
 			}
@@ -199,11 +196,9 @@ public final class BodypartUtil implements Serializable {
 			BodypartBean subNode = sNode.get(i);
 			String mtype = subNode.getMimeType();
 			String disp = subNode.getDisposition();
-			logger.info("retrieveDlvrStatus() - proceeded to level " + level + ", mtype="
-					+ mtype + ", disp=" + disp);
+			logger.info("retrieveDlvrStatus() - proceeded to level " + level + ", mtype=" + mtype + ", disp=" + disp);
 			if (mtype.startsWith("message/delivery-status")) {
-				logger.info("retrieveDlvrStatus() - found message/delivery-status bodypart from level "
-								+ level);
+				logger.info("retrieveDlvrStatus() - found message/delivery-status bodypart from level " + level);
 				if (isRfcReportEnabled) {
 					/* write to report file */
 					byte[] btext = (byte[]) subNode.getValue();
@@ -233,11 +228,10 @@ public final class BodypartUtil implements Serializable {
 			BodypartBean subNode = sNode.get(i);
 			String mtype = subNode.getMimeType();
 			String disp = subNode.getDisposition();
-			logger.info("retrieveMDNReceipt() - proceeded to level " + level + ", mtype=" + mtype
-					+ ", disp=" + disp);
+			logger.info("retrieveMDNReceipt() - proceeded to level " + level + ", mtype=" + mtype + ", disp=" + disp);
 			if (mtype.startsWith("message/disposition-notification")) {
-				logger.info("retrieveMDNReceipt() - found message/disposition-notification "
-						+ "bodypart from level " + level);
+				logger.info("retrieveMDNReceipt() - found message/disposition-notification " + "bodypart from level "
+						+ level);
 				if (isRfcReportEnabled) {
 					/* write to report file */
 					byte[] btext = (byte[]) subNode.getValue();
@@ -247,8 +241,7 @@ public final class BodypartUtil implements Serializable {
 						rfcLogger.info("==============disposition-notification END==============");
 					}
 				}
-				return subNode; // return disposition-notification if one is
-								// found
+				return subNode; // return disposition-notification if one is found
 			}
 		}
 		//logger.info("retrieveMDNReceipt() - missing the lower level node or the lower level node has no text.");
@@ -269,11 +262,9 @@ public final class BodypartUtil implements Serializable {
 			BodypartBean subNode = sNode.get(i);
 			String mtype = subNode.getMimeType();
 			String disp = subNode.getDisposition();
-			logger.info("retrieveReportText() - proceeded to level " + level + ", mtype="
-					+ mtype + ", disp=" + disp);
+			logger.info("retrieveReportText() - proceeded to level " + level + ", mtype=" + mtype + ", disp=" + disp);
 			if (mtype.startsWith("text") && !mtype.startsWith("text/rfc822-headers")) {
-				logger.info("retrieveReportText() - found " + mtype + " bodypart from level "
-						+ level);
+				logger.info("retrieveReportText() - found " + mtype + " bodypart from level " + level);
 				if (isRfcReportEnabled) {
 					/* write to report file */
 					byte[] btext = (byte[]) subNode.getValue();
@@ -302,11 +293,10 @@ public final class BodypartUtil implements Serializable {
 			BodypartBean subNode = sNode.get(i);
 			String mtype = subNode.getMimeType();
 			String disp = subNode.getDisposition();
-			logger.info("retrieveMessageRFC822() - proceeded to level " + level + ", mtype="
-					+ mtype + ", disp=" + disp);
+			logger.info(
+					"retrieveMessageRFC822() - proceeded to level " + level + ", mtype=" + mtype + ", disp=" + disp);
 			if (mtype.startsWith("message/rfc822")) {
-				logger.info("retrieveMessageRFC822() - found message/rfc822 section from level "
-						+ level);
+				logger.info("retrieveMessageRFC822() - found message/rfc822 section from level " + level);
 				return subNode;
 			}
 		}
@@ -326,11 +316,10 @@ public final class BodypartUtil implements Serializable {
 			BodypartBean subNode = sNode.get(i);
 			String mtype = subNode.getMimeType();
 			String disp = subNode.getDisposition();
-			logger.info("retrieveRFC822Headers() - proceeded to level " + level + ", mtype="
-					+ mtype + ", disp=" + disp);
+			logger.info(
+					"retrieveRFC822Headers() - proceeded to level " + level + ", mtype=" + mtype + ", disp=" + disp);
 			if (mtype.startsWith("text/rfc822-headers")) {
-				logger.info("retrieveRFC822Headers() - found message/rfc822 section from level "
-						+ level);
+				logger.info("retrieveRFC822Headers() - found message/rfc822 section from level " + level);
 				return subNode;
 			}
 		}

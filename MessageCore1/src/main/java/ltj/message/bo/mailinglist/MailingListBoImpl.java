@@ -72,8 +72,8 @@ public class MailingListBoImpl implements MailingListBo {
 	 * @throws TemplateNotFoundException
 	 * @throws DataValidationException
 	 */
-	public int broadcast(String templateId) throws OutOfServiceException,
-			TemplateNotFoundException, DataValidationException {
+	public int broadcast(String templateId)
+			throws OutOfServiceException, TemplateNotFoundException, DataValidationException {
 		EmailTemplateVo vo = emailTemplateDao.getByTemplateId(templateId);
 		if (vo == null) {
 			throw new TemplateNotFoundException("Could not find Template by Id: " + templateId);
@@ -95,8 +95,8 @@ public class MailingListBoImpl implements MailingListBo {
 	 * @throws TemplateNotFoundException
 	 * @throws DataValidationException
 	 */
-	public int broadcast(String templateId, String listId) throws OutOfServiceException,
-			TemplateNotFoundException, DataValidationException {
+	public int broadcast(String templateId, String listId)
+			throws OutOfServiceException, TemplateNotFoundException, DataValidationException {
 		EmailTemplateVo vo = emailTemplateDao.getByTemplateId(templateId);
 		if (vo == null) {
 			throw new TemplateNotFoundException("Could not find Template by Id: " + templateId);
@@ -196,8 +196,7 @@ public class MailingListBoImpl implements MailingListBo {
 
 	final static String LF = System.getProperty("line.separator", "\n");
 	
-	private MessageBean createMessageBean(EmailTemplateVo tmpltVo)
-			throws DataValidationException {
+	private MessageBean createMessageBean(EmailTemplateVo tmpltVo) throws DataValidationException {
 		if (isDebugEnabled)
 			logger.debug("Entering createMessageBean() method...");
 
@@ -329,8 +328,7 @@ public class MailingListBoImpl implements MailingListBo {
 		return recsUpdated;
 	}
 
-	private int addOrRemove(String emailAddr, String listId, boolean addToList)
-			throws DataValidationException {
+	private int addOrRemove(String emailAddr, String listId, boolean addToList) throws DataValidationException {
 		// validate email address and list id
 		validateInput(emailAddr, listId);
 		// retrieve/insert email address from/into EmailAddr table
@@ -346,8 +344,7 @@ public class MailingListBoImpl implements MailingListBo {
 		return rowsAffected;
 	}
 
-	private int optInOrConfirm(String emailAddr, String listId, boolean confirm)
-			throws DataValidationException {
+	private int optInOrConfirm(String emailAddr, String listId, boolean confirm) throws DataValidationException {
 		// validate email address and list id
 		validateInput(emailAddr, listId);
 		// opt-in or confirm subscription
@@ -363,8 +360,7 @@ public class MailingListBoImpl implements MailingListBo {
 		return rowsAffected;
 	}
 
-	private void validateInput(String emailAddr, String listId)
-			throws DataValidationException {
+	private void validateInput(String emailAddr, String listId) throws DataValidationException {
 		// validate email address
 		if (StringUtil.isEmpty(emailAddr)) {
 			throw new DataValidationException("Email Address is not valued.");

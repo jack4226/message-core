@@ -55,8 +55,9 @@ public class TestProcessor implements Processor {
 						logger.info("property name:" + enu.nextElement());
 					}
 				}
-				else
+				else {
 					logger.error("Message received was not a ObjectMessage/TextMessage.");
+				}
 			}
 			else if (req != null && req instanceof Socket) {
 				skt = (Socket) req;
@@ -120,9 +121,9 @@ public class TestProcessor implements Processor {
 
 			clientReceive = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
 
-			if (interactive)
+			if (interactive) {
 				clientSend.println("+HELO " + myAddr);
-
+			}
 			while ((nextLine = clientReceive.readLine()) != null) {
 				try {
 					if (nextLine.equalsIgnoreCase("QUIT"))
@@ -138,12 +139,14 @@ public class TestProcessor implements Processor {
 				clientSend.flush();
 			} // end of while
 
-			if (interactive)
+			if (interactive) {
 				clientSend.println("+BYE");
+			}
 		}
 		catch (java.io.InterruptedIOException e) {
-			if (clientSend != null)
+			if (clientSend != null) {
 				clientSend.println("+SOCKET TIMED OUT, BYE");
+			}
 			logger.error("TestProcessor.process(): Socket Timed out", e);
 		}
 		catch (IOException e) {
@@ -151,12 +154,15 @@ public class TestProcessor implements Processor {
 		}
 		finally {
 			try {
-				if (clientSend != null)
+				if (clientSend != null) {
 					clientSend.close();
-				if (clientReceive != null)
+				}
+				if (clientReceive != null) {
 					clientReceive.close();
-				if (mySocket != null)
+				}
+				if (mySocket != null) {
 					mySocket.close();
+				}
 			}
 			catch (IOException e) {
 				logger.error("TestProcessor.process(): Failed I/O", e);
@@ -189,8 +195,9 @@ public class TestProcessor implements Processor {
 			}
 		}
 		catch (java.io.InterruptedIOException e) {
-			if (clientSend != null)
+			if (clientSend != null) {
 				clientSend.println("+SOCKET TIMED OUT, BYE");
+			}
 			logger.error("TestProcessor.process(): Socket Timed out", e);
 		}
 		catch (Exception e) {
@@ -198,12 +205,15 @@ public class TestProcessor implements Processor {
 		}
 		finally {
 			try {
-				if (clientSend != null)
+				if (clientSend != null) {
 					clientSend.close();
-				if (clientReceive != null)
+				}
+				if (clientReceive != null) {
 					clientReceive.close();
-				if (mySocket != null)
+				}
+				if (mySocket != null) {
 					mySocket.close();
+				}
 			}
 			catch (IOException e) {
 				logger.error("TestProcessor.process(): Failed I/O", e);

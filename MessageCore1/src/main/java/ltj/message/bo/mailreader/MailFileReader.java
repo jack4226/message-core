@@ -1,8 +1,5 @@
 package ltj.message.bo.mailreader;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,6 +19,7 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bean.MessageNode;
 import ltj.message.constant.CarrierCode;
+import ltj.message.util.FileUtil;
 import ltj.spring.util.SpringUtil;
 
 public class MailFileReader {
@@ -30,11 +28,11 @@ public class MailFileReader {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	public static void main(String[] args){
-		String filePath = "F:/pkgs/SavedMailStreams/aim/mail17_bounced.txt";
-		filePath = "F:/pkgs/SavedMailStreams/aim/mail18.txt";
-		//filePath = "F:/pkgs/workspace/MailReader/data/rfc3798_MDN_sample.txt";
-		//filePath = "F:/pkgs/workspace/MailReader/data/rfc3464_DSN_sample4.txt";
-		filePath = "F:/pkgs/workspace/MailReader/data/hard_bounce.txt";
+		String filePath = "SavedMailStreams/aim/mail17_bounced.txt";
+		filePath = "SavedMailStreams/aim/mail18.txt";
+		//filePath = "/workspace/MailReader/data/rfc3798_MDN_sample.txt";
+		//filePath = /workspace/MailReader/data/rfc3464_DSN_sample4.txt";
+		//filePath = "F:/pkgs/workspace/MailReader/data/hard_bounce.txt";
 		try {
 			MailFileReader fReader = new MailFileReader();
 			//MessageBean msgBean = fReader.start(filePath);
@@ -80,22 +78,8 @@ public class MailFileReader {
 	}
 	
 	private MessageBean readMessageBean(String filePath) throws MessagingException, IOException {
-		byte[] mailStream = readFromFile(filePath);
+		byte[] mailStream = FileUtil.loadFromFile(filePath);
 		MessageBean msgBean = MessageBeanUtil.createBeanFromStream(mailStream);
 		return msgBean;
-	}
-	
-	private byte[] readFromFile(String filePath) throws IOException {
-		File file = new File(filePath);
-		if (file.exists() && file.isFile()) {
-			FileInputStream fis = new FileInputStream(file);
-			int fileLen = fis.available();
-			logger.info("File Length: " + fileLen);
-			byte[] fileContent = new byte[fileLen];
-			fis.read(fileContent);
-			fis.close();
-			return fileContent;
-		}
-		throw new FileNotFoundException("File " + filePath + " not found");
 	}
 }

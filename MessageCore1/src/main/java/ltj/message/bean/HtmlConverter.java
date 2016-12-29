@@ -53,8 +53,9 @@ public final class HtmlConverter implements java.io.Serializable {
 		sb.setLinks(showUrl); // default is false, true to show URL links
 		sb.setReplaceNonBreakingSpaces(true); // default is true
 		parser.visitAllNodesWith(sb); // TODO: fix it
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("Html to Plain text conversion completed.");
+		}
 		return sb.getStrings();
 	}
 

@@ -1,6 +1,7 @@
 package ltj.message.bo.mailinglist;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import ltj.message.bo.template.RenderVariable;
 import ltj.message.constant.Constants;
@@ -14,9 +15,9 @@ public final class MailingListUtil {
 		// static only
 	}
 	
-	public static HashMap<String, RenderVariable> renderListVariables(MailingListVo listVo,
-			String subscriberAddress, long subscriberAddressId) {
-		HashMap<String, RenderVariable> variables = new HashMap<String, RenderVariable>();
+	public static Map<String, RenderVariable> renderListVariables(MailingListVo listVo, String subscriberAddress,
+			long subscriberAddressId) {
+		Map<String, RenderVariable> variables = new HashMap<String, RenderVariable>();
 		String varName = null;
 		RenderVariable var = null;
 		

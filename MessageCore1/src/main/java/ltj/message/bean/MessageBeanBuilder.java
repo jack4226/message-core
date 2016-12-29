@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,15 +86,7 @@ public final class MessageBeanBuilder {
 		}
 		
 		if (hostName == null) {
-			try {
-				hostName = java.net.InetAddress.getLocalHost().getHostName();
-				if (isDebugEnabled)
-					logger.debug("Host Name: " + hostName);
-			}
-			catch (UnknownHostException e) {
-				logger.warn("UnknownHostException caught, use localhost as host name", e);
-				hostName = "localhost";
-			}
+			hostName = HostUtil.getHostName(); 
 		}
 		
 		MessageBean msgBean = new MessageBean();
@@ -169,8 +160,9 @@ public final class MessageBeanBuilder {
 			while (enu.hasMoreElements()) {
 				Header hdr = (Header) enu.nextElement();
 				String name = hdr.getName();
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("header line: " + name + ": " + hdr.getValue());
+				}
 				if ("Message-ID".equalsIgnoreCase(name)) {
 					messageId= hdr.getValue();
 					logger.info(">>>>>Message-ID retrieved: " + messageId);
@@ -194,8 +186,7 @@ public final class MessageBeanBuilder {
 		}
 		// display Received Date
 		if (isDebugEnabled) {
-			logger.info("Email Received Time: "
-					+ (receivedTime != null ? receivedTime.toString() : "UNKNOWN")
+			logger.info("Email Received Time: " + (receivedTime != null ? receivedTime.toString() : "UNKNOWN")
 					+ ", SERVER-TIME: " + rightNow.getTime().toString());
 		}
 
@@ -215,8 +206,9 @@ public final class MessageBeanBuilder {
 			int i;
 			String tmp_to = null;
 			for (i = received.length - 1; i >= 0; i--) {
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("Received: " + received[i]);
+				}
 				if ((tmp_to = analyzeReceived(received[i])) != null) {
 					// rely on InternetAddress.parse() to perform syntax check.
 					real_to = tmp_to;
@@ -224,16 +216,14 @@ public final class MessageBeanBuilder {
 					break; // exit loop
 				}
 			}
-			if (tmp_to != null && toAddrDomain != null
-					&& toAddrDomain.indexOf(getDomain(real_to)) < 0) {
+			if (tmp_to != null && toAddrDomain != null && toAddrDomain.indexOf(getDomain(real_to)) < 0) {
 				// domain matching string is present in MailBoxes record, scan
 				// Received headers for address with a matching domain.
 				for (int j = i - 1; j >= 0; j--) {
 					if ((tmp_to = analyzeReceived(received[j])) != null) {
 						if (toAddrDomain.indexOf(getDomain(tmp_to)) >= 0) {
 							real_to = tmp_to;
-							logger.info("found \"for\" with matching domain in Received Headers: "
-									+ real_to);
+							logger.info("found \"for\" with matching domain in Received Headers: " + real_to);
 							break; // exit loop
 						}
 					}
@@ -268,9 +258,9 @@ public final class MessageBeanBuilder {
 			logger.error("MessagingException caught from getFrom()", e);
 		}
 		msgBean.setFrom(from);
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Email From Address: " + msgBean.getFromAsString());
-
+		}
 		// TO from Received Headers
 		if (real_to != null && real_to.trim().length() > 0) {
 			// found TO address from header
@@ -362,8 +352,9 @@ public final class MessageBeanBuilder {
 			if ((addr = msg.getRecipients(RecipientType.CC)) != null && addr.length > 0) {
 				cc = addr;
 				msgBean.setCc(cc);
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("Email CC Address: " + msgBean.getCcAsString());
+				}
 			}
 		}
 		catch (MessagingException e) {
@@ -375,8 +366,9 @@ public final class MessageBeanBuilder {
 			if ((addr = msg.getRecipients(RecipientType.BCC)) != null && addr.length > 0) {
 				bcc = addr;
 				msgBean.setBcc(bcc);
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("Email BCC Address: " + msgBean.getBccAsString());
+				}
 			}
 		}
 		catch (MessagingException e) {
@@ -444,8 +436,7 @@ public final class MessageBeanBuilder {
 	 *            JavaMail message
 	 * @throws MessagingException
 	 */
-	private static void addXHeadersToBean(MessageBean msgBean, Message mimeMsg)
-			throws MessagingException {
+	private static void addXHeadersToBean(MessageBean msgBean, Message mimeMsg) throws MessagingException {
 		// check X Headers and populate MessageBean properties
 		String[] clientId = mimeMsg.getHeader(XHeaderName.XHEADER_CLIENT_ID);
 		if (clientId != null && clientId.length > 0) {
@@ -471,8 +462,7 @@ public final class MessageBeanBuilder {
 	 * @param level -
 	 *            attachment level
 	 */
-	private static void processAttachment(BodypartBean aNode, Part p, MessageBean msgBean,
-			int level) {
+	private static void processAttachment(BodypartBean aNode, Part p, MessageBean msgBean, int level) {
 		/**
 		 * "javax.mail.MessagingException: Missing start boundary" was caught by
 		 * mp.getCount() during the MultiPart read of an email bounced from
@@ -597,8 +587,7 @@ public final class MessageBeanBuilder {
 			}
 			else if (p.isMimeType("multipart/*")) {
 				// multipart attachment(s) detected
-				logger.info("processAttc: level " + level + ", Recursive Multipart: "
-								+ contentType);
+				logger.info("processAttc: level " + level + ", Recursive Multipart: " + contentType);
 				Multipart mp = (Multipart) p.getContent();
 				int count = mp.getCount();
 				for (int i = 0; i < count; i++) {
@@ -644,8 +633,7 @@ public final class MessageBeanBuilder {
 				}
 				else if (o instanceof InputStream) {
 					// stream type of section
-					logger.info("processAttc: level " + level + ", Java InputStream Content type "
-							+ contentType);
+					logger.info("processAttc: level " + level + ", Java InputStream Content type " + contentType);
 					InputStream is = (InputStream) o;
 					aNode.setValue((InputStream) is);
 					if (aNode.getValue() != null) {
@@ -654,8 +642,7 @@ public final class MessageBeanBuilder {
 				}
 				else if (o != null) {
 					// unknown Java type, write it out as a string anyway.
-					logger.error("processAttc: level " + level + ", Unknown Object type: "
-							+ o.toString());
+					logger.error("processAttc: level " + level + ", Unknown Object type: " + o.toString());
 					aNode.setValue((String) o.toString());
 					if (aNode.getValue() != null) {
 						msgBean.getComponentsSize().add(Integer.valueOf(((byte[]) aNode.getValue()).length));
@@ -706,8 +693,7 @@ public final class MessageBeanBuilder {
 				aNode.put(subNode);
 				setAnodeValue(subNode, p);
 				if (subNode.getValue() != null) {
-					msgBean.getComponentsSize().add(
-							Integer.valueOf(((byte[]) subNode.getValue()).length));
+					msgBean.getComponentsSize().add(Integer.valueOf(((byte[]) subNode.getValue()).length));
 				}
 				subNode.setDisposition(aNode.getDisposition());
 				subNode.setDescription(aNode.getDescription());
@@ -715,8 +701,7 @@ public final class MessageBeanBuilder {
 			else {
 				setAnodeValue(aNode, p);
 				if (aNode.getValue() != null) {
-					msgBean.getComponentsSize()
-							.add(Integer.valueOf(((byte[]) aNode.getValue()).length));
+					msgBean.getComponentsSize().add(Integer.valueOf(((byte[]) aNode.getValue()).length));
 				}
 			}
 		}
@@ -731,8 +716,7 @@ public final class MessageBeanBuilder {
 				aNode.put(subNode);
 				setAnodeValue(subNode, p);
 				if (subNode.getValue() != null) {
-					msgBean.getComponentsSize().add(
-							Integer.valueOf(((byte[]) subNode.getValue()).length));
+					msgBean.getComponentsSize().add(Integer.valueOf(((byte[]) subNode.getValue()).length));
 				}
 				subNode.setDisposition(aNode.getDisposition());
 				subNode.setDescription(aNode.getDescription());
@@ -740,8 +724,7 @@ public final class MessageBeanBuilder {
 			else {
 				setAnodeValue(aNode, p);
 				if (aNode.getValue() != null) {
-					msgBean.getComponentsSize()
-							.add(Integer.valueOf(((byte[]) aNode.getValue()).length));
+					msgBean.getComponentsSize().add(Integer.valueOf(((byte[]) aNode.getValue()).length));
 				}
 			}
 		}
@@ -934,8 +917,9 @@ public final class MessageBeanBuilder {
 	 * @return domain
 	 */
 	private static String getDomain(String addr) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Real_TO Address: ->" + addr + "<-");
+		}
 		addr = EmailAddrUtil.removeDisplayName(addr);
 
 		int at_pos = addr.lastIndexOf("@");
@@ -960,8 +944,9 @@ public final class MessageBeanBuilder {
 				addr = domain;
 			}
 		}
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Real_TO's domain name: ->" + addr + "<-");
+		}
 		return addr.toLowerCase();
 	}
 
@@ -1050,8 +1035,9 @@ public final class MessageBeanBuilder {
 		String desc = null;
 		if (ctype != null && ctype.indexOf("name=") >= 0) {
 			desc = ctype.substring(ctype.indexOf("name=") + 5);
-			if (desc != null && desc.indexOf(";") > 0)
+			if (desc != null && desc.indexOf(";") > 0) {
 				desc = desc.substring(0, desc.indexOf(";"));
+			}
 		}
 		return desc;
 	}
@@ -1066,8 +1052,9 @@ public final class MessageBeanBuilder {
 	 * @throws DataValidationException
 	 */
 	public static MessageBean createMessageBean(MsgInboxVo msgVo) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering createMessageBean() method...");
+		}
 		if (msgVo == null) {
 			throw new DataValidationException("Input msgInboxVo is null");
 		}
@@ -1154,34 +1141,44 @@ public final class MessageBeanBuilder {
 			for (int i = 0; i < addrsVo.size(); i++) {
 				MsgAddrsVo addrVo = addrsVo.get(i);
 				if (EmailAddressType.FROM_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
-					if (fromAddr == null)
+					if (fromAddr == null) {
 						fromAddr = addrVo.getAddrValue();
-					else
+					}
+					else {
 						fromAddr += "," + addrVo.getAddrValue();
+					}
 				}
 				else if (EmailAddressType.TO_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
-					if (toAddr == null)
+					if (toAddr == null) {
 						toAddr = addrVo.getAddrValue();
-					else
+					}
+					else {
 						toAddr += "," + addrVo.getAddrValue();
+					}
 				}
 				else if (EmailAddressType.REPLYTO_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
-					if (replyToAddr == null)
+					if (replyToAddr == null) {
 						replyToAddr = addrVo.getAddrValue();
-					else
+					}
+					else {
 						replyToAddr += "," + addrVo.getAddrValue();
+					}
 				}
 				else if (EmailAddressType.CC_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
-					if (ccAddr == null)
+					if (ccAddr == null) {
 						ccAddr = addrVo.getAddrValue();
-					else
+					}
+					else {
 						ccAddr += "," + addrVo.getAddrValue();
+					}
 				}
 				else if (EmailAddressType.BCC_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
-					if (bccAddr == null)
+					if (bccAddr == null) {
 						bccAddr = addrVo.getAddrValue();
-					else
+					}
+					else {
 						bccAddr += "," + addrVo.getAddrValue();
+					}
 				}
 			}
 			if (fromAddr != null) {

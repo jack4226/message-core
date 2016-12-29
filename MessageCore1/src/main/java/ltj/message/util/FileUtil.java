@@ -17,17 +17,20 @@ public class FileUtil {
 	static final Logger logger = Logger.getLogger(FileUtil.class);
 
 	public static byte[] loadFromFile(String filePath, String fileName) {
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		//loader = TestUtil.class.getClassLoader(); // works too
 		filePath = filePath == null ? "" : filePath;
 		if (!filePath.endsWith(File.separator) && !filePath.endsWith("/")) {
 			filePath += File.separator;
 		}
-		InputStream is = loader.getResourceAsStream(filePath + fileName);
+		return loadFromFile(filePath + fileName);
+	}
+
+	public static byte[] loadFromFile(String filePath) {
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		InputStream is = loader.getResourceAsStream(filePath);
 		if (is == null) {
-			throw new RuntimeException("File (" + filePath + fileName + ") not found!");
+			throw new RuntimeException("File (" + filePath + ") not found!");
 		}
-		logger.info("Loading file from location: " + filePath + fileName);
+		logger.info("Loading file from location: " + filePath);
 		BufferedInputStream bis = new BufferedInputStream(is);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		byte[] buffer = new byte[1024];
@@ -45,11 +48,6 @@ public class FileUtil {
 
 	public static List<String> loadFromTextFile(String filePath) {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		//loader = TestUtil.class.getClassLoader(); // works too
-		filePath = filePath == null ? "" : filePath;
-		if (!filePath.endsWith(File.separator) && !filePath.endsWith("/")) {
-			filePath += File.separator;
-		}
 		InputStream is = loader.getResourceAsStream(filePath);
 		if (is == null) {
 			throw new RuntimeException("File (" + filePath + ") not found!");

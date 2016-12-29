@@ -36,8 +36,7 @@ public final class BounceAddressFinder {
 				if (m.find()) {
 					if (isDebugEnabled) {
 						for (int i = 1; i <= m.groupCount(); i++) {
-							logger.debug(myPattern.getPatternName() + ", group(" + i + ") - "
-									+ m.group(i));
+							logger.debug(myPattern.getPatternName() + ", group(" + i + ") - " + m.group(i));
 						}
 					}
 					return m.group(m.groupCount());

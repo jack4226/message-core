@@ -37,8 +37,7 @@ public class MailReaderReply {
 	 * @throws MessagingException
 	 * @throws ParserException 
 	 */
-	public Message composeReply(Message msg, String body, String contentType)
-			throws MessagingException {
+	public Message composeReply(Message msg, String body, String contentType) throws MessagingException {
 		String LF = System.getProperty("line.separator","\n");
 		// return the mail
 		MimeMessage reply = (MimeMessage)msg.reply(false);	// reply to sender only
