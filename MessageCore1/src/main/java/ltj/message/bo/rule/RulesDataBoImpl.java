@@ -1,7 +1,10 @@
 package ltj.message.bo.rule;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Component;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.dao.rule.RuleDao;
 import ltj.message.external.RuleTargetProc;
+import ltj.message.util.PrintUtil;
 import ltj.message.vo.rule.RuleElementVo;
 import ltj.message.vo.rule.RuleVo;
 import ltj.spring.util.SpringUtil;
@@ -33,7 +37,7 @@ public final class RulesDataBoImpl implements RulesDataBo {
 	}
 	
 	public RuleVo getRuleByPrimaryKey(String key) {
-		RuleVo ruleVo = (RuleVo) ruleDao.getByPrimaryKey(key);
+		RuleVo ruleVo = ruleDao.getByPrimaryKey(key);
 		substituteTargetProc(ruleVo);
 		substituteExclListProc(ruleVo);
 		return ruleVo;
@@ -44,7 +48,9 @@ public final class RulesDataBoImpl implements RulesDataBo {
 	}
 
 	private void substituteTargetProc(List<RuleVo> rules) {
-		if (rules == null || rules.size() == 0) return;
+		if (rules == null || rules.size() == 0) {
+			return;
+		}
 		for (RuleVo rule : rules) {
 			substituteTargetProc(rule);
 		}
@@ -52,38 +58,39 @@ public final class RulesDataBoImpl implements RulesDataBo {
 	
 	private void substituteTargetProc(RuleVo rule) {
 		List<RuleElementVo> elements = rule.getRuleElementVos();
-		if (elements == null) return;
+		if (elements == null) {
+			return;
+		}
 		for (RuleElementVo element : elements) {
-			if (element.getTargetProc() == null) continue;
+			if (StringUtils.isBlank(element.getTargetProc())) {
+				continue;
+			}
 			Object obj = null;
 			try { // a TargetProc could be a class name or a bean id
 				obj = Class.forName(element.getTargetProc()).newInstance();
-				logger.info("Loaded class " + element.getTargetProc() + " for rule "
-						+ rule.getRuleName());
+				logger.info("Loaded class " + element.getTargetProc() + " for rule " + rule.getRuleName());
 			}
 			catch (Exception e) { // not a class name, try load it as a Bean
 				try {
 					obj = SpringUtil.getAppContext().getBean(element.getTargetProc());
-					logger.info("Loaded bean " + element.getTargetProc() + " for rule "
-							+ rule.getRuleName());
+					logger.info("Loaded bean " + element.getTargetProc() + " for rule " + rule.getRuleName());
 				}
 				catch (Exception e2) {
-					logger.warn("Failed to load: " + element.getTargetProc() + " for rule "
-							+ rule.getRuleName());
+					logger.warn("Failed to load: " + element.getTargetProc() + " for rule " + rule.getRuleName());
 				}
-				if (obj == null) continue;
+				if (obj == null) {
+					continue;
+				}
 			}
 			try {
 				String text = null;
 				if (obj instanceof TaskBaseBo) {
-					TaskBaseBo bo = (TaskBaseBo) obj;
-					text = (String) bo.process(null);
+					text = (String) ((TaskBaseBo) obj).process(null);
 				}
 				else if (obj instanceof RuleTargetProc) {
-					RuleTargetProc bo = (RuleTargetProc) obj;
-					text = bo.process();
+					text = ((RuleTargetProc) obj).process();
 				}
-				if (text != null && text.trim().length() > 0) {
+				if (StringUtils.isNotBlank(text)) {
 					logger.info("Changing Target Text for rule: " + rule.getRuleName());
 					logger.info("  From: " + element.getTargetText());
 					logger.info("    To: " + text);
@@ -98,7 +105,9 @@ public final class RulesDataBoImpl implements RulesDataBo {
 	}
 	
 	private void substituteExclListProc(List<RuleVo> rules) {
-		if (rules == null || rules.size() == 0) return;
+		if (rules == null || rules.size() == 0) {
+			return;
+		}
 		for (RuleVo rule : rules) {
 			substituteExclListProc(rule);
 		}
@@ -106,47 +115,63 @@ public final class RulesDataBoImpl implements RulesDataBo {
 	
 	private void substituteExclListProc(RuleVo rule) {
 		List<RuleElementVo> elements = rule.getRuleElementVos();
-		if (elements == null) return;
+		if (elements == null) {
+			return;
+		}
 		for (RuleElementVo element : elements) {
-			if (element.getExclListProc() == null) continue;
+			if (StringUtils.isBlank(element.getExclListProc())) {
+				continue;
+			}
 			Object obj = null;
 			try {
 				obj = SpringUtil.getAppContext().getBean(element.getExclListProc());
+				logger.info("Loaded bean: " + element.getExclListProc() + " for rule " + rule.getRuleName());
 			}
 			catch (Exception e) {
-				logger.error("Failed to load bean: " + element.getExclListProc() + " for rule "
-						+ rule.getRuleName());
+				logger.error("Failed to load bean: " + element.getExclListProc() + " for rule " + rule.getRuleName());
 			}
-			if (obj == null || !(obj instanceof TaskBaseBo)) continue;
-			TaskBaseBo bo = (TaskBaseBo) obj;
-			try {
-				String text = (String) bo.process(null);
-				if (text != null && text.trim().length() > 0) {
-					logger.info("Appending Exclusion list for rule: " + rule.getRuleName());
-					logger.info("  Exclusion List: " + text);
-					String delimiter = element.getDelimiter();
-					if (delimiter == null || delimiter.length() == 0) {
-						delimiter = ",";
+			if (obj instanceof TaskBaseBo) {
+				try {
+					String text = (String) ((TaskBaseBo) obj).process(null);
+					if (StringUtils.isNotBlank(text)) {
+						logger.info("Appending Exclusion list for rule: " + rule.getRuleName());
+						String delimiter = element.getDelimiter();
+						if (delimiter == null || delimiter.length() == 0) {
+							delimiter = ",";
+						}
+						Set<String> emailSet = new LinkedHashSet<>();
+						String origText = element.getExclusions();
+						if (StringUtils.isNotBlank(origText)) {
+							// Exclusion list from database column  
+							String[] emails = origText.split(delimiter);
+							for (String email : emails) {
+								emailSet.add(email);
+							}
+						}
+						// Exclusion list from bean class
+						String[] emails = text.split(",");
+						for (String email : emails) {
+							emailSet.add(email);
+						}
+						String exclusions = StringUtils.join(emailSet, delimiter);
+						element.setExclusions(exclusions);
+						logger.info("  Exclusion List - " + exclusions);
 					}
-					String origText = element.getExclusions();
-					if (origText != null && origText.length() > 0) {
-						origText = origText + delimiter;
-					}
-					else {
-						origText = "";
-					}
-					element.setExclusions(origText + text);
 				}
-			}
-			catch (Exception e) {
-				logger.error("Exception caught", e);
-				throw new RuntimeException(e.toString());
+				catch (Exception e) {
+					logger.error("Exception caught", e);
+					throw new RuntimeException(e.toString());
+				}
 			}
 		}
 	}
 	
 	public static void main(String[] args) {
 		RulesDataBo bo = SpringUtil.getAppContext().getBean(RulesDataBo.class);
-		bo.getCurrentRules();
+		List<RuleVo> rules = bo.getCurrentRules();
+		for (RuleVo vo : rules) {
+			logger.info(PrintUtil.prettyPrint(vo, 2));
+		}
+		System.exit(0);
 	}
 }

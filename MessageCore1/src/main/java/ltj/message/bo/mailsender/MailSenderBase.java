@@ -89,8 +89,9 @@ public abstract class MailSenderBase {
 	protected static final String LF = System.getProperty("line.separator", "\n");
 
 	public MailSenderBase() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering constructor...");
+		}
 	}
 
 	/**
@@ -102,14 +103,13 @@ public abstract class MailSenderBase {
 	 * @throws SmtpException
 	 * @throws DataValidationException 
 	 */
-	public void process(MessageBean msgBean) throws MessagingException, SmtpException,
-			DataValidationException {
+	public void process(MessageBean msgBean) throws MessagingException, SmtpException, DataValidationException {
 
 		if (msgBean == null) {
 			throw new DataValidationException("Input MessageBean is null");
 		}
 		
-		/* Save addresses first to resolve MySQL error - Lock wait timeout exceeded; */
+		/* Save addresses first to resolve this MySQL error: "Lock wait timeout exceeded;" */
 		SpringUtil.beginTransaction();
 		try {
 			/* insert email addresses */
@@ -126,14 +126,6 @@ public abstract class MailSenderBase {
 
 		try {
 			SpringUtil.beginTransaction();
-			/*
-			if (ClientUtil.isTrialPeriodEnded() && !ClientUtil.isProductKeyValid()) {
-				try {
-					Thread.sleep(1000); // delay for 1 second
-				}
-				catch (InterruptedException e) {}
-			}
-			*/
 			// was the outgoing message rendered?
 			if (msgBean.getRenderId() == null) {
 				logger.warn("process() - Render Id is null, the message was not rendered");

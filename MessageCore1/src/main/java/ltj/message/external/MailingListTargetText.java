@@ -22,9 +22,9 @@ public class MailingListTargetText implements RuleTargetProc {
 	 * @return a regular expression
 	 */
 	public String process() throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
-		
+		}
 		StringBuffer sb = new StringBuffer();
 		MailingListDao dao = SpringUtil.getDaoAppContext().getBean(MailingListDao.class);
 		List<MailingListVo> list = dao.getAll(false);

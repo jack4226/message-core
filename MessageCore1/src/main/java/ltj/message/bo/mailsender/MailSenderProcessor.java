@@ -9,10 +9,8 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageFormatException;
 import javax.jms.ObjectMessage;
-import javax.jms.Queue;
 import javax.mail.Address;
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 
 import org.apache.log4j.Logger;
 import org.springframework.jms.connection.JmsTransactionManager;
@@ -39,7 +37,6 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 
 	private JmsProcessor jmsProcessor;
 	private JmsTransactionManager jmsTransactionManager;
-	private Queue errorQueue;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -61,8 +58,7 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 	 * @throws SmtpException 
 	 * @throws MessagingException 
 	 */
-	public void process(Object req) throws JMSException, MessagingException,
-			SmtpException, InterruptedException {
+	public void process(Object req) throws JMSException, MessagingException, SmtpException, InterruptedException {
 		if (req == null) {
 			logger.error("a null request was received.");
 			return;
@@ -76,7 +72,6 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
 		definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus tStatus = jmsTransactionManager.getTransaction(definition);
-		jmsProcessor.getJmsTemplate().setDefaultDestination(errorQueue);
 
 		boolean isJmsMsgWritten = false;
 		// defined here to be used in catch blocks
@@ -125,43 +120,9 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 				logger.info("Messages written to Queue were committed.");
 			}
 		}
-		catch (DataValidationException dex) {
-			// failed to send the message
-			logger.error("DataValidationException caught", dex);
-			jmsProcessor.writeJmsMsg(message, true);
-			jmsTransactionManager.commit(tStatus);
-		}
-		catch (AddressException ae) {
-			logger.error("AddressException caught", ae);
-			jmsProcessor.writeJmsMsg(message, true);
-			jmsTransactionManager.commit(tStatus);
-		}
-		catch (MessagingException mex) {
-			// failed to send the message
-			logger.error("MessagingException caught", mex);
-			jmsProcessor.writeJmsMsg(message, true);
-			jmsTransactionManager.commit(tStatus);
-		}
-		catch (MessageFormatException em) {
-			logger.error("MessageFormatException caught", em);
-			jmsProcessor.writeJmsMsg(message, true);
-			jmsTransactionManager.commit(tStatus);
-		}
-		catch (NullPointerException en) {
-			logger.error("NullPointerException caught", en);
-			jmsProcessor.writeJmsMsg(message, true);
-			jmsTransactionManager.commit(tStatus);
-		}
-		catch (IndexOutOfBoundsException eb) {
-			// AddressException from InternetAddress.parse() caused this
-			// Exception to be thrown
-			// write the original message to error queue
-			logger.error("IndexOutOfBoundsException caught", eb);
-			jmsProcessor.writeJmsMsg(message, true);
-			jmsTransactionManager.commit(tStatus);
-		}
-		catch (NumberFormatException ef) {
-			logger.error("NumberFormatException caught", ef);
+		catch (DataValidationException | MessagingException | MessageFormatException | NullPointerException | IndexOutOfBoundsException | NumberFormatException ex) {
+			// unrecoverable exception caught, send to error queue and commit.
+			logger.error(ex.getClass().getSimpleName() + " caught", ex);
 			jmsProcessor.writeJmsMsg(message, true);
 			jmsTransactionManager.commit(tStatus);
 		}
@@ -270,13 +231,5 @@ public class MailSenderProcessor extends MailSenderBase implements Processor {
 
 	public void setJmsTransactionManager(JmsTransactionManager transactionManager) {
 		this.jmsTransactionManager = transactionManager;
-	}
-
-	public Queue getErrorQueue() {
-		return errorQueue;
-	}
-
-	public void setErrorQueue(Queue errorQueue) {
-		this.errorQueue = errorQueue;
 	}
 }

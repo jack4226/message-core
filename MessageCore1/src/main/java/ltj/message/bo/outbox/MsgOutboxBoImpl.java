@@ -136,30 +136,26 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			msgBean.setCarrierCode(rsp.getMsgSourceVo().getCarrierCode());
 		}
 		if (msgBean.getFrom() == null && rsp.getMsgSourceVo().getFromAddrId() != null) {
-			EmailAddrVo addrVo = getEmailAddrDao()
-					.getByAddrId(rsp.getMsgSourceVo().getFromAddrId());
+			EmailAddrVo addrVo = getEmailAddrDao().getByAddrId(rsp.getMsgSourceVo().getFromAddrId());
 			if (addrVo !=null) {
 				try {
 					Address[] from = InternetAddress.parse(addrVo.getEmailAddr());
 					msgBean.setFrom(from);
 				}
 				catch (AddressException e) {
-					logger.error("saveRenderData() - AddressException caught for address: "
-							+ addrVo.getEmailAddr());
+					logger.error("saveRenderData() - AddressException caught for address: " + addrVo.getEmailAddr());
 				}
 			}
 		}
 		if (msgBean.getReplyto() == null && rsp.getMsgSourceVo().getReplyToAddrId() != null) {
-			EmailAddrVo addrVo = getEmailAddrDao()
-					.getByAddrId(rsp.getMsgSourceVo().getReplyToAddrId());
+			EmailAddrVo addrVo = getEmailAddrDao().getByAddrId(rsp.getMsgSourceVo().getReplyToAddrId());
 			if (addrVo != null) {
 				try {
 					Address[] replyto = InternetAddress.parse(addrVo.getEmailAddr());
 					msgBean.setReplyto(replyto);
 				}
 				catch (AddressException e) {
-					logger.error("saveRenderData() - AddressException caught for address: "
-							+ addrVo.getEmailAddr());
+					logger.error("saveRenderData() - AddressException caught for address: " + addrVo.getEmailAddr());
 				}
 			}
 			
@@ -199,8 +195,8 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 						renderAttachmentVo.setAttchmntType(req.getVariableFormat());
 					}
 					else {
-						renderAttachmentVo.setAttchmntType(req.getVariableFormat() + "; name=\""
-								+ req.getVariableName() + "\"");
+						renderAttachmentVo
+								.setAttchmntType(req.getVariableFormat() + "; name=\"" + req.getVariableName() + "\"");
 					}
 					renderAttachmentVo.setAttchmntDisp(Part.ATTACHMENT);
 					Object value = req.getVariableValue();
@@ -211,8 +207,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 						renderAttachmentVo.setAttchmntValue((byte[])value);
 					}
 					else {
-						throw new DataValidationException("Invalid Attachment Type: "
-								+ value.getClass().getName());
+						throw new DataValidationException("Invalid Attachment Type: " + value.getClass().getName());
 					}
 					// create a record
 					renderAttachmentDao.insert(renderAttachmentVo);
@@ -279,21 +274,18 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 									renderVariableVo.setVariableValue(fmt.format(date));
 								}
 								catch (ParseException e) {
-									logger.error("saveRenderData() - Invalid Date Value: "
-											+ req.getVariableValue(), e);
+									logger.error("saveRenderData() - Invalid Date Value: " + req.getVariableValue(), e);
 									renderVariableVo.setVariableValue((String)req.getVariableValue());
 								}
 							}
 							else if (req.getVariableValue() instanceof java.util.Date) {
-								renderVariableVo.setVariableValue(fmt
-										.format((java.util.Date) req.getVariableValue()));
+								renderVariableVo.setVariableValue(fmt.format((java.util.Date) req.getVariableValue()));
 							}
 						}
 					}
 					else {
-						logger.warn("saveRenderData() - Unrecognized render name/type: "
-									+ req.getVariableName() + "/" + req.getVariableType()
-									+ ", ignored");
+						logger.warn("saveRenderData() - Unrecognized render name/type: " + req.getVariableName() + "/"
+								+ req.getVariableType() + ", ignored");
 					}
 					// create a record
 					renderVariableDao.insert(renderVariableVo);
@@ -314,8 +306,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 	 * @throws DataValidationException
 	 * @throws ParseException
 	 */
-	public MessageBean getMessageByPK(long renderId) throws AddressException, DataValidationException,
-			ParseException {
+	public MessageBean getMessageByPK(long renderId) throws AddressException, DataValidationException, ParseException {
 		RenderRequest renderRequest = getRenderRequestByPK(renderId);
 		if (renderRequest == null) { // should never happen
 			throw new DataValidationException("RenderRequest is null for RenderId: " + renderId);
@@ -337,8 +328,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 		// get the messageOB
 		MsgRenderedVo msgRenderedVo = msgRenderedDao.getByPrimaryKey(renderId);
 		if (msgRenderedVo == null) {
-			throw new DataValidationException("MsgRendered record not found for renderId: "
-					+ renderId);
+			throw new DataValidationException("MsgRendered record not found for renderId: " + renderId);
 		}
 		String msgSourceId = msgRenderedVo.getMsgSourceId();
 		//MsgSourceVo src = msgSourceDao.getByPrimaryKey(msgSourceId);

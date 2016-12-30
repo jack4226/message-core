@@ -129,17 +129,18 @@ public class JmsProcessor {
 			throws JMSException {
 		String rtnMessageId = null;
 		try {
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Creating a ObjectMessage");
-
+			}
 			SendMessageCreator msgCreator = new SendMessageCreator() {
 				public Message createMessage(Session session) throws JMSException {
 					ObjectMessage outObjMsg = session.createObjectMessage();
 					outObjMsg.clearBody();
 					outObjMsg.clearProperties();
 
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("Adding Object");
+					}
 					outObjMsg.setObject((java.io.Serializable) msgBean);
 					setCorrelationId(outObjMsg, useThisCorrelId);
 					setMessage(outObjMsg);
@@ -154,8 +155,9 @@ public class JmsProcessor {
 			throw new JMSException("Exception caught during writeMsg() " + e.getMessage());
 		}
 
-		if (isDebugEnabled)
-			logger.debug("Message sent at " + new Date());
+		if (isDebugEnabled) {
+			logger.debug("Message sent at " + new Date() + ", JmsMsgId: " + rtnMessageId);
+		}
 		return rtnMessageId;
 	}
 
@@ -204,17 +206,18 @@ public class JmsProcessor {
 			throws JMSException {
 		String rtnMessageId = null;
 		try {
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Creating a TextMessage");
-
+			}
 			SendMessageCreator msgCreator = new SendMessageCreator() {
 				public Message createMessage(Session session) throws JMSException {
 					TextMessage outTextMsg = session.createTextMessage();
 					outTextMsg.clearBody();
 					outTextMsg.clearProperties();
 
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("Adding Text");
+					}
 					outTextMsg.setText(mStr);
 					setCorrelationId(outTextMsg, useThisCorrelId);
 					setMessage(outTextMsg);
@@ -229,8 +232,9 @@ public class JmsProcessor {
 			throw new JMSException("Exception caught during writeMsg() " + e.getMessage());
 		}
 
-		if (isDebugEnabled)
-			logger.debug("Message sent at " + new Date());
+		if (isDebugEnabled) {
+			logger.debug("Message sent at " + new Date() + ", JmsMsgId: " + rtnMessageId);
+		}
 		return rtnMessageId;
 	}
 
@@ -266,9 +270,9 @@ public class JmsProcessor {
 		String rtnMessageId = null;
 		MessageConverter converter = getJmsTemplate().getMessageConverter();
 		try {
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Creating a Message");
-
+			}
 			getJmsTemplate().setMessageConverter(new PassThroughMessageConverter());
 			if (StringUtils.isBlank(msg.getJMSCorrelationID())) {
 				setCorrelationId(msg, useThisCorrelId);
@@ -298,8 +302,9 @@ public class JmsProcessor {
 			getJmsTemplate().setMessageConverter(converter);
 		}
 
-		if (isDebugEnabled)
-			logger.debug("Message sent at " + new Date());
+		if (isDebugEnabled) {
+			logger.debug("Message sent at " + new Date() + ", JmsMsgId: " + rtnMessageId);
+		}
 		return rtnMessageId;
 	}
 
@@ -331,9 +336,9 @@ public class JmsProcessor {
 		String rtnMessageId = null;
 		MessageConverter converter = getJmsTemplate().getMessageConverter();
 		try {
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Creating a Message");
-
+			}
 			SendMessageCreator msgCreator = new SendMessageCreator() {
 				public Message createMessage(Session session) throws JMSException {
 					setMessage(msg);
@@ -351,8 +356,9 @@ public class JmsProcessor {
 			getJmsTemplate().setMessageConverter(converter);
 		}
 
-		if (isDebugEnabled)
-			logger.debug("Message sent at " + new Date());
+		if (isDebugEnabled) {
+			logger.debug("Message sent at " + new Date() + ", JmsMsgId: " + rtnMessageId);
+		}
 		return rtnMessageId;
 	}
 
@@ -389,14 +395,16 @@ public class JmsProcessor {
 		try {
 			SendMessageCreator msgCreator = new SendMessageCreator() {
 				public Message createMessage(Session session) throws JMSException {
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("Creating a BytesMessage");
+					}
 					BytesMessage outBytesMsg = session.createBytesMessage();
 					outBytesMsg.clearBody();
 					outBytesMsg.clearProperties();
 
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("Adding message components");
+					}
 					outBytesMsg.writeBytes(bytes);
 					setCorrelationId(outBytesMsg, useThisCorrelId);
 					setMessage(outBytesMsg);
@@ -411,8 +419,9 @@ public class JmsProcessor {
 			throw new JMSException("Exception caught during writeMsg() " + e.getMessage());
 		}
 
-		if (isDebugEnabled)
-			logger.debug("Message sent at " + new Date());
+		if (isDebugEnabled) {
+			logger.debug("Message sent at " + new Date() + ", JmsMsgId: " + rtnMessageId);
+		}
 		return rtnMessageId;
 	}
 
@@ -436,14 +445,16 @@ public class JmsProcessor {
 		try {
 			SendMessageCreator msgCreator = new SendMessageCreator() {
 				public Message createMessage(Session session) throws JMSException {
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("Creating a StreamMessage");
+					}
 					StreamMessage outStreamMsg = session.createStreamMessage();
 					outStreamMsg.clearBody();
 					outStreamMsg.clearProperties();
 
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("Adding message components");
+					}
 					outStreamMsg.writeBytes(bytes);
 					setCorrelationId(outStreamMsg, useThisCorrelId);
 					setMessage(outStreamMsg);
@@ -458,8 +469,9 @@ public class JmsProcessor {
 			throw new JMSException("Exception caught during writeMsg() " + e.getMessage());
 		}
 
-		if (isDebugEnabled)
-			logger.debug("Message sent at " + new Date());
+		if (isDebugEnabled) {
+			logger.debug("Message sent at " + new Date() + ", JmsMsgId: " + rtnMessageId);
+		}
 		return rtnMessageId;
 	}
 

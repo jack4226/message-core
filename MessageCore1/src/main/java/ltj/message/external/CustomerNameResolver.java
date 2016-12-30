@@ -11,8 +11,9 @@ public class CustomerNameResolver implements VariableResolver {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	public String process(long addrId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
+		}
 		String query = "SELECT CONCAT(c.firstName,' ',c.lastName) as ResultStr " +
 				" FROM customers c, emailaddr e " +
 				" where e.emailaddrId=c.emailAddrId and e.emailAddrId=?";

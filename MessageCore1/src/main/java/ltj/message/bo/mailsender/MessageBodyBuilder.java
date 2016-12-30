@@ -287,7 +287,7 @@ public final class MessageBodyBuilder {
 	 *            new message text
 	 * @return message with new text added to the top
 	 */
-	private static String prependTextToHtml(String origText, String newText) {
+	public static String prependTextToHtml(String origText, String newText) {
 		// make sure the HTML tag is there
 		String origBody = checkHtmlTag(origText); 
 		int pos1 = 0, pos2 = 0;
@@ -330,7 +330,7 @@ public final class MessageBodyBuilder {
 	 *            new message text
 	 * @return message with new text added to the bottom
 	 */
-	private static String appendTextToHtml(String origText, String newText) {
+	public static String appendTextToHtml(String origText, String newText) {
 		// make sure the HTML tag is there
 		String origBody = checkHtmlTag(origText);
 		int pos1 = 0;

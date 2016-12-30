@@ -1,10 +1,8 @@
 package ltj.message.bo.mailreader;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.jms.JMSException;
-import javax.jms.Queue;
 import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
@@ -35,12 +33,12 @@ public class MailFileReader {
 		//filePath = "F:/pkgs/workspace/MailReader/data/hard_bounce.txt";
 		try {
 			MailFileReader fReader = new MailFileReader();
-			//MessageBean msgBean = fReader.start(filePath);
-			MessageBean msgBean = fReader.readMessageBean(filePath);
+			MessageBean msgBean = fReader.start(filePath);
+			//MessageBean msgBean = fReader.readMessageBean(filePath);
 			List<MessageNode> mNodes = BodypartUtil.retrieveAttachments(msgBean);
 			logger.info("Number of Attachments: " + mNodes.size());
 			logger.info("******************************");
-			logger.info("MessageBean created:" + LF + msgBean);
+			//logger.info("MessageBean created:" + LF + msgBean);
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
@@ -48,15 +46,38 @@ public class MailFileReader {
 		System.exit(0);
 	}
 	
-	MessageBean start(String filePath) throws MessagingException, IOException, JMSException {
-		JmsTransactionManager jmsTransactionManager = (JmsTransactionManager) SpringUtil
-				.getAppContext().getBean("jmsTransactionManager");
+	MessageBean start(String filePath) throws MessagingException, JMSException {
 		JmsProcessor jmsProcessor = (JmsProcessor) SpringUtil.getAppContext().getBean("jmsProcessor");
-		Queue queue = (Queue) SpringUtil.getAppContext().getBean("mailReaderOutput");
+		jmsProcessor.setQueueName("mailReaderOutput");
+
+		MessageBean msgBean = readMessageBean(filePath);
+		msgBean.setCarrierCode(CarrierCode.SMTPMAIL);
+		
+		try {
+			String msgId = jmsProcessor.writeMsg(msgBean, "MailReader");
+			logger.info("JMS message written. Message Id returned: " + msgId);
+			return msgBean;
+		}
+		catch (JMSException e) {
+			logger.error("JMSException caught", e);
+			throw e;
+		}
+	}
+	
+	private MessageBean readMessageBean(String filePath) throws MessagingException {
+		byte[] mailStream = FileUtil.loadFromFile(filePath);
+		MessageBean msgBean = MessageBeanUtil.createBeanFromStream(mailStream);
+		return msgBean;
+	}
+	
+	MessageBean start_v0(String filePath) throws MessagingException, JMSException {
+		JmsTransactionManager jmsTransactionManager = (JmsTransactionManager) SpringUtil.getAppContext()
+				.getBean("jmsTransactionManager");
+		JmsProcessor jmsProcessor = (JmsProcessor) SpringUtil.getAppContext().getBean("jmsProcessor");
 		
 		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
 		definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		jmsProcessor.getJmsTemplate().setDefaultDestination(queue);
+		jmsProcessor.setQueueName("mailReaderOutput");
 
 		MessageBean msgBean = readMessageBean(filePath);
 		msgBean.setCarrierCode(CarrierCode.SMTPMAIL);
@@ -75,11 +96,5 @@ public class MailFileReader {
 			tStatus.setRollbackOnly();
 			throw e;
 		}
-	}
-	
-	private MessageBean readMessageBean(String filePath) throws MessagingException, IOException {
-		byte[] mailStream = FileUtil.loadFromFile(filePath);
-		MessageBean msgBean = MessageBeanUtil.createBeanFromStream(mailStream);
-		return msgBean;
 	}
 }

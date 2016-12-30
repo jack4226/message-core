@@ -501,7 +501,7 @@ public class RuleTables extends CreateTableBase
 					"^(?:postmaster|mailmaster|mailadmin|administrator" +
 					"|mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@");
 			ps.setString(9, "postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME);
-			ps.setString(10, null);
+			ps.setString(10, "excludingPostmastersBo");
 			ps.setString(11, ",");
 			ps.execute();
 			
