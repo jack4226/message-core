@@ -47,7 +47,7 @@ public class MessageParserTest extends BoTestBase {
 		try {
 			MessageBean mBean = new MessageBean();
 			try {
-				mBean.setFrom(InternetAddress.parse("postmaster@localhost", false));
+				mBean.setFrom(InternetAddress.parse("postmaster@test.com", false));
 				mBean.setTo(InternetAddress.parse("abc@domain.com", false));
 				mBean.setFinalRcpt("finalrcpt@domain.com");
 			}
@@ -73,7 +73,7 @@ public class MessageParserTest extends BoTestBase {
 		try {
 			MessageBean mBean = new MessageBean();
 			try {
-				mBean.setFrom(InternetAddress.parse("postmaster@localhost", false));
+				mBean.setFrom(InternetAddress.parse("postmaster@test.com", false));
 				mBean.setTo(InternetAddress.parse("abc@domain.com", false));
 				mBean.setFinalRcpt(null);
 			}
