@@ -112,16 +112,16 @@
 	</dependency>
 
 	<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>eclipselink</artifactId>
-			<version>${eclipselink.version}</version>
-			<!-- scope>provided</scope -->
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.persistence</groupId>
-					<artifactId>commonj.sdo</artifactId>
-				</exclusion>
-			</exclusions>
+		<groupId>org.eclipse.persistence</groupId>
+		<artifactId>eclipselink</artifactId>
+		<version>${eclipselink.version}</version>
+		<!-- scope>provided</scope -->
+		<exclusions>
+			<exclusion>
+				<groupId>org.eclipse.persistence</groupId>
+				<artifactId>commonj.sdo</artifactId>
+			</exclusion>
+		</exclusions>
 	</dependency>
 
 	<!-- Apache Commons -->
