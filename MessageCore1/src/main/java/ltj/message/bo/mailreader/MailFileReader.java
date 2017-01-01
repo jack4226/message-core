@@ -28,9 +28,9 @@ public class MailFileReader {
 	public static void main(String[] args){
 		String filePath = "SavedMailStreams/aim/mail17_bounced.txt";
 		filePath = "SavedMailStreams/aim/mail18.txt";
-		//filePath = "/workspace/MailReader/data/rfc3798_MDN_sample.txt";
-		//filePath = /workspace/MailReader/data/rfc3464_DSN_sample4.txt";
-		//filePath = "F:/pkgs/workspace/MailReader/data/hard_bounce.txt";
+		filePath = "SavedMailStreams/mailreader/rfc3798_MDN_sample.txt";
+		//filePath = "SavedMailStreams/mailreader/rfc3464_DSN_sample4.txt";
+		//filePath = "SavedMailStreams/mailreader/hard_bounce.txt";
 		try {
 			MailFileReader fReader = new MailFileReader();
 			MessageBean msgBean = fReader.start(filePath);
