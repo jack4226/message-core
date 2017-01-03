@@ -73,10 +73,16 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	}
 	
 	public String getFromAddress() {
-		if (fromAddrId == null) return "";
+		if (fromAddrId == null) {
+			return "";
+		}
 		EmailAddrVo vo = getEmailAddrDao().getByAddrId(fromAddrId);
-		if (vo == null) return "";
-		else return vo.getEmailAddr();
+		if (vo == null) {
+			return "";
+		}
+		else {
+			return vo.getEmailAddr();
+		}
 	}
 	
 	public String getFromDisplayName() {
@@ -84,15 +90,25 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	}
 	
 	public String getToAddress() {
-		if (toAddrId == null) return "";
+		if (toAddrId == null) {
+			return "";
+		}
 		EmailAddrVo vo = getEmailAddrDao().getByAddrId(toAddrId);
-		if (vo == null) return "";
-		else return vo.getEmailAddr();
+		if (vo == null) {
+			return "";
+		}
+		else {
+			return vo.getEmailAddr();
+		}
 	}
 	
 	public java.util.Date getReceivedDate() {
-		if (receivedTime == null) return new java.util.Date();
-		else return new java.util.Date(receivedTime.getTime());
+		if (receivedTime == null) {
+			return new java.util.Date();
+		}
+		else {
+			return new java.util.Date(receivedTime.getTime());
+		}
 	}
 	
 	public String getSize() {
@@ -113,7 +129,9 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	}
 	
 	private String getDisplayName(String addr) {
-		if (addr == null) return addr;
+		if (addr == null) {
+			return addr;
+		}
 		int left = addr.indexOf("<");
 		int right = addr.indexOf(">", left + 1);
 		if (left > 0 && right > left) {

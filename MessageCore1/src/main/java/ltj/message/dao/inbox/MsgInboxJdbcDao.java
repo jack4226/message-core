@@ -63,6 +63,22 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	}
 	
 	@Override
+	public MsgInboxVo getRandomRecord() {
+		String sql = 
+			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"from " +
+				"MsgInbox where msgId >= (RAND() * (select max(msgId) from MsgInbox)) " +
+			" order by msgId limit 1 ";
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
+		if (list.size()>0) {
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
+	}
+	
+	@Override
 	public MsgInboxVo getLastReceivedRecord() {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +

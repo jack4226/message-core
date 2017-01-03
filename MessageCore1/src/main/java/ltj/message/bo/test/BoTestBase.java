@@ -96,7 +96,7 @@ public class BoTestBase {
 	}
 	
 	protected MessageBean buildMessageBeanFromMsgStream() throws Exception {
-		MsgStreamVo msgStreamVo = msgStreamDao.getLastRecord();
+		MsgStreamVo msgStreamVo = msgStreamDao.getRandomRecord();
 		if (msgStreamVo == null) {
 			addMsgToInbox();
 		}

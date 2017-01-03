@@ -12,22 +12,19 @@ public class RuleComplex extends RuleBase {
 	
 	private final List<RuleBase> ruleList;
 	
-	public RuleComplex(String _ruleName,
-			String _ruleType, 
-			String _mailType, 
-			List<RuleBase> _rule_list) {
+	public RuleComplex(String _ruleName, String _ruleType, String _mailType, List<RuleBase> _rule_list) {
 		super(_ruleName, _ruleType, _mailType, "", null, RuleBase.EQUALS, "N");
 		this.ruleList = _rule_list;
 		logger.info(">>>>> Complex-Rule initialized for " + ruleName);
 	}
 
 	public String match(String mail_type, Object mail_obj) {
-		if (mail_type==null || !mail_type.equals(mailType))
+		if (mail_type==null || !mail_type.equals(mailType)) {
 			return null;
+		}
 
 		if (isDebugEnabled) {
-			logger.debug("BEGIN - [" + getRuleName(20) + "] [" + mailType + "] rule_type: ["
-					+ ruleType + "]");
+			logger.debug("BEGIN - [" + getRuleName(20) + "] [" + mailType + "] rule_type: [" + ruleType + "]");
 		}
 		if (RuleBase.ALL_RULE.equals(ruleType)) {
 			for (int i = 0; i < ruleList.size(); i++) {
@@ -79,9 +76,8 @@ public class RuleComplex extends RuleBase {
 		}
 		String ruleName = rule.match(mail_type, rule.getDataName(), data);
 		// now check attachment rules
-		if (ruleName == null 
-				&& (RuleBase.MIME_TYPE.equals(rule.getDataName()) 
-					|| RuleBase.FILE_NAME.equals(rule.getDataName()))) {
+		if (ruleName == null
+				&& (RuleBase.MIME_TYPE.equals(rule.getDataName()) || RuleBase.FILE_NAME.equals(rule.getDataName()))) {
 			ruleName = RuleMatcher.matchMimeTypes((MessageBean)mail_obj, rule);
 		}
 		

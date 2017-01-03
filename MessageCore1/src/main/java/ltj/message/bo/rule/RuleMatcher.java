@@ -39,8 +39,7 @@ public class RuleMatcher implements java.io.Serializable {
 	 *            sub-rules
 	 * @return a rule name if matched
 	 */
-	public String match(Object mailObj, List<RuleBase> rule_set,
-			Map<String, List<RuleBase>> subRuleSet) {
+	public String match(Object mailObj, List<RuleBase> rule_set, Map<String, List<RuleBase>> subRuleSet) {
 		String ruleName = null;
 
 		for (int i = 0; i < rule_set.size(); i++) {
@@ -66,9 +65,8 @@ public class RuleMatcher implements java.io.Serializable {
 					ruleName = r.match(mailType, r.getDataName(), data);
 				}
 				// now check attachment rules
-				if (ruleName == null 
-						&& (RuleBase.MIME_TYPE.equals(r.getDataName()) 
-							|| RuleBase.FILE_NAME.equals(r.getDataName()))) {
+				if (ruleName == null
+						&& (RuleBase.MIME_TYPE.equals(r.getDataName()) || RuleBase.FILE_NAME.equals(r.getDataName()))) {
 					ruleName = matchMimeTypes((MessageBean)mailObj, r);
 				}
 			}
@@ -76,8 +74,8 @@ public class RuleMatcher implements java.io.Serializable {
 				// other object types, not implemented yet.
 			}
 			if (ruleName != null) { // matched
-				logger.info("$$$ Rule matched (name/type/data): " + r.getRuleName() + "/"
-						+ r.getDataName() + "/" + data + ", RuleName: " + ruleName);
+				logger.info("$$$ Rule matched (name/type/data): " + r.getRuleName() + "/" + r.getDataName() + "/" + data
+						+ ", RuleName: " + ruleName);
 			}
 			/*
 			 * sub-rule can be used to evaluate: (A or B) and (C or D)
@@ -88,11 +86,13 @@ public class RuleMatcher implements java.io.Serializable {
 			 */
 			// now match sub-rules
 			if (ruleName != null && r.getSubRules().size() > 0 && subRuleSet != null) {
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("BEGIN - SubRules");
+				}
 				String subRuleName = matchSubRules(mailObj, r.getSubRules(), subRuleSet);
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("END - SubRules, sub-rule ruleName: " + subRuleName);
+				}
 				if (subRuleName == null) {
 					ruleName = null; // did not match sub-rules, reset rule name
 				}
@@ -104,8 +104,7 @@ public class RuleMatcher implements java.io.Serializable {
 		return ruleName;
 	}
 
-	private String matchSubRules(Object mailObj, List<String> ruleNames,
-			Map<String, List<RuleBase>> subRuleSet) {
+	private String matchSubRules(Object mailObj, List<String> ruleNames, Map<String, List<RuleBase>> subRuleSet) {
 		List<RuleBase> subRules = new ArrayList<RuleBase>();
 		for (int i = 0; i < ruleNames.size(); i++) {
 			String ruleName = (String)ruleNames.get(i);
@@ -142,29 +141,39 @@ public class RuleMatcher implements java.io.Serializable {
 	}
 
 	/* @deprecated, replaced by above method using reflection */
-	static String getFieldDataV0(RuleBase r, MessageBean mobj) {
+	String getFieldDataV0(RuleBase r, MessageBean mobj) {
 		String data = null;
 		String data_type = r.getDataName();
-		if (RuleBase.FROM_ADDR.equals(data_type))
+		if (RuleBase.FROM_ADDR.equals(data_type)) {
 			data = EmailAddrUtil.emailAddrToString(mobj.getFrom());
-		else if (RuleBase.TO_ADDR.equals(data_type))
+		}
+		else if (RuleBase.TO_ADDR.equals(data_type)) {
 			data = EmailAddrUtil.emailAddrToString(mobj.getTo());
-		else if (RuleBase.REPLYTO_ADDR.equals(data_type))
+		}
+		else if (RuleBase.REPLYTO_ADDR.equals(data_type)) {
 			data = EmailAddrUtil.emailAddrToString(mobj.getReplyto());
-		else if (RuleBase.CC_ADDR.equals(data_type))
+		}
+		else if (RuleBase.CC_ADDR.equals(data_type)) {
 			data = EmailAddrUtil.emailAddrToString(mobj.getCc());
-		else if (RuleBase.BCC_ADDR.equals(data_type))
+		}
+		else if (RuleBase.BCC_ADDR.equals(data_type)) {
 			data = EmailAddrUtil.emailAddrToString(mobj.getBcc());
-		else if (RuleBase.SUBJECT.equals(data_type))
+		}
+		else if (RuleBase.SUBJECT.equals(data_type)) {
 			data = mobj.getSubject();
-		else if (RuleBase.BODY.equals(data_type))
+		}
+		else if (RuleBase.BODY.equals(data_type)) {
 			data = mobj.getBody();
-		else if (RuleBase.MSG_REF_ID.equals(data_type))
+		}
+		else if (RuleBase.MSG_REF_ID.equals(data_type)) {
 			data = mobj.getMsgRefId() == null ? null : mobj.getMsgRefId().toString();
-		else if (RuleBase.MAILBOX_USER.equals(data_type))
+		}
+		else if (RuleBase.MAILBOX_USER.equals(data_type)) {
 			data = mobj.getMailboxUser();
-		else if (RuleBase.MAILBOX_HOST.equals(data_type))
+		}
+		else if (RuleBase.MAILBOX_HOST.equals(data_type)) {
 			data = mobj.getMailboxHost();
+		}
 		else if (RuleBase.RULE_NAME.equals(data_type)) {
 			data = mobj.getRuleName();
 		}
@@ -195,13 +204,16 @@ public class RuleMatcher implements java.io.Serializable {
 						}
 					}
 				}
-				if (r instanceof RuleSimple)
+				if (r instanceof RuleSimple) {
 					ruleName = r.match(Constants.SMTP_MAIL, r.getDataName(), data);
-				//else
-				//	ruleName = r.match(Constants.SMTP_MAIL, mailObj); // why this?
+				}
+				//else {
+				//	ruleName = r.match(Constants.SMTP_MAIL, mailObj); // XXX why this?
+				//}
 				
-				if (ruleName != null)
+				if (ruleName != null) {
 					break;
+				}
 			}
 		}
 		return ruleName;

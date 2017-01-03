@@ -4,9 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
@@ -22,12 +24,13 @@ public class ForwardBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo forwardBo;
 	
-	private String forwardAddress = "testto@localhost";
+	private static String forwardAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost"; //"testto@localhost";
 	private static Long msgRefId;
+	
 	@Test
 	public void test1() throws Exception { // forward
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
-		forwardBo.setTaskArguments("$" + EmailAddressType.FROM_ADDR + "," + forwardAddress);
+		forwardBo.setTaskArguments(forwardAddress + ",$" + EmailAddressType.FROM_ADDR);
 		msgRefId = messageBean.getMsgId();
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
@@ -56,6 +59,8 @@ public class ForwardBoTest extends BoTestBase {
 		for (MsgInboxWebVo vo : list) {
 			assertEquals(RuleNameType.SEND_MAIL.name(),vo.getRuleName());
 			assertTrue(vo.getMsgSubject().startsWith("Fwd:"));
+			//logger.info("Verify result: " + vo);
+			assertEquals("Verify result", forwardAddress, vo.getToAddress());
 		}
 	}
 }

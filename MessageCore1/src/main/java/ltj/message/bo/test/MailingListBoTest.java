@@ -44,15 +44,13 @@ public class MailingListBoTest extends BoTestBase {
 	
 	// TODO verify results
 	
-	int broadcast(String templateId) throws OutOfServiceException, TemplateNotFoundException,
-			DataValidationException {
+	int broadcast(String templateId) throws OutOfServiceException, TemplateNotFoundException, DataValidationException {
 		int mailsSent = mlServiceBo.broadcast(templateId);
 		logger.info("Number of emails sent: " + mailsSent);
 		return mailsSent;
 	}
 
-	int sendMail(String templateId) throws OutOfServiceException, TemplateNotFoundException,
-			DataValidationException {
+	int sendMail(String templateId) throws OutOfServiceException, TemplateNotFoundException, DataValidationException {
 		String toAddr = "testto@localhost";
 		Map<String, String> vars = new HashMap<String, String>();
 		vars.put("CustomerName", "List Subscriber");

@@ -9,6 +9,7 @@ public interface MsgStreamDao {
 	public MsgStreamVo getByPrimaryKey(long msgId);
 	public List<MsgStreamVo> getByFromAddrId(long fromAddrId);
 	public MsgStreamVo getLastRecord();
+	public MsgStreamVo getRandomRecord();
 	public int update(MsgStreamVo msgStreamVo);
 	public int deleteByPrimaryKey(long msgId);
 	public int insert(MsgStreamVo msgStreamVo);

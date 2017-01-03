@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
@@ -15,8 +15,11 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.dao.idtokens.EmailIdParser;
+import ltj.message.dao.outbox.MsgRenderedDao;
 import ltj.message.vo.inbox.MsgInboxVo;
+import ltj.vo.outbox.MsgRenderedVo;
 
 public class MsgInboxBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MsgInboxBoTest.class);
@@ -29,10 +32,16 @@ public class MsgInboxBoTest extends BoTestBase {
 	@Resource
 	private MessageParser parser;
 	
+	@Resource
+	private MsgRenderedDao renderedDao;
+	
 	@Test
 	public void testMsgInboxBo() {
 		long msgId = 1L;
 		try {
+			MsgRenderedVo renderedVo = renderedDao.getRandomRecord();
+			assertNotNull(renderedVo);
+			msgId = renderedVo.getRenderId();
 			MessageBean messageBean = msgOutboxBo.getMessageByPK(msgId);
 			assertNotNull(messageBean);
 			if (isDebugEnabled) {

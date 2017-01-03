@@ -2,7 +2,7 @@ package ltj.message.bo.rule;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -60,8 +60,8 @@ public abstract class RuleBase implements java.io.Serializable {
 	public static final String DELIVERY_STATUS = VariableName.DELIVERY_STATUS;
 
 	public static final String[] DATATYPES = 
-		{ FROM_ADDR, TO_ADDR, REPLYTO_ADDR, CC_ADDR, BCC_ADDR,
-			SUBJECT, BODY, MSG_REF_ID, RULE_NAME, MAILBOX_USER, MAILBOX_HOST };
+			{ FROM_ADDR, TO_ADDR, REPLYTO_ADDR, CC_ADDR, BCC_ADDR, SUBJECT, BODY, MSG_REF_ID, RULE_NAME, MAILBOX_USER,
+					MAILBOX_HOST };
 
 	/** define data type constants for Internet email attachments */
 	public static final String MIME_TYPE = "MimeType";
@@ -70,7 +70,7 @@ public abstract class RuleBase implements java.io.Serializable {
 	final static String LF = System.getProperty("line.separator", "\n");
 
 	// store rule names found in rules.xml
-	private final static Set<String> ruleNameList = Collections.synchronizedSet(new HashSet<String>());
+	private final static Set<String> ruleNameList = Collections.synchronizedSet(new LinkedHashSet<String>());
 
 	protected final String ruleName, ruleType;
 	protected String dataName;
@@ -94,8 +94,9 @@ public abstract class RuleBase implements java.io.Serializable {
 		this.headerName = _headerName;
 		this.criteria = _criteria;
 		this.caseSensitive = "Y".equalsIgnoreCase(_caseSensitive);
-		if (this.ruleName != null && !ruleNameList.contains(this.ruleName))
+		if (this.ruleName != null && !ruleNameList.contains(this.ruleName)) {
 			ruleNameList.add(this.ruleName);
+		}
 	}
 	
 	public String getRuleName() {
@@ -104,8 +105,9 @@ public abstract class RuleBase implements java.io.Serializable {
 
 	protected String getRuleName(int len) {
 		StringBuffer sb = new StringBuffer();
-		for (int i=0; i<len-ruleName.length(); i++)
+		for (int i=0; i<len-ruleName.length(); i++) {
 			sb.append(" ");
+		}
 		return ruleName + sb.toString();
 	}
 	
@@ -132,8 +134,9 @@ public abstract class RuleBase implements java.io.Serializable {
 		sb.append("Rule Type: " + ruleType + LF);
 		sb.append("Mail Type: " + mailType + LF);
 		sb.append("Data Type: " + dataName + LF);
-		if (headerName != null)
+		if (headerName != null) {
 			sb.append("Header Name: " + headerName + LF);
+		}
 		sb.append("Criteria : " + criteria + LF);
 		sb.append("Case Sensitive : " + caseSensitive + LF);
 		if (subRuleList != null) {

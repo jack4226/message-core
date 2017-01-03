@@ -3,11 +3,13 @@ package ltj.message.bo.test;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.mail.Address;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -23,13 +25,23 @@ public class AutoReplyBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo autoReplyBo;
 	
-	private final String replyToAddress = "testto@localhost";
+	private static String replyToAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost"; //"testto@localhost";
 	private static Long msgRefId;
+	
+
+	@Test
+	@Rollback(value=false)
+	public void test0() {
+		// work around the deadlock on inserting email address in RenderUtil
+		// TODO fix the deadlock issue in AutoReplyBo/RenderUtil
+		emailAddrDao.findByAddress(replyToAddress);
+	}
 	
 	@Test
 	@Rollback(value=false)
 	public void test1() throws Exception { // autoReply
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
+		assertNotNull(messageBean);
 		messageBean.setMailingListId("SMPLLST1");
 		Address[] from = InternetAddress.parse(replyToAddress);
 		messageBean.setFrom(from); // redirect to MailReader
@@ -62,6 +74,8 @@ public class AutoReplyBoTest extends BoTestBase {
 		for (MsgInboxWebVo vo : list) {
 			assertEquals(RuleNameType.SEND_MAIL.name(),vo.getRuleName());
 			assertTrue(vo.getMsgSubject().startsWith("You have subscribed to "));
+			//logger.info("Verify result: " + vo);
+			assertEquals("Verify result", replyToAddress, vo.getToAddress());
 		}
 	}
 }

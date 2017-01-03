@@ -44,7 +44,7 @@ public final class RuleLoader implements java.io.Serializable {
 	final List<RuleBase>[] mainRules;
 	final List<RuleBase>[] preRules;
 	final List<RuleBase>[] postRules;
-	final HashMap<String, List<RuleBase>>[] subRules;
+	final Map<String, List<RuleBase>>[] subRules;
 	
 	private int currIndex = 0;
 	private transient RulesDataBo rulesDataBo = null;
@@ -129,7 +129,7 @@ public final class RuleLoader implements java.io.Serializable {
 	}
 	
 	private synchronized void checkChangesAndPerformReload() {
-		long currTime = new java.util.Date().getTime();
+		long currTime = System.currentTimeMillis();
 		if (currTime > (lastTimeLoaded + INTERVAL)) {
 			// check change flags and reload rule and address patterns
 			ReloadFlagsVo vo = getReloadFlagsDao().select();

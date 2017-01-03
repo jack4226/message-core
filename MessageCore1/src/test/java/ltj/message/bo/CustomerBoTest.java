@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bo.customer.CustomerBo;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.CustomerVo;
 

@@ -16,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.jbatch.queue.JmsProcessor;
@@ -44,8 +43,6 @@ public class MsgOutboxBoTest extends BoTestBase {
 	private RenderBo renderBo;
 	@Resource
 	private JmsProcessor jmsProcessor;
-	@Resource
-	private JmsTemplate jmsTemplate;
 	@Resource
 	private MsgInboxDao inboxDao;
 	
@@ -102,7 +99,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 			assertTrue(body.indexOf((String)rsp2Vars.get("name2").getVariableValue()) > 0 );
 			assertTrue(body.indexOf((String)rsp2Vars.get("name3").getVariableValue()) > 0 );
 			
-			jmsProcessor.setQueueName("mailSenderOutput"); // TODO set queue name from property
+			jmsProcessor.setQueueName("mailSenderInput"); // TODO set queue name from property
 			String msgWritten = jmsProcessor.writeMsg(rsp.getMessageBean());
 			assertNotNull(msgWritten);
 			logger.info("Message Written - JMS MessageId: " + msgWritten);
@@ -125,16 +122,16 @@ public class MsgOutboxBoTest extends BoTestBase {
 	@Test
 	public void test3() { // verify results
 		
-		EmailAddrVo from = selectEmailAddrByAddress(msgBean.getFromAsString());
-		EmailAddrVo to = selectEmailAddrByAddress(msgBean.getToAsString());
+		EmailAddrVo fromVo = selectEmailAddrByAddress(msgBean.getFromAsString());
+		EmailAddrVo toVo = selectEmailAddrByAddress(msgBean.getToAsString());
 		
-		assertNotNull(from);
-		assertNotNull(to);
+		assertNotNull(fromVo);
+		assertNotNull(toVo);
 		
-		List<MsgInboxVo> msgFromList = inboxDao.getByFromAddrId(from.getEmailAddrId());
+		List<MsgInboxVo> msgFromList = inboxDao.getByFromAddrId(fromVo.getEmailAddrId());
 		assertTrue(msgFromList.size() > 0);
 		
-		List<MsgInboxVo> msgToList = inboxDao.getByToAddrId(to.getEmailAddrId());
+		List<MsgInboxVo> msgToList = inboxDao.getByToAddrId(toVo.getEmailAddrId());
 		assertTrue(msgToList.size() > 0);
 		
 		boolean subjectFound = false;

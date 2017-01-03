@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.mail.Address;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
@@ -23,8 +25,9 @@ public class CsrReplyBoTest extends BoTestBase {
 	private TaskBaseBo csrReplyBo;
 	
 	private final String replyBodyText = "This is Reply from CSR.";
-	private final String replyToAddress = "testto@localhost";
+	private static String replyToAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost"; //"testto@localhost";
 	private static Long msgRefId;
+	
 	@Test
 	public void test1() throws Exception { // csrReply
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
@@ -65,6 +68,8 @@ public class CsrReplyBoTest extends BoTestBase {
 		for (MsgInboxWebVo vo : list) {
 			assertEquals(RuleNameType.SEND_MAIL.name(),vo.getRuleName());
 			assertTrue(vo.getMsgSubject().startsWith("Re:"));
+			//logger.info("Verify result: " + vo);
+			assertEquals("Verify result", replyToAddress, vo.getToAddress());
 		}
 	}
 }

@@ -10,6 +10,7 @@ import ltj.message.vo.inbox.SearchFieldsVo;
 public interface MsgInboxDao {
 	public MsgInboxVo getByPrimaryKey(long msgId);
 	public MsgInboxVo getLastRecord();
+	public MsgInboxVo getRandomRecord();
 	public MsgInboxVo getLastReceivedRecord();
 	public MsgInboxVo getLastSentRecord();
 	public List<MsgInboxWebVo> getByLeadMsgId(long leadMsgId);

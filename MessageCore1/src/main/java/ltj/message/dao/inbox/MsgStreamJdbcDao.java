@@ -14,6 +14,7 @@ import ltj.vo.outbox.MsgStreamVo;
 @Component("msgStreamDao")
 public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 	
+	@Override
 	public MsgStreamVo getByPrimaryKey(long msgId) {
 		String sql = 
 			"select * " +
@@ -31,6 +32,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		}
 	}
 	
+	@Override
 	public List<MsgStreamVo> getByFromAddrId(long fromAddrId) {
 		String sql = 
 			"select * " +
@@ -43,6 +45,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		return list;
 	}
 	
+	@Override
 	public MsgStreamVo getLastRecord() {
 		String sql = 
 			"select * " +
@@ -57,6 +60,50 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 			return null;
 	}
 	
+	/* 
+	 * Select a random row:
+	 * 
+	 Select a random row with MySQL:
+		SELECT column FROM table
+		ORDER BY RAND()
+		LIMIT 1
+		
+	Select a random row with PostgreSQL:
+		SELECT column FROM table
+		ORDER BY RANDOM()
+		LIMIT 1
+		
+	Select a random row with Microsoft SQL Server:
+		SELECT TOP 1 column FROM table
+		ORDER BY NEWID()
+		
+	Select a random row with IBM DB2
+		SELECT column, RAND() as IDX 
+		FROM table 
+		ORDER BY IDX FETCH FIRST 1 ROWS ONLY
+		
+	Select a random record with Oracle:
+		SELECT column FROM
+		( SELECT column FROM table
+		ORDER BY dbms_random.value )
+		WHERE rownum = 1
+	 */
+	@Override
+	public MsgStreamVo getRandomRecord() {
+		String sql = 
+			"select * " +
+			"from " +
+				"MsgStream order by RAND() limit 1 ";
+		
+		List<MsgStreamVo> list = getJdbcTemplate().query(sql, 
+				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
+		if (list.size()>0)
+			return list.get(0);
+		else
+			return null;
+	}
+	
+	@Override
 	public int update(MsgStreamVo msgStreamVo) {
 		
 		if (msgStreamVo.getAddTime()==null) {
@@ -84,6 +131,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId) {
 		String sql = 
 			"delete from MsgStream where msgid=? ";
@@ -95,6 +143,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgStreamVo msgStreamVo) {
 		String sql = 
 			"INSERT INTO MsgStream (" +

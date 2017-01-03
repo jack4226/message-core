@@ -22,16 +22,18 @@ public class MsgRenderedVo extends BaseVo implements Serializable {
 	private List<RenderAttachmentVo> renderAttachments;
 	
 	public List<RenderVariableVo> getRenderVariables() {
-		if (renderVariables==null)
+		if (renderVariables==null) {
 			renderVariables = new ArrayList<RenderVariableVo>();
+		}
 		return renderVariables;
 	}
 	public void setRenderVariables(List<RenderVariableVo> renderVariables) {
 		this.renderVariables = renderVariables;
 	}
 	public List<RenderAttachmentVo> getRenderAttachments() {
-		if (renderAttachments==null)
+		if (renderAttachments==null) {
 			renderAttachments = new ArrayList<RenderAttachmentVo>();
+		}
 		return renderAttachments;
 	}
 	public void setRenderAttachments(List<RenderAttachmentVo> renderAttachments) {

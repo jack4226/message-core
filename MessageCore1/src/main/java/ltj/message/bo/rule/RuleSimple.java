@@ -48,8 +48,7 @@ public class RuleSimple extends RuleBase {
 			}
 			else {
 				// enables case-insensitive matching and dotall mode
-				pattern = Pattern.compile(this.targetText, Pattern.CASE_INSENSITIVE
-						| Pattern.DOTALL);
+				pattern = Pattern.compile(this.targetText, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 			}
 		}
 		else {
@@ -70,8 +69,9 @@ public class RuleSimple extends RuleBase {
 				// convert the list to lower case
 				for (int i = 0; i < this.exclusionList.size(); i++) {
 					String str = (String) this.exclusionList.get(i);
-					if (str != null) // just for safety
+					if (str != null) { // just for safety
 						this.exclusionList.set(i, str.toLowerCase());
+					}
 				}
 			}
 
@@ -89,48 +89,55 @@ public class RuleSimple extends RuleBase {
 	}
 
 	public String match(String mail_type, String data_type, String data) {
-		if (mail_type==null || !mail_type.equals(mailType))
+		if (mail_type==null || !mail_type.equals(mailType)) {
 			return null;
-		if (data_type==null || !data_type.equals(dataName))
+		}
+		if (data_type==null || !data_type.equals(dataName)) {
 			return null;
-		
+		}
 		if (data == null) data = ""; // just for safety
 		if (!caseSensitive) {
 			data = data.toLowerCase();
 		}
 		if (isDebugEnabled) {
-			logger.debug("[" + getRuleName(20) + "] [" + mailType + "] [" + data_type + "] data: ["
-					+ data + "] targetText: [" + targetText + "]");
+			logger.debug("[" + getRuleName(20) + "] [" + mailType + "] [" + data_type + "] data: [" + data
+					+ "] targetText: [" + targetText + "]");
 		}
 		boolean criteria_met = false;
 
 		if (criteria.equals(STARTS_WITH)) {
-			if (data.startsWith(targetText))
+			if (data.startsWith(targetText)) {
 				criteria_met = true;
+			}
 		}
 		else if (criteria.equals(ENDS_WITH)) {
-			if (data.endsWith(targetText))
+			if (data.endsWith(targetText)) {
 				criteria_met = true;
+			}
 		}
 		else if (criteria.equals(CONTAINS)) {
-			if (data.indexOf(targetText) >= 0)
+			if (data.indexOf(targetText) >= 0) {
 				criteria_met = true;
+			}
 		}
 		else if (criteria.equals(EQUALS)) {
-			if (data.equals(targetText))
+			if (data.equals(targetText)) {
 				criteria_met = true;
+			}
 		}
 		else if (criteria.equals(GREATER_THAN)) {
-			if (data.compareTo(targetText)>0)
+			if (data.compareTo(targetText) > 0)
 				criteria_met = true;
 		}
 		else if (criteria.equals(LESS_THAN)) {
-			if (data.compareTo(targetText)<0)
+			if (data.compareTo(targetText) < 0) {
 				criteria_met = true;
+			}
 		}
 		else if (criteria.equals(VALUED)) {
-			if (data.trim().length() > 0)
+			if (data.trim().length() > 0) {
 				criteria_met = true;
+			}
 		}
 		else if (criteria.equals(NOT_VALUED)) {
 			if (data.trim().length() == 0)
@@ -138,8 +145,9 @@ public class RuleSimple extends RuleBase {
 		}
 		else if (criteria.equals(REG_EX)) {
 			Matcher matcher = pattern.matcher(data);
-			if (matcher.find())
+			if (matcher.find()) {
 				criteria_met = true;
+			}
 		}
 
 		if (criteria_met) {
@@ -160,8 +168,9 @@ public class RuleSimple extends RuleBase {
 		StringBuffer sb = new StringBuffer();
 		sb.append(super.getRuleContent());
 		
-		if (storedProcedure != null)
+		if (storedProcedure != null) {
 			sb.append("Stored Procedure: " + storedProcedure + LF);
+		}
 		if (exclusionList != null) {
 			sb.append("Exclusion List:" + LF);
 			for (int i = 0; i < exclusionList.size(); i++) {

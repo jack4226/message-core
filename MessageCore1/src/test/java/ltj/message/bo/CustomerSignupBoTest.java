@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.bo.customer.CustomerSignupBo;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.dao.customer.CustomerDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.exception.DataValidationException;

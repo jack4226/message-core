@@ -17,6 +17,7 @@ import ltj.vo.outbox.MsgRenderedVo;
 @Component("msgRenderedDao")
 public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 	
+	@Override
 	public MsgRenderedVo getByPrimaryKey(long renderId) {
 		String sql = 
 			"select * " +
@@ -34,6 +35,7 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		}
 	}
 	
+	@Override
 	public MsgRenderedVo getLastRecord() {
 		String sql = 
 			"select * " +
@@ -48,6 +50,23 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 			return null;
 	}
 	
+	@Override
+	public MsgRenderedVo getRandomRecord() {
+		String sql = 
+			"select * " +
+			"from " +
+				"MsgRendered where renderId >= (RAND() *(select max(RenderId) from MsgRendered)) " +
+				 "order by renderId limit 1 ";
+		
+		List<MsgRenderedVo> list = getJdbcTemplate().query(sql, 
+				new BeanPropertyRowMapper<MsgRenderedVo>(MsgRenderedVo.class));
+		if (list.size()>0)
+			return list.get(0);
+		else
+			return null;
+	}
+	
+	@Override
 	public List<MsgRenderedVo> getByMsgSourceId(String msgSourceId) {
 		String sql = 
 			"select * " +
@@ -60,7 +79,7 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		return list;
 	}
 	
-	
+	@Override
 	public int update(MsgRenderedVo msgRenderedVo) {
 		msgRenderedVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgRenderedVo);
@@ -73,6 +92,7 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long renderId) {
 		String sql = 
 			"delete from MsgRendered where renderId=? ";
@@ -84,6 +104,7 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgRenderedVo msgRenderedVo) {
 		msgRenderedVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgRenderedVo);

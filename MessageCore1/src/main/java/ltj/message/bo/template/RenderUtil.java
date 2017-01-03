@@ -636,6 +636,7 @@ public final class RenderUtil {
 				logger.debug("renderEmailTemplate() - Subject Variable names: " + subjVarNames);
 			}
 		}
+		// TODO fix deadlock issue when running from JUnit test
 		EmailAddrVo addrVo = getEmailAddrDao().findByAddress(toAddr);
 		// render email variables using TO emailAddrId
 		Map<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames, addrVo.getEmailAddrId());

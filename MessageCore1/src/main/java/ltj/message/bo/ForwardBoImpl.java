@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -23,7 +24,6 @@ import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.TableColumnName;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.exception.DataValidationException;
-import ltj.message.util.StringUtil;
 import ltj.message.vo.ClientVo;
 
 @Component("forwardBo")
@@ -65,73 +65,73 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 		String forwardAddrs = "";
 		StringTokenizer st = new StringTokenizer(taskArguments, ",");
 		while (st.hasMoreTokens()) {
-			String addrs = null;
+			String addr = null;
 			String token = st.nextToken();
 			if (token != null && token.startsWith("$")) { // address type
 				token = token.substring(1);
 				if (EmailAddressType.FROM_ADDR.equals(token)) {
-					addrs = messageBean.getFromAsString();
+					addr = messageBean.getFromAsString();
 				}
 				else if (EmailAddressType.FINAL_RCPT_ADDR.equals(token)) {
-					addrs = messageBean.getFinalRcpt();
+					addr = messageBean.getFinalRcpt();
 				}
 				else if (EmailAddressType.ORIG_RCPT_ADDR.equals(token)) {
-					addrs = messageBean.getOrigRcpt();
+					addr = messageBean.getOrigRcpt();
 				}
 				else if (EmailAddressType.FORWARD_ADDR.equals(token)) {
-					addrs = messageBean.getForwardAsString();
+					addr = messageBean.getForwardAsString();
 				}
 				else if (EmailAddressType.TO_ADDR.equals(token)) {
-					addrs = messageBean.getToAsString();
+					addr = messageBean.getToAsString();
 				}
 				else if (EmailAddressType.REPLYTO_ADDR.equals(token)) {
-					addrs = messageBean.getReplytoAsString();
+					addr = messageBean.getReplytoAsString();
 				}
 				// E-mail addresses from Client table
 				else if (TableColumnName.CUSTOMER_CARE_ADDR.equals(token)) {
-					addrs = clientVo.getCustcareEmail();
+					addr = clientVo.getCustcareEmail();
 				}
 				else if (TableColumnName.SECURITY_DEPT_ADDR.equals(token)) {
-					addrs = clientVo.getSecurityEmail();
+					addr = clientVo.getSecurityEmail();
 				}
 				else if (TableColumnName.RMA_DEPT_ADDR.equals(token)) {
-					addrs = clientVo.getRmaDeptEmail();
+					addr = clientVo.getRmaDeptEmail();
 				}
 				else if (TableColumnName.SPAM_CONTROL_ADDR.equals(token)) {
-					addrs = clientVo.getSpamCntrlEmail();
+					addr = clientVo.getSpamCntrlEmail();
 				}
 				else if (TableColumnName.VIRUS_CONTROL_ADDR.equals(token)) {
-					addrs = clientVo.getSpamCntrlEmail();
+					addr = clientVo.getSpamCntrlEmail();
 				}
 				else if (TableColumnName.CHALLENGE_HANDLER_ADDR.equals(token)) {
-					addrs = clientVo.getChaRspHndlrEmail();
+					addr = clientVo.getChaRspHndlrEmail();
 				}
 				// end of Client table
 			}
 			else { // real email address
-				addrs = token;
+				addr = token;
 			}
 			
-			if (!StringUtil.isEmpty(addrs)) {
+			if (StringUtils.isNotBlank(addr)) {
 				try {
-					InternetAddress.parse(addrs);
-					if (StringUtil.isEmpty(forwardAddrs)) {
-						forwardAddrs += addrs;
+					InternetAddress.parse(addr);
+					if (StringUtils.isBlank(forwardAddrs)) {
+						forwardAddrs += addr;
 					}
 					else {
-						forwardAddrs += "," + addrs;
+						forwardAddrs += "," + addr;
 					}
 				}
 				catch (AddressException e) {
-					logger.error("AddressException caught for: " + addrs + ", skip...");
+					logger.error("AddressException caught for: " + addr + ", skip...");
 				}
 			}
 		} // end of while
 		if (isDebugEnabled) {
 			logger.debug("Address(es) to forward to: " + forwardAddrs);
 		}
-		if (forwardAddrs.trim().length() == 0) {
-			throw new DataValidationException("forward address is not valued");
+		if (StringUtils.isBlank(forwardAddrs)) {
+			throw new DataValidationException("forward address is empty!");
 		}
 		
 		if (messageBean.getMsgId() != null) {

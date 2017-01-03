@@ -39,6 +39,8 @@ public class MsgInboxTest extends DaoTestBase {
 	@Rollback(value=true)
 	public void testMessageInbox() {
 		try {
+			MsgInboxVo randomVo = msgInboxDao.getRandomRecord();
+			assertNotNull(randomVo);
 			MsgInboxVo msgInboxVo = selectByMsgId(testMsgId);
 			assertNotNull(msgInboxVo);
 			List<MsgInboxVo> list = selectByFromAddrId(testFromMsgId);
@@ -106,7 +108,7 @@ public class MsgInboxTest extends DaoTestBase {
 	}
 	
 	private MsgInboxVo selectByMsgId(long msgId) {
-		MsgInboxVo msgInboxVo = (MsgInboxVo)msgInboxDao.getByPrimaryKey(msgId);
+		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
 		System.out.println("MsgInboxDao - selectByPrimaryKey: "+LF+msgInboxVo);
 		return msgInboxVo;
 	}

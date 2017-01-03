@@ -29,10 +29,11 @@ public class MsgStreamTest extends DaoTestBase {
 	private MsgInboxDao msgInboxDao;
 
 	@Before
+	@Rollback(value=false)
 	public void checkMsgStream() throws IOException {
-		long testMsgId = 2L;
 		if (msgStreamDao.getLastRecord()==null) {
-			MsgInboxVo msgInboxVo = selectByMsgId(testMsgId);
+			MsgInboxVo msgInboxVo = msgInboxDao.getRandomRecord();
+			assertNotNull(msgInboxVo);
 			MsgStreamVo msgStreamVo = new MsgStreamVo();
 			msgStreamVo.setMsgId(msgInboxVo.getMsgId());
 			msgStreamVo.setFromAddrId(msgInboxVo.getFromAddrId());
@@ -50,11 +51,6 @@ public class MsgStreamTest extends DaoTestBase {
 //				System.err.println(failure.toString());
 //			}
 //		}
-	}
-	private MsgInboxVo selectByMsgId(long msgId) {
-		MsgInboxVo msgInboxVo = (MsgInboxVo)msgInboxDao.getByPrimaryKey(msgId);
-		System.out.println("MsgInboxDao - selectByPrimaryKey: "+LF+msgInboxVo);
-		return msgInboxVo;
 	}
 
 	byte[] getBouncedMail(int fileNbr) {
