@@ -46,6 +46,7 @@ public class RenderTest extends BoTestBase {
 			RenderResponse rsp = util.getRenderedEmail(req);
 			assertNotNull(rsp);
 			logger.info(rsp);
+			// TODO verify result
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -64,6 +65,7 @@ public class RenderTest extends BoTestBase {
 			RenderResponse rsp = util.getRenderedEmail(req);
 			assertNotNull(rsp);
 			logger.info(rsp);
+			// TODO verify result
 		}
 		catch (Exception e) {
 			e.printStackTrace();

@@ -22,5 +22,6 @@ public class ToCsrBoTest extends BoTestBase {
 		String jmsMsgId = (String)toCsrBo.process(messageBean);
 		assertNotNull(jmsMsgId);
 		assertTrue(jmsMsgId.startsWith("ID:"));
+		// TODO verify result
 	}
 }
