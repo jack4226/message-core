@@ -99,8 +99,8 @@ public class BoTestBase {
 		MsgStreamVo msgStreamVo = msgStreamDao.getRandomRecord();
 		if (msgStreamVo == null) {
 			addMsgToInbox();
+			msgStreamVo = msgStreamDao.getLastRecord();
 		}
-		msgStreamVo = msgStreamDao.getLastRecord();
 		assertNotNull(msgStreamVo);
 		Message msg = createMimeMessage(msgStreamVo.getMsgStream());
 		MessageBean messageBean = createMessageBean(msg);

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -31,6 +32,7 @@ import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.util.PrintUtil;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
@@ -95,6 +97,10 @@ public class MsgOutboxBoTest extends BoTestBase {
 			
 			String body = msgBean.getBody();
 			assertNotNull(body);
+			String subj = msgBean.getSubject();
+			assertNotNull(subj);
+			msgBean.setSubject(subj + " - " + (new Random().nextInt(999) + 1));
+			
 			assertTrue(body.indexOf((String)rsp2Vars.get("name1").getVariableValue()) > 0 );
 			assertTrue(body.indexOf((String)rsp2Vars.get("name2").getVariableValue()) > 0 );
 			assertTrue(body.indexOf((String)rsp2Vars.get("name3").getVariableValue()) > 0 );
@@ -138,6 +144,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 		for (MsgInboxVo vo : msgFromList) {
 			if (StringUtils.equals(msgBean.getSubject(), vo.getMsgSubject())) {
 				subjectFound = true;
+				logger.info("Subject matched: " + PrintUtil.prettyPrint(vo, 1));
 				break;
 			}
 		}
