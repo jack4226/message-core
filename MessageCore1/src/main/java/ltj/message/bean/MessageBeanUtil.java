@@ -328,13 +328,14 @@ public final class MessageBeanUtil {
 		part.setDisposition(aNode.getDisposition());
 		part.setDescription(aNode.getDescription());
 
+		byte[] node_value = aNode.getValue() == null ? "".getBytes() : aNode.getValue();
 		if (aNode.getMimeType().startsWith("text")) {
-			part.setContent(new String(aNode.getValue()), aNode.getContentType());
+			part.setContent(new String(node_value), aNode.getContentType());
 			if (aNode.getMimeType().startsWith("text/html")) {
 				if (aNode.getDisposition() == null) {
 					//part.setDisposition(Part.INLINE);
-					/* 
-					 Do not uncomment above line, as Dyndns Mail Relay server will insert 
+					/*
+					 XXX Do not uncomment above line, as Dyndns Mail Relay server will insert 
 					 "-----Inline Attachment Follows-----" at the beginning of the message.
 					 */ 
 				}
@@ -345,8 +346,7 @@ public final class MessageBeanUtil {
 				// not sure why do this, consistency?
 				part.setDescription(MessageBeanBuilder.getFileName(aNode.getContentType()));
 			}
-			ByteArrayDataSource bads = new ByteArrayDataSource(aNode.getValue(), aNode
-					.getContentType());
+			ByteArrayDataSource bads = new ByteArrayDataSource(node_value, aNode.getContentType());
 			part.setDataHandler(new DataHandler(bads));
 		}
 	}
@@ -363,8 +363,9 @@ public final class MessageBeanUtil {
 	 */
 	public static Message createMimeMessage(MessageBean msgBean, Address failedAddr, String loopbackText)
 			throws MessagingException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering createMimeMessage() for email loopback");
+		}
 		javax.mail.Session session = Session.getDefaultInstance(System.getProperties());
 		if (debugSession) {
 			session.setDebug(true);
@@ -582,8 +583,9 @@ public final class MessageBeanUtil {
 		name = "get" + name;
 		
 		try {
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("invoking method: " + name + "()");
+			}
 			Method method = msgBean.getClass().getMethod(name, (Class[])null);
 			Object obj =  method.invoke(msgBean, (Object[])null);
 			if (obj instanceof String) {

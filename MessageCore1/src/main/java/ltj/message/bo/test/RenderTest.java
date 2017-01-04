@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
@@ -68,8 +70,8 @@ public class RenderTest extends BoTestBase {
 			fail();
 		}
 	}
-	private static HashMap<String, RenderVariable> buildTestVariables() {
-		HashMap<String, RenderVariable> map=new HashMap<String, RenderVariable>();
+	private static Map<String, RenderVariable> buildTestVariables() {
+		Map<String, RenderVariable> map=new HashMap<String, RenderVariable>();
 		
 		try {
 			RenderVariable toAddr = new RenderVariable(
@@ -199,12 +201,12 @@ public class RenderTest extends BoTestBase {
 				"N", 
 				null
 			);
-		ArrayList<HashMap<String, RenderVariable>> collection = new ArrayList<HashMap<String, RenderVariable>>();
-		HashMap<String, RenderVariable> row1 = new HashMap<String, RenderVariable>();	// a row
+		List<Map<String, RenderVariable>> collection = new ArrayList<Map<String, RenderVariable>>();
+		Map<String, RenderVariable> row1 = new HashMap<String, RenderVariable>();	// a row
 		row1.put(req2.getVariableName(), req2_row1);
 		row1.put(req3.getVariableName(), req3);
 		collection.add(row1);
-		HashMap<String, RenderVariable> row2 = new HashMap<String, RenderVariable>();	// a row
+		Map<String, RenderVariable> row2 = new HashMap<String, RenderVariable>();	// a row
 		row2.put(req2.getVariableName(), req2_row2);
 		row2.put(req3.getVariableName(), req3);
 		collection.add(row2);

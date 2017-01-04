@@ -33,15 +33,7 @@ public class SendMailBoTest extends BoTestBase {
 		for (int i = 0; i < loops; i++) {
 			String suffix = StringUtils.leftPad((i % 100) + "", 2, "0");
 			String user = "user" + suffix;
-			if (i % 13 == 1) {
-				try {
-					Thread.sleep(1 * 1000);
-				}
-				catch (InterruptedException e) {
-					break;
-				}
-			}
-			if (messageBean==null) {
+			if (messageBean == null) {
 				messageBean = buildMessageBeanFromMsgStream();
 			}
 			messageBean.getHeaders().clear();
@@ -62,7 +54,7 @@ public class SendMailBoTest extends BoTestBase {
 	@Test
 	@Rollback(value=false)
 	public void test2() throws Exception { // sendMailVERP
-		if (messageBean==null) {
+		if (messageBean == null) {
 			messageBean = buildMessageBeanFromMsgStream();
 		}
 		messageBean.getHeaders().clear();

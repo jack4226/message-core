@@ -1,22 +1,26 @@
 package ltj.message.bo.test;
 
-import java.io.IOException;
+import static org.junit.Assert.*;
+
+import java.util.List;
 
 import javax.annotation.Resource;
-import javax.jms.JMSException;
-import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
-import ltj.message.exception.DataValidationException;
 import ltj.message.util.FileUtil;
+import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.inbox.MsgInboxVo;
 
+@FixMethodOrder
 public class RuleEngineTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(RuleEngineTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
@@ -28,22 +32,74 @@ public class RuleEngineTest extends BoTestBase {
 	@Resource
 	private TaskDispatcher taskDispatcher;
 	
-	final int startFrom = 1;
-	final int endTo = 1;
+	final static int startFrom = 1;
+	final static int loops = 1;
+	
+	private static String[] fromAddr = new String[loops];
+	private static String[] toAddr = new String[loops];
+	private static String[] ruleName = new String[loops];
+	private static MessageBean[] messageBean = new MessageBean[loops];
 	
 	@Test
-	public void processgetBouncedMails() throws IOException, MessagingException,
-			DataValidationException, JMSException {
-		for (int i = startFrom; i <= endTo; i++) {
-			byte[] mailStream = getBouncedMail(i);
-			MessageBean messageBean = MessageBeanUtil.createBeanFromStream(mailStream);
-			messageBean.setIsReceived(true);
-			messageParser.parse(messageBean);
-			taskDispatcher.dispatchTasks(messageBean);
-			// TODO verify results
+	@Rollback(value=false)
+	public void test0() throws Exception {
+		// insert email addresses here to work around the deadlock issue
+		for (int i = 0; i < loops; i++) {
+			byte[] mailStream = getBouncedMail(i + startFrom);
+			messageBean[i] = MessageBeanUtil.createBeanFromStream(mailStream);
+			messageBean[i].setIsReceived(true);
+			fromAddr[i] = messageBean[i].getFromAsString();
+			toAddr[i] = messageBean[i].getToAsString();
+			assertNotNull(fromAddr[i]);
+			assertNotNull(toAddr[i]);
+			emailAddrDao.findByAddress(fromAddr[i]);
+			emailAddrDao.findByAddress(toAddr[i]);
 		}
 	}
 	
+	@Test
+	public void test1() throws Exception { // process bounced email
+		for (int i = 0; i < loops; i++) {
+			ruleName[i] = messageParser.parse(messageBean[i]);
+			assertNotNull(ruleName[i]);
+			taskDispatcher.dispatchTasks(messageBean[i]);
+		}
+	}
+	
+	@Test
+	public void test2() { // wait for 5 seconds
+		try {
+			Thread.sleep(WaitTimeInMillis);
+		} catch (InterruptedException e) {
+			//
+		}
+	}
+
+	@Test
+	public void test3() { // verifyDataRecord
+		for (int i = 0; i < loops; i++) {
+			assertNotNull(messageBean[i].getMsgId());
+			MsgInboxVo vo = selectMsgInboxByMsgId(messageBean[i].getMsgId());
+			assertNotNull(vo);
+			assertEquals(fromAddr[i], vo.getFromAddress());
+			assertEquals(toAddr[i],vo.getToAddress());
+			
+			EmailAddrVo addrVo = selectEmailAddrByAddress(fromAddr[i]);
+			assertNotNull(addrVo);
+			
+			List<MsgInboxVo> miList = msgInboxDao.getByFromAddrId(addrVo.getEmailAddrId());
+			assertFalse(miList.isEmpty());
+			assertEquals(ruleName[i], miList.get(miList.size() - 1).getRuleName());
+			
+			addrVo = selectEmailAddrByAddress(toAddr[i]);
+			assertNotNull(addrVo);
+			
+			miList = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
+			assertFalse(miList.isEmpty());
+			assertEquals(ruleName[i], miList.get(miList.size() - 1).getRuleName());
+		}
+	}
+
 	byte[] getBouncedMail(int fileNbr) {
 		return FileUtil.loadFromFile("bouncedmails", "BouncedMail_" + fileNbr + ".txt");
 	}
