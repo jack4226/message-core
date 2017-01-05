@@ -64,12 +64,17 @@ public class CsrReplyBoTest extends BoTestBase {
 	public void test3() { // verifyDatabaseRecord
 		// now verify the database record added
 		List<MsgInboxWebVo> list = selectMsgInboxByMsgRefId(msgRefId);
-		assertTrue(list.size()>0);
+		assertTrue(list.size() > 0);
+		boolean found = false;
 		for (MsgInboxWebVo vo : list) {
-			assertEquals(RuleNameType.SEND_MAIL.name(),vo.getRuleName());
-			assertTrue(vo.getMsgSubject().startsWith("Re:"));
-			//logger.info("Verify result: " + vo);
-			assertEquals("Verify result", replyToAddress, vo.getToAddress());
+			if (RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
+				if (vo.getMsgSubject().startsWith("Re:")) {
+					found = true;
+					//logger.info("Verify result: " + vo);
+					assertEquals("Verify result", replyToAddress, vo.getToAddress());
+				}
+			}
 		}
+		assertEquals(true, found);
 	}
 }

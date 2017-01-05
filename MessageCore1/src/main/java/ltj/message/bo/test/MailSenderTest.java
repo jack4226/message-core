@@ -38,7 +38,7 @@ public class MailSenderTest extends BoTestBase {
 	@Rollback(value=false)
 	public void test1() { // send mail
 		int loops = 2;
-		for (int i=0; i<loops; i++) {
+		for (int i = 0; i < loops; i++) {
 			String suffix = StringUtils.leftPad(new Random().nextInt(100) + "", 2, "0");
 			suffixes.add(suffix);
 		}
@@ -68,11 +68,17 @@ public class MailSenderTest extends BoTestBase {
 			assertNotNull("Address " + addr + " must have been added.", addrVo);
 			List<MsgInboxVo> list = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 			assertTrue(list.size()>0);
+			boolean found = false;
 			for (MsgInboxVo vo : list) {
-				assertEquals(RuleNameType.SEND_MAIL.name(),vo.getRuleName());
-				assertTrue(vo.getMsgSubject().startsWith("Test MailSender - "));
-				assertEquals("Verify result", addr, vo.getToAddress());
+				if (vo.getMsgSubject().startsWith("Test MailSender - ")) {
+					if (addr.equals(vo.getToAddress())) {
+						found = true;
+						assertEquals(RuleNameType.SEND_MAIL.name(),vo.getRuleName());
+						
+					}
+				}
 			}
+			assertEquals("Verify result", true, found);
 		}
 	}
 

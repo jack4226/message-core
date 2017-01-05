@@ -151,10 +151,10 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 		//msg.removeHeader("Delivered-To"); // remove delivery history
 		
 		msg.setSubject("Fwd: " + messageBean.getSubject());
-		msg.setRecipients(Message.RecipientType.TO, addresses);
 		msg.setRecipients(Message.RecipientType.CC, null);
 		msg.setRecipients(Message.RecipientType.BCC, null);
 		
+		msg.setRecipients(Message.RecipientType.TO, addresses);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
 			msg.writeTo(baos);

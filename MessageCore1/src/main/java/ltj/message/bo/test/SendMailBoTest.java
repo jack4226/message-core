@@ -94,10 +94,10 @@ public class SendMailBoTest extends BoTestBase {
 			assertTrue(list.size() > 0);
 			boolean found = false;
 			for (MsgInboxWebVo vo : list) {
-				assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
 				if ((testSubject + suffixes[i]).equals(vo.getMsgSubject())) {
 					if (StringUtils.contains(vo.getToAddress(), suffixes[i])) {
 						found = true;
+						assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
 					}
 				}
 			}
@@ -110,9 +110,9 @@ public class SendMailBoTest extends BoTestBase {
 			String nbr = StringUtils.leftPad(((i - loops) + ""), 2, "0");
 			boolean found = false;
 			for (MsgInboxWebVo vo : list) {
-				assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
 				if ((testSubject + nbr).equals(vo.getMsgSubject())) {
 					found = true;
+					assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
 				}
 			}
 			assertEquals(true, found);

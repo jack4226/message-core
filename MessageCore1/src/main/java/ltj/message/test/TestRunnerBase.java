@@ -9,23 +9,29 @@ import org.apache.commons.lang.StringUtils;
 public class TestRunnerBase {
 	
 	final static String PS = File.separator;
-	static Class<?>[] getAllDaoTestClasses(String pkgName) {
+	static Class<?>[] getAllDaoTestClasses(String pkgName, String[] exclusions) {
 		// looking for class name ending with "Test", for example CustomerTest.class
 		List<Class<?>> clsList = new ArrayList<Class<?>>();
 		String homeDir = System.getProperty("user.dir") + PS + "target" + PS + "classes" + PS;
 		System.out.println("Working directory: " + homeDir);
 		List<File> files =  getClassesFromDirTree(new File(homeDir), "Test.class");
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		for (File file : files) {
+		outerloop: for (File file : files) {
 			String path = file.getPath();
 			String pkgPath = StringUtils.removeStart(path, homeDir);
 			String clsName = pkgPath.replace(PS, ".");
 			try {
 				clsName = StringUtils.removeEnd(clsName,".class");
 				Class<?> testCls = loader.loadClass(clsName);
-				if (clsName.startsWith(pkgName) && testCls.getDeclaredAnnotations().length>=4) {
-					if (clsName.startsWith("ltj.message.bo.test")) {
+				int annotations = testCls.getDeclaredAnnotations().length;
+				if (clsName.startsWith(pkgName) && annotations >= 0) {
+					if (clsName.startsWith("ltj.message.bo.obsolete")) {
 						continue;
+					}
+					for (String exclusion : exclusions) {
+						if (StringUtils.contains(clsName, exclusion)) {
+							continue outerloop;
+						}
 					}
 					clsList.add(testCls);
 					System.out.println("Test Class: " + testCls.getName());

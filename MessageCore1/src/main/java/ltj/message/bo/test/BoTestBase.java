@@ -104,6 +104,7 @@ public class BoTestBase {
 		assertNotNull(msgStreamVo);
 		Message msg = createMimeMessage(msgStreamVo.getMsgStream());
 		MessageBean messageBean = createMessageBean(msg);
+		//messageBean.getHeaders().clear();
 		messageBean.setMsgId(msgStreamVo.getMsgId()); // to be converted as MsgRefId
 		if (messageBean.getMsgRefId() == null) { // TODO revisit with DeliveryErrorBoTest
 			messageBean.setMsgRefId(messageBean.getMsgId());

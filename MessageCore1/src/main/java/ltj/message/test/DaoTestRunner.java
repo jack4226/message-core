@@ -6,8 +6,10 @@ import org.junit.runner.notification.Failure;
 
 public class DaoTestRunner extends TestRunnerBase {
 	static final String DaoPackageName = "ltj.message.dao";
+	static final String[] exclusions = {};
+	
 	public static void main(String[] args) {
-		Result result = JUnitCore.runClasses(getAllDaoTestClasses(DaoPackageName));
+		Result result = JUnitCore.runClasses(getAllDaoTestClasses(DaoPackageName, exclusions));
 		if (!result.getFailures().isEmpty()) {
 			for (Failure failure : result.getFailures()) {
 				System.err.println(failure.toString());

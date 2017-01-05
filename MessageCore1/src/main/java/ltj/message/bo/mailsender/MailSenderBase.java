@@ -7,7 +7,9 @@ import static ltj.message.constant.Constants.YES;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.jms.JMSException;
@@ -330,37 +332,45 @@ public abstract class MailSenderBase {
 			logger.debug("Entering rebuildAddresses method...");
 		}
 		// set TO address to Test Address if it's a test run
-		if (clientVo.getUseTestAddress() && !overrideTestAddr) {
-			if (isDebugEnabled) {
-				logger.debug("rebuildAddresses() - Replace original TO: "
-						+ EmailAddrUtil.emailAddrToString(m.getRecipients(javax.mail.Message.RecipientType.TO))
-						+ ", with testing address: " + clientVo.getTestToAddr());
-			}
-			boolean toAddrIsLocal = false;
-			String displayName = null;
+		if (clientVo.getUseTestAddress() && overrideTestAddr == false) {
 			// use the original address as Display Name 
 			Address[] to_addrs = m.getRecipients(javax.mail.Message.RecipientType.TO);
+			List<String> addr_list = new ArrayList<>();;
 			if (to_addrs != null && to_addrs.length > 0) {
-				Address to_addr = to_addrs[0];
-				if (to_addr != null) {
-					String addr = to_addr.toString();
-					if (!StringUtil.isEmpty(addr)) {
-						displayName = EmailAddrUtil.removeDisplayName(addr);
-						//displayName = StringUtil.replaceAll(displayName, "@", ".at.");
-						toAddrIsLocal = addr.toLowerCase().endsWith("@localhost");
+				for (Address to_addr : to_addrs) {
+					if (to_addr != null) {
+						String addr = to_addr.toString();
+						if (StringUtils.isNotBlank(addr)) {
+							boolean toAddrIsLocal = EmailAddrUtil.removeDisplayName(addr, true).endsWith("@localhost");
+							if (toAddrIsLocal) {
+								addr_list.add(addr);
+							}
+							else {
+								if (EmailAddrUtil.hasDisplayName(addr)) {
+									addr_list.add("\"" + EmailAddrUtil.getDisplayName(addr) + "\" <"
+											+ EmailAddrUtil.removeDisplayName(clientVo.getTestToAddr()) + ">");
+								}
+								else {
+									addr_list.add(clientVo.getTestToAddr());
+								}
+							}
+						}
 					}
 				}
 			}
-			if (!toAddrIsLocal) { // DO NOT override if TO address is local
-				if (displayName == null) {
-					m.setRecipients(RecipientType.TO, InternetAddress.parse(clientVo.getTestToAddr()));
+			String toAddr = "";
+			for (int i = 0; i < addr_list.size(); i++) {
+				if (i > 0) {
+					toAddr += ",";
 				}
-				else {
-					m.setRecipients(RecipientType.TO, InternetAddress.parse("\""
-								+ displayName + "\" <"
-								+ EmailAddrUtil.removeDisplayName(clientVo.getTestToAddr()) + ">"));
-				}
+				toAddr += addr_list.get(i);
 			}
+			if (isDebugEnabled) {
+				logger.debug("rebuildAddresses() - Replace original TO: "
+						+ EmailAddrUtil.emailAddrToString(m.getRecipients(javax.mail.Message.RecipientType.TO))
+						+ ", with testing address: " + toAddr);
+			}
+			m.setRecipients(RecipientType.TO, InternetAddress.parse(toAddr));
 		}
 		// validate TO address
 		if (m.getRecipients(RecipientType.TO) == null || m.getRecipients(RecipientType.TO).length == 0) {
@@ -384,9 +394,9 @@ public abstract class MailSenderBase {
 			throw new AddressException("FROM address is blank!");
 		}
 		// set ReplyTo address to Test Address if it's a test run and not provided
-		if (clientVo.getUseTestAddress() && !overrideTestAddr
+		if (clientVo.getUseTestAddress() && overrideTestAddr == false
 				&& (m.getReplyTo() == null || m.getReplyTo().length == 0)) {
-			if (!StringUtil.isEmpty(clientVo.getTestReplytoAddr())) {
+			if (StringUtils.isNotBlank(clientVo.getTestReplytoAddr())) {
 				if (EmailAddrUtil.hasDisplayName(clientVo.getTestReplytoAddr())) {
 					m.setReplyTo(InternetAddress.parse(clientVo.getTestReplytoAddr()));
 				}

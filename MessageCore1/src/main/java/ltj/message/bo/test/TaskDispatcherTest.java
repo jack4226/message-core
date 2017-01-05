@@ -19,11 +19,13 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.constant.Constants;
+import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.inbox.MsgInboxWebVo;
 
 @FixMethodOrder
 public class TaskDispatcherTest extends BoTestBase {
@@ -38,15 +40,21 @@ public class TaskDispatcherTest extends BoTestBase {
 
 	private static String testFromAddress;
 	private static String mailingListAddr = "demolist1@localhost";
+	private static MessageBean messageBean;
+	
+	@Test
+	@Rollback(value=false)
+	public void test0() throws Exception {
+		String digits = StringUtils.leftPad("" + new Random().nextInt(1000), 4, "0");
+		testFromAddress = "sbsr" + digits + "@localhost";
+		emailAddrDao.findByAddress(testFromAddress);
+	}
 	
 	@Test
 	@Rollback(value=false)
 	public void test1() throws Exception { // testTaskScheduler
 		assertNotNull(dispr);
-		MessageBean messageBean = buildMessageBeanFromMsgStream();
-		
-		String digits = StringUtils.leftPad("" + new Random().nextInt(1000), 4, "0");
-		testFromAddress = "sbsr" + digits + "@localhost";
+		messageBean = buildMessageBeanFromMsgStream();
 		
 		messageBean.setFrom(InternetAddress.parse(testFromAddress));
 		messageBean.setTo(InternetAddress.parse(mailingListAddr));
@@ -59,13 +67,12 @@ public class TaskDispatcherTest extends BoTestBase {
 		messageBean.setRuleName(ruleName);
 		
 		dispr.dispatchTasks(messageBean);
-		// TODO verify results
 	}
 	
 	@Test
 	public void test2() { // wait for 5 seconds
 		try {
-			Thread.sleep(WaitTimeInMillis);
+			Thread.sleep(WaitTimeInMillis * 2);
 		} catch (InterruptedException e) {
 			//
 		}
@@ -80,7 +87,20 @@ public class TaskDispatcherTest extends BoTestBase {
 		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
 		assertNotNull(vo);
 		assertEquals(Constants.YES_CODE, vo.getSubscribed());
+		
+		List<MsgInboxWebVo> msglist = selectMsgInboxByMsgRefId(messageBean.getMsgId());
+		assertTrue(msglist.size() > 0);
+		String subj = "You have subscribed to mailing list"; // Sample List 1";
+		boolean found = false;
+		for (MsgInboxWebVo mivo : msglist) {
+			if (testFromAddress.equals(mivo.getToAddress())) {
+				if (StringUtils.startsWith(mivo.getMsgSubject(), subj)) {
+					found = true;
+					assertEquals(RuleNameType.SEND_MAIL.name(), mivo.getRuleName());
+				}
+			}
+		}
+		assertEquals(true, found);
 	}
-
 
 }
