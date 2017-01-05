@@ -34,7 +34,6 @@ public class ForwardBoTest extends BoTestBase {
 	@Rollback(value=false)
 	public void test1() throws Exception { // forward
 		messageBean = buildMessageBeanFromMsgStream();
-		messageBean.getHeaders().clear();
 		forwardBo.setTaskArguments("$" + EmailAddressType.FROM_ADDR);
 		forwardBo.setTaskArguments(forwardAddress);
 		if (isDebugEnabled) {

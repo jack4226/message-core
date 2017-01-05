@@ -81,11 +81,11 @@ public class TaskDispatcherTest extends BoTestBase {
 	@Test
 	public void test3() { // verifyDataRecord
 		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);
-		assertNotNull(addrVo);
+		assertNotNull("test from address must have been added to database.", addrVo);
 		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);
-		assertTrue(list.size()>0);
+		assertTrue(list.size() > 0);
 		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
-		assertNotNull(vo);
+		assertNotNull("Subscription must have been added to database.", vo);
 		assertEquals(Constants.YES_CODE, vo.getSubscribed());
 		
 		List<MsgInboxWebVo> msglist = selectMsgInboxByMsgRefId(messageBean.getMsgId());

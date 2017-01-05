@@ -240,6 +240,15 @@ public abstract class MailSenderBase {
 			MessageBean msgBean = MessageBeanBuilder.processPart(mimeMsg, null);
 			// convert extra mimeMessage headers
 			addXHeadersToBean(msgBean, mimeMsg);
+			
+			/*
+			 * Override TO address in message bean with target recipient, since
+			 * the TO address in message bean could be populated with the value
+			 * in either "Delivered-To" or "Received" headers.
+			 */
+			Address[] to = mimeMsg.getRecipients(RecipientType.TO);
+			msgBean.setTo(to);
+			
 			// save the message and send it off
 			process(msgBean);
 		}

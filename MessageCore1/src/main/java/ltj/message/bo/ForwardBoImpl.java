@@ -154,18 +154,20 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 		msg.setRecipients(Message.RecipientType.CC, null);
 		msg.setRecipients(Message.RecipientType.BCC, null);
 		
-		msg.setRecipients(Message.RecipientType.TO, addresses);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
-			msg.writeTo(baos);
-			setTargetToMailSender();
-			String jmsMsgId = jmsProcessor.writeMsg(baos.toByteArray());
-			baos.close();
-			if (isDebugEnabled) {
-				logger.debug("Jms Message Id returned: " + jmsMsgId);
+		for (Address address : addresses) {
+			msg.setRecipients(Message.RecipientType.TO, new Address[] {address});
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			try {
+				msg.writeTo(baos);
+				setTargetToMailSender();
+				String jmsMsgId = jmsProcessor.writeMsg(baos.toByteArray());
+				baos.close();
+				if (isDebugEnabled) {
+					logger.debug("Jms Message Id returned: " + jmsMsgId);
+				}
+			} catch (IOException e) {
+				logger.error("IOException caught", e);
 			}
-		} catch (IOException e) {
-			logger.error("IOException caught", e);
 		}
 		return Long.valueOf(addresses.length);
 	}
