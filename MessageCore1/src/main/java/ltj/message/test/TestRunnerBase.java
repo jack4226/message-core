@@ -24,6 +24,7 @@ public class TestRunnerBase {
 				clsName = StringUtils.removeEnd(clsName,".class");
 				Class<?> testCls = loader.loadClass(clsName);
 				int annotations = testCls.getDeclaredAnnotations().length;
+				System.out.println("Class - " + clsName + ", annotation count: " + annotations);
 				if (clsName.startsWith(pkgName) && annotations >= 0) {
 					if (clsName.startsWith("ltj.message.bo.obsolete")) {
 						continue;

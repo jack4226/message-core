@@ -26,9 +26,8 @@ public class AutoReplyBoTest extends BoTestBase {
 	private TaskBaseBo autoReplyBo;
 	
 	private static String replyToAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost"; //"testto@localhost";
-	private static Long msgRefId;
+	private static MessageBean messageBean;
 	
-
 	@Test
 	@Rollback(value=false)
 	public void test0() {
@@ -40,7 +39,7 @@ public class AutoReplyBoTest extends BoTestBase {
 	@Test
 	@Rollback(value=false)
 	public void test1() throws Exception { // autoReply
-		MessageBean messageBean = buildMessageBeanFromMsgStream();
+		messageBean = buildMessageBeanFromMsgStream();
 		assertNotNull(messageBean);
 		messageBean.setMailingListId("SMPLLST1");
 		Address[] from = InternetAddress.parse(replyToAddress);
@@ -56,7 +55,6 @@ public class AutoReplyBoTest extends BoTestBase {
 		 * "replyToAddress", and add a record to MsgInbox table.
 		 */
 		autoReplyBo.process(messageBean);
-		msgRefId = messageBean.getMsgId();
 	}
 	@Test
 	public void test2() { // waitForMailEngine
@@ -69,14 +67,14 @@ public class AutoReplyBoTest extends BoTestBase {
 	@Test
 	public void test3() { // verifyDatabaseRecord
 		// now verify the database record added
-		List<MsgInboxWebVo> list = selectMsgInboxByMsgRefId(msgRefId);
+		List<MsgInboxWebVo> list = selectMsgInboxByMsgRefId(messageBean.getMsgId());
 		assertTrue(list.size() > 0);
 		boolean found = false;
 		for (MsgInboxWebVo vo : list) {
-			if (RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
+			if (replyToAddress.equals(vo.getToAddress())) {
 				if (vo.getMsgSubject().startsWith("You have subscribed to ")) {
 					found = true;
-					assertEquals("Verify result", replyToAddress, vo.getToAddress());
+					assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
 				}
 			}
 		}
