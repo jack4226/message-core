@@ -13,6 +13,7 @@ import javax.mail.internet.InternetAddress;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
@@ -29,6 +30,7 @@ public class CsrReplyBoTest extends BoTestBase {
 	private static Long msgRefId;
 	
 	@Test
+	@Rollback(value=false)
 	public void test1() throws Exception { // csrReply
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		Address[] from = InternetAddress.parse(replyToAddress);
@@ -67,11 +69,11 @@ public class CsrReplyBoTest extends BoTestBase {
 		assertTrue(list.size() > 0);
 		boolean found = false;
 		for (MsgInboxWebVo vo : list) {
-			if (RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
+			if (replyToAddress.equals(vo.getToAddress())) {
 				if (vo.getMsgSubject().startsWith("Re:")) {
 					found = true;
 					//logger.info("Verify result: " + vo);
-					assertEquals("Verify result", replyToAddress, vo.getToAddress());
+					assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
 				}
 			}
 		}
