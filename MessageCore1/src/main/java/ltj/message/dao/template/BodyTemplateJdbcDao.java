@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -25,14 +26,14 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(templateId);
-		if (clientId!=null) {
+		if (StringUtils.isNotBlank(clientId)) {
 			sql += " and clientId=? ";
 			keys.add(clientId);
 		}
 		else {
 			sql += " and clientId is null ";
 		}
-		if (startTime!=null) {
+		if (startTime != null) {
 			sql += " and startTime=? ";
 			keys.add(startTime);
 		}
@@ -59,15 +60,15 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(templateId);
-		if (clientId==null) {
+		if (StringUtils.isBlank(clientId)) {
 			sql += " and clientId is null ";
 		}
 		else {
 			sql += " and (clientId=? or clientId is null) ";
 			keys.add(clientId);
 		}
-		if (startTime==null) {
-			startTime = new Timestamp(new java.util.Date().getTime());
+		if (startTime == null) {
+			startTime = new Timestamp(System.currentTimeMillis());
 		}
 		sql += " and (startTime<=? or startTime is null) ";
 		keys.add(startTime);
@@ -121,7 +122,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(templateId);
 		fields.add(clientId);
-		if (startTime!=null) {
+		if (startTime != null) {
 			sql += " and startTime=? ";
 			fields.add(startTime);
 		}

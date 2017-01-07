@@ -6,7 +6,7 @@ import org.junit.runner.notification.Failure;
 
 public class BoTestRunner extends TestRunnerBase {
 	static final String BoPackageName = "ltj.message.bo";
-	static final String[] exclusions = {"EmailSubscribeTest", "MailReaderTest"}; //, "MailSenderTest"};
+	static final String[] exclusions = {"EmailSubscribeTest", "MailReaderTest"};
 	
 	public static void main(String[] args) {
 		Result result = JUnitCore.runClasses(getAllDaoTestClasses(BoPackageName, exclusions));

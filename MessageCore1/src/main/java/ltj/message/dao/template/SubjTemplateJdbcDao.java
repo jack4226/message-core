@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -24,13 +25,13 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 				"SubjTemplate where templateId=? and clientId=? ";
 		
 		Object[] parms;
-		if (startTime!=null) {
+		if (startTime != null) {
 			sql += " and startTime<=? ";
-			parms = new Object[] {templateId,clientId,startTime};
+			parms = new Object[] {templateId, clientId, startTime};
 		}
 		else {
 			sql += " and startTime is null ";
-			parms = new Object[] {templateId,clientId};
+			parms = new Object[] {templateId, clientId};
 		}
 		sql += " order by startTime asc ";
 		try {
@@ -51,15 +52,15 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(templateId);
-		if (clientId==null) {
+		if (StringUtils.isBlank(clientId)) {
 			sql += " and clientId is null ";
 		}
 		else {
 			sql += " and (clientId=? or clientId is null) ";
 			keys.add(clientId);
 		}
-		if (startTime!=null) {
-			startTime = new Timestamp(new java.util.Date().getTime());
+		if (startTime == null) {
+			startTime = new Timestamp(System.currentTimeMillis());
 		}
 		sql += " and (startTime<=? or startTime is null) ";
 		keys.add(startTime);

@@ -47,7 +47,7 @@ public class BodyTemplateTest extends DaoTestBase {
 		List<BodyTemplateVo> variables = bodyTemplateDao.getByTemplateId(templateId);
 		for (Iterator<BodyTemplateVo> it = variables.iterator(); it.hasNext();) {
 			BodyTemplateVo bodyTemplateVo = it.next();
-			System.out.println("BodyTemplateDao - selectByTemplateId: " + LF + bodyTemplateVo);
+			logger.info("BodyTemplateDao - selectByTemplateId: " + LF + bodyTemplateVo);
 		}
 		return variables;
 	}
@@ -56,7 +56,7 @@ public class BodyTemplateTest extends DaoTestBase {
 		BodyTemplateVo bodyvo = bodyTemplateDao.getByPrimaryKey(vo.getTemplateId(),
 				vo.getClientId(), vo.getStartTime());
 		if (bodyvo!=null) {
-			System.out.println("BodyTemplateDao - selectByPrimaryKey: " + LF + bodyvo);
+			logger.info("BodyTemplateDao - selectByPrimaryKey: " + LF + bodyvo);
 		}
 		return bodyvo;
 	}
@@ -64,7 +64,7 @@ public class BodyTemplateTest extends DaoTestBase {
 	private int update(BodyTemplateVo bodyTemplateVo) {
 		bodyTemplateVo.setTemplateValue("Dear customer, here is a list of great deals on gardening tools provided to you by ${company.url}");
 		int rows = bodyTemplateDao.update(bodyTemplateVo);
-		System.out.println("BodyTemplateDao - update: rows updated " + rows);
+		logger.info("BodyTemplateDao - update: rows updated " + rows);
 		return rows;
 	}
 
@@ -74,7 +74,7 @@ public class BodyTemplateTest extends DaoTestBase {
 			BodyTemplateVo vo = list.get(list.size() - 1);
 			vo.setTemplateId(vo.getTemplateId()+"_v2");
 			int rows = bodyTemplateDao.insert(vo);
-			System.out.println("BodyTemplateDao - insert: rows inserted " + rows);
+			logger.info("BodyTemplateDao - insert: rows inserted " + rows);
 			return selectByPrimaryKey(vo);
 		}
 		return null;
@@ -83,7 +83,7 @@ public class BodyTemplateTest extends DaoTestBase {
 	private int deleteByPrimaryKey(BodyTemplateVo vo) {
 		int rowsDeleted = bodyTemplateDao.deleteByPrimaryKey(vo.getTemplateId(), vo.getClientId(),
 				vo.getStartTime());
-		System.out.println("BodyTemplateDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		logger.info("BodyTemplateDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 }
