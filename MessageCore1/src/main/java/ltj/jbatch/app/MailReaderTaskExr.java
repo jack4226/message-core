@@ -63,7 +63,7 @@ public class MailReaderTaskExr {
 				executor = Executors.newFixedThreadPool(mailBoxList.size());
 			}
 			else {
-				executor = new ThreadPoolExecutor(5, mailBoxList.size(), 1000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(15));
+				executor = new ThreadPoolExecutor(5, mailBoxList.size(), 1000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(20));
 			}
 			//List<Future<?>> futureList = new ArrayList<>();
 			for (MailBoxVo vo : mailBoxList) {

@@ -19,11 +19,14 @@ import org.springframework.test.context.ContextConfiguration;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
 import ltj.message.constant.Constants;
+import ltj.message.constant.MsgDirectionCode;
+import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringAppConfig;
 import ltj.spring.util.SpringJmsConfig;
 import ltj.spring.util.SpringTaskConfig;
@@ -39,7 +42,7 @@ public class EmailSubscribeTest extends BoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
 	
-	private static String testFromAddress; // = "testfrom@localhost";
+	private static String testFromAddress;
 	private static String mailingListAddr = "demolist1@localhost";
 
 	@Test
@@ -61,7 +64,7 @@ public class EmailSubscribeTest extends BoTestBase {
 	@Test
 	public void test2() { // wait for mail reader to pick up the email
 		try {
-			Thread.sleep(60 * 1000L);
+			Thread.sleep(90 * 1000L);
 		} catch (InterruptedException e) {
 		}
 	}
@@ -75,6 +78,39 @@ public class EmailSubscribeTest extends BoTestBase {
 		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
 		assertNotNull(vo);
 		assertEquals(Constants.YES_CODE, vo.getSubscribed());
+		
+		List<MsgInboxVo> miFrom = msgInboxDao.getByFromAddrId(addrVo.getEmailAddrId());
+		assertFalse(miFrom.isEmpty());
+		boolean foundFrom = false;
+		for (MsgInboxVo mivo : miFrom) {
+			if ("subscribe".equals(mivo.getMsgSubject())) {
+				if (StringUtils.contains(mivo.getMsgBody(),"Test Subscription Body Message")) {
+					if (mailingListAddr.equalsIgnoreCase(mivo.getToAddress())) {
+						foundFrom = true;
+						assertEquals(RuleNameType.SUBSCRIBE.name(), mivo.getRuleName());
+						assertEquals(MsgDirectionCode.MSG_RECEIVED, mivo.getMsgDirection());
+					}
+				}
+			}
+		}
+		assertEquals(true, foundFrom);
+		
+		List<MsgInboxVo> miTo = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
+		assertFalse(miTo.isEmpty());
+		boolean foundTo = false;
+		for (MsgInboxVo mivo : miTo) {
+			if (StringUtils.contains(mivo.getMsgSubject(), "You have subscribed to mailing list")) {
+				if (StringUtils.contains(mivo.getMsgBody(), "This is an automatically generated message to confirm")) {
+					if (mailingListAddr.equals(mivo.getFromAddress())) {
+						foundTo = true;
+						assertEquals(RuleNameType.SEND_MAIL.name(), mivo.getRuleName());
+						assertEquals(MsgDirectionCode.MSG_SENT, mivo.getMsgDirection());
+					}
+					
+				}
+			}
+		}
+		assertEquals(true, foundTo);
 	}
 	
 	void sendNotify(String subject, String body, String user) {

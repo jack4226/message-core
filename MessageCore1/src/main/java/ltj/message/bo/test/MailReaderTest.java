@@ -50,6 +50,7 @@ public class MailReaderTest extends BoTestBase {
 	private static int endUser = 50;
 	private static int loops = 100; //Integer.MAX_VALUE;
  	
+	
 	@Test
 	@Rollback(value=false)
 	public void test1() { // MailReader
@@ -63,14 +64,6 @@ public class MailReaderTest extends BoTestBase {
 				else {
 					msgCountMap.put(user, 1);
 				}
-				if (i % 13 == 0) {
-					try {
-						Thread.sleep(1 * 1000);
-					}
-					catch (InterruptedException e) {
-						break;
-					}
-				}
 				sendNotify("Test MailReader - " + suffix, "Test MailReader Body Message - " + suffix, user);
 			}
 		}
@@ -81,24 +74,41 @@ public class MailReaderTest extends BoTestBase {
 	}
 	
 	@Test
-	@Rollback(value=false)
-	public void test2() {
-		MailReaderTaskExr.readTestUserAccounts = true;
-		MailReaderTaskExr.testStartUser = startUser;
-		MailReaderTaskExr.testEndUser = endUser;
-		try {
-			Thread.sleep(60 * 1000L);
-		} catch (InterruptedException e) {}
+	public void test2() { // gather existing counts
+		for (Iterator<String> it=msgCountMap.keySet().iterator(); it.hasNext();) {
+			String toAddr = it.next();
+			EmailAddrVo toAddrVo = addrDao.getByAddress(toAddr);
+			if (toAddrVo != null) {
+				SearchFieldsVo vo = new SearchFieldsVo();
+				vo.setFromAddr(testFromAddr);
+				vo.setToAddrId(toAddrVo.getEmailAddrId());
+				vo.setSubject("Test MailReader");
+				List<MsgInboxWebVo> list = inboxDao.getListForWeb(vo);
+				if (list.size() > 0) {
+					msgCountMap.put(toAddr, msgCountMap.get(toAddr) + list.size());
+				}
+			}
+		}
 	}
 	
 	@Test
 	@Rollback(value=false)
-	public void test3() { //verify results
+	public void test3() {
+		MailReaderTaskExr.readTestUserAccounts = true;
+		MailReaderTaskExr.testStartUser = startUser;
+		MailReaderTaskExr.testEndUser = endUser;
+		try {
+			Thread.sleep(120 * 1000L);
+		} catch (InterruptedException e) {}
+	}
+	
+	@Test
+	public void test4() { //verify results
 		for (Iterator<String> it=msgCountMap.keySet().iterator(); it.hasNext();) {
 			String toAddr = it.next();
 			Integer count = msgCountMap.get(toAddr);
 			EmailAddrVo toAddrVo = addrDao.getByAddress(toAddr);
-			assertNotNull("Could not find email address: " + toAddr, toAddrVo);
+			assertNotNull("Email address (" + toAddr + ") must be present in database.", toAddrVo);
 			SearchFieldsVo vo = new SearchFieldsVo();
 			vo.setFromAddr(testFromAddr);
 			vo.setToAddrId(toAddrVo.getEmailAddrId());
