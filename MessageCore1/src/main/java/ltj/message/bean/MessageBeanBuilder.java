@@ -553,8 +553,7 @@ public final class MessageBeanBuilder {
 		if (isDebugEnabled) {
 			logger.info("getDisposition(): " + dispOrig);
 			logger.info("getDescription(): " + descOrig);
-			logger.info("getContentType(): " + contentType + ", level:" + level + ", size:"
-					+ partSize);
+			logger.info("getContentType(): " + contentType + ", level:" + level + ", size:" + partSize);
 		}
 		if (fileName != null && isDebugEnabled) {
 			logger.debug("getFileName() = " + fileName);

@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -108,7 +109,7 @@ public final class MessageBean extends BodypartBean implements java.io.Serializa
 	private final Properties properties;
 
 	// can be used to store extra objects w/o code change
-	private final HashMap<String, Object> hashMap;
+	private final Map<String, Object> hashMap;
 
 	// for incoming only, stores sizes of each attachment.
 	private final List<Integer> componentsSize;
@@ -128,9 +129,9 @@ public final class MessageBean extends BodypartBean implements java.io.Serializa
 	}
 
 	private String addrToString(Address[] addr) {
-		if (addr == null || addr.length == 0)
+		if (addr == null || addr.length == 0) {
 			return null;
-
+		}
 		String str = addr[0].toString();
 		for (int i = 1; i < addr.length; i++) {
 			str = str + "," + addr[i].toString();
@@ -332,8 +333,7 @@ public final class MessageBean extends BodypartBean implements java.io.Serializa
 	public String getBody(boolean original) {
 		String msgBody = getBody(0, hashMap);
 		
-		if (!original && getToPlainText()
-				&& getBodyContentType(0).toLowerCase().indexOf("text/html") >= 0) {
+		if (!original && getToPlainText() && getBodyContentType(0).toLowerCase().indexOf("text/html") >= 0) {
 			// convert HTML to plain text if "to_plain_text" is "yes"
 			if (!hashMap.containsKey(MSG_BODY_TEXT)) { // use a cache
 				try {
@@ -540,7 +540,7 @@ public final class MessageBean extends BodypartBean implements java.io.Serializa
 	/**
 	 * @return Hash-table object
 	 */
-	public HashMap<String, Object> getHashMap() {
+	public Map<String, Object> getHashMap() {
 		return hashMap;
 	}
 
@@ -1045,49 +1045,64 @@ public final class MessageBean extends BodypartBean implements java.io.Serializa
 
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		if (from != null)
+		if (from != null) {
 			sb.append("From: " + getFromAsString() + LF);
-		if (to != null)
+		}
+		if (to != null) {
 			sb.append("To: " + getToAsString() + LF);
-		if (toEnvelope != null)
+		}
+		if (toEnvelope != null) {
 			sb.append("To from Envelope: " + getToEnvelopeAsString() + LF);
-		if (cc != null)
+		}
+		if (cc != null) {
 			sb.append("Cc: " + getCcAsString() + LF);
-		if (bcc != null)
+		}
+		if (bcc != null) {
 			sb.append("Bcc: " + getBccAsString() + LF);
-		if (replyto != null)
+		}
+		if (replyto != null) {
 			sb.append("Replyto: " + getReplytoAsString() + LF);
-		if (forward != null)
+		}
+		if (forward != null) {
 			sb.append("Forward: " + getForwardAsString() + LF);
-		if (returnPath != null)
+		}
+		if (returnPath != null) {
 			sb.append("Return-Path: " + returnPath + LF);
+		}
 
 		if (xmailer != null && xmailer.length > 0) {
-			for (int i = 0; i < xmailer.length; i++)
+			for (int i = 0; i < xmailer.length; i++) {
 				sb.append("X-Mailer: " + xmailer[i] + LF);
+			}
 		}
 		if (priority != null && priority.length > 0) {
-			for (int i = 0; i < priority.length; i++)
+			for (int i = 0; i < priority.length; i++) {
 				sb.append("Priority: " + priority[i] + LF);
+			}
 		}
-		if (smtpMessageId != null)
+		if (smtpMessageId != null) {
 			sb.append("SMTP Message Id: " + smtpMessageId + LF);
+		}
 
-		if (carrierCode != null)
+		if (carrierCode != null) {
 			sb.append("CarrierCode: " + carrierCode + LF);
+		}
 		sb.append("Subject: " + subject + LF);
-		if (date != null)
+		if (date != null) {
 			sb.append("Send Date: " + date + LF);
+		}
 		if (emBedEmailId != null) {
 			sb.append("Embed EmailId: " + emBedEmailId.booleanValue() + LF);
 		}
 		if (msgId != null) {
 			sb.append("MsgId: " + msgId.toString() + LF);
 		}
-		if (msgRefId != null)
+		if (msgRefId != null) {
 			sb.append("MsgRefId: " + msgRefId + LF);
-		if (ruleName != null)
+		}
+		if (ruleName != null) {
 			sb.append("RuleName: " + ruleName + LF);
+		}
 		if (mailingListId != null)  {
 			sb.append("Mailing List Id: " + mailingListId + LF);
 			sb.append("ToCustomersOnly: " + toCustomersOnly + LF);
@@ -1095,44 +1110,62 @@ public final class MessageBean extends BodypartBean implements java.io.Serializa
 		if (renderId != null) {
 			sb.append("RenderId: " + renderId.toString() + LF);
 		}
-		if (msgSourceId != null)
+		if (msgSourceId != null) {
 			sb.append("MsgSourceId: " + msgSourceId + LF);
-		if (clientId != null)
+		}
+		if (clientId != null) {
 			sb.append("Client Id: " + clientId + LF);
-		if (custId != null)
+		}
+		if (custId != null) {
 			sb.append("Cust Id: " + custId + LF);
+		}
 		sb.append("To PlainText: " + toPlainText + LF);
 		sb.append("Override TestAddr: " + overrideTestAddr + LF);
-		if (mailboxHost != null)
+		if (mailboxHost != null) {
 			sb.append("MailBox Host: " + mailboxHost + LF);
-		if (mailboxUser != null)
+		}
+		if (mailboxUser != null) {
 			sb.append("Mailbox User: " + mailboxUser + LF);
-		if (mailboxName != null)
+		}
+		if (mailboxName != null) {
 			sb.append("Mailbox Name: " + mailboxName + LF);
-		if (folderName != null)
+		}
+		if (folderName != null) {
 			sb.append("Folder Name: " + folderName + LF);
-		if (finalRcpt!=null)
-			sb.append("Final Recipient: "+finalRcpt+LF);
-		if (origRcpt!=null)
-			sb.append("Original Recipient: "+origRcpt+LF);
-		if (dsnAction!=null)
-			sb.append("DSN Action: "+dsnAction+LF);
-		if (dsnStatus!=null)
-			sb.append("DSN Status: "+dsnStatus+LF);
- 		if (diagnosticCode!=null)
-			sb.append("Diagnostic Code: "+diagnosticCode+LF);
-		if (origSubject!=null)
-			sb.append("Original Subject: "+origSubject+LF);
-		if (rfcMessageId!=null)
-			sb.append("RFC MessageId: "+rfcMessageId+LF);
-		if (dsnText!=null)
-			sb.append(LF + "List DSN Text: "+ LF + dsnText+LF);
-		if (dsnRfc822!=null)
-			sb.append(LF + "List DSN RFC822: "+ LF + dsnRfc822+LF);
-		if (dsnDlvrStat!=null)
-			sb.append(LF + "List DSN Delivery Status: "+ LF + dsnDlvrStat+LF);
-		if (headers.size() > 0)
+		}
+		if (finalRcpt!=null) {
+			sb.append("Final Recipient: " + finalRcpt +LF);
+		}
+		if (origRcpt!=null) {
+			sb.append("Original Recipient: " + origRcpt + LF);
+		}
+		if (dsnAction!=null) {
+			sb.append("DSN Action: " + dsnAction + LF);
+		}
+		if (dsnStatus!=null) {
+			sb.append("DSN Status: " + dsnStatus + LF);
+		}
+ 		if (diagnosticCode!=null) {
+			sb.append("Diagnostic Code: " + diagnosticCode + LF);
+ 		}
+		if (origSubject!=null) {
+			sb.append("Original Subject: "+origSubject + LF);
+		}
+		if (rfcMessageId!=null) {
+			sb.append("RFC MessageId: " + rfcMessageId + LF);
+		}
+		if (dsnText!=null) {
+			sb.append(LF + "List DSN Text: "+ LF + dsnText + LF);
+		}
+		if (dsnRfc822!=null) {
+			sb.append(LF + "List DSN RFC822: "+ LF + dsnRfc822 + LF);
+		}
+		if (dsnDlvrStat!=null) {
+			sb.append(LF + "List DSN Delivery Status: " + LF + dsnDlvrStat + LF);
+		}
+		if (headers.size() > 0) {
 			sb.append(LF + "List Header Lines:" + LF);
+		}
 		for (int i = 0; i < headers.size(); i++) {
 			MsgHeader hdr = (MsgHeader) headers.get(i);
 			sb.append("Header Line - " + hdr.getName() + ": " + hdr.getValue() + LF);
@@ -1159,10 +1192,12 @@ public final class MessageBean extends BodypartBean implements java.io.Serializa
 					if (st.hasMoreTokens()) {
 						dispStr = st.nextToken(); // display only the first line
 					}
-					if (dispStr.length() < 70)
+					if (dispStr.length() < 70) {
 						value = dispStr;
-					else
+					}
+					else {
 						value = dispStr.substring(0, 70) + "...";
+					}
 				}
 				sb.append(key + ": " + value + LF);
 			}

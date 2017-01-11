@@ -9,9 +9,9 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.mail.Header;
@@ -71,10 +71,12 @@ public class BodypartBean implements Serializable {
 	 *            body part node value
 	 */
 	public BodypartBean(String contentType, Object value) {
-		if (contentType == null)
+		if (contentType == null) {
 			this.contentType = DEFAULT_CONTENT_TYPE;
-		else
+		}
+		else {
 			this.contentType = contentType;
+		}
 		setValue(value);
 	}
 
@@ -199,7 +201,7 @@ public class BodypartBean implements Serializable {
 	 *            plain text alternative is saved here
 	 * @return body text
 	 */
-	String getBody(int level, HashMap<String, Object> hashMap) {
+	String getBody(int level, Map<String, Object> hashMap) {
 		StringBuffer sb = new StringBuffer();
 		String label = LF + "content-type: ";
 		boolean showInlineContentType = false;
@@ -208,8 +210,9 @@ public class BodypartBean implements Serializable {
 			// exclude attachment body parts
 			if (!Part.ATTACHMENT.equals(getDisposition())) {
 				if (level > 0 && !this_mtype.startsWith("text/html")) {
-					if (showInlineContentType)
+					if (showInlineContentType) {
 						sb.append(label + this.getContentType() + LF + LF);
+					}
 				}
 				if (getValue() != null) {
 					sb.append(new String(getValue()));
@@ -245,8 +248,9 @@ public class BodypartBean implements Serializable {
 			if (textBody != null) {
 				String txt = new String(textBody);
 				if (level > 0 && !content_type.startsWith("text/html")) {
-					if (showInlineContentType)
+					if (showInlineContentType) {
 						sb.append(label + content_type + LF + LF);
+					}
 				}
 				sb.append(txt);
 			}
@@ -379,8 +383,9 @@ public class BodypartBean implements Serializable {
 			for (Iterator<BodypartBean> it = getIterator(); it.hasNext();) {
 				BodypartBean subNode = it.next();
 				bodyNode = subNode.getBodyNode(level + 1);
-				if (bodyNode != null)
+				if (bodyNode != null) {
 					break;
+				}
 			}
 		}
 		return bodyNode;
@@ -447,16 +452,21 @@ public class BodypartBean implements Serializable {
 	 *            node value
 	 */
 	public final void setValue(Object value) {
-		if (value instanceof String)
+		if (value instanceof String) {
 			setValue((String) value);
-		else if (value instanceof InputStream)
+		}
+		else if (value instanceof InputStream) {
 			setValue((InputStream) value);
-		else if (value instanceof byte[])
+		}
+		else if (value instanceof byte[]) {
 			this.value = (byte[]) value;
-		else if (value == null)
+		}
+		else if (value == null) {
 			this.value = null;
-		else
+		}
+		else {
 			throw new IllegalArgumentException("The input was not a type as expected");
+		}
 	}
 
 	/**
@@ -613,8 +623,8 @@ public class BodypartBean implements Serializable {
 		StringBuffer sb = new StringBuffer();
 		sb.append("-> Level(" + level + ")****** BEGIN BodypartBean ******" + LF);
 
-		sb.append("Mime Type: " + getContentType() + ", Disposition: " + disposition
-				+ ", Description: " + description + LF);
+		sb.append("Mime Type: " + getContentType() + ", Disposition: " + disposition + ", Description: " + description
+				+ LF);
 		if (!(this instanceof MessageBean)) {
 			for (int i = 0; i < headers.size(); i++) {
 				MsgHeader hdr = (MsgHeader) headers.get(i);
@@ -622,10 +632,12 @@ public class BodypartBean implements Serializable {
 			}
 		}
 		if (value != null) {
-			if (getMimeType().indexOf("text") >= 0 || getMimeType().indexOf("message") >= 0)
+			if (getMimeType().indexOf("text") >= 0 || getMimeType().indexOf("message") >= 0) {
 				sb.append(new String(value) + LF);
-			else
+			}
+			else {
 				sb.append("Data contains nonprintable content." + LF);
+			}
 		}
 
 		Iterator<?> it = getIterator();
