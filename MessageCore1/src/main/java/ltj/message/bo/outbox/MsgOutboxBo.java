@@ -13,8 +13,7 @@ public interface MsgOutboxBo {
 
 	public long saveRenderData(RenderResponse rsp) throws DataValidationException;
 
-	public MessageBean getMessageByPK(long renderId) throws AddressException,
-			DataValidationException, ParseException;
+	public MessageBean getMessageByPK(long renderId) throws AddressException, DataValidationException, ParseException;
 
 	public RenderRequest getRenderRequestByPK(long renderId) throws DataValidationException;
 }

@@ -95,7 +95,9 @@ public class RuleSimple extends RuleBase {
 		if (data_type==null || !data_type.equals(dataName)) {
 			return null;
 		}
-		if (data == null) data = ""; // just for safety
+		if (data == null) {
+			data = ""; // just for safety
+		}
 		if (!caseSensitive) {
 			data = data.toLowerCase();
 		}

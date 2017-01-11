@@ -19,7 +19,6 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
-import ltj.message.dao.client.ClientUtil;
 import ltj.message.vo.MailBoxVo;
 
 /**
@@ -63,8 +62,6 @@ public class MailProcessor extends RunnableProcessor {
 	public void process(Object req) throws JMSException, MessagingException {
 		logger.info("Entering process() method...");
 
-		//jmsProcessor.getJmsTemplate().setDefaultDestination(queue);
-
 		if (req != null && req instanceof Message[]) {
 			Message[] msgs = (Message[]) req;
 			// Just dump out the new messages and set the delete flags
@@ -76,13 +73,6 @@ public class MailProcessor extends RunnableProcessor {
 					catch (IllegalStateException e) {
 						logger.error("IllegalStateException caught: " + e.getMessage());
 						continue;
-					}
-					if (ClientUtil.isTrialPeriodEnded() && !ClientUtil.isProductKeyValid()) {
-						try {
-							Thread.sleep(1000); // delay for 1 second
-						}
-						catch (InterruptedException e) {
-						}
 					}
 				}
 				// release the instance for GC, not working w/pop3
@@ -176,14 +166,6 @@ public class MailProcessor extends RunnableProcessor {
 			if (isDuplicate) {
 				logger.error("Duplicate Message received, messageId: " + msgBean.getSmtpMessageId());
 
-				// issue an info_event alert
-				if ("yes".equalsIgnoreCase(mailBoxVo.getAlertDuplicate())) {
-//					JbMain.getEventAlert().issueInfoAlert(
-//							JbMain.MAIL_SVR,
-//							"MailProcessor: Duplicate Message Received: "
-//									+ msgBean.getSmtpMessageId());
-				}
-
 				// write raw stream to logging file
 				if ("yes".equalsIgnoreCase(mailBoxVo.getLogDuplicate())) {
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -215,8 +197,7 @@ public class MailProcessor extends RunnableProcessor {
 		}
 
 		long time_spent = System.currentTimeMillis()- start_tms;
-		logger.info("Msg from " + msgBean.getFromAsString() + " processed, milliseconds: "
-				+ time_spent);
+		logger.info("Msg from " + msgBean.getFromAsString() + " processed, milliseconds: " + time_spent);
 		
 		return msgBean;
 	}

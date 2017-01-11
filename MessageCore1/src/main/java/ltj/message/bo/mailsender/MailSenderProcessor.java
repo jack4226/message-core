@@ -27,6 +27,7 @@ import ltj.message.bean.MessageBean;
 import ltj.message.exception.DataValidationException;
 
 /**
+ * @deprecated - replaced by MailSenderBoImpl
  * process queue messages handed over by QueueListener
  * 
  * @author Administrator

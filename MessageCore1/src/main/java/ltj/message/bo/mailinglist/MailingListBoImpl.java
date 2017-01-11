@@ -197,9 +197,9 @@ public class MailingListBoImpl implements MailingListBo {
 	final static String LF = System.getProperty("line.separator", "\n");
 	
 	private MessageBean createMessageBean(EmailTemplateVo tmpltVo) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering createMessageBean() method...");
-
+		}
 		MessageBean msgBean = new MessageBean();
 		msgBean.setCarrierCode(CarrierCode.SMTPMAIL);
 		msgBean.setClientId(tmpltVo.getClientId());
@@ -239,36 +239,41 @@ public class MailingListBoImpl implements MailingListBo {
 	}
 
 	public int subscribe(String emailAddr, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("subscribe() -  emailAddr: " + emailAddr + ", listAddr: " + listId);
+		}
 		int emailsAdded = addOrRemove(emailAddr, listId, true);
 		return emailsAdded;
 	}
 
 	public int unSubscribe(String emailAddr, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("unSubscribe() - emailAddr: " + emailAddr + ", listAddr: " + listId);
+		}
 		int emailsRemoved = addOrRemove(emailAddr, listId, false);
 		return emailsRemoved;
 	}
 
 	public int optInRequest(String emailAddr, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("optInRequest() -  emailAddr: " + emailAddr + ", listAddr: " + listId);
+		}
 		int emailsAdded = optInOrConfirm(emailAddr, listId, false);
 		return emailsAdded;
 	}
 
 	public int optInConfirm(String emailAddr, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("optInConfirm() -  emailAddr: " + emailAddr + ", listAddr: " + listId);
+		}
 		int emailsAdded = optInOrConfirm(emailAddr, listId, true);
 		return emailsAdded;
 	}
 
 	public int optInConfirm(long emailAddrId, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("optInConfirm() -  emailAddrId: " + emailAddrId + ", listAddr: " + listId);
+		}
 		EmailAddrVo addrVo = getEmailAddrDao().getByAddrId(emailAddrId);
 		int emailsAdded = 0;
 		if (addrVo != null) {
@@ -278,8 +283,9 @@ public class MailingListBoImpl implements MailingListBo {
 	}
 
 	public int updateSentCount(long emailAddrId, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("updateSentCount() - emailAddrId: " + emailAddrId + ", listId: " + listId);
+		}
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
@@ -288,8 +294,9 @@ public class MailingListBoImpl implements MailingListBo {
 	}
 
 	public int updateOpenCount(long emailAddrId, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("updateOpenCount() - emailAddrId: " + emailAddrId + ", listId: " + listId);
+		}
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
@@ -298,8 +305,9 @@ public class MailingListBoImpl implements MailingListBo {
 	}
 
 	public int updateClickCount(long emailAddrId, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("updateClickCount() - emailAddrId: " + emailAddrId + ", listId: " + listId);
+		}
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
@@ -308,22 +316,25 @@ public class MailingListBoImpl implements MailingListBo {
 	}
 
 	public int updateSentCount(long msgId, int count) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("updateSentCount() - MsgId: " + msgId);
+		}
 		int recsUpdated = getMsgClickCountsDao().updateSentCount(msgId, count);
 		return recsUpdated;
 	}
 
 	public int updateOpenCount(long msgId, int count) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("updateOpenCount() - MsgId: " + msgId);
+		}
 		int recsUpdated = getMsgClickCountsDao().updateOpenCount(msgId, count);
 		return recsUpdated;
 	}
 
 	public int updateClickCount(long msgId, int count) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("updateClickCount() - MsgId: " + msgId);
+		}
 		int recsUpdated = getMsgClickCountsDao().updateClickCount(msgId, count);
 		return recsUpdated;
 	}

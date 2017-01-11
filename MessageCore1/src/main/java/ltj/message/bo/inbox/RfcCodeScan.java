@@ -111,8 +111,9 @@ public final class RfcCodeScan {
 	 * @return rule name or null if no RFC code is found.
 	 */
 	private String examineBody(String body, int pass) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering the examineBody method, pass " + pass);
+		}
 		if (StringUtil.isEmpty(body)) { // sanity check
 			return null;
 		}
@@ -306,8 +307,9 @@ public final class RfcCodeScan {
 			String inStr=null, code=null;
 			while ((inStr = fr.readLine()) != null) {
 				if (!inStr.startsWith("#")) {
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("loadRfc1893StatusCode(): " + inStr);
+					}
 					StringTokenizer st = new StringTokenizer(inStr, "^\r\n");
 					if (st.countTokens() == 3) {
 						code = st.nextToken();
@@ -349,8 +351,9 @@ public final class RfcCodeScan {
 			String inStr=null, code=null;
 			while ((inStr = fr.readLine()) != null) {
 				if (!inStr.startsWith("#")) {
-					if (isDebugEnabled)
+					if (isDebugEnabled) {
 						logger.debug("loadRfc2821StatusCode(): " + inStr);
+					}
 					StringTokenizer st = new StringTokenizer(inStr, "^\r\n");
 					if (st.countTokens() == 3) {
 						code = st.nextToken(); // 1st token = RFC code
