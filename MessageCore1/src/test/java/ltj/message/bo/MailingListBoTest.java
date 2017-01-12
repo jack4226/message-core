@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -42,14 +43,17 @@ public class MailingListBoTest extends BoTestBase {
 	@Resource
 	private MailingListDao mlDao;
 	
-	private static String testEmailAddr = "test" + StringUtils.leftPad(new Random().nextInt(10000) + "", 4, '0') + "@test.com";
-	private static String mailingListId = "SMPLLST1";
 	private static String templateId = "SampleNewsletter2";
 	private static Map<String, Integer> countMap = new HashMap<>();
 	
-	@Test
-	@Rollback(value=false)
-	public void test1() {
+	private static String testEmailAddr = "test" + StringUtils.leftPad(new Random().nextInt(10000) + "", 4, '0') + "@test.com";
+	private static String mailingListId = "SMPLLST1";
+	
+	@Before
+	public void getBeforeCounts() {
+		if (countMap.size() > 0) {
+			return; 
+		}
 		// gather existing message counts
 		EmailTemplateVo tmpltVo = emailTemplateDao.getByTemplateId(templateId);
 		assertNotNull(tmpltVo);
@@ -61,8 +65,13 @@ public class MailingListBoTest extends BoTestBase {
 			
 			List<MsgInboxVo> milist = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 			countMap.put(addrVo.getEmailAddr(), milist.size());
+			logger.info("Count before: " + addrVo.getEmailAddr() + " = " + milist.size());
 		}
-		
+	}
+	
+	@Test
+	@Rollback(value=false)
+	public void test1() {
 		try {
 			int rows = broadcast(templateId);
 			assertEquals(1, rows);
@@ -80,10 +89,15 @@ public class MailingListBoTest extends BoTestBase {
 	}
 	
 	@Test
-	public void test2() { // verify results
+	@Rollback(value=false)
+	public void test2() {
 		try {
 			Thread.sleep(1000L);
 		} catch (InterruptedException e) {}
+	}
+	
+	@Test
+	public void test3() { // verify results
 		// verify broadcast
 		EmailTemplateVo tmpltVo = emailTemplateDao.getByTemplateId(templateId);
 		assertNotNull(tmpltVo);
@@ -101,6 +115,7 @@ public class MailingListBoTest extends BoTestBase {
 			List<MsgInboxVo> milist = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 			assertFalse(milist.isEmpty());
 			MsgInboxVo mivo = milist.get(milist.size() - 1);
+			logger.info("Count after: " + addrVo.getEmailAddr() + " = " + milist.size());
 			assertTrue(StringUtils.contains(mivo.getFromAddress(), mlvo.getAcctUserName()));
 			assertEquals(countMap.get(addrVo.getEmailAddr()), Integer.valueOf(milist.size() - 1));
 		}
@@ -112,7 +127,7 @@ public class MailingListBoTest extends BoTestBase {
 		assertNotNull("Subscription must be present in database.", subsVo);
 	}
 	
-	int broadcast(String templateId) {
+	private int broadcast(String templateId) {
 		int mailsSent = 0;
 		try {
 			mailsSent = mlServiceBo.broadcast(templateId);
@@ -124,7 +139,7 @@ public class MailingListBoTest extends BoTestBase {
 		return mailsSent;
 	}
 
-	int sendMail(String templateId) {
+	private int sendMail(String templateId) {
 		String toAddr = "testto@localhost";
 		Map<String, String> vars = new HashMap<String, String>();
 		vars.put("CustomerName", "List Subscriber");
@@ -139,7 +154,7 @@ public class MailingListBoTest extends BoTestBase {
 		return mailsSent;
 	}
 
-	int subscribe(String emailAddr, String listId) {
+	private int subscribe(String emailAddr, String listId) {
 		int rows = 0;
 		try {
 			rows = mlServiceBo.subscribe(emailAddr, listId);
@@ -151,7 +166,7 @@ public class MailingListBoTest extends BoTestBase {
 		return rows;
 	}
 
-	int unSubscribe(String emailAddr, String listId) {
+	private int unSubscribe(String emailAddr, String listId) {
 		int rows = 0;
 		try {
 			rows = mlServiceBo.unSubscribe(emailAddr, listId);
