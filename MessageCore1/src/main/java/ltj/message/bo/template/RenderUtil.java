@@ -293,8 +293,7 @@ public final class RenderUtil {
 					if (_openPos > 0 && _openPos < nextPos) {
 						int _endPos = Math.min(text.length(), bgnPos + 26);
 						throw new DataValidationException("Missing " + VariableDelimiter.CLOSE_DELIMITER
-								+ " from position " + bgnPos + ", around: "
-								+ text.substring(bgnPos, _endPos));
+								+ " from position " + bgnPos + ", around: " + text.substring(bgnPos, _endPos));
 					}
 					else {
 						throw new DataValidationException("Variable name: ${" + name
@@ -770,15 +769,17 @@ public final class RenderUtil {
 		if (variableNames == null) {
 			// retrieve variable names from message body
 			varNames = RenderUtil.retrieveVariableNames(body);
-			if (isDebugEnabled)
+			if (isDebugEnabled) {
 				logger.debug("Body Variable names: " + varNames);
+			}
 			// retrieve variable names from message subject
 			String subject = subj == null ? "" : subj;
 			List<String> subjVarNames = RenderUtil.retrieveVariableNames(subject);
 			if (!subjVarNames.isEmpty()) {
 				varNames.addAll(subjVarNames);
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("Subject Variable names: " + subjVarNames);
+				}
 			}
 		}
 		else { // use variable names from input
@@ -840,8 +841,7 @@ public final class RenderUtil {
 			String text = renderTemplateId("testTemplate", null, null);
 			System.out.println(text);
 			
-			BodyTemplateVo bodyVo = getBodyTemplateDao().getByBestMatch("testTemplate",
-					DEFAULT_CLIENTID, null);
+			BodyTemplateVo bodyVo = getBodyTemplateDao().getByBestMatch("testTemplate", DEFAULT_CLIENTID, null);
 			if (bodyVo == null) {
 				throw new DataValidationException("BodyTemplate not found for testTemplate");
 			}

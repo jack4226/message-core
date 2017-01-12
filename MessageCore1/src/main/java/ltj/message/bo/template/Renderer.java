@@ -89,6 +89,12 @@ public final class Renderer implements java.io.Serializable {
 		return renderer;
 	}
 	
+	static class VarProperties {
+		int bgnPos = 0;
+		int endPos = 0;
+		String name = null;
+	}
+
 	public String render(String templateText, Map<String, RenderVariable> variables,
 			Map<String, RenderVariable> errors) throws DataValidationException, ParseException {
 		return renderTemplate(templateText, variables, errors);
@@ -124,8 +130,7 @@ public final class Renderer implements java.io.Serializable {
 		StringBuffer sb = new StringBuffer();
 		VarProperties varProps;
 		while ((varProps = getVariableName(templateText, currPos)) != null) {
-			logger.info("varname:" + varProps.name + ", bgnPos:" + varProps.bgnPos + ", endPos:"
-					+ varProps.endPos);
+			logger.info("varname:" + varProps.name + ", bgnPos:" + varProps.bgnPos + ", endPos:" + varProps.endPos);
 			sb.append(templateText.substring(currPos, varProps.bgnPos));
 			if (OptionalTagBgn.equals(varProps.name)) { // optional section
 				int optEndPos = getEndTagPosition(templateText, varProps.endPos);
@@ -135,29 +140,27 @@ public final class Renderer implements java.io.Serializable {
 					errors.put(req.getVariableName(), req);
 					break;
 				}
-				String optTmplt = templateText.substring(varProps.bgnPos + OptionalTagBgn.length()
-						+ delimitersLen, optEndPos);
+				String optTmplt = templateText.substring(varProps.bgnPos + OptionalTagBgn.length() + delimitersLen,
+						optEndPos);
 				varProps.endPos = optEndPos + OptionalTagEnd.length() + delimitersLen;
 				logger.info("Optional Section <" + optTmplt + ">");
 				sb.append(renderTemplate(optTmplt, variables, errors, true, loopCount));
 			}
 			else if (TableTagBgn.equals(varProps.name)) { // table section
-				int tableEndPos = templateText.indexOf(openDelimiter + TableTagEnd + closeDelimiter,
-						varProps.endPos);
+				int tableEndPos = templateText.indexOf(openDelimiter + TableTagEnd + closeDelimiter, varProps.endPos);
 				if (tableEndPos < varProps.endPos) {
 					RenderVariable req = buildErrorRecord(varProps.name, "" + varProps.bgnPos,
 							TableTagEnd + " Missing");
 					errors.put(req.getVariableName(), req);
 					break;
 				}
-				String arrayRow = templateText.substring(varProps.bgnPos + TableTagBgn.length()
-						+ delimitersLen, tableEndPos);
+				String arrayRow = templateText.substring(varProps.bgnPos + TableTagBgn.length() + delimitersLen,
+						tableEndPos);
 				varProps.endPos = tableEndPos + TableTagEnd.length() + delimitersLen;
 				logger.info("Table Row <" + arrayRow + ">");
 				if (variables != null) {
 					RenderVariable r = (RenderVariable) variables.get(TableVariableName);
-					if (r != null && r.getVariableValue() != null
-							&& VariableType.COLLECTION.equals(r.getVariableType())
+					if (r != null && r.getVariableValue() != null && VariableType.COLLECTION.equals(r.getVariableType())
 							&& r.getVariableValue() instanceof Collection) {
 						Collection<Map<String, RenderVariable>> c = (Collection<Map<String, RenderVariable>>) r.getVariableValue();
 						for (Iterator<Map<String, RenderVariable>> it = c.iterator(); it.hasNext();) {
@@ -182,8 +185,8 @@ public final class Renderer implements java.io.Serializable {
 							// recursive variable
 							// this variable contains other variable(s), render it
 							if (loopCount <= MAX_LOOP_COUNT) // check infinite loop
-								sb.append(renderTemplate((String) r.getVariableValue(), variables,
-										errors, false, ++loopCount));
+								sb.append(renderTemplate((String) r.getVariableValue(), variables, errors, false,
+										++loopCount));
 						}
 						else {
 							sb.append(r.getVariableValue());
@@ -309,8 +312,9 @@ public final class Renderer implements java.io.Serializable {
 				count--;
 				pos = pos2;
 			}
-			if (count == 0)
+			if (count == 0) {
 				break;
+			}
 		} while (pos1 >= 0 || pos2 >= 0);
 		return pos2;
 	}

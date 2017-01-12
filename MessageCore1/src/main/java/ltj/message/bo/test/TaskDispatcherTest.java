@@ -70,6 +70,7 @@ public class TaskDispatcherTest extends BoTestBase {
 	}
 	
 	@Test
+	@Rollback(value=false)
 	public void test2() { // wait for 5 seconds
 		try {
 			Thread.sleep(WaitTimeInMillis * 2);

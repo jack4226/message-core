@@ -68,14 +68,15 @@ public class RenderBoImpl implements RenderBo {
 	@Autowired
 	private EmailAddrDao emailAddrDao;
 	
-	public RenderResponse getRenderedEmail(RenderRequest req) throws DataValidationException,
-			ParseException, AddressException {
+	public RenderResponse getRenderedEmail(RenderRequest req)
+			throws DataValidationException, ParseException, AddressException {
 		logger.info("in getRenderedEmail(RenderRequest)...");
-		if (req == null)
+		if (req == null) {
 			throw new IllegalArgumentException("RenderRequest is null");
-		if (req.startTime==null)
-			req.startTime = new Timestamp(new java.util.Date().getTime());
-
+		}
+		if (req.startTime==null) {
+			req.startTime = new Timestamp(System.currentTimeMillis());
+		}
 		RenderResponse rsp = initRenderResponse(req);
 		buildRenderVariables(req, rsp);
 		buildRenderedBody(req, rsp);
@@ -104,8 +105,7 @@ public class RenderBoImpl implements RenderBo {
 		return rsp;
 	}
 	
-	public RenderResponse getRenderedBody(RenderRequest req) throws DataValidationException,
-			ParseException {
+	public RenderResponse getRenderedBody(RenderRequest req) throws DataValidationException, ParseException {
 		RenderResponse rsp = initRenderResponse(req);
 		buildRenderVariables(req, rsp);
 		buildRenderedBody(req, rsp);
@@ -121,8 +121,7 @@ public class RenderBoImpl implements RenderBo {
 		return rsp;
 	}
 	
-	public RenderResponse getRenderedSubj(RenderRequest req) throws DataValidationException,
-			ParseException {
+	public RenderResponse getRenderedSubj(RenderRequest req) throws DataValidationException, ParseException {
 		RenderResponse rsp = initRenderResponse(req);
 		buildRenderVariables(req, rsp);
 		buildRenderedSubj(req, rsp);
@@ -130,8 +129,7 @@ public class RenderBoImpl implements RenderBo {
 		return rsp;
 	}
 
-	public RenderResponse getRenderedAddrs(RenderRequest req) throws DataValidationException,
-			AddressException {
+	public RenderResponse getRenderedAddrs(RenderRequest req) throws DataValidationException, AddressException {
 		RenderResponse rsp = initRenderResponse(req);
 		buildRenderVariables(req, rsp);
 		buildRenderedAddrs(req, rsp);
@@ -149,8 +147,9 @@ public class RenderBoImpl implements RenderBo {
 	
 	private void buildRenderedBody(RenderRequest req, RenderResponse rsp)
 			throws DataValidationException, ParseException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("in buildRenderedBody()...");
+		}
 		MsgSourceVo srcVo = rsp.msgSourceVo;
 		
 		String bodyTemplate = null;
@@ -161,17 +160,16 @@ public class RenderBoImpl implements RenderBo {
 			RenderVariable var = (RenderVariable) rsp.variableFinal.get(VariableName.BODY_TEMPLATE);
 			if (VariableType.TEXT.equals(var.getVariableType())) {
 				bodyTemplate = (String) var.getVariableValue();
-				contentType = var.getVariableFormat() == null ? "text/plain" : var
-						.getVariableFormat();
+				contentType = var.getVariableFormat() == null ? "text/plain" : var.getVariableFormat();
 			}
 		}
 		
 		if (bodyTemplate == null) {
-			BodyTemplateVo tmpltVo = getBodyTemplateDao().getByBestMatch(srcVo.getBodyTemplateId(),
-					req.clientId, req.startTime);
+			BodyTemplateVo tmpltVo = getBodyTemplateDao().getByBestMatch(srcVo.getBodyTemplateId(), req.clientId,
+					req.startTime);
 			if (tmpltVo == null) {
-				throw new DataValidationException("BodyTemplate not found for: "
-						+ srcVo.getBodyTemplateId() + "/" + req.clientId + "/" + req.startTime);
+				throw new DataValidationException("BodyTemplate not found for: " + srcVo.getBodyTemplateId() + "/"
+						+ req.clientId + "/" + req.startTime);
 			}
 			bodyTemplate = tmpltVo.getTemplateValue();
 			contentType = tmpltVo.getContentType();
@@ -199,11 +197,11 @@ public class RenderBoImpl implements RenderBo {
 		}
 
 		if (subjTemplate == null) {
-			SubjTemplateVo tmpltVo = getSubjTemplateDao().getByBestMatch(srcVo.getSubjTemplateId(),
-					req.clientId, req.startTime);
+			SubjTemplateVo tmpltVo = getSubjTemplateDao().getByBestMatch(srcVo.getSubjTemplateId(), req.clientId,
+					req.startTime);
 			if (tmpltVo == null) {
-				throw new DataValidationException("SubjTemplate not found for: "
-						+ srcVo.getSubjTemplateId() + "/" + req.clientId + "/" + req.startTime);
+				throw new DataValidationException("SubjTemplate not found for: " + srcVo.getSubjTemplateId() + "/"
+						+ req.clientId + "/" + req.startTime);
 			}
 			subjTemplate = tmpltVo.getTemplateValue();
 		}
@@ -227,8 +225,7 @@ public class RenderBoImpl implements RenderBo {
 					attNode.setContentType(r.getVariableFormat());
 				}
 				else {
-					attNode.setContentType(r.getVariableFormat() + "; name=\""
-							+ r.getVariableName() + "\"");
+					attNode.setContentType(r.getVariableFormat() + "; name=\"" + r.getVariableName() + "\"");
 				}
 				attNode.setDisposition(Part.ATTACHMENT);
 				// not necessary, for consistency?
@@ -239,8 +236,8 @@ public class RenderBoImpl implements RenderBo {
 		}
 	}
 	
-	private String render(String templateText, Map<String, RenderVariable> varbls,
-			Map<String, RenderVariable> errors) throws DataValidationException, ParseException {
+	private String render(String templateText, Map<String, RenderVariable> varbls, Map<String, RenderVariable> errors)
+			throws DataValidationException, ParseException {
 		return render.render(templateText, varbls, errors);
 	}
 	
@@ -255,36 +252,41 @@ public class RenderBoImpl implements RenderBo {
 			RenderVariable r = it.next();
 			if (VariableType.ADDRESS.equals(r.getVariableType()) && r.getVariableValue() != null) {
 				if (EmailAddressType.FROM_ADDR.equals(r.getVariableName())) {
-					if (r.getVariableValue() instanceof String)
+					if (r.getVariableValue() instanceof String) {
 						mBean.setFrom(InternetAddress.parse((String) r.getVariableValue()));
+					}
 					else if (r.getVariableValue() instanceof InternetAddress) {
 						mBean.setFrom(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
 				}
 				else if (EmailAddressType.REPLYTO_ADDR.equals(r.getVariableName())) {
-					if (r.getVariableValue() instanceof String)
+					if (r.getVariableValue() instanceof String) {
 						mBean.setReplyto(InternetAddress.parse((String) r.getVariableValue()));
+					}
 					else if (r.getVariableValue() instanceof Address) {
 						mBean.setReplyto(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
 				}
 				else if (EmailAddressType.TO_ADDR.equals(r.getVariableName())) {
-					if (r.getVariableValue() instanceof String)
+					if (r.getVariableValue() instanceof String) {
 						mBean.setTo(InternetAddress.parse((String) r.getVariableValue()));
+					}
 					else if (r.getVariableValue() instanceof Address) {
 						mBean.setTo(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
 				}
 				else if (EmailAddressType.CC_ADDR.equals(r.getVariableName())) {
-					if (r.getVariableValue() instanceof String)
+					if (r.getVariableValue() instanceof String) {
 						mBean.setCc(InternetAddress.parse((String) r.getVariableValue()));
+					}
 					else if (r.getVariableValue() instanceof Address) {
 						mBean.setCc(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
 				}
 				else if (EmailAddressType.BCC_ADDR.equals(r.getVariableName())) {
-					if (r.getVariableValue() instanceof String)
+					if (r.getVariableValue() instanceof String) {
 						mBean.setBcc(InternetAddress.parse((String) r.getVariableValue()));
+					}
 					else if (r.getVariableValue() instanceof Address) {
 						mBean.setBcc(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
@@ -307,33 +309,45 @@ public class RenderBoImpl implements RenderBo {
 					String[] s = { (String) r.getVariableValue() };
 					mBean.setPriority(s);
 				}
-				else if (VariableName.RULE_NAME.equals(r.getVariableName()))
+				else if (VariableName.RULE_NAME.equals(r.getVariableName())) {
 					mBean.setRuleName((String)r.getVariableValue());
-				else if (VariableName.CARRIER_CODE.equals(r.getVariableName()))
+				}
+				else if (VariableName.CARRIER_CODE.equals(r.getVariableName())) {
 					mBean.setCarrierCode((String)r.getVariableValue());
-				else if (VariableName.MAILBOX_HOST.equals(r.getVariableName()))
+				}
+				else if (VariableName.MAILBOX_HOST.equals(r.getVariableName())) {
 					mBean.setMailboxHost((String)r.getVariableValue());
-				else if (VariableName.MAILBOX_HOST.equals(r.getVariableName()))
+				}
+				else if (VariableName.MAILBOX_HOST.equals(r.getVariableName())) {
 					mBean.setMailboxHost((String)r.getVariableValue());
-				else if (VariableName.MAILBOX_NAME.equals(r.getVariableName()))
+				}
+				else if (VariableName.MAILBOX_NAME.equals(r.getVariableName())) {
 					mBean.setMailboxName((String)r.getVariableValue());
-				else if (VariableName.MAILBOX_USER.equals(r.getVariableName()))
+				}
+				else if (VariableName.MAILBOX_USER.equals(r.getVariableName())) {
 					mBean.setMailboxUser((String)r.getVariableValue());
-				else if (VariableName.FOLDER_NAME.equals(r.getVariableName()))
+				}
+				else if (VariableName.FOLDER_NAME.equals(r.getVariableName())) {
 					mBean.setFolderName((String)r.getVariableValue());
-				else if (VariableName.CLIENT_ID.equals(r.getVariableName()))
+				}
+				else if (VariableName.CLIENT_ID.equals(r.getVariableName())) {
 					mBean.setClientId((String)r.getVariableValue());
-				else if (VariableName.CUSTOMER_ID.equals(r.getVariableName()))
+				}
+				else if (VariableName.CUSTOMER_ID.equals(r.getVariableName())) {
 					mBean.setCustId((String)r.getVariableValue());
-				else if (VariableName.TO_PLAIN_TEXT.equals(r.getVariableName()))
+				}
+				else if (VariableName.TO_PLAIN_TEXT.equals(r.getVariableName())) {
 					mBean.setToPlainText(Constants.YES_CODE.equals((String)r.getVariableValue()));
+				}
 			}
 			else if (r.getVariableValue() != null && VariableType.NUMERIC.equals(r.getVariableType())) {
 				if (VariableName.MSG_REF_ID.equals(r.getVariableName())) {
-					if (r.getVariableValue() instanceof Long)
+					if (r.getVariableValue() instanceof Long) {
 						mBean.setMsgRefId((Long) r.getVariableValue());
-					else if (r.getVariableValue() instanceof String)
+					}
+					else if (r.getVariableValue() instanceof String) {
 						mBean.setMsgRefId(Long.valueOf((String) r.getVariableValue()));
+					}
 				}
 			}
 			else if (VariableType.DATETIME.equals(r.getVariableType())) {
@@ -372,10 +386,12 @@ public class RenderBoImpl implements RenderBo {
 			mBean.setEmBedEmailId(Boolean.valueOf(false));
 		}
 
-		if (Constants.YES_CODE.equalsIgnoreCase(src.getSaveMsgStream()))
+		if (Constants.YES_CODE.equalsIgnoreCase(src.getSaveMsgStream())) {
 			mBean.setSaveMsgStream(true);
-		else
+		}
+		else {
 			mBean.setSaveMsgStream(false);
+		}
 	}
 	
 	/*
@@ -401,12 +417,14 @@ public class RenderBoImpl implements RenderBo {
 				headers.add(msgHeader);
 				// set ClientId for MessageBean
 				if (XHeaderName.XHEADER_CLIENT_ID.equals(r.getVariableName())) {
-					if (StringUtil.isEmpty(mBean.getClientId()))
+					if (StringUtil.isEmpty(mBean.getClientId())) {
 						mBean.setClientId((String) r.getVariableValue());
+					}
 				}
 				else if (XHeaderName.XHEADER_CUSTOMER_ID.equals(r.getVariableName())) {
-					if (StringUtil.isEmpty(mBean.getCustId()))
+					if (StringUtil.isEmpty(mBean.getCustId())) {
 						mBean.setCustId((String) r.getVariableValue());
+					}
 				}
 			}
 		}
@@ -421,8 +439,7 @@ public class RenderBoImpl implements RenderBo {
 		
 		// retrieve variables
 		Collection<GlobalVariableVo> globalVariables = getGlobalVariableDao().getCurrent();
-		Collection<ClientVariableVo> clientVariables = getClientVariableDao().getCurrentByClientId(
-				req.clientId);
+		Collection<ClientVariableVo> clientVariables = getClientVariableDao().getCurrentByClientId(req.clientId);
 		Collection<TemplateVariableVo> templateVariables = getTemplateVariableDao()
 				.getCurrentByTemplateId(msgSourceVo.getTemplateVariableId(), req.clientId);
 		
@@ -467,7 +484,9 @@ public class RenderBoImpl implements RenderBo {
 		
 		// get Runtime variables
 		Map<String, RenderVariable> r_ht = req.variableOverrides;
-		if (r_ht==null) r_ht = new HashMap<String, RenderVariable>();
+		if (r_ht==null) {
+			r_ht = new HashMap<String, RenderVariable>();
+		}
 		
 		// error hash table
 		Map<String, RenderVariable> err_ht = new HashMap<String, RenderVariable>();
@@ -484,8 +503,8 @@ public class RenderBoImpl implements RenderBo {
 		rsp.variableErrors.putAll(err_ht);
 	}
 	
-	private void mergeHashMaps(Map<String, RenderVariable> from,
-			Map<String, RenderVariable> to, Map<String, RenderVariable> error) {
+	private void mergeHashMaps(Map<String, RenderVariable> from, Map<String, RenderVariable> to,
+			Map<String, RenderVariable> error) {
 		Set<String> keys = from.keySet();
 		for (Iterator<String> it=keys.iterator(); it.hasNext();) {
 			String name = it.next();
@@ -507,8 +526,7 @@ public class RenderBoImpl implements RenderBo {
 		}
 	}
 	
-	private void verifyHashMap(Map<String, RenderVariable> ht,
-			Map<String, RenderVariable> error) {
+	private void verifyHashMap(Map<String, RenderVariable> ht, Map<String, RenderVariable> error) {
 		Set<String> keys = ht.keySet();
 		for (Iterator<String> it=keys.iterator(); it.hasNext();) {
 			String name = it.next();
@@ -556,8 +574,7 @@ public class RenderBoImpl implements RenderBo {
 		return ht;
 	}
 	
-	private Map<String, RenderVariable> TemplateVariablesToHashMap(
-			Collection<TemplateVariableVo> c) {
+	private Map<String, RenderVariable> TemplateVariablesToHashMap(Collection<TemplateVariableVo> c) {
 		Map<String, RenderVariable> ht = new HashMap<String, RenderVariable>();
 		for (Iterator<TemplateVariableVo> it = c.iterator(); it.hasNext();) {
 			TemplateVariableVo req = it.next();

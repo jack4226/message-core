@@ -58,8 +58,8 @@ public class RenderVariable implements Serializable {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof Long) && !(variableValue instanceof String)
 						&& !(variableValue instanceof Integer)) {
-					throw new IllegalArgumentException("Invalid Value Type: "
-							+ variableValue.getClass().getName() + ", by " + variableName);
+					throw new IllegalArgumentException(
+							"Invalid Value Type: " + variableValue.getClass().getName() + ", by " + variableName);
 				}
 				if (variableValue instanceof String) {
 					NumberFormat numberFormat = NumberFormat.getNumberInstance();
@@ -67,8 +67,8 @@ public class RenderVariable implements Serializable {
 						numberFormat.parse((String)variableValue);
 					}
 					catch (ParseException e) {
-						throw new IllegalArgumentException("Invalid Numeric Value: "
-								+ variableValue + ", by " + variableName);
+						throw new IllegalArgumentException(
+								"Invalid Numeric Value: " + variableValue + ", by " + variableName);
 					}
 				}
 			}
@@ -80,16 +80,16 @@ public class RenderVariable implements Serializable {
 			}
 			if (variableValue!=null) {
 				if (!(variableValue instanceof Date) && !(variableValue instanceof String)) {
-					throw new IllegalArgumentException("Invalid Value Type: "
-						+ variableValue.getClass().getName() + ", by " + variableName);
+					throw new IllegalArgumentException(
+							"Invalid Value Type: " + variableValue.getClass().getName() + ", by " + variableName);
 				}
 				if (variableValue instanceof String) {
 					try {
 						fmt.parse((String)variableValue);
 					}
 					catch (ParseException e) {
-						throw new IllegalArgumentException("Invalid DateTime Value: "
-								+ variableValue + ", by " + variableName);						
+						throw new IllegalArgumentException(
+								"Invalid DateTime Value: " + variableValue + ", by " + variableName);
 					}
 				}
 			}
@@ -97,16 +97,16 @@ public class RenderVariable implements Serializable {
 		else if (VariableType.ADDRESS.equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof Address) && !(variableValue instanceof String)) {
-					throw new IllegalArgumentException("Invalid Value Type: "
-						+ variableValue.getClass().getName() + ", by " + variableName);
+					throw new IllegalArgumentException(
+							"Invalid Value Type: " + variableValue.getClass().getName() + ", by " + variableName);
 				}
 				if (variableValue instanceof String) {
 					try {
 						InternetAddress.parse((String)variableValue);
 					}
 					catch (AddressException e) {
-						throw new IllegalArgumentException("Invalid Email Address: "
-								+ variableValue + ", by " + variableName);
+						throw new IllegalArgumentException(
+								"Invalid Email Address: " + variableValue + ", by " + variableName);
 					}
 				}
 			}
@@ -114,8 +114,8 @@ public class RenderVariable implements Serializable {
 		else if (VariableType.LOB.equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof String) && !(variableValue instanceof byte[])) {
-					throw new IllegalArgumentException("Invalid Value Type: "
-						+ variableValue.getClass().getName() + ", by " + variableName);
+					throw new IllegalArgumentException(
+							"Invalid Value Type: " + variableValue.getClass().getName() + ", by " + variableName);
 				}
 			}
 			if (variableFormat==null) {
@@ -126,19 +126,17 @@ public class RenderVariable implements Serializable {
 		else if (VariableType.COLLECTION.equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof Collection)) {
-					throw new IllegalArgumentException("Invalid Value Type: "
-						+ variableValue.getClass().getName() + ", by " + variableName);
+					throw new IllegalArgumentException(
+							"Invalid Value Type: " + variableValue.getClass().getName() + ", by " + variableName);
 				}
 			}
 		}
 		else if (!VariableType.TEXT.equals(variableType) && !VariableType.X_HEADER.equals(variableType)) {
-			throw new IllegalArgumentException("Invalid Variable Type: " + variableType + ", by "
-					+ variableName);
+			throw new IllegalArgumentException("Invalid Variable Type: " + variableType + ", by " + variableName);
 		}
     }
 	
-	public String toString()
-	{
+	public String toString() {
 		String LF = System.getProperty("line.separator","\n");
 		StringBuffer sb = new StringBuffer();
 		sb.append("========== Display RenderVariable Fields =========="+LF);
