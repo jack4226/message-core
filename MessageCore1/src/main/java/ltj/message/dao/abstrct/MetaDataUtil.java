@@ -191,8 +191,8 @@ public class MetaDataUtil {
 	public static void main(String[] args) {
 		Table msg_inbox = MetaDataUtil.getTableMetaData("MsgInbox");
 		logger.info("Table Metadata:" + PrintUtil.prettyPrint(msg_inbox));
-		logger.info(buildUpdateStatement("Msg_Inbox", new MsgInboxVo()));
-		logger.info(buildInsertStatement("Mailing_List", new MailingListVo()));
-		logger.info(buildUpdateStatement("Msg_Attachment", new AttachmentsVo()));
+		logger.info(buildUpdateStatement("MsgInbox", new MsgInboxVo()));
+		logger.info(buildInsertStatement("MailingList", new MailingListVo()));
+		logger.info(buildUpdateStatement("Attachments", new AttachmentsVo()));
 	}
 }
