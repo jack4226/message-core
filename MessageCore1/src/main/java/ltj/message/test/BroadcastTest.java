@@ -42,8 +42,8 @@ public class BroadcastTest extends BoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
 	
-	private static String sbsrAddr = "sbsr" + StringUtils.leftPad(new Random().nextInt(1000)+"", 3, '0') + "@localhost";
-	private static String listAddr = "demolist1@localhost";
+	private static String sbsrAddr = "sbsr" + StringUtils.leftPad(new Random().nextInt(1000)+"", 3, '0') + "@ltj.com";
+	private static String listAddr = "demolist2@localhost";
 	
 	@Test
 	@Rollback(value=false)
@@ -79,14 +79,7 @@ public class BroadcastTest extends BoTestBase {
 	
 	@Test
 	@Rollback(value=false)
-	public void test2() {
-		// insert email address here to work around deadlock issue
-		emailAddrDao.findByAddress(sbsrAddr);
-	}
-	
-	@Test
-	@Rollback(value=false)
-	public void test3() throws Exception { // subscribe
+	public void test2() throws Exception { // subscribe
 		logger.info("=================================================");
 		logger.info("Testing Subscribe ###############################");
 		logger.info("=================================================");
@@ -109,7 +102,7 @@ public class BroadcastTest extends BoTestBase {
 
 	@Test
 	@Rollback(value=false)
-	public void test4() throws Exception { // unsubscribe
+	public void test3() throws Exception { // unsubscribe
 		logger.info("=================================================");
 		logger.info("Testing Unsubscribe ###############################");
 		logger.info("=================================================");

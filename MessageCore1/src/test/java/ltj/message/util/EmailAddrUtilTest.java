@@ -26,6 +26,10 @@ public class EmailAddrUtilTest {
 		System.out.println(addr+" --> "+EmailAddrUtil.removeDisplayName(addr));
 		assertEquals("fqusoogd.undlwfeteot@chaffingphotosensitive.com", EmailAddrUtil.removeDisplayName(addr));
 		
+		addr = "TEST@test.com";
+		assertEquals(addr, EmailAddrUtil.removeDisplayName(addr, false));
+		assertEquals(addr.toLowerCase(), EmailAddrUtil.removeDisplayName(addr));
+		
 		assertEquals(true, EmailAddrUtil.isRemoteEmailAddress("A!#$%&'*+/=?.^_`{|}~-BC@localhost.us"));
 		assertEquals(true, EmailAddrUtil.isRemoteOrLocalEmailAddress("A!#$%&'*+/=?.^_`{|}~-BC"));
 		

@@ -59,23 +59,27 @@ public class TaskDispatcher {
 			throw new DataValidationException("RuleName is not valued");
 		}
 		
-		/* Save addresses first to resolve MySQL error - Lock wait timeout exceeded; */
-		SpringUtil.beginTransaction();
-		try {
-			/* insert email addresses */
-			saveEmailAddr(msgBean.getFrom());
-			saveEmailAddr(msgBean.getTo());
-			saveEmailAddr(msgBean.getReplyto());
-			/* end of email addresses */
-			SpringUtil.commitTransaction();
-		}
-		catch (Exception e) {
-			logger.error("Exception during saving email addrs: " + e.getMessage());
-			SpringUtil.rollbackTransaction();
+		/* 
+		 * Save addresses first to resolve MySQL error - Lock wait timeout exceeded;
+		 * Only do this if it's not already in a transaction. 
+		 */
+		if (SpringUtil.isInTransaction() == false) {
+			SpringUtil.beginTransaction();
+			try {
+				/* insert email addresses */
+				saveEmailAddr(msgBean.getFrom());
+				saveEmailAddr(msgBean.getTo());
+				saveEmailAddr(msgBean.getReplyto());
+				/* end of email addresses */
+				SpringUtil.commitTransaction();
+			}
+			catch (Exception e) {
+				logger.error("Exception during saving email addrs: " + e.getMessage());
+				SpringUtil.rollbackTransaction();
+			}
 		}
 		
 		SpringUtil.beginTransaction();
-		
 		try{
 			List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null, msgBean.getClientId());
 			if (actions == null || actions.isEmpty()) {

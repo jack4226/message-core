@@ -2,6 +2,7 @@ package ltj.spring.util;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -9,6 +10,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public final class SpringUtil {
 	static final Logger logger = Logger.getLogger(SpringUtil.class);
@@ -116,11 +118,31 @@ public final class SpringUtil {
 			rollbackTransaction();
 		}
 	}
+	
+	public static boolean isInTransaction() {
+		return TransactionSynchronizationManager.isActualTransactionActive();
+	}
 
 	private static final ThreadLocal<AtomicInteger> TX_COUNTER = new ThreadLocal<AtomicInteger>() {
 		public AtomicInteger initialValue() {
 			return new AtomicInteger(1);
 		}
 	};
+
+	public static boolean isRunningInJunitTest() {
+		StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+		for (int i = traces.length - 1; i > 0; i--) {
+			StackTraceElement trace = traces[i];
+			if (StringUtils.startsWith(trace.getClassName(), "org.junit.runners")) {
+				// org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+				return true;
+			}
+			else if (StringUtils.contains(trace.getClassName(), "junit.runner")) {
+				// org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
