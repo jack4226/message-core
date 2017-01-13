@@ -1,9 +1,13 @@
 package ltj.message.test;
 
+import java.util.Random;
+
 import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
@@ -13,6 +17,7 @@ import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.RuleNameType;
 
+@FixMethodOrder
 public class BroadcastTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(BroadcastTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
@@ -25,9 +30,11 @@ public class BroadcastTest extends BoTestBase {
 	@Resource
 	private TaskDispatcher taskDispatcher;
 	
+	private static String sbsrAddr = "sbsr" + StringUtils.leftPad(new Random().nextInt(1000)+"", 3, '0') + "@localhost";
+	
 	@Test
 	@Rollback(value=false)
-	public void broadcast() throws Exception {
+	public void test1() throws Exception { // broadcast
 		logger.info("=================================================");
 		logger.info("Testing Broadcast ###############################");
 		logger.info("=================================================");
@@ -46,14 +53,15 @@ public class BroadcastTest extends BoTestBase {
 	}
 	
 	@Test
-	public void subscribe() throws Exception {
+	//@Rollback(value=false)
+	public void test2() throws Exception { // subscribe
 		logger.info("=================================================");
 		logger.info("Testing Subscribe ###############################");
 		logger.info("=================================================");
 		MessageBean messageBean = new MessageBean();
 		messageBean.setIsReceived(true);
-		messageBean.setFrom(InternetAddress.parse("test@test.com"));
-		messageBean.setTo(InternetAddress.parse("jwang@localhost"));
+		messageBean.setFrom(InternetAddress.parse(sbsrAddr));
+		messageBean.setTo(InternetAddress.parse("demolist1@localhost"));
 		messageBean.setSubject("subscribe");
 		messageBean.setBody("sign me up to the email mailing list");
 		messageParser.parse(messageBean);
@@ -61,16 +69,17 @@ public class BroadcastTest extends BoTestBase {
 	}
 
 	@Test
-	public void unsubscribe() throws Exception {
+	//@Rollback(value=false)
+	public void test3() throws Exception { // unsubscribe
 		logger.info("=================================================");
 		logger.info("Testing Unsubscribe ###############################");
 		logger.info("=================================================");
 		MessageBean messageBean = new MessageBean();
 		messageBean.setIsReceived(true);
-		messageBean.setFrom(InternetAddress.parse("test@test.com"));
-		messageBean.setTo(InternetAddress.parse("jwang@localhost"));
+		messageBean.setFrom(InternetAddress.parse(sbsrAddr));
+		messageBean.setTo(InternetAddress.parse("demolist1@localhost"));
 		messageBean.setSubject("unsubscribe");
-		messageBean.setBody("remove mefrom the email mailing list");
+		messageBean.setBody("remove me from the email mailing list");
 		messageParser.parse(messageBean);
 		taskDispatcher.dispatchTasks(messageBean);
 	}
