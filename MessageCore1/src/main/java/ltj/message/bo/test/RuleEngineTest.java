@@ -16,6 +16,7 @@ import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
+import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.FileUtil;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
@@ -81,8 +82,8 @@ public class RuleEngineTest extends BoTestBase {
 			assertNotNull(messageBean[i].getMsgId());
 			MsgInboxVo vo = selectMsgInboxByMsgId(messageBean[i].getMsgId());
 			assertNotNull(vo);
-			assertEquals(fromAddr[i], vo.getFromAddress());
-			assertEquals(toAddr[i],vo.getToAddress());
+			assertEquals(EmailAddrUtil.removeDisplayName(fromAddr[i]), vo.getFromAddress());
+			assertEquals(EmailAddrUtil.removeDisplayName(toAddr[i]),vo.getToAddress());
 			
 			EmailAddrVo addrVo = selectEmailAddrByAddress(fromAddr[i]);
 			assertNotNull(addrVo);
@@ -97,6 +98,8 @@ public class RuleEngineTest extends BoTestBase {
 			miList = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 			assertFalse(miList.isEmpty());
 			assertEquals(ruleName[i], miList.get(miList.size() - 1).getRuleName());
+			
+			assertEquals(messageBean[i].getSubject(), vo.getMsgSubject());
 		}
 	}
 

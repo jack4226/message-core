@@ -113,8 +113,9 @@ public class SendMailBoTest extends BoTestBase {
 			for (MsgInboxWebVo vo : list) {
 				if ((testSubject + suffixes[i]).equals(vo.getMsgSubject())) {
 					if (StringUtils.contains(vo.getToAddress(), suffixes[i])) {
-						found = true;
-						assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
+						if (RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
+							found = true;
+						}
 					}
 				}
 			}
@@ -128,8 +129,9 @@ public class SendMailBoTest extends BoTestBase {
 			boolean found = false;
 			for (MsgInboxWebVo vo : list) {
 				if ((testSubject + nbr).equals(vo.getMsgSubject())) {
-					found = true;
-					assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
+					if (RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
+						found = true;
+					}
 				}
 			}
 			assertEquals(true, found);
