@@ -42,36 +42,50 @@ public class BroadcastTest extends BoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
 	
+	private static String brstAddr = "testto@localhost";
+	private static String suffix = StringUtils.leftPad(new Random().nextInt(10000)+"", 4, '0');
+	private static int sizeBefore = 0;
+
 	private static String sbsrAddr = "sbsr" + StringUtils.leftPad(new Random().nextInt(1000)+"", 3, '0') + "@ltj.com";
 	private static String listAddr = "demolist2@localhost";
 	
 	@Test
 	@Rollback(value=false)
-	public void test1() throws Exception { // broadcast
-		String brstAddr = "testto@localhost";
+	public void test1() { // broadcast
 		EmailAddrVo addrVo = emailAddrDao.findByAddress(brstAddr);
 		List<MsgInboxVo> milist1 = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
-		String suffix = StringUtils.leftPad(new Random().nextInt(10000)+"", 4, '0');
+		sizeBefore = milist1.size();
 		
 		logger.info("=================================================");
 		logger.info("Testing Broadcast ###############################");
 		logger.info("=================================================");
-		MessageBean messageBean = new MessageBean();
-		messageBean.setIsReceived(true);
-		messageBean.setFrom(InternetAddress.parse("support@localhost"));
-		messageBean.setTo(InternetAddress.parse(brstAddr));
-		messageBean.setSubject("Test Broadcast message - " + suffix);
-		messageBean.setBody("Test Broadcast message body.");
-		messageBean.setRuleName(RuleNameType.BROADCAST.toString());
-		messageBean.setMailingListId("SMPLLST1");
-		messageBean.setBody("Dear ${CustomerName}:" + LF + messageBean.getBody());
-		messageParser.parse(messageBean);
-		System.out.println("MessageBean:" + LF + messageBean);
-		taskDispatcher.dispatchTasks(messageBean);
-		
+		try {
+			MessageBean messageBean = new MessageBean();
+			messageBean.setIsReceived(true);
+			messageBean.setFrom(InternetAddress.parse("support@localhost"));
+			messageBean.setTo(InternetAddress.parse(brstAddr));
+			messageBean.setSubject("Test Broadcast message - " + suffix);
+			messageBean.setBody("Test Broadcast message body.");
+			messageBean.setRuleName(RuleNameType.BROADCAST.toString());
+			messageBean.setMailingListId("SMPLLST1");
+			messageBean.setBody("Dear ${CustomerName}:" + LF + messageBean.getBody());
+			messageParser.parse(messageBean);
+			System.out.println("MessageBean:" + LF + messageBean);
+			taskDispatcher.dispatchTasks(messageBean);
+		}
+		catch (Exception e) {
+			logger.error("Exception", e);
+			fail();
+		}
+	}
+	
+	@Test
+	public void test2() {
 		// verify results
+		EmailAddrVo addrVo = emailAddrDao.getByAddress(brstAddr);
+		assertNotNull(addrVo);
 		List<MsgInboxVo> milist2 = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
-		assertEquals(milist1.size() + 1, milist2.size());
+		assertEquals(sizeBefore + 1, milist2.size());
 		MsgInboxVo mivo = milist2.get(milist2.size() - 1);
 		assertEquals(RuleNameType.BROADCAST.name(), mivo.getRuleName());
 		assertEquals("Test Broadcast message - " + suffix, mivo.getMsgSubject());
@@ -79,19 +93,28 @@ public class BroadcastTest extends BoTestBase {
 	
 	@Test
 	@Rollback(value=false)
-	public void test2() throws Exception { // subscribe
+	public void test3() { // subscribe
 		logger.info("=================================================");
 		logger.info("Testing Subscribe ###############################");
 		logger.info("=================================================");
-		MessageBean messageBean = new MessageBean();
-		messageBean.setIsReceived(true);
-		messageBean.setFrom(InternetAddress.parse(sbsrAddr));
-		messageBean.setTo(InternetAddress.parse(listAddr));
-		messageBean.setSubject("subscribe");
-		messageBean.setBody("sign me up to the email mailing list");
-		messageParser.parse(messageBean);
-		taskDispatcher.dispatchTasks(messageBean);
-		
+		try {
+			MessageBean messageBean = new MessageBean();
+			messageBean.setIsReceived(true);
+			messageBean.setFrom(InternetAddress.parse(sbsrAddr));
+			messageBean.setTo(InternetAddress.parse(listAddr));
+			messageBean.setSubject("subscribe");
+			messageBean.setBody("sign me up to the email mailing list");
+			messageParser.parse(messageBean);
+			taskDispatcher.dispatchTasks(messageBean);
+		}
+		catch (Exception e) {
+			logger.error("Exception", e);
+			fail();
+		}
+	}
+	
+	@Test
+	public void test4() {
 		// verify result
 		List<MailingListVo> mllist = mailingListDao.getByAddress(listAddr);
 		assertFalse(mllist.isEmpty());
@@ -102,19 +125,28 @@ public class BroadcastTest extends BoTestBase {
 
 	@Test
 	@Rollback(value=false)
-	public void test3() throws Exception { // unsubscribe
+	public void test5() { // unsubscribe
 		logger.info("=================================================");
 		logger.info("Testing Unsubscribe ###############################");
 		logger.info("=================================================");
-		MessageBean messageBean = new MessageBean();
-		messageBean.setIsReceived(true);
-		messageBean.setFrom(InternetAddress.parse(sbsrAddr));
-		messageBean.setTo(InternetAddress.parse(listAddr));
-		messageBean.setSubject("unsubscribe");
-		messageBean.setBody("remove me from the email mailing list");
-		messageParser.parse(messageBean);
-		taskDispatcher.dispatchTasks(messageBean);
-		
+		try {
+			MessageBean messageBean = new MessageBean();
+			messageBean.setIsReceived(true);
+			messageBean.setFrom(InternetAddress.parse(sbsrAddr));
+			messageBean.setTo(InternetAddress.parse(listAddr));
+			messageBean.setSubject("unsubscribe");
+			messageBean.setBody("remove me from the email mailing list");
+			messageParser.parse(messageBean);
+			taskDispatcher.dispatchTasks(messageBean);
+		}
+		catch (Exception e) {
+			logger.error("Exception", e);
+			fail();
+		}
+	}
+	
+	@Test
+	public void test6() {
 		// verify result
 		List<MailingListVo> mllist = mailingListDao.getByAddress(listAddr);
 		assertFalse(mllist.isEmpty());

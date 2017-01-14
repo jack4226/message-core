@@ -18,6 +18,7 @@ import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bo.mailinglist.MailingListBo;
 import ltj.message.bo.test.BoTestBase;
+import ltj.message.constant.YorN;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
@@ -92,7 +93,7 @@ public class MailingListBoTest extends BoTestBase {
 	@Rollback(value=false)
 	public void test2() {
 		try {
-			Thread.sleep(1000L);
+			Thread.sleep(WaitTimeInMillis / 2);
 		} catch (InterruptedException e) {}
 	}
 	
@@ -109,13 +110,17 @@ public class MailingListBoTest extends BoTestBase {
 		assertNotNull(mlvo);
 		
 		for (SubscriptionVo subsVo : subsList) {
+			if (YorN.N.getValue().equals(subsVo.getSubscribed())) {
+				continue;
+			}
 			EmailAddrVo addrVo = emailAddrDao.getByAddress(subsVo.getEmailAddr());
 			assertNotNull(addrVo);
 			
 			List<MsgInboxVo> milist = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 			assertFalse(milist.isEmpty());
 			MsgInboxVo mivo = milist.get(milist.size() - 1);
-			logger.info("Count after: " + addrVo.getEmailAddr() + " = " + milist.size());
+			logger.info("Count before/after: " + addrVo.getEmailAddr() + " = " + countMap.get(addrVo.getEmailAddr())
+					+ "/" + milist.size());
 			assertTrue(StringUtils.contains(mivo.getFromAddress(), mlvo.getAcctUserName()));
 			assertEquals(countMap.get(addrVo.getEmailAddr()), Integer.valueOf(milist.size() - 1));
 		}
