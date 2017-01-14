@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Resource;
-import javax.jms.JMSException;
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
@@ -42,10 +42,30 @@ public class MailSenderTest extends BoTestBase {
 			String suffix = StringUtils.leftPad(new Random().nextInt(100) + "", 2, "0");
 			suffixes.add(suffix);
 		}
+		long startTime = System.currentTimeMillis();
 		try {
-			testSendMail(suffixes);
+			for (int i = 0; i < suffixes.size(); i++) {
+				String suffix = suffixes.get(i);
+				String user = "user" + suffix + "@localhost";
+				users.add(user);
+				MessageBean messageBean = new MessageBean();
+				messageBean.setSubject("Test MailSender - " + suffix + " " + new java.util.Date());
+				messageBean.setBody("Test MailSender Body Message - " + suffix);
+				messageBean.setFrom(InternetAddress.parse("testfrom@localhost", false));
+				messageBean.setTo(InternetAddress.parse(user, false));
+				logger.info("testSendMail() - before calling for " + user);
+				try {
+					mailSenderBo.process(messageBean);
+				} catch (SmtpException | MessagingException e) {
+					logger.error("Exception caught", e);
+					fail();
+				}
+				logger.info("Email saved and sent!");
+			}
+			logger.info("Total Emails Queued: " + suffixes.size() + ", Time taken: "
+					+ (System.currentTimeMillis() - startTime) / 1000 + " seconds");
 		}
-		catch (Exception e) {
+		catch (DataValidationException | AddressException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -63,18 +83,17 @@ public class MailSenderTest extends BoTestBase {
 	@Test
 	public void test3() { // verifyDatabaseRecord
 		// now verify the database record added
-		for (String addr : users) {
-			EmailAddrVo addrVo = emailAddrDao.getByAddress(addr);
-			assertNotNull("Address " + addr + " must have been added.", addrVo);
+		for (int i = 0; i < users.size(); i++) {
+			String user = users.get(i);
+			EmailAddrVo addrVo = emailAddrDao.getByAddress(user);
+			assertNotNull("Address " + user + " must have been added.", addrVo);
 			List<MsgInboxVo> list = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
-			assertTrue(list.size()>0);
+			assertTrue(list.size() > 0);
 			boolean found = false;
 			for (MsgInboxVo vo : list) {
-				if (vo.getMsgSubject().startsWith("Test MailSender - ")) {
-					if (addr.equals(vo.getToAddress())) {
+				if (vo.getMsgSubject().startsWith("Test MailSender - " + suffixes.get(i))) {
+					if (user.equals(vo.getToAddress()) && RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
 						found = true;
-						assertEquals(RuleNameType.SEND_MAIL.name(),vo.getRuleName());
-						
 					}
 				}
 			}
@@ -82,28 +101,4 @@ public class MailSenderTest extends BoTestBase {
 		}
 	}
 
-	private void testSendMail(List<String> suffixes) throws DataValidationException, MessagingException, JMSException {
-		long startTime = System.currentTimeMillis();
-		int i;
-		for (i = 0; i < suffixes.size(); i++) {
-			String suffix = suffixes.get(i);
-			String user = "user" + suffix + "@localhost";
-			users.add(user);
-			MessageBean messageBean = new MessageBean();
-			messageBean.setSubject("Test MailSender - " + suffix + " " + new java.util.Date());
-			messageBean.setBody("Test MailSender Body Message - " + suffix);
-			messageBean.setFrom(InternetAddress.parse("testfrom@localhost", false));
-			messageBean.setTo(InternetAddress.parse(user, false));
-			logger.info("testSendMail() - before calling for " + user);
-			try {
-				mailSenderBo.process(messageBean);
-			} catch (SmtpException e) {
-				logger.error("Exception caught", e);
-				fail();
-			}
-			logger.info("Email saved and sent!");
-		}
-		logger.info("Total Emails Queued: " + i + ", Time taken: " + (System.currentTimeMillis() - startTime) / 1000
-				+ " seconds");
-	}
 }

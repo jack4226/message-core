@@ -4,14 +4,14 @@ public class VariableType {
 	//
 	// define variable types
 	//
-	public final static String TEXT = "T";
-	public final static String NUMERIC = "N";
-	public final static String ADDRESS = "A";
-	public final static String DATETIME = "D";
-	public final static String X_HEADER = "X";
-	public final static String LOB = "L";
+	public final static String TEXT = Variable.TEXT.getValue();
+	public final static String NUMERIC = Variable.NUMERIC.getValue();
+	public final static String ADDRESS = Variable.ADDRESS.getValue();
+	public final static String DATETIME = Variable.DATETIME.getValue();
+	public final static String X_HEADER = Variable.X_HEADER.getValue();
+	public final static String LOB = Variable.LOB.getValue();
 	// body template only
-	public final static String COLLECTION = "C";
+	public final static String COLLECTION = Variable.COLLECTION.getValue();
 	// a collection of <HashMap>s (for Table section)
 
 	// enum class = list of variables

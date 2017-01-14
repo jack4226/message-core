@@ -25,10 +25,10 @@ public class Constants {
 	public static final String SMTP_MAIL = "smtpmail";
 	public static final String WEB_MAIL = "webmail";
 	
-	public final static String YES_CODE = "Y";
-	public final static String NO_CODE = "N";
-	public final static String YES = "Yes";
-	public final static String NO = "No";
+	public final static String YES_CODE = YorN.Y.getValue();
+	public final static String NO_CODE = YorN.N.getValue();
+	public final static String YES = YesOrNo.Yes.getValue();
+	public final static String NO = YesOrNo.No.getValue();
 	
 	//
 	// define VERP constants
