@@ -51,14 +51,16 @@ public class Hash32 implements java.io.Serializable {
 		int len = str.length();
 		char[] data = new char[len];
 		str.getChars(0, len, data, 0);
-		for (int i = 0; i < len; ++i)
+		for (int i = 0; i < len; ++i) {
 			add(data[i]);
+		}
 	}
 
 	/** Add some bytes to the hash. */
 	public void add(byte[] data, int off, int len) {
-		for (int i = off; i < off + len; ++i)
+		for (int i = off; i < off + len; ++i) {
 			val = (val << 8) ^ crc32Tab[(val >>> 24) ^ (data[i] & 0xff)];
+		}
 	}
 
 	// Prepare the hash for retrieval.

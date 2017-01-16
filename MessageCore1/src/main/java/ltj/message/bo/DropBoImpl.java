@@ -19,8 +19,9 @@ public class DropBoImpl extends TaskBaseAdaptor {
 	 * Only to log the message.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
+		}
 		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}

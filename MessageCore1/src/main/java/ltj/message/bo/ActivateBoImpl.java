@@ -42,9 +42,10 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 	 *         activated.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
-		if (messageBean==null) {
+		}
+		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		

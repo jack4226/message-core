@@ -31,9 +31,10 @@ public class AssignRuleNameBoImpl extends TaskBaseAdaptor {
 	 *         the ruleEngineInput queue.
 	 */
 	public Object process(MessageBean messageBean) throws DataValidationException, JMSException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
-		if (messageBean==null) {
+		}
+		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		if (getArgumentList().size() == 0) {

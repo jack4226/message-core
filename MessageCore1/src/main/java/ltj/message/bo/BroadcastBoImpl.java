@@ -60,8 +60,9 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 	 *         been sent to.
 	 */
 	public Long process(MessageBean msgBean) throws DataValidationException, AddressException, JMSException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
+		}
 		if (msgBean==null) {
 			throw new DataValidationException("input MessageBean is null");
 		}

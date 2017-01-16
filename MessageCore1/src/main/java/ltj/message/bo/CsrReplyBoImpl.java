@@ -32,8 +32,9 @@ public class CsrReplyBoImpl extends TaskBaseAdaptor {
 	 *         been replied to.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException, AddressException, JMSException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
+		}
 		if (messageBean==null) {
 			throw new DataValidationException("input MessageBean is null");
 		}

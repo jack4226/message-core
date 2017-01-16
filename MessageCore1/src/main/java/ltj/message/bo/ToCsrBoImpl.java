@@ -36,9 +36,10 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 	 * @see ltj.message.bo.TaskBaseBo#process(ltj.message.bean.MessageBean)
 	 */
 	public Object process(MessageBean messageBean) throws DataValidationException, JMSException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
-		if (messageBean==null) {
+		}
+		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		if (getArgumentList().size() == 0) {

@@ -37,9 +37,10 @@ public class BounceBoImpl extends TaskBaseAdaptor {
 	 * @return a Long representing the number of addresses updated.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
-		if (messageBean==null) {
+		}
+		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		

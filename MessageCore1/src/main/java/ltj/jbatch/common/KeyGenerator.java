@@ -77,8 +77,8 @@ public class KeyGenerator {
 			int count = 100;
 			for (int i = 0; i < count; i++) {
 				String prodKey = generateKey();
-				stmt.executeUpdate("insert into productkeys (ProductKey, AddTime)" + 
-						" values ('" + prodKey + "',now())");
+				stmt.executeUpdate(
+						"insert into productkeys (ProductKey, AddTime)" + " values ('" + prodKey + "',now())");
 			}
 			System.out.println("Number of keys generated: " + count);
 			stmt.close();

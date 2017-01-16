@@ -26,9 +26,10 @@ public class SaveBoImpl extends TaskBaseAdaptor {
 	 * @return a Long value representing the msgId inserted into MsgInbox.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
-		if (messageBean==null) {
+		}
+		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		

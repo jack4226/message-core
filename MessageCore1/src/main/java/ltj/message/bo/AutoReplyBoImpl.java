@@ -50,9 +50,10 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 	 * @throws JMSException
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException, AddressException, JMSException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
-		if (messageBean==null) {
+		}
+		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		if (StringUtil.isEmpty(taskArguments)) {

@@ -27,13 +27,14 @@ public class CloseBoImpl extends TaskBaseAdaptor {
 	 * @return a Long representing the msgId closed.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
+		}
 		if (messageBean==null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		long msgId = -1L;
-		if (messageBean.getMsgId()==null) {
+		if (messageBean.getMsgId() == null) {
 			logger.warn("MessageBean.msgId is null, nothing to close");
 			return Long.valueOf(msgId);
 		}

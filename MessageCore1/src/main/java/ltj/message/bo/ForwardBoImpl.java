@@ -43,8 +43,9 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 	 *         forwarded to.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException, MessagingException, JMSException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
+		}
 		if (messageBean==null) {
 			throw new DataValidationException("input MessageBean is null");
 		}

@@ -45,8 +45,9 @@ public class DeliveryErrorBoImpl extends TaskBaseAdaptor {
 	 *         table, or -1 if nothing is saved.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering process() method...");
+		}
 		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
