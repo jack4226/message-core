@@ -20,7 +20,6 @@ import ltj.message.constant.MsgDirectionCode;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
-import ltj.message.util.StringUtil;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
