@@ -111,9 +111,9 @@ public class SimpleEmailSender implements java.io.Serializable {
 	 * @throws MessagingException
 	 */
 	private void sendUseTransient(Message msg) throws MessagingException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering sendUseTransient method");
-
+		}
 		Properties props = System.getProperties();
 		if (smtphost != null) {
 			props.put("mail.smtp.host", smtphost);
@@ -142,9 +142,9 @@ public class SimpleEmailSender implements java.io.Serializable {
 	 * @throws MessagingException
 	 */
 	private void sendUseTransient(MessageBean m) throws MessagingException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering sendUseTransient method");
-
+		}
 		Properties props = System.getProperties();
 		if (smtphost != null) {
 			props.put("mail.smtp.host", smtphost);
@@ -252,9 +252,9 @@ public class SimpleEmailSender implements java.io.Serializable {
 	}
 
 	private void sendUsePersistent(Message msg) throws NumberFormatException, MessagingException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering sendUsePersistent method");
-
+		}
 		try {
 			if (debug) {
 				session.setDebug(true);
@@ -280,9 +280,9 @@ public class SimpleEmailSender implements java.io.Serializable {
 	}
 
 	private void sendUsePersistent(MessageBean m) throws NumberFormatException, MessagingException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering sendUsePersistent method");
-
+		}
 		try {
 			if (debug) {
 				session.setDebug(true);
