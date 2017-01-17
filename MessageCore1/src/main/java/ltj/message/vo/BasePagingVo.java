@@ -23,7 +23,7 @@ public abstract class BasePagingVo extends BaseVo implements java.io.Serializabl
 		String className = this.getClass().getName();
 		Method thisMethods[] = this.getClass().getMethods();
 		for (int i = 0; i < thisMethods.length; i++) {
-			Method method = (Method) thisMethods[i];
+			Method method = thisMethods[i];
 			String methodName = method.getName();
 			Class<?>[] params = method.getParameterTypes();
 			if (methodName.length() > 3 && methodName.startsWith("get") && params.length == 0) {
@@ -42,15 +42,7 @@ public abstract class BasePagingVo extends BaseVo implements java.io.Serializabl
 				try {
 					Class<?> returnType = method.getReturnType();
 					String returnTypeName = returnType.getName();
-					if ((returnTypeName.endsWith("java.lang.String"))
-							|| (returnTypeName.endsWith("java.lang.Integer"))
-							|| (returnTypeName.endsWith("java.lang.Long"))
-							|| (returnTypeName.endsWith("java.sql.Timestamp"))
-							|| (returnTypeName.endsWith("java.sql.Date"))
-							|| (returnType.equals(java.lang.Integer.TYPE))
-							|| (returnType.equals(java.lang.Long.TYPE))
-							|| (returnType.equals(java.lang.Character.TYPE))
-							|| (returnTypeName.endsWith("MsgType"))) {
+					if (isValidReturnType(returnType) || (returnTypeName.endsWith("MsgType"))) {
 						Object thisValue = method.invoke((Object)this, (Object[])params);
 						Object voValue = voMethod.invoke((Object)vo, (Object[])params);
 						if (thisValue == null) {

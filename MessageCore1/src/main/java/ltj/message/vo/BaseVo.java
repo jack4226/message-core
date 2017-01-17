@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -115,7 +116,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 		}
 		Method thisMethods[] = this.getClass().getMethods();
 		for (int i = 0; i < thisMethods.length; i++) {
-			Method method = (Method) thisMethods[i];
+			Method method = thisMethods[i];
 			String methodName = method.getName();
 			Class<?>[] params = method.getParameterTypes();
 			if (methodName.length() > 3 && methodName.startsWith("get") && params.length == 0) {
@@ -130,15 +131,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 				try {
 					Class<?> returnType = method.getReturnType();
 					String returnTypeName = returnType.getName();
-					if ((returnTypeName.endsWith("java.lang.String"))
-							|| (returnTypeName.endsWith("java.lang.Integer"))
-							|| (returnTypeName.endsWith("java.lang.Long"))
-							|| (returnTypeName.endsWith("java.sql.Timestamp"))
-							|| (returnTypeName.endsWith("java.sql.Date"))
-							|| (returnType.equals(java.lang.Integer.TYPE))
-							|| (returnType.equals(java.lang.Long.TYPE))
-							|| (returnType.equals(java.lang.Character.TYPE))
-							|| (returnTypeName.endsWith("PageAction"))) {
+					if (isValidReturnType(returnType) || (returnTypeName.endsWith("PageAction"))) {
 						Object thisValue = method.invoke((Object)this, (Object[])params);
 						Object voValue = voMethod.invoke((Object)vo, (Object[])params);
 						if (thisValue == null) {
@@ -185,8 +178,8 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 		}
 		Object[] params = {};
 		StringBuffer sb = new StringBuffer();
-		HashMap<String, Method> methodMap = new HashMap<String, Method>();
-		ArrayList<String> methodList = new ArrayList<String>();
+		Map<String, Method> methodMap = new HashMap<String, Method>();
+		List<String> methodList = new ArrayList<String>();
 		Method methods[] = vo.getClass().getMethods();
 
 		// sort the attributes by name
@@ -198,7 +191,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 
 		for (int i = 0; i < methodList.size(); i++) {
 			String methodName = (String) methodList.get(i);
-			Method method = (Method) methodMap.get(methodName);
+			Method method = methodMap.get(methodName);
 			params = method.getParameterTypes();
 			String paramClassName = vo.getClass().getName();
 			paramClassName = paramClassName.substring(paramClassName.lastIndexOf(".") + 1);
@@ -210,14 +203,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 					sb.append("=");
 					Class<?> returnType = method.getReturnType();
 					String returnTypeName = returnType.getName();
-					if ((returnTypeName.endsWith("java.lang.String"))
-							|| (returnTypeName.endsWith("java.lang.Integer"))
-							|| (returnTypeName.endsWith("java.lang.Long"))
-							|| (returnTypeName.endsWith("java.sql.Timestamp"))
-							|| (returnTypeName.endsWith("java.sql.Date"))
-							|| (returnType.equals(java.lang.Integer.TYPE))
-							|| (returnType.equals(java.lang.Long.TYPE))
-							|| (returnType.equals(java.lang.Character.TYPE))) {
+					if (isValidReturnType(returnType)) {
 						if (method.invoke(vo, params) == null) {
 							sb.append("null");
 						}
@@ -272,6 +258,23 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 			}
 		}
 		return sb.toString();
+	}
+
+	protected boolean isValidReturnType(Class<?> returnType) {
+		String returnTypeName = returnType.getName();
+		if ((returnTypeName.endsWith("java.lang.String"))
+				|| (returnTypeName.endsWith("java.lang.Integer"))
+				|| (returnTypeName.endsWith("java.lang.Long"))
+				|| (returnTypeName.endsWith("java.sql.Timestamp"))
+				|| (returnTypeName.endsWith("java.sql.Date"))
+				|| (returnType.equals(java.lang.Integer.TYPE))
+				|| (returnType.equals(java.lang.Long.TYPE))
+				|| (returnType.equals(java.lang.Character.TYPE))) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	private String dots(int level) {
