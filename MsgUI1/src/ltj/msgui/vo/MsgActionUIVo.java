@@ -67,16 +67,14 @@ public class MsgActionUIVo extends BaseVo {
 	private static MsgDataTypeDao msgDataTypeDao = null;
 	private static MsgDataTypeDao getMsgDataTypeDao() {
 		if (msgDataTypeDao == null) {
-			msgDataTypeDao = (MsgDataTypeDao) SpringUtil.getWebAppContext().getBean(
-					"msgDataTypeDao");
+			msgDataTypeDao = (MsgDataTypeDao) SpringUtil.getWebAppContext().getBean("msgDataTypeDao");
 		}
 		return msgDataTypeDao;
 	}
 	private static MsgActionDetailDao msgActionDetailDao = null;
 	private static MsgActionDetailDao getMsgActionDetailDao() {
 		if (msgActionDetailDao == null) {
-			msgActionDetailDao = (MsgActionDetailDao) SpringUtil.getWebAppContext().getBean(
-					"msgActionDetailDao");
+			msgActionDetailDao = (MsgActionDetailDao) SpringUtil.getWebAppContext().getBean("msgActionDetailDao");
 		}
 		return msgActionDetailDao;
 	}
@@ -149,15 +147,19 @@ public class MsgActionUIVo extends BaseVo {
 	public void setDataTypeValuesUI(String[] values) {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; values != null && i < values.length; i++) {
-			if (i == 0)
+			if (i == 0) {
 				sb.append(values[i]);
-			else
+			}
+			else {
 				sb.append("," + values[i]);
+			}
 		}
-		if (sb.length() > 0)
+		if (sb.length() > 0) {
 			setDataTypeValues(sb.toString());
-		else
+		}
+		else {
 			setDataTypeValues(null);
+		}
 	}
 	/** end of UI components */
 

@@ -11,8 +11,7 @@ import ltj.message.util.StringUtil;
 
 public class PasswordValidator implements Validator {
 
-	public void validate(FacesContext context, UIComponent component, Object value)
-			throws ValidatorException {
+	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		// Obtain the first password field from f:attribute.
 		String password1 = (String) component.getAttributes().get("password1");
 		// Find the actual JSF component for the password.
@@ -24,8 +23,7 @@ public class PasswordValidator implements Validator {
 		// Check if the first password is actually entered and compare it with
 		// second password.
 		if (!StringUtil.isEmpty(password) && !password.equals(confirm)) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "passwordsNotEqual", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "passwordsNotEqual", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

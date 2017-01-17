@@ -67,8 +67,7 @@ public class HttpServletUtil {
 	 * @param maxAge
 	 *            expiration period in seconds. expire immediately if set to 0.
 	 */
-    public static void setCookieValue(HttpServletResponse response, String name, String value,
-			int maxAge) {
+	public static void setCookieValue(HttpServletResponse response, String name, String value, int maxAge) {
 		Cookie cookie = new Cookie(name, value);
 		cookie.setMaxAge(maxAge);
 		response.addCookie(cookie);
@@ -101,8 +100,8 @@ public class HttpServletUtil {
 	 * @param isAttachment
 	 *            down load as attachment?
 	 */
-    public static void downloadFile(HttpServletResponse response, byte[] bytes, String fileName,
-			boolean isAttachment) throws IOException {
+	public static void downloadFile(HttpServletResponse response, byte[] bytes, String fileName, boolean isAttachment)
+			throws IOException {
 		// Wrap the byte array in a ByteArrayInputStream
 		downloadFile(response, new ByteArrayInputStream(bytes), fileName,isAttachment);
 	}
@@ -119,8 +118,7 @@ public class HttpServletUtil {
 	 * @param isAttachment
 	 *            down load as attachment?
 	 */
-    public static void downloadFile(HttpServletResponse response, File file, boolean isAttachment)
-			throws IOException {
+	public static void downloadFile(HttpServletResponse response, File file, boolean isAttachment) throws IOException {
 		BufferedInputStream input = null;
 		try {
 			// Wrap the file in a BufferedInputStream
@@ -154,8 +152,8 @@ public class HttpServletUtil {
 	 * @param iaAttachment
 	 *            down load as attachment?
 	 */
-    public static void downloadFile(HttpServletResponse response, InputStream input,
-			String fileName, boolean isAttachment) throws IOException {
+	public static void downloadFile(HttpServletResponse response, InputStream input, String fileName,
+			boolean isAttachment) throws IOException {
 		BufferedOutputStream output = null;
 
 		try {
@@ -212,7 +210,7 @@ public class HttpServletUtil {
 	 * @throws IOException
 	 *             If the given URL cannot be connected or written
 	 */
-    public static InputStream doGet(String url, Map<String, String[]> parameters)
+	public static InputStream doGet(String url, Map<String, String[]> parameters)
 			throws MalformedURLException, IOException {
 		return doGet(url, parameters, "UTF-8");
 	}
@@ -260,7 +258,7 @@ public class HttpServletUtil {
 	 * @throws IOException
 	 *             If the given URL cannot be connected or written
 	 */
-    public static InputStream doPost(String url, Map<String, String[]> parameters)
+	public static InputStream doPost(String url, Map<String, String[]> parameters)
 			throws MalformedURLException, IOException {
 		return doPost(url, parameters, "UTF-8");
 	}
@@ -321,7 +319,7 @@ public class HttpServletUtil {
 	 * @throws UnsupportedEncodingException
 	 *             If the given charset is not supported.
 	 */
-    public static String createQuery(Map<String, String[]> parameters, String charset)
+	public static String createQuery(Map<String, String[]> parameters, String charset)
 			throws UnsupportedEncodingException {
 		StringBuilder query = new StringBuilder();
 		if (parameters == null) return query.toString(); // just for safety

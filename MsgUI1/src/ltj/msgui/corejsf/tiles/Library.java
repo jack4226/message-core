@@ -67,7 +67,6 @@ public class Library {
 	}
 
 	private String getBookTitle(String key) {
-		return ltj.msgui.util.Messages.getString("ltj.msgui.messages",
-				key, null);
+		return ltj.msgui.util.Messages.getString("ltj.msgui.messages", key, null);
 	}
 }

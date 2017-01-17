@@ -68,9 +68,9 @@ public class TabbedPaneTag extends UIComponentELTag {
 		component.setValueExpression("tabClass", tabClass);
 		component.setValueExpression("selectedTabClass", selectedTabClass);
 		component.setValueExpression("resourceBundle", resourceBundle);
-		if (actionListener != null)
-			((ActionSource) component).addActionListener(new MethodExpressionActionListener(
-					actionListener));
+		if (actionListener != null) {
+			((ActionSource) component).addActionListener(new MethodExpressionActionListener(actionListener));
+		}
 	}
 
 	public void release() {

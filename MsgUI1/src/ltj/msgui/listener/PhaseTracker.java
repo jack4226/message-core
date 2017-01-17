@@ -25,20 +25,27 @@ public class PhaseTracker implements PhaseListener {
 		PhaseId phaseId = PhaseId.ANY_PHASE;
 
 		if (phase != null) {
-			if ("RESTORE_VIEW".equals(phase))
+			if ("RESTORE_VIEW".equals(phase)) {
 				phaseId = PhaseId.RESTORE_VIEW;
-			else if ("APPLY_REQUEST_VALUES".equals(phase))
+			}
+			else if ("APPLY_REQUEST_VALUES".equals(phase)) {
 				phaseId = PhaseId.APPLY_REQUEST_VALUES;
-			else if ("PROCESS_VALIDATIONS".equals(phase))
+			}
+			else if ("PROCESS_VALIDATIONS".equals(phase)) {
 				phaseId = PhaseId.PROCESS_VALIDATIONS;
-			else if ("UPDATE_MODEL_VALUES".equals(phase))
+			}
+			else if ("UPDATE_MODEL_VALUES".equals(phase)) {
 				phaseId = PhaseId.UPDATE_MODEL_VALUES;
-			else if ("INVOKE_APPLICATION".equals(phase))
+			}
+			else if ("INVOKE_APPLICATION".equals(phase)) {
 				phaseId = PhaseId.INVOKE_APPLICATION;
-			else if ("RENDER_RESPONSE".equals(phase))
+			}
+			else if ("RENDER_RESPONSE".equals(phase)) {
 				phaseId = PhaseId.RENDER_RESPONSE;
-			else if ("ANY_PHASE".equals(phase))
+			}
+			else if ("ANY_PHASE".equals(phase)) {
 				phaseId = PhaseId.ANY_PHASE;
+			}
 		}
 		return phaseId;
 	}

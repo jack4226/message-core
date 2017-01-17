@@ -31,8 +31,7 @@ public class SpringUtil {
 	 * @return a WebApplicationContext reference
 	 */
 	public static WebApplicationContext getWebAppContext(ServletContext sctx) {
-		WebApplicationContext webContext = WebApplicationContextUtils
-				.getRequiredWebApplicationContext(sctx);
+		WebApplicationContext webContext = WebApplicationContextUtils.getRequiredWebApplicationContext(sctx);
 		return webContext;
 	}
 }

@@ -43,15 +43,13 @@ public class PostRedirectGetListener implements PhaseListener {
      */
     public void beforePhase(PhaseEvent event) {
 		FacesContext facesContext = event.getFacesContext();
-		HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext()
-				.getRequest();
+		HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         if ("POST".equals(request.getMethod())) {
             // Save faces messages from POST request in session so that they'll
             // be available to the subsequent GET request.
             saveFacesMessages(facesContext);
             // Gather the POST request parameters
-            Map<String, String> paramMap = facesContext.getExternalContext()
-					.getRequestParameterMap();
+			Map<String, String> paramMap = facesContext.getExternalContext().getRequestParameterMap();
 			List<String> params = new ArrayList<String>();
 			for (String paramKey : paramMap.keySet()) {
 				UIComponent component = facesContext.getViewRoot().findComponent(paramKey);
@@ -67,8 +65,8 @@ public class PostRedirectGetListener implements PhaseListener {
 				}
 			}
             // Build the GET request URL
-            String url = facesContext.getApplication().getViewHandler()
-                .getActionURL(facesContext, facesContext.getViewRoot().getViewId());
+			String url = facesContext.getApplication().getViewHandler().getActionURL(facesContext,
+					facesContext.getViewRoot().getViewId());
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < params.size(); i++) {
                 sb.append((i == 0 ? "?" : "&") + params.get(i));
@@ -104,8 +102,7 @@ public class PostRedirectGetListener implements PhaseListener {
 		// LinkedHashMap the FacesMessages will be kept in order, which
 		// can be very useful for certain error and focus handling.
 		Map<String, List<FacesMessage>> allFacesMessages = new LinkedHashMap<String, List<FacesMessage>>();
-		facesContext.getExternalContext().getSessionMap().put(ALL_FACES_MESSAGES_ID,
-				allFacesMessages);
+		facesContext.getExternalContext().getSessionMap().put(ALL_FACES_MESSAGES_ID, allFacesMessages);
 		// Get all component ID's that has faces messages
 		Iterator<String> clientIds = facesContext.getClientIdsWithMessages();
 		while (clientIds.hasNext()) {

@@ -38,8 +38,7 @@ public class DynamicCodes {
 	private static MsgActionDetailDao msgActionDetailDao = null;
 	public static MsgActionDetailDao getMsgActionDetailDao() {
 		if (msgActionDetailDao == null) {
-			msgActionDetailDao = (MsgActionDetailDao) SpringUtil.getWebAppContext().getBean(
-					"msgActionDetailDao");
+			msgActionDetailDao = (MsgActionDetailDao) SpringUtil.getWebAppContext().getBean("msgActionDetailDao");
 		}
 		return msgActionDetailDao;
 	}
@@ -47,8 +46,7 @@ public class DynamicCodes {
 	private static MsgDataTypeDao msgDataTypeDao = null;
 	public static MsgDataTypeDao getMsgDataTypeDao() {
 		if (msgDataTypeDao == null) {
-			msgDataTypeDao = (MsgDataTypeDao) SpringUtil.getWebAppContext().getBean(
-					"msgDataTypeDao");
+			msgDataTypeDao = (MsgDataTypeDao) SpringUtil.getWebAppContext().getBean("msgDataTypeDao");
 		}
 		return msgDataTypeDao;
 	}

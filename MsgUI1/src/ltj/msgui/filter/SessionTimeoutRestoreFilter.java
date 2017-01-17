@@ -84,8 +84,9 @@ public class SessionTimeoutRestoreFilter implements Filter {
 				userVo.setSessionId(sessionId);
 				// TODO: populate userVo before insert
 				int rowsInserted = getUserDao(httpSession).insert(userVo);
-				if (rowsInserted > 0 && isDebugEnabled)
+				if (rowsInserted > 0 && isDebugEnabled) {
 					logger.debug("doFilter() - userVo inserted");
+				}
 				// Put SessionId in cookie.
 				HttpServletUtil.setCookieValue(httpResponse, COOKIE_ID, sessionId, COOKIE_MAX_AGE);
 			}
@@ -112,11 +113,9 @@ public class SessionTimeoutRestoreFilter implements Filter {
 	 * and this will be result with an infinite loop...
 	 */
 	private boolean isPageSessioned(HttpServletRequest httpRequest) {
-		String pathInfo = StringUtil
-				.trim(httpRequest.getRequestURI(), httpRequest.getContextPath());
+		String pathInfo = StringUtil.trim(httpRequest.getRequestURI(), httpRequest.getContextPath());
 		boolean pageSessioned = false;
-		if (pathInfo.startsWith("/includes") || pathInfo.startsWith("/images")
-				|| pathInfo.startsWith("/htmls")) {
+		if (pathInfo.startsWith("/includes") || pathInfo.startsWith("/images") || pathInfo.startsWith("/htmls")) {
 			// This is not necessary, but it might be useful if you want to skip
 			// some include files. If those include files are loaded, continue 
 			// the filter chain and abort this filter, because it is usually not
@@ -132,8 +131,7 @@ public class SessionTimeoutRestoreFilter implements Filter {
 			}
 		}
 		if (isDebugEnabled) {
-			logger.debug("isPageSessioned() - pathInfo: " + pathInfo + ", Sessioned: "
-					+ pageSessioned);
+			logger.debug("isPageSessioned() - pathInfo: " + pathInfo + ", Sessioned: " + pageSessioned);
 		}
 		return pageSessioned;
 	}

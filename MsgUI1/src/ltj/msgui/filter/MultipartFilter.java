@@ -181,8 +181,9 @@ public class MultipartFilter implements Filter {
         List<FileItem> multipartItems = null;
         try {
         	DiskFileItemFactory factory = new DiskFileItemFactory();
-        	if (sizeThreshold > 0)
+        	if (sizeThreshold > 0) {
         		factory.setSizeThreshold(sizeThreshold);
+        	}
             // Parse the multipart request items.
             multipartItems = new ServletFileUpload(factory).parseRequest(request);
             // Note: we could use ServletFileUpload.setFileSizeMax() here, but that would throw a
@@ -271,7 +272,7 @@ public class MultipartFilter implements Filter {
 	 *            HttpServletRequest.
 	 * @return The HttpServletRequest with the parameterMap wrapped in.
 	 */
-    private static HttpServletRequest wrapRequest(HttpServletRequest request,
+	private static HttpServletRequest wrapRequest(HttpServletRequest request,
 			final Map<String, String[]> parameterMap) {
 		return new HttpServletRequestWrapper(request) {
 			public Map<String, String[]> getParameterMap() {

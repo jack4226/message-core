@@ -3,9 +3,11 @@ package ltj.msgui.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.StringUtil;
+import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 
 public class MessageThreadsBuilder {
@@ -20,9 +22,10 @@ public class MessageThreadsBuilder {
 	 */
 	public static List<MsgInboxWebVo> buildThreads(List<MsgInboxWebVo> messages) {
 		List<MsgInboxWebVo> threads = new ArrayList<MsgInboxWebVo>();
-		if (messages == null || messages.isEmpty())
+		if (messages == null || messages.isEmpty()) {
 			return threads;
-		HashMap<Long, List<Reply>> map = buildMap(messages);
+		}
+		Map<Long, List<Reply>> map = buildMap(messages);
 		if (map.containsKey(null)) {
 			// originating message thread found
 			List<Reply> root = map.get(null);
@@ -65,10 +68,11 @@ public class MessageThreadsBuilder {
 	 * @param level -
 	 *            starting offset from left
 	 */
-	private static void buildTreeLevel(List<Reply> root, HashMap<Long, List<Reply>> map,
-			List<MsgInboxWebVo> messages, List<MsgInboxWebVo> threads, int level) {
-		if (root == null)
+	private static void buildTreeLevel(List<Reply> root, Map<Long, List<Reply>> map, List<MsgInboxWebVo> messages,
+			List<MsgInboxWebVo> threads, int level) {
+		if (root == null) {
 			return;
+		}
 		for (int i = 0; i < root.size(); i++) {
 			MsgInboxWebVo vo = messages.get(root.get(i).index);
 			vo.setThreadLevel(level);
@@ -84,8 +88,8 @@ public class MessageThreadsBuilder {
 	 *            list of messages to be threaded
 	 * @return a map that maps each MsgRefId to its associated messages
 	 */
-	private static HashMap<Long, List<Reply>> buildMap(List<MsgInboxWebVo> messages) {
-		HashMap<Long, List<Reply>> map = new HashMap<Long, List<Reply>>();
+	private static Map<Long, List<Reply>> buildMap(List<MsgInboxWebVo> messages) {
+		Map<Long, List<Reply>> map = new HashMap<Long, List<Reply>>();
 		for (int i = 0; i < messages.size(); i++) {
 			MsgInboxWebVo vo = messages.get(i);
 			if (map.containsKey(vo.getMsgRefId())) {
@@ -117,13 +121,16 @@ public class MessageThreadsBuilder {
 	public static void main(String[] args) {
 		try {
 			long threadId = 3L;
-			MsgInboxDao msgInboxDao = (MsgInboxDao) ltj.spring.util.SpringUtil.getDaoAppContext().getBean("msgInboxDao");
+			MsgInboxDao msgInboxDao = ltj.spring.util.SpringUtil.getDaoAppContext().getBean(MsgInboxDao.class);
 			List<MsgInboxWebVo> list = msgInboxDao.getByLeadMsgId(threadId);
+			if (list.isEmpty()) {
+				MsgInboxVo vo =msgInboxDao.getRandomRecord();
+				list = msgInboxDao.getByLeadMsgId(vo.getLeadMsgId());
+			}
 			List<MsgInboxWebVo> threads = buildThreads(list);
 			for (int i = 0; i < threads.size(); i++) {
 				MsgInboxWebVo vo = threads.get(i);
-				System.out.println(StringUtil.getDots(vo.getThreadLevel()) + vo.getMsgId() + " - "
-						+ vo.getMsgSubject());
+				System.out.println(StringUtil.getDots(vo.getThreadLevel()) + vo.getMsgId() + " - " + vo.getMsgSubject());
 			}
 		}
 		catch (Exception e) {

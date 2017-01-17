@@ -36,8 +36,7 @@ public class CacheControlPhaseListener implements PhaseListener {
 			return;
 		}
 		FacesContext facesContext = event.getFacesContext();
-		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext()
-				.getResponse();
+		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
 		response.addHeader("Pragma", "no-cache");
 		//response.addHeader("Expires", "-1");
 		response.addHeader("Cache-Control", "no-cache");

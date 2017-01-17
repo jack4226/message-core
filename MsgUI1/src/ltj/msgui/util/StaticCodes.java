@@ -61,7 +61,7 @@ public class StaticCodes {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Enumeration<URL> urls = null;
 		try {
-			urls = loader.getResources("com/legacytojava/message/external");
+			urls = loader.getResources("ltj/message/external");
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -135,7 +135,7 @@ public class StaticCodes {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Enumeration<URL> urls = null;
 		try {
-			urls = loader.getResources("com/legacytojava/message/external");
+			urls = loader.getResources("ltj/message/external");
 		}
 		catch (IOException e) {
 			e.printStackTrace();

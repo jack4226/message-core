@@ -72,8 +72,7 @@ public class FacesUtil {
 			facesContext = contextFactory.getFacesContext(request.getSession().getServletContext(),
 					request, response, lifecycle);
 			// Create a new View
-			UIViewRoot view = facesContext.getApplication().getViewHandler().createView(
-					facesContext, "");
+			UIViewRoot view = facesContext.getApplication().getViewHandler().createView(facesContext, "");
 			facesContext.setViewRoot(view);
 			// Set current FacesContext instance
 			FacesContextWrapper.setCurrentInstance(facesContext);
@@ -141,8 +140,7 @@ public class FacesUtil {
 	 * @return request parameter value
 	 */
     public static String getRequestParameter(String name) {
-		return (String) FacesContext.getCurrentInstance().getExternalContext()
-				.getRequestParameterMap().get(name);
+		return (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(name);
 	}
 
 	/**
@@ -238,8 +236,9 @@ public class FacesUtil {
     public static String getSessionId() {
 		String sessionId = null;
 		HttpServletRequest httpRequest = getHttpServletRequest();
-		if (httpRequest != null)
+		if (httpRequest != null) {
 			sessionId = httpRequest.getRequestedSessionId();
+		}
 		return sessionId;
     }
 
@@ -250,8 +249,9 @@ public class FacesUtil {
     public static boolean isSessionIdValid() {
     	boolean sessionIdValid = false;
 		HttpServletRequest httpRequest = getHttpServletRequest();
-		if (httpRequest != null)
+		if (httpRequest != null) {
 			sessionIdValid = httpRequest.isRequestedSessionIdValid();
+		}
     	return sessionIdValid;
     }
     
@@ -270,10 +270,12 @@ public class FacesUtil {
      */
 	public static String getLoginUserId() {
 		UserVo userVo = getLoginUserVo();
-		if (userVo != null)
+		if (userVo != null) {
 			return userVo.getUserId();
-		else
+		}
+		else {
 			return null;
+		}
 	}
 	
     /**
@@ -282,9 +284,11 @@ public class FacesUtil {
      */
 	public static String getLoginUserClientId() {
 		UserVo userVo = getLoginUserVo();
-		if (userVo != null)
+		if (userVo != null) {
 			return userVo.getClientId();
-		else
+		}
+		else {
 			return null;
+		}
 	}
 }

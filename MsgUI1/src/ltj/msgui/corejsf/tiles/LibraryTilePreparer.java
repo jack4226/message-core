@@ -17,8 +17,7 @@ public class LibraryTilePreparer implements ViewPreparer {
 		String chapter = params.get("chapter");
 		
 		Map<String, Object> session = tilesContext.getSessionScope();
-		session.put("chapter", chapter == null || "".equals(chapter) ? "chapter1"
-				: chapter);
+		session.put("chapter", chapter == null || "".equals(chapter) ? "chapter1" : chapter);
 
 		Library library = (Library) session.get("library");
 
