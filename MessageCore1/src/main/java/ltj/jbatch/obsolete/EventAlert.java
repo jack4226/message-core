@@ -21,6 +21,7 @@ import ltj.message.dao.client.ClientUtil;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.ClientVo;
+import ltj.spring.util.SpringUtil;
 
 /**
  * EventAlert class. It handles all event alerts from batch application.
@@ -351,7 +352,7 @@ public class EventAlert implements java.io.Serializable {
 
 	public ClientDao getClientDao() {
 		if (clientDao == null) {
-			clientDao = (ClientDao) JbMain.getBatchAppContext().getBean("clientDao");
+			clientDao = SpringUtil.getDaoAppContext().getBean(ClientDao.class);
 		}
 		return clientDao;
 	}

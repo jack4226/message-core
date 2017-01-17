@@ -1,6 +1,9 @@
 package ltj.message.bean;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -328,33 +331,17 @@ public class SimpleEmailSender implements java.io.Serializable {
 	}
 
 	private Address[] obtainAddrArray(MessageBean msgBean) {
-		int array_size = 0;
-		if (msgBean.getTo() != null) {
-			array_size += msgBean.getTo().length;
-		}
-		if (msgBean.getCc() != null) {
-			array_size += msgBean.getCc().length;
-		}
-		if (msgBean.getBcc() != null) {
-			array_size += msgBean.getBcc().length;
-		}
-		int j = 0;
-		Address[] address = new Address[array_size];
+		List<Address> addrList = new ArrayList<>();;
 		if (msgBean.getTo() != null && msgBean.getTo().length > 0) {
-			for (int i = 0; i < msgBean.getTo().length; i++) {
-				address[j++] = msgBean.getTo()[i];
-			}
+			addrList.addAll(Arrays.asList(msgBean.getTo()));
 		}
 		if (msgBean.getCc() != null && msgBean.getCc().length > 0) {
-			for (int i = 0; i < msgBean.getCc().length; i++) {
-				address[j++] = msgBean.getCc()[i];
-			}
+			addrList.addAll(Arrays.asList(msgBean.getCc()));
 		}
 		if (msgBean.getBcc() != null && msgBean.getBcc().length > 0) {
-			for (int i = 0; i < msgBean.getBcc().length; i++) {
-				address[j++] = msgBean.getBcc()[i];
-			}
+			addrList.addAll(Arrays.asList(msgBean.getBcc()));
 		}
+		Address[] address = addrList.toArray(new Address[addrList.size()]);
 		return address;
 	}
 
