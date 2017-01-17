@@ -114,8 +114,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 				List<EmailAddrVo> nextList = getEmailAddrsWithPaging(vo);
 				if (!nextList.isEmpty()) {
 					lastList = nextList;
-					vo.setStrIdLast(nextList.get(nextList.size() - 1)
-							.getEmailAddr());
+					vo.setStrIdLast(nextList.get(nextList.size() - 1).getEmailAddr());
 				} else {
 					break;
 				}
@@ -151,7 +150,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(vo.getPageSize());
 		getJdbcTemplate().setMaxRows(vo.getPageSize());
-		List<EmailAddrVo> list = getJdbcTemplate().query(sql, parms.toArray(), 
+		List<EmailAddrVo> list = getJdbcTemplate().query(sql, parms.toArray(),
 				new BeanPropertyRowMapper<EmailAddrVo>(EmailAddrVo.class));
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
@@ -175,16 +174,13 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			parms.add("");
 		}
 		// search by address
-		if (vo.getSearchString() != null
-				&& vo.getSearchString().trim().length() > 0) {
+		if (vo.getSearchString() != null && vo.getSearchString().trim().length() > 0) {
 			String addr = vo.getSearchString().trim();
 			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr LIKE '%"
-						+ addr + "%' ";
+				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr LIKE '%" + addr + "%' ";
 			} else {
 				String regex = StringUtil.replaceAll(addr, " ", ".+");
-				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr REGEXP '"
-						+ regex + "' ";
+				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr REGEXP '" + regex + "' ";
 			}
 		}
 		return whereSql;
