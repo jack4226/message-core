@@ -130,7 +130,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		String sql = "select a.EmailAddrId, a.EmailAddr, a.OrigEmailAddr, a.StatusId, "
 				+ " a.StatusChangeTime, a.StatusChangeUserId, a.BounceCount, "
 				+ " a.LastBounceTime, a.LastSentTime, a.LastRcptTime, a.AcceptHtml, "
-				+ " a.UpdtTime, a.UpdtUserId, , a.EmailAddr as CurrEmailAddr, a.UpdtTime as OrigUpdtTime"
+				+ " a.UpdtTime, a.UpdtUserId, a.EmailAddr as CurrEmailAddr, a.UpdtTime as OrigUpdtTime, "
 				+ " b.CustId, b.FirstName, b.MiddleName, b.LastName, "
 				+ " sum(c.SentCount) as SentCount, sum(c.OpenCount) as OpenCount, "
 				+ " sum(c.ClickCount) as ClickCount "

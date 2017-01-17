@@ -35,7 +35,7 @@ public class EmailAddrsListBean {
 	private boolean editMode = true;
 
 	private HtmlDataTable dataTable;
-	private final PagingVo pagingVo =  new PagingVo();;
+	private final PagingVo pagingVo =  new PagingVo();
 	private String searchString = null;
 	
 	private List<MailingListVo> mailingLists = null;

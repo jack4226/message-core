@@ -1,8 +1,8 @@
 package ltj.message.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -44,6 +44,16 @@ public class EmailAddrTest extends DaoTestBase {
 		}
 	}
 
+	@Test
+	public void testWithPaging() {
+		PagingVo pagingVo =  new PagingVo();
+		pagingVo.resetPageContext();
+		
+		List<EmailAddrVo> emailAddrList = emailAddrDao.getEmailAddrsWithPaging(pagingVo);
+		assertFalse(emailAddrList.isEmpty());
+		
+	}
+	
 	private EmailAddrVo selectByAddress(String emailAddr) {
 		EmailAddrVo addrVo = emailAddrDao.findByAddress(emailAddr);
 		System.out.println("EmailAddrDao - selectByAddress: "+LF+addrVo);
