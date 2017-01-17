@@ -87,12 +87,15 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 		try {
 			Method method = this.getClass().getMethod("getStatusId", (Class[])null);
 			String desc = (String) method.invoke(this, (Object[])null);
-			if (StatusIdCode.ACTIVE.equals(desc))
+			if (StatusIdCode.ACTIVE.equals(desc)) {
 				desc = "Active";
-			else if (StatusIdCode.INACTIVE.equals(desc))
+			}
+			else if (StatusIdCode.INACTIVE.equals(desc)) {
 				desc = "Inactive";
-			else if (StatusIdCode.SUSPENDED.equals(desc))
+			}
+			else if (StatusIdCode.SUSPENDED.equals(desc)) {
 				desc = "Suspended";
+			}
 			return desc;
 		}
 		catch (Exception e) {
@@ -104,8 +107,12 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 	
 	public boolean equalsTo(BaseVo vo) {
 		getLogList().clear();
-		if (this == vo) return true;
-		if (vo == null) return false;
+		if (this == vo) {
+			return true;
+		}
+		if (vo == null) {
+			return false;
+		}
 		Method thisMethods[] = this.getClass().getMethods();
 		for (int i = 0; i < thisMethods.length; i++) {
 			Method method = (Method) thisMethods[i];
@@ -152,8 +159,12 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 				}
 			}
 		}
-		if (getLogList().size() > 0) return false;
-		else return true;
+		if (getLogList().size() > 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 	
 	public String toString() {
@@ -242,10 +253,12 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 					else {
 						Object subVo = method.invoke(vo, params);
 						if (subVo != null) {
-							if (!(subVo instanceof BaseVo))
+							if (!(subVo instanceof BaseVo)) {
 								sb.append(subVo.toString());
-							else if (subVo instanceof java.util.List<?>)
+							}
+							else if (subVo instanceof java.util.List<?>) {
 								sb.append(((java.util.List<?>)subVo).size());
+							}
 						}
 						else {
 							sb.append("null");
@@ -254,8 +267,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 					sb.append(LF);
 				}
 				catch (Exception e) {
-					System.err.println("error getting values in toString " + methods[i].getName()
-							+ " " + e.getMessage());
+					System.err.println("error getting values in toString " + methods[i].getName() + " " + e.getMessage());
 				}
 			}
 		}

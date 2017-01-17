@@ -14,8 +14,12 @@ public abstract class BasePagingVo extends BaseVo implements java.io.Serializabl
 	
 	public boolean equalsToSearch(BasePagingVo vo) {
 		getLogList().clear();
-		if (this == vo) return true;
-		if (vo == null) return false;
+		if (this == vo) {
+			return true;
+		}
+		if (vo == null) {
+			return false;
+		}
 		String className = this.getClass().getName();
 		Method thisMethods[] = this.getClass().getMethods();
 		for (int i = 0; i < thisMethods.length; i++) {
@@ -67,8 +71,12 @@ public abstract class BasePagingVo extends BaseVo implements java.io.Serializabl
 				}
 			}
 		}
-		if (getLogList().size() > 0) return false;
-		else return true;
+		if (getLogList().size() > 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 	
 	public void printMethodNames() {
@@ -78,8 +86,7 @@ public abstract class BasePagingVo extends BaseVo implements java.io.Serializabl
 			String name = method.getName();
 			Class<?>[] params = method.getParameterTypes();
 			if (name.startsWith("get") && params.length == 0) {
-				System.out.println("Method Name: " + name + ", Return Type: "
-						+ method.getReturnType().getName());
+				System.out.println("Method Name: " + name + ", Return Type: " + method.getReturnType().getName());
 			}
 		}
 	}
