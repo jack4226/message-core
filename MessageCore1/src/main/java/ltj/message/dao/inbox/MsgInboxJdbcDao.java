@@ -37,7 +37,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			" where msgId=? ";
 		Object[] parms = new Object[] {msgId};
 		try {
-			MsgInboxVo vo = getJdbcTemplate().queryForObject(sql, parms, 
+			MsgInboxVo vo = getJdbcTemplate().queryForObject(sql, parms,
 					new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 			return vo;
 		}
@@ -147,7 +147,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			" where fromAddrId=? " +
 			" order by msgId";
 		Object[] parms = new Object[] {addrId};
-		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		return list;
 	}
@@ -418,7 +418,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				whereSql += CRIT[parms.size()] + " a.MsgSubject LIKE '%" + subj + "%' ";
 			}
 			else {
-				String regex = StringUtil.replaceAll(subj, " ", ".+");
+				String regex = (subj + "").replaceAll("[ ]+", ".+");
 				whereSql += CRIT[parms.size()] + " a.MsgSubject REGEXP '" + regex + "' ";
 			}
 		}
@@ -430,7 +430,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			}
 			else {
 				// ".+" or "[[:space:]].*" or "([[:space:]]+|[[:space:]].+[[:space:]])"
-				String regex = StringUtil.replaceAll(body, " ", "[[:space:]].*");
+				String regex = (body + "").replaceAll("[ ]+", "[[:space:]].*");
 				whereSql += CRIT[parms.size()] + " a.MsgBody REGEXP '" + regex + "' ";
 			}
 		}
@@ -442,7 +442,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 					whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE '%" + from + "%' ";
 				}
 				else {
-					String regex = StringUtil.replaceAll(from, " ", ".+");
+					String regex = (from + "").replaceAll("[ ]+", ".+");
 					whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP '" + regex + "' ";
 				}
 			}

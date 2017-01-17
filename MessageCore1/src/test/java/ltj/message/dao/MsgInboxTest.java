@@ -107,6 +107,19 @@ public class MsgInboxTest extends DaoTestBase {
 		}
 	}
 	
+	@Test
+	public void testWithPaging() {
+		SearchFieldsVo vo = new SearchFieldsVo();
+		vo.setSubject("Test   Broadcast");
+		vo.setBody("Test   Broadcast");
+		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
+		assertFalse(list.isEmpty());
+		for (MsgInboxWebVo mivo : list) {
+			logger.info("Subject: " + mivo.getMsgSubject());
+			// TODO add assertions
+		}
+	}
+	
 	private MsgInboxVo selectByMsgId(long msgId) {
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
 		System.out.println("MsgInboxDao - selectByPrimaryKey: "+LF+msgInboxVo);

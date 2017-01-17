@@ -179,7 +179,8 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			if (addr.indexOf(" ") < 0) {
 				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr LIKE '%" + addr + "%' ";
 			} else {
-				String regex = StringUtil.replaceAll(addr, " ", ".+");
+				//String regex = (addr + "").replaceAll("[ ]+", ".+");
+				String regex = (addr + "").replaceAll("[ ]+", "|");
 				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr REGEXP '" + regex + "' ";
 			}
 		}

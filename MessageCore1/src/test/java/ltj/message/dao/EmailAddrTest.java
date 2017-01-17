@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import ltj.message.dao.abstrct.DaoTestBase;
@@ -51,7 +52,18 @@ public class EmailAddrTest extends DaoTestBase {
 		
 		List<EmailAddrVo> emailAddrList = emailAddrDao.getEmailAddrsWithPaging(pagingVo);
 		assertFalse(emailAddrList.isEmpty());
-		
+		int listSize1 = emailAddrList.size();
+		for (EmailAddrVo vo : emailAddrList) {
+			logger.info(vo.getOrigEmailAddr());
+		}
+
+		pagingVo.setSearchString("Jane  Joe"); // any word search
+		emailAddrList = emailAddrDao.getEmailAddrsWithPaging(pagingVo);
+		assertFalse(emailAddrList.isEmpty());
+		assertTrue(listSize1 > emailAddrList.size());
+		for (EmailAddrVo vo : emailAddrList) {
+			assertTrue(StringUtils.contains(vo.getOrigEmailAddr(), "Jane") || StringUtils.contains(vo.getOrigEmailAddr(), "Joe"));
+		}
 	}
 	
 	private EmailAddrVo selectByAddress(String emailAddr) {
