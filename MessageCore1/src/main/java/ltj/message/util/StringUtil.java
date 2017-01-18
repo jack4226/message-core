@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
@@ -278,6 +279,22 @@ public final class StringUtil {
 			end -= length;
 		}
         return string.substring(start, end);
+    }
+
+    public static String getRandomWord(String paragraph) {
+    	String[] words = (paragraph + "").split("[ ]+");
+    	int idx = new Random().nextInt(words.length);
+    	return words[idx];
+    }
+ 
+    public static String[] getRandomWords(String paragraph, int numberOfWords) {
+    	String[] words = (paragraph + "").split("[ ]+");
+    	String[] rwords = new String[numberOfWords];
+		for (int i = 0; i < numberOfWords; i++) {
+			int idx = new Random().nextInt(words.length);
+			rwords[i] = words[idx];
+		}
+    	return rwords;
     }
 
 	public static void main(String[] args) {

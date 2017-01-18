@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
@@ -17,6 +18,7 @@ import ltj.message.dao.inbox.MsgClickCountsDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgUnreadCountDao;
 import ltj.message.dao.outbox.MsgSequenceDao;
+import ltj.message.util.StringUtil;
 import ltj.message.vo.inbox.MsgClickCountsVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
@@ -110,9 +112,32 @@ public class MsgInboxTest extends DaoTestBase {
 	@Test
 	public void testWithPaging() {
 		SearchFieldsVo vo = new SearchFieldsVo();
-		vo.setSubject("Test   Broadcast");
-		vo.setBody("Test   Broadcast");
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
+		assertFalse(list.isEmpty());
+		String word1 = "";
+		String word2 = "";
+		String body = "";
+		for (MsgInboxWebVo mivo : list) {
+			logger.info("Subject: " + mivo.getMsgSubject());
+			if (StringUtils.isBlank(word1)) {
+				word1 = StringUtil.getRandomWord(mivo.getMsgSubject());
+				if (StringUtils.isBlank(body)) {
+					MsgInboxVo ivo = msgInboxDao.getByPrimaryKey(mivo.getMsgId());
+					assertNotNull(ivo);
+					body = ivo.getMsgBody();
+				}
+			}
+			else if (StringUtils.isBlank(word2)) {
+				word2 = StringUtil.getRandomWord(mivo.getMsgSubject());
+			}
+		}
+		
+		vo.setSubject(word1 + "   " + word2);
+		if (StringUtils.isNoneBlank(body)) {
+			String[] words = StringUtil.getRandomWords(body, 1);
+			vo.setBody(words[0]);
+		}
+		list = msgInboxDao.getListForWeb(vo);
 		assertFalse(list.isEmpty());
 		for (MsgInboxWebVo mivo : list) {
 			logger.info("Subject: " + mivo.getMsgSubject());

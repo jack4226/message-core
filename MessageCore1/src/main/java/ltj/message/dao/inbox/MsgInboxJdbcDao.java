@@ -417,7 +417,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				whereSql += CRIT[parms.size()] + " a.MsgSubject LIKE '%" + subj + "%' ";
 			}
 			else {
-				String regex = (subj + "").replaceAll("[ ]+", ".+");
+				String regex = (subj + "").replaceAll("[ ]+", "|");
 				whereSql += CRIT[parms.size()] + " a.MsgSubject REGEXP '" + regex + "' ";
 			}
 		}
