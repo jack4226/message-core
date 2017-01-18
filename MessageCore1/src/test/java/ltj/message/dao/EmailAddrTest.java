@@ -57,12 +57,14 @@ public class EmailAddrTest extends DaoTestBase {
 			logger.info(vo.getOrigEmailAddr());
 		}
 
-		pagingVo.setSearchString("Jane  Joe"); // any word search
+		pagingVo.setSearchString("Jane  Joe  Test"); // any word search
 		emailAddrList = emailAddrDao.getEmailAddrsWithPaging(pagingVo);
 		assertFalse(emailAddrList.isEmpty());
-		assertTrue(listSize1 > emailAddrList.size());
+		assertTrue(listSize1 >= emailAddrList.size());
 		for (EmailAddrVo vo : emailAddrList) {
-			assertTrue(StringUtils.contains(vo.getOrigEmailAddr(), "Jane") || StringUtils.contains(vo.getOrigEmailAddr(), "Joe"));
+			assertTrue(StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Jane")
+					|| StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Joe")
+					|| StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Test"));
 		}
 	}
 	
