@@ -139,8 +139,7 @@ public class MailingListBoImpl implements MailingListBo {
 			msgBean.setFrom(InternetAddress.parse(renderVo.getFromAddr()));
 		}
 		catch (AddressException e) {
-			throw new DataValidationException("Invalid FROM address found from list: "
-					+ renderVo.getFromAddr());
+			throw new DataValidationException("Invalid FROM address found from list: " + renderVo.getFromAddr());
 		}
 		if (!StringUtil.isEmpty(renderVo.getCcAddr())) {
 			try {

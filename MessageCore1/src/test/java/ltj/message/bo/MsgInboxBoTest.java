@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -37,11 +38,10 @@ public class MsgInboxBoTest extends BoTestBase {
 	
 	@Test
 	public void testMsgInboxBo() {
-		long msgId = 1L;
 		try {
 			MsgRenderedVo renderedVo = renderedDao.getRandomRecord();
 			assertNotNull(renderedVo);
-			msgId = renderedVo.getRenderId();
+			long msgId = renderedVo.getRenderId();
 			MessageBean messageBean = msgOutboxBo.getMessageByPK(msgId);
 			assertNotNull(messageBean);
 			if (isDebugEnabled) {
@@ -61,6 +61,12 @@ public class MsgInboxBoTest extends BoTestBase {
 				logger.debug("MessageBean After:" + LF + messageBean);
 			}
 			messageBean.setRuleName(ruleName);
+			if (messageBean.getFrom() == null) {
+				messageBean.setFrom(InternetAddress.parse("testfrom@localhost"));
+			}
+			if (messageBean.getTo() == null) {
+				messageBean.setTo(InternetAddress.parse("testto@localhost"));
+			}
 			msgId = msgInboxBo.saveMessage(messageBean);
 			logger.info("msgInboxBo.saveMessage - MsgId returned: " + msgId);
 			MsgInboxVo vo = msgInboxBo.getAllDataByMsgId(msgId);

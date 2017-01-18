@@ -379,7 +379,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			parms.add(direction);
 		}
 		// ruleName
-		if (vo.getRuleName() != null && vo.getRuleName().trim().length() > 0) {
+		if (StringUtils.isNotBlank(vo.getRuleName())) {
 			if (!SearchFieldsVo.RuleName.All.toString().equals(vo.getRuleName())) {
 				whereSql += CRIT[parms.size()] + " a.RuleName = ? ";
 				parms.add(vo.getRuleName());
@@ -406,12 +406,12 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			parms.add(0);
 		}
 		// msgFlag
-		if (vo.getFlagged() != null) {
+		if (vo.getFlagged() != null && vo.getFlagged().booleanValue()) {
 			whereSql += CRIT[parms.size()] + " a.Flagged = ? ";
 			parms.add(Constants.YES_CODE);
 		}
 		// subject
-		if (vo.getSubject() != null && vo.getSubject().trim().length() > 0) {
+		if (StringUtils.isNotBlank(vo.getSubject())) {
 			String subj = vo.getSubject().trim();
 			if (subj.indexOf(" ") < 0) { // a single word
 				whereSql += CRIT[parms.size()] + " a.MsgSubject LIKE '%" + subj + "%' ";
@@ -422,10 +422,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			}
 		}
 		// body
-		if (vo.getBody() != null && vo.getBody().trim().length() > 0) {
+		if (StringUtils.isNotBlank(vo.getBody())) {
 			String body = vo.getBody().trim();
 			if (body.indexOf(" ") < 0) { // a single word
-				whereSql += CRIT[parms.size()] + " a.MsgBody LIKE '%" + vo.getBody().trim() + "%' ";
+				whereSql += CRIT[parms.size()] + " a.MsgBody LIKE '%" + body + "%' ";
 			}
 			else {
 				// ".+" or "[[:space:]].*" or "([[:space:]]+|[[:space:]].+[[:space:]])"
@@ -434,16 +434,15 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			}
 		}
 		// from address
-		if (StringUtils.isNotBlank(vo.getFromAddr())) {
-			if (vo.getFromAddrId() == null) {
-				String from = vo.getFromAddr().trim();
-				if (from.indexOf(" ") < 0) {
-					whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE '%" + from + "%' ";
-				}
-				else {
-					String regex = (from + "").replaceAll("[ ]+", ".+");
-					whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP '" + regex + "' ";
-				}
+		if (StringUtils.isNotBlank(vo.getFromAddr()) && vo.getFromAddrId() == null) {
+			String from = vo.getFromAddr().trim();
+			if (from.indexOf(" ") < 0) {
+				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE '%" + from + "%' ";
+			}
+			else {
+				//String regex = (from + "").replaceAll("[ ]+", ".+");
+				String regex = (from + "").replaceAll("[ ]+", "|");
+				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP '" + regex + "' ";
 			}
 		}
 		

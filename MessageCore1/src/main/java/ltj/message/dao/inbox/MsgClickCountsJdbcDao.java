@@ -19,15 +19,20 @@ import ltj.message.vo.inbox.MsgClickCountsVo;
 @Component("msgClickCountsDao")
 public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCountsDao {
 	
-	public List<MsgClickCountsVo> getAll() {
+	public MsgClickCountsVo getRandomRecord() {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgClickCounts order by MsgId ";
+				"MsgClickCounts where MsgId >= (RAND() * (select max(MsgId) from MsgClickCounts)) order by MsgId limit 1 ";
 		
 		List<MsgClickCountsVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgClickCountsVo>(MsgClickCountsVo.class));
-		return list;
+		if (list.size() > 0) {
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public int getMsgCountForWeb() {

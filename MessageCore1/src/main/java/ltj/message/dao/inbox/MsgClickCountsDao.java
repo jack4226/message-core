@@ -6,7 +6,7 @@ import ltj.message.vo.PagingVo;
 import ltj.message.vo.inbox.MsgClickCountsVo;
 
 public interface MsgClickCountsDao {
-	public List<MsgClickCountsVo> getAll();
+	public MsgClickCountsVo getRandomRecord();
 	public int getMsgCountForWeb();
 	public MsgClickCountsVo getByPrimaryKey(long msgId);
 	public List<MsgClickCountsVo> getBroadcastsWithPaging(PagingVo vo);

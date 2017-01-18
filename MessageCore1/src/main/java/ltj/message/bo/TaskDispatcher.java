@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.jms.JMSException;
 import javax.mail.Address;
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
+import ltj.message.constant.RuleNameType;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.exception.DataValidationException;
@@ -55,8 +57,25 @@ public class TaskDispatcher {
 		if (isDebugEnabled) {
 			logger.debug("Entering dispatchTasks() method. MessageBean:" + LF + msgBean);
 		}
-		if (msgBean.getRuleName() == null) {
-			throw new DataValidationException("RuleName is not valued");
+		if (StringUtils.isBlank(msgBean.getRuleName())) {
+			throw new DataValidationException("RuleName is required.");
+		}
+		
+		if (msgBean.getFrom() == null) {
+			if (RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
+				msgBean.setFrom(InternetAddress.parse("brst.tmplt@localhost"));
+			}
+			else {
+				throw new DataValidationException("From email address is required.");
+			}
+		}
+		if (msgBean.getTo() == null) {
+			if (RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
+				msgBean.setTo(InternetAddress.parse("brst.tmplt@localhost"));
+			}
+			else {
+				throw new DataValidationException("To email address is required.");
+			}
 		}
 		
 		/* 

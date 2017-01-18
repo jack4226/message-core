@@ -9,6 +9,8 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
@@ -27,6 +29,7 @@ import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
 
 public class MsgInboxTest extends DaoTestBase {
+	static final Logger logger = Logger.getLogger(MsgInboxTest.class);
 	@Resource
 	private MsgUnreadCountDao unreadCountDao;
 	@Resource
@@ -36,21 +39,30 @@ public class MsgInboxTest extends DaoTestBase {
 	@Resource
 	private MsgSequenceDao msgSequenceDao;
 	
-	static long testMsgId = 2L;
-	static long testFromMsgId = 1L;
+	private static Long testMsgId = null; //2L;
+	private static Long testFromAddrId = null; //1L;
+	
+	@Before
+	public void setup() {
+		if (testMsgId == null || testFromAddrId == null) {
+			MsgInboxVo randomVo = msgInboxDao.getRandomRecord();
+			assertNotNull(randomVo);
+			testMsgId = randomVo.getMsgId();
+			testFromAddrId = randomVo.getFromAddrId();
+			assertNotNull(testFromAddrId);
+		}
+	}
 	
 	@Test
 	@Rollback(value=true)
 	public void testMessageInbox() {
 		try {
-			MsgInboxVo randomVo = msgInboxDao.getRandomRecord();
-			assertNotNull(randomVo);
 			MsgInboxVo msgInboxVo = selectByMsgId(testMsgId);
 			assertNotNull(msgInboxVo);
-			List<MsgInboxVo> list = selectByFromAddrId(testFromMsgId);
-			assertTrue(list.size()>0);
+			List<MsgInboxVo> list = selectByFromAddrId(testFromAddrId);
+			assertTrue(list.size() > 0);
 			List<MsgInboxVo> list2 = selectByToAddrId(msgInboxVo.getToAddrId());
-			assertTrue(list2.size()>0);
+			assertTrue(list2.size() > 0);
 			MsgInboxWebVo webvo = selectInboundGenericMsg();
 			int unreadCountBefore = unreadCountDao.selectInboxUnreadCount();
 			MsgInboxVo msgvo = insert(webvo.getMsgId());
@@ -88,7 +100,7 @@ public class MsgInboxTest extends DaoTestBase {
 			//assertEquals(unreadCountAfter, unreadCountBefore);
 			assertTrue(unreadCountAfter >= unreadCountBefore);
 			assertNotNull(msgvo);
-			MsgClickCountsVo ccvo = insertClickCount(msgvo, testMsgId);
+			MsgClickCountsVo ccvo = insertClickCount(msgvo);
 			assertNotNull(ccvo);
 			MsgClickCountsVo ccvo2 = selectClickCounts(ccvo.getMsgId());
 			assertNotNull(ccvo2);
@@ -96,7 +108,7 @@ public class MsgInboxTest extends DaoTestBase {
 			ccvo2.setUnsubscribeCount(ccvo.getUnsubscribeCount());
 			assertTrue(ccvo.equalsTo(ccvo2));
 			int rowsCCUpdated = updateClickCounts(ccvo2);
-			assertTrue(rowsCCUpdated>0);
+			assertTrue(rowsCCUpdated > 0);
 			int rowsCCDeleted = deleteClickCounts(ccvo2.getMsgId());
 			assertEquals(rowsCCDeleted, 1);
 			int rowsDeleted = deleteByPrimaryKey(msgvo.getMsgId());
@@ -117,19 +129,27 @@ public class MsgInboxTest extends DaoTestBase {
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		assertFalse(list.isEmpty());
 		Random r = new Random();
+		
 		// get first subject search word
 		int idx = r.nextInt(list.size());
 		MsgInboxWebVo mivo = list.get(idx);
 		String word1 = StringUtil.getRandomWord(mivo.getMsgSubject());
-		// get body text
-		MsgInboxVo ivo = msgInboxDao.getByPrimaryKey(mivo.getMsgId());
-		assertNotNull(ivo);
-		String body = ivo.getMsgBody();
-		logger.info(PrintUtil.prettyPrint(ivo));
+		// get body text for record 1
+		MsgInboxVo ivo1 = msgInboxDao.getByPrimaryKey(mivo.getMsgId());
+		assertNotNull(ivo1);
+		String body1 = ivo1.getMsgBody();
+		logger.info("Search record 1:" + PrintUtil.prettyPrint(ivo1));
+		
 		// get second subject search word
 		idx = r.nextInt(list.size());
 		mivo = list.get(idx);
 		String word2 = StringUtil.getRandomWord(mivo.getMsgSubject());
+		// get body text for record 2
+		MsgInboxVo ivo2 = msgInboxDao.getByPrimaryKey(mivo.getMsgId());
+		assertNotNull(ivo2);
+		String body2 = ivo2.getMsgBody();
+		logger.info("Search record 2:" + PrintUtil.prettyPrint(ivo2));
+		
 		// build and set subject search string
 		String subjStr = word1;
 		if (StringUtils.isNotBlank(word2)) {
@@ -137,11 +157,12 @@ public class MsgInboxTest extends DaoTestBase {
 		}
 		subjStr = subjStr.replaceAll("\\p{Punct}", ".");
 		vo.setSubject(subjStr);
-		// build and set body search string
-		if (StringUtils.isNoneBlank(body)) {
-			List<String> words = StringUtil.getRandomWords(body);
+		
+		// build and set search string for body 1
+		String bodyStr = "";
+		if (StringUtils.isNoneBlank(body1)) {
+			List<String> words = StringUtil.getRandomWords(body1);
 			if (!words.isEmpty()) {
-				String bodyStr = "";
 				for (int i = 0; i < words.size(); i++) {
 					bodyStr += " " + StringUtils.trim(words.get(i));
 				}
@@ -154,14 +175,36 @@ public class MsgInboxTest extends DaoTestBase {
 		list = msgInboxDao.getListForWeb(vo);
 		assertFalse(list.isEmpty());
 		for (MsgInboxWebVo mwvo : list) {
-			logger.info("Subject: " + mwvo.getMsgSubject());
-			// TODO add assertions
+			logger.info("Search Subj/Body1: " + subjStr + "/" + bodyStr + ", Subject: " + mwvo.getMsgSubject());
+			assertTrue(StringUtils.containsIgnoreCase(mwvo.getMsgSubject(), word1)
+					|| StringUtils.containsIgnoreCase(mwvo.getMsgSubject(), word2));
+		}
+		
+		if (StringUtils.isNoneBlank(body2)) {
+			List<String> words = StringUtil.getRandomWords(body2);
+			if (!words.isEmpty()) {
+				bodyStr = "";
+				for (int i = 0; i < words.size(); i++) {
+					bodyStr += " " + StringUtils.trim(words.get(i));
+				}
+				bodyStr = bodyStr.replaceAll("\\p{Punct}", ".");
+				if (StringUtils.isNotBlank(bodyStr)) {
+					vo.setBody(bodyStr);
+					list = msgInboxDao.getListForWeb(vo);
+					assertFalse(list.isEmpty());
+					for (MsgInboxWebVo mwvo : list) {
+						logger.info("Search Subj/Body2: " + subjStr + "/" + bodyStr + ", Subject: " + mwvo.getMsgSubject());
+						assertTrue(StringUtils.containsIgnoreCase(mwvo.getMsgSubject(), word1)
+								|| StringUtils.containsIgnoreCase(mwvo.getMsgSubject(), word2));
+					}
+				}
+			}
 		}
 	}
 	
 	private MsgInboxVo selectByMsgId(long msgId) {
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
-		System.out.println("MsgInboxDao - selectByPrimaryKey: "+LF+msgInboxVo);
+		System.out.println("MsgInboxDao - selectByPrimaryKey: " + LF + msgInboxVo);
 		return msgInboxVo;
 	}
 	
@@ -169,8 +212,7 @@ public class MsgInboxTest extends DaoTestBase {
 		List<MsgInboxVo> actions = msgInboxDao.getByFromAddrId(msgId);
 		for (Iterator<MsgInboxVo> it = actions.iterator(); it.hasNext();) {
 			MsgInboxVo vo = it.next();
-			System.out.println("MsgInboxDao - selectByFromAddrId: " + vo.getMsgId() + " - "
-					+ vo.getFromAddress());
+			System.out.println("MsgInboxDao - selectByFromAddrId: " + vo.getMsgId() + " - " + vo.getFromAddress());
 		}
 		return actions;
 	}
@@ -179,8 +221,7 @@ public class MsgInboxTest extends DaoTestBase {
 		List<MsgInboxVo> actions = msgInboxDao.getByToAddrId(msgId);
 		for (Iterator<MsgInboxVo> it = actions.iterator(); it.hasNext();) {
 			MsgInboxVo vo = it.next();
-			System.out.println("MsgInboxDao - selectByToAddrId: " + vo.getMsgId() + " - "
-					+ vo.getToAddress());
+			System.out.println("MsgInboxDao - selectByToAddrId: " + vo.getMsgId() + " - " + vo.getToAddress());
 		}
 		return actions;
 	}
@@ -214,48 +255,48 @@ public class MsgInboxTest extends DaoTestBase {
 		int rows = 0;
 		if (msgInboxVo!=null) {
 			msgInboxVo.setCarrierCode(CarrierCode.SMTPMAIL);
-			msgInboxVo.setPurgeDate(new java.sql.Date(new java.util.Date().getTime()));
+			msgInboxVo.setPurgeDate(new java.sql.Date(System.currentTimeMillis()));
 			rows = msgInboxDao.update(msgInboxVo);
-			System.out.println("MsgInboxDao - update: rows updated:  "+ rows);
-			System.out.println("InboxUnreadCount: "+ unreadCountDao.selectInboxUnreadCount());
+			System.out.println("MsgInboxDao - update: rows updated:  " + rows);
+			System.out.println("InboxUnreadCount: " + unreadCountDao.selectInboxUnreadCount());
 		}
 		return rows;
 	}
 	
 	private int deleteByPrimaryKey(long msgId) {
 		int rowsDeleted = msgInboxDao.deleteByPrimaryKey(msgId);
-		System.out.println("MsgInboxDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
-		System.out.println("InboxUnreadCount: "+ unreadCountDao.selectInboxUnreadCount());
+		System.out.println("MsgInboxDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		System.out.println("InboxUnreadCount: " + unreadCountDao.selectInboxUnreadCount());
 		return rowsDeleted;
 	}
 	
 	private MsgInboxVo insert(long msgId) {
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
-		if (msgInboxVo!=null) {
+		if (msgInboxVo != null) {
 			long nextVal = msgSequenceDao.findNextValue();
 			msgInboxVo.setMsgId(nextVal);
-			System.out.println("InboxUnreadCount before: "+ unreadCountDao.selectInboxUnreadCount());
+			System.out.println("InboxUnreadCount before: " + unreadCountDao.selectInboxUnreadCount());
 			msgInboxDao.insert(msgInboxVo);
-			System.out.println("MsgInboxDao - insert: "+LF+msgInboxVo);
+			System.out.println("MsgInboxDao - insert: " + LF + msgInboxVo);
 			System.out.println("InboxUnreadCount after: "+ unreadCountDao.selectInboxUnreadCount());
 			return msgInboxVo;
 		}
 		return null;
 	}
 
-	private MsgClickCountsVo insertClickCount(MsgInboxVo msgvo, long msgId) {
-		MsgClickCountsVo vo = msgClickCountsDao.getByPrimaryKey(msgId);
+	private MsgClickCountsVo insertClickCount(MsgInboxVo msgvo) {
+		MsgClickCountsVo vo = msgClickCountsDao.getRandomRecord();
 		if (vo != null) {
 			vo.setMsgId(msgvo.getMsgId());
 			msgClickCountsDao.insert(vo);
-			System.out.println("insertClickCount: "+LF+vo);
+			System.out.println("insertClickCount: " + LF + vo);
 		}
 		return vo;
 	}
 
 	private MsgClickCountsVo selectClickCounts(long msgId) {
-		MsgClickCountsVo vo = (MsgClickCountsVo)msgClickCountsDao.getByPrimaryKey(msgId);
-		System.out.println("selectByPrimaryKey - "+LF+vo);
+		MsgClickCountsVo vo = msgClickCountsDao.getByPrimaryKey(msgId);
+		System.out.println("selectByPrimaryKey - " + LF + vo);
 		return vo;
 	}
 
@@ -265,16 +306,16 @@ public class MsgInboxTest extends DaoTestBase {
 		rows += msgClickCountsDao.update(msgClickCountsVo);
 		rows += msgClickCountsDao.updateOpenCount(msgClickCountsVo.getMsgId());
 		rows += msgClickCountsDao.updateClickCount(msgClickCountsVo.getMsgId());
-		rows += msgClickCountsDao.updateUnsubscribeCount(msgClickCountsVo.getMsgId(),1);
-		rows += msgClickCountsDao.updateComplaintCount(msgClickCountsVo.getMsgId(),1);
+		rows += msgClickCountsDao.updateUnsubscribeCount(msgClickCountsVo.getMsgId(), 1);
+		rows += msgClickCountsDao.updateComplaintCount(msgClickCountsVo.getMsgId(), 1);
 		rows += msgClickCountsDao.updateClickCount(msgClickCountsVo.getMsgId());
-		System.out.println("updateClickCounts: rows updated: "+rows+LF+msgClickCountsVo);
+		System.out.println("updateClickCounts: rows updated: " + rows + LF + msgClickCountsVo);
 		return rows;
 	}
 	
 	private int deleteClickCounts(long msgId) {
 		int rowsDeleted = msgClickCountsDao.deleteByPrimaryKey(msgId);
-		System.out.println("deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
+		System.out.println("deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 	

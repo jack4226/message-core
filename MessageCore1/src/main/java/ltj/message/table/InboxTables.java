@@ -267,9 +267,9 @@ public class InboxTables extends CreateTableBase
 			"MsgSubject varchar(255), " +
 			"MsgPriority varchar(10), " + // 1 (High)/2 (Normal)/3 (Low)
 			"ReceivedTime datetime(3) NOT NULL, " +
-			"FromAddrId bigint, " + // link to EmailAddr
+			"FromAddrId bigint NOT NULL, " + // link to EmailAddr
 			"ReplyToAddrId bigint, " + // link to EmailAddr
-			"ToAddrId bigint, " + // link to EmailAddr
+			"ToAddrId bigint NOT NULL, " + // link to EmailAddr
 			"ClientId varchar(16), " + // link to Clients - derived from OutMsgRefId
 			"CustId varchar(16), " + // link to Customers - derived from OutMsgRefId
 			"PurgeDate Date, " +

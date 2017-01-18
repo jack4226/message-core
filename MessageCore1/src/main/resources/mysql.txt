@@ -32,7 +32,11 @@ or
 
 6) connect to server the first time, cd to bin directory:
 > mysql -u root --skip-password
+
 > mysql -u email -p emaildb
+
+> mysql -u email -p message
+
 
 7) assign a root password:
 > ALTER USER 'root'@'localhost' IDENTIFIED BY 'jackwng01';

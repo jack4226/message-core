@@ -55,8 +55,7 @@ public class BroadcastMsgListBean {
 			pagingVo.setRowCount(rowCount);
 		}
 		if (broadcasts == null || !pagingVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<MsgClickCountsVo> brdList = getMsgClickCountsDao().getBroadcastsWithPaging(
-					pagingVo);
+			List<MsgClickCountsVo> brdList = getMsgClickCountsDao().getBroadcastsWithPaging(pagingVo);
 			/* set keys for paging */
 			if (!brdList.isEmpty()) {
 				MsgClickCountsVo firstRow = (MsgClickCountsVo) brdList.get(0);
@@ -70,8 +69,7 @@ public class BroadcastMsgListBean {
 			}
 			//logger.info("PagingVo After: " + pagingVo);
 			pagingVo.setPageAction(PagingVo.PageAction.CURRENT);
-			broadcasts = new PagedListDataModel(brdList, pagingVo.getRowCount(), pagingVo
-					.getPageSize());
+			broadcasts = new PagedListDataModel(brdList, pagingVo.getRowCount(), pagingVo.getPageSize());
 		}
 		return broadcasts;
 	}
@@ -136,8 +134,7 @@ public class BroadcastMsgListBean {
 
 	public MsgClickCountsDao getMsgClickCountsDao() {
 		if (msgClickCountsDao == null) {
-			msgClickCountsDao = (MsgClickCountsDao) SpringUtil.getWebAppContext().getBean(
-					"msgClickCountsDao");
+			msgClickCountsDao = (MsgClickCountsDao) SpringUtil.getWebAppContext().getBean("msgClickCountsDao");
 		}
 		return msgClickCountsDao;
 	}
