@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -18,6 +19,7 @@ import ltj.message.dao.inbox.MsgClickCountsDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgUnreadCountDao;
 import ltj.message.dao.outbox.MsgSequenceDao;
+import ltj.message.util.PrintUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.inbox.MsgClickCountsVo;
 import ltj.message.vo.inbox.MsgInboxVo;
@@ -114,33 +116,45 @@ public class MsgInboxTest extends DaoTestBase {
 		SearchFieldsVo vo = new SearchFieldsVo();
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		assertFalse(list.isEmpty());
-		String word1 = "";
-		String word2 = "";
-		String body = "";
-		for (MsgInboxWebVo mivo : list) {
-			logger.info("Subject: " + mivo.getMsgSubject());
-			if (StringUtils.isBlank(word1)) {
-				word1 = StringUtil.getRandomWord(mivo.getMsgSubject());
-				if (StringUtils.isBlank(body)) {
-					MsgInboxVo ivo = msgInboxDao.getByPrimaryKey(mivo.getMsgId());
-					assertNotNull(ivo);
-					body = ivo.getMsgBody();
+		Random r = new Random();
+		// get first subject search word
+		int idx = r.nextInt(list.size());
+		MsgInboxWebVo mivo = list.get(idx);
+		String word1 = StringUtil.getRandomWord(mivo.getMsgSubject());
+		// get body text
+		MsgInboxVo ivo = msgInboxDao.getByPrimaryKey(mivo.getMsgId());
+		assertNotNull(ivo);
+		String body = ivo.getMsgBody();
+		logger.info(PrintUtil.prettyPrint(ivo));
+		// get second subject search word
+		idx = r.nextInt(list.size());
+		mivo = list.get(idx);
+		String word2 = StringUtil.getRandomWord(mivo.getMsgSubject());
+		// build and set subject search string
+		String subjStr = word1;
+		if (StringUtils.isNotBlank(word2)) {
+			subjStr += "  " + word2;
+		}
+		subjStr = subjStr.replaceAll("\\p{Punct}", ".");
+		vo.setSubject(subjStr);
+		// build and set body search string
+		if (StringUtils.isNoneBlank(body)) {
+			List<String> words = StringUtil.getRandomWords(body);
+			if (!words.isEmpty()) {
+				String bodyStr = "";
+				for (int i = 0; i < words.size(); i++) {
+					bodyStr += " " + StringUtils.trim(words.get(i));
+				}
+				bodyStr = bodyStr.replaceAll("\\p{Punct}", ".");
+				if (StringUtils.isNotBlank(bodyStr)) {
+					vo.setBody(bodyStr);
 				}
 			}
-			else if (StringUtils.isBlank(word2)) {
-				word2 = StringUtil.getRandomWord(mivo.getMsgSubject());
-			}
-		}
-		
-		vo.setSubject(word1 + "   " + word2);
-		if (StringUtils.isNoneBlank(body)) {
-			String[] words = StringUtil.getRandomWords(body, 1);
-			vo.setBody(words[0]);
 		}
 		list = msgInboxDao.getListForWeb(vo);
 		assertFalse(list.isEmpty());
-		for (MsgInboxWebVo mivo : list) {
-			logger.info("Subject: " + mivo.getMsgSubject());
+		for (MsgInboxWebVo mwvo : list) {
+			logger.info("Subject: " + mwvo.getMsgSubject());
 			// TODO add assertions
 		}
 	}

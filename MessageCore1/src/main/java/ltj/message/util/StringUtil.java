@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -287,14 +288,25 @@ public final class StringUtil {
     	return words[idx];
     }
  
-    public static String[] getRandomWords(String paragraph, int numberOfWords) {
-    	String[] words = (paragraph + "").split("[ ]+");
-    	String[] rwords = new String[numberOfWords];
-		for (int i = 0; i < numberOfWords; i++) {
-			int idx = new Random().nextInt(words.length);
-			rwords[i] = words[idx];
-		}
-    	return rwords;
+    public static List<String> getRandomWords(String paragraph) {
+    	String[] words = (paragraph + "").split("[\\s]+");
+    	List<String> list = new ArrayList<>();
+    	if (words.length > 0 && words.length <= 5) {
+    		int idx = new Random().nextInt(words.length);
+    		list.add(words[idx]);
+    	}
+    	else if (words.length < 20) {
+    		int idx = new Random().nextInt(words.length - 4);
+    		list.add(words[idx]);
+    		list.add(words[idx + 1]);
+    	}
+    	else {
+    		int idx = new Random().nextInt(words.length - 10);
+    		list.add(words[idx]);
+    		list.add(words[idx + 1]);
+    		list.add(words[idx + 2]);
+    	}
+    	return list;
     }
 
 	public static void main(String[] args) {
