@@ -204,16 +204,16 @@ public class ClientTable extends CreateTableBase {
 			ps.setString(9, "sitemaster@emailsphere.com");
 			ps.setString(10, "security@localhost");
 			ps.setString(11, "custcare@localhost");
-			ps.setString(12, "rma.dept@localhost");
-			ps.setString(13, "spam.ctrl@localhost");
+			ps.setString(12, "rma_dept@localhost");
+			ps.setString(13, "spam_ctrl@localhost");
 			ps.setString(14, "challenge@localhost");
 		}
 		else { // release data
 			ps.setString(9, "sitemaster@localhost");
 			ps.setString(10, "security@localhost");
 			ps.setString(11, "custcare@localhost");
-			ps.setString(12, "rma.dept@localhost");
-			ps.setString(13, "spam.ctrl@localhost");
+			ps.setString(12, "rma_dept@localhost");
+			ps.setString(13, "spam_ctrl@localhost");
 			ps.setString(14, "challenge@localhost");
 		}
 		ps.setString(15, Constants.YES); // Embed EmailId 
@@ -250,7 +250,7 @@ public class ClientTable extends CreateTableBase {
 		ps.setString(9, "sitemaster@jbatch.com");
 		ps.setString(10, "security@jbatch.com");
 		ps.setString(11, "custcare@jbatch.com");
-		ps.setString(12, "rma.dept@jbatch.com");
+		ps.setString(12, "rma_dept@jbatch.com");
 		ps.setString(13, "spam.control@jbatch.com");
 		ps.setString(14, "challenge@jbatch.com");
 		ps.setString(15, Constants.YES);
@@ -284,8 +284,8 @@ public class ClientTable extends CreateTableBase {
 		vo.setContactEmail("sitemaster@emailsphere.com");
 		vo.setSecurityEmail("security@emailsphere.com");
 		vo.setCustcareEmail("custcare@emailsphere.com");
-		vo.setRmaDeptEmail("rma.dept@emailsphere.com");
-		vo.setSpamCntrlEmail("spam.ctrl@emailsphere.com");
+		vo.setRmaDeptEmail("rma_dept@emailsphere.com");
+		vo.setSpamCntrlEmail("spam_.ctrl@emailsphere.com");
 		vo.setChaRspHndlrEmail("challenge@emailsphere.com");
 		vo.setEmbedEmailId(Constants.YES); // Embed EmailId 
 		vo.setUseTestAddr(Constants.NO); // use testing address
