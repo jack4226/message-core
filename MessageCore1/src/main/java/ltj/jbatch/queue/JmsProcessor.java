@@ -266,7 +266,8 @@ public class JmsProcessor {
 	 * @throws JMSException
 	 *             if JMS error occurred
 	 */
-	public synchronized String writeMsg(javax.jms.Message msg, final String useThisCorrelId, boolean toErrorQue) throws JMSException {
+	public synchronized String writeMsg(javax.jms.Message msg, final String useThisCorrelId, boolean toErrorQue)
+			throws JMSException {
 		String rtnMessageId = null;
 		MessageConverter converter = getJmsTemplate().getMessageConverter();
 		try {
@@ -539,15 +540,18 @@ public class JmsProcessor {
 	synchronized boolean errorsUnderLimit() {
 		GoodMsgCount = 0;
 		// caught a bad message, reset the good message counter
-		if (++ErrorMsgCount < ErrorMsgLimit)
+		if (++ErrorMsgCount < ErrorMsgLimit) {
 			return true;
-		else
+		}
+		else {
 			return false;
+		}
 	}
 
 	synchronized void receivedGoodMsg() {
-		if (++GoodMsgCount % 10 == 0)
+		if (++GoodMsgCount % 10 == 0) {
 			ErrorMsgCount = 0;
+		}
 		// 10 consecutive good messages has been returned, reset the error
 		// message counter.
 	}

@@ -24,8 +24,7 @@ public class JmsQueueListener implements MessageListener {
 				throw new RuntimeException(ex);
 			}
 		} else {
-			throw new IllegalArgumentException(
-					"Message must be of type TextMessage");
+			throw new IllegalArgumentException("Message must be of type TextMessage");
 		}
 	}
 
@@ -55,7 +54,7 @@ public class JmsQueueListener implements MessageListener {
 				logger.info("Listener stopped.");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception caught", e);;
 		}
 	}
 }
