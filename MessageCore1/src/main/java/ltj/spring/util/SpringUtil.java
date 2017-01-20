@@ -72,12 +72,12 @@ public final class SpringUtil {
 		}
 	}
 	
-	private static final ThreadLocal<PlatformTransactionManager> txmgrThreadLocal = new ThreadLocal<PlatformTransactionManager>();
-	private static final ThreadLocal<TransactionStatus> statusThreadLocal = new ThreadLocal<TransactionStatus>();
+	private static final ThreadLocal<PlatformTransactionManager> txmgrThreadLocal = new ThreadLocal<>();
+	private static final ThreadLocal<TransactionStatus> statusThreadLocal = new ThreadLocal<>();
 	
 	public static void beginTransaction() {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setName("service_"+ TX_COUNTER.get().incrementAndGet());
+		def.setName("service_" + TX_COUNTER.get().incrementAndGet());
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		PlatformTransactionManager txmgr = (PlatformTransactionManager) SpringUtil.getDaoAppContext().getBean("mysqlTransactionManager");
 		TransactionStatus status = txmgr.getTransaction(def);
@@ -88,7 +88,7 @@ public final class SpringUtil {
 	public static void commitTransaction() {
 		PlatformTransactionManager txmgr = txmgrThreadLocal.get();
 		TransactionStatus status = statusThreadLocal.get();
-		if (txmgr==null || status==null) {
+		if (txmgr == null || status == null) {
 			throw new IllegalStateException("No transaction is in progress.");
 		}
 		if (!status.isCompleted()) {
@@ -101,7 +101,7 @@ public final class SpringUtil {
 	public static void rollbackTransaction() {
 		PlatformTransactionManager txmgr = txmgrThreadLocal.get();
 		TransactionStatus status = statusThreadLocal.get();
-		if (txmgr==null || status==null) {
+		if (txmgr == null || status == null) {
 			throw new IllegalStateException("No transaction is in progress.");
 		}
 		if (!status.isCompleted()) {
@@ -114,7 +114,7 @@ public final class SpringUtil {
 	public static void clearTransaction() {
 		PlatformTransactionManager txmgr = txmgrThreadLocal.get();
 		TransactionStatus status = statusThreadLocal.get();
-		if (txmgr!=null && status!=null) {
+		if (txmgr != null && status != null) {
 			rollbackTransaction();
 		}
 	}
