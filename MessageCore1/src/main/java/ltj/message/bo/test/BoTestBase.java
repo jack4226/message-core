@@ -46,7 +46,6 @@ import ltj.spring.util.SpringJmsConfig;
 import ltj.vo.outbox.MsgStreamVo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations={"/spring-mysql-config.xml", "/spring-jmsqueue_rmt-config.xml", "/spring-common-config.xml"})
 @ContextConfiguration(classes={SpringAppConfig.class, SpringJmsConfig.class})
 @TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
 @Transactional
