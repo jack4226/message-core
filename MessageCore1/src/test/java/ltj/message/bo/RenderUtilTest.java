@@ -140,12 +140,12 @@ public class RenderUtilTest extends BoTestBase {
 		logger.info("EmailTemplateVo: " + tmpltVo);
 		assertTrue(StringUtils.contains(tmpltVo.getBodyText(), "BroadcastMsgId: ${BroadcastMsgId}"));
 		Map<String, String> vars = new HashMap<String, String>();
-		String brstMsgId = StringUtils.leftPad("" + new Random().nextInt(1000), 4, '0');
-		vars.put("BroadcastMsgId", brstMsgId);
+		String bcstMsgId = StringUtils.leftPad("" + new Random().nextInt(1000), 4, '0');
+		vars.put("BroadcastMsgId", bcstMsgId);
 		try {
 			TemplateRenderVo renderVo = RenderUtil.renderEmailTemplate("jsmith@test.com", vars, tmpltId);
 			logger.info("TemplateRenderVo:" + renderVo);
-			assertTrue(StringUtils.contains(renderVo.getBody(), "BroadcastMsgId: " + brstMsgId));
+			assertTrue(StringUtils.contains(renderVo.getBody(), "BroadcastMsgId: " + bcstMsgId));
 		}
 		catch (Exception e) {
 			fail(e.getMessage());

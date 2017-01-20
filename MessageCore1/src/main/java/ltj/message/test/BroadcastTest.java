@@ -42,7 +42,7 @@ public class BroadcastTest extends BoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
 	
-	private static String brstAddr = "testto@localhost";
+	private static String bcstAddr = "testto@localhost";
 	private static String suffix = StringUtils.leftPad(new Random().nextInt(10000)+"", 4, '0');
 	private static int sizeBefore = 0;
 
@@ -52,7 +52,7 @@ public class BroadcastTest extends BoTestBase {
 	@Test
 	@Rollback(value=false)
 	public void test1() { // broadcast
-		EmailAddrVo addrVo = emailAddrDao.findByAddress(brstAddr);
+		EmailAddrVo addrVo = emailAddrDao.findByAddress(bcstAddr);
 		List<MsgInboxVo> milist1 = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		sizeBefore = milist1.size();
 		
@@ -63,7 +63,7 @@ public class BroadcastTest extends BoTestBase {
 			MessageBean messageBean = new MessageBean();
 			messageBean.setIsReceived(true);
 			messageBean.setFrom(InternetAddress.parse("support@localhost"));
-			messageBean.setTo(InternetAddress.parse(brstAddr));
+			messageBean.setTo(InternetAddress.parse(bcstAddr));
 			messageBean.setSubject("Test Broadcast message - " + suffix);
 			messageBean.setBody("Test Broadcast message body.");
 			messageBean.setRuleName(RuleNameType.BROADCAST.toString());
@@ -82,7 +82,7 @@ public class BroadcastTest extends BoTestBase {
 	@Test
 	public void test2() {
 		// verify results
-		EmailAddrVo addrVo = emailAddrDao.getByAddress(brstAddr);
+		EmailAddrVo addrVo = emailAddrDao.getByAddress(bcstAddr);
 		assertNotNull(addrVo);
 		List<MsgInboxVo> milist2 = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		assertEquals(sizeBefore + 1, milist2.size());

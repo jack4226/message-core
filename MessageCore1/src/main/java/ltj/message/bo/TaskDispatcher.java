@@ -63,7 +63,7 @@ public class TaskDispatcher {
 		
 		if (msgBean.getFrom() == null) {
 			if (RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
-				msgBean.setFrom(InternetAddress.parse("brst.tmplt@localhost"));
+				msgBean.setFrom(InternetAddress.parse("bcst.tmplt@localhost"));
 			}
 			else {
 				throw new DataValidationException("From email address is required.");
@@ -71,7 +71,7 @@ public class TaskDispatcher {
 		}
 		if (msgBean.getTo() == null) {
 			if (RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
-				msgBean.setTo(InternetAddress.parse("brst.tmplt@localhost"));
+				msgBean.setTo(InternetAddress.parse("bcst.tmplt@localhost"));
 			}
 			else {
 				throw new DataValidationException("To email address is required.");

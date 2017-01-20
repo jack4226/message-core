@@ -11,7 +11,7 @@
 
       <body>
       <div align="center">
-         <h:form id="viewbrst">
+         <h:form id="viewbcst">
             <h:panelGrid columns="1" styleClass="headerMenuContent"
                    columnClasses="contentColumn">
                <f:facet name="header">
