@@ -40,7 +40,7 @@ public class JmsQueueListener implements MessageListener {
 	private void startListener(AbstractApplicationContext factory) {
 		try {
 			DefaultMessageListenerContainer listener = (DefaultMessageListenerContainer) factory
-					.getBean(DefaultMessageListenerContainer.class);
+					.getBean("jmsListenerContainer");
 			
 			listener.setDestination(new ActiveMQQueue("testQueue"));
 			listener.setMessageListener(this);

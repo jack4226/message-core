@@ -48,6 +48,9 @@ public class JmsQueueSender {
 	    map.put("Name", "Mark");
 	    map.put("Age", new Integer(47));
 	    JmsTemplate template = (JmsTemplate) factory.getBean("jmsTemplate");
+	    if (template.getDefaultDestination() == null) {
+	    	template.setDefaultDestination(new ActiveMQQueue("rmaRequestInput"));
+	    }
 	    template.convertAndSend(template.getDefaultDestination(), map, new MessagePostProcessor() {
 	        public Message postProcessMessage(Message message) throws JMSException {
 	            message.setIntProperty("AccountID", 1234);
