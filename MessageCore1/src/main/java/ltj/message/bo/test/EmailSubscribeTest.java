@@ -48,8 +48,8 @@ public class EmailSubscribeTest extends BoTestBase {
 	@Test
 	public void test1() {
 		
-		String digits = StringUtils.leftPad("" + new Random().nextInt(1000), 4, "0");
-		testFromAddress = "sbsr" + digits + "@localhost";
+		String digits = StringUtils.leftPad("" + new Random().nextInt(100), 2, "0");
+		testFromAddress = "user" + digits + "@localhost";
 		
 		try {
 			sendNotify("subscribe", "Test Subscription Body Message", mailingListAddr);
