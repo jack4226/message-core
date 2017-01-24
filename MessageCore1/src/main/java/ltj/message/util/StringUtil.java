@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 
@@ -288,12 +288,7 @@ public final class StringUtil {
     	int idx = r.nextInt(words.length);
     	String word = words[idx];
     	int count = 0;
-    	while (StringUtils.trim(word).length() <= 3 && count++ < words.length) {
-    		idx = r.nextInt(words.length);
-    		word = words[idx];
-    	}
-    	count = 0;
-    	while (StringUtils.trim(word).length() <= 2 && count++ < words.length) {
+    	while (word.matches(".*[\\p{Punct}].*") && count++ < words.length) {
     		idx = r.nextInt(words.length);
     		word = words[idx];
     	}
@@ -302,26 +297,41 @@ public final class StringUtil {
  
     public static List<String> getRandomWords(String paragraph) {
     	String[] words = (paragraph + "").split("[\\s]+");
-    	List<String> list = new ArrayList<>();
+    	List<String> list = null;
     	if (words.length > 0 && words.length <= 5) {
-    		int idx = new Random().nextInt(words.length);
-    		list.add(words[idx]);
+    		list = new ArrayList<>();
+    		list.add(getRandomWord(paragraph));
     	}
     	else if (words.length < 20) {
     		int idx = new Random().nextInt(words.length - 4);
-    		list.add(words[idx]);
-    		list.add(words[idx + 1]);
+    		list = getWords(idx, 2, words);
     	}
     	else {
     		int idx = new Random().nextInt(words.length - 10);
-    		list.add(words[idx]);
-    		list.add(words[idx + 1]);
-    		list.add(words[idx + 2]);
+    		list = getWords(idx, 3, words);
     	}
     	return list;
     }
 
+    private static List<String> getWords(int start, int nbrOfWords, String[] words) {
+    	List<String> list = new ArrayList<>();
+    	for (int i = 0; i < nbrOfWords; i++) {
+        	String word = words[start];
+    		while (++start < words.length && word.matches(".*[\\p{Punct}].*")) {
+        		word = words[start];
+        	}
+    		list.add(word);
+    		if (start >= words.length) {
+    			break;
+    		}
+    	}
+    	return list;
+    }
+    
 	public static void main(String[] args) {
 		System.out.println(removeStringFirst("<pre>12345abcdefklqhdkh</pre>", "<pre>"));
+		for (int i = 0; i < 50; i++) {
+		System.out.println(getRandomWords("This is my ${best} worst test $rest message."));
+		}
 	}
 }
