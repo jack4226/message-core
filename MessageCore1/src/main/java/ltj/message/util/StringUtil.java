@@ -284,8 +284,20 @@ public final class StringUtil {
 
     public static String getRandomWord(String paragraph) {
     	String[] words = (paragraph + "").split("[ ]+");
-    	int idx = new Random().nextInt(words.length);
-    	return words[idx];
+    	Random r = new Random();
+    	int idx = r.nextInt(words.length);
+    	String word = words[idx];
+    	int count = 0;
+    	while (StringUtils.trim(word).length() <= 3 && count++ < words.length) {
+    		idx = r.nextInt(words.length);
+    		word = words[idx];
+    	}
+    	count = 0;
+    	while (StringUtils.trim(word).length() <= 2 && count++ < words.length) {
+    		idx = r.nextInt(words.length);
+    		word = words[idx];
+    	}
+    	return word;
     }
  
     public static List<String> getRandomWords(String paragraph) {
