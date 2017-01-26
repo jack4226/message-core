@@ -15,7 +15,7 @@ public interface TaskBaseBo {
 	
 	public JmsProcessor getJmsProcessor();
 
-	public String getTaskArguments();
+	public String[] getTaskArguments();
 
-	public void setTaskArguments(String taskArguments);
+	public void setTaskArguments(String... taskArguments);
 }

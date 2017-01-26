@@ -2,7 +2,6 @@ package ltj.message.bo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.StringTokenizer;
 
 import javax.jms.JMSException;
 import javax.mail.Address;
@@ -52,7 +51,7 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 		if (!messageBean.getHashMap().containsKey(MessageBeanBuilder.MSG_RAW_STREAM)) {
 			logger.warn("Email Raw Stream not found in MessageBean.hashMap");
 		}
-		if (taskArguments == null || taskArguments.trim().length() == 0) {
+		if (getArgumentList(taskArguments).isEmpty()) {
 			throw new DataValidationException("Arguments is not valued, can't forward");
 		}
 		
@@ -64,10 +63,8 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 
 		// example: $Forward,securityDept@mycompany.com
 		String forwardAddrs = "";
-		StringTokenizer st = new StringTokenizer(taskArguments, ",");
-		while (st.hasMoreTokens()) {
+		for (String token : taskArguments) {
 			String addr = null;
-			String token = st.nextToken();
 			if (token != null && token.startsWith("$")) { // address type
 				token = token.substring(1);
 				if (EmailAddressType.FROM_ADDR.equals(token)) {

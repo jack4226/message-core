@@ -1,8 +1,6 @@
 package ltj.message.bo;
 
 import java.sql.Timestamp;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
@@ -49,8 +47,8 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		
-		if (taskArguments == null || taskArguments.trim().length() == 0) {
-			throw new DataValidationException("Arguments is not valued, nothing to activate");
+		if (getArgumentList(taskArguments).isEmpty()) {
+			throw new DataValidationException("Arguments is blank, nothing to activate");
 		}
 		else if (isDebugEnabled) {
 			logger.debug("Arguments passed: " + taskArguments);
@@ -58,11 +56,9 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 		
 		// example: $From,$To,myaddress@mydomain.com
 		long addrsActiveted = 0;
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
-		List<String> list = TaskBaseAdaptor.getArgumentList(taskArguments);
-		for (Iterator<String> it=list.iterator(); it.hasNext(); ) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
+		for (String token : taskArguments) {
 			String addrs = null;
-			String token = it.next();
 			if (token != null && token.startsWith("$")) { // address variable
 				token = token.substring(1);
 				if (EmailAddressType.FROM_ADDR.equals(token)) {
@@ -97,7 +93,7 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 					logger.error("AddressException caught for: " + addrs + ", skip...");
 				}
 			}
-			for (int i=0; iAddrs!=null && i<iAddrs.length; i++) {
+			for (int i = 0; iAddrs != null && i < iAddrs.length; i++) {
 				Address iAddr = iAddrs[i];
 				String addr = iAddr.toString();
 				if (isDebugEnabled) {

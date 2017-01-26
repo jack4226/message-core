@@ -21,14 +21,14 @@ public class ActivateBoTest extends BoTestBase {
 	@Test
 	public void activate() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
-		activateBo.setTaskArguments("$"+EmailAddressType.FINAL_RCPT_ADDR+",$"+EmailAddressType.FROM_ADDR);
+		activateBo.setTaskArguments(new String[] {"$"+EmailAddressType.FINAL_RCPT_ADDR, "$"+EmailAddressType.FROM_ADDR});
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
 		deActivateAddress(messageBean.getFromAsString());
 		deActivateAddress(messageBean.getFinalRcpt());
-		Long addrsActivated = (Long)activateBo.process(messageBean);
-		assertTrue(addrsActivated>0);
+		Long addrsActivated = (Long) activateBo.process(messageBean);
+		assertTrue(addrsActivated > 0);
 		// now verify the database record
 		EmailAddrVo addrVo = selectEmailAddrByAddress(messageBean.getFromAsString());
 		assertNotNull(addrVo);
@@ -41,7 +41,9 @@ public class ActivateBoTest extends BoTestBase {
 	}
 
 	private int deActivateAddress(String address) {
-		if (address==null) return 0;
+		if (address==null) {
+			return 0;
+		}
 		EmailAddrVo vo = emailAddrDao.findByAddress(address);
 		vo.setStatusId(StatusIdCode.INACTIVE);
 		int rows = emailAddrDao.update(vo);

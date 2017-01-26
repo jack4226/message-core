@@ -145,7 +145,7 @@ public class TaskDispatcher {
 					bo.setTaskArguments(msgActionVo.getDataTypeValues());
 				}
 				else {
-					bo.setTaskArguments(null);
+					bo.setTaskArguments((String[]) null);
 				}
 				// TODO set queue name for jmsProcessor
 				//bo.getJmsProcessor().setQueueName("");

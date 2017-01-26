@@ -22,7 +22,7 @@ public class BounceBoTest extends BoTestBase {
 	@Test
 	public void bounce() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
-		bounceBo.setTaskArguments("$"+EmailAddressType.FINAL_RCPT_ADDR+",$"+EmailAddressType.FROM_ADDR);
+		bounceBo.setTaskArguments(new String[] {"$"+EmailAddressType.FINAL_RCPT_ADDR, "$"+EmailAddressType.FROM_ADDR});
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
@@ -31,8 +31,8 @@ public class BounceBoTest extends BoTestBase {
 		assertNotNull(addrVo);
 		int beforeFromCount = addrVo.getBounceCount();
 		// end of "before" bounce count
-		Long addrsUpdated = (Long)bounceBo.process(messageBean);
-		assertTrue(addrsUpdated>=0);
+		Long addrsUpdated = (Long) bounceBo.process(messageBean);
+		assertTrue(addrsUpdated >= 0);
 		// now verify the database record
 		addrVo = selectByAddress(messageBean.getFromAsString());
 		assertNotNull(addrVo);

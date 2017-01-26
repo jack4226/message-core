@@ -1,7 +1,5 @@
 package ltj.message.bo;
 
-import java.util.StringTokenizer;
-
 import javax.jms.JMSException;
 import javax.mail.Address;
 import javax.mail.MessagingException;
@@ -56,13 +54,11 @@ public class ToSecurityBoImpl extends TaskBaseAdaptor {
 		 * variables are supplied from task arguments, send carbon copies to
 		 * those addresses as well.
 		 */
-		if (taskArguments != null && taskArguments.trim().length() > 0) {
+		if (getArgumentList(taskArguments).size() > 0) {
 			// example: $Forward,security@mycompany.com or $To or security@mycompany.com
-			StringTokenizer st = new StringTokenizer(taskArguments, ",");
-			while (st.hasMoreTokens()) {
+			for (String token : taskArguments) {
 				String addrs = null;
 				String cc_addrs = null;
-				String token = st.nextToken();
 				if (token != null && token.startsWith("$")) { // address type
 					token = token.substring(1);
 					// only $Forward and $To can be cc'ed.

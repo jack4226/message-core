@@ -2,7 +2,6 @@ package ltj.message.bo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +16,7 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 	@Autowired
 	protected JmsProcessor jmsProcessor;
 	
-	protected String taskArguments;
+	protected String[] taskArguments;
 	
 	@Override
 	public JmsProcessor getJmsProcessor() {
@@ -25,12 +24,12 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 	}
 	
 	@Override
-	public String getTaskArguments() {
+	public String[] getTaskArguments() {
 		return taskArguments;
 	}
 	
 	@Override
-	public void setTaskArguments(String taskArguments) {
+	public void setTaskArguments(String... taskArguments) {
 		this.taskArguments = taskArguments;
 	}
 	
@@ -48,7 +47,7 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 		jmsProcessor.setQueueName("customerCareInput");
 	}
 	
-	protected void setTargetToCsrWorkQueue(String queueName) {
+	protected void setTargetQueue(String queueName) {
 		jmsProcessor.setQueueName(queueName);
 	}
 	
@@ -59,12 +58,10 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 		return getArgumentList(taskArguments);
 	}
 	
-	public static List<String> getArgumentList(String taskArguments) {
+	public static List<String> getArgumentList(String... taskArguments) {
 		List<String> list = new ArrayList<String>();
 		if (taskArguments != null) {
-			StringTokenizer st = new StringTokenizer(taskArguments, ",");
-			while (st.hasMoreTokens()) {
-				String token = st.nextToken();
+			for (String token : taskArguments) {
 				if (token != null && token.trim().length() > 0) {
 					list.add(token);
 				}

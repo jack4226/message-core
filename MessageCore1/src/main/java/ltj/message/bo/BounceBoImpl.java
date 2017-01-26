@@ -1,7 +1,5 @@
 package ltj.message.bo;
 
-import java.util.StringTokenizer;
-
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -44,7 +42,7 @@ public class BounceBoImpl extends TaskBaseAdaptor {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		
-		if (taskArguments == null || taskArguments.trim().length() == 0) {
+		if (getArgumentList(taskArguments).isEmpty()) {
 			throw new DataValidationException("Arguments is not valued, nothing to suspend");
 		}
 		else if (isDebugEnabled) {
@@ -53,10 +51,8 @@ public class BounceBoImpl extends TaskBaseAdaptor {
 		
 		// example: $FinalRcpt,$OriginalRcpt,badaddress@baddomain.com
 		long addrsUpdated = 0;
-		StringTokenizer st = new StringTokenizer(taskArguments, ",");
-		while (st.hasMoreTokens()) {
+		for (String token : taskArguments) {
 			String addrs = null;
-			String token = st.nextToken();
 			if (token != null && token.startsWith("$")) { // address type
 				token = token.substring(1);
 				if (EmailAddressType.FROM_ADDR.equals(token)) {

@@ -56,7 +56,7 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 		if (messageBean == null) {
 			throw new DataValidationException("input MessageBean is null");
 		}
-		if (StringUtil.isEmpty(taskArguments)) {
+		if (getArgumentList(taskArguments).isEmpty()) {
 			throw new DataValidationException("Arguments(TemplateId) is not valued.");
 		}
 		else if (isDebugEnabled) {
@@ -113,7 +113,7 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 			TemplateRenderVo renderVo = null;
 			try {
 				// Mailing List id may have been provided by upstream process (subscribe)
-				renderVo = RenderUtil.renderEmailTemplate(vo.getEmailAddr(), variables, taskArguments,
+				renderVo = RenderUtil.renderEmailTemplate(vo.getEmailAddr(), variables, taskArguments[0],
 						messageBean.getMailingListId());
 			}
 			catch (TemplateNotFoundException e) {

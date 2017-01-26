@@ -50,26 +50,26 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 		}
 		
 		String queueName = null;
-		if (taskArguments != null && taskArguments.trim().length() > 0) {
-			if (taskArguments.startsWith("$")) { // variable name
+		if (getArgumentList(taskArguments).size() > 0) {
+			if (taskArguments[0].startsWith("$")) { // variable name
 				// retrieve the real queue name (Spring JMS template) from database:
-				MsgDataTypeVo vo = msgDataTypeDao.getByTypeValuePair("QUEUE_NAME", taskArguments);
+				MsgDataTypeVo vo = msgDataTypeDao.getByTypeValuePair("QUEUE_NAME", taskArguments[0]);
 				if (vo != null) {
 					if (!StringUtil.isEmpty(vo.getMiscProperties())) {
 						queueName = vo.getMiscProperties();
 					}
 				}
 				else {
-					throw new DataValidationException("Record not found by: QUEUE_NAME/" + taskArguments);
+					throw new DataValidationException("Record not found by: QUEUE_NAME/" + taskArguments[0]);
 				}
 			}
 			else { // should be a JMS template name
-				queueName = taskArguments;
+				queueName = taskArguments[0];
 			}
 		}
 		// Configure JmsProcessor to use provided JMS template
 		if (StringUtils.isNotBlank(queueName)) {
-			setTargetToCsrWorkQueue(queueName);
+			setTargetQueue(queueName);
 		}
 		else {
 			setTargetToCsrWorkQueue(); // use default queue

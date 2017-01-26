@@ -72,10 +72,10 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		if (!RuleNameType.BROADCAST.toString().equals(msgBean.getRuleName())) {
 			throw new DataValidationException("Invalid Rule Name: " + msgBean.getRuleName());
 		}
-		if (taskArguments != null && taskArguments.trim().length() > 0) {
+		if (getArgumentList(taskArguments).size() > 0) {
 			// mailing list from MessageBean takes precedence
 			if (msgBean.getMailingListId() == null) {
-				msgBean.setMailingListId(taskArguments);
+				msgBean.setMailingListId(taskArguments[0]);
 			}
 		}
 		if (msgBean.getMailingListId() == null) {

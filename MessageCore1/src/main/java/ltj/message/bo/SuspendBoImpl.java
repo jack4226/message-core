@@ -52,7 +52,7 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		
-		if (taskArguments == null || taskArguments.trim().length() == 0) {
+		if (getArgumentList(taskArguments).isEmpty()) {
 			throw new DataValidationException("Arguments is not valued, nothing to suspend");
 		}
 		else if (isDebugEnabled) {
@@ -61,11 +61,9 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 		
 		// example: $FinalRcpt,$OriginalRcpt,badaddress@badcompany.com
 		long addrsSuspended = 0;
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
-		StringTokenizer st = new StringTokenizer(taskArguments, ",");
-		while (st.hasMoreTokens()) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
+		for (String token : taskArguments) {
 			String addrs = null;
-			String token = st.nextToken();
 			if (token != null && token.startsWith("$")) { // address type
 				token = token.substring(1);
 				if (EmailAddressType.FROM_ADDR.equals(token)) {
