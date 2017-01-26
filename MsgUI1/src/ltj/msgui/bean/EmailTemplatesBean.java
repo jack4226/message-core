@@ -90,8 +90,9 @@ public class EmailTemplatesBean {
 	}
 	
 	public String viewEmailTemplate() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewEmailTemplate() - Entering...");
+		}
 		if (emailTemplates == null) {
 			logger.warn("viewEmailTemplate() - EmailTemplate List is null.");
 			return TO_FAILED;
@@ -102,20 +103,19 @@ public class EmailTemplatesBean {
 		}
 		reset();
 		this.emailTemplate = (EmailTemplateVo) emailTemplates.getRowData();
-		logger.info("viewEmailTemplate() - EmailTemplate to be edited: "
-				+ emailTemplate.getTemplateId());
+		logger.info("viewEmailTemplate() - EmailTemplate to be edited: " + emailTemplate.getTemplateId());
 		emailTemplate.setMarkedForEdition(true);
 		editMode = true;
 		if (isDebugEnabled) {
-			logger.debug("viewEmailTemplate() - EmailTemplateVo to be passed to jsp: "
-					+ emailTemplate);
+			logger.debug("viewEmailTemplate() - EmailTemplateVo to be passed to jsp: " + emailTemplate);
 		}
 		return TO_EDIT;
 	}
 	
 	public String saveEmailTemplate() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveEmailTemplate() - Entering...");
+		}
 		if (emailTemplate == null) {
 			logger.warn("saveEmailTemplate() - EmailTemplateVo is null.");
 			return TO_FAILED;
@@ -149,27 +149,31 @@ public class EmailTemplatesBean {
 		}
 		else {
 			int rowsInserted = getEmailTemplateDao().insert(emailTemplate);
-			if (rowsInserted > 0)
+			if (rowsInserted > 0) {
 				addToList(emailTemplate);
+			}
 			logger.info("saveEmailTemplate() - Rows Inserted: " + rowsInserted);
 		}
 		return TO_SAVED;
 	}
 
 	public String editSchedules() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("editSchedules() - Entering...");
+		}
 		this.emailTemplate = (EmailTemplateVo) emailTemplates.getRowData();
 		dateList = new ArrayDataModel(emailTemplate.getSchedulesBlob().getDateList());
 		return TO_SCHEDULE_EDIT;
 	}
 	
 	public String saveSchedules() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveSchedules() - Entering...");
+		}
 		int rowsUpdated = getEmailTemplateDao().update(emailTemplate);
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveSchedules() - rows updated: " + rowsUpdated);
+		}
 		return TO_SCHEDULE_SAVED;
 	}
 	
@@ -180,8 +184,9 @@ public class EmailTemplatesBean {
 	}
 	
 	public String deleteEmailTemplates() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteEmailTemplates() - Entering...");
+		}
 		if (emailTemplates == null) {
 			logger.warn("deleteEmailTemplates() - EmailTemplate List is null.");
 			return TO_FAILED;
@@ -193,8 +198,7 @@ public class EmailTemplatesBean {
 			if (vo.isMarkedForDeletion()) {
 				int rowsDeleted = getEmailTemplateDao().deleteByTemplateId(vo.getTemplateId());
 				if (rowsDeleted > 0) {
-					logger.info("deleteEmailTemplates() - EmailTemplate deleted: "
-							+ vo.getTemplateId());
+					logger.info("deleteEmailTemplates() - EmailTemplate deleted: " + vo.getTemplateId());
 				}
 				smtpList.remove(vo);
 			}
@@ -203,8 +207,9 @@ public class EmailTemplatesBean {
 	}
 	
 	public String copyEmailTemplate() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyEmailTemplate() - Entering...");
+		}
 		if (emailTemplates == null) {
 			logger.warn("copyEmailTemplate() - EmailTemplate List is null.");
 			return TO_FAILED;
@@ -227,8 +232,9 @@ public class EmailTemplatesBean {
 	}
 	
 	public String addEmailTemplate() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addEmailTemplate() - Entering...");
+		}
 		reset();
 		this.emailTemplate = new EmailTemplateVo();
 		emailTemplate.setMarkedForEdition(true);
@@ -244,8 +250,9 @@ public class EmailTemplatesBean {
 	}
 	
 	public boolean getAnyTemplatesMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyTemplatesMarkedForDeletion() - Entering...");
+		}
 		if (emailTemplates == null) {
 			logger.warn("getAnyTemplatesMarkedForDeletion() - EmailTemplate List is null.");
 			return false;
@@ -268,39 +275,40 @@ public class EmailTemplatesBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String templateId = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - templateId: " + templateId);
+		}
 		EmailTemplateVo vo = getEmailTemplateDao().getByTemplateId(templateId);
-		if (editMode == true && vo != null && emailTemplate != null
-				&& vo.getRowId() != emailTemplate.getRowId()) {
+		if (editMode == true && vo != null && emailTemplate != null && vo.getRowId() != emailTemplate.getRowId()) {
 			// emailTemplate does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					//"ltj.msgui.messages", "emailTemplateDoesNotExist", null);
-	        		"ltj.msgui.messages", "emailTemplateAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailTemplateAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// emailTemplate already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "emailTemplateAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailTemplateAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 	}
 	
 	public void checkDate(FacesContext context, UIComponent component, Object value) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("checkDate() - date = " + value);
-		if (value == null) return;
+		}
+		if (value == null) {
+			return;
+		}
 		if (value instanceof Date) {
 		    Calendar cal = Calendar.getInstance();
 		    cal.setTime((Date)value);
 			return;
 		}
 		((UIInput)component).setValid(false);
-		FacesMessage message = ltj.msgui.util.Messages.getMessage(
-				"ltj.msgui.messages", "invalidDate", null);
+		FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidDate", null);
 		message.setSeverity(FacesMessage.SEVERITY_ERROR);
 		context.addMessage(component.getClientId(context), message);
 	}
@@ -318,8 +326,8 @@ public class EmailTemplatesBean {
 	 * @param e
 	 */
 	public void fieldValueChanged(ValueChangeEvent e) {
-		logger.info("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": "
-				+ e.getOldValue() + " -> " + e.getNewValue());
+		logger.info("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": " + e.getOldValue()
+				+ " -> " + e.getNewValue());
 		if (emailTemplate != null) {
 			emailTemplate.setListType((String)e.getNewValue());
 		}

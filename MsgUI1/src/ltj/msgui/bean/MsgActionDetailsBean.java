@@ -65,8 +65,7 @@ public class MsgActionDetailsBean {
 	
 	public MsgActionDetailDao getMsgActionDetailDao() {
 		if (msgActionDetailDao == null) {
-			msgActionDetailDao = (MsgActionDetailDao) SpringUtil.getWebAppContext().getBean(
-					"msgActionDetailDao");
+			msgActionDetailDao = (MsgActionDetailDao) SpringUtil.getWebAppContext().getBean("msgActionDetailDao");
 		}
 		return msgActionDetailDao;
 	}
@@ -76,8 +75,9 @@ public class MsgActionDetailsBean {
 	}
 	
 	public String viewMsgActionDetail() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewMsgActionDetail() - Entering...");
+		}
 		if (actionDetails == null) {
 			logger.warn("viewMsgActionDetail() - MsgActionDetail List is null.");
 			return TO_FAILED;
@@ -89,21 +89,20 @@ public class MsgActionDetailsBean {
 		reset();
 		this.actionDetail = (MsgActionDetailVo) actionDetails.getRowData();
 		if (isInfoEnabled) {
-			logger.info("viewMsgActionDetail() - MsgActionDetail to be edited: "
-					+ actionDetail.getActionId());
+			logger.info("viewMsgActionDetail() - MsgActionDetail to be edited: " + actionDetail.getActionId());
 		}
 		actionDetail.setMarkedForEdition(true);
 		editMode = true;
 		if (isDebugEnabled) {
-			logger.debug("viewMsgActionDetail() - MsgActionDetailVo to be passed to jsp: "
-					+ actionDetail);
+			logger.debug("viewMsgActionDetail() - MsgActionDetailVo to be passed to jsp: " + actionDetail);
 		}
 		return TO_EDIT;
 	}
 	
 	public String saveMsgActionDetail() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveMsgActionDetail() - Entering...");
+		}
 		if (actionDetail == null) {
 			logger.warn("saveMsgActionDetail() - MsgActionDetailVo is null.");
 			return TO_FAILED;
@@ -119,8 +118,9 @@ public class MsgActionDetailsBean {
 		}
 		else {
 			int rowsInserted = getMsgActionDetailDao().insert(actionDetail);
-			if (rowsInserted > 0)
+			if (rowsInserted > 0) {
 				addToList(actionDetail);
+			}
 			logger.info("saveMsgActionDetail() - Rows Inserted: " + rowsInserted);
 		}
 		return TO_SAVED;
@@ -133,8 +133,9 @@ public class MsgActionDetailsBean {
 	}
 	
 	public String deleteMsgActionDetails() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteMsgActionDetails() - Entering...");
+		}
 		if (actionDetails == null) {
 			logger.warn("deleteMsgActionDetails() - MsgActionDetail List is null.");
 			return TO_FAILED;
@@ -146,8 +147,7 @@ public class MsgActionDetailsBean {
 			if (vo.isMarkedForDeletion()) {
 				int rowsDeleted = getMsgActionDetailDao().deleteByActionId(vo.getActionId());
 				if (rowsDeleted > 0) {
-					logger.info("deleteMsgActionDetails() - MsgActionDetail deleted: "
-							+ vo.getActionId());
+					logger.info("deleteMsgActionDetails() - MsgActionDetail deleted: " + vo.getActionId());
 				}
 				list.remove(vo);
 			}
@@ -156,8 +156,9 @@ public class MsgActionDetailsBean {
 	}
 	
 	public String copyMsgActionDetail() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyMsgActionDetail() - Entering...");
+		}
 		if (actionDetails == null) {
 			logger.warn("copyMsgActionDetail() - MsgActionDetail List is null.");
 			return TO_FAILED;
@@ -184,8 +185,9 @@ public class MsgActionDetailsBean {
 	}
 	
 	public String addMsgActionDetail() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addMsgActionDetail() - Entering...");
+		}
 		reset();
 		this.actionDetail = new MsgActionDetailVo();
 		actionDetail.setMarkedForEdition(true);
@@ -200,8 +202,9 @@ public class MsgActionDetailsBean {
 	}
 	
 	public boolean getAnyActionDetailsMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyActionDetailsMarkedForDeletion() - Entering...");
+		}
 		if (actionDetails == null) {
 			logger.warn("getAnyActionDetailsMarkedForDeletion() - MsgActionDetail List is null.");
 			return false;
@@ -224,28 +227,30 @@ public class MsgActionDetailsBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String actionDetailId = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - MsgActionDetailKey: " + actionDetailId);
+		}
 		MsgActionDetailVo vo = getMsgActionDetailDao().getByActionId(actionDetailId);
 		if (editMode && vo == null) {
 			// MsgActionDetail does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "MsgActionIdDoesNotExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "MsgActionIdDoesNotExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		if (!editMode && vo != null) {
 			// MsgActionDetail already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "MsgActionIdAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "MsgActionIdAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 	}
 	
 	public String testActionDetail() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("testActionDetail() - Entering...");
+		}
 		if (actionDetail == null) {
 			logger.warn("testActionDetail() - ActionDetailVo is null.");
 			return TO_FAILED;
@@ -271,8 +276,7 @@ public class MsgActionDetailsBean {
 		if (beanId != null && testResult == null) {
 			FacesContext facesCtx = FacesContext.getCurrentInstance();
 			ServletContext sctx = (ServletContext) facesCtx.getExternalContext().getContext();
-			WebApplicationContext ctx = WebApplicationContextUtils
-					.getRequiredWebApplicationContext(sctx);
+			WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(sctx);
 			try {
 				Object bo = ctx.getBean(beanId);
 				if (bo instanceof TaskBaseBo) {

@@ -75,8 +75,9 @@ public class MailingListsBean {
 	}
 	
 	public String viewMailingList() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewMailingList() - Entering...");
+		}
 		if (mailingLists == null) {
 			logger.warn("viewMailingList() - MailingList List is null.");
 			return "mailinglist.failed";
@@ -90,9 +91,9 @@ public class MailingListsBean {
 		logger.info("viewMailingList() - MailingList to be edited: " + mailingList.getListId());
 		mailingList.setMarkedForEdition(true);
 		editMode = true;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewMailingList() - MailingListVo to be passed to jsp: " + mailingList);
-		
+		}
 		return "mailinglist.edit";
 	}
 	
@@ -118,8 +119,9 @@ public class MailingListsBean {
 		}
 		else {
 			int rowsInserted = getMailingListDao().insert(mailingList);
-			if (rowsInserted > 0)
+			if (rowsInserted > 0) {
 				addToList(mailingList);
+			}
 			logger.info("saveMailingList() - Rows Inserted: " + rowsInserted);
 		}
 		return "mailinglist.saved";
@@ -132,8 +134,9 @@ public class MailingListsBean {
 	}
 	
 	public String deleteMailingLists() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteMailingLists() - Entering...");
+		}
 		if (mailingLists == null) {
 			logger.warn("deleteMailingLists() - MailingList List is null.");
 			return "mailinglist.failed";
@@ -154,8 +157,9 @@ public class MailingListsBean {
 	}
 	
 	public String copyMailingList() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyMailingList() - Entering...");
+		}
 		if (mailingLists == null) {
 			logger.warn("copyMailingList() - MailingList List is null.");
 			return "mailinglist.failed";
@@ -182,8 +186,9 @@ public class MailingListsBean {
 	}
 	
 	public String addMailingList() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addMailingList() - Entering...");
+		}
 		reset();
 		this.mailingList = new MailingListVo();
 		mailingList.setMarkedForEdition(true);
@@ -213,8 +218,9 @@ public class MailingListsBean {
 	}
 	
 	public boolean getAnyListsMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyListsMarkedForDeletion() - Entering...");
+		}
 		if (mailingLists == null) {
 			logger.warn("getAnyListsMarkedForDeletion() - MailingList List is null.");
 			return false;
@@ -237,22 +243,22 @@ public class MailingListsBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String listId = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - listId: " + listId);
+		}
 		MailingListVo vo = getMailingListDao().getByListId(listId);
-		if (editMode == true && vo != null && mailingList != null
-				&& vo.getRowId() != mailingList.getRowId()) {
+		if (editMode == true && vo != null && mailingList != null && vo.getRowId() != mailingList.getRowId()) {
 			// mailingList does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-	        		"ltj.msgui.messages", "mailingListAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "mailingListAlreadyExist",
+					null);
 					//"ltj.msgui.messages", "mailingListDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// mailingList already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "mailingListAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "mailingListAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -260,13 +266,14 @@ public class MailingListsBean {
 	
 	public void validateEmailAddress(FacesContext context, UIComponent component, Object value) {
 		String emailAddr = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateEmailAddress() - addr: " + emailAddr);
+		}
 		if (!StringUtil.isEmpty(emailAddr)) {
 			if (!EmailAddrUtil.isRemoteOrLocalEmailAddress(emailAddr)) {
 				// invalid email address
-		        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-						"ltj.msgui.messages", "invalidEmailAddress", null);
+				FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidEmailAddress",
+						null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -275,13 +282,14 @@ public class MailingListsBean {
 	
 	public void validateAccountUserName(FacesContext context, UIComponent component, Object value) {
 		String acctUserName = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateAccountUserName() - account user name: " + acctUserName);
+		}
 		if (!StringUtil.isEmpty(acctUserName)) {
 			if (!acctUserName.matches("^(?i)([a-z0-9\\.\\_\\%\\+\\-])+$")) {
 				// invalid email address
-		        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-						"ltj.msgui.messages", "invalidAccountUserName", null);
+				FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages",
+						"invalidAccountUserName", null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -301,9 +309,10 @@ public class MailingListsBean {
 	 * @param e
 	 */
 	public void fieldValueChanged(ValueChangeEvent e) {
-		if (isDebugEnabled)
-			logger.debug("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": "
-					+ e.getOldValue() + " -> " + e.getNewValue());
+		if (isDebugEnabled) {
+			logger.debug("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": " + e.getOldValue()
+					+ " -> " + e.getNewValue());
+		}
 	}
 	
 	void reset() {

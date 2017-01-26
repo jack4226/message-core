@@ -82,8 +82,9 @@ public class EmailVariablesBean {
 	}
 	
 	public String viewEmailVariable() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewEmailVariable() - Entering...");
+		}
 		if (emailVariables == null) {
 			logger.warn("viewEmailVariable() - EmailVariable List is null.");
 			return TO_FAILED;
@@ -94,20 +95,19 @@ public class EmailVariablesBean {
 		}
 		reset();
 		this.emailVariable = (EmailVariableVo) emailVariables.getRowData();
-		logger.info("viewEmailVariable() - EmailVariable to be edited: "
-				+ emailVariable.getVariableName());
+		logger.info("viewEmailVariable() - EmailVariable to be edited: " + emailVariable.getVariableName());
 		emailVariable.setMarkedForEdition(true);
 		editMode = true;
 		if (isDebugEnabled) {
-			logger.debug("viewEmailVariable() - EmailVariableVo to be passed to jsp: "
-					+ emailVariable);
+			logger.debug("viewEmailVariable() - EmailVariableVo to be passed to jsp: " + emailVariable);
 		}
 		return TO_EDIT;
 	}
 	
 	public String testEmailVariable() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("testEmailVariable() - Entering...");
+		}
 		if (emailVariable == null) {
 			logger.warn("testEmailVariable() - EmailVariableVo is null.");
 			return TO_FAILED;
@@ -139,8 +139,9 @@ public class EmailVariablesBean {
 	}
 	
 	public String saveEmailVariable() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveEmailVariable() - Entering...");
+		}
 		if (emailVariable == null) {
 			logger.warn("saveEmailVariable() - EmailVariableVo is null.");
 			return TO_FAILED;
@@ -173,8 +174,7 @@ public class EmailVariablesBean {
 		}
 		// validate variable loops
 		try {
-			RenderUtil.checkVariableLoop(emailVariable.getDefaultValue(), emailVariable
-					.getVariableName());
+			RenderUtil.checkVariableLoop(emailVariable.getDefaultValue(), emailVariable.getVariableName());
 		}
 		catch (DataValidationException e) {
 			actionFailure = e.getMessage();
@@ -191,8 +191,9 @@ public class EmailVariablesBean {
 		}
 		else {
 			int rowsInserted = getEmailVariableDao().insert(emailVariable);
-			if (rowsInserted > 0)
+			if (rowsInserted > 0) {
 				addToList(emailVariable);
+			}
 			logger.info("saveEmailVariable() - Rows Inserted: " + rowsInserted);
 		}
 		return TO_SAVED;
@@ -205,8 +206,9 @@ public class EmailVariablesBean {
 	}
 	
 	public String deleteEmailVariables() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteEmailVariables() - Entering...");
+		}
 		if (emailVariables == null) {
 			logger.warn("deleteEmailVariables() - EmailVariable List is null.");
 			return TO_FAILED;
@@ -218,8 +220,7 @@ public class EmailVariablesBean {
 			if (vo.isMarkedForDeletion()) {
 				int rowsDeleted = getEmailVariableDao().deleteByName(vo.getVariableName());
 				if (rowsDeleted > 0) {
-					logger.info("deleteEmailVariables() - EmailVariable deleted: "
-							+ vo.getVariableName());
+					logger.info("deleteEmailVariables() - EmailVariable deleted: " + vo.getVariableName());
 				}
 				smtpList.remove(vo);
 			}
@@ -228,8 +229,9 @@ public class EmailVariablesBean {
 	}
 	
 	public String copyEmailVariable() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyEmailVariable() - Entering...");
+		}
 		if (emailVariables == null) {
 			logger.warn("copyEmailVariable() - EmailVariable List is null.");
 			return TO_FAILED;
@@ -256,8 +258,9 @@ public class EmailVariablesBean {
 	}
 	
 	public String addEmailVariable() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addEmailVariable() - Entering...");
+		}
 		reset();
 		this.emailVariable = new EmailVariableVo();
 		emailVariable.setMarkedForEdition(true);
@@ -271,8 +274,9 @@ public class EmailVariablesBean {
 	}
 	
 	public boolean getAnyListsMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyListsMarkedForDeletion() - Entering...");
+		}
 		if (emailVariables == null) {
 			logger.warn("getAnyListsMarkedForDeletion() - EmailVariable List is null.");
 			return false;
@@ -295,20 +299,21 @@ public class EmailVariablesBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String variableName = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - variableName: " + variableName);
+		}
 		EmailVariableVo vo = getEmailVariableDao().getByName(variableName);
 		if (editMode == true && vo == null) {
 			// emailVariable does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "emailVariableDoesNotExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailVariableDoesNotExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// emailVariable already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "emailVariableAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailVariableAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -327,9 +332,10 @@ public class EmailVariablesBean {
 	 * @param e
 	 */
 	public void fieldValueChanged(ValueChangeEvent e) {
-		if (isDebugEnabled)
-			logger.debug("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": "
-					+ e.getOldValue() + " -> " + e.getNewValue());
+		if (isDebugEnabled) {
+			logger.debug("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": " + e.getOldValue()
+					+ " -> " + e.getNewValue());
+		}
 	}
 	
 	void reset() {
@@ -344,7 +350,7 @@ public class EmailVariablesBean {
 			return new ArrayList<EmailVariableVo>();
 		}
 		else {
-			return (List<EmailVariableVo>)emailVariables.getWrappedData();
+			return (List<EmailVariableVo>) emailVariables.getWrappedData();
 		}
 	}
 	

@@ -140,10 +140,12 @@ public class EmailAddrsListBean {
     
 	public int getLastPageRow() {
 		int lastRow = dataTable.getFirst() + dataTable.getRows();
-		if (lastRow > dataTable.getRowCount())
+		if (lastRow > dataTable.getRowCount()) {
 			return dataTable.getRowCount();
-		else
+		}
+		else {
 			return lastRow;
+		}
 	}
 	
 	public PagingVo getPagingVo() {
@@ -162,7 +164,9 @@ public class EmailAddrsListBean {
 	
 	private void resetPagingVo() {
 		pagingVo.resetPageContext();
-		if (dataTable != null) dataTable.setFirst(0);
+		if (dataTable != null) {
+			dataTable.setFirst(0);
+		}
 		refresh();
 	}
 	
@@ -178,8 +182,9 @@ public class EmailAddrsListBean {
 	}
 
 	public MailingListDao getMailingListDao() {
-		if (mailingListDao == null)
+		if (mailingListDao == null) {
 			mailingListDao = (MailingListDao) SpringUtil.getWebAppContext().getBean("mailingListDao");
+		}
 		return mailingListDao;
 	}
 
@@ -188,8 +193,9 @@ public class EmailAddrsListBean {
 	}
 
 	public String viewEmailAddr() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewEmailAddr() - Entering...");
+		}
 		if (emailAddrs == null) {
 			logger.warn("viewEmailAddr() - EmailAddr List is null.");
 			return TO_FAILED;
@@ -211,8 +217,9 @@ public class EmailAddrsListBean {
 	}
 
 	public String saveEmailAddr() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveEmailAddr() - Entering...");
+		}
 		if (emailAddr == null) {
 			logger.warn("saveEmailAddr() - EmailAddrVo is null.");
 			return TO_FAILED;
@@ -245,8 +252,9 @@ public class EmailAddrsListBean {
 	}
 
 	public String deleteEmailAddrs() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteEmailAddrs() - Entering...");
+		}
 		if (emailAddrs == null) {
 			logger.warn("deleteEmailAddrs() - EmailAddr List is null.");
 			return TO_FAILED;
@@ -268,8 +276,9 @@ public class EmailAddrsListBean {
 	}
 
 	public String saveEmailAddrs() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveEmailAddrs() - Entering...");
+		}
 		if (emailAddrs == null) {
 			logger.warn("saveEmailAddrs() - EmailAddr List is null.");
 			return TO_FAILED;
@@ -301,14 +310,16 @@ public class EmailAddrsListBean {
 	}
 
 	public String addEmailAddr() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addEmailAddr() - Entering...");
+		}
 		reset();
 		this.emailAddr = new EmailAddrVo();
 		emailAddr.setMarkedForEdition(true);
 		emailAddr.setUpdtUserId(Constants.DEFAULT_USER_ID);
-		if (mailingLists != null)
+		if (mailingLists != null) {
 			mailingLists.clear();
+		}
 		editMode = false;
 		return TO_EDIT;
 	}
@@ -319,8 +330,9 @@ public class EmailAddrsListBean {
 	}
 
 	public boolean getAnyEmailAddrsMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyEmailAddrsMarkedForDeletion() - Entering...");
+		}
 		if (emailAddrs == null) {
 			logger.warn("getAnyEmailAddrsMarkedForDeletion() - EmailAddr List is null.");
 			return false;
@@ -343,22 +355,21 @@ public class EmailAddrsListBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String address = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - address: " + address);
+		}
 		EmailAddrVo vo = getEmailAddrDao().getByAddress(address);
-		if (editMode == true && vo != null && emailAddr != null
-				&& vo.getEmailAddrId() != emailAddr.getEmailAddrId()) {
+		if (editMode == true && vo != null && emailAddr != null && vo.getEmailAddrId() != emailAddr.getEmailAddrId()) {
 			// emailAddr does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					//"ltj.msgui.messages", "emailAddrDoesNotExist", null);
-	        		"ltj.msgui.messages", "emailAddrAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailAddrAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// emailAddr already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "emailAddrAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailAddrAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

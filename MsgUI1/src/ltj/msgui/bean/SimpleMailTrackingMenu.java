@@ -148,16 +148,22 @@ public class SimpleMailTrackingMenu {
 	}
 	
 	public void checkEmailAddress(FacesContext context, UIComponent component, Object value) {
-		if (value == null) return;
-		if (!(value instanceof String)) return;
+		if (value == null) {
+			return;
+		}
+		if (!(value instanceof String)) {
+			return;
+		}
 		
 		String addr = (String) value;
-		if (addr.trim().length() == 0) return;
+		if (addr.trim().length() == 0) {
+			return;
+		}
 		
 		EmailAddrVo vo = getEmailAddrDao().getByAddress(addr);
 		if (vo == null) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "emailAddressNotFound", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailAddressNotFound",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 	        throw new ValidatorException(message);
 		}
@@ -166,19 +172,24 @@ public class SimpleMailTrackingMenu {
 	public SearchFieldsVo getSearchFieldVo() {
 		SearchFieldsVo vo = new SearchFieldsVo();
 		SearchFieldsVo.MsgType msgType = null;
-		if (SearchFieldsVo.MsgType.All.toString().equals(functionKey))
+		if (SearchFieldsVo.MsgType.All.toString().equals(functionKey)) {
 			msgType = SearchFieldsVo.MsgType.All;
-		else if (SearchFieldsVo.MsgType.Received.toString().equals(functionKey))
+		}
+		else if (SearchFieldsVo.MsgType.Received.toString().equals(functionKey)) {
 			msgType = SearchFieldsVo.MsgType.Received;
-		else if (SearchFieldsVo.MsgType.Sent.toString().equals(functionKey))
+		}
+		else if (SearchFieldsVo.MsgType.Sent.toString().equals(functionKey)) {
 			msgType = SearchFieldsVo.MsgType.Sent;
-		else if (SearchFieldsVo.MsgType.Draft.toString().equals(functionKey))
+		}
+		else if (SearchFieldsVo.MsgType.Draft.toString().equals(functionKey)) {
 			msgType = SearchFieldsVo.MsgType.Draft;
-		else if (SearchFieldsVo.MsgType.Closed.toString().equals(functionKey))
+		}
+		else if (SearchFieldsVo.MsgType.Closed.toString().equals(functionKey)) {
 			msgType = SearchFieldsVo.MsgType.Closed;
-		else if (SearchFieldsVo.MsgType.Trash.toString().equals(functionKey))
+		}
+		else if (SearchFieldsVo.MsgType.Trash.toString().equals(functionKey)) {
 			msgType = SearchFieldsVo.MsgType.Trash;
-		
+		}
 		vo.setMsgType(msgType);
 		vo.setRuleName(ruleName);
 		vo.setFromAddr(fromAddress);

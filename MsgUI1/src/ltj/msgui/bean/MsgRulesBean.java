@@ -72,16 +72,14 @@ public class MsgRulesBean {
 
 	protected RuleElementDao getRuleElementDao() {
 		if (ruleElementDao == null) {
-			ruleElementDao = (RuleElementDao) SpringUtil.getWebAppContext().getBean(
-					"ruleElementDao");
+			ruleElementDao = (RuleElementDao) SpringUtil.getWebAppContext().getBean("ruleElementDao");
 		}
 		return ruleElementDao;
 	}
 
 	protected RuleSubRuleMapDao getRuleSubRuleMapDao() {
 		if (ruleSubRuleMapDao == null) {
-			ruleSubRuleMapDao = (RuleSubRuleMapDao) SpringUtil.getWebAppContext().getBean(
-					"ruleSubRuleMapDao");
+			ruleSubRuleMapDao = (RuleSubRuleMapDao) SpringUtil.getWebAppContext().getBean("ruleSubRuleMapDao");
 		}
 		return ruleSubRuleMapDao;
 	}
@@ -118,8 +116,9 @@ public class MsgRulesBean {
 	}
 	
 	public String viewRuleLogic() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewRuleLogic() - Entering...");
+		}
 		if (ruleLogics == null) {
 			logger.warn("viewRuleLogic() - RuleLogic List is null.");
 			return TO_FAILED;
@@ -137,15 +136,16 @@ public class MsgRulesBean {
 		logger.info("viewRuleLogic() - RuleLogic to be edited: " + ruleLogic.getRuleName());
 		ruleLogic.setMarkedForEdition(true);
 		editMode = true;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewRuleLogic() - RuleLogicVo to be passed to jsp: " + ruleLogic);
-		
+		}
 		return "msgrule.edit";
 	}
 	
 	public String viewSubRules() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewSubRules() - Entering...");
+		}
 		if (ruleLogics == null) {
 			logger.warn("viewSubRules() - RuleLogic List is null.");
 			return TO_FAILED;
@@ -162,8 +162,9 @@ public class MsgRulesBean {
 	}
 	
 	public String viewMsgActions() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewMsgActions() - Entering...");
+		}
 		if (ruleLogics == null) {
 			logger.warn("viewMsgActions() - RuleLogic List is null.");
 			return TO_FAILED;
@@ -180,8 +181,9 @@ public class MsgRulesBean {
 	}
 	
 	public String viewRuleElement() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewRuleElement() - Entering...");
+		}
 		if (ruleElements == null) {
 			logger.warn("viewRuleElement() - RuleElement List is null.");
 			return TO_FAILED;
@@ -198,8 +200,9 @@ public class MsgRulesBean {
 	}
 	
 	public String doneRuleElementEdit() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("doneRuleElementEdit() - Entering...");
+		}
 		if (ruleElement == null) {
 			logger.warn("doneRuleElementEdit() - RuleElementVo is null.");
 			return TO_FAILED;
@@ -228,8 +231,9 @@ public class MsgRulesBean {
 	}
 	
 	public String saveRuleElement() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveRuleElement() - Entering...");
+		}
 		if (ruleElement == null) {
 			logger.warn("saveRuleElement() - RuleElementVo is null.");
 			return TO_FAILED;
@@ -240,8 +244,7 @@ public class MsgRulesBean {
 			ruleLogic.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
 		// first delete the rule element
-		getRuleElementDao().deleteByPrimaryKey(ruleElement.getRuleName(),
-				ruleElement.getElementSeq());
+		getRuleElementDao().deleteByPrimaryKey(ruleElement.getRuleName(), ruleElement.getElementSeq());
 		// insert the record
 		int rowsInserted = getRuleElementDao().insert(ruleElement);
 		logger.info("saveRuleElement() - Element Rows Deleted: " + rowsInserted);
@@ -249,8 +252,9 @@ public class MsgRulesBean {
 	}
 
 	public String saveRuleLogic() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveRuleLogic() - Entering...");
+		}
 		if (ruleLogic == null) {
 			logger.warn("saveRuleLogic() - RuleLogicVo is null.");
 			return TO_FAILED;
@@ -306,8 +310,9 @@ public class MsgRulesBean {
 	}
 	
 	public String deleteRuleLogics() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteRuleLogics() - Entering...");
+		}
 		if (ruleLogics == null) {
 			logger.warn("deleteRuleLogics() - RuleLogic List is null.");
 			return TO_FAILED;
@@ -328,8 +333,9 @@ public class MsgRulesBean {
 	}
 	
 	public String testRuleLogic() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("testRuleLogic() - Entering...");
+		}
 		if (ruleLogic == null) {
 			logger.warn("testRuleLogic() - RuleLogicVo is null.");
 			return TO_FAILED;
@@ -338,8 +344,9 @@ public class MsgRulesBean {
 	}
 	
 	public String copyRuleLogic() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyRuleLogic() - Entering...");
+		}
 		if (ruleLogics == null) {
 			logger.warn("copyRuleLogic() - RuleLogic List is null.");
 			return TO_FAILED;
@@ -378,8 +385,9 @@ public class MsgRulesBean {
 	}
 	
 	public String addRuleLogic() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addRuleLogic() - Entering...");
+		}
 		reset();
 		ruleElements = null;
 		this.ruleLogic = new RuleLogicVo();
@@ -394,8 +402,9 @@ public class MsgRulesBean {
 	}
 	
 	public String cancelEdit() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("cancelEdit() - Entering...");
+		}
 		refresh();
 		return "msgrule.canceled";
 	}
@@ -431,15 +440,17 @@ public class MsgRulesBean {
 	}
 	
 	public String moveUp() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("moveUp() - Entering...");
+		}
 		moveUpDownRule(-1);
 		return TO_SELF;
 	}
 	
 	public String moveDown() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("moveDown() - Entering...");
+		}
 		moveUpDownRule(1);
 		return TO_SELF;
 	}
@@ -477,8 +488,9 @@ public class MsgRulesBean {
 	}
 	
 	public DataModel getRuleElements() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getRuleElement() - Entering...");
+		}
 		if (ruleLogic == null) {
 			logger.warn("getRuleElements() - RuleLogicVo is null.");
 			return null;
@@ -498,8 +510,9 @@ public class MsgRulesBean {
 	}
 	
 	public String deleteRuleElements() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteRuleElements() - Entering...");
+		}
 		if (ruleElements == null) {
 			logger.warn("deleteRuleElements() - RuleElement List is null.");
 			return TO_FAILED;
@@ -509,11 +522,10 @@ public class MsgRulesBean {
 		for (int i = 0; i < list.size(); i++) {
 			RuleElementVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getRuleElementDao().deleteByPrimaryKey(vo.getRuleName(),
-						vo.getElementSeq());
+				int rowsDeleted = getRuleElementDao().deleteByPrimaryKey(vo.getRuleName(), vo.getElementSeq());
 				if (rowsDeleted > 0) {
-					logger.info("deleteRuleElements() - RuleElement deleted: " + vo.getRuleName()
-							+ ":" + vo.getElementSeq());
+					logger.info("deleteRuleElements() - RuleElement deleted: " + vo.getRuleName() + ":"
+							+ vo.getElementSeq());
 				}
 				list.remove(vo);
 			}
@@ -522,8 +534,9 @@ public class MsgRulesBean {
 	}
 	
 	public String copyRuleElement() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyRuleElement() - Entering...");
+		}
 		if (ruleElements == null) {
 			logger.warn("copyRuleElement() - RuleElement List is null.");
 			return TO_FAILED;
@@ -552,8 +565,9 @@ public class MsgRulesBean {
 	}
 	
 	public String addRuleElement() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addRuleElement() - Entering...");
+		}
 		reset();
 		List<RuleElementVo> list = getRuleElementList();
 		RuleElementVo vo = new RuleElementVo();
@@ -590,8 +604,9 @@ public class MsgRulesBean {
 	}
 	
 	public DataModel getSubRules() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getSubRules() - Entering...");
+		}
 		if (ruleLogic == null) {
 			logger.warn("getSubRules() - RuleLogicVo is null.");
 			return null;
@@ -611,8 +626,9 @@ public class MsgRulesBean {
 	}
 	
 	public String deleteSubRules() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteSubRules() - Entering...");
+		}
 		if (subRules == null) {
 			logger.warn("deleteSubRules() - SubRule List is null.");
 			return TO_FAILED;
@@ -622,11 +638,9 @@ public class MsgRulesBean {
 		for (int i = 0; i < list.size(); i++) {
 			RuleSubRuleMapVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getRuleSubRuleMapDao().deleteByPrimaryKey(vo.getRuleName(),
-						vo.getSubRuleName());
+				int rowsDeleted = getRuleSubRuleMapDao().deleteByPrimaryKey(vo.getRuleName(), vo.getSubRuleName());
 				if (rowsDeleted > 0) {
-					logger.info("deleteSubRules() - SubRule deleted: " + vo.getRuleName()
-							+ ":" + vo.getSubRuleName());
+					logger.info("deleteSubRules() - SubRule deleted: " + vo.getRuleName() + ":" + vo.getSubRuleName());
 				}
 				list.remove(vo);
 			}
@@ -635,8 +649,9 @@ public class MsgRulesBean {
 	}
 
 	public String copySubRule() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copySubRule() - Entering...");
+		}
 		if (subRules == null) {
 			logger.warn("copySubRule() - SubRule List is null.");
 			return TO_FAILED;
@@ -665,8 +680,9 @@ public class MsgRulesBean {
 	}
 	
 	public String addSubRule() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addSubRule() - Entering...");
+		}
 		reset();
 		List<RuleSubRuleMapVo> list = getSubRuleList();
 		RuleSubRuleMapVo vo = new RuleSubRuleMapVo();
@@ -676,8 +692,9 @@ public class MsgRulesBean {
 	}
 	
 	public String saveSubRules() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveSubRules() - Entering...");
+		}
 		if (ruleLogic == null) {
 			logger.warn("saveSubRules() - RuleLogicVo is null.");
 			return TO_FAILED;
@@ -691,8 +708,7 @@ public class MsgRulesBean {
 		if (hasDuplicateSubRules(list)) {
 			testResult = "duplicateSubRuleFound";
 			/* Add to Face message queue. Not working. */
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", testResult, null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", testResult, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
@@ -708,29 +724,32 @@ public class MsgRulesBean {
 	}
 
 	public String moveUpSubRule() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("moveUpSubRule() - Entering...");
+		}
 		moveSubRule(-1);
 		return TO_SELF;
 	}
 	
 	public String moveDownSubRule() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("moveDownSubRule() - Entering...");
+		}
 		moveSubRule(1);
 		return TO_SELF;
 	}
 	
 	protected boolean hasDuplicateSubRules(List<RuleSubRuleMapVo> list) {
-		if (list == null || list.size() <= 1)
+		if (list == null || list.size() <= 1) {
 			return false;
-		
+		}
 		for (int i=0; i<list.size(); i++) {
 			RuleSubRuleMapVo vo = list.get(i);
 			for (int j=i+1; j<list.size(); j++) {
 				RuleSubRuleMapVo vo2 = list.get(j);
-				if (vo.getSubRuleName().equals(vo2.getSubRuleName()))
+				if (vo.getSubRuleName().equals(vo2.getSubRuleName())) {
 					return true;
+				}
 			}
 		}
 		return false;
@@ -767,8 +786,9 @@ public class MsgRulesBean {
 	}
 	
 	public DataModel getMsgActions() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getMsgActions() - Entering...");
+		}
 		if (ruleLogic == null) {
 			logger.warn("getMsgActions() - RuleLogicVo is null.");
 			return null;
@@ -793,8 +813,9 @@ public class MsgRulesBean {
 	}
 	
 	public String deleteMsgActions() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteMsgActions() - Entering...");
+		}
 		if (msgActions == null) {
 			logger.warn("deleteMsgActions() - MsgAction List is null.");
 			return TO_FAILED;
@@ -804,11 +825,11 @@ public class MsgRulesBean {
 		for (int i = 0; i < list.size(); i++) {
 			MsgActionUIVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getMsgActionDao().deleteByUniqueKey(vo.getRuleName(),
-						vo.getActionSeq(), vo.getStartTime(), vo.getClientId());
+				int rowsDeleted = getMsgActionDao().deleteByUniqueKey(vo.getRuleName(), vo.getActionSeq(),
+						vo.getStartTime(), vo.getClientId());
 				if (rowsDeleted > 0) {
-					logger.info("deleteMsgActions() - MsgAction deleted: " + vo.getRuleName() + "."
-							+ vo.getActionSeq() + "." + vo.getStartTime() + "." + vo.getClientId());
+					logger.info("deleteMsgActions() - MsgAction deleted: " + vo.getRuleName() + "." + vo.getActionSeq()
+							+ "." + vo.getStartTime() + "." + vo.getClientId());
 				}
 				list.remove(vo);
 			}
@@ -817,8 +838,9 @@ public class MsgRulesBean {
 	}
 
 	public String copyMsgAction() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyMsgAction() - Entering...");
+		}
 		if (msgActions == null) {
 			logger.warn("copyMsgAction() - MsgAction List is null.");
 			return TO_FAILED;
@@ -849,8 +871,9 @@ public class MsgRulesBean {
 	}
 	
 	public String addMsgAction() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addMsgAction() - Entering...");
+		}
 		reset();
 		List<MsgActionUIVo> list = getMsgActionList();
 		MsgActionUIVo vo = new MsgActionUIVo(new MsgActionVo());
@@ -863,8 +886,9 @@ public class MsgRulesBean {
 	}
 	
 	public String saveMsgActions() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveMsgActions() - Entering...");
+		}
 		if (ruleLogic == null) {
 			logger.warn("saveMsgActions() - RuleLogicVo is null.");
 			return TO_FAILED;
@@ -897,8 +921,9 @@ public class MsgRulesBean {
 	 */
 	
 	public boolean getAnyRulesMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyRulesMarkedForDeletion() - Entering...");
+		}
 		List<RuleLogicVo> list = getRuleLogicList();
 		for (Iterator<RuleLogicVo> it=list.iterator(); it.hasNext();) {
 			RuleLogicVo vo = it.next();
@@ -910,8 +935,9 @@ public class MsgRulesBean {
 	}
 
 	public boolean getAnyElementsMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyElementsMarkedForDeletion() - Entering...");
+		}
 		List<RuleElementVo> list = getRuleElementList();
 		for (Iterator<RuleElementVo> it=list.iterator(); it.hasNext();) {
 			RuleElementVo vo = it.next();
@@ -923,8 +949,9 @@ public class MsgRulesBean {
 	}
 
 	public boolean getAnySubRulesMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnySubRulesMarkedForDeletion() - Entering...");
+		}
 		List<RuleSubRuleMapVo> list = getSubRuleList();
 		for (Iterator<RuleSubRuleMapVo> it=list.iterator(); it.hasNext();) {
 			RuleSubRuleMapVo vo = it.next();
@@ -936,8 +963,9 @@ public class MsgRulesBean {
 	}
 
 	public boolean getAnyMsgActionsMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyMsgActionsMarkedForDeletion() - Entering...");
+		}
 		List<MsgActionUIVo> list = getMsgActionList();
 		for (Iterator<MsgActionUIVo> it=list.iterator(); it.hasNext();) {
 			MsgActionUIVo vo = it.next();
@@ -949,11 +977,11 @@ public class MsgRulesBean {
 	}
 
 	public boolean getHasSubRules() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getHasSubRules() - Entering...");
+		}
 		if (ruleLogic != null) {
-			List<RuleSubRuleMapVo> list = getRuleSubRuleMapDao().getByRuleName(
-					ruleLogic.getRuleName());
+			List<RuleSubRuleMapVo> list = getRuleSubRuleMapDao().getByRuleName(ruleLogic.getRuleName());
 			if (list.size() > 0)
 				return true;
 		}
@@ -961,13 +989,15 @@ public class MsgRulesBean {
 	}
 
 	public boolean getHasMsgActions() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getHasMsgActions() - Entering...");
+		}
 		if (ruleLogics != null) {
 			RuleLogicVo vo = (RuleLogicVo) ruleLogics.getRowData();
 			List<MsgActionVo> list = getMsgActionDao().getByRuleName(vo.getRuleName());
-			if (list.size() > 0)
+			if (list.size() > 0) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -983,8 +1013,9 @@ public class MsgRulesBean {
 	 * @param value
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - ruleName: " + value);
+		}
 		String ruleName = (String) value;
 		int seq;
 		if (ruleLogic != null) {
@@ -997,15 +1028,15 @@ public class MsgRulesBean {
 		RuleLogicVo vo = getRuleLogicDao().getByPrimaryKey(ruleName, seq);
 		if (editMode == true && vo == null) {
 			// ruleLogic does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "ruleLogicDoesNotExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "ruleLogicDoesNotExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// ruleLogic already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "ruleLogicAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "ruleLogicAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -1018,15 +1049,15 @@ public class MsgRulesBean {
 	 * @param value
 	 */
 	public void validateRegex(FacesContext context, UIComponent component, Object value) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateRegex() - regex: " + value);
+		}
 		String regex = (String) value;
 		try {
 			Pattern.compile(regex);
 		}
 		catch (PatternSyntaxException e) {
-			FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "invalidRegex", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidRegex", null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			//context.addMessage(component.getClientId(context), message);
 			throw new ValidatorException(message);
@@ -1041,16 +1072,16 @@ public class MsgRulesBean {
 	 * @param value
 	 */
 	public void checkStartDate(FacesContext context, UIComponent component, Object value) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("checkStartDate() - startDate = " + value);
+		}
 		if (value instanceof Date) {
 		    Calendar cal = Calendar.getInstance();
 		    cal.setTime((Date)value);
 			return;
 		}
 		((UIInput)component).setValid(false);
-		FacesMessage message = ltj.msgui.util.Messages.getMessage(
-				"ltj.msgui.messages", "invalidDate", null);
+		FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidDate", null);
 		message.setSeverity(FacesMessage.SEVERITY_ERROR);
 		context.addMessage(component.getClientId(context), message);
 	}

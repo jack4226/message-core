@@ -44,8 +44,9 @@ public class ChangePasswordBean {
 	}
 	
 	private UserDao getUserDao() {
-		if (userDao == null)
+		if (userDao == null) {
 			userDao = (UserDao) SpringUtil.getWebAppContext().getBean("userDao");
+		}
 		return userDao;
 	}
 	

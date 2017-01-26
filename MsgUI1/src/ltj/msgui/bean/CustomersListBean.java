@@ -93,15 +93,15 @@ public class CustomersListBean {
 			logger.info("PagingVo After: " + pagingVo);
 			pagingVo.setPageAction(PagingVo.PageAction.CURRENT);
 			//customers = new ListDataModel(customerList);
-			customers = new PagedListDataModel(customerList, pagingVo.getRowCount(), pagingVo
-					.getPageSize());
+			customers = new PagedListDataModel(customerList, pagingVo.getRowCount(), pagingVo.getPageSize());
 		}
 		return customers;
 	}
 
 	public String viewCustomer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewCustomer() - Entering...");
+		}
 		if (customers == null) {
 			logger.warn("viewCustomer() - Customer List is null.");
 			return TO_FAILED;
@@ -175,10 +175,12 @@ public class CustomersListBean {
     
 	public int getLastPageRow() {
 		int lastRow = dataTable.getFirst() + dataTable.getRows();
-		if (lastRow > dataTable.getRowCount())
+		if (lastRow > dataTable.getRowCount()) {
 			return dataTable.getRowCount();
-		else
+		}
+		else {
 			return lastRow;
+		}
 	}
 	
 	public PagingVo getPagingVo() {
@@ -209,7 +211,9 @@ public class CustomersListBean {
 
 	private void resetPagingVo() {
 		pagingVo.resetPageContext();
-		if (dataTable != null) dataTable.setFirst(0);
+		if (dataTable != null) {
+			dataTable.setFirst(0);
+		}
 		refresh();
 	}
 	
@@ -228,8 +232,9 @@ public class CustomersListBean {
 	}
 	
 	public String deleteCustomers() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteCustomers() - Entering...");
+		}
 		if (customers == null) {
 			logger.warn("deleteCustomers() - Customer List is null.");
 			return TO_FAILED;
@@ -251,8 +256,9 @@ public class CustomersListBean {
 	}
 
 	public String saveCustomer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveCustomer() - Entering...");
+		}
 		if (customer == null) {
 			logger.warn("saveCustomer() - Customer Vo is null.");
 			return TO_FAILED;
@@ -287,13 +293,14 @@ public class CustomersListBean {
 	
 	@SuppressWarnings("unchecked")
 	private void addToList(CustomerVo vo) {
-		List<CustomerVo> list = (List<CustomerVo>)customers.getWrappedData();
+		List<CustomerVo> list = (List<CustomerVo>) customers.getWrappedData();
 		list.add(vo);
 	}
 
 	public String copyCustomer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyCustomer() - Entering...");
+		}
 		if (customers == null) {
 			logger.warn("copyCustomer() - Customer List is null.");
 			return TO_FAILED;
@@ -324,8 +331,9 @@ public class CustomersListBean {
 	}
 	
 	public String addCustomer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addCustomer() - Entering...");
+		}
 		reset();
 		this.customer = new CustomerVo();
 		customer.setMarkedForEdition(true);
@@ -340,8 +348,9 @@ public class CustomersListBean {
 	}
 
 	public boolean getAnyCustomersMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyCustomersMarkedForDeletion() - Entering...");
+		}
 		if (customers == null) {
 			logger.warn("getAnyCustomersMarkedForDeletion() - Customer List is null.");
 			return false;
@@ -364,21 +373,20 @@ public class CustomersListBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String custId = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - CustId: " + custId);
+		}
 		CustomerVo vo = getCustomerDao().getByCustId(custId);
-		if (editMode == true && vo != null && customer != null
-				&& vo.getRowId() != customer.getRowId()) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					//"ltj.msgui.messages", "customerDoesNotExist", null);
-	        		"ltj.msgui.messages", "customerAlreadyExist", null);
+		if (editMode == true && vo != null && customer != null && vo.getRowId() != customer.getRowId()) {
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "customerAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// customer already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "customerAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "customerAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -386,21 +394,22 @@ public class CustomersListBean {
 	
 	public void validateEmailAddress(FacesContext context, UIComponent component, Object value) {
 		String emailAddr = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateEmailAddress() - addr: " + emailAddr);
+		}
 		if (!StringUtil.isEmpty(emailAddr)) {
 			if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 				// invalid email address
-		        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-						"ltj.msgui.messages", "invalidEmailAddress", null);
+				FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidEmailAddress",
+						null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
 			else {
 				CustomerVo vo = getCustomerDao().getByEmailAddress(emailAddr);
 				if (vo != null && customer != null && !vo.getCustId().equals(customer.getCustId())) {
-					FacesMessage message = ltj.msgui.util.Messages.getMessage(
-							"ltj.msgui.messages", "emailAddressAlreadyUsed", null);
+					FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages",
+							"emailAddressAlreadyUsed", null);
 					message.setSeverity(FacesMessage.SEVERITY_WARN);
 					throw new ValidatorException(message);
 				}
@@ -410,22 +419,22 @@ public class CustomersListBean {
 	
 	public void validateSsnNumber(FacesContext context, UIComponent component, Object value) {
 		String ssn = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateSsnNumber() - SSN: " + ssn);
+		}
 		if (!StringUtil.isEmpty(ssn) && !SsnNumberUtil.isValidSSN(ssn)) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "invalidSsnNumber", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidSsnNumber", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 	}
 
 	public void validateDate(FacesContext context, UIComponent component, Object value) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateDate() - date = " + value);
+		}
 		if (value != null && !(value instanceof Date)) {
-			FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "invalidDate", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidDate", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -433,11 +442,11 @@ public class CustomersListBean {
 	
 	public void validatePhoneNumber(FacesContext context, UIComponent component, Object value) {
 		String phone = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePhoneNumber() - Phone Number: " + phone);
+		}
 		if (!StringUtil.isEmpty(phone) && !PhoneNumberUtil.isValidPhoneNumber(phone)) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "invalidPhoneNumber", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidPhoneNumber", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -445,15 +454,16 @@ public class CustomersListBean {
 
 	public void validateMibileCarrier(FacesContext context, UIComponent component, Object value) {
 		String carrier = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateMibileCarrier() - Phone Number: " + carrier);
+		}
 		if (!StringUtil.isEmpty(carrier)) {
 			try {
 				MobileCarrier.getByValue(carrier);
 			}
 			catch (IllegalArgumentException e) {
-		        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-						"ltj.msgui.messages", "invalidMobileCarrier", null);
+				FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidMobileCarrier",
+						null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -462,11 +472,11 @@ public class CustomersListBean {
 	
 	public void validateZipCode5(FacesContext context, UIComponent component, Object value) {
 		String zip5 = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateZipCode5() - Zip Code: " + zip5);
+		}
 		if (!StringUtil.isEmpty(zip5) && !zip5.matches("\\d{5}")) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-	        		"ltj.msgui.messages", "invalideZipCode", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalideZipCode", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -474,11 +484,11 @@ public class CustomersListBean {
 
 	public void validateZipCode4(FacesContext context, UIComponent component, Object value) {
 		String zip4 = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateZipCode4() - Zip Code: " + zip4);
+		}
 		if (!StringUtil.isEmpty(zip4) && !zip4.matches("\\d{4}")) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-	        		"ltj.msgui.messages", "invalideZipCode", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalideZipCode", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

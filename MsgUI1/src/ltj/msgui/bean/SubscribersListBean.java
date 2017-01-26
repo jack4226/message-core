@@ -59,8 +59,7 @@ public class SubscribersListBean {
 			pagingVo.setRowCount(rowCount);
 		}
 		if (subscribers == null || !pagingVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<SubscriptionVo> subscriberList = getSubscriptionDao().getSubscribersWithPaging(
-					listId, pagingVo);
+			List<SubscriptionVo> subscriberList = getSubscriptionDao().getSubscribersWithPaging(listId, pagingVo);
 			/* set keys for paging */
 			if (!subscriberList.isEmpty()) {
 				SubscriptionVo firstRow = (SubscriptionVo) subscriberList.get(0);
@@ -75,8 +74,7 @@ public class SubscribersListBean {
 			logger.info("PagingVo After: " + pagingVo);
 			pagingVo.setPageAction(PagingVo.PageAction.CURRENT);
 			//subscribers = new ListDataModel(subscriberList);
-			subscribers = new PagedListDataModel(subscriberList, pagingVo.getRowCount(), pagingVo
-					.getPageSize());
+			subscribers = new PagedListDataModel(subscriberList, pagingVo.getRowCount(), pagingVo.getPageSize());
 		}
 		return subscribers;
 	}
@@ -135,10 +133,12 @@ public class SubscribersListBean {
     
 	public int getLastPageRow() {
 		int lastRow = dataTable.getFirst() + dataTable.getRows();
-		if (lastRow > dataTable.getRowCount())
+		if (lastRow > dataTable.getRowCount()) {
 			return dataTable.getRowCount();
-		else
+		}
+		else {
 			return lastRow;
+		}
 	}
 	
 	public PagingVo getPagingVo() {
@@ -163,8 +163,7 @@ public class SubscribersListBean {
 	
 	public SubscriptionDao getSubscriptionDao() {
 		if (subscriberDao == null) {
-			subscriberDao = (SubscriptionDao) SpringUtil.getWebAppContext().getBean(
-					"subscriptionDao");
+			subscriberDao = (SubscriptionDao) SpringUtil.getWebAppContext().getBean("subscriptionDao");
 		}
 		return subscriberDao;
 	}
@@ -185,8 +184,9 @@ public class SubscribersListBean {
 	}
 
 	public String deleteSubscribers() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteSubscribers() - Entering...");
+		}
 		if (subscribers == null) {
 			logger.warn("deleteSubscribers() - Subscriber List is null.");
 			return TO_FAILED;
@@ -212,8 +212,9 @@ public class SubscribersListBean {
 	}
 
 	public String saveSubscribers() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveSubscribers() - Entering...");
+		}
 		if (subscribers == null) {
 			logger.warn("saveSubscribers() - Subscriber List is null.");
 			return TO_FAILED;
@@ -239,8 +240,9 @@ public class SubscribersListBean {
 	}
 
 	public String addSubscriber() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addSubscriber() - Entering...");
+		}
 		reset();
 		this.subscriber = new SubscriptionVo();
 		subscriber.setListId(listId);
@@ -256,8 +258,9 @@ public class SubscribersListBean {
 	}
 
 	public boolean getAnySubscribersMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnySubscribersMarkedForDeletion() - Entering...");
+		}
 		if (subscribers == null) {
 			logger.warn("getAnySubscribersMarkedForDeletion() - Subscriber List is null.");
 			return false;
@@ -280,20 +283,21 @@ public class SubscribersListBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String subId = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - subscriberId: " + subId);
+		}
 		SubscriptionVo vo = getSubscriptionDao().getByAddrAndListId(subId, listId);
 		if (editMode == true && vo == null) {
 			// subscriber does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "subscriberDoesNotExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "subscriberDoesNotExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// subscriber already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "subscriberAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "subscriberAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

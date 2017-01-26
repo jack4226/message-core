@@ -110,8 +110,9 @@ public class EmailProfileBean {
 	}
 	
 	public String viewSiteProfile() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewSiteProfile() - Entering...");
+		}
 		if (siteProfiles == null) {
 			logger.warn("viewSiteProfile() - SiteProfile List is null.");
 			return "siteprofile.failed";
@@ -125,15 +126,16 @@ public class EmailProfileBean {
 		logger.info("viewSiteProfile() - Site to be edited: " + client.getClientId());
 		client.setMarkedForEdition(true);
 		editMode = true;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewSiteProfile() - ClientVo to be passed to jsp: " + client);
-		
+		}
 		return "siteprofile.edit";
 	}
 	
 	public String saveClient() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveClient() - Entering...");
+		}
 		if (client == null) {
 			logger.warn("saveClient() - ClientVo is null.");
 			return "siteprofile.failed";
@@ -149,8 +151,9 @@ public class EmailProfileBean {
 		}
 		else {
 			int rowsInserted = getClientDao().insert(client);
-			if (rowsInserted > 0)
+			if (rowsInserted > 0) {
 				addToList(client);
+			}
 			logger.info("saveClient() - Rows Inserted: " + rowsInserted);
 		}
 		return "siteprofile.saved";
@@ -163,8 +166,9 @@ public class EmailProfileBean {
 	}
 	
 	public String deleteSiteProfiles() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteSiteProfiles() - Entering...");
+		}
 		if (siteProfiles == null) {
 			logger.warn("deleteSiteProfiles - SiteProfile List is null.");
 			return "siteprofile.failed";
@@ -185,8 +189,9 @@ public class EmailProfileBean {
 	}
 	
 	public String copySiteProfile() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copySiteProfile() - Entering...");
+		}
 		if (siteProfiles == null) {
 			logger.warn("copySiteProfile() - Client List is null.");
 			return "siteprofile.failed";
@@ -213,8 +218,9 @@ public class EmailProfileBean {
 	}
 	
 	public String addSiteProfile() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addSiteProfile() - Entering...");
+		}
 		reset();
 		this.client = new ClientVo();
 		client.setMarkedForEdition(true);
@@ -228,8 +234,9 @@ public class EmailProfileBean {
 	}
 	
 	public boolean getAnySitesMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnySitesMarkedForDeletion() - Entering...");
+		}
 		if (siteProfiles == null) {
 			logger.warn("getAnySitesMarkedForDeletion() - Client List is null.");
 			return false;
@@ -246,8 +253,9 @@ public class EmailProfileBean {
 	
 	public void validateEmailAddress(FacesContext context, UIComponent component, Object value) {
 		String emailAddr = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateEmailAddress() - addr: " + emailAddr);
+		}
 		if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 			// invalid email address
 	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
@@ -259,11 +267,12 @@ public class EmailProfileBean {
 	
 	public void validateEmailLocalPart(FacesContext context, UIComponent component, Object value) {
 		String localPart = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateEmailLocalPart() - local part: " + localPart);
+		}
 		if (!EmailAddrUtil.isValidEmailLocalPart(localPart)) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "invalidEmailLocalPart", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidEmailLocalPart",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -271,19 +280,20 @@ public class EmailProfileBean {
 	
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String clientId = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - clientId: " + clientId);
+		}
 		ClientVo vo = getClientDao().getByClientId(clientId);
 		if (editMode == true && vo != null && client != null && vo.getRowId() != client.getRowId()) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-	        		"ltj.msgui.messages", "siteProfileAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "siteProfileAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// mailingList already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "siteProfileAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "siteProfileAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

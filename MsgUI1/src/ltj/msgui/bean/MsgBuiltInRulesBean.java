@@ -27,8 +27,9 @@ public class MsgBuiltInRulesBean extends MsgRulesBean {
 	}
 	
 	public String viewMsgActions() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewMsgActions() - Entering...");
+		}
 		if (ruleLogics == null) {
 			logger.warn("viewMsgActions() - RuleLogic List is null.");
 			return "msgrule.failed";

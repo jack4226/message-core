@@ -66,8 +66,9 @@ public class UserAccountsBean {
 	}
 	
 	public String viewUser() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewUser() - Entering...");
+		}
 		if (users == null) {
 			logger.warn("viewUser() - User List is null.");
 			return "useraccount.failed";
@@ -81,15 +82,16 @@ public class UserAccountsBean {
 		logger.info("viewUser() - User to be edited: " + user.getUserId());
 		user.setMarkedForEdition(true);
 		editMode = true;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewUser() - UserVo to be passed to jsp: " + user);
-		
+		}
 		return "useraccount.edit";
 	}
 	
 	public String saveUser() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveUser() - Entering...");
+		}
 		if (user == null) {
 			logger.warn("saveUser() - UserVo is null.");
 			return "useraccount.failed";
@@ -111,8 +113,9 @@ public class UserAccountsBean {
 		}
 		else {
 			int rowsInserted = getUserDao().insert(user);
-			if (rowsInserted > 0)
+			if (rowsInserted > 0) {
 				addToList(user);
+			}
 			logger.info("saveUser() - Rows Inserted: " + rowsInserted);
 		}
 		return "useraccount.saved";
@@ -125,8 +128,9 @@ public class UserAccountsBean {
 	}
 	
 	public String deleteUsers() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteUsers() - Entering...");
+		}
 		if (users == null) {
 			logger.warn("deleteUsers() - User List is null.");
 			return "useraccount.failed";
@@ -147,8 +151,9 @@ public class UserAccountsBean {
 	}
 	
 	public String copyUser() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyUser() - Entering...");
+		}
 		if (users == null) {
 			logger.warn("copyUser() - User List is null.");
 			return "useraccount.failed";
@@ -177,8 +182,9 @@ public class UserAccountsBean {
 	}
 	
 	public String addUser() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addUser() - Entering...");
+		}
 		reset();
 		this.user = new UserVo();
 		user.setMarkedForEdition(true);
@@ -192,8 +198,9 @@ public class UserAccountsBean {
 	}
 	
 	public boolean getAnyUsersMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyUsersMarkedForDeletion() - Entering...");
+		}
 		if (users == null) {
 			logger.warn("getAnyUsersMarkedForDeletion() - User List is null.");
 			return false;
@@ -216,20 +223,19 @@ public class UserAccountsBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String userId = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - userId: " + userId);
+		}
 		UserVo vo = getUserDao().getByPrimaryKey(userId);
 		if (editMode == true && vo == null) {
 			// user does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "userDoesNotExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "userDoesNotExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// user already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "userAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "userAlreadyExist", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -248,9 +254,10 @@ public class UserAccountsBean {
 	 * @param e
 	 */
 	public void fieldValueChanged(ValueChangeEvent e) {
-		if (isDebugEnabled)
-			logger.debug("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": "
-					+ e.getOldValue() + " -> " + e.getNewValue());
+		if (isDebugEnabled) {
+			logger.debug("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": " + e.getOldValue()
+					+ " -> " + e.getNewValue());
+		}
 	}
 	
 	void reset() {

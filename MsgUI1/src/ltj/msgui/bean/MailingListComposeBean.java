@@ -79,16 +79,14 @@ public class MailingListComposeBean {
 	
 	public SessionUploadDao getSessionUploadDao() {
 		if (sessionUploadDao == null) {
-			sessionUploadDao = (SessionUploadDao) SpringUtil.getWebAppContext().getBean(
-					"sessionUploadDao");
+			sessionUploadDao = (SessionUploadDao) SpringUtil.getWebAppContext().getBean("sessionUploadDao");
 		}
 		return sessionUploadDao;
 	}
 	
 	public MailingListDao getMailingListDao() {
 		if (mailingListDao == null) {
-			mailingListDao = (MailingListDao) SpringUtil.getWebAppContext().getBean(
-					"mailingListDao");
+			mailingListDao = (MailingListDao) SpringUtil.getWebAppContext().getBean("mailingListDao");
 		}
 		return mailingListDao;
 	}
@@ -96,8 +94,7 @@ public class MailingListComposeBean {
 
 	public EmailTemplateDao getEmailTemplateDao() {
 		if (emailTemplateDao == null) {
-			emailTemplateDao = (EmailTemplateDao) SpringUtil.getWebAppContext().getBean(
-					"emailTemplateDao");
+			emailTemplateDao = (EmailTemplateDao) SpringUtil.getWebAppContext().getBean("emailTemplateDao");
 		}
 		return emailTemplateDao;
 	}
@@ -142,8 +139,9 @@ public class MailingListComposeBean {
 		boolean valid = FacesUtil.isSessionIdValid();
 		logger.info("retrieveUploadFiles() - SessionId: " + sessionId + ", Valid? " + valid);
 		uploads = getSessionUploadDao().getBySessionId4Web(sessionId);
-		if (isDebugEnabled && uploads != null)
+		if (isDebugEnabled && uploads != null) {
 			logger.debug("retrieveUploadFiles() - files retrieved: " + uploads.size());
+		}
 		return uploads;
 	}
 	
@@ -162,8 +160,7 @@ public class MailingListComposeBean {
 				}
 			}
 			int rowsDeleted = getSessionUploadDao().deleteByPrimaryKey(id, sessionSeq);
-			logger.info("removeUploadFile() - rows deleted: " + rowsDeleted + ", file name: "
-					+ name);
+			logger.info("removeUploadFile() - rows deleted: " + rowsDeleted + ", file name: " + name);
 		}
 		catch (RuntimeException e) {
 			logger.error("RuntimeException caught", e);
@@ -283,14 +280,14 @@ public class MailingListComposeBean {
 			mBean.setTo(to);
 			mBean.setSubject(msgSubject);
 			// process the message
-			TaskBaseBo taskBo = (TaskBaseBo) SpringUtil.getWebAppContext().getBean(
-					"assignRuleNameBo");
+			TaskBaseBo taskBo = (TaskBaseBo) SpringUtil.getWebAppContext().getBean("assignRuleNameBo");
 			taskBo.setTaskArguments(mBean.getRuleName());
 			Object mailsSent = taskBo.process(mBean);
 			if (mailsSent != null && mailsSent instanceof Long) {
 				logger.info("sendMessage() - Broadcast Message queued: " + mailsSent);
-				if (isDebugEnabled)
+				if (isDebugEnabled) {
 					logger.debug("sendMessage() - Broadcast message: " + LF + mBean);
+				}
 			}
 		}
 		catch (DataValidationException e) {
@@ -322,8 +319,7 @@ public class MailingListComposeBean {
 			if (addrVo != null) {
 				previewAddr = addrVo.getEmailAddr();
 			}
-			TemplateRenderVo renderVo = RenderUtil.renderEmailText(previewAddr, null, msgSubject,
-					msgBody, listId);
+			TemplateRenderVo renderVo = RenderUtil.renderEmailText(previewAddr, null, msgSubject, msgBody, listId);
 			renderedBody = getDisplayBody(renderVo.getBody());
 			renderedSubj = renderVo.getSubject();
 		}
@@ -356,8 +352,8 @@ public class MailingListComposeBean {
 		String fromAddr = (String) value;
 		if (!isValidEmailAddress(fromAddr)) {
 			// invalid email address
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "invalidEmailAddress", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidEmailAddress",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

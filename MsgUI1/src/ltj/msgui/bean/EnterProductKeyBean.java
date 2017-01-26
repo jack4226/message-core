@@ -26,8 +26,9 @@ public class EnterProductKeyBean {
 	}
 	
 	private ClientDao getClientDao() {
-		if (clientDao == null)
+		if (clientDao == null) {
 			clientDao = (ClientDao) SpringUtil.getWebAppContext().getBean("clientDao");
+		}
 		return clientDao;
 	}
     

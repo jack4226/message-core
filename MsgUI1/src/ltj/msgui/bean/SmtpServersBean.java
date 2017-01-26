@@ -80,8 +80,9 @@ public class SmtpServersBean {
 	}
 	
 	public String viewSmtpServer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewSmtpServer() - Entering...");
+		}
 		if (smtpServers == null) {
 			logger.warn("viewSmtpServer() - SmtpServer List is null.");
 			return "smtpserver.failed";
@@ -95,15 +96,16 @@ public class SmtpServersBean {
 		logger.info("viewSmtpServer() - SmtpServer to be edited: " + smtpServer.getSmtpHost());
 		smtpServer.setMarkedForEdition(true);
 		editMode = true;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewSmtpServer() - SmtpConnVo to be passed to jsp: " + smtpServer);
-		
+		}
 		return "smtpserver.edit";
 	}
 	
 	public String saveSmtpServer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveSmtpServer() - Entering...");
+		}
 		if (smtpServer == null) {
 			logger.warn("saveSmtpServer() - SmtpConnVo is null.");
 			return "smtpserver.failed";
@@ -119,8 +121,9 @@ public class SmtpServersBean {
 		}
 		else {
 			int rowsInserted = getSmtpServerDao().insert(smtpServer);
-			if (rowsInserted > 0)
+			if (rowsInserted > 0) {
 				addToList(smtpServer);
+			}
 			logger.info("saveSmtpServer() - Rows Inserted: " + rowsInserted);
 		}
 		return "smtpserver.saved";
@@ -133,8 +136,9 @@ public class SmtpServersBean {
 	}
 	
 	public String deleteSmtpServers() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteSmtpServers() - Entering...");
+		}
 		if (smtpServers == null) {
 			logger.warn("deleteSmtpServers() - SmtpServer List is null.");
 			return "smtpserver.failed";
@@ -155,8 +159,9 @@ public class SmtpServersBean {
 	}
 	
 	public String testSmtpServer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("testSmtpServer() - Entering...");
+		}
 		if (smtpServer == null) {
 			logger.warn("testSmtpServer() - SmtpConnVo is null.");
 			return "smtpserver.failed";
@@ -215,8 +220,9 @@ public class SmtpServersBean {
 	}
 	
 	public String copySmtpServer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copySmtpServer() - Entering...");
+		}
 		if (smtpServers == null) {
 			logger.warn("copySmtpServer() - SmtpServer List is null.");
 			return "smtpserver.failed";
@@ -244,8 +250,9 @@ public class SmtpServersBean {
 	}
 	
 	public String addSmtpServer() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addSmtpServer() - Entering...");
+		}
 		reset();
 		this.smtpServer = new SmtpConnVo();
 		smtpServer.setMarkedForEdition(true);
@@ -269,8 +276,9 @@ public class SmtpServersBean {
 	}
 	
 	public boolean getAnyServersMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyServersMarkedForDeletion() - Entering...");
+		}
 		if (smtpServers == null) {
 			logger.warn("getAnyServersMarkedForDeletion() - SmtpServer List is null.");
 			return false;
@@ -293,20 +301,21 @@ public class SmtpServersBean {
 	 */
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String serverName = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - serverName: " + serverName);
+		}
 		SmtpConnVo vo = getSmtpServerDao().getByPrimaryKey(serverName);
 		if (editMode == true && vo == null) {
 			// smtpServer does not exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "smtpServerDoesNotExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "smtpServerDoesNotExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// smtpServer already exist
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "smtpServerAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "smtpServerAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -349,9 +358,10 @@ public class SmtpServersBean {
 	 * @param e
 	 */
 	public void fieldValueChanged(ValueChangeEvent e) {
-		if (isDebugEnabled)
-			logger.debug("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": "
-					+ e.getOldValue() + " -> " + e.getNewValue());
+		if (isDebugEnabled) {
+			logger.debug("fieldValueChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": " + e.getOldValue()
+					+ " -> " + e.getNewValue());
+		}
 	}
 	
 	void reset() {

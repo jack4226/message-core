@@ -102,10 +102,12 @@ public class BroadcastMsgListBean {
     
 	public int getLastPageRow() {
 		int lastRow = dataTable.getFirst() + dataTable.getRows();
-		if (lastRow > dataTable.getRowCount())
+		if (lastRow > dataTable.getRowCount()) {
 			return dataTable.getRowCount();
-		else
+		}
+		else {
 			return lastRow;
+		}
 	}
 	
 	public PagingVo getPagingVo() {
@@ -128,7 +130,9 @@ public class BroadcastMsgListBean {
 	
 	public void resetPagingVo() {
 		pagingVo.resetPageContext();
-		if (dataTable != null) dataTable.setFirst(0);
+		if (dataTable != null) {
+			dataTable.setFirst(0);
+		}
 		refresh();
 	}
 
@@ -154,8 +158,9 @@ public class BroadcastMsgListBean {
 	}
 
 	public String viewBroadcastMsg() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewBroadcastMsg() - Entering...");
+		}
 		if (broadcasts == null) {
 			logger.warn("viewBroadcastMsg() - Broadcast List is null.");
 			return TO_FAILED;
@@ -177,8 +182,9 @@ public class BroadcastMsgListBean {
 	}
 
 	public String deleteBroadcasts() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteBroadcasts() - Entering...");
+		}
 		if (broadcasts == null) {
 			logger.warn("deleteBroadcasts() - Broadcast List is null.");
 			return TO_FAILED;
@@ -200,8 +206,9 @@ public class BroadcastMsgListBean {
 	}
 
 	public String saveBroadcasts() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveBroadcasts() - Entering...");
+		}
 		if (broadcasts == null) {
 			logger.warn("saveBroadcasts() - Broadcast List is null.");
 			return TO_FAILED;
@@ -230,8 +237,9 @@ public class BroadcastMsgListBean {
 	}
 
 	public boolean getAnyBroadcastsMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyBroadcastsMarkedForDeletion() - Entering...");
+		}
 		if (broadcasts == null) {
 			logger.warn("getAnyBroadcastsMarkedForDeletion() - Broadcast List is null.");
 			return false;

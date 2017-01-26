@@ -67,14 +67,14 @@ public class GettingStarted {
 				break;
 			}
 		}
-		logger.info("selectFunction() - functionKey selected: " + functionKey + ", value: "
-				+ navigationKeys[i]);
+		logger.info("selectFunction() - functionKey selected: " + functionKey + ", value: " + navigationKeys[i]);
 		return null; // navigationKeys[i];
 	}
 
 	public String getFunctionKey() {
-		if (functionKey == null)
+		if (functionKey == null) {
 			functionKey = menuTooltips[0];
+		}
 		return functionKey;
 	}
 
@@ -91,8 +91,9 @@ public class GettingStarted {
 	}
 
 	public String getJspPageLink() {
-		if (jspPageLink == null)
+		if (jspPageLink == null) {
 			jspPageLink = jspPageLinks[0];
+		}
 		return jspPageLink;
 	}
 

@@ -135,8 +135,9 @@ public class LoginBean {
 	}
 
 	public UserDao getUserDao() {
-		if (userDao == null)
+		if (userDao == null) {
 			userDao = (UserDao) SpringUtil.getWebAppContext().getBean("userDao");
+		}
 		return userDao;
 	}
 

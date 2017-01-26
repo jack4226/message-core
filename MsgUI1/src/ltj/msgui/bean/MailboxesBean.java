@@ -85,8 +85,9 @@ public class MailboxesBean {
 	}
 
 	public String viewMailBox() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewMailBox() - Entering...");
+		}
 		if (mailBoxes == null) {
 			logger.warn("viewMailBox() - MailBox List is null.");
 			return TO_FAILED;
@@ -98,20 +99,20 @@ public class MailboxesBean {
 		reset();
 		this.mailbox = (MailBoxVo) mailBoxes.getRowData();
 		if (isInfoEnabled) {
-			logger.info("viewMailBox() - Mailbox to be edited: " + mailbox.getUserId() + "@"
-					+ mailbox.getHostName());
+			logger.info("viewMailBox() - Mailbox to be edited: " + mailbox.getUserId() + "@" + mailbox.getHostName());
 		}
 		mailbox.setMarkedForEdition(true);
 		editMode = true;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("viewMailBox() - MailBoxVo to be passed to jsp: " + mailbox);
-		
+		}
 		return TO_EDIT;
 	}
 	
 	public String saveMailbox() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("saveMailbox() - Entering...");
+		}
 		if (mailbox == null) {
 			logger.warn("saveMailbox() - MailBoxVo is null.");
 			return TO_FAILED;
@@ -130,8 +131,9 @@ public class MailboxesBean {
 		}
 		else {
 			int rowsInserted = getMailBoxDao().insert(mailbox);
-			if (rowsInserted > 0)
+			if (rowsInserted > 0) {
 				addToList(mailbox);
+			}
 			logger.info("saveMailBox() - Rows Inserted: " + rowsInserted);
 		}
 		return TO_SAVED;
@@ -144,8 +146,9 @@ public class MailboxesBean {
 	}
 	
 	public String deleteMailBoxes() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("deleteMailBoxes() - Entering...");
+		}
 		if (mailBoxes == null) {
 			logger.warn("deleteMailBoxes() - MailBox List is null.");
 			return TO_FAILED;
@@ -155,11 +158,9 @@ public class MailboxesBean {
 		for (int i=0; i<mboxList.size(); i++) {
 			MailBoxVo vo = mboxList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getMailBoxDao().deleteByPrimaryKey(vo.getUserId(),
-						vo.getHostName());
+				int rowsDeleted = getMailBoxDao().deleteByPrimaryKey(vo.getUserId(), vo.getHostName());
 				if (rowsDeleted > 0) {
-					logger.info("deleteMailBoxes() - Mailbox deleted: " + vo.getUserId() + "@"
-							+ vo.getHostName());
+					logger.info("deleteMailBoxes() - Mailbox deleted: " + vo.getUserId() + "@" + vo.getHostName());
 				}
 				mboxList.remove(vo);
 			}
@@ -168,8 +169,9 @@ public class MailboxesBean {
 	}
 	
 	public String testMailbox() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("testMailbox() - Entering...");
+		}
 		if (mailbox == null) {
 			logger.warn("testMailbox() - MailBoxVo is null.");
 			return TO_FAILED;
@@ -193,8 +195,7 @@ public class MailboxesBean {
 			// Get a Store object
 			store = session.getStore(mailbox.getProtocol());
 			// connect to the store
-			store.connect(mailbox.getHostName(), mailbox.getPortNumber(),
-					mailbox.getUserId(), mailbox.getUserPswd());
+			store.connect(mailbox.getHostName(), mailbox.getPortNumber(), mailbox.getUserId(), mailbox.getUserPswd());
 			
 			testResult = "mailboxTestSuccess";
 		}
@@ -211,16 +212,16 @@ public class MailboxesBean {
 			}
 		}
 		/* Add to Face message queue. Not working. */
-        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-				"ltj.msgui.messages", testResult, null);
+		FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", testResult, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		
 		return null;
 	}
 	
 	public String copyMailbox() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("copyMailbox() - Entering...");
+		}
 		if (mailBoxes == null) {
 			logger.warn("copyMailbox() - MailBox List is null.");
 			return TO_FAILED;
@@ -249,8 +250,9 @@ public class MailboxesBean {
 	}
 	
 	public String addMailbox() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addMailbox() - Entering...");
+		}
 		reset();
 		this.mailbox = new MailBoxVo();
 		mailbox.setMarkedForEdition(true);
@@ -280,8 +282,9 @@ public class MailboxesBean {
 	}
 	
 	public boolean getAnyMailBoxsMarkedForDeletion() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getAnyMailBoxsMarkedForDeletion() - Entering...");
+		}
 		if (mailBoxes == null) {
 			logger.warn("getAnyMailBoxsMarkedForDeletion() - MailBox List is null.");
 			return false;
@@ -298,27 +301,28 @@ public class MailboxesBean {
 
 	public void validatePrimaryKey(FacesContext context, UIComponent component, Object value) {
 		String userId = (String) value;
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - UserId: " + userId);
+		}
 		MailBoxVo vo = (MailBoxVo) getMailBoxDao().getByPrimaryKey(userId, mailbox.getHostName());
-		if (editMode == true && vo != null && mailbox != null
-				&& vo.getRowId() != mailbox.getRowId()) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "mailboxAlreadyExist", null);
+		if (editMode == true && vo != null && mailbox != null && vo.getRowId() != mailbox.getRowId()) {
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "mailboxAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
-	        FacesMessage message = ltj.msgui.util.Messages.getMessage(
-					"ltj.msgui.messages", "mailboxAlreadyExist", null);
+			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "mailboxAlreadyExist",
+					null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 	}
 	
 	private String validatePrimaryKey(String hostName, String userId) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - hostName/userId: " + hostName + "/" + userId);
+		}
 		MailBoxVo vo = (MailBoxVo) getMailBoxDao().getByPrimaryKey(userId, hostName);
 		if (editMode == true && vo != null && vo.getRowId() != mailbox.getRowId()) {
 			// mailbox does not exist
@@ -344,8 +348,8 @@ public class MailboxesBean {
 	 * @param e
 	 */
 	public void hostNameOrUserIdChanged(ValueChangeEvent e) {
-		logger.info("hostNameOrUserIdChanged(ValueChangeEvent) - " + e.getComponent().getId()
-				+ ": " + e.getOldValue() + " -> " + e.getNewValue());
+		logger.info("hostNameOrUserIdChanged(ValueChangeEvent) - " + e.getComponent().getId() + ": " + e.getOldValue()
+				+ " -> " + e.getNewValue());
 		//FacesContext.getCurrentInstance().renderResponse();
 	}
 	
