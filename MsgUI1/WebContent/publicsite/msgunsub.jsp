@@ -18,8 +18,7 @@
 		try {
 			EmailAddrVo addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrId));
 			if (addrVo != null) {
-				rowsUpdated += getSubscriptionDao(ctx).updateClickCount(
-						addrVo.getEmailAddrId(), listId);
+				rowsUpdated += getSubscriptionDao(ctx).updateClickCount(addrVo.getEmailAddrId(), listId);
 			}
 		}
 		catch (NumberFormatException e) {
@@ -39,8 +38,7 @@
 		try {
 			MsgClickCountsVo countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
 			if (countVo != null) {
-				rowsUpdated += getMsgClickCountsDao(ctx).updateUnsubscribeCount(
-						countVo.getMsgId(), 1);
+				rowsUpdated += getMsgClickCountsDao(ctx).updateUnsubscribeCount(countVo.getMsgId(), 1);
 			}
 		}
 		catch (NumberFormatException e) {

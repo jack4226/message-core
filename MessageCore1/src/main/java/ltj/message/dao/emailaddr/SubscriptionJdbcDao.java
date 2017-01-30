@@ -35,6 +35,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	 * Set Subscribed field to "Yes". Called when an subscription is received
 	 * from an email address.
 	 */
+	@Override
 	public int subscribe(long addrId, String listId) {
 		SubscriptionVo vo = getByPrimaryKey(addrId, listId);
 		int rowsAffected = 0;
@@ -54,6 +55,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsAffected;
 	}
 	
+	@Override
 	public int subscribe(String addr, String listId) {
 		EmailAddrVo addrVo = getEmailAddrDao().findByAddress(addr);
 		return subscribe(addrVo.getEmailAddrId(), listId);
@@ -63,6 +65,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	 * Set Subscribed field to "No". Called when a removal request is received
 	 * from either an email address or a public subscription request web page.
 	 */
+	@Override
 	public int unsubscribe(long addrId, String listId) {
 		SubscriptionVo vo = getByPrimaryKey(addrId, listId);
 		int rowsAffected = 0;
@@ -75,6 +78,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsAffected;
 	}
 
+	@Override
 	public int unsubscribe(String addr, String listId) {
 		EmailAddrVo addrVo = getEmailAddrDao().getByAddress(addr);
 		if (addrVo != null) {
@@ -89,6 +93,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	 * Set Subscribed field to "Pending". Called when a subscription is received
 	 * from a public subscription request web page.
 	 */
+	@Override
 	public int optInRequest(long addrId, String listId) {
 		SubscriptionVo vo = getByPrimaryKey(addrId, listId);
 		int rowsAffected = 0;
@@ -109,6 +114,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsAffected;
 	}
 	
+	@Override
 	public int optInRequest(String addr, String listId) {
 		EmailAddrVo addrVo = getEmailAddrDao().findByAddress(addr);
 		return optInRequest(addrVo.getEmailAddrId(), listId);
@@ -118,6 +124,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	 * Set Subscribed field to "Yes". Called when a subscription is received
 	 * from public subscription confirmation web page.
 	 */
+	@Override
 	public int optInConfirm(long addrId, String listId) {
 		SubscriptionVo vo = getByPrimaryKey(addrId, listId);
 		int rowsAffected = 0;
@@ -130,6 +137,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsAffected;
 	}
 	
+	@Override
 	public int optInConfirm(String addr, String listId) {
 		EmailAddrVo addrVo = getEmailAddrDao().findByAddress(addr);
 		return optInConfirm(addrVo.getEmailAddrId(), listId);
@@ -138,6 +146,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and ", " and ",
 		" and ", " and ", " and ", " and " };
 	
+	@Override
 	public int getSubscriberCount(String listId, PagingVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(listId, vo, parms);
@@ -150,6 +159,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowCount;
 	}
 	
+	@Override
 	public List<SubscriptionVo> getSubscribersWithPaging(String listId, PagingVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(listId, vo, parms);
@@ -254,6 +264,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return whereSql;
 	}
 	
+	@Override
 	public List<SubscriptionVo> getSubscribers(String listId) {
 		String sql = 
 			"select a.EmailAddrId, " +
@@ -283,6 +294,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return list;
 	}
 	
+	@Override
 	public List<SubscriptionVo> getSubscribersWithCustomerRecord(String listId) {
 		String sql = 
 			"select a.EmailAddrId, " +
@@ -312,6 +324,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return list;
 	}
 	
+	@Override
 	public List<SubscriptionVo> getSubscribersWithoutCustomerRecord(String listId) {
 		String sql = 
 			"select a.EmailAddrId, " +
@@ -338,6 +351,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return list;
 	}
 	
+	@Override
 	public SubscriptionVo getByPrimaryKey(long addrId, String listId) {
 		String sql = "select a.*, " +
 				" b.EmailAddr, " +
@@ -356,6 +370,24 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		}
 	}
 	
+	@Override
+	public SubscriptionVo getRandomRecord() {
+		String sql = 
+				"select * " +
+				"from " +
+					"Subscription where EmailAddrId >= (RAND() * (select max(EmailAddrId) from Subscription)) order by EmailAddrId limit 1 ";
+			
+		List<SubscriptionVo> list = getJdbcTemplate().query(sql,
+				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
+		if (list.size() > 0) {
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
+	}
+	
+	@Override
 	public SubscriptionVo getByAddrAndListId(String addr, String listId) {
 		String sql = "SELECT a.*, " +
 				" b.EmailAddr, " +
@@ -375,6 +407,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 
 	}
 	
+	@Override
 	public List<SubscriptionVo> getByAddrId(long addrId) {
 		String sql = "select a.*, " +
 				" b.EmailAddr, " +
@@ -388,6 +421,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return list;
 	}
 	
+	@Override
 	public List<SubscriptionVo> getByListId(String listId) {
 		String sql = "select a.*, " +
 				" b.EmailAddr, " +
@@ -401,6 +435,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return list;
 	}
 
+	@Override
 	public int update(SubscriptionVo subscriptionVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(subscriptionVo);
 		String sql = MetaDataUtil.buildUpdateStatement("Subscription", subscriptionVo);
@@ -408,6 +443,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int updateSentCount(long emailAddrId, String listId) {
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(new Timestamp(new java.util.Date().getTime()));
@@ -423,6 +459,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int updateOpenCount(long emailAddrId, String listId) {
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(new Timestamp(new java.util.Date().getTime()));
@@ -438,6 +475,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int updateClickCount(long emailAddrId, String listId) {
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(new Timestamp(new java.util.Date().getTime()));
@@ -453,6 +491,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long addrid, String listId) {
 		String sql = "delete from Subscription where EmailAddrId=? and ListId=?";
 		Object[] parms = new Object[] {addrid, listId};
@@ -460,6 +499,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByAddrId(long addrId) {
 		String sql = "delete from Subscription where EmailAddrId=?";
 		Object[] parms = new Object[] {addrId};
@@ -467,6 +507,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByListId(String listId) {
 		String sql = "delete from Subscription where ListId=?";
 		Object[] parms = new Object[] {listId};
@@ -474,6 +515,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(SubscriptionVo subscriptionVo) {
 		if (subscriptionVo.getCreateTime()==null) {
 			subscriptionVo.setCreateTime(new Timestamp(System.currentTimeMillis()));

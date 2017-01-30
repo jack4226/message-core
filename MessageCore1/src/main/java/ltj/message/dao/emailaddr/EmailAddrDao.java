@@ -8,6 +8,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 public interface EmailAddrDao {
 	public EmailAddrVo getByAddrId(long addrId);
 	public EmailAddrVo getByAddress(String address);
+	public EmailAddrVo getRandomRecord();
 	public EmailAddrVo getFromByMsgRefId(Long msgRefId);
 	public EmailAddrVo getToByMsgRefId(Long msgRefId);
 	public int getEmailAddressCount(PagingVo vo);

@@ -76,6 +76,23 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			return null;
 		}
 	}
+	
+	@Override
+	public EmailAddrVo getRandomRecord() {
+		String sql = 
+				"select * " +
+				"from " +
+					"EmailAddr where EmailAddrId >= (RAND() * (select max(EmailAddrId) from EmailAddr)) order by EmailAddrId limit 1 ";
+			
+		List<EmailAddrVo> list = getJdbcTemplate().query(sql,
+				new BeanPropertyRowMapper<EmailAddrVo>(EmailAddrVo.class));
+		if (list.size() > 0) {
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
+	}
 
 	@Override
 	public int getEmailAddressCount(PagingVo vo) {

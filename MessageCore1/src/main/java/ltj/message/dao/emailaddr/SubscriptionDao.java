@@ -23,6 +23,7 @@ public interface SubscriptionDao {
 	public SubscriptionVo getByAddrAndListId(String addr, String listId);
 	public List<SubscriptionVo> getByAddrId(long addrId);
 	public List<SubscriptionVo> getByListId(String listId);
+	public SubscriptionVo getRandomRecord();
 	public int update(SubscriptionVo subscriptionVo);
 	public int updateSentCount(long emailAddrId, String listId);
 	public int updateOpenCount(long emailAddrId, String listId);
