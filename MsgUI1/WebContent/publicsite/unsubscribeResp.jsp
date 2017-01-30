@@ -69,7 +69,7 @@ Logger logger = Logger.getLogger("com.legacytojava.jsp");
 				}
 				unsubscribed += rowsUnsubed;
 			}
-			pageContext.setAttribute("subedList", unsubedList);
+			pageContext.setAttribute("unsubedList", unsubedList);
 			// add user comments
 			if (unsubscribed > 0 && comments != null && comments.trim().length() > 0) {
 				try {
