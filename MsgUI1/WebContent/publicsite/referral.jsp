@@ -119,8 +119,10 @@ function checkLength(element, maxvalue) {
 				logger.error("referralResp.jsp", e);
 			}
 		}
-		// forward to response page
-		pageContext.forward("referralResp.jsp?sbsrid=" + request.getParameter("sbsrid"));
+		if (!"referralUnitTest".equalsIgnoreCase(request.getParameter("frompage"))) {
+			// forward to response page
+			pageContext.forward("referralResp.jsp?sbsrid=" + request.getParameter("sbsrid"));
+		}
  	}
  	%>
 
