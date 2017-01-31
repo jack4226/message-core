@@ -31,7 +31,7 @@ public class ReferralSubmitTest {
 	private final String USER_AGENT = "Mozilla/5.0";
 
 	@Test
-	public void testSbsrIdClickCount() { // POST
+	public void testReferralSubmit() { // POST
 		String url = "http://localhost:8080/MsgUI1/publicsite/referral.jsp";
 		
 		SubscriptionVo subsVo = getSubscriptionDao().getRandomRecord();
@@ -59,7 +59,7 @@ public class ReferralSubmitTest {
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
 			String yourName = "ReferralTest";
-			String comments = "This is a pretty cool web site, please give it shot!";
+			String comments = URLEncoder.encode("This is a pretty cool web site, please give it shot!", "UTF-8");
 			
 			String urlParameters = "submit=Send&sbsrid=" + sbsrId + "&listid=" + listId + "&msgid=" + msgId
 					+ "&rcptEmail=" + emailVo.getEmailAddr() + "&emailtype=html&yourName=" + yourName + "&yourEmail="
@@ -74,7 +74,7 @@ public class ReferralSubmitTest {
 
 			int responseCode = con.getResponseCode();
 			logger.info("Sending 'POST' request to URL : " + url);
-			logger.info("Post parameters : " + URLEncoder.encode(urlParameters, "UTF-8"));
+			logger.info("Post parameters : " + urlParameters);
 			logger.info("Response Code : " + responseCode);
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));

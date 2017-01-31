@@ -47,7 +47,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		
 		String sql = "select * from Users ";
 		if (onlyActive) {
-			sql += " where StatusId='" + StatusIdCode.ACTIVE + "'";
+			sql += " where StatusId='" + StatusIdCode.ACTIVE + "' limit 100";
 		}
 		List<UserVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<UserVo>(UserVo.class));
 		return list;

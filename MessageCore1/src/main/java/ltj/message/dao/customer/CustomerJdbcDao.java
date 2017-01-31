@@ -88,7 +88,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	public List<CustomerVo> getAll() {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
-				"from Customers";
+				"from Customers limit 100";
 		
 		List<CustomerVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<CustomerVo>(CustomerVo.class));

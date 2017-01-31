@@ -61,12 +61,17 @@
  			customerBean.setSecurityAnswer(request.getParameter("securityAnswer"));
  			int rowsInserted = getCustomerBo(ctx).insert(customerBean);
  			logger.info("usersignup.jsp - customer record inserted: " + rowsInserted + ", email address: " + addrVo.getEmailAddr());
- 			pageContext.forward("subscribe.jsp?sbsrid=" + addrVo.getEmailAddrId());
- 			//response.sendRedirect("subscribe.jsp?sbsrid=" + addrVo.getEmailAddrId());
+ 			if (!"SignupJunitTest".equalsIgnoreCase(request.getParameter("frompage"))) {
+ 				pageContext.forward("subscribe.jsp?sbsrid=" + addrVo.getEmailAddrId());
+ 				//response.sendRedirect("subscribe.jsp?sbsrid=" + addrVo.getEmailAddrId());
+ 			}
  			//return;
  		}
  	}
  	boolean hasError = errorMsg.trim().length() > 0;
+ 	if ("SignupJunitTest".equalsIgnoreCase(request.getParameter("frompage"))) {
+ 		hasError = true; // from unit test, display values in the response regardless
+ 	}
  	%>
 
 <table width="100%" class="headerMenuContent" style="background: white;" border="0" cellspacing="0" cellpadding="0">

@@ -25,7 +25,7 @@ public class MsgUnsubTest {
 	private final String USER_AGENT = "Mozilla/5.0";
 
 	@Test
-	public void testSbsrIdClickCount() { // POST
+	public void testUnsubClick() { // POST
 		String url = "http://localhost:8080/MsgUI1/publicsite/msgunsub.jsp";
 		
 		SubscriptionVo subsVo = getSubscriptionDao().getRandomRecord();
