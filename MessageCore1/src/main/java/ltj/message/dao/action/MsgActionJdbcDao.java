@@ -51,9 +51,9 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	}
 	
 	public List<MsgActionVo> getByBestMatch(String ruleName, Timestamp startTime, String clientId) {
-		if (startTime == null)
-			startTime = new Timestamp(new java.util.Date().getTime());
-		
+		if (startTime == null) {
+			startTime = new Timestamp(System.currentTimeMillis());
+		}
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
 			" from MsgAction a, MsgActionDetail b " +
@@ -106,8 +106,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		return list;	
 	}
 	
-	public MsgActionVo getByUniqueKey(String ruleName, int actionSeq, Timestamp startTime,
-			String clientId) {
+	public MsgActionVo getByUniqueKey(String ruleName, int actionSeq, Timestamp startTime, String clientId) {
 		List<Object> keys = new ArrayList<Object>();
 		keys.add(ruleName);
 		keys.add(actionSeq);
@@ -137,7 +136,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	}
 	
 	public MsgActionVo getMostCurrent(String ruleName, int actionSeq, String clientId) {
-		Timestamp startTime = new Timestamp(new java.util.Date().getTime());
+		Timestamp startTime = new Timestamp(System.currentTimeMillis());
 		
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +

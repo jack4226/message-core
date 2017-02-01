@@ -380,7 +380,9 @@ public final class MessageBodyBuilder {
 	 * @return string with HTML tag
 	 */
 	private static String checkHtmlTag(String body) {
-		if (body==null) body = "";
+		if (body==null) {
+			body = "";
+		}
 		
 		if (body.toUpperCase().indexOf(OPEN_HTML_TAG) < 0 || body.toUpperCase().indexOf(CLOSE_HTML_TAG) < 0) {
 			// remove HTML and body tags, just for safety
@@ -404,7 +406,9 @@ public final class MessageBodyBuilder {
 	 * @return new string
 	 */
 	private static String removeString(String body, String startStr, String endStr) {
-		if (body==null) return "";
+		if (body==null) {
+			return "";
+		}
 		
 		String bodyUpperCase = body.toUpperCase();
 		int start_pos = 0, end_pos = 0;

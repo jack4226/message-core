@@ -33,13 +33,13 @@ public class JmsListener implements MessageListener {
 			if (message.getJMSRedelivered()) {
 				Enumeration<?> enu = message.getPropertyNames();
 				while (enu.hasMoreElements()) {
-					String name = (String)enu.nextElement();
-					logger.info("Propertiy Name: "+name);
-					logger.info("String Property: "+message.getStringProperty(name));
-					logger.info("Int Property: "+message.getIntProperty(name));
+					String name = (String) enu.nextElement();
+					logger.info("Propertiy Name: " + name);
+					logger.info("String Property: " + message.getStringProperty(name));
+					logger.info("Int Property: " + message.getIntProperty(name));
 				}
-				if (message.getIntProperty("JMSXDeliveryCount")>10) {
-					jmsProcessor.writeMsg(message, message.getJMSMessageID(),true);
+				if (message.getIntProperty("JMSXDeliveryCount") > 10) {
+					jmsProcessor.writeMsg(message, message.getJMSMessageID(), true);
 					return;
 				}
 			}
@@ -48,11 +48,11 @@ public class JmsListener implements MessageListener {
 				logger.info(msgText);
 				try {
 					String msgId = jmsProcessor.writeMsg(msgText);
-					logger.info("JMSMessageId: "+msgId);
+					logger.info("JMSMessageId: " + msgId);
 				}
 				catch (MessageFormatException mfe) {
 					logger.error("MessageFormatException caught, write to error queue...");
-					jmsProcessor.writeMsg(msgText,message.getJMSMessageID(),true);
+					jmsProcessor.writeMsg(msgText,message.getJMSMessageID(), true);
 				}
 				//throw new JMSException("Test Exception");
 			}
@@ -99,8 +99,8 @@ public class JmsListener implements MessageListener {
 	}
 	
 	public static void main(String[] args) {
-		DefaultMessageListenerContainer listener = (DefaultMessageListenerContainer) 
-				SpringUtil.getAppContext().getBean("jmsListenerContainer");
+		DefaultMessageListenerContainer listener = (DefaultMessageListenerContainer) SpringUtil.getAppContext()
+				.getBean("jmsListenerContainer");
 		listener.start();
 		try {
 			Thread.sleep(10 * 1000);

@@ -42,7 +42,7 @@ public class TestRunnerBase {
 				System.err.println("Class not found: " + clsName);
 			}
 		}
-		return (Class<?>[])clsList.toArray(new Class<?>[clsList.size()]);
+		return (Class<?>[]) clsList.toArray(new Class<?>[clsList.size()]);
 	}
 
 	/**

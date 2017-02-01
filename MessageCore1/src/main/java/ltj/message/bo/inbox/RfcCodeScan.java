@@ -90,8 +90,7 @@ public final class RfcCodeScan {
 		return RuleName;
 	}
 	
-	private static Pattern pattern1 = Pattern.compile("\\s([245]\\.\\d{1,3}\\.\\d{1,3})\\s",
-			Pattern.DOTALL);
+	private static Pattern pattern1 = Pattern.compile("\\s([245]\\.\\d{1,3}\\.\\d{1,3})\\s", Pattern.DOTALL);
 	private static Pattern pattern2 = Pattern.compile("\\s([245]\\d\\d)\\s", Pattern.DOTALL);
 	
 	/**

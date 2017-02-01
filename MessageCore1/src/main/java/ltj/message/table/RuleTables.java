@@ -1,4 +1,5 @@
 package ltj.message.table;
+
 /**
  * The RuleBean referenced by ActionBean with a FOREIGN key restraint.
  */
@@ -13,8 +14,8 @@ import ltj.message.constant.RuleNameType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.constant.XHeaderName;
 import ltj.message.main.CreateTableBase;
-public class RuleTables extends CreateTableBase
-{
+
+public class RuleTables extends CreateTableBase {
 	/**
 	 * Creates a new instance of RuleTables
 	 * 

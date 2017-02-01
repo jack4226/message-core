@@ -440,9 +440,6 @@ public final class SmtpConnection implements java.io.Serializable {
 			catch (MessagingException e) {
 				String alert_lvl = smtpConnVo.getAlertLevel();
 				if ("infor".equalsIgnoreCase(alert_lvl)) {
-//					JbMain.getEventAlert().issueExcepAlert(JbMain.SMTP_ALERT,
-//							"failed to connect to " + smtpHost + " after " + retries + " retries",
-//							e);
 				}
 				// retry
 				if (totalRetries < 0 || retries < totalRetries) {
@@ -468,10 +465,6 @@ public final class SmtpConnection implements java.io.Serializable {
 					retries++;
 					if (time_stopped_session >= TIME_TO_ISSUE_ALERT) {
 						if (!"nolog".equalsIgnoreCase(alert_lvl)) {
-//							JbMain.getEventAlert().issueExcepAlert(
-//									JbMain.SMTP_ALERT,
-//									"Couldn't connect to smtp for " + time_stopped_total
-//											+ " seconds, target host " + smtpHost, e);
 							logger.warn("Couldn't connect to smtp for " + time_stopped_total + " seconds, target host "
 									+ smtpHost, e);
 						}
@@ -480,10 +473,6 @@ public final class SmtpConnection implements java.io.Serializable {
 					obtainTransport(retries, true);
 				}
 				else {
-//					JbMain.getEventAlert().issueFatalAlert(
-//							JbMain.SMTP_ALERT,
-//							"All smtp retries failed (for " + time_stopped_total
-//									+ " seconds), target host " + smtpHost, e);
 					logger.warn(
 							"All smtp retries failed (for " + time_stopped_total + " seconds), target host " + smtpHost,
 							e);

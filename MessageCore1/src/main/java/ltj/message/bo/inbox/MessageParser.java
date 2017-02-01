@@ -71,8 +71,9 @@ public final class MessageParser {
 	 * default constructor
 	 */
 	public MessageParser() throws IOException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering constructor...");
+		}
 		rfcScan = RfcCodeScan.getInstance();
 		ruleMatcher = new RuleMatcher();
 	}
@@ -85,8 +86,9 @@ public final class MessageParser {
 	 *            a MessageBean instance
 	 */
 	public String parse(MessageBean msgBean) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering parse() method...");
+		}
 		if (msgBean.getMsgRefId() == null) {
 			try {
 				// Search Email Id from body, Email_Id X-header and VERP X-header

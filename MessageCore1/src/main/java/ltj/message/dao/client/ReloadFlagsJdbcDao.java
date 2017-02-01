@@ -22,8 +22,9 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 		String sql = "select * from ReloadFlags ";
 		List<ReloadFlagsVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<ReloadFlagsVo>(ReloadFlagsVo.class));
-		if (list.size()>0)
+		if (list.size()>0) {
 			return list.get(0);
+		}
 		else if (retry < 1) {
 			repair();
 			return selectWithRepair(++retry);

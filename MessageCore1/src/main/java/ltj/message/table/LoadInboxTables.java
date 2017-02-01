@@ -45,23 +45,19 @@ import ltj.vo.template.BodyTemplateVo;
 import ltj.vo.template.MsgSourceVo;
 import ltj.vo.template.SubjTemplateVo;
 
-public class LoadInboxTables
-{
+public class LoadInboxTables {
 	static long msgId = -1L;
 	MsgSequenceDao msgSequenceDao;
 	EmailAddrDao emailAddrDao;
 	MsgClickCountsDao msgClickCountsDao;
 	//static AbstractApplicationContext factory = null;
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		
 		LoadInboxTables loadInboxTables = new LoadInboxTables();
-		try
-		{
+		try {
 			loadInboxTables.loadData();
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.exit(0);
@@ -95,9 +91,8 @@ public class LoadInboxTables
 		loadRenderTables(factory);
 	}
 	
-	long load(MsgInboxDao msgInboxDao) 
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	long load(MsgInboxDao msgInboxDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		MsgInboxVo in = new MsgInboxVo();
 		
 		long msgId = msgSequenceDao.findNextValue();
@@ -173,8 +168,7 @@ public class LoadInboxTables
 		return in.getMsgId();
 	}
 	
-	void load(MsgAddrsDao msgAddrsDao) 
-	{
+	void load(MsgAddrsDao msgAddrsDao) {
 		MsgAddrsVo in = new MsgAddrsVo();
 		
 		in.setMsgId(msgId);
@@ -187,8 +181,7 @@ public class LoadInboxTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(AttachmentsDao attachmentrsDao) 
-	{
+	void load(AttachmentsDao attachmentrsDao) {
 		AttachmentsVo in = new AttachmentsVo();
 		
 		in.setMsgId(msgId);
@@ -204,8 +197,7 @@ public class LoadInboxTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(MsgHeadersDao msgHeadersDao) 
-	{
+	void load(MsgHeadersDao msgHeadersDao) {
 		MsgHeadersVo in = new MsgHeadersVo();
 		
 		in.setMsgId(msgId);
@@ -218,8 +210,7 @@ public class LoadInboxTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(RfcFieldsDao rfcFieldsDao) 
-	{
+	void load(RfcFieldsDao rfcFieldsDao) {
 		RfcFieldsVo in = new RfcFieldsVo();
 		
 		in.setMsgId(msgId);

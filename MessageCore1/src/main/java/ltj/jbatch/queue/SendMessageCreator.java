@@ -16,7 +16,7 @@ public abstract class SendMessageCreator implements MessageCreator {
 	public abstract Message createMessage(Session session) throws JMSException;
 	
 	public String getJMSMessageId() throws JMSException {
-		if (message!=null) {
+		if (message != null) {
 			return message.getJMSMessageID();
 		}
 		else {

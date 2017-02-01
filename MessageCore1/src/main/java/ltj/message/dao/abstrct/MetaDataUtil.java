@@ -21,7 +21,7 @@ import ltj.spring.util.SpringUtil;
 public class MetaDataUtil {
 	static final Logger logger = Logger.getLogger(MetaDataUtil.class);
 
-	private static Map<String, Table> tableMetaData = new HashMap<String, Table>();
+	private static Map<String, Table> tableMetaData = new HashMap<>();
 
 	public static Table getTableMetaData(String tableName) {
 		if (tableMetaData.isEmpty()) {

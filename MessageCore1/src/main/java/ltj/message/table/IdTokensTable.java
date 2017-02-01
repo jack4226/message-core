@@ -6,28 +6,23 @@ import java.sql.Timestamp;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailIDToken;
 import ltj.message.main.CreateTableBase;
-public class IdTokensTable extends CreateTableBase
-{
+public class IdTokensTable extends CreateTableBase {
 	/** Creates a new instance of IdTokenTables 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException */
-	public IdTokensTable() throws ClassNotFoundException, SQLException
-	{
+	public IdTokensTable() throws ClassNotFoundException, SQLException {
 		init();
 	}
 	
 	public void dropTables() {
-		try
-		{
+		try {
 			stm.execute("DROP TABLE IDTOKENS");
 			System.out.println("Dropped IDTOKENS Table...");
 		} catch (SQLException e) {}
 	}
 	
-	public void createTables() throws SQLException
-	{
-		try
-		{
+	public void createTables() throws SQLException {
+		try {
 			stm.execute("CREATE TABLE IDTOKENS ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ClientId varchar(16) NOT NULL, " + 
@@ -45,17 +40,14 @@ public class IdTokensTable extends CreateTableBase
 			"UNIQUE INDEX (ClientId) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created IDTOKENS Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void loadTestData() throws SQLException
-	{
-		try
-		{
+	public void loadTestData() throws SQLException {
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO IDTOKENS " +
 				"(ClientId," +
@@ -82,8 +74,7 @@ public class IdTokensTable extends CreateTableBase
 			ps.execute();
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -92,8 +83,7 @@ public class IdTokensTable extends CreateTableBase
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		try {
 			IdTokensTable ct = new IdTokensTable();
 			ct.dropTables();

@@ -9,8 +9,7 @@ import ltj.message.main.CreateTableBase;
  * Dependency: RuleBean - this program runs RuleTable first before create its
  * own tables.
  */
-public class ActionTables extends CreateTableBase
-{
+public class ActionTables extends CreateTableBase {
 	RuleTables ruleTables;
 	
 	/**
@@ -19,26 +18,21 @@ public class ActionTables extends CreateTableBase
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public ActionTables() throws SQLException, ClassNotFoundException
-	{
+	public ActionTables() throws SQLException, ClassNotFoundException {
 		ruleTables = new RuleTables();
 		init();
 	}
 	
-	public void dropTables()
-	{
-		try
-		{
+	public void dropTables() {
+		try {
 			stm.execute("DROP TABLE MSGACTION");
 			System.out.println("Dropped MSGACTION Table...");
 		} catch (SQLException e) {}
-		try
-		{
+		try {
 			stm.execute("DROP TABLE MSGACTIONDETAIL");
 			System.out.println("Dropped MSGMSGACTIONDETAIL Table...");
 		} catch (SQLException e) {}
-		try
-		{
+		try {
 			stm.execute("DROP TABLE MSGDATATYPE");
 			System.out.println("Dropped MSGDATATYPE Table...");
 		} catch (SQLException e) {}
@@ -57,10 +51,8 @@ public class ActionTables extends CreateTableBase
 		ruleTables.loadTestData();
 	}
 	
-	void createActionDataTypeTable() throws SQLException
-	{
-		try
-		{
+	void createActionDataTypeTable() throws SQLException {
+		try {
 			stm.execute("CREATE TABLE MSGDATATYPE ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"DataType varchar(16) NOT NULL, " +
@@ -70,17 +62,14 @@ public class ActionTables extends CreateTableBase
 			"UNIQUE INDEX (DataType, DataTypeValue) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created MSGDATATYPE Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 	
-	void createActionDetailTable() throws SQLException
-	{
-		try
-		{
+	void createActionDetailTable() throws SQLException {
+		try {
 			stm.execute("CREATE TABLE MSGACTIONDETAIL ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ActionId varchar(16) NOT NULL, " +
@@ -96,8 +85,7 @@ public class ActionTables extends CreateTableBase
 			"PRIMARY KEY (RowId) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created MSGACTIONDETAIL Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -131,8 +119,7 @@ public class ActionTables extends CreateTableBase
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		try {
 			ActionTables ct = new ActionTables();
 			ct.dropTables();

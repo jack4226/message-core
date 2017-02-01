@@ -28,8 +28,7 @@ public class RenderRequest implements Serializable {
 		sb.append("========== Display RenderRequest Fields ==========" + LF);
 		sb.append("MsgSourceId:       " + msgSourceId + LF);
 		sb.append("ClientId:		  " + clientId + LF);
-		sb.append("EffectiveDate:     " + (startTime == null ? "null" : startTime.toString())
-				+ LF);
+		sb.append("EffectiveDate:     " + (startTime == null ? "null" : startTime.toString()) + LF);
 		sb.append("VariableOverrides: " + variableOverrides + LF);
 		return sb.toString();
 	}

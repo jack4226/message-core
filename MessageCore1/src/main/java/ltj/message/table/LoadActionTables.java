@@ -19,6 +19,7 @@ import ltj.spring.util.SpringUtil;
 
 public class LoadActionTables {
 	String LF = System.getProperty("line.separator", "\n");
+	
 	public static void main(String[] args) {
 		LoadActionTables loadActionTables = new LoadActionTables();
 		try {

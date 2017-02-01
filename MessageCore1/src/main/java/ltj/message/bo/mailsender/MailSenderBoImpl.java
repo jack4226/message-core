@@ -26,8 +26,9 @@ public class MailSenderBoImpl extends MailSenderBase {
 	 * constructor
 	 */
 	public MailSenderBoImpl() {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering constructor...");
+		}
 	}
 
 	/**

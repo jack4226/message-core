@@ -26,18 +26,14 @@ import ltj.vo.template.MsgSourceVo;
 import ltj.vo.template.SubjTemplateVo;
 import ltj.vo.template.TemplateVariableVo;
 
-public class LoadTemplateTables
-{
+public class LoadTemplateTables {
 	//AbstractApplicationContext factory = null;
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		LoadTemplateTables loadInboxTables = new LoadTemplateTables();
-		try
-		{
+		try {
 			loadInboxTables.loadData();
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.exit(0);
@@ -72,9 +68,8 @@ public class LoadTemplateTables
 
 	}
 		
-	void load(GlobalVariableDao globalVariableDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load(GlobalVariableDao globalVariableDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		GlobalVariableVo in = new GlobalVariableVo();
 		
 		in.setVariableName("CurrentDateTime");
@@ -134,9 +129,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(ClientVariableDao clientVariableDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load(ClientVariableDao clientVariableDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		ClientVariableVo in = new ClientVariableVo();
 		
 		in.setClientId(Constants.DEFAULT_CLIENTID);
@@ -178,9 +172,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(TemplateVariableDao templateVariableDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load(TemplateVariableDao templateVariableDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		TemplateVariableVo in = new TemplateVariableVo();
 		
 		in.setTemplateId("WeekendDeals");
@@ -212,9 +205,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(SubjTemplateDao subjTemplateDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load(SubjTemplateDao subjTemplateDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		SubjTemplateVo in = new SubjTemplateVo();
 		
 		in.setTemplateId("WeekendDeals");
@@ -229,9 +221,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(BodyTemplateDao bodyTemplateDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load(BodyTemplateDao bodyTemplateDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		BodyTemplateVo in = new BodyTemplateVo();
 		
 		in.setTemplateId("WeekendDeals");
@@ -247,9 +238,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(MsgSourceDao msgSourceDao)
-	{
-		//Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load(MsgSourceDao msgSourceDao) {
+		//Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		MsgSourceVo in = new MsgSourceVo();
 		
 		in.setMsgSourceId("WeekendDeals");
@@ -273,9 +263,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load1(BodyTemplateDao bodyTemplateDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load1(BodyTemplateDao bodyTemplateDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		BodyTemplateVo in = new BodyTemplateVo();
 		
 		String template = "BeginTemplate\n"
@@ -305,9 +294,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load2(MsgSourceDao msgSourceDao)
-	{
-		//Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load2(MsgSourceDao msgSourceDao) {
+		//Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		MsgSourceVo in = new MsgSourceVo();
 		
 		in.setMsgSourceId("testMsgSource");
@@ -331,9 +319,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load3(ClientVariableDao clientVariableDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load3(ClientVariableDao clientVariableDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		ClientVariableVo in = new ClientVariableVo();
 		
 		in.setClientId(Constants.DEFAULT_CLIENTID);
@@ -351,9 +338,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load4(TemplateVariableDao templateVariableDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load4(TemplateVariableDao templateVariableDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		TemplateVariableVo in = new TemplateVariableVo();
 		
 		in.setTemplateId("WeekendDeals");
@@ -372,9 +358,8 @@ public class LoadTemplateTables
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load5(GlobalVariableDao globalVariableDao)
-	{
-		Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	void load5(GlobalVariableDao globalVariableDao) {
+		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		GlobalVariableVo in = new GlobalVariableVo();
 		
 		in.setVariableName(EmailAddressType.TO_ADDR);

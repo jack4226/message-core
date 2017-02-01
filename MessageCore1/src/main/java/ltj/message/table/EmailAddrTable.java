@@ -367,10 +367,8 @@ DELIMITER ;
 		insertSubscribers();
 	}
 	
-	private void insertEmailAddrs() throws SQLException
-	{
-		try
-		{
+	private void insertEmailAddrs() throws SQLException {
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO EMAILADDR " +
 				"(EmailAddr," +
@@ -426,16 +424,14 @@ DELIMITER ;
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
 	private void insertMaillingList() throws SQLException {
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO MAILINGLIST " +
 				"(ListId," +
@@ -480,16 +476,14 @@ DELIMITER ;
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
 	}
 
 	private void insertProdMaillingList() throws SQLException {
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO MAILINGLIST " +
 				"(ListId," +
@@ -514,16 +508,14 @@ DELIMITER ;
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
 	private void insertSubscribers() throws SQLException {
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO SUBSCRIPTION " +
 				"(EmailAddrId," +
@@ -564,16 +556,14 @@ DELIMITER ;
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
 	}
 
 	private void insertEmailVariable() throws SQLException {
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO EmailVariable " +
 				"(VariableName," +
@@ -881,16 +871,14 @@ DELIMITER ;
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
 	}
 
 	private void insertEmailTemplate() throws SQLException {
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO EmailTemplate " +
 				"(TemplateId," +
@@ -1308,16 +1296,14 @@ DELIMITER ;
 			
 			ps.close();
 			System.out.println("Inserted EmailTemplate...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
 	}
 
 	void selectEmailTemplate() throws SQLException {
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"select * from EmailTemplate where TemplateId = 'test template'");
 			ResultSet rs = ps.executeQuery();
@@ -1333,16 +1319,14 @@ DELIMITER ;
 				}
 			}
 			ps.close();
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
 	}
 	
 	private void insertProdEmailTemplate() throws SQLException {
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO EmailTemplate " +
 				"(TemplateId," +
@@ -1462,8 +1446,7 @@ DELIMITER ;
 
 			ps.close();
 			System.out.println("Inserted Product EmailTemplate...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	

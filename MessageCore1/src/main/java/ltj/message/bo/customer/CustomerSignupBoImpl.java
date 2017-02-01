@@ -30,8 +30,9 @@ public class CustomerSignupBoImpl implements CustomerSignupBo {
 	private CustomerBo customerBo;
 	
 	public int signUpOnly(CustomerVo vo) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("signUpOnly() - Entering...");
+		}
 		// add customer to database
 		int rowsAffected = insertOrUpdate(vo);
 		return rowsAffected;
@@ -53,8 +54,9 @@ public class CustomerSignupBoImpl implements CustomerSignupBo {
 	}
 
 	public int signUpAndSubscribe(CustomerVo vo, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("signUpAndSubscribe() - Entering..., listId: " + listId);
+		}
 		// validate list id
 		MailingListVo listVo = mailingListDao.getByListId(listId);
 		if (listVo == null) {
@@ -67,8 +69,9 @@ public class CustomerSignupBoImpl implements CustomerSignupBo {
 	}
 
 	public int addToList(String emailAddr, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("addToList() - Entering..., emailAddr/listId: " + emailAddr + "/" + listId);
+		}
 		// validate list address
 		MailingListVo listVo = mailingListDao.getByListId(listId);
 		if (listVo == null) {
@@ -84,8 +87,9 @@ public class CustomerSignupBoImpl implements CustomerSignupBo {
 	}
 	
 	public int removeFromList(String emailAddr, String listId) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("removeFromList() - Entering..., emailAddr/listId: " + emailAddr + "/" + listId);
+		}
 		// validate list address
 		MailingListVo listVo = mailingListDao.getByListId(listId);
 		if (listVo == null) {

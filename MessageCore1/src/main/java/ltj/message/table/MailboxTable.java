@@ -1,4 +1,5 @@
 package ltj.message.table;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -16,26 +17,23 @@ import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.MailBoxVo;
 import ltj.spring.util.SpringUtil;
-public class MailboxTable extends CreateTableBase
-{
+
+public class MailboxTable extends CreateTableBase {
 	/** Creates a new instance of MailTables 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException */
-	public MailboxTable() throws ClassNotFoundException, SQLException
-	{
+	public MailboxTable() throws ClassNotFoundException, SQLException {
 		init();
 	}
 	
 	public void dropTables() {
-		try
-		{
+		try {
 			stm.execute("DROP TABLE MAILBOXES");
 			System.out.println("Dropped MAILBOXES Table...");
 		} catch (SQLException e) {}
 	}
 	
-	public void createTables() throws SQLException
-	{
+	public void createTables() throws SQLException {
 		/*
 		 Required properties for mailbox
 			- UserId: mailbox user name
@@ -65,8 +63,7 @@ public class MailboxTable extends CreateTableBase
 			- PurgeDupsAfter: purge duplicate messages after certain hours
 			- ProcessorName: Spring processor id / processor class name
 		*/
-		try
-		{
+		try {
 			stm.execute("CREATE TABLE MAILBOXES ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"UserId varchar(30) NOT NULL, " + 
@@ -99,8 +96,7 @@ public class MailboxTable extends CreateTableBase
 			"UNIQUE INDEX (UserId, HostName) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created MAILBOXES Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -137,35 +133,28 @@ public class MailboxTable extends CreateTableBase
 				", ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
 				", ?, ?, ?, ?, ?)";
 
-	public void loadTestData() throws SQLException
-	{
-		try
-		{
+	public void loadTestData() throws SQLException {
+		try {
 			insertReleaseMailbox();
 			insertTestMailboxes();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
-	public void loadReleaseData() throws SQLException
-	{
-		try
-		{
+	public void loadReleaseData() throws SQLException {
+		try {
 			insertReleaseMailbox();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
-	void insertReleaseMailbox() throws SQLException
-	{
+	void insertReleaseMailbox() throws SQLException {
 		PreparedStatement ps = con.prepareStatement(insertSql);
 		ps.setString(1, "support");
 		ps.setString(2, "support");
@@ -311,8 +300,7 @@ public class MailboxTable extends CreateTableBase
 		ps.close();
 	}
 
-	void insertTestMailboxes() throws SQLException
-	{
+	void insertTestMailboxes() throws SQLException {
 		PreparedStatement ps = con.prepareStatement(insertSql);
 
 		ps.setString(1, "jwang");
@@ -523,8 +511,7 @@ public class MailboxTable extends CreateTableBase
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		try {
 			MailboxTable ct = new MailboxTable();
 			ct.dropTables();

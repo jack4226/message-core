@@ -10,8 +10,8 @@ public class Table {
 	private String schema;
 	private String tableName;
 
-	private Map<String, PrimaryKey> primaryKeyMap = new LinkedHashMap<String, PrimaryKey>();
-	private final Map<String, Column> columnMap = new LinkedHashMap<String, Column>();
+	private Map<String, PrimaryKey> primaryKeyMap = new LinkedHashMap<>();
+	private final Map<String, Column> columnMap = new LinkedHashMap<>();
 	
 	public String getCatalog() {
 		return catalog;

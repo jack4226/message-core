@@ -1,12 +1,13 @@
 package ltj.message.table;
+
 import java.sql.SQLException;
 
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailingListDeliveryOption;
 import ltj.message.main.CreateTableBase;
-public class InboxTables extends CreateTableBase
-{
+
+public class InboxTables extends CreateTableBase {
 	/**
 	 * Creates a new instance of InboxTables 
 	 * @throws SQLException 

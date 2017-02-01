@@ -93,11 +93,13 @@ public class HostUtil {
 					}
 					if (isIpv6) {
 						InetAddress addrv4 = Inet6Address.getLocalHost();
-						logger.info("IPv6 - v4 address: " + addrv4.getHostAddress() + ", name: " + addrv4.getHostName() + ", Canonical name: " + addrv4.getCanonicalHostName()); 
+						logger.info("IPv6 - v4 address: " + addrv4.getHostAddress() + ", name: " + addrv4.getHostName()
+								+ ", Canonical name: " + addrv4.getCanonicalHostName());
 						Inet6Address addrv6 = (Inet6Address) addr;
 						NetworkInterface niv6 = addrv6.getScopedInterface();
 						if (niv6 != null) {
-							logger.info("Hareware - Display name: " + niv6.getDisplayName() + ", name: " + niv6.getName() + ", is up? " + niv6.isUp());
+							logger.info("Hareware - Display name: " + niv6.getDisplayName() + ", name: "
+									+ niv6.getName() + ", is up? " + niv6.isUp());
 						}
 					}
 				}

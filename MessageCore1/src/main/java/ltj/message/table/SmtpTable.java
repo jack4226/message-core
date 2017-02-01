@@ -1,4 +1,5 @@
 package ltj.message.table;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -7,31 +8,27 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.MailServerType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.main.CreateTableBase;
-public class SmtpTable extends CreateTableBase
-{
+
+public class SmtpTable extends CreateTableBase {
 	/** Creates a new instance of MailTables 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException */
-	public SmtpTable() throws ClassNotFoundException, SQLException
-	{
+	public SmtpTable() throws ClassNotFoundException, SQLException {
 		init();
 	}
 	
 	public void dropTables() {
-		try
-		{
+		try {
 			stm.execute("DROP TABLE MAILSENDERPROPS");
 			System.out.println("Dropped MAILSENDERPROPS Table...");
 		} catch (SQLException e) {}
-		try
-		{
+		try {
 			stm.execute("DROP TABLE SMTPSERVERS");
 			System.out.println("Dropped SMTPSERVERS Table...");
 		} catch (SQLException e) {}
 	}
 	
-	public void createTables() throws SQLException
-	{
+	public void createTables() throws SQLException {
 		/*
 	 	- smtpHost: smtp host domain name or ip address
 	 	- smtpPort: smtp port, default = 25
@@ -49,8 +46,7 @@ public class SmtpTable extends CreateTableBase
 	 	- alertLevel: infor/error/fatal/nolog
 		- messageCount: number of messages to send before stopping the process, 0=unlimited
 		*/
-		try
-		{
+		try {
 			stm.execute("CREATE TABLE SMTPSERVERS ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ServerName varchar(50) NOT NULL, " +
@@ -76,8 +72,7 @@ public class SmtpTable extends CreateTableBase
 			"UNIQUE INDEX (ServerName) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created SMTPSERVERS Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -88,8 +83,7 @@ public class SmtpTable extends CreateTableBase
 		- UseTestAddr: yes/no: to override the TO address with the value from TestToAddr
 		- TestToAddr: use it as the TO address when UseTestAddr is yes
 		*/
-		try
-		{
+		try {
 			stm.execute("CREATE TABLE MAILSENDERPROPS ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"InternalLoopback varchar(100) NOT NULL, " +
@@ -104,8 +98,7 @@ public class SmtpTable extends CreateTableBase
 			"PRIMARY KEY (RowId) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created MAILSENDERPROPS Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -145,10 +138,8 @@ public class SmtpTable extends CreateTableBase
 			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
 				", ?, ?, ?, ?, ?, ?, ?, ?)";
 
-	void insertReleaseSmtpData() throws SQLException
-	{
-		try
-		{
+	void insertReleaseSmtpData() throws SQLException {
+		try {
 			PreparedStatement ps = con.prepareStatement(insertSql);
 
 			ps.setString(1, "localhost"); // smtpHost
@@ -173,17 +164,14 @@ public class SmtpTable extends CreateTableBase
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
-	void insertTestSmtpData() throws SQLException
-	{
-		try
-		{
+	void insertTestSmtpData() throws SQLException {
+		try {
 			PreparedStatement ps = con.prepareStatement(insertSql);
 			
 			ps.setString(1, "outbound.mailhop.org"); // smtpHost
@@ -244,18 +232,15 @@ public class SmtpTable extends CreateTableBase
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
-	public void UpdateSmtpData4Prod() throws SQLException
-	{
+	public void UpdateSmtpData4Prod() throws SQLException {
 		String sql = "update SMTPSERVERS set StatusId = ? where ServerName = ?";
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			
 			ps.setString(1, StatusIdCode.INACTIVE); // statusid
@@ -272,17 +257,14 @@ public class SmtpTable extends CreateTableBase
 			
 			ps.close();
 			System.out.println("SmtpTable: Smtp records updated.");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 	
-	void insertMailSenderData() throws SQLException
-	{
-		try
-		{
+	void insertMailSenderData() throws SQLException {
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO MAILSENDERPROPS " +
 				"(InternalLoopback," +
@@ -309,8 +291,7 @@ public class SmtpTable extends CreateTableBase
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -319,8 +300,7 @@ public class SmtpTable extends CreateTableBase
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		try {
 			SmtpTable ct = new SmtpTable();
 			ct.dropTables();

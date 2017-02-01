@@ -36,8 +36,7 @@ public class CustomerBoImpl implements CustomerBo {
 			/* insert a new customer, will generate a custId using CustSequence */
 			String custId = custSequenceDao.findNextValue() + "";
 			if (custId.length() > CUSTOMER_ID_MAX_LEN) {
-				throw new DataValidationException("Generated CustId exceeded maximum length: "
-						+ custId);
+				throw new DataValidationException("Generated CustId exceeded maximum length: " + custId);
 			}
 			// check the uniqueness of generated customer id
 			CustomerVo custVo = customerDao.getByCustId(custId);
@@ -142,8 +141,8 @@ public class CustomerBoImpl implements CustomerBo {
 			// is it used by any customers?
 			CustomerVo cust_vo = customerDao.getByEmailAddrId(emailAddrVo.getEmailAddrId());
 			if (cust_vo != null) { // yes, used by a customer
-				throw new DataValidationException("Email Address: " + vo.getEmailAddr()
-						+ " is used by another customer: " + cust_vo.getCustId());
+				throw new DataValidationException(
+						"Email Address: " + vo.getEmailAddr() + " is used by another customer: " + cust_vo.getCustId());
 			}
 		}
 		else { // email address not found from EmailAddr table
@@ -168,8 +167,8 @@ public class CustomerBoImpl implements CustomerBo {
 		// check the uniqueness of the new email address
 		CustomerVo custVo = customerDao.getByEmailAddrId(emailAddrVo.getEmailAddrId());
 		if (custVo != null && !(vo.getCustId().equals(custVo.getCustId()))) {
-			throw new DataValidationException("Email Address: " + vo.getEmailAddr()
-					+ " is used by another customer: " + custVo.getCustId());
+			throw new DataValidationException(
+					"Email Address: " + vo.getEmailAddr() + " is used by another customer: " + custVo.getCustId());
 		}
 		if (vo.getStartDate() == null) { // just for safety
 			vo.setStartDate(new java.sql.Date(new java.util.Date().getTime()));

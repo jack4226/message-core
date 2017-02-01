@@ -35,8 +35,8 @@ public class BodypartBean implements Serializable {
 
 	protected static final String DEFAULT_CONTENT_TYPE =  "text/plain";
 	
-	protected final List<BodypartBean> attachParts = new ArrayList<BodypartBean>();
-	protected final List<MsgHeader> headers = new ArrayList<MsgHeader>();
+	protected final List<BodypartBean> attachParts = new ArrayList<>();
+	protected final List<MsgHeader> headers = new ArrayList<>();
 	protected int size = 0;
 	protected String disposition = null, description = null;
 	protected String fileName = null;
@@ -554,7 +554,9 @@ public class BodypartBean implements Serializable {
 	 */
 	public void setHeaders(Part part) throws MessagingException {
 		this.headers.clear();
-		if (part==null) return;
+		if (part == null) {
+			return;
+		}
 		Enumeration<?> enu = part.getAllHeaders();
 		while (enu.hasMoreElements()) {
 			Header jmHdr = (Header) enu.nextElement();

@@ -71,7 +71,7 @@ public final class BodypartUtil implements Serializable {
 
 			// find other attachments down from the Node
 			List<MessageNode> subAttch = retrieveAttachments(subNode, msgBean, level + 1);
-			if (subAttch!=null) {
+			if (subAttch != null) {
 				aNodes.addAll(subAttch);
 			}
 

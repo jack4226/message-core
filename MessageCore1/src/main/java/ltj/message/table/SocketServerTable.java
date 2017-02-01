@@ -1,4 +1,5 @@
 package ltj.message.table;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -6,26 +7,23 @@ import java.sql.Timestamp;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.main.CreateTableBase;
-public class SocketServerTable extends CreateTableBase
-{
+
+public class SocketServerTable extends CreateTableBase {
 	/** Creates a new instance of MailTables 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException */
-	public SocketServerTable() throws SQLException, ClassNotFoundException
-	{
+	public SocketServerTable() throws SQLException, ClassNotFoundException {
 		init();
 	}
 	
 	public void dropTables() {
-		try
-		{
+		try {
 			stm.execute("DROP TABLE SOCKETSERVERS");
 			System.out.println("Dropped SOCKETSERVERS Table...");
 		} catch (SQLException e) {}
 	}
 	
-	public void createTables() throws SQLException
-	{
+	public void createTables() throws SQLException {
 		/*
 	 	- ServerName: Socket Server Name
 	 	- SocketPort: the port number the socket server is listening to
@@ -38,8 +36,7 @@ public class SocketServerTable extends CreateTableBase
 		- StatusId: A - Active, I - Inactive
 		- ProcessorName: processor class name
 		*/
-		try
-		{
+		try {
 			stm.execute("CREATE TABLE SOCKETSERVERS ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ServerName varchar(30) NOT NULL, " + 
@@ -60,17 +57,14 @@ public class SocketServerTable extends CreateTableBase
 			"Constraint UNIQUE INDEX (SocketPort) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created SOCKETSERVERS Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void loadTestData() throws SQLException
-	{
-		try
-		{
+	public void loadTestData() throws SQLException {
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO SOCKETSERVERS " +
 				"(ServerName," +
@@ -106,8 +100,7 @@ public class SocketServerTable extends CreateTableBase
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -116,8 +109,7 @@ public class SocketServerTable extends CreateTableBase
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		try {
 			SocketServerTable ct = new SocketServerTable();
 			ct.dropTables();

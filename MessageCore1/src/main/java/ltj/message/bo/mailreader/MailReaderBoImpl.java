@@ -365,8 +365,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 				if (MESSAGE_COUNT > 0 && msgCount > MESSAGE_COUNT * 2) {
 					// bump up MESSAGE_COUNT to process more in this cycle
 					MESSAGE_COUNT *= (int) Math.floor(msgCount / MESSAGE_COUNT);
-					MESSAGE_COUNT = MESSAGE_COUNT > MAX_MESSAGE_COUNT ? MAX_MESSAGE_COUNT
-							: MESSAGE_COUNT;
+					MESSAGE_COUNT = MESSAGE_COUNT > MAX_MESSAGE_COUNT ? MAX_MESSAGE_COUNT : MESSAGE_COUNT;
 					logger.info("MESSAGE_COUNT has been bumped up to: " + MESSAGE_COUNT);
 				}
 				Message[] msgs = null;
@@ -525,8 +524,9 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 *            Connection event
 	 */
 	public void opened(ConnectionEvent e) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug(">>> ConnectionListener: connection opened()");
+		}
 	}
 
 	/**
@@ -546,13 +546,15 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 *            Connection event
 	 */
 	public void closed(ConnectionEvent e) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug(">>> ConnectionListener: connection closed()");
+		}
 	}
 
 	public void notification(StoreEvent e) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug(">>> StoreListener: notification event: " + e.getMessage());
+		}
 	}
 	
 	/* end of the implementation */
@@ -665,10 +667,10 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 * @return a List containing metrics data
 	 */
 	public List<String> getStatus() {
-		List<String> v = new ArrayList<String>();
+		List<String> v = new ArrayList<>();
 		if (mailBoxVo != null) {
-			v.add("MailReaderBoImpl: user=" + mailBoxVo.getUserId() + ", host="
-					+ mailBoxVo.getHostName() + ", #Threads=" + MAX_CLIENTS);
+			v.add("MailReaderBoImpl: user=" + mailBoxVo.getUserId() + ", host=" + mailBoxVo.getHostName()
+					+ ", #Threads=" + MAX_CLIENTS);
 			v.add(mailBoxVo.toString());
 		}
 		return v;

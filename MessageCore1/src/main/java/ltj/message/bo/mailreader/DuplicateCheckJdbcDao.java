@@ -54,8 +54,7 @@ public class DuplicateCheckJdbcDao implements DuplicateCheckDao {
 	*/
 	
 	public static void main(String[] args) {
-		DuplicateCheckDao dCheck = (DuplicateCheckDao) SpringUtil.getDaoAppContext()
-				.getBean("duplicateCheck");
+		DuplicateCheckDao dCheck = (DuplicateCheckDao) SpringUtil.getDaoAppContext().getBean("duplicateCheck");
 		try {
 			String msgId = "1223344556788990";
 			boolean isDuplicate = dCheck.isDuplicate(msgId);

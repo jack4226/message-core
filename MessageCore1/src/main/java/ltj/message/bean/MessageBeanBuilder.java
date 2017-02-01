@@ -296,7 +296,7 @@ public final class MessageBeanBuilder {
 			String[] dlvrTo = msg.getHeader("Delivered-To");
 			if (dlvrTo != null && dlvrTo.length > 0) {
 				String addrStr = checkAddr(dlvrTo[0]);
-				for (int j=1; j<dlvrTo.length; j++) {
+				for (int j = 1; j < dlvrTo.length; j++) {
 					addrStr += "," + checkAddr(dlvrTo[j]);
 				}
 				logger.info("\"Delivered-To\" found from header: " + addrStr);
@@ -623,8 +623,7 @@ public final class MessageBeanBuilder {
 				 */
 				if (o instanceof String) {
 					// text type of section
-					logger.info("processAttc: level " + level + ", Java String Content type "
-							+ contentType);
+					logger.info("processAttc: level " + level + ", Java String Content type " + contentType);
 					aNode.setValue((String) o);
 					if (aNode.getValue() != null) {
 						msgBean.getComponentsSize().add(Integer.valueOf(((byte[]) aNode.getValue()).length));

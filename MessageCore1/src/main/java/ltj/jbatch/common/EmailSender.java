@@ -95,9 +95,9 @@ public class EmailSender implements java.io.Serializable {
 	 * @throws MessagingException
 	 */
 	public void send(SimpleEmailVo m) throws MessagingException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering send method");
-
+		}
 		Properties props = System.getProperties();
 		if (smtphost != null) {
 			props.put("mail.smtp.host", smtphost);
@@ -131,8 +131,7 @@ public class EmailSender implements java.io.Serializable {
 		// send the thing off
 		Transport.send(msg);
 		if (isDebugEnabled) {
-			logger.debug("Mail from " + m.getFromAddr() + " - " + m.getMsgSubject()
-					+ " was sent to: " + m.getToAddr());
+			logger.debug("Mail from " + m.getFromAddr() + " - " + m.getMsgSubject() + " was sent to: " + m.getToAddr());
 		}
 		// IMAP only
 		String url = null;
@@ -179,8 +178,8 @@ public class EmailSender implements java.io.Serializable {
 			msgs[0] = msg;
 			folder.appendMessages(msgs);
 			if (isDebugEnabled) {
-				logger.debug("Mail from: " + m.getFromAddr() + " - " + m.getMsgSubject() + ", to: "
-						+ m.getToAddr() + " was recorded successfully.");
+				logger.debug("Mail from: " + m.getFromAddr() + " - " + m.getMsgSubject() + ", to: " + m.getToAddr()
+						+ " was recorded successfully.");
 			}
 		}
 	}

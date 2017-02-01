@@ -101,8 +101,9 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 	 * @throws IOException 
 	 */
 	public long saveRenderData(RenderResponse rsp) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering saveRenderData()...");
+		}
 		if (rsp == null) {
 			throw new DataValidationException("Input object is null");
 		}

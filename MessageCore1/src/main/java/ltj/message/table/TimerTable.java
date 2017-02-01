@@ -1,4 +1,5 @@
 package ltj.message.table;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -6,28 +7,24 @@ import java.sql.Timestamp;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.main.CreateTableBase;
-public class TimerTable extends CreateTableBase
-{
+
+public class TimerTable extends CreateTableBase {
 	/** Creates a new instance of MailTables 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException */
-	public TimerTable() throws ClassNotFoundException, SQLException
-	{
+	public TimerTable() throws ClassNotFoundException, SQLException {
 		init();
 	}
 	
 	public void dropTables() {
-		try
-		{
+		try {
 			stm.execute("DROP TABLE TIMERSERVERS");
 			System.out.println("Dropped TIMERSERVERS Table...");
 		} catch (SQLException e) {}
 	}
 	
-	public void createTables() throws SQLException
-	{
-		try
-		{
+	public void createTables() throws SQLException {
+		try {
 			stm.execute("CREATE TABLE TIMERSERVERS ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ServerName varchar(50) NOT NULL, " + 
@@ -44,17 +41,14 @@ public class TimerTable extends CreateTableBase
 			"UNIQUE INDEX (ServerName) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created TIMERSERVERS Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void loadTestData() throws SQLException
-	{
-		try
-		{
+	public void loadTestData() throws SQLException {
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO TIMERSERVERS " +
 				"(ServerName," +
@@ -83,8 +77,7 @@ public class TimerTable extends CreateTableBase
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -93,8 +86,7 @@ public class TimerTable extends CreateTableBase
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		try {
 			TimerTable ct = new TimerTable();
 			ct.dropTables();

@@ -1,4 +1,5 @@
 package ltj.message.table;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -7,45 +8,38 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.inbox.SearchFieldsVo;
-public class UserTable extends CreateTableBase
-{
+
+public class UserTable extends CreateTableBase {
 	/** Creates a new instance of MailTables 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException */
-	public UserTable() throws ClassNotFoundException, SQLException
-	{
+	public UserTable() throws ClassNotFoundException, SQLException {
 		init();
 	}
 	
 	public void dropTables() {
-		try
-		{
+		try {
 			stm.execute("DROP TABLE SESSIONS");
 			System.out.println("Dropped SESSIONS Table...");
 		} catch (SQLException e) {}
-		try
-		{
+		try {
 			stm.execute("DROP TABLE SESSIONUPLOADS");
 			System.out.println("Dropped SESSIONUPLOADS Table...");
 		} catch (SQLException e) {}
-		try
-		{
+		try {
 			stm.execute("DROP TABLE USERS");
 			System.out.println("Dropped USERS Table...");
 		} catch (SQLException e) {}
 	}
 	
-	public void createTables() throws SQLException
-	{
+	public void createTables() throws SQLException {
 		createUserTable();
 		createSessionTable();
 		createSessionUploadTable();
 	}
 
-	void createUserTable() throws SQLException
-	{
-		try
-		{
+	void createUserTable() throws SQLException {
+		try {
 			stm.execute("CREATE TABLE USERS ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"UserId varchar(10) NOT NULL, " + 
@@ -69,17 +63,14 @@ public class UserTable extends CreateTableBase
 			"Constraint UNIQUE INDEX (UserId) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created USERS Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
-	void createSessionTable() throws SQLException
-	{
-		try
-		{
+	void createSessionTable() throws SQLException {
+		try {
 			stm.execute("CREATE TABLE SESSIONS ( " +
 			"SessionId varchar(50) NOT NULL, " + 
 			"SessionName varchar(50), " +
@@ -90,17 +81,14 @@ public class UserTable extends CreateTableBase
 			"PRIMARY KEY (SessionId, SessionName) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created SESSIONS Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 	
-	void createSessionUploadTable() throws SQLException
-	{
-		try
-		{
+	void createSessionUploadTable() throws SQLException {
+		try {
 			stm.execute("CREATE TABLE SESSIONUPLOADS ( " +
 			"SessionId varchar(50) NOT NULL, " + 
 			"SessionSeq int NOT NULL, " +
@@ -113,17 +101,14 @@ public class UserTable extends CreateTableBase
 			"PRIMARY KEY (SessionId, SessionSeq) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created SESSIONUPLOADS Table...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void loadTestData() throws SQLException
-	{
-		try
-		{
+	public void loadTestData() throws SQLException {
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO USERS " +
 				"(UserId," +
@@ -161,14 +146,12 @@ public class UserTable extends CreateTableBase
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 		
-		try
-		{
+		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO SESSIONUPLOADS " +
 				"(SessionId," +
@@ -200,8 +183,7 @@ public class UserTable extends CreateTableBase
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
@@ -210,8 +192,7 @@ public class UserTable extends CreateTableBase
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		try {
 			UserTable ct = new UserTable();
 			ct.dropTables();

@@ -152,8 +152,9 @@ public final class NamedPools {
 			}
 		}
 		
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("getConnection() - All pools are empty, entering wait()...");
+		}
 		try {
 			wait();
 			if (isDebugEnabled) {

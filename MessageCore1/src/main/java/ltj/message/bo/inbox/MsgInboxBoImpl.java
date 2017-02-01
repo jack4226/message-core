@@ -101,8 +101,9 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	 *             if SQL error occurred
 	 */
 	public long saveMessage(MessageBean msgBean) throws DataValidationException {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("Entering saveMessage() method..." + LF + msgBean);
+		}
 		if (msgBean == null) {
 			throw new DataValidationException("Input MessageBean is null");
 		}

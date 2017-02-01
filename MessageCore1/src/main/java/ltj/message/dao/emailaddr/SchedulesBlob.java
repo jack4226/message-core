@@ -195,8 +195,9 @@ public final class SchedulesBlob implements Serializable {
 						else {
 							sb.append("[");
 							for (int j = 0; j < array.length; j++) {
-								if (j > 0)
+								if (j > 0) {
 									sb.append(", ");
+								}
 								sb.append(array[j]);
 							}
 							sb.append("]");
@@ -220,8 +221,9 @@ public final class SchedulesBlob implements Serializable {
 							sb.append("[");
 							for (int j = 0; j < list.size(); j++) {
 								Date date = (Date) list.get(j);
-								if (j > 0)
+								if (j > 0) {
 									sb.append(", ");
+								}
 								sb.append(sdf.format(date));
 							}
 							sb.append("]");
@@ -242,8 +244,8 @@ public final class SchedulesBlob implements Serializable {
 					sb.append(LF);
 				}
 				catch (Exception e) {
-					System.err.println("error getting values in toString " + methods[i].getName()
-							+ " " + e.getMessage());
+					System.err
+							.println("error getting values in toString " + methods[i].getName() + " " + e.getMessage());
 				}
 			}
 		}

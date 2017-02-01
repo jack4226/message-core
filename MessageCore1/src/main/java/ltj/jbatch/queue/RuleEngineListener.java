@@ -43,7 +43,7 @@ public class RuleEngineListener implements MessageListener {
 		try {
 			String JmsMessageId = message.getJMSMessageID();
 			if (message instanceof ObjectMessage) {
-				Object obj = ((ObjectMessage)message).getObject();
+				Object obj = ((ObjectMessage) message).getObject();
 				if (obj instanceof MessageBean) {
 					MessageBean messageBean = (MessageBean) obj;
 					parser.parse(messageBean); // for RuleName
