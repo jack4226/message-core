@@ -13,7 +13,9 @@ public class SsnNumberUtil {
      * Invalid SSN: 987-65-4320 | 000-00-0000 | (555) 555-5555
      */
     public static boolean isValidSSN(String ssn) {
-    	if (ssn == null) return false;
+    	if (ssn == null) {
+    		return false;
+    	}
     	Matcher matcher = ssnPattern.matcher(ssn);
     	return matcher.matches();
     }

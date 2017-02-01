@@ -31,8 +31,7 @@ public class TimestampUtil implements java.io.Serializable {
 		String converted = db2ToDecStr(db2tm);
 		// converted = "30023805873165862201";
 		String restored = decStrToDb2(converted);
-		System.out.println("Date: " + db2tm + ", converted: " + converted + ", restored: "
-				+ restored);
+		System.out.println("Date: " + db2tm + ", converted: " + converted + ", restored: " + restored);
 	}
 
 	//
@@ -88,8 +87,7 @@ public class TimestampUtil implements java.io.Serializable {
 		}
 
 		if (!isValidDb2Timestamp(db2ts)) {
-			throw new NumberFormatException("Converted <" + st + "> to an invalid DB2 Timestamp <"
-					+ db2ts + ">");
+			throw new NumberFormatException("Converted <" + st + "> to an invalid DB2 Timestamp <" + db2ts + ">");
 		}
 		return db2ts;
 	}
@@ -137,8 +135,9 @@ public class TimestampUtil implements java.io.Serializable {
 			seconds = Integer.parseInt(st.nextToken());
 
 			String millis_str = st.nextToken();
-			if (millis_str.length() > 3)
+			if (millis_str.length() > 3) {
 				millis_str = millis_str.substring(0, 3);
+			}
 			millis = Integer.parseInt(millis_str);
 
 			Calendar cal = Calendar.getInstance();
@@ -207,8 +206,7 @@ public class TimestampUtil implements java.io.Serializable {
 
 	static String fillWithLeadingZeros(String str, int len) {
 		String zeros = "00000000000000000000";
-		if (str.length() > len) // this shouldn't happen
-		{
+		if (str.length() > len) { // this shouldn't happen
 			return str.substring(0, len);
 		}
 		else if (str.length() < len) {
@@ -285,8 +283,8 @@ public class TimestampUtil implements java.io.Serializable {
 		else {
 			maxDays = daysArray[months - 1];
 		}
-		if (months < 1 || months > 12 || days < 1 || days > maxDays || hours > 23 || minutes > 59
-				|| seconds > 59 || nanosStr.length() != 6) {
+		if (months < 1 || months > 12 || days < 1 || days > maxDays || hours > 23 || minutes > 59 || seconds > 59
+				|| nanosStr.length() != 6) {
 			throw new NumberFormatException("Invalid timestamp: " + db2ts);
 		}
 
@@ -332,8 +330,7 @@ public class TimestampUtil implements java.io.Serializable {
 				String sec = Millis.substring(12, 2 + 12);
 				String mil = Millis.substring(14, 3 + 14);
 
-				String dateStr = year + "-" + month + "-" + date + "-" + hour + "." + min + "."
-						+ sec + "." + mil;
+				String dateStr = year + "-" + month + "-" + date + "-" + hour + "." + min + "." + sec + "." + mil;
 
 				return dateStr + last3;
 			}
@@ -382,8 +379,7 @@ public class TimestampUtil implements java.io.Serializable {
 			maxDays = daysArray[months - 1];
 		}
 
-		if (months < 1 || months > 12 || days < 1 || days > maxDays || hours > 23 || minutes > 59
-				|| seconds > 59) {
+		if (months < 1 || months > 12 || days < 1 || days > maxDays || hours > 23 || minutes > 59 || seconds > 59) {
 			throw new NumberFormatException("Invalid timestamp: " + db2ts);
 		}
 		cal.set(years, --months, days, hours, minutes, seconds);
@@ -450,8 +446,7 @@ public class TimestampUtil implements java.io.Serializable {
 	 */
 	public static int getCheckDigit(String nbrstr) {
 		// Calculate the check digit
-		char multiplier[] = { 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1,
-				3, 7, 1, 3, 7, 1, 3 };
+		char multiplier[] = { 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3 };
 		char charstr[] = nbrstr.toCharArray();
 		long sum = 0L;
 		for (short i = 0; i < charstr.length; i++) {

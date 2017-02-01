@@ -15,14 +15,11 @@ public class EmailAddrUtil {
 	final static String remotePart = "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])+";
 	final static String intraPart = "@[a-z0-9](?:[a-z0-9-]*[a-z0-9])+";
 
-	final static Pattern remotePattern = Pattern.compile("^" + localPart + remotePart + "$",
-			Pattern.CASE_INSENSITIVE);
+	final static Pattern remotePattern = Pattern.compile("^" + localPart + remotePart + "$", Pattern.CASE_INSENSITIVE);
 
-	final static Pattern intraPattern = Pattern.compile("^" + localPart + intraPart + "$",
-			Pattern.CASE_INSENSITIVE);
+	final static Pattern intraPattern = Pattern.compile("^" + localPart + intraPart + "$", Pattern.CASE_INSENSITIVE);
 
-	final static Pattern localPattern = Pattern.compile("^" + localPart + "$",
-			Pattern.CASE_INSENSITIVE);
+	final static Pattern localPattern = Pattern.compile("^" + localPart + "$", Pattern.CASE_INSENSITIVE);
 
 	final static String bounceRegex = (new StringBuilder("\\s*\\W?((\\w+)\\-("))
 			.append(EmailIDToken.XHDR_BEGIN).append("\\d+").append(EmailIDToken.XHDR_END)
@@ -58,19 +55,22 @@ public class EmailAddrUtil {
 		if (addrs == null || addrs.length == 0) {
 			return null;
 		}
-		String str = addrs[0].toString();
+		StringBuilder sb = new StringBuilder();
 		if (removeDisplayName) {
-			str = removeDisplayName(str);
+			sb.append(removeDisplayName(addrs[0].toString()));
+		}
+		else {
+			sb.append(addrs[0].toString());
 		}
 		for (int i = 1; i < addrs.length; i++) {
 			if (removeDisplayName) {
-				str = str + "," + removeDisplayName(addrs[i].toString());
+				sb.append("," + removeDisplayName(addrs[i].toString()));
 			}
 			else {
-				str = str + "," + addrs[i].toString();
+				sb.append("," + addrs[i].toString());
 			}
 		}
-		return str;
+		return sb.toString();
 	}
 
 	/**
@@ -120,7 +120,9 @@ public class EmailAddrUtil {
 	 * @return true if it has a display name
 	 */
 	public static boolean hasDisplayName(String addr) {
-		if (StringUtil.isEmpty(addr)) return false;
+		if (StringUtil.isEmpty(addr)) {
+			return false;
+		}
 		return addr.matches("^\\s*\\S+.{0,250}\\<.+\\>\\s*$");
 	}
 
@@ -206,7 +208,9 @@ public class EmailAddrUtil {
 	 * @return new message text
 	 */
 	public static String getHtmlDisplayText(String text) {
-		if (text == null) return null;
+		if (text == null) {
+			return null;
+		}
 		if (text.startsWith("<pre>") && text.endsWith("</pre>")) {
 			return text;
 		}
@@ -228,7 +232,9 @@ public class EmailAddrUtil {
 	 * @return True if string is an valid email address. False if not.
 	 */
 	public static boolean isInternetEmailAddress(String string) {
-		if (string == null) return false;
+		if (string == null) {
+			return false;
+		}
 		Matcher matcher = remotePattern.matcher(removeDisplayName(string));
 		return matcher.matches();
 	    //return string.matches(
@@ -245,8 +251,12 @@ public class EmailAddrUtil {
 	 * @return True if string is an valid email address. False if not.
 	 */
 	public static boolean isRemoteEmailAddress(String string) {
-		if (string == null) return false;
-		if (isInternetEmailAddress(string)) return true;
+		if (string == null) {
+			return false;
+		}
+		if (isInternetEmailAddress(string)) {
+			return true;
+		}
 		Matcher matcher = intraPattern.matcher(removeDisplayName(string));
 		return matcher.matches();
 	    //return string.matches(
@@ -262,8 +272,12 @@ public class EmailAddrUtil {
 	 * @return true if it's a valid email address
 	 */
 	public static boolean isRemoteOrLocalEmailAddress(String string) {
-		if (string == null) return false;
-		if (isRemoteEmailAddress(string)) return true;
+		if (string == null) {
+			return false;
+		}
+		if (isRemoteEmailAddress(string)) {
+			return true;
+		}
 		Matcher matcher = localPattern.matcher(removeDisplayName(string));
 		return matcher.matches();
 	}

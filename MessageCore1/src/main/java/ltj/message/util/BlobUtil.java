@@ -31,7 +31,9 @@ public final class BlobUtil {
 	}
 
 	public static byte[] objectToBytes(Object obj) throws IOException {
-		if (obj == null) return null;
+		if (obj == null) {
+			return null;
+		}
 		// convert java object to a output stream
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream objos = new ObjectOutputStream(baos);
@@ -47,7 +49,9 @@ public final class BlobUtil {
 	}
 
 	public static byte[] beanToXmlBytes(Object obj) throws IOException {
-		if (obj == null) return null;
+		if (obj == null) {
+			return null;
+		}
 		// convert java object to a output stream using XMLEncoder
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XMLEncoder encoder = new XMLEncoder(baos);
@@ -61,7 +65,9 @@ public final class BlobUtil {
 	}
 
 	public static Object bytesToObject(byte[] bytes) throws IOException, ClassNotFoundException {
-		if (bytes == null) return null;
+		if (bytes == null) {
+			return null;
+		}
 		// wrap the bytes into an object input stream
 		ObjectInputStream objis = new ObjectInputStream(new ByteArrayInputStream(bytes));
 		// get object from the input stream
@@ -71,7 +77,9 @@ public final class BlobUtil {
 	}
 
 	public static Object xmlBytesToBean(byte[] bytes) throws IOException, ClassNotFoundException {
-		if (bytes == null) return null;
+		if (bytes == null) {
+			return null;
+		}
 		// wrap the bytes into an XMLDecoder
 		XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(bytes));
 		// get object from XMLDecoder
@@ -85,7 +93,9 @@ public final class BlobUtil {
 	 * @throws IllegalArgumentException if the object cannot be serialized.
 	 */
     public static Object deepCopy(Object orig) {
-    	if (orig == null) return null;
+    	if (orig == null) {
+    		return null;
+    	}
     	if (!(orig instanceof java.io.Serializable)) {
     		throw new IllegalArgumentException("Input object must be Serializable");
     	}
@@ -99,8 +109,7 @@ public final class BlobUtil {
             out.close();
             // Make an input stream from the byte array and read
             // a copy of the object back in.
-            ObjectInputStream in = new ObjectInputStream(
-                new ByteArrayInputStream(bos.toByteArray()));
+			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
             obj = in.readObject();
         }
         catch(IOException e) {

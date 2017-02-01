@@ -55,11 +55,9 @@ public class HtmlTags extends LinkedHashMap<String, Boolean> {
 	final static Pattern matchedPairs = Pattern.compile(
 			"<([a-zA-Z]{1,10}|H[1-6])(?:\\b.{1,1024}?)?>(.*?)</\\1>", Pattern.DOTALL);
 	final static Pattern noAttrs = Pattern.compile("<([a-zA-Z]{1,10})[\\s]?[\\/]?>");
-	final static Pattern hasAttrs = Pattern.compile("<([a-zA-Z]{1,10})(?:\\b.{1,1024}?)?[\\/]?>",
-			Pattern.DOTALL);
+	final static Pattern hasAttrs = Pattern.compile("<([a-zA-Z]{1,10})(?:\\b.{1,1024}?)?[\\/]?>", Pattern.DOTALL);
 	final static Pattern comment = Pattern.compile("<!--\\s+.*?-->", Pattern.DOTALL);
-	final static Pattern doctype = Pattern.compile("<!DOCTYPE .*?>", Pattern.DOTALL
-			| Pattern.CASE_INSENSITIVE);
+	final static Pattern doctype = Pattern.compile("<!DOCTYPE .*?>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 	
 	/**
 	 * Check if the input text contains HTML tags 
@@ -67,14 +65,17 @@ public class HtmlTags extends LinkedHashMap<String, Boolean> {
 	 * @return true if contains any HTML tag
 	 */
 	public static boolean isHTML(String text) {
-		if (StringUtil.isEmpty(text)) return false;
+		if (StringUtil.isEmpty(text)) {
+			return false;
+		}
 		Matcher m1 = matchedPairs.matcher(text);
 		int count = 0;
 		while (m1.find() && count++ < 1) {
 			String tag = m1.group(1).toUpperCase();
 			if (getHtmlTagNames().containsKey(tag)) {
-				if (debug && isDebugEnabled)
+				if (debug && isDebugEnabled) {
 					logger.debug("isHTML() - Found Tag With Closing tag: " + m1.group(0));
+				}
 				return true;
 			}
 			else {
@@ -86,8 +87,9 @@ public class HtmlTags extends LinkedHashMap<String, Boolean> {
 		while (m2.find() && count++ < 2) { // allow one non-HTML tags
 			String tag = m2.group(m2.groupCount()).toUpperCase();
 			if (getHtmlTagNames().containsKey(tag)) {
-				if (debug && isDebugEnabled)
+				if (debug && isDebugEnabled) {
 					logger.debug("isHTML() - Found Tag-Only Tag: " + m2.group(0));
+				}
 				return true;
 			}
 			else {
@@ -100,8 +102,9 @@ public class HtmlTags extends LinkedHashMap<String, Boolean> {
 			String tag = m3.group(m3.groupCount()).toUpperCase();
 			if (getHtmlTagNames().containsKey(tag)) {
 				if (getHtmlTagNames().get(tag)) {
-					if (debug && isDebugEnabled)
+					if (debug && isDebugEnabled) {
 						logger.debug("isHTML() - Found Tag With Attributes: " + m3.group(0));
+					}
 					return true;
 				}
 				else {

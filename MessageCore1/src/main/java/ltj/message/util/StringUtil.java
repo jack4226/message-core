@@ -51,12 +51,15 @@ public final class StringUtil {
 	 * @return string with maximum size of "len" plus three dots.
 	 */
 	public static String cutWithDots(String str, int len) {
-		if (str == null || str.length() <= len || len < 0)
+		if (str == null || str.length() <= len || len < 0) {
 			return str;
-		else if (str.length() > len)
+		}
+		else if (str.length() > len) {
 			return str.substring(0, len) + "...";
-		else
+		}
+		else {
 			return str;
+		}
 	}
 
 	/**
@@ -67,12 +70,14 @@ public final class StringUtil {
 	 * @return string with quotes removed, or null if input is null
 	 */
 	public static String removeQuotes(String data) {
-		if (data == null) return data;
+		if (data == null) {
+			return data;
+		}
 		StringTokenizer st = new StringTokenizer(data, "\"\'");
 		StringBuffer sb = new StringBuffer();
-		while (st.hasMoreTokens())
+		while (st.hasMoreTokens()) {
 			sb.append(st.nextToken());
-
+		}
 		return sb.toString();
 	}
 
@@ -83,11 +88,14 @@ public final class StringUtil {
 	 *            a list objects
 	 */
 	public static void stripAll(ArrayList<Object> list) {
-		if (list==null) return;
+		if (list==null) {
+			return;
+		}
 		for (int i=0; i<list.size(); i++) {
 			Object obj = list.get(i);
-			if (obj!=null && obj instanceof String)
+			if (obj!=null && obj instanceof String) {
 				list.set(i,((String)obj).trim());
+			}
 		}
 	}
 
@@ -98,11 +106,14 @@ public final class StringUtil {
 	 *            a list of objects
 	 */
 	public static void stripAll(Object[] list) {
-		if (list==null) return;
+		if (list==null) {
+			return;
+		}
 		for (int i=0; i<list.length; i++) {
 			Object obj = list[i];
-			if (obj!=null && obj instanceof String)
+			if (obj!=null && obj instanceof String) {
 				list[i]=((String)obj).trim();
+			}
 		}
 	}
 
@@ -132,8 +143,7 @@ public final class StringUtil {
 						if (str != null) { // trim the string
 							String setMethodName = "set" + method.getName().substring(3);
 							try {
-								Method setMethod = obj.getClass()
-										.getMethod(setMethodName, setParms);
+								Method setMethod = obj.getClass().getMethod(setMethodName, setParms);
 								if (setMethod != null) {
 									String strParms[] = { str.trim() };
 									setMethod.invoke(obj, (Object[])strParms);
@@ -241,7 +251,9 @@ public final class StringUtil {
 		 * We could also do this: ("A" + text).trim().substring(1)
 		 * but the performance is poor.
 		 */
-		if (StringUtils.isEmpty(text)) return text; 
+		if (StringUtils.isEmpty(text)) {
+			return text; 
+		}
 		int idx = text.length() - 1;
 		while (idx >= 0 && Character.isWhitespace(text.charAt(idx))) {
 			idx--;
@@ -331,7 +343,7 @@ public final class StringUtil {
 	public static void main(String[] args) {
 		System.out.println(removeStringFirst("<pre>12345abcdefklqhdkh</pre>", "<pre>"));
 		for (int i = 0; i < 50; i++) {
-		System.out.println(getRandomWords("This is my ${best} worst test $rest message."));
+			System.out.println(getRandomWords("This is my ${best} worst test $rest message."));
 		}
 	}
 }
