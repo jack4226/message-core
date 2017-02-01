@@ -982,8 +982,9 @@ public class MsgRulesBean {
 		}
 		if (ruleLogic != null) {
 			List<RuleSubRuleMapVo> list = getRuleSubRuleMapDao().getByRuleName(ruleLogic.getRuleName());
-			if (list.size() > 0)
+			if (list.size() > 0) {
 				return true;
+			}
 		}
 		return false;
 	}

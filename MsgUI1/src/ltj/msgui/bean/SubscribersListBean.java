@@ -62,9 +62,9 @@ public class SubscribersListBean {
 			List<SubscriptionVo> subscriberList = getSubscriptionDao().getSubscribersWithPaging(listId, pagingVo);
 			/* set keys for paging */
 			if (!subscriberList.isEmpty()) {
-				SubscriptionVo firstRow = (SubscriptionVo) subscriberList.get(0);
+				SubscriptionVo firstRow = subscriberList.get(0);
 				pagingVo.setIdFirst(firstRow.getEmailAddrId());
-				SubscriptionVo lastRow = (SubscriptionVo) subscriberList.get(subscriberList.size() - 1);
+				SubscriptionVo lastRow = subscriberList.get(subscriberList.size() - 1);
 				pagingVo.setIdLast(lastRow.getEmailAddrId());
 			}
 			else {

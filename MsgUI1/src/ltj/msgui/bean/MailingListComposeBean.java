@@ -347,8 +347,9 @@ public class MailingListComposeBean {
 	 * @param value
 	 */
 	public void validateFromAddress(FacesContext context, UIComponent component, Object value) {
-		if (isDebugEnabled)
+		if (isDebugEnabled) {
 			logger.debug("validateFromAddress() - From Address: " + value);
+		}
 		String fromAddr = (String) value;
 		if (!isValidEmailAddress(fromAddr)) {
 			// invalid email address
