@@ -22,8 +22,7 @@ public class SwingInput {
     
     String getPasswordUnfocused() {
 		JPasswordField pwd = new JPasswordField(16);
-		int action = JOptionPane.showConfirmDialog(null, pwd, "Enter Root Password",
-				JOptionPane.OK_CANCEL_OPTION);
+		int action = JOptionPane.showConfirmDialog(null, pwd, "Enter Root Password", JOptionPane.OK_CANCEL_OPTION);
 		if (action < 0) {
 			JOptionPane.showMessageDialog(null, "Cancel, X or escape key selected");
 			return null;
@@ -36,8 +35,7 @@ public class SwingInput {
     
     private String getPasswordFocused() {
     	final JPasswordField jpf = new JPasswordField();
-		JOptionPane jop = new JOptionPane(jpf, JOptionPane.QUESTION_MESSAGE,
-				JOptionPane.OK_CANCEL_OPTION);
+		JOptionPane jop = new JOptionPane(jpf, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 		JDialog dialog = jop.createDialog(null, "Enter MySql root password:");
 		dialog.addComponentListener(new ComponentAdapter() {
 			@Override

@@ -85,8 +85,7 @@ public class CreateDatabase {
 	 */
     private String getRootPassword() {
     	final JPasswordField jpf = new JPasswordField();
-		JOptionPane jop = new JOptionPane(jpf, JOptionPane.QUESTION_MESSAGE,
-				JOptionPane.OK_CANCEL_OPTION);
+		JOptionPane jop = new JOptionPane(jpf, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 		JDialog dialog = jop.createDialog(null, "Enter MySql root password:");
 		dialog.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -114,14 +113,12 @@ public class CreateDatabase {
 		    logger.info("overrideCurrentDB() - OK clicked");
 	    }
 	    // Modal dialog with yes/no button
-	    int answer = JOptionPane.showConfirmDialog(null, message, "Emailsphere.com",
-				JOptionPane.OK_CANCEL_OPTION);
+		int answer = JOptionPane.showConfirmDialog(null, message, "Emailsphere.com", JOptionPane.OK_CANCEL_OPTION);
 	    if (answer == JOptionPane.YES_OPTION) {
 	        // User clicked YES.
 	    	logger.info("overrideCurrentDB() - Yes clicked");
-	    	int answer2 = JOptionPane.showConfirmDialog(null,
-					"The entire database will be erased, are you sure?", "Emailsphere.com",
-					JOptionPane.OK_CANCEL_OPTION);
+			int answer2 = JOptionPane.showConfirmDialog(null, "The entire database will be erased, are you sure?",
+					"Emailsphere.com", JOptionPane.OK_CANCEL_OPTION);
 	    	if (answer2 == JOptionPane.YES_OPTION) {
 	    		logger.info("overrideCurrentDB() - Override confirmed");
 	    		return true;

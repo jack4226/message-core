@@ -198,8 +198,8 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 
 			if (methodName.startsWith("get") && params.length == 0) {
 				try {
-					sb.append("     " + dots(level) + paramClassName + "."
-							+ methodName.substring(3, 4).toLowerCase() + methodName.substring(4));
+					sb.append("     " + dots(level) + paramClassName + "." + methodName.substring(3, 4).toLowerCase()
+							+ methodName.substring(4));
 					sb.append("=");
 					Class<?> returnType = method.getReturnType();
 					String returnTypeName = returnType.getName();
