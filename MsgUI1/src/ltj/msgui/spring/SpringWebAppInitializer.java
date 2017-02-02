@@ -1,4 +1,4 @@
-package ltj.msgui.util;
+package ltj.msgui.spring;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

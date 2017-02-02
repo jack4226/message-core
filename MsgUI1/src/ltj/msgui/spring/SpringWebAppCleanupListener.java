@@ -1,4 +1,4 @@
-package ltj.msgui.util;
+package ltj.msgui.spring;
 
 import javax.servlet.ServletContextEvent;
 
@@ -10,6 +10,8 @@ import org.springframework.jms.JmsException;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.web.context.ContextCleanupListener;
 import org.springframework.web.context.WebApplicationContext;
+
+import ltj.msgui.util.SpringUtil;
 
 public class SpringWebAppCleanupListener extends ContextCleanupListener {
 	static final Logger logger = Logger.getLogger(SpringWebAppCleanupListener.class);
