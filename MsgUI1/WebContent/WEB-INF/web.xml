@@ -174,8 +174,8 @@
 		<description>A reference to MailingListEjb</description>
 		<ejb-ref-name>ejb/MailingList</ejb-ref-name>
 		<ejb-ref-type>Session</ejb-ref-type>
-		<home>com.legacytojava.message.ejb.mailinglist.MailingListHome</home>
-		<remote>com.legacytojava.message.ejb.mailinglist.MailingList</remote>
+		<home>ltj.message.ejb.mailinglist.MailingListHome</home>
+		<remote>ltj.message.ejb.mailinglist.MailingList</remote>
 	</ejb-ref -->
 
 	<!-- define jdbc resource reference -->
