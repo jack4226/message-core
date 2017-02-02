@@ -3,8 +3,6 @@ package ltj.msgui.servlet;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -21,6 +19,7 @@ import org.apache.log4j.Logger;
 import ltj.message.dao.inbox.AttachmentsDao;
 import ltj.message.vo.inbox.AttachmentsVo;
 import ltj.msgui.util.SpringUtil;
+import ltj.tomee.util.TomeeCtxUtil;
 
 /**
  * The File Servlet that serves files from database.
@@ -36,7 +35,7 @@ public class FileServlet extends HttpServlet {
 		ServletContext ctx = getServletContext();
 		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Path: " + ctx.getContextPath());
 		attachmentsDao = SpringUtil.getWebAppContext(ctx).getBean(AttachmentsDao.class);
-		//getInitialContext();
+		getInitialContext();
 	}
 	
 	void getInitialContext() {
@@ -57,27 +56,29 @@ public class FileServlet extends HttpServlet {
 			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 			logger.info("getInitialContext(): initial env context - " + envCtx);
+			TomeeCtxUtil.listContext(envCtx, "");
 			ds = (DataSource) envCtx.lookup("jdbc/msgdb_pool");
 			logger.info("getInitialContext(): jdbc/msgdb_pool data source - " + ds);
 		} catch (NamingException e) {
 			logger.error("NamingException caught", e);
 		}
 
-		if (ds != null) {
-			Connection conn = null;
-			try {
-				conn = ds.getConnection();
-				logger.info("getInitialContext(): data source connection - " + conn);
-			} catch (SQLException e) {
-				logger.error("SQLException caught", e);
-			} finally {
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {}
-				}
-			}
-		}
+		// TODO - configure resource factory in server.xml and uncomment the code
+//		if (ds != null) {
+//			java.sql.Connection conn = null;
+//			try {
+//				conn = ds.getConnection();
+//				logger.info("getInitialContext(): data source connection - " + conn);
+//			} catch (java.sql.SQLException e) {
+//				logger.error("SQLException caught", e);
+//			} finally {
+//				if (conn != null) {
+//					try {
+//						conn.close();
+//					} catch (java.sql.SQLException e) {}
+//				}
+//			}
+//		}
 	}
 	
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
