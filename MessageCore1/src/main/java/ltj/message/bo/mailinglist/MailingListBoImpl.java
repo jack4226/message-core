@@ -273,7 +273,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (isDebugEnabled) {
 			logger.debug("optInConfirm() -  emailAddrId: " + emailAddrId + ", listAddr: " + listId);
 		}
-		EmailAddrVo addrVo = getEmailAddrDao().getByAddrId(emailAddrId);
+		EmailAddrVo addrVo = emailAddrDao.getByAddrId(emailAddrId);
 		int emailsAdded = 0;
 		if (addrVo != null) {
 			emailsAdded = optInOrConfirm(addrVo.getEmailAddr(), listId, true);
@@ -288,7 +288,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
-		int recsUpdated = getSubscriptionDao().updateSentCount(emailAddrId, listId);
+		int recsUpdated = subscriptionDao.updateSentCount(emailAddrId, listId);
 		return recsUpdated;
 	}
 
@@ -299,7 +299,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
-		int recsUpdated = getSubscriptionDao().updateOpenCount(emailAddrId, listId);
+		int recsUpdated = subscriptionDao.updateOpenCount(emailAddrId, listId);
 		return recsUpdated;
 	}
 
@@ -310,7 +310,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
-		int recsUpdated = getSubscriptionDao().updateClickCount(emailAddrId, listId);
+		int recsUpdated = subscriptionDao.updateClickCount(emailAddrId, listId);
 		return recsUpdated;
 	}
 
@@ -318,7 +318,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (isDebugEnabled) {
 			logger.debug("updateSentCount() - MsgId: " + msgId);
 		}
-		int recsUpdated = getMsgClickCountsDao().updateSentCount(msgId, count);
+		int recsUpdated = msgClickCountsDao.updateSentCount(msgId, count);
 		return recsUpdated;
 	}
 
@@ -326,7 +326,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (isDebugEnabled) {
 			logger.debug("updateOpenCount() - MsgId: " + msgId);
 		}
-		int recsUpdated = getMsgClickCountsDao().updateOpenCount(msgId, count);
+		int recsUpdated = msgClickCountsDao.updateOpenCount(msgId, count);
 		return recsUpdated;
 	}
 
@@ -334,7 +334,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (isDebugEnabled) {
 			logger.debug("updateClickCount() - MsgId: " + msgId);
 		}
-		int recsUpdated = getMsgClickCountsDao().updateClickCount(msgId, count);
+		int recsUpdated = msgClickCountsDao.updateClickCount(msgId, count);
 		return recsUpdated;
 	}
 
@@ -386,33 +386,5 @@ public class MailingListBoImpl implements MailingListBo {
 		if (listVo == null) {
 			throw new DataValidationException("Mailing List does not exist: " + listId);
 		}
-	}
-
-	public EmailTemplateDao getEmailTemplateDao() {
-		return emailTemplateDao;
-	}
-
-	public MailingListDao getMailingListDao() {
-		return mailingListDao;
-	}
-
-	public EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
-	}
-
-	public SubscriptionDao getSubscriptionDao() {
-		return subscriptionDao;
-	}
-
-	public MsgClickCountsDao getMsgClickCountsDao() {
-		return msgClickCountsDao;
-	}
-
-	public TaskBaseBo getSendMailBo() {
-		return sendMailBo;
-	}
-
-	public TaskBaseBo getAssignRuleNameBo() {
-		return assignRuleNameBo;
 	}
 }

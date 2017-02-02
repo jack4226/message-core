@@ -177,28 +177,4 @@ public class CustomerBoImpl implements CustomerBo {
 		return rowsUpdated;
 	}
 
-	public CustomerDao getCustomerDao() {
-		return customerDao;
-	}
-
-//	public void setCustomerDao(CustomerDao customerDao) {
-//		this.customerDao = customerDao;
-//	}
-
-	public EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
-	}
-
-//	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-//		this.emailAddrDao = emailAddrDao;
-//	}
-
-	public CustSequenceDao getCustSequenceDao() {
-		return custSequenceDao;
-	}
-
-//	public void setCustSequenceDao(CustSequenceDao custSequenceDao) {
-//		this.custSequenceDao = custSequenceDao;
-//	}
-
 }

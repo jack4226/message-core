@@ -32,10 +32,6 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.RuleNameType;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.dao.inbox.AttachmentsDao;
-import ltj.message.dao.inbox.MsgAddrsDao;
-import ltj.message.dao.inbox.MsgHeadersDao;
-import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
 import ltj.message.dao.outbox.RenderAttachmentDao;
 import ltj.message.dao.outbox.RenderObjectDao;
@@ -65,14 +61,6 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 	private RenderVariableDao renderVariableDao;
 	@Autowired
 	private RenderObjectDao renderObjectDao;
-	@Autowired
-	private MsgInboxDao msgInboxDao;
-	@Autowired
-	private AttachmentsDao attachmentsDao;
-	@Autowired
-	private MsgHeadersDao msgHeadersDao;
-	@Autowired
-	private MsgAddrsDao msgAddrsDao;
 	@Autowired
 	private EmailAddrDao emailAddrDao;
 	
@@ -137,7 +125,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			msgBean.setCarrierCode(rsp.getMsgSourceVo().getCarrierCode());
 		}
 		if (msgBean.getFrom() == null && rsp.getMsgSourceVo().getFromAddrId() != null) {
-			EmailAddrVo addrVo = getEmailAddrDao().getByAddrId(rsp.getMsgSourceVo().getFromAddrId());
+			EmailAddrVo addrVo = emailAddrDao.getByAddrId(rsp.getMsgSourceVo().getFromAddrId());
 			if (addrVo !=null) {
 				try {
 					Address[] from = InternetAddress.parse(addrVo.getEmailAddr());
@@ -149,7 +137,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			}
 		}
 		if (msgBean.getReplyto() == null && rsp.getMsgSourceVo().getReplyToAddrId() != null) {
-			EmailAddrVo addrVo = getEmailAddrDao().getByAddrId(rsp.getMsgSourceVo().getReplyToAddrId());
+			EmailAddrVo addrVo = emailAddrDao.getByAddrId(rsp.getMsgSourceVo().getReplyToAddrId());
 			if (addrVo != null) {
 				try {
 					Address[] replyto = InternetAddress.parse(addrVo.getEmailAddr());
@@ -422,45 +410,5 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			);
 		
 		return renderRequest;
-	}
-
-	public AttachmentsDao getAttachmentsDao() {
-		return attachmentsDao;
-	}
-
-	public RenderVariableDao getRenderVariableDao() {
-		return renderVariableDao;
-	}
-
-	public EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
-	}
-
-	public RenderBo getRenderBo() {
-		return renderBo;
-	}
-
-	public MsgRenderedDao getMsgRenderedDao() {
-		return msgRenderedDao;
-	}
-
-	public RenderAttachmentDao getRenderAttachmentDao() {
-		return renderAttachmentDao;
-	}
-
-	public MsgHeadersDao getMsgHeadersDao() {
-		return msgHeadersDao;
-	}
-
-	public MsgAddrsDao getMsgAddrsDao() {
-		return msgAddrsDao;
-	}
-
-	public MsgInboxDao getMsgInboxDao() {
-		return msgInboxDao;
-	}
-
-	public RenderObjectDao getRenderObjectDao() {
-		return renderObjectDao;
 	}
 }

@@ -165,7 +165,7 @@ public class RenderBoImpl implements RenderBo {
 		}
 		
 		if (bodyTemplate == null) {
-			BodyTemplateVo tmpltVo = getBodyTemplateDao().getByBestMatch(srcVo.getBodyTemplateId(), req.clientId,
+			BodyTemplateVo tmpltVo = bodyTemplateDao.getByBestMatch(srcVo.getBodyTemplateId(), req.clientId,
 					req.startTime);
 			if (tmpltVo == null) {
 				throw new DataValidationException("BodyTemplate not found for: " + srcVo.getBodyTemplateId() + "/"
@@ -197,7 +197,7 @@ public class RenderBoImpl implements RenderBo {
 		}
 
 		if (subjTemplate == null) {
-			SubjTemplateVo tmpltVo = getSubjTemplateDao().getByBestMatch(srcVo.getSubjTemplateId(), req.clientId,
+			SubjTemplateVo tmpltVo = subjTemplateDao.getByBestMatch(srcVo.getSubjTemplateId(), req.clientId,
 					req.startTime);
 			if (tmpltVo == null) {
 				throw new DataValidationException("SubjTemplate not found for: " + srcVo.getSubjTemplateId() + "/"
@@ -438,9 +438,9 @@ public class RenderBoImpl implements RenderBo {
 		rsp.msgSourceVo = msgSourceVo;
 		
 		// retrieve variables
-		Collection<GlobalVariableVo> globalVariables = getGlobalVariableDao().getCurrent();
-		Collection<ClientVariableVo> clientVariables = getClientVariableDao().getCurrentByClientId(req.clientId);
-		Collection<TemplateVariableVo> templateVariables = getTemplateVariableDao()
+		Collection<GlobalVariableVo> globalVariables = globalVariableDao.getCurrent();
+		Collection<ClientVariableVo> clientVariables = clientVariableDao.getCurrentByClientId(req.clientId);
+		Collection<TemplateVariableVo> templateVariables = templateVariableDao
 				.getCurrentByTemplateId(msgSourceVo.getTemplateVariableId(), req.clientId);
 		
 		// convert variables into Map
@@ -590,34 +590,6 @@ public class RenderBoImpl implements RenderBo {
 			ht.put(req.getVariableName(), r);
 		}
 		return ht;
-	}
-
-	public MsgSourceDao getMsgSourceDao() {
-		return msgSourceDao;
-	}
-
-	public BodyTemplateDao getBodyTemplateDao() {
-		return bodyTemplateDao;
-	}
-
-	public ClientVariableDao getClientVariableDao() {
-		return clientVariableDao;
-	}
-
-	public GlobalVariableDao getGlobalVariableDao() {
-		return globalVariableDao;
-	}
-
-	public SubjTemplateDao getSubjTemplateDao() {
-		return subjTemplateDao;
-	}
-
-	public TemplateVariableDao getTemplateVariableDao() {
-		return templateVariableDao;
-	}
-
-	public EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
 	}
 
 }

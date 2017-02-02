@@ -33,7 +33,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	public List<SessionUploadVo> getBySessionId(String sessionId) {
 		String sql = "select * from SessionUploads where SessionId=?";
 		Object[] parms = new Object[] {sessionId};
-		List<SessionUploadVo> list = getJdbcTemplate().query(sql, parms, 
+		List<SessionUploadVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SessionUploadVo>(SessionUploadVo.class));
 		return list;
 	}
@@ -60,7 +60,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	public List<SessionUploadVo> getByUserId(String userId) {
 		String sql = "select * from SessionUploads where UserId=?";
 		Object[] parms = new Object[] {userId};
-		List<SessionUploadVo> list = getJdbcTemplate().query(sql, parms, 
+		List<SessionUploadVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SessionUploadVo>(SessionUploadVo.class));
 		return list;
 	}
@@ -122,8 +122,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	}
 	
 	public int insertLast(SessionUploadVo sessVo) {
-		String lastSeq = "select max(SessionSeq) from SessionUploads where SessionId = '"
-				+ sessVo.getSessionId() + "'";
+		String lastSeq = "select max(SessionSeq) from SessionUploads where SessionId = '" + sessVo.getSessionId() + "'";
 		int sessSeq = getJdbcTemplate().queryForObject(lastSeq, Integer.class) + 1;
 		sessVo.setSessionSeq(sessSeq);
 		return insert(sessVo);

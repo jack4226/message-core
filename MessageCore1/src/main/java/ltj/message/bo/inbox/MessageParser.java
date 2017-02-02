@@ -653,22 +653,6 @@ public final class MessageParser {
 		return msgRefId;
 	}
 
-	public RuleLoader getRuleLoader() {
-		return ruleLoader;
-	}
-
-	public EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
-	}
-
-	public MsgInboxDao getMsgInboxDao() {
-		return msgInboxDao;
-	}
-
-	public MsgRenderedDao getMsgRenderedDao() {
-		return msgRenderedDao;
-	}
-
 	public static void main(String[] args) {
 		try {
 			MessageParser parser = (MessageParser) SpringUtil.getAppContext().getBean("messageParser");

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import ltj.message.bo.mailinglist.MailingListBo;
-import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.CustomerVo;
@@ -22,8 +21,6 @@ public class CustomerSignupBoImpl implements CustomerSignupBo {
 	
 	@Autowired
 	private MailingListDao mailingListDao;
-	@Autowired
-	private EmailAddrDao emailAddrDao;
 	@Autowired
 	private MailingListBo mailingListBo;
 	@Autowired
@@ -102,22 +99,6 @@ public class CustomerSignupBoImpl implements CustomerSignupBo {
 		}
 		int emailsAdded = mailingListBo.unSubscribe(vo.getEmailAddr(), listId);
 		return emailsAdded;
-	}
-	
-	public MailingListDao getMailingListDao() {
-		return mailingListDao;
-	}
-
-	public EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
-	}
-
-	public MailingListBo getMailingListBo() {
-		return mailingListBo;
-	}
-
-	public CustomerBo getCustomerBo() {
-		return customerBo;
 	}
 
 }

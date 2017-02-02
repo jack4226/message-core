@@ -146,7 +146,7 @@ public abstract class MailSenderBase {
 				msgBean.setEmBedEmailId(Boolean.valueOf(clientVo.getIsEmbedEmailId()));
 			}
 			// save the message to database
-			getMsgInboxBo().saveMessage(msgBean);
+			msgInboxBo.saveMessage(msgBean);
 			// check if VERP is enabled
 			if (clientVo.getIsVerpAddressEnabled()) {
 				// set return path with VERP, msgBean.msgId must be valued.
@@ -435,7 +435,7 @@ public abstract class MailSenderBase {
 		if (isDebugEnabled) {
 			logger.debug("saveMsgStream() - msgId: " + msgId);
 		}
-		MsgInboxVo msgInboxVo = getMsgInboxDao().getByPrimaryKey(msgId);
+		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
 		if (msgInboxVo == null) {
 			logger.error("saveMsgStream() - MsgInbox record not found by MsgId: " + msgId);
 			return;
@@ -444,12 +444,12 @@ public abstract class MailSenderBase {
 		msgStreamVo.setMsgId(msgId);
 		Address[] fromAddrs = msg.getFrom();
 		if (fromAddrs != null && fromAddrs.length > 0) {
-			EmailAddrVo emailAddrVo = getEmailAddrDao().findByAddress(fromAddrs[0].toString());
+			EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(fromAddrs[0].toString());
 			msgStreamVo.setFromAddrId(Long.valueOf(emailAddrVo.getEmailAddrId()));
 		}
 		Address[] toAddrs = msg.getRecipients(RecipientType.TO);
 		if (toAddrs != null && toAddrs.length > 0) {
-			EmailAddrVo emailAddrVo = getEmailAddrDao().findByAddress(toAddrs[0].toString());
+			EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(toAddrs[0].toString());
 			msgStreamVo.setToAddrId(Long.valueOf(emailAddrVo.getEmailAddrId()));
 		}
 		msgStreamVo.setMsgSubject(msg.getSubject());
@@ -457,7 +457,7 @@ public abstract class MailSenderBase {
 		try {
 			msg.writeTo(baos);
 			msgStreamVo.setMsgStream(baos.toByteArray());
-			getMsgStreamDao().insert(msgStreamVo);
+			msgStreamDao.insert(msgStreamVo);
 		} catch (IOException e) {
 			logger.error("IOException caught, ignored", e);
 		}
@@ -491,7 +491,7 @@ public abstract class MailSenderBase {
 	protected void validUnsent(MessageBean msgBean, SendFailedException exp, Address[] validUnsent)
 			throws MessagingException {
 		
-		MsgInboxVo msgInboxVo = getMsgInboxDao().getByPrimaryKey(msgBean.getMsgId());
+		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgBean.getMsgId());
 		if (msgInboxVo == null) {
 			logger.error("validUnsent() - MsgInbox record not found for MsgId: " + msgBean.getMsgId());
 			return;
@@ -579,7 +579,7 @@ public abstract class MailSenderBase {
 	 */
 	protected int updateMsgStatus(long msgId) throws MessagingException {
 		// update MsgInbox status (to delivered)
-		MsgInboxVo msgInboxVo = getMsgInboxDao().getByPrimaryKey(msgId);
+		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
 		if (msgInboxVo == null) {
 			logger.error("updateMsgStatus() - MsgInbox record not found for MsgId: " + msgId);
 			return 0;
@@ -589,7 +589,7 @@ public abstract class MailSenderBase {
 		msgInboxVo.setDeliveryTime(ts);
 		msgInboxVo.setUpdtTime(ts);
 		msgInboxVo.setUpdtUserId(DEFAULT_USER_ID);
-		int rowsUpdated = getMsgInboxDao().update(msgInboxVo);
+		int rowsUpdated = msgInboxDao.update(msgInboxVo);
 		return rowsUpdated;
 	}
 
@@ -659,34 +659,6 @@ public abstract class MailSenderBase {
 	 * @throws MessagingException
 	 */
 	public abstract void sendMail(Message msg, Map<String, Address[]> errors) throws MessagingException, SmtpException;
-
-	public DeliveryStatusDao getDeliveryStatusDao() {
-		return deliveryStatusDao;
-	}
-
-	public MsgInboxBo getMsgInboxBo() {
-		return msgInboxBo;
-	}
-
-	public MsgInboxDao getMsgInboxDao() {
-		return msgInboxDao;
-	}
-
-	public EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
-	}
-
-	public MsgStreamDao getMsgStreamDao() {
-		return msgStreamDao;
-	}
-
-	public MsgOutboxBo getMsgOutboxBo() {
-		return msgOutboxBo;
-	}
-
-	public MsgSequenceDao getMsgSequenceDao() {
-		return msgSequenceDao;
-	}
 
 	public MessageParser getMessageParser() {
 		if (parser == null) {
