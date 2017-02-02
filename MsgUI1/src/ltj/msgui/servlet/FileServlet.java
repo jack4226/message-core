@@ -3,12 +3,18 @@ package ltj.msgui.servlet;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
@@ -30,6 +36,48 @@ public class FileServlet extends HttpServlet {
 		ServletContext ctx = getServletContext();
 		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Path: " + ctx.getContextPath());
 		attachmentsDao = SpringUtil.getWebAppContext(ctx).getBean(AttachmentsDao.class);
+		//getInitialContext();
+	}
+	
+	void getInitialContext() {
+		/*
+		 * A resource factory for the data source must be configured in $CATALINA_HOME/conf/server.xml.
+		 * For example:
+		 <Context ...>
+		  ...
+		  <Resource name="jdbc/msgdb_pool" auth="Container"
+		            type="javax.sql.DataSource" username="dbusername" password="dbpassword"
+		            driverClassName="org.hsql.jdbcDriver" url="jdbc:HypersonicSQL:database"
+		            maxActive="8" maxIdle="4"/>
+		  ...
+		 </Context>
+		 */
+		DataSource ds = null;
+		try {
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+			logger.info("getInitialContext(): initial env context - " + envCtx);
+			ds = (DataSource) envCtx.lookup("jdbc/msgdb_pool");
+			logger.info("getInitialContext(): jdbc/msgdb_pool data source - " + ds);
+		} catch (NamingException e) {
+			logger.error("NamingException caught", e);
+		}
+
+		if (ds != null) {
+			Connection conn = null;
+			try {
+				conn = ds.getConnection();
+				logger.info("getInitialContext(): data source connection - " + conn);
+			} catch (SQLException e) {
+				logger.error("SQLException caught", e);
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {}
+				}
+			}
+		}
 	}
 	
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
