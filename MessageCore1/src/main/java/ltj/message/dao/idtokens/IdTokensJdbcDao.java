@@ -19,6 +19,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 	
 	private static final Hashtable<String, IdTokensVo> cache = new Hashtable<String, IdTokensVo>();
 
+	@Override
 	public IdTokensVo getByClientId(String clientId) {
 		/*
 		 * This method is not thread safe as the "cache" is not locked.
@@ -40,6 +41,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 		return cache.get(clientId);
 	}
 	
+	@Override
 	public List<IdTokensVo> getAll() {
 		String sql = "select * from IdTokens order by clientId";
 		List<IdTokensVo> list = getJdbcTemplate().query(sql, 
@@ -47,6 +49,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 		return list;
 	}
 	
+	@Override
 	public int update(IdTokensVo idTokensVo) {
 		idTokensVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		idTokensVo.setOrigUpdtTime(idTokensVo.getUpdtTime());
@@ -59,6 +62,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 		}
 	}
 	
+	@Override
 	public int delete(String clientId) {
 		String sql = "delete from IdTokens where clientId=?";
 		Object[] parms = new Object[] {clientId};
@@ -69,6 +73,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 		}
 	}
 	
+	@Override
 	public int insert(IdTokensVo idTokensVo) {
 		idTokensVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		idTokensVo.setOrigUpdtTime(idTokensVo.getUpdtTime());

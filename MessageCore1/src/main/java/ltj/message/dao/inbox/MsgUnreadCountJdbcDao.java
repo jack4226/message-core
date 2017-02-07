@@ -11,6 +11,7 @@ import ltj.message.dao.abstrct.AbstractDao;
 public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCountDao {
 	protected static final Logger logger = Logger.getLogger(MsgUnreadCountJdbcDao.class);
 	
+	@Override
 	public int updateInboxUnreadCount(int delta) {
 		String sql = 
 			"update MsgUnreadCount set InboxUnreadCount = (InboxUnreadCount + " + delta + ")";
@@ -18,6 +19,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 		return rowsUpdated;
 	}
 
+	@Override
 	public int updateSentUnreadCount(int delta) {
 		String sql = 
 			"update MsgUnreadCount set SentUnreadCount = (SentUnreadCount + " + delta + ")";
@@ -25,6 +27,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 		return rowsUpdated;
 	}
 
+	@Override
 	public int resetInboxUnreadCount(int inboxUnreadCount) {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(inboxUnreadCount);
@@ -36,6 +39,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 		return rowsUpdated;
 	}
 
+	@Override
 	public int resetSentUnreadCount(int sentUnreadCount) {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(sentUnreadCount);
@@ -47,6 +51,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 		return rowsUpdated;
 	}
 
+	@Override
 	public int resetUnreadCounts(int inboxUnreadCount, int sentUnreadCount) {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(inboxUnreadCount);
@@ -60,12 +65,14 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 		return rowsUpdated;
 	}
 
+	@Override
 	public int selectInboxUnreadCount() {
 		String sql = "select InboxUnreadCount from MsgUnreadCount";
 		int unreadCount = getJdbcTemplate().queryForObject(sql, Integer.class);
 		return unreadCount;
 	}
 
+	@Override
 	public int selectSentUnreadCount() {
 		String sql = "select SentUnreadCount from MsgUnreadCount";
 		int unreadCount = getJdbcTemplate().queryForObject(sql, Integer.class);

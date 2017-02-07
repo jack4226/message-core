@@ -27,6 +27,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 @Component("customerDao")
 public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 
+	@Override
 	public CustomerVo getByCustId(String custId) {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
@@ -43,6 +44,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		}
 	}
 	
+	@Override
 	public List<CustomerVo> getByClientId(String clientId) {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
@@ -53,6 +55,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		return list;
 	}
 	
+	@Override
 	public CustomerVo getByEmailAddrId(long emailAddrId) {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
@@ -68,6 +71,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		}
 	}
 	
+	@Override
 	public CustomerVo getByEmailAddress(String emailAddr) {
 		String sql = 
 			"select a.*, a.CustId as OrigCustId, a.UpdtTime as OrigUpdtTime " +
@@ -85,6 +89,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		}
 	}
 	
+	@Override
 	public List<CustomerVo> getAll() {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
@@ -95,6 +100,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		return list;
 	}
 	
+	@Override
 	public int getCustomerCount(PagingCustomerVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
@@ -105,6 +111,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		return rowCount;
 	}
 	
+	@Override
 	public List<CustomerVo> getCustomersWithPaging(PagingCustomerVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
@@ -215,6 +222,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		return whereSql;
 	}
 	
+	@Override
 	public int update(CustomerVo customerVo) {
 		customerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		syncupEmailFields(customerVo);
@@ -230,6 +238,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int delete(String custId) {
 		String sql = 
 			"delete from Customers where custid=? ";
@@ -238,6 +247,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		return rowsDeleted;
 	}
 
+	@Override
 	public int deleteByEmailAddr(String emailAddr) {
 		EmailAddrVo addrVo = getEmailAddrDao().getByAddress(emailAddr);
 		if (addrVo == null) {
@@ -250,6 +260,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		return rowsDeleted;
 	}
 
+	@Override
 	public int insert(CustomerVo customerVo) {
 		customerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		syncupEmailFields(customerVo);

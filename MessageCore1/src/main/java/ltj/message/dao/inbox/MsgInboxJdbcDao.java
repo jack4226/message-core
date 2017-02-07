@@ -53,10 +53,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				"MsgInbox " +
 			" where msgId = (select max(MsgId) from MsgInbox) ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
-		if (list.size()>0) {
+		if (list.size() > 0) {
 			return list.get(0);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -69,10 +68,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				"MsgInbox where msgId >= (RAND() * (select max(msgId) from MsgInbox)) " +
 			" order by msgId limit 1 ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
-		if (list.size()>0) {
+		if (list.size() > 0) {
 			return list.get(0);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -85,10 +83,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				"MsgInbox " +
 			" where msgId = (select max(MsgId) from MsgInbox where MsgDirection = 'R') ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
-		if (list.size()>0) {
+		if (list.size() > 0) {
 			return list.get(0);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -101,10 +98,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				"MsgInbox " +
 			" where msgId = (select max(MsgId) from MsgInbox where MsgDirection = 'S') ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
-		if (list.size()>0) {
+		if (list.size() > 0) {
 			return list.get(0);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}

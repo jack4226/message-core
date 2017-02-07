@@ -16,6 +16,7 @@ import ltj.message.vo.inbox.AttachmentsVo;
 @Component("attachmentsDao")
 public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 
+	@Override
 	public AttachmentsVo getByPrimaryKey(long msgId, int attchmntDepth, int attchmntSeq) {
 		String sql = 
 			"select * " +
@@ -33,6 +34,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		}
 	}
 	
+	@Override
 	public List<AttachmentsVo> getByMsgId(long msgId) {
 		String sql = 
 			"select * " +
@@ -45,6 +47,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		return list;
 	}
 	
+	@Override
 	public int update(AttachmentsVo attachmentsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(attachmentsVo);
 		String sql = MetaDataUtil.buildUpdateStatement("Attachments", attachmentsVo);
@@ -52,6 +55,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId, int attchmntDepth, int attchmntSeq) {
 		String sql = 
 			"delete from Attachments where msgid=? and attchmntDepth=? and attchmntSeq=? ";
@@ -65,6 +69,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
 			"delete from Attachments where msgid=? ";
@@ -76,6 +81,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(AttachmentsVo attachmentsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(attachmentsVo);
 		String sql = MetaDataUtil.buildInsertStatement("Attachments", attachmentsVo);

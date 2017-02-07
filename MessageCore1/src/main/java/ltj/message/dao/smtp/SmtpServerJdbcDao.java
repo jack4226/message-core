@@ -19,6 +19,7 @@ import ltj.message.vo.SmtpConnVo;
 @Component("smtpServerDao")
 public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	
+	@Override
 	public SmtpConnVo getByPrimaryKey(String serverName) {
 		String sql = "select * from SmtpServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
@@ -32,6 +33,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		}
 	}
 	
+	@Override
 	public List<SmtpConnVo> getAll(boolean onlyActive) {
 		List<String> keys = new ArrayList<String>();
 		String sql = "select * from SmtpServers ";
@@ -45,6 +47,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		return list;
 	}
 	
+	@Override
 	public List<SmtpConnVo> getAllForTrial(boolean onlyActive) {
 		List<String> keys = new ArrayList<String>();
 		String sql = "select * from SmtpServers ";
@@ -64,6 +67,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		return list;
 	}
 	
+	@Override
 	public List<SmtpConnVo> getByServerType(String serverType, boolean onlyActive) {
 		List<String> keys = new ArrayList<String>();
 		keys.add(serverType);
@@ -78,6 +82,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		return list;
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<SmtpConnVo> getBySslFlag(boolean useSSL, boolean onlyActive) {
 		List<String> keys = new ArrayList<String>();
@@ -93,6 +98,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		return (List<SmtpConnVo>) list;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<SmtpConnVo> getBySslFlagForTrial(boolean useSSL, boolean onlyActive) {
 		List<String> keys = new ArrayList<String>();
@@ -108,6 +114,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		return (List<SmtpConnVo>) list;
 	}
 
+	@Override
 	public int update(SmtpConnVo smtpConnVo) {
 		smtpConnVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(smtpConnVo);
@@ -120,6 +127,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String serverName) {
 		String sql = "delete from SmtpServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
@@ -127,6 +135,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(SmtpConnVo smtpConnVo) {
 		smtpConnVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(smtpConnVo);

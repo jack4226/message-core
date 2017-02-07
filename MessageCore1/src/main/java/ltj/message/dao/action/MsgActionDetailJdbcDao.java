@@ -19,6 +19,7 @@ import ltj.message.vo.action.MsgActionDetailVo;
 @Component("msgActionDetailDao")
 public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDetailDao {
 	
+	@Override
 	public MsgActionDetailVo getByActionId(String actionId) {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime " +
@@ -36,6 +37,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		}
 	}
 	
+	@Override
 	public MsgActionDetailVo getByPrimaryKey(int rowId) {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime " +
@@ -54,6 +56,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		}
 	}
 	
+	@Override
 	public List<MsgActionDetailVo> getAll() {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime " +
@@ -65,6 +68,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		return list;
 	}
 	
+	@Override
 	public List<String> getActionIds() {
 		String sql = 
 			"select distinct(ActionId) from MsgActionDetail " +
@@ -74,6 +78,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		return list;
 	}
 	
+	@Override
 	public synchronized int update(MsgActionDetailVo msgActionDetailVo) {
 		msgActionDetailVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionDetailVo);
@@ -87,6 +92,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		return rowsUpadted;
 	}
 	
+	@Override
 	public synchronized int deleteByActionId(String actionId) {
 		String sql = 
 			"delete from MsgActionDetail where actionId=? ";
@@ -99,6 +105,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int deleteByPrimaryKey(int rowId) {
 		String sql = 
 			"delete from MsgActionDetail where RowId=? ";
@@ -111,6 +118,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int insert(MsgActionDetailVo msgActionDetailVo) {
 		msgActionDetailVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionDetailVo);

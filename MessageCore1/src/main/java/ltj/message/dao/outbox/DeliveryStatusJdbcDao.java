@@ -17,6 +17,7 @@ import ltj.vo.outbox.DeliveryStatusVo;
 @Component("deliveryStatusDao")
 public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatusDao {
 	
+	@Override
 	public DeliveryStatusVo getByPrimaryKey(long msgId, long finalRecipientId) {
 		String sql = 
 			"select * " +
@@ -34,6 +35,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		}
 	}
 	
+	@Override
 	public List<DeliveryStatusVo> getByMsgId(long msgId) {
 		String sql = 
 			"select * " +
@@ -46,6 +48,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		return list;
 	}
 	
+	@Override
 	public int update(DeliveryStatusVo deliveryStatusVo) {
 		if (deliveryStatusVo.getAddTime()==null) {
 			deliveryStatusVo.setAddTime(new Timestamp(System.currentTimeMillis()));
@@ -56,6 +59,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId, long finalRecipientId) {
 		String sql = 
 			"delete from DeliveryStatus where msgid=? and finalRecipientId=? ";
@@ -68,6 +72,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
 			"delete from DeliveryStatus where msgid=? ";
@@ -89,11 +94,13 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 	 * set the global rollback-only flag to true, causing the entire transaction
 	 * to fail.
 	 */
+	@Override
 	public synchronized int insertWithDelete(DeliveryStatusVo deliveryStatusVo) {
 		deleteByPrimaryKey(deliveryStatusVo.getMsgId(), deliveryStatusVo.getFinalRecipientId());
 		return insert(deliveryStatusVo);
 	}
 	
+	@Override
 	public int insert(DeliveryStatusVo deliveryStatusVo) {
 		if (deliveryStatusVo.getAddTime()==null) {
 			deliveryStatusVo.setAddTime(new Timestamp(System.currentTimeMillis()));

@@ -62,6 +62,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		return groupBy;
 	}
 
+	@Override
 	public MailingListVo getByListId(String listId) {
 		String sql = getSelectClause() +
 				" where a.ListId = ? " +
@@ -77,6 +78,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		}
 	}
 	
+	@Override
 	public List<MailingListVo> getByAddress(String emailAddr) {
 		emailAddr = emailAddr == null ? "" : emailAddr; // just for safety
 		String acctUserName = emailAddr;
@@ -98,6 +100,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		return list;
 	}
 	
+	@Override
 	public List<MailingListVo> getAll(boolean onlyActive) {
 		List<Object> parms = new ArrayList<Object>();
 		String sql = getSelectClause();
@@ -112,6 +115,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		return list;
 	}
 
+	@Override
 	public List<MailingListVo> getAllForTrial(boolean onlyActive) {
 		List<Object> parms = new ArrayList<Object>();
 		String sql = getSelectClause();
@@ -132,6 +136,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		return list;
 	}
 
+	@Override
 	public List<MailingListVo> getSubscribedLists(long emailAddrId) {
 		String sql = "SELECT " +
 			" m.*, " +
@@ -150,6 +155,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		return list;
 	}
 
+	@Override
 	public int update(MailingListVo mailingListVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailingListVo);
 		String sql = MetaDataUtil.buildUpdateStatement("MailingList", mailingListVo);
@@ -158,6 +164,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByListId(String listId) {
 		String sql = "delete from MailingList where ListId=?";
 		Object[] parms = new Object[] {listId};
@@ -165,6 +172,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByAddress(String emailAddr) {
 		String sql = "delete from MailingList where EmailAddr=?";
 		Object[] parms = new Object[] {emailAddr};
@@ -172,6 +180,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MailingListVo mailingListVo) {
 		mailingListVo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailingListVo);

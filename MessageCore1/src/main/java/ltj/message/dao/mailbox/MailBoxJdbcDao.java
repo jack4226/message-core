@@ -41,21 +41,23 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		return toDomains;
 	}
 	
+	@Override
 	public MailBoxVo getByPrimaryKey(String userId, String hostName) {
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
 				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
 				"from MailBoxes where UserId=? and HostName=?";
 		Object[] parms = new Object[] {userId, hostName};
 		try {
-		MailBoxVo vo = getJdbcTemplate().queryForObject(sql, parms, 
-				new BeanPropertyRowMapper<MailBoxVo>(MailBoxVo.class));
-		return vo;
+			MailBoxVo vo = getJdbcTemplate().queryForObject(sql, parms, 
+					new BeanPropertyRowMapper<MailBoxVo>(MailBoxVo.class));
+			return vo;
 		}
 		catch (EmptyResultDataAccessException e) {
 			return null;
 		}
 	}
 	
+	@Override
 	public List<MailBoxVo> getAll(boolean onlyActive) {
 		List<String> keys = new ArrayList<String>();
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
@@ -71,6 +73,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		return list;
 	}
 	
+	@Override
 	public List<MailBoxVo> getAllForTrial(boolean onlyActive) {
 		List<String> keys = new ArrayList<String>();
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
@@ -92,6 +95,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		return list;
 	}
 	
+	@Override
 	public int update(MailBoxVo mailBoxVo) {
 		mailBoxVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailBoxVo);
@@ -106,6 +110,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String userId, String hostName) {
 		String sql = "delete from MailBoxes where UserId=? and HostName=?";
 		Object[] parms = new Object[] {userId, hostName};
@@ -113,6 +118,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MailBoxVo mailBoxVo) {
 		mailBoxVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailBoxVo);

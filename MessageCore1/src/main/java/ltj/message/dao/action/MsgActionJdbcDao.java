@@ -20,6 +20,7 @@ import ltj.message.vo.action.MsgActionVo;
 @Component("msgActionDao")
 public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	
+	@Override
 	public List<MsgActionVo> getByRuleName(String ruleName) {
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
@@ -33,6 +34,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		return list;
 	}
 	
+	@Override
 	public MsgActionVo getByPrimaryKey(int rowId) {
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
@@ -50,6 +52,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		}
 	}
 	
+	@Override
 	public List<MsgActionVo> getByBestMatch(String ruleName, Timestamp startTime, String clientId) {
 		if (startTime == null) {
 			startTime = new Timestamp(System.currentTimeMillis());
@@ -94,6 +97,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		return listnew;
 	}
 
+	@Override
 	public List<MsgActionVo> getAll() {
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
@@ -106,6 +110,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		return list;	
 	}
 	
+	@Override
 	public MsgActionVo getByUniqueKey(String ruleName, int actionSeq, Timestamp startTime, String clientId) {
 		List<Object> keys = new ArrayList<Object>();
 		keys.add(ruleName);
@@ -135,6 +140,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		}
 	}
 	
+	@Override
 	public MsgActionVo getMostCurrent(String ruleName, int actionSeq, String clientId) {
 		Timestamp startTime = new Timestamp(System.currentTimeMillis());
 		
@@ -161,12 +167,15 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		Object[] parms = keys.toArray();
 		List<MsgActionVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgActionVo>(MsgActionVo.class));
-		if (list.size() > 0)
+		if (list.size() > 0) {
 			return list.get(0);
-		else
+		}
+		else {
 			return null;
+		}
 	}
 	
+	@Override
 	public synchronized int update(MsgActionVo msgActionVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionVo);
 		String sql = MetaDataUtil.buildUpdateStatement("MsgAction", msgActionVo);
@@ -175,6 +184,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
 			"delete from MsgAction where ruleName=?";
@@ -185,6 +195,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int deleteByPrimaryKey(int rowId) {
 		String sql = 
 			"delete from MsgAction where rowId=?";
@@ -195,8 +206,8 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		return rowsDeleted;
 	}
 	
-	public synchronized int deleteByUniqueKey(String ruleName, int actionSeq, Timestamp startTime,
-			String clientId) {
+	@Override
+	public synchronized int deleteByUniqueKey(String ruleName, int actionSeq, Timestamp startTime, String clientId) {
 		List<Object> keys = new ArrayList<Object>();
 		keys.add(ruleName);
 		keys.add(actionSeq);
@@ -219,6 +230,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int insert(MsgActionVo msgActionVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionVo);
 		String sql = MetaDataUtil.buildInsertStatement("MsgAction", msgActionVo);

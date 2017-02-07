@@ -18,6 +18,7 @@ import ltj.message.vo.rule.RuleElementVo;
 @Component("ruleElementDao")
 public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 	
+	@Override
 	public RuleElementVo getByPrimaryKey(String ruleName, int elementSeq) {
 		String sql = 
 			"select * " +
@@ -35,6 +36,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		}
 	}
 	
+	@Override
 	public List<RuleElementVo> getAll() {
 		String sql = 
 			"select * " +
@@ -46,6 +48,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		return list;
 	}
 	
+	@Override
 	public List<RuleElementVo> getByRuleName(String ruleName) {
 		String sql = 
 			"select * " +
@@ -59,6 +62,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		return list;
 	}
 	
+	@Override
 	public synchronized int update(RuleElementVo ruleElementVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleElementVo);
 		String sql = MetaDataUtil.buildUpdateStatement("RuleElement", ruleElementVo);
@@ -67,6 +71,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public synchronized int deleteByPrimaryKey(String ruleName, int elementSeq) {
 		String sql = 
 			"delete from RuleElement where ruleName=? and elementSeq=?";
@@ -80,6 +85,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
 			"delete from RuleElement where ruleName=?";
@@ -92,6 +98,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int insert(RuleElementVo ruleElementVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleElementVo);
 		String sql = MetaDataUtil.buildInsertStatement("RuleElement", ruleElementVo);

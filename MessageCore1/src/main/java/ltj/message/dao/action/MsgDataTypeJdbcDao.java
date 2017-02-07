@@ -16,6 +16,7 @@ import ltj.message.vo.action.MsgDataTypeVo;
 @Component("msgDataTypeDao")
 public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 	
+	@Override
 	public MsgDataTypeVo getByTypeValuePair(String type, String value) {
 		String sql = 
 			"select * " +
@@ -33,6 +34,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		}
 	}
 	
+	@Override
 	public MsgDataTypeVo getByPrimaryKey(int rowId) {
 		String sql = 
 			"select * " +
@@ -50,6 +52,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		}
 	}
 	
+	@Override
 	public List<MsgDataTypeVo> getByDataType(String dataType) {
 		String sql = 
 			"select * " +
@@ -63,6 +66,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		return list;
 	}
 	
+	@Override
 	public List<String> getDataTypes() {
 		String sql = 
 			"select distinct(DataType) " +
@@ -74,6 +78,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		return list;
 	}
 	
+	@Override
 	public int update(MsgDataTypeVo msgDataTypeVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgDataTypeVo);
 		String sql = MetaDataUtil.buildUpdateStatement("MsgDataType", msgDataTypeVo);
@@ -81,6 +86,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = 
 			"delete from MsgDataType where RowId=? ";
@@ -92,6 +98,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByDataType(String dataType) {
 		String sql = 
 			"delete from MsgDataType where DataType=? ";
@@ -103,6 +110,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgDataTypeVo msgDataTypeVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgDataTypeVo);
 		String sql = MetaDataUtil.buildInsertStatement("MsgDataType", msgDataTypeVo);

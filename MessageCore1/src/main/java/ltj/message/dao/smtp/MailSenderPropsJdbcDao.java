@@ -16,6 +16,7 @@ import ltj.message.vo.MailSenderVo;
 @Component("mailSenderPropsDao")
 public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPropsDao {
 	
+	@Override
 	public MailSenderVo getByPrimaryKey(int rowId) {
 		String sql = 
 			"select * from MailSenderProps where rowId=?";
@@ -30,6 +31,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 		}
 	}
 	
+	@Override
 	public List<MailSenderVo> getAll() {
 		
 		String sql = "select * from MailSenderProps ";
@@ -38,6 +40,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 		return list;
 	}
 	
+	@Override
 	public int update(MailSenderVo mailSenderVo) {
 		mailSenderVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailSenderVo);
@@ -50,6 +53,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = 
 			"delete from MailSenderProps where RowId=?";
@@ -58,6 +62,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MailSenderVo mailSenderVo) {
 		mailSenderVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailSenderVo);

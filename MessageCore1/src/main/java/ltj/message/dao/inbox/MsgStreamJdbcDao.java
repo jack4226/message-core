@@ -54,10 +54,11 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
-		if (list.size()>0)
+		if (list.size() > 0) {
 			return list.get(0);
-		else
+		} else {
 			return null;
+		}
 	}
 	
 	/* 
@@ -95,12 +96,13 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 			"from " +
 				"MsgStream order by RAND() limit 1 ";
 		
-		List<MsgStreamVo> list = getJdbcTemplate().query(sql, 
+		List<MsgStreamVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
-		if (list.size()>0)
+		if (list.size() > 0) {
 			return list.get(0);
-		else
+		} else {
 			return null;
+		}
 	}
 	
 	@Override

@@ -57,6 +57,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		}
 	}
 	
+	@Override
 	public EmailTemplateVo getByTemplateId(String templateId) {
 		String sql = "select a.*, b.ClientId " +
 				" from EmailTemplate a, MailingList b " +
@@ -71,6 +72,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		}
 	}
 	
+	@Override
 	public List<EmailTemplateVo> getByListId(String listId) {
 		String sql = "select a.*, b.ClientId " +
 				" from EmailTemplate a, MailingList b " +
@@ -82,6 +84,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		return list;
 	}
 	
+	@Override
 	public List<EmailTemplateVo> getAll() {
 		String sql = "select a.*, b.ClientId " +
 				" from EmailTemplate a, MailingList b " +
@@ -92,6 +95,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		return list;
 	}
 
+	@Override
 	public List<EmailTemplateVo> getAllForTrial() {
 		String sql = "select a.*, b.ClientId " +
 				" from EmailTemplate a, MailingList b " +
@@ -102,13 +106,13 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(20);
 		getJdbcTemplate().setMaxRows(20);
-		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql,
-				new EmailTemplateMapper());
+		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql, new EmailTemplateMapper());
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
 		return list;
 	}
 
+	@Override
 	public synchronized int update(EmailTemplateVo emailTemplateVo) {
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(emailTemplateVo.getTemplateId());
@@ -153,6 +157,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		return rowsUpadted;
 	}
 
+	@Override
 	public synchronized int deleteByTemplateId(String templateId) {
 		String sql = "delete from EmailTemplate where TemplateId=?";
 		Object[] parms = new Object[] {templateId};
@@ -162,6 +167,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int insert(EmailTemplateVo emailTemplateVo) {
 		SchedulesBlob blob = emailTemplateVo.getSchedulesBlob();
 		byte[] bytes = null;

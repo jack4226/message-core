@@ -14,6 +14,7 @@ import ltj.message.vo.inbox.MsgHeadersVo;
 @Component("msgHeadersDao")
 public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 	
+	@Override
 	public MsgHeadersVo getByPrimaryKey(long msgId, int headerSeq) {
 		String sql = 
 			"select * " +
@@ -31,6 +32,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		}
 	}
 	
+	@Override
 	public List<MsgHeadersVo> getByMsgId(long msgId) {
 		String sql = 
 			"select * " +
@@ -43,6 +45,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		return list;
 	}
 	
+	@Override
 	public int update(MsgHeadersVo msgHeadersVo) {
 		
 		ArrayList<String> fields = new ArrayList<String>();
@@ -62,18 +65,20 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId, int headerSeq) {
 		String sql = 
 			"delete from MsgHeaders where msgid=? and headerSeq=? ";
 		
 		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(msgId+"");
-		fields.add(headerSeq+"");
+		fields.add(msgId + "");
+		fields.add(headerSeq + "");
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
 			"delete from MsgHeaders where msgid=? ";
@@ -85,6 +90,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgHeadersVo msgHeadersVo) {
 		String sql = 
 			"INSERT INTO MsgHeaders (" +

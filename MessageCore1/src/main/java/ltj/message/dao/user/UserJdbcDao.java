@@ -17,12 +17,12 @@ import ltj.message.vo.UserVo;
 @Component("userDao")
 public class UserJdbcDao extends AbstractDao implements UserDao {
 	
+	@Override
 	public UserVo getByPrimaryKey(String userId) {
 		String sql = "select * from Users where UserId=?";
 		Object[] parms = new Object[] {userId};
 		try {
-			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, 
-					new BeanPropertyRowMapper<UserVo>(UserVo.class));
+			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, new BeanPropertyRowMapper<UserVo>(UserVo.class));
 			return vo;
 		}
 		catch (EmptyResultDataAccessException e) {
@@ -30,12 +30,12 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		}
 	}
 	
+	@Override
 	public UserVo getForLogin(String userId, String password) {
 		String sql = "select * from Users where UserId=? and Password=?";
 		Object[] parms = new Object[] {userId, password};
 		try {
-			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, 
-					new BeanPropertyRowMapper<UserVo>(UserVo.class));
+			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, new BeanPropertyRowMapper<UserVo>(UserVo.class));
 			return vo;
 		}
 		catch (EmptyResultDataAccessException e) {
@@ -43,6 +43,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		}
 	}
 	
+	@Override
 	public List<UserVo> getAll(boolean onlyActive) {
 		
 		String sql = "select * from Users ";
@@ -53,6 +54,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		return list;
 	}
 	
+	@Override
 	public int update(UserVo userVo) {
 		if (userVo.getCreateTime()==null) {
 			userVo.setCreateTime(new Timestamp(System.currentTimeMillis()));
@@ -64,6 +66,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int update4Web(UserVo userVo) {
 		Object[] parms = {
 				userVo.getSessionId(),
@@ -82,6 +85,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String userId) {
 		String sql = "delete from Users where UserId=?";
 		Object[] parms = new Object[] {userId};
@@ -89,6 +93,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(UserVo userVo) {
 		if (userVo.getCreateTime()==null) {
 			userVo.setCreateTime(new Timestamp(System.currentTimeMillis()));

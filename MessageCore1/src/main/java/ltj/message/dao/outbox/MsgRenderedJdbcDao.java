@@ -44,10 +44,11 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		
 		List<MsgRenderedVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgRenderedVo>(MsgRenderedVo.class));
-		if (list.size()>0)
+		if (list.size() > 0) {
 			return list.get(0);
-		else
+		} else {
 			return null;
+		}
 	}
 	
 	@Override
@@ -60,10 +61,11 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		
 		List<MsgRenderedVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgRenderedVo>(MsgRenderedVo.class));
-		if (list.size()>0)
+		if (list.size() > 0) {
 			return list.get(0);
-		else
+		} else {
 			return null;
+		}
 	}
 	
 	@Override

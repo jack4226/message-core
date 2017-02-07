@@ -17,6 +17,7 @@ import ltj.message.vo.SessionUploadVo;
 @Component("sessionUploadDao")
 public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDao {
 	
+	@Override
 	public SessionUploadVo getByPrimaryKey(String sessionId, int sessionSeq) {
 		String sql = "select * from SessionUploads where SessionId=? and sessionSeq=?";
 		Object[] parms = new Object[] {sessionId, sessionSeq};
@@ -30,6 +31,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		}
 	}
 	
+	@Override
 	public List<SessionUploadVo> getBySessionId(String sessionId) {
 		String sql = "select * from SessionUploads where SessionId=?";
 		Object[] parms = new Object[] {sessionId};
@@ -42,6 +44,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	 * SessionValue (blob) is not returned from this method. But
 	 * SessionUploadVo.fileSize is populated with file size.
 	 */
+	@Override
 	public List<SessionUploadVo> getBySessionId4Web(String sessionId) {
 		List<SessionUploadVo> list = getBySessionId(sessionId);
 		for (int i = 0; i < list.size(); i++) {
@@ -57,6 +60,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return list;
 	}
 	
+	@Override
 	public List<SessionUploadVo> getByUserId(String userId) {
 		String sql = "select * from SessionUploads where UserId=?";
 		Object[] parms = new Object[] {userId};
@@ -65,6 +69,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return list;
 	}
 	
+	@Override
 	public int update(SessionUploadVo sessVo) {
 		if (sessVo.getCreateTime() == null) {
 			sessVo.setCreateTime(new Timestamp(System.currentTimeMillis()));
@@ -75,6 +80,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String sessionId, int sessionSeq) {
 		String sql = "delete from SessionUploads where SessionId=? and SessionSeq=?";
 		Object[] parms = new Object[] {sessionId, sessionSeq};
@@ -82,6 +88,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return rowsDeleted;
 	}
 
+	@Override
 	public int deleteBySessionId(String sessionId) {
 		String sql = "delete from SessionUploads where SessionId=?";
 		Object[] parms = new Object[] {sessionId,};
@@ -89,6 +96,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByUserId(String userId) {
 		String sql = "delete from SessionUploads where UserId=?";
 		Object[] parms = new Object[] {userId};
@@ -96,6 +104,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteExpired(int minutes) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -minutes); // roll back time
@@ -106,12 +115,14 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return rowsDeleted;	
 	}
 	
+	@Override
 	public int deleteAll() {
 		String sql = "delete from SessionUploads";
 		int rowsDeleted = getJdbcTemplate().update(sql);
 		return rowsDeleted;	
 	}
 
+	@Override
 	public int insert(SessionUploadVo sessVo) {
 		sessVo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		
@@ -121,6 +132,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return rowsInserted;
 	}
 	
+	@Override
 	public int insertLast(SessionUploadVo sessVo) {
 		String lastSeq = "select max(SessionSeq) from SessionUploads where SessionId = '" + sessVo.getSessionId() + "'";
 		int sessSeq = getJdbcTemplate().queryForObject(lastSeq, Integer.class) + 1;

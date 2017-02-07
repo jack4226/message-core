@@ -244,8 +244,7 @@ public final class SchedulesBlob implements Serializable {
 					sb.append(LF);
 				}
 				catch (Exception e) {
-					System.err
-							.println("error getting values in toString " + methods[i].getName() + " " + e.getMessage());
+					System.err.println("error getting values in toString " + methods[i].getName() + " " + e.getMessage());
 				}
 			}
 		}

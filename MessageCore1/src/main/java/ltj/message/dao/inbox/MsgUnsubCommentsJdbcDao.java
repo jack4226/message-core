@@ -19,6 +19,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 	static final Logger logger = Logger.getLogger(MsgUnsubCommentsJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
+	@Override
 	public MsgUnsubCommentsVo getByPrimaryKey(int rowId){
 		String sql = "select * from MsgUnsubComments where RowId=?";
 		Object[] parms = new Object[] {rowId};
@@ -32,6 +33,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		}
 	}
 	
+	@Override
 	public List<MsgUnsubCommentsVo> getAll() {
 		String sql = "select * from MsgUnsubComments " +
 		" order by RowId";
@@ -40,6 +42,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		return list;
 	}
 	
+	@Override
 	public List<MsgUnsubCommentsVo> getByMsgId(long msgId) {
 		String sql = "select * from MsgUnsubComments " +
 			" where MsgId=" + msgId +
@@ -49,6 +52,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		return list;
 	}
 	
+	@Override
 	public List<MsgUnsubCommentsVo> getByEmailAddrId(long emailAddrId) {
 		String sql = "select * from MsgUnsubComments " +
 			" where EmailAddrId=" + emailAddrId +
@@ -58,6 +62,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		return list;
 	}
 	
+	@Override
 	public List<MsgUnsubCommentsVo> getByListId(String listId) {
 		String sql = "select * from MsgUnsubComments " +
 			" where ListId='" + listId + "' " +
@@ -67,6 +72,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		return list;
 	}
 	
+	@Override
 	public int update(MsgUnsubCommentsVo msgUnsubCommentsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgUnsubCommentsVo);
 		String sql = MetaDataUtil.buildUpdateStatement("MsgUnsubComments", msgUnsubCommentsVo);
@@ -74,6 +80,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = "delete from MsgUnsubComments where RowId=?";
 		Object[] parms = new Object[] {rowId};
@@ -81,6 +88,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = "delete from MsgUnsubComments where MsgId=?";
 		Object[] parms = new Object[] {msgId};
@@ -88,6 +96,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByEmailAddrId(long emailAddrId) {
 		String sql = "delete from MsgUnsubComments where EmailAddrId=?";
 		Object[] parms = new Object[] {emailAddrId};
@@ -95,6 +104,7 @@ public class MsgUnsubCommentsJdbcDao extends AbstractDao implements MsgUnsubComm
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgUnsubCommentsVo msgUnsubCommentsVo) {
 		msgUnsubCommentsVo.setAddTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgUnsubCommentsVo);

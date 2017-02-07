@@ -19,6 +19,7 @@ import ltj.message.vo.inbox.MsgClickCountsVo;
 @Component("msgClickCountsDao")
 public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCountsDao {
 	
+	@Override
 	public MsgClickCountsVo getRandomRecord() {
 		String sql = 
 			"select * " +
@@ -35,6 +36,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		}
 	}
 	
+	@Override
 	public int getMsgCountForWeb() {
 		String sql = 
 			"select count(*) " +
@@ -44,6 +46,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return count;
 	}
 	
+	@Override
 	public MsgClickCountsVo getByPrimaryKey(long msgId) {
 		String sql = 
 			"select * " +
@@ -63,6 +66,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	
 	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and " };
 	
+	@Override
 	public List<MsgClickCountsVo> getBroadcastsWithPaging(PagingVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = "";
@@ -132,6 +136,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return list;
 	}
 
+	@Override
 	public int update(MsgClickCountsVo msgClickCountsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgClickCountsVo);
 		String sql = MetaDataUtil.buildUpdateStatement("MsgClickCounts", msgClickCountsVo);
@@ -139,6 +144,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int updateSentCount(long msgId, int count) {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
@@ -152,6 +158,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int updateOpenCount(long msgId, int count) {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
@@ -165,12 +172,14 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsUpadted;		
 	}
 	
+	@Override
 	public int updateOpenCount(long msgId) {
 		return updateOpenCount(msgId, 1);
 	}
 
+	@Override
 	public int updateClickCount(long msgId, int count) {
-		Timestamp currTime = new Timestamp(new java.util.Date().getTime());
+		Timestamp currTime = new Timestamp(System.currentTimeMillis());
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(currTime);
 		fields.add(msgId);
@@ -184,10 +193,12 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsUpadted;		
 	}
 	
+	@Override
 	public int updateClickCount(long msgId) {
 		return updateClickCount(msgId, 1);
 	}
 
+	@Override
 	public int updateReferalCount(long msgId, int count) {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
@@ -200,12 +211,14 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsUpadted;		
 	}
 
+	@Override
 	public int updateReferalCount(long msgId) {
 		return updateReferalCount(msgId, 1);
 	}
 
+	@Override
 	public int updateStartTime(long msgId) {
-		Timestamp currTime = new Timestamp(new java.util.Date().getTime());
+		Timestamp currTime = new Timestamp(System.currentTimeMillis());
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(currTime);
 		fields.add(msgId);
@@ -218,6 +231,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsUpadted;		
 	}
 	
+	@Override
 	public int updateUnsubscribeCount(long msgId, int count) {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
@@ -230,6 +244,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsUpadted;		
 	}
 	
+	@Override
 	public int updateComplaintCount(long msgId, int count) {
 		ArrayList<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
@@ -242,6 +257,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsUpadted;		
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId) {
 		String sql = 
 			"delete from MsgClickCounts where msgid=? ";
@@ -253,6 +269,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgClickCountsVo msgClickCountsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgClickCountsVo);
 		String sql = MetaDataUtil.buildInsertStatement("MsgClickCounts", msgClickCountsVo);

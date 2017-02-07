@@ -58,6 +58,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return groupBy;
 	}
 
+	@Override
 	public RuleLogicVo getByPrimaryKey(String ruleName, int ruleSeq) {
 		String sql = getSelectClause() +
 			" where r.ruleName=? and r.RuleSeq=? " +
@@ -74,6 +75,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		}
 	}
 	
+	@Override
 	public List<RuleLogicVo> getByRuleName(String ruleName) {
 		String sql = getSelectClause() +
 			" where r.ruleName=? " +
@@ -87,6 +89,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return list;
 	}
 	
+	@Override
 	public int getNextRuleSequence() {
 		String sql = 
 			"select max(RuleSeq) from RuleLogic";
@@ -95,6 +98,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return (nextSeq + 1);
 	}
 	
+	@Override
 	public List<RuleLogicVo> getActiveRules() {
 		String sql = getSelectClause() +
 			" where r.statusId=? and r.startTime<=? " +
@@ -106,6 +110,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return list;
 	}
 	
+	@Override
 	public List<RuleLogicVo> getAll(boolean builtInRule) {
 		String sql = getSelectClause();
 		
@@ -124,6 +129,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return list;
 	}
 	
+	@Override
 	public List<RuleLogicVo> getAllSubRules(boolean excludeBuiltIn) {
 		String sql = 
 			"select *, 0 as SubRuleCount " +
@@ -138,6 +144,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return list;
 	}
 	
+	@Override
 	public List<String> getBuiltinRuleNames4Web() {
 		String sql = 
 			"select distinct(RuleName) " +
@@ -153,6 +160,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return list;
 	}
 	
+	@Override
 	public List<String> getCustomRuleNames4Web() {
 		String sql = 
 			"select distinct(RuleName) " +
@@ -168,6 +176,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return list;
 	}
 	
+	@Override
 	public synchronized int update(RuleLogicVo ruleLogicVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleLogicVo);
 		String sql = MetaDataUtil.buildUpdateStatement("RuleLogic", ruleLogicVo);
@@ -178,6 +187,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public synchronized int deleteByPrimaryKey(String ruleName, int ruleSeq) {
 		String sql = 
 			"delete from RuleLogic where RuleName=? and RuleSeq=? ";
@@ -191,6 +201,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int insert(RuleLogicVo ruleLogicVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleLogicVo);
 		String sql = MetaDataUtil.buildInsertStatement("RuleLogic", ruleLogicVo);

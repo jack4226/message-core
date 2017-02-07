@@ -16,6 +16,7 @@ import ltj.vo.outbox.RenderVariableVo;
 @Component("renderVariableDao")
 public class RenderVariableJdbcDao extends AbstractDao implements RenderVariableDao {
 	
+	@Override
 	public RenderVariableVo getByPrimaryKey(long renderId, String variableName) {
 		String sql = 
 			"select * " +
@@ -33,6 +34,7 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 		}
 	}
 	
+	@Override
 	public List<RenderVariableVo> getByRenderId(long renderId) {
 		String sql = 
 			"select * " +
@@ -45,6 +47,7 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 		return list;
 	}
 	
+	@Override
 	public int update(RenderVariableVo renderVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(renderVariableVo);
 		String sql = MetaDataUtil.buildUpdateStatement("RenderVariable", renderVariableVo);
@@ -53,6 +56,7 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId, String variableName) {
 		String sql = 
 			"delete from RenderVariable where renderId=? and variableName=? ";
@@ -65,6 +69,7 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByRenderId(long msgId) {
 		String sql = 
 			"delete from RenderVariable where renderId=? ";
@@ -76,6 +81,7 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(RenderVariableVo renderVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(renderVariableVo);
 		String sql = MetaDataUtil.buildInsertStatement("RenderVariable", renderVariableVo);

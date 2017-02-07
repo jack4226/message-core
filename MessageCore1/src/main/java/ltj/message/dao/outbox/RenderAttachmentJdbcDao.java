@@ -16,6 +16,7 @@ import ltj.vo.outbox.RenderAttachmentVo;
 @Component("renderAttachmentDao")
 public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttachmentDao {
 	
+	@Override
 	public RenderAttachmentVo getByPrimaryKey(long renderId, int attchmntSeq) {
 		String sql = 
 			"select * " +
@@ -33,6 +34,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		}
 	}
 	
+	@Override
 	public List<RenderAttachmentVo> getByRenderId(long renderId) {
 		String sql = 
 			"select * " +
@@ -45,6 +47,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		return list;
 	}
 	
+	@Override
 	public int update(RenderAttachmentVo renderAttachmentVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(renderAttachmentVo);
 		String sql = MetaDataUtil.buildUpdateStatement("RenderAttachment", renderAttachmentVo);
@@ -52,6 +55,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long renderId, int attchmntSeq) {
 		String sql = 
 			"delete from RenderAttachment where renderId=? and attchmntSeq=? ";
@@ -64,6 +68,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByRenderId(long renderId) {
 		String sql = 
 			"delete from RenderAttachment where renderId=? ";
@@ -75,6 +80,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(RenderAttachmentVo renderAttachmentVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(renderAttachmentVo);
 		String sql = MetaDataUtil.buildInsertStatement("RenderAttachment", renderAttachmentVo);

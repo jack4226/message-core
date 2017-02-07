@@ -225,8 +225,9 @@ public class CreateDatabase {
 	
 	private void closeConnection(Connection con) {
 		try {
-			if (con != null)
+			if (con != null) { 
 				con.close();
+			}
 		}
 		catch (SQLException e) {
 		}

@@ -17,6 +17,7 @@ import ltj.vo.template.MsgSourceVo;
 @Component("msgSourceDao")
 public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 	
+	@Override
 	public MsgSourceVo getByPrimaryKey(String msgSourceId) {
 		String sql = 
 			"select * " +
@@ -25,7 +26,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		
 		Object[] parms = new Object[] {msgSourceId};
 		try {
-			MsgSourceVo vo = getJdbcTemplate().queryForObject(sql, parms, 
+			MsgSourceVo vo = getJdbcTemplate().queryForObject(sql, parms,
 					new BeanPropertyRowMapper<MsgSourceVo>(MsgSourceVo.class));
 			return vo;
 		}
@@ -34,6 +35,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		}
 	}
 	
+	@Override
 	public List<MsgSourceVo> getByFromAddrId(long fromAddrId) {
 		String sql = 
 			"select * " +
@@ -45,6 +47,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		return list;
 	}
 	
+	@Override
 	public List<MsgSourceVo> getAll() {
 		String sql = 
 			"select * " +
@@ -55,6 +58,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		return list;
 	}
 	
+	@Override
 	public int update(MsgSourceVo msgSourceVo) {
 		msgSourceVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		
@@ -69,6 +73,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String msgSourceId) {
 		String sql = 
 			"delete from MsgSource where msgSourceId=? ";
@@ -80,6 +85,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByFromAddrId(long fromAddrId) {
 		String sql = 
 			"delete from MsgSource where fromAddrId=? ";
@@ -91,6 +97,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgSourceVo msgSourceVo) {
 		msgSourceVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		

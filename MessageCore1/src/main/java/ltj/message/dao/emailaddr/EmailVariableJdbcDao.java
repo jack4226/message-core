@@ -22,6 +22,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	static final Logger logger = Logger.getLogger(EmailVariableJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
+	@Override
 	public EmailVariableVo getByName(String variableName) {
 		String sql = "select * from EmailVariable where VariableName=:variableName";
 		SqlParameterSource namedParameters = new MapSqlParameterSource("variableName", variableName);
@@ -35,6 +36,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		}
 	}
 	
+	@Override
 	public List<EmailVariableVo> getAll() {
 		String sql = "select * from EmailVariable " +
 		" order by RowId";
@@ -43,6 +45,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		return list;
 	}
 	
+	@Override
 	public List<EmailVariableVo> getAllForTrial() {
 		String sql = "select * from EmailVariable " +
 		" order by RowId" +
@@ -58,6 +61,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		return list;
 	}
 	
+	@Override
 	public List<EmailVariableVo> getAllCustomVariables() {
 		String sql = "select * from EmailVariable " +
 			" where IsBuiltIn!='" + Constants.YES_CODE + "' " +
@@ -67,6 +71,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		return list;
 	}
 	
+	@Override
 	public List<EmailVariableVo> getAllBuiltinVariables() {
 		String sql = "select * from EmailVariable " +
 			" where IsBuiltIn='" + Constants.YES_CODE + "' " +
@@ -79,6 +84,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	/**
 	 * returns query result as string or null if not found.
 	 */
+	@Override
 	public String getByQuery(String query, long addrId) {
 		Object[] parms = new Object[] {addrId};
 		List<String> list = (List<String>)getJdbcTemplate().queryForList(query, parms, String.class);
@@ -94,6 +100,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		return sb.toString();
 	}
 	
+	@Override
 	public int update(EmailVariableVo emailVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(emailVariableVo);
 		String sql = MetaDataUtil.buildUpdateStatement("EmailVariable", emailVariableVo);
@@ -102,6 +109,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByName(String variableName) {
 		String sql = "delete from EmailVariable where VariableName=:variableName";
 		Map<String,?> namedParameters = Collections.singletonMap("variableName", variableName);
@@ -109,6 +117,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(EmailVariableVo emailVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(emailVariableVo);
 		String sql = MetaDataUtil.buildInsertStatement("EmailVariable", emailVariableVo);

@@ -17,6 +17,7 @@ import ltj.message.vo.TimerServerVo;
 @Component("timerServerDao")
 public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 	
+	@Override
 	public TimerServerVo getByPrimaryKey(String serverName) {
 		String sql = "select * from TimerServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
@@ -30,6 +31,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 		}
 	}
 	
+	@Override
 	public List<TimerServerVo> getAll(boolean onlyActive) {
 		
 		String sql = "select * from TimerServers ";
@@ -41,6 +43,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 		return list;
 	}
 	
+	@Override
 	public int update(TimerServerVo timerServerVo) {
 		if (timerServerVo.getUpdtTime()==null) {
 			timerServerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
@@ -52,6 +55,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String serverName) {
 		String sql = "delete from TimerServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
@@ -59,6 +63,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(TimerServerVo timerServerVo) {
 		if (timerServerVo.getUpdtTime()==null) {
 			timerServerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));

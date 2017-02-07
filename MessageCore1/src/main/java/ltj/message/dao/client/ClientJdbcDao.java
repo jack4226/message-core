@@ -31,6 +31,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	final static Map<String, ClientVo> clientCache = new HashMap<String, ClientVo>();
 	private java.util.Date lastFetchTime = new java.util.Date();
 
+	@Override
 	public ClientVo getByClientId(String clientId) {
 		java.util.Date currTime = new java.util.Date();
 		if (currTime.getTime() - lastFetchTime.getTime() > (15*60*1000)) {
@@ -45,7 +46,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 					"from Clients where clientid=?";
 			Object[] parms = new Object[] { clientId };
 			try {
-				ClientVo vo = getJdbcTemplate().queryForObject(sql, parms, 
+				ClientVo vo = getJdbcTemplate().queryForObject(sql, parms,
 						new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
 				synchronized (clientCache) {
 					clientCache.put(clientId, vo);
@@ -57,12 +58,12 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		return (ClientVo) BlobUtil.deepCopy(clientCache.get(clientId));
 	}
 
+	@Override
 	public ClientVo getByDomainName(String domainName) {
 		String sql = "select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
 				"from Clients where DomainName=?";
 		Object[] parms = new Object[] { domainName };
-		List<ClientVo> list = getJdbcTemplate().query(sql, parms, 
-				new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
+		List<ClientVo> list = getJdbcTemplate().query(sql, parms, new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
 		if (list.size() > 0) {
 			return list.get(0);
 		}
@@ -71,16 +72,17 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		}
 	}
 
+	@Override
 	public List<ClientVo> getAll() {
 		String sql = 
 			"select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
 				"from Clients order by clientId";
 		
-		List<ClientVo> list = getJdbcTemplate().query(sql, 
-				new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
+		List<ClientVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
 		return list;
 	}
 	
+	@Override
 	public List<ClientVo> getAllForTrial() {
 		String sql = 
 			"select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
@@ -91,13 +93,13 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(1);
 		getJdbcTemplate().setMaxRows(1);
-		List<ClientVo> list = getJdbcTemplate().query(sql, 
-				new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
+		List<ClientVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
 		return list;
 	}
 	
+	@Override
 	public String getSystemId() {
 		String sql = 
 			"select SystemId " +
@@ -105,6 +107,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		return (String) getJdbcTemplate().queryForObject(sql, String.class);
 	}
 
+	@Override
 	public String getSystemKey() {
 		String sql = 
 			"select SystemKey " +
@@ -112,6 +115,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		return (String) getJdbcTemplate().queryForObject(sql, String.class);
 	}
 
+	@Override
 	public synchronized int updateSystemKey(String key) {
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(key);
@@ -122,6 +126,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		return rowsUpdated;
 	}
 
+	@Override
 	public synchronized int update(ClientVo clientVo) {
 		clientVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		validateClientVo(clientVo);
@@ -142,6 +147,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		return rowsUpadted;
 	}
 
+	@Override
 	public synchronized int delete(String clientId) {
 		if (Constants.DEFAULT_CLIENTID.equals(clientId)) {
 			throw new IllegalArgumentException("Can't delete System Default Client.");
@@ -157,6 +163,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int insert(ClientVo clientVo) {
 		clientVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		validateClientVo(clientVo);

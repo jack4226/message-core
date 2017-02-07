@@ -16,6 +16,7 @@ import ltj.message.vo.inbox.RfcFieldsVo;
 @Component("rfcFieldsDao")
 public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 	
+	@Override
 	public RfcFieldsVo getByPrimaryKey(long msgId, String rfcType) {
 		String sql = 
 			"select * " +
@@ -33,6 +34,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		}
 	}
 	
+	@Override
 	public List<RfcFieldsVo> getByMsgId(long msgId) {
 		String sql = 
 			"select * " +
@@ -45,6 +47,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		return list;
 	}
 	
+	@Override
 	public int update(RfcFieldsVo rfcFieldsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(rfcFieldsVo);
 		String sql = MetaDataUtil.buildUpdateStatement("RfcFields", rfcFieldsVo);
@@ -52,6 +55,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId, String rfcType) {
 		String sql = 
 			"delete from RfcFields where msgid=? and rfcType=? ";
@@ -64,6 +68,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
 			"delete from RfcFields where msgid=? ";
@@ -75,6 +80,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(RfcFieldsVo rfcFieldsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(rfcFieldsVo);
 		String sql = MetaDataUtil.buildInsertStatement("RfcFields", rfcFieldsVo);

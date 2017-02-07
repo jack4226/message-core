@@ -9,6 +9,7 @@ import ltj.message.dao.abstrct.AbstractDao;
 public class MsgSequenceJdbcDao extends AbstractDao implements MsgSequenceDao {
 	protected static final Logger logger = Logger.getLogger(MsgSequenceJdbcDao.class);
 	
+	@Override
 	public long findNextValue() {
 		/* simulate a sequence table */
 		String sql1 = "update MsgSequence set seqId = LAST_INSERT_ID(seqId + 1)";

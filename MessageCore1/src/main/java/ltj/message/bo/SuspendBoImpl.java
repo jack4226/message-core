@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
@@ -140,7 +139,7 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 		if (msgInboxVo == null) {
 			logger.warn("Failed to find MsgInbox record by MsgId: " + msgId);
 		}
-		else if (!RuleNameType.SEND_MAIL.toString().equals(msgInboxVo.getRuleName())) {
+		else if (!RuleNameType.SEND_MAIL.name().equals(msgInboxVo.getRuleName())) {
 			logger.error("Message from MsgRefId is not a 'SEND_MAIL', ignored." + LF + messageBean);
 		}
 		else if (msgInboxVo.getToAddrId() != null) { // should always valued
@@ -158,8 +157,5 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 			}
 		}
 		return addrsSuspended;
-	}
-	public void setJmsProcessor(JmsProcessor jmsProcessor) {
-		// dummy implementation to satisfy the interface
 	}
 }

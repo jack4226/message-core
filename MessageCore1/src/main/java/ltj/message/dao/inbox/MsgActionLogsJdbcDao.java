@@ -17,6 +17,7 @@ import ltj.message.vo.inbox.MsgActionLogsVo;
 @Component("msgActionLogsDao")
 public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDao {
 	
+	@Override
 	public MsgActionLogsVo getByPrimaryKey(long msgId, Long msgRefId) {
 		String sql = 
 			"select * " +
@@ -41,6 +42,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		}
 	}
 	
+	@Override
 	public List<MsgActionLogsVo> getByMsgId(long msgId) {
 		String sql = 
 			"select * " +
@@ -53,6 +55,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		return list;
 	}
 	
+	@Override
 	public List<MsgActionLogsVo> getByLeadMsgId(long leadMsgId) {
 		String sql = 
 			"select * " +
@@ -65,6 +68,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		return list;
 	}
 	
+	@Override
 	public int update(MsgActionLogsVo msgActionLogsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionLogsVo);
 		String sql = MetaDataUtil.buildUpdateStatement("MsgActionLogs", msgActionLogsVo);
@@ -79,6 +83,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId, Long msgRefId) {
 		String sql = 
 			"delete from MsgActionLogs where msgId=? ";
@@ -97,6 +102,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
 			"delete from MsgActionLogs where msgId=? ";
@@ -108,6 +114,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByLeadMsgId(long leadMsgId) {
 		String sql = 
 			"delete from MsgActionLogs where leadMsgId=? ";
@@ -119,6 +126,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgActionLogsVo msgActionLogsVo) {
 		Timestamp addTime = new Timestamp(System.currentTimeMillis());
 		msgActionLogsVo.setAddTime(addTime);

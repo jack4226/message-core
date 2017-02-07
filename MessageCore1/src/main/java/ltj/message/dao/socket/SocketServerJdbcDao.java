@@ -16,6 +16,7 @@ import ltj.message.vo.SocketServerVo;
 @Component("socketServerDao")
 public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao {
 	
+	@Override
 	public SocketServerVo getByPrimaryKey(String serverName) {
 		String sql = "select * from SocketServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
@@ -29,6 +30,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 		}
 	}
 	
+	@Override
 	public List<SocketServerVo> getAll(boolean onlyActive) {
 		
 		String sql = "select * from SocketServers ";
@@ -40,6 +42,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 		return list;
 	}
 	
+	@Override
 	public int update(SocketServerVo socketServerVo) {
 		socketServerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(socketServerVo);
@@ -52,6 +55,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String serverName) {
 		String sql = "delete from SocketServers where ServerName=?";
 		Object[] parms = new Object[] {serverName};
@@ -59,6 +63,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(SocketServerVo socketServerVo) {
 		socketServerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(socketServerVo);

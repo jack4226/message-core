@@ -19,8 +19,9 @@ import ltj.vo.template.GlobalVariableVo;
 @Component("globalVariableDao")
 public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariableDao {
 	
-	private static final List<GlobalVariableVo> currentVariablesCache = new ArrayList<GlobalVariableVo>();
+	private static final List<GlobalVariableVo> currentVariablesCache = new ArrayList<>();
 	
+	@Override
 	public GlobalVariableVo getByPrimaryKey(String variableName, Timestamp startTime) {
 		String sql = 
 			"select * " +
@@ -46,6 +47,7 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		}
 	}
 	
+	@Override
 	public GlobalVariableVo getByBestMatch(String variableName, Timestamp startTime) {
 		String sql = 
 			"select * " +
@@ -62,12 +64,14 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		parms = new Object[] {variableName, startTime};
 		List<GlobalVariableVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<GlobalVariableVo>(GlobalVariableVo.class));
-		if (list.size()>0)
+		if (list.size() > 0) {
 			return list.get(0);
-		else
+		} else {
 			return null;
+		}
 	}
 	
+	@Override
 	public List<GlobalVariableVo> getByVariableName(String variableName) {
 		String sql = 
 			"select * " +
@@ -80,8 +84,9 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		return list;
 	}
 	
+	@Override
 	public List<GlobalVariableVo> getCurrent() {
-		if (currentVariablesCache.size()==0) {
+		if (currentVariablesCache.size() == 0) {
 			String sql = 
 				"select * " +
 					" from GlobalVariable a " +
@@ -93,8 +98,7 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 					" ) as c " +
 					"  on a.variablename=c.variablename and a.starttime=c.maxtime " +
 					" order by a.variableName asc ";
-			Object[] parms = new Object[] { StatusIdCode.ACTIVE,
-					new Timestamp(new java.util.Date().getTime()) };
+			Object[] parms = new Object[] { StatusIdCode.ACTIVE, new Timestamp(new java.util.Date().getTime()) };
 			List<GlobalVariableVo> list = getJdbcTemplate().query(sql, parms, 
 					new BeanPropertyRowMapper<GlobalVariableVo>(GlobalVariableVo.class));
 			currentVariablesCache.addAll(list);
@@ -111,8 +115,7 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 				" from GlobalVariable " +
 				" where statusid = ? and starttime<=?" +
 				" order by variableName asc, starttime desc ";
-		Object[] parms = new Object[] { statusId,
-				new Timestamp(new java.util.Date().getTime()) };
+		Object[] parms = new Object[] { statusId, new Timestamp(new java.util.Date().getTime()) };
 		List<GlobalVariableVo> list =  getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<GlobalVariableVo>(GlobalVariableVo.class));
 		ArrayList<GlobalVariableVo> list2 = new ArrayList<GlobalVariableVo>();
@@ -127,15 +130,18 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		return list2;
 	}
 	
+	@Override
 	public int update(GlobalVariableVo globalVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(globalVariableVo);
 		String sql = MetaDataUtil.buildUpdateStatement("GlobalVariable", globalVariableVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
-		if (rowsUpadted>0)
+		if (rowsUpadted > 0) {
 			currentVariablesCache.clear();
+		}
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String variableName, Timestamp startTime) {
 		String sql = 
 			"delete from GlobalVariable where variableName=? ";
@@ -151,11 +157,13 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		}
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
-		if (rowsDeleted>0)
+		if (rowsDeleted > 0) {
 			currentVariablesCache.clear();
+		}
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByVariableName(String variableName) {
 		String sql = 
 			"delete from GlobalVariable where variableName=? ";
@@ -164,18 +172,21 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		fields.add(variableName);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
-		if (rowsDeleted>0)
+		if (rowsDeleted > 0) {
 			currentVariablesCache.clear();
+		}
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(GlobalVariableVo globalVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(globalVariableVo);
 		String sql = MetaDataUtil.buildInsertStatement("GlobalVariable", globalVariableVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		globalVariableVo.setRowId(retrieveRowId());
-		if (rowsInserted>0)
+		if (rowsInserted > 0) {
 			currentVariablesCache.clear();
+		}
 		return rowsInserted;
 	}
 }

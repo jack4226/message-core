@@ -16,6 +16,7 @@ import ltj.message.vo.inbox.MsgAddrsVo;
 @Component("msgAddrsDao")
 public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 
+	@Override
 	public MsgAddrsVo getByPrimaryKey(long msgId, String addrType, int addrSeq) {
 		String sql = 
 			"select * " +
@@ -33,6 +34,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		}
 	}
 	
+	@Override
 	public List<MsgAddrsVo> getByMsgId(long msgId) {
 		String sql = 
 			"select * " +
@@ -45,6 +47,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		return list;
 	}
 	
+	@Override
 	public List<MsgAddrsVo> getByMsgIdAndType(long msgId, String addrType) {
 		String sql = 
 			"select * " +
@@ -57,6 +60,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		return list;
 	}
 	
+	@Override
 	public int update(MsgAddrsVo msgAddrsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgAddrsVo);
 		String sql = MetaDataUtil.buildUpdateStatement("MsgAddrs", msgAddrsVo);
@@ -64,6 +68,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(long msgId, String addrType, int addrSeq) {
 		String sql = 
 			"delete from MsgAddrs where msgid=? and addrType=? and addrSeq=? ";
@@ -77,6 +82,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
 			"delete from MsgAddrs where msgid=? ";
@@ -88,6 +94,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(MsgAddrsVo msgAddrsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgAddrsVo);
 		String sql = MetaDataUtil.buildInsertStatement("MsgAddrs", msgAddrsVo);

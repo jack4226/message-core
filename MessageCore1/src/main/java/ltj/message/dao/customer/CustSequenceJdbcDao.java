@@ -11,6 +11,7 @@ import ltj.message.dao.abstrct.AbstractDao;
 public class CustSequenceJdbcDao extends AbstractDao implements CustSequenceDao {
 	protected static final Logger logger = Logger.getLogger(CustSequenceJdbcDao.class);
 	
+	@Override
 	public long findNextValue() {
 		/* simulate a sequence table */
 		String sql1 = "update CustSequence set seqId = LAST_INSERT_ID(seqId + 1)";

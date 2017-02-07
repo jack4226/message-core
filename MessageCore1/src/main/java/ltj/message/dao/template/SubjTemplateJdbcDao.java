@@ -18,6 +18,7 @@ import ltj.vo.template.SubjTemplateVo;
 @Component("subjTemplateDao")
 public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao {
 
+	@Override
 	public SubjTemplateVo getByPrimaryKey(String templateId, String clientId, Timestamp startTime) {
 		String sql = 
 			"select * " +
@@ -44,6 +45,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		}
 	}
 	
+	@Override
 	public SubjTemplateVo getByBestMatch(String templateId, String clientId, Timestamp startTime) {
 		String sql = 
 			"select * " +
@@ -69,12 +71,14 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		Object[] parms = keys.toArray();
 		List<SubjTemplateVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<SubjTemplateVo>(SubjTemplateVo.class));
-		if (list.size()>0)
+		if (list.size() > 0) {
 			return list.get(0);
-		else
+		} else {
 			return null;
+		}
 	}
 	
+	@Override
 	public List<SubjTemplateVo> getByTemplateId(String templateId) {
 		String sql = 
 			"select * " +
@@ -87,6 +91,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		return list;
 	}
 	
+	@Override
 	public List<SubjTemplateVo> getByClientId(String clientId) {
 		String sql = 
 			"select * " +
@@ -99,6 +104,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		return list;
 	}
 	
+	@Override
 	public int update(SubjTemplateVo subjTemplateVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(subjTemplateVo);
 		String sql = MetaDataUtil.buildUpdateStatement("SubjTemplate", subjTemplateVo);
@@ -106,6 +112,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		return rowsUpadted;
 	}
 	
+	@Override
 	public int deleteByPrimaryKey(String templateId, String clientId, Timestamp startTime) {
 		String sql = 
 			"delete from SubjTemplate where templateId=? and clientId=? ";
@@ -125,6 +132,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByTemplateId(String templateId) {
 		String sql = 
 			"delete from SubjTemplate where templateId=? ";
@@ -136,6 +144,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int deleteByClientId(String clientId) {
 		String sql = 
 			"delete from SubjTemplate where clientId=? ";
@@ -147,6 +156,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		return rowsDeleted;
 	}
 	
+	@Override
 	public int insert(SubjTemplateVo subjTemplateVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(subjTemplateVo);
 		String sql = MetaDataUtil.buildInsertStatement("SubjTemplate", subjTemplateVo);

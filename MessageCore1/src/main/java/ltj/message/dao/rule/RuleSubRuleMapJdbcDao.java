@@ -18,6 +18,7 @@ import ltj.message.vo.rule.RuleSubRuleMapVo;
 @Component("ruleSubRuleMapDao")
 public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMapDao {
 	
+	@Override
 	public RuleSubRuleMapVo getByPrimaryKey(String ruleName, String subRuleName) {
 		String sql = 
 			"select * " +
@@ -35,6 +36,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		}
 	}
 	
+	@Override
 	public List<RuleSubRuleMapVo> getByRuleName(String ruleName) {
 		String sql = 
 			"select * " +
@@ -48,6 +50,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		return list;
 	}
 	
+	@Override
 	public synchronized int deleteByPrimaryKey(String ruleName, String subRuleName) {
 		String sql = 
 			"delete from RuleSubRuleMap where ruleName=? and subRuleName=? ";
@@ -61,6 +64,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
 			"delete from RuleSubRuleMap where ruleName=? ";
@@ -73,6 +77,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		return rowsDeleted;
 	}
 	
+	@Override
 	public synchronized int update(RuleSubRuleMapVo ruleSubRuleMapVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleSubRuleMapVo);
 		String sql = MetaDataUtil.buildUpdateStatement("RuleSubRuleMap", ruleSubRuleMapVo);
@@ -81,6 +86,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		return rowsUpdated;
 	}
 	
+	@Override
 	public synchronized int insert(RuleSubRuleMapVo ruleSubRuleMapVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleSubRuleMapVo);
 		String sql = MetaDataUtil.buildInsertStatement("RuleSubRuleMap", ruleSubRuleMapVo);

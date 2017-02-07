@@ -60,6 +60,7 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 		}
 	}
 
+	@Override
 	public RuleVo getByPrimaryKey(String ruleName) {
 		String sql = 
 			"select " +
@@ -94,6 +95,7 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 	/**
 	 * returns a list of RuleVo's
 	 */
+	@Override
 	public List<RuleVo> getActiveRules() {
 		List<RuleLogicVo> ruleLogics = getRuleLogicDao().getActiveRules();
 		List<RuleVo> ruleVos = new ArrayList<RuleVo>();
@@ -102,11 +104,9 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 			RuleVo ruleVo = new RuleVo();
 			ruleVo.setRuleName(ruleLogicVo.getRuleName());
 			ruleVo.setRuleLogicVo(ruleLogicVo);
-			List<RuleElementVo> elements = getRuleElementDao().getByRuleName(
-					ruleLogicVo.getRuleName());
+			List<RuleElementVo> elements = getRuleElementDao().getByRuleName(ruleLogicVo.getRuleName());
 			ruleVo.getRuleElementVos().addAll(elements);
-			List<RuleSubRuleMapVo> subRules = getRuleSubRuleMapDao().getByRuleName(
-					ruleLogicVo.getRuleName());
+			List<RuleSubRuleMapVo> subRules = getRuleSubRuleMapDao().getByRuleName(ruleLogicVo.getRuleName());
 			ruleVo.getRuleSubRuleVos().addAll(subRules);
 			ruleVos.add(ruleVo);
 		}

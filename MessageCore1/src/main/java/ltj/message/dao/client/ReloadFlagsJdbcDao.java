@@ -14,6 +14,7 @@ import ltj.message.vo.ReloadFlagsVo;
 public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	protected static final Logger logger = Logger.getLogger(ReloadFlagsJdbcDao.class);
 	
+	@Override
 	public ReloadFlagsVo select() {
 		return selectWithRepair(0);
 	}
@@ -34,6 +35,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 		}
 	}
 	
+	@Override
 	public int update(ReloadFlagsVo vo) {
 		String sql = "update ReloadFlags set " +
 			"Clients=?," +
@@ -52,6 +54,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 		return rowsUpdated;
 	}
 	
+	@Override
 	public int updateClientReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Clients=Clients + 1";
@@ -59,6 +62,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 		return rows;
 	}
 
+	@Override
 	public int updateRuleReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Rules=Rules + 1";
@@ -66,6 +70,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 		return rows;
 	}
 
+	@Override
 	public int updateActionReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Actions=Actions + 1";
@@ -73,6 +78,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 		return rows;
 	}
 
+	@Override
 	public int updateTemplateReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Templates=Templates + 1";
@@ -80,6 +86,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 		return rows;
 	}
 
+	@Override
 	public int updateScheduleReloadFlag() {
 		String sql = "update ReloadFlags set " +
 			"Schedules=Schedules + 1";
