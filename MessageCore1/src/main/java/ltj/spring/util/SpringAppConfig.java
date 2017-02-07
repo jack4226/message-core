@@ -33,9 +33,7 @@ public class SpringAppConfig {
 		smtpProps.setProperty("persistent", "no");
 		try {
 			return new SimpleEmailSender(smtpProps);
-		} catch (NumberFormatException e) {
-			throw new java.lang.IllegalStateException(e);
-		} catch (MessagingException e) {
+		} catch (NumberFormatException | MessagingException e) {
 			throw new java.lang.IllegalStateException(e);
 		}
 	}

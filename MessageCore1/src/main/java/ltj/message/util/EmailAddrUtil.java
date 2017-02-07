@@ -106,10 +106,12 @@ public class EmailAddrUtil {
 				addr = addr.substring(pos1 + 1, pos2);
 			}
 		}
-		if (toLowerCase)
+		if (toLowerCase) {
 			return addr.toLowerCase();
-		else
+		}
+		else {
 			return addr;
+		}
 	}
 
 	/**
