@@ -3,7 +3,7 @@ package ltj.vo.template;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.vo.BaseVoWithRowId;
 
@@ -18,7 +18,7 @@ public class MsgSourceVo extends BaseVoWithRowId implements Serializable {
 	private String templateVariableId = null;
 	private String excludingIdToken = Constants.NO_CODE;
 	// Y - No email id will be embedded into message
-	private String carrierCode = CarrierCode.SMTPMAIL;
+	private String carrierCode = CarrierCodeType.SMTPMAIL_CODE.value();
 	// Internet, WebMail, Internal Routing, ...
 	private String allowOverride = Constants.YES_CODE;
 	// allow override templates, addresses to be supplied at runtime

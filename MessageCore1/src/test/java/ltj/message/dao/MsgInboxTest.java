@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.RuleNameType;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgClickCountsDao;
@@ -254,7 +254,7 @@ public class MsgInboxTest extends DaoTestBase {
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
 		int rows = 0;
 		if (msgInboxVo!=null) {
-			msgInboxVo.setCarrierCode(CarrierCode.SMTPMAIL);
+			msgInboxVo.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 			msgInboxVo.setPurgeDate(new java.sql.Date(System.currentTimeMillis()));
 			rows = msgInboxDao.update(msgInboxVo);
 			System.out.println("MsgInboxDao - update: rows updated:  " + rows);

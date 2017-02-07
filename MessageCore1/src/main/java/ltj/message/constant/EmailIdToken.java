@@ -1,6 +1,6 @@
 package ltj.message.constant;
 
-public class EmailIDToken {
+public class EmailIdToken {
 
 	//
 	// defined default email parser id tokens

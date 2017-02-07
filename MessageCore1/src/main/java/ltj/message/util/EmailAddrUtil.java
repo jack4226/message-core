@@ -8,7 +8,7 @@ import javax.mail.Address;
 
 import org.apache.commons.lang.StringUtils;
 
-import ltj.message.constant.EmailIDToken;
+import ltj.message.constant.EmailIdToken;
 
 public class EmailAddrUtil {
 	final static String localPart = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*";
@@ -22,7 +22,7 @@ public class EmailAddrUtil {
 	final static Pattern localPattern = Pattern.compile("^" + localPart + "$", Pattern.CASE_INSENSITIVE);
 
 	final static String bounceRegex = (new StringBuilder("\\s*\\W?((\\w+)\\-("))
-			.append(EmailIDToken.XHDR_BEGIN).append("\\d+").append(EmailIDToken.XHDR_END)
+			.append(EmailIdToken.XHDR_BEGIN).append("\\d+").append(EmailIdToken.XHDR_END)
 			.append(")\\-(.+\\=.+)\\@(.+\\w))\\W?\\s*").toString();
 
 	// for ex.: bounce-10.07410251.0-jsmith=test.com@localhost

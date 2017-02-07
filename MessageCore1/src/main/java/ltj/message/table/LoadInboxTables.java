@@ -7,7 +7,7 @@ import javax.mail.Part;
 
 import org.springframework.context.ApplicationContext;
 
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.MsgDirectionCode;
@@ -99,7 +99,7 @@ public class LoadInboxTables {
 		in.setMsgId(msgId);
 		in.setMsgRefId(null);
 		in.setLeadMsgId(msgId);
-		in.setCarrierCode(CarrierCode.SMTPMAIL);
+		in.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		in.setMsgDirection(MsgDirectionCode.MSG_RECEIVED);
 		in.setMsgSubject("Test Subject");
 		in.setMsgPriority("2 (Normal)");
@@ -128,7 +128,7 @@ public class LoadInboxTables {
 		in.setMsgId(msgId);
 		in.setMsgRefId(null);
 		in.setLeadMsgId(msgId);
-		in.setCarrierCode(CarrierCode.SMTPMAIL);
+		in.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		in.setMsgDirection(MsgDirectionCode.MSG_SENT);
 		in.setMsgSubject("Test Broadcast Subject");
 		in.setMsgPriority("2 (Normal)");

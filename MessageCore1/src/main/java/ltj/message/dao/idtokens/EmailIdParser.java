@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import ltj.message.bean.MsgHeader;
-import ltj.message.constant.EmailIDToken;
+import ltj.message.constant.EmailIdToken;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.IdTokensVo;
 
@@ -39,12 +39,12 @@ public final class EmailIdParser implements Serializable {
 		else { // use default values from Constants class
 			this.idTokensVo = new IdTokensVo();
 			this.idTokensVo.setClientId(DEFAULT_CLIENTID);
-			this.idTokensVo.setBodyBeginToken(EmailIDToken.BODY_BEGIN);
-			this.idTokensVo.setBodyEndToken(EmailIDToken.BODY_END);
-			this.idTokensVo.setXhdrBeginToken(EmailIDToken.XHDR_BEGIN);
-			this.idTokensVo.setXhdrEndToken(EmailIDToken.XHDR_END);
-			this.idTokensVo.setXHeaderName(EmailIDToken.XHEADER_NAME);
-			this.idTokensVo.setMaxLength(EmailIDToken.MAXIMUM_LENGTH);
+			this.idTokensVo.setBodyBeginToken(EmailIdToken.BODY_BEGIN);
+			this.idTokensVo.setBodyEndToken(EmailIdToken.BODY_END);
+			this.idTokensVo.setXhdrBeginToken(EmailIdToken.XHDR_BEGIN);
+			this.idTokensVo.setXhdrEndToken(EmailIdToken.XHDR_END);
+			this.idTokensVo.setXHeaderName(EmailIdToken.XHEADER_NAME);
+			this.idTokensVo.setMaxLength(EmailIdToken.MAXIMUM_LENGTH);
 		}
 		/*
 		 * Some Email servers may insert CR/LF and tabs into Email_Id section

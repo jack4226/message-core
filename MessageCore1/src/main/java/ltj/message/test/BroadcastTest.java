@@ -18,8 +18,8 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.test.BoTestBase;
+import ltj.message.constant.CodeType;
 import ltj.message.constant.RuleNameType;
-import ltj.message.constant.YorN;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -120,7 +120,7 @@ public class BroadcastTest extends BoTestBase {
 		assertFalse(mllist.isEmpty());
 		SubscriptionVo subsVo = subscriptionDao.getByAddrAndListId(sbsrAddr, mllist.get(0).getListId());
 		assertNotNull(subsVo);
-		assertEquals(YorN.Y.name(), subsVo.getSubscribed());
+		assertEquals(CodeType.Y.name(), subsVo.getSubscribed());
 	}
 
 	@Test
@@ -152,6 +152,6 @@ public class BroadcastTest extends BoTestBase {
 		assertFalse(mllist.isEmpty());
 		SubscriptionVo subsVo = subscriptionDao.getByAddrAndListId(sbsrAddr, mllist.get(0).getListId());
 		assertNotNull(subsVo);
-		assertEquals(YorN.N.name(), subsVo.getSubscribed());
+		assertEquals(CodeType.N.name(), subsVo.getSubscribed());
 	}
 }

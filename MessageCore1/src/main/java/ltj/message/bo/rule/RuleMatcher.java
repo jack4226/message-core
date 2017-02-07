@@ -13,7 +13,7 @@ import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bean.MessageNode;
 import ltj.message.bean.MsgHeader;
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.VariableName;
 import ltj.message.util.EmailAddrUtil;
@@ -54,7 +54,7 @@ public class RuleMatcher implements java.io.Serializable {
 			String data = null;
 			if (mailObj instanceof MessageBean) { // just for safety
 				String mailType = Constants.SMTP_MAIL;
-				if (CarrierCode.WEBMAIL.equals(((MessageBean)mailObj).getCarrierCode())) {
+				if (CarrierCodeType.WEBMAIL_CODE.value().equals(((MessageBean)mailObj).getCarrierCode())) {
 					mailType = Constants.WEB_MAIL;
 				}
 				if (r instanceof RuleComplex) {

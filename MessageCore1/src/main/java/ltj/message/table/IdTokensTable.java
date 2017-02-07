@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailIDToken;
+import ltj.message.constant.EmailIdToken;
 import ltj.message.main.CreateTableBase;
 public class IdTokensTable extends CreateTableBase {
 	/** Creates a new instance of IdTokenTables 
@@ -63,12 +63,12 @@ public class IdTokensTable extends CreateTableBase {
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			ps.setString(1, Constants.DEFAULT_CLIENTID);
 			ps.setString(2, "Default SenderId");
-			ps.setString(3, EmailIDToken.BODY_BEGIN);
-			ps.setString(4, EmailIDToken.BODY_END);
-			ps.setString(5, EmailIDToken.XHEADER_NAME);
-			ps.setString(6, EmailIDToken.XHDR_BEGIN);
-			ps.setString(7, EmailIDToken.XHDR_END);
-			ps.setInt(8, EmailIDToken.MAXIMUM_LENGTH);
+			ps.setString(3, EmailIdToken.BODY_BEGIN);
+			ps.setString(4, EmailIdToken.BODY_END);
+			ps.setString(5, EmailIdToken.XHEADER_NAME);
+			ps.setString(6, EmailIdToken.XHDR_BEGIN);
+			ps.setString(7, EmailIdToken.XHDR_END);
+			ps.setInt(8, EmailIdToken.MAXIMUM_LENGTH);
 			ps.setTimestamp(9, new Timestamp(new java.util.Date().getTime()));
 			ps.setString(10, "SysAdmin");
 			ps.execute();

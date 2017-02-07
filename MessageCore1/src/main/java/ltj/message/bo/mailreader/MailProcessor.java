@@ -17,7 +17,7 @@ import ltj.jbatch.app.RunnableProcessor;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.vo.MailBoxVo;
 
@@ -118,8 +118,8 @@ public class MailProcessor extends RunnableProcessor {
 		msgBean.setToPlainText("yes".equalsIgnoreCase(mailBoxVo.getToPlainText()));
 		
 		// for prototype only. Remove it.
-		if (msgBean.getCarrierCode().toUpperCase().startsWith(CarrierCode.READONLY)) {
-			msgBean.setCarrierCode(CarrierCode.SMTPMAIL);
+		if (msgBean.getCarrierCode().toUpperCase().startsWith(CarrierCodeType.READONLY_CODE.value())) {
+			msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		}
 		// get original body w/o possible HTML to text conversion
 		String body = msgBean.getBody(true);
@@ -190,7 +190,7 @@ public class MailProcessor extends RunnableProcessor {
 
 		// message has been sent, delete it from mail box
 		// keep the message if it's from notes
-		if (!CarrierCode.READONLY.equalsIgnoreCase(mailBoxVo.getCarrierCode())) {
+		if (!CarrierCodeType.READONLY_CODE.value().equalsIgnoreCase(mailBoxVo.getCarrierCode())) {
 			((Message) p).setFlag(Flags.Flag.DELETED, true);
 			// may throw MessageingException, stop MailReader to
 			// prevent from producing duplicate messages

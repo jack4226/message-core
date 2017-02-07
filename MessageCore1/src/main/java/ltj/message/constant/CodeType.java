@@ -1,10 +1,14 @@
 package ltj.message.constant;
 
-public enum YorN {
-	Y("Y"),N("N");
-
+public enum CodeType {
+	Y("Y"),
+	N("N"),
+	MANDATORY_CODE("M"),
+	Yes("Yes"),
+	No("No");
+	
 	private final String value;
-	private YorN(String value) {
+	private CodeType(String value) {
 		this.value = value;
 	}
 	

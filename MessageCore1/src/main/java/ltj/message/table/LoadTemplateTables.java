@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import org.springframework.context.ApplicationContext;
 
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.StatusIdCode;
@@ -251,7 +251,7 @@ public class LoadTemplateTables {
 		in.setBodyTemplateId("WeekendDeals");
 		in.setTemplateVariableId("WeekendDeals");
 		in.setExcludingIdToken(Constants.NO_CODE);
-		in.setCarrierCode(CarrierCode.SMTPMAIL);
+		in.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		in.setAllowOverride(Constants.YES_CODE);
 		in.setSaveMsgStream(Constants.YES_CODE);
 		in.setArchiveInd(Constants.NO_CODE);
@@ -307,7 +307,7 @@ public class LoadTemplateTables {
 		in.setBodyTemplateId("testTemplate");
 		in.setTemplateVariableId("WeekendDeals");
 		in.setExcludingIdToken(Constants.NO_CODE);
-		in.setCarrierCode(CarrierCode.SMTPMAIL);
+		in.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		in.setAllowOverride(Constants.YES_CODE);
 		in.setSaveMsgStream(Constants.YES_CODE);
 		in.setArchiveInd(Constants.NO_CODE);

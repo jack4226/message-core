@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.util.StringUtil;
@@ -38,7 +38,7 @@ public class MessageBodyBuilderTest {
 		msgBean.setSubject("Test Embedding Email_Id");
 		msgBean.setBody("<HTML>This is the original message." + Constants.MSG_DELIMITER_BEGIN
 				+ "abcdefg" + Constants.MSG_DELIMITER_END + "</HTML>");
-		msgBean.setCarrierCode(CarrierCode.SMTPMAIL);
+		msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		msgBean.setMsgId(Long.valueOf(origMsgId));
 		msgBean.setBody(MessageBodyBuilder.getBody(msgBean));
 		logger.info(">>>>>>>>>>>>>>>>HTML Message:" + StringUtil.LF + msgBean);
@@ -55,7 +55,7 @@ public class MessageBodyBuilderTest {
 		msgBean.setSubject("Test Embedding Email_Id");
 		msgBean.setBody("This is the original message.\n" + Constants.MSG_DELIMITER_BEGIN
 				+ "abcdefg" + Constants.MSG_DELIMITER_END);
-		msgBean.setCarrierCode(CarrierCode.SMTPMAIL);
+		msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		msgBean.setMsgId(Long.valueOf(origMsgId));
 		msgBean.setBody(MessageBodyBuilder.getBody(msgBean));
 		logger.info(">>>>>>>>>>>>>>>>TEXT Message:" + StringUtil.LF +msgBean);
@@ -77,7 +77,7 @@ public class MessageBodyBuilderTest {
 		msgBean.setSubject("Test Embedding Email_Id");
 		msgBean.setBody("<HTML>This is the original message." + Constants.MSG_DELIMITER_BEGIN
 				+ "abcdefg" + Constants.MSG_DELIMITER_END + "</HTML>");
-		msgBean.setCarrierCode(CarrierCode.SMTPMAIL);
+		msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		msgBean.setMsgId(Long.valueOf(origMsgId));
 		msgBean.setBody(MessageBodyBuilder.getBody(msgBean));
 		logger.info(">>>>>>>>>>>>>>>>HTML Message:" + StringUtil.LF + msgBean);

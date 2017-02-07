@@ -2,7 +2,7 @@ package ltj.message.table;
 
 import java.sql.SQLException;
 
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.main.CreateTableBase;
@@ -216,7 +216,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "TemplateVariableId varchar(16), "
 				+ "ExcludingIdToken char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
 				// Y - No email id will be embedded into message
-				+ "CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL + "', "
+				+ "CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCodeType.SMTPMAIL_CODE.value() + "', "
 				// Internet, WebMail, Internal Routing, ...
 				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.YES_CODE + "', "
 				// allow override templates, addrs to be supplied at runtime

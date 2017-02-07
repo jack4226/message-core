@@ -34,8 +34,8 @@ import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
-import ltj.message.constant.CarrierCode;
-import ltj.message.constant.EmailIDToken;
+import ltj.message.constant.CarrierCodeType;
+import ltj.message.constant.EmailIdToken;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.constant.RuleNameType;
 import ltj.message.constant.XHeaderName;
@@ -150,8 +150,8 @@ public abstract class MailSenderBase {
 			// check if VERP is enabled
 			if (clientVo.getIsVerpAddressEnabled()) {
 				// set return path with VERP, msgBean.msgId must be valued.
-				String emailId = EmailIDToken.XHDR_BEGIN + MsgIdCipher.encode(msgBean.getMsgId())
-						+ EmailIDToken.XHDR_END;
+				String emailId = EmailIdToken.XHDR_BEGIN + MsgIdCipher.encode(msgBean.getMsgId())
+						+ EmailIdToken.XHDR_END;
 				Address[] addrs = msgBean.getTo();
 				if (addrs == null || addrs.length == 0 || addrs[0] == null) {
 					throw new DataValidationException("TO address is not provided.");
@@ -555,7 +555,7 @@ public abstract class MailSenderBase {
 	 */
 	public int sendDeliveryReport(MessageBean m) throws MessagingException {
 		int rspCount = 0;
-		if (CarrierCode.SMTPMAIL.equalsIgnoreCase(m.getCarrierCode())) {
+		if (CarrierCodeType.SMTPMAIL_CODE.value().equalsIgnoreCase(m.getCarrierCode())) {
 			if (m.isInternalOnly()) {
 				rspCount = updateMsgStatus(m.getMsgId());
 			}

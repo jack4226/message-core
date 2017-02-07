@@ -20,7 +20,7 @@ import javax.mail.Store;
 
 import org.apache.log4j.Logger;
 
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.dao.mailbox.MailBoxDao;
@@ -272,7 +272,7 @@ public class MailboxesBean {
 		mailbox.setAlertDuplicate(Constants.YES);
 		mailbox.setLogDuplicate(Constants.YES);
 		mailbox.setPurgeDupsAfter(24); // in hours
-		mailbox.setCarrierCode(CarrierCode.SMTPMAIL);
+		mailbox.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		mailbox.setInternalOnly(Constants.NO);
 		mailbox.setMessageCount(-1);
 	}

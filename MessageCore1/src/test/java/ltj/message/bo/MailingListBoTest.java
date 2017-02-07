@@ -18,7 +18,7 @@ import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bo.mailinglist.MailingListBo;
 import ltj.message.bo.test.BoTestBase;
-import ltj.message.constant.YorN;
+import ltj.message.constant.CodeType;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
@@ -110,7 +110,7 @@ public class MailingListBoTest extends BoTestBase {
 		assertNotNull(mlvo);
 		
 		for (SubscriptionVo subsVo : subsList) {
-			if (YorN.N.getValue().equals(subsVo.getSubscribed())) {
+			if (CodeType.N.getValue().equals(subsVo.getSubscribed())) {
 				continue;
 			}
 			EmailAddrVo addrVo = emailAddrDao.getByAddress(subsVo.getEmailAddr());

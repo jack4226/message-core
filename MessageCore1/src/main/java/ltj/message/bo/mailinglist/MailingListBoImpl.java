@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.template.RenderUtil;
-import ltj.message.constant.CarrierCode;
+import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailingListDeliveryOption;
 import ltj.message.constant.RuleNameType;
@@ -200,7 +200,7 @@ public class MailingListBoImpl implements MailingListBo {
 			logger.debug("Entering createMessageBean() method...");
 		}
 		MessageBean msgBean = new MessageBean();
-		msgBean.setCarrierCode(CarrierCode.SMTPMAIL);
+		msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
 		msgBean.setClientId(tmpltVo.getClientId());
 		msgBean.setSubject(tmpltVo.getSubject());
 		msgBean.setSendDate(new java.util.Date());
