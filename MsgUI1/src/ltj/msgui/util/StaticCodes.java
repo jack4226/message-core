@@ -278,8 +278,8 @@ public class StaticCodes {
 	}
 
 	private static SelectItem[] yorNItems = {
-		new SelectItem(Constants.YES_CODE, "Yes"),
-		new SelectItem(Constants.NO_CODE, "No")
+		new SelectItem(Constants.Y, "Yes"),
+		new SelectItem(Constants.N, "No")
 	};
 	
 	// PROPERTY: true/false Items

@@ -140,7 +140,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		setTargetToMailSender();
 		for (SubscriptionVo sub : subs) {
 			mailsSent += constructAndSendMessage(msgBean, sub, listVo, bodyText, subjVarNames, saveEmbedEmailId, false);
-			if (Constants.YES_CODE.equalsIgnoreCase(listVo.getIsSendText())) {
+			if (Constants.Y.equalsIgnoreCase(listVo.getIsSendText())) {
 				mailsSent += constructAndSendMessage(msgBean, sub, listVo, bodyText, subjVarNames, saveEmbedEmailId, true);
 			}
 		}
@@ -208,7 +208,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		// set TO to subscriber address
 		msgBean.setTo(to);
 		String body = renderVo.getBody();
-		if ("text/html".equals(msgBean.getBodyContentType()) && Constants.NO_CODE.equals(sub.getAcceptHtml())
+		if ("text/html".equals(msgBean.getBodyContentType()) && Constants.N.equals(sub.getAcceptHtml())
 				|| isText) {
 			// convert to plain text
 			try {

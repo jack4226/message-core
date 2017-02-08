@@ -1065,12 +1065,12 @@ public final class MessageBeanBuilder {
 		msgBean.setPriority(new String[] {msgVo.getMsgPriority()});
 		msgBean.setSendDate(msgVo.getReceivedDate());
 		
-		msgBean.setIsReceived(Constants.YES_CODE.equals(msgVo.getMsgDirection()));
+		msgBean.setIsReceived(Constants.Y.equals(msgVo.getMsgDirection()));
 		msgBean.setClientId(msgVo.getClientId());
 		msgBean.setCustId(msgVo.getCustId());
 		msgBean.setSmtpMessageId(msgVo.getSmtpMessageId());
 		msgBean.setRenderId(msgVo.getRenderId());
-		msgBean.setOverrideTestAddr(Constants.YES_CODE.equals(msgVo.getOverrideTestAddr()));
+		msgBean.setOverrideTestAddr(Constants.Y.equals(msgVo.getOverrideTestAddr()));
 		msgBean.setRuleName(msgVo.getRuleName());
 		
 		// set message body and attachments

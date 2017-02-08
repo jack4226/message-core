@@ -156,7 +156,7 @@ public class RenderBoImpl implements RenderBo {
 		String contentType = null;
 		// body template may come from variables
 		if (rsp.variableFinal.containsKey(VariableName.BODY_TEMPLATE)
-				&& Constants.YES_CODE.equalsIgnoreCase(srcVo.getAllowOverride())) {
+				&& Constants.Y.equalsIgnoreCase(srcVo.getAllowOverride())) {
 			RenderVariable var = (RenderVariable) rsp.variableFinal.get(VariableName.BODY_TEMPLATE);
 			if (VariableType.TEXT.equals(var.getVariableType())) {
 				bodyTemplate = (String) var.getVariableValue();
@@ -189,7 +189,7 @@ public class RenderBoImpl implements RenderBo {
 		String subjTemplate = null;
 		// subject template may come from variables
 		if (rsp.variableFinal.containsKey(VariableName.SUBJECT_TEMPLATE)
-				&& Constants.YES_CODE.equalsIgnoreCase(srcVo.getAllowOverride())) {
+				&& Constants.Y.equalsIgnoreCase(srcVo.getAllowOverride())) {
 			RenderVariable var = (RenderVariable) rsp.variableFinal.get(VariableName.SUBJECT_TEMPLATE);
 			if (VariableType.TEXT.equals(var.getVariableType())) {
 				subjTemplate = (String) var.getVariableValue();
@@ -337,7 +337,7 @@ public class RenderBoImpl implements RenderBo {
 					mBean.setCustId((String)r.getVariableValue());
 				}
 				else if (VariableName.TO_PLAIN_TEXT.equals(r.getVariableName())) {
-					mBean.setToPlainText(Constants.YES_CODE.equals((String)r.getVariableValue()));
+					mBean.setToPlainText(Constants.Y.equals((String)r.getVariableValue()));
 				}
 			}
 			else if (r.getVariableValue() != null && VariableType.NUMERIC.equals(r.getVariableType())) {
@@ -382,11 +382,11 @@ public class RenderBoImpl implements RenderBo {
 			mBean.setCarrierCode(rsp.msgSourceVo.getCarrierCode());
 		}
 
-		if (Constants.YES_CODE.equalsIgnoreCase(src.getExcludingIdToken())) {
+		if (Constants.Y.equalsIgnoreCase(src.getExcludingIdToken())) {
 			mBean.setEmBedEmailId(Boolean.valueOf(false));
 		}
 
-		if (Constants.YES_CODE.equalsIgnoreCase(src.getSaveMsgStream())) {
+		if (Constants.Y.equalsIgnoreCase(src.getSaveMsgStream())) {
 			mBean.setSaveMsgStream(true);
 		}
 		else {
@@ -455,8 +455,8 @@ public class RenderBoImpl implements RenderBo {
 				req.clientId,
 				null,
 				VariableType.TEXT, 
-				Constants.YES_CODE,
-				Constants.YES_CODE,
+				Constants.Y,
+				Constants.Y,
 				null);
 		s_ht.put(vreq.getVariableName(), vreq);
 		
@@ -465,8 +465,8 @@ public class RenderBoImpl implements RenderBo {
 			emailAddrDao.getByAddrId(msgSourceVo.getFromAddrId().longValue()).getEmailAddr(),
 			null,
 			VariableType.ADDRESS, 
-			Constants.YES_CODE,
-			Constants.YES_CODE,
+			Constants.Y,
+			Constants.Y,
 			null);
 		s_ht.put(vreq.getVariableName(), vreq);
 		
@@ -476,8 +476,8 @@ public class RenderBoImpl implements RenderBo {
 				emailAddrDao.getByAddrId(msgSourceVo.getReplyToAddrId().longValue()).getEmailAddr(),
 				null,
 				VariableType.ADDRESS, 
-				Constants.YES_CODE,
-				Constants.NO_CODE,
+				Constants.Y,
+				Constants.N,
 				null);
 			s_ht.put(vreq.getVariableName(), vreq);
 		}
@@ -510,7 +510,7 @@ public class RenderBoImpl implements RenderBo {
 			String name = it.next();
 			if (to.get(name) != null) {
 				RenderVariable req = (RenderVariable) to.get(name);
-				if (Constants.YES_CODE.equalsIgnoreCase(req.getAllowOverride())
+				if (Constants.Y.equalsIgnoreCase(req.getAllowOverride())
 						|| VariableStatus.MANDATORY.equalsIgnoreCase(req.getAllowOverride())) {
 					to.put(name, from.get(name));
 				}

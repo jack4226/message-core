@@ -275,7 +275,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 				emailAddrVo.setStatusId(StatusIdCode.ACTIVE);
 				emailAddrVo.setStatusChangeTime(updtTime);
 				emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
-				emailAddrVo.setAcceptHtml(Constants.YES_CODE);
+				emailAddrVo.setAcceptHtml(Constants.Y);
 				emailAddrVo.setUpdtTime(updtTime);
 				emailAddrVo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 				try {
@@ -325,7 +325,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			emailAddrVo.setStatusId(StatusIdCode.ACTIVE);
 			emailAddrVo.setStatusChangeTime(updtTime);
 			emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
-			emailAddrVo.setAcceptHtml(Constants.YES_CODE);
+			emailAddrVo.setAcceptHtml(Constants.Y);
 			emailAddrVo.setUpdtTime(updtTime);
 			emailAddrVo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 			// concurrency issue still pops up but it is much better controlled
@@ -484,7 +484,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	@Override
 	public int updateAcceptHtml(long addrId, boolean acceptHtml) {
 		List<Object> keys = new ArrayList<Object>();
-		keys.add(acceptHtml ? Constants.YES_CODE : Constants.NO_CODE);
+		keys.add(acceptHtml ? Constants.Y : Constants.N);
 		keys.add(addrId);
 
 		String sql = "update EmailAddr set " + " AcceptHtml=? "

@@ -16,8 +16,8 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 	private Timestamp startTime;
 	private String mailType = "";
 	private String ruleCategory = RuleBase.MAIN_RULE;
-	private String isSubRule = Constants.NO_CODE;
-	private String builtInRule = Constants.NO_CODE;
+	private String isSubRule = Constants.N;
+	private String builtInRule = Constants.N;
 	private String description = null;
 	private int subRuleCount = -1;
 	
@@ -26,13 +26,13 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 	
 	/** Define properties for UI components */
 	public boolean isSubRule() {
-		return Constants.YES_CODE.equalsIgnoreCase(isSubRule);
+		return Constants.Y.equalsIgnoreCase(isSubRule);
 	}
 	public void setSubRule(boolean value) {
-		setIsSubRule(value == true ? Constants.YES_CODE : Constants.NO_CODE);
+		setIsSubRule(value == true ? Constants.Y : Constants.N);
 	}
 	public String getIsSubRuleDesc() {
-		if (Constants.YES_CODE.equalsIgnoreCase(getIsSubRule()))
+		if (Constants.Y.equalsIgnoreCase(getIsSubRule()))
 			return "SubRule";
 		else if (subRuleCount > 0)
 			return "Edit";
@@ -48,7 +48,7 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 			return "Main";
 	}
 	public boolean isBuiltInRule() {
-		return Constants.YES_CODE.equalsIgnoreCase(builtInRule);
+		return Constants.Y.equalsIgnoreCase(builtInRule);
 	}
 	
 	private java.util.Date startDate = null;

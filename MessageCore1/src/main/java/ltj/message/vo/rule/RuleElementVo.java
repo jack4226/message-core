@@ -14,7 +14,7 @@ public class RuleElementVo extends BaseVoWithRowId implements Serializable {
 	private String dataName = "";
 	private String headerName = null;
 	private String criteria = ""; 
-	private String caseSensitive = Constants.NO_CODE;
+	private String caseSensitive = Constants.N;
 	private String targetText = null;
 	private String targetProc = null;
 	private String exclusions = null;

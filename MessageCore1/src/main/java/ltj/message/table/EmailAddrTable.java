@@ -90,7 +90,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "LastBounceTime datetime(3), "
 					+ "LastSentTime datetime(3), "
 					+ "LastRcptTime datetime(3), "
-					+ "AcceptHtml char(1) not null default '" + Constants.YES_CODE + "', "
+					+ "AcceptHtml char(1) not null default '" + Constants.Y + "', "
 					+ "UpdtTime datetime(3) NOT NULL, "
 					+ "UpdtUserId char(10) NOT NULL, "
 					+ "PRIMARY KEY (EmailAddrId), "
@@ -116,7 +116,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "ClientId varchar(16) NOT NULL, "
 					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " 
 						// A - active, I - Inactive
-					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
+					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 					+ "IsSendText char(1), "
 					+ "CreateTime datetime(3) NOT NULL, "
 					+ "ListMasterEmailAddr varchar(255), "
@@ -170,7 +170,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "ColumnName varchar(50), " // document only
 					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " 
 						// A - active, I - Inactive
-					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
+					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 					+ "DefaultValue varchar(255), "
 					+ "VariableQuery varchar(255), " // 1) provides TO emailAddId as query criteria
 													// 2) returns a single field called "ResultStr"
@@ -194,14 +194,14 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "ListId varchar(8) NOT NULL, "
 					+ "Subject varchar(255), "
 					+ "BodyText mediumtext, "
-					+ "IsHtml char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', " // Y or N
+					+ "IsHtml char(1) NOT NULL DEFAULT '" + Constants.N + "', " // Y or N
 					+ "ListType varchar(12) NOT NULL, " // Traditional/Personalized
 					+ "DeliveryOption varchar(4) NOT NULL DEFAULT '" + MailingListDeliveryOption.ALL_ON_LIST + "', " // when ListType is Personalized
 						// ALL - all on list, CUST - only email addresses with customer record
 					+ "SelectCriteria varchar(100), " 
 						// additional selection criteria - to be implemented
 					+ "EmbedEmailId char(1) NOT NULL DEFAULT '', " // Y, N, or <Blank> - use system default
-					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
+					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 					+ "Schedules blob, " // store a java object
 					+ "PRIMARY KEY (RowId), "
 					+ "FOREIGN KEY (ListId) REFERENCES MAILINGLIST (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
@@ -450,7 +450,7 @@ DELIMITER ;
 			ps.setString(4, "Sample mailing list 1");
 			ps.setString(5, Constants.DEFAULT_CLIENTID);
 			ps.setString(6, StatusIdCode.ACTIVE);
-			ps.setString(7, Constants.NO_CODE);
+			ps.setString(7, Constants.N);
 			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
@@ -460,7 +460,7 @@ DELIMITER ;
 			ps.setString(4, "Sample mailing list 2");
 			ps.setString(5, Constants.DEFAULT_CLIENTID);
 			ps.setString(6, StatusIdCode.ACTIVE);
-			ps.setString(7, Constants.NO_CODE);
+			ps.setString(7, Constants.N);
 			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
@@ -470,7 +470,7 @@ DELIMITER ;
 			ps.setString(4, "Auto-Responder, used by Subscription and confirmation Templates");
 			ps.setString(5, Constants.DEFAULT_CLIENTID);
 			ps.setString(6, StatusIdCode.INACTIVE);
-			ps.setString(7, Constants.YES_CODE);
+			ps.setString(7, Constants.Y);
 			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
@@ -502,7 +502,7 @@ DELIMITER ;
 			ps.setString(4, "Auto-Responder, used by order processing");
 			ps.setString(5, Constants.DEFAULT_CLIENTID);
 			ps.setString(6, StatusIdCode.INACTIVE);
-			ps.setString(7, Constants.YES_CODE);
+			ps.setString(7, Constants.Y);
 			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
@@ -526,31 +526,31 @@ DELIMITER ;
 			
 			ps.setLong(1, 1);
 			ps.setString(2, "SMPLLST1");
-			ps.setString(3, Constants.YES_CODE);
+			ps.setString(3, Constants.Y);
 			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
 			ps.setLong(1, 2);
 			ps.setString(2, "SMPLLST1");
-			ps.setString(3, Constants.YES_CODE);
+			ps.setString(3, Constants.Y);
 			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
 			ps.setLong(1, 3);
 			ps.setString(2, "SMPLLST1");
-			ps.setString(3, Constants.YES_CODE);
+			ps.setString(3, Constants.Y);
 			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
 			ps.setLong(1, 1);
 			ps.setString(2, "SMPLLST2");
-			ps.setString(3, Constants.YES_CODE);
+			ps.setString(3, Constants.Y);
 			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
 			ps.setLong(1, 2);
 			ps.setString(2, "SMPLLST2");
-			ps.setString(3, Constants.YES_CODE);
+			ps.setString(3, Constants.Y);
 			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 			ps.execute();
 			
@@ -582,7 +582,7 @@ DELIMITER ;
 			ps.setString(3, "customers");
 			ps.setString(4, "FirstName,LastName");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "Valued Customer");
 			ps.setString(8, "SELECT CONCAT(c.FirstName, ' ', c.LastName) as ResultStr " +
 					"FROM customers c, emailaddr e " +
@@ -595,7 +595,7 @@ DELIMITER ;
 			ps.setString(3, "customers");
 			ps.setString(4, "FirstName");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "Valued Customer");
 			ps.setString(8, "SELECT c.FirstName as ResultStr " +
 					"FROM customers c, emailaddr e " +
@@ -608,7 +608,7 @@ DELIMITER ;
 			ps.setString(3, "customers");
 			ps.setString(4, "LastName");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "Valued Customer");
 			ps.setString(8, "SELECT c.LastName as ResultStr " +
 					"FROM customers c, emailaddr e " +
@@ -621,7 +621,7 @@ DELIMITER ;
 //			ps.setString(3, "customers");
 //			ps.setString(4, "MiddleName");
 //			ps.setString(5, Constants.ACTIVE);
-//			ps.setString(6, Constants.NO_CODE);
+//			ps.setString(6, Constants.N);
 //			ps.setString(7, "Valued Customer");
 //			ps.setString(8, "SELECT c.MiddleName as ResultStr " +
 //					"FROM customers c, emailaddr e " +
@@ -634,7 +634,7 @@ DELIMITER ;
 			ps.setString(3, "customers");
 			ps.setString(4, "StreetAddress");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "");
 			ps.setString(8, "SELECT CONCAT_WS(',',c.StreetAddress2,c.StreetAddress) as ResultStr " +
 					"FROM customers c, emailaddr e " +
@@ -647,7 +647,7 @@ DELIMITER ;
 			ps.setString(3, "customers");
 			ps.setString(4, "CityName");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "");
 			ps.setString(8, "SELECT c.CityName as ResultStr " +
 					"FROM customers c, emailaddr e " +
@@ -660,7 +660,7 @@ DELIMITER ;
 			ps.setString(3, "customers");
 			ps.setString(4, "StateCode");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "");
 			ps.setString(8, "SELECT CONCAT_WS(',',c.StateCode,c.ProvinceName) as ResultStr " +
 					"FROM customers c, emailaddr e " +
@@ -673,7 +673,7 @@ DELIMITER ;
 			ps.setString(3, "customers");
 			ps.setString(4, "ZipCode");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "");
 			ps.setString(8, "SELECT CONCAT_WS('-',c.ZipCode5,ZipCode4) as ResultStr " +
 					"FROM customers c, emailaddr e " +
@@ -686,7 +686,7 @@ DELIMITER ;
 //			ps.setString(3, "customers");
 //			ps.setString(4, "PostalCode");
 //			ps.setString(5, Constants.ACTIVE);
-//			ps.setString(6, Constants.NO_CODE);
+//			ps.setString(6, Constants.N);
 //			ps.setString(7, "");
 //			ps.setString(8, "SELECT c.PostalCode as ResultStr " +
 //					"FROM customers c, emailaddr e " +
@@ -699,7 +699,7 @@ DELIMITER ;
 			ps.setString(3, "customers");
 			ps.setString(4, "Country");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "");
 			ps.setString(8, "SELECT c.Country as ResultStr " +
 					"FROM customers c, emailaddr e " +
@@ -712,7 +712,7 @@ DELIMITER ;
 //			ps.setString(3, "customers");
 //			ps.setString(4, "Full Address");
 //			ps.setString(5, Constants.ACTIVE);
-//			ps.setString(6, Constants.NO_CODE);
+//			ps.setString(6, Constants.N);
 //			ps.setString(7, "");
 //			ps.setString(8, "SELECT CONCAT_WS(',',c.StreetAddress,c.StreetAddress2,c.CityName," +
 //					"CONCAT(c.StateCode,c.PostalCode), c.Country) as ResultStr " +
@@ -726,7 +726,7 @@ DELIMITER ;
 //			ps.setString(3, "customers");
 //			ps.setString(4, "Profession");
 //			ps.setString(5, Constants.ACTIVE);
-//			ps.setString(6, Constants.NO_CODE);
+//			ps.setString(6, Constants.N);
 //			ps.setString(7, "");
 //			ps.setString(8, "SELECT c.Profession as ResultStr " +
 //					"FROM customers c, emailaddr e " +
@@ -739,7 +739,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "<img src='${WebSiteUrl}/msgopen.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -750,7 +750,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "<img src='${WebSiteUrl}/msgclick.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -761,7 +761,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "<img src=='${WebSiteUrl}/msgunsub.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -772,7 +772,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -783,7 +783,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, LF + "<p>To unsubscribe from this mailing list, " + LF +
 					"<a target='_blank' href='${WebSiteUrl}/MsgUnsubPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}'>click here</a>.</p>"
 					+ LF);
@@ -796,7 +796,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, LF + "To unsubscribe from this mailing list, send an e-mail to: ${MailingListAddress}" + LF +
 					"with \"unsubscribe\" (no quotation marks) in the subject." + LF);
 			ps.setString(8, null);
@@ -808,7 +808,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "${WebSiteUrl}/subscribe.jsp?sbsrid=${SubscriberAddressId}");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -819,7 +819,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "${WebSiteUrl}/confirmsub.jsp?sbsrid=${_EncodedSubcriberId}&listids=${_SubscribedListIds}&sbsraddr=${SubscriberAddress}");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -830,7 +830,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "${WebSiteUrl}/unsubscribe.jsp?sbsrid=${_EncodedSubcriberId}&listids=${_SubscribedListIds}&sbsraddr=${SubscriberAddress}");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -841,7 +841,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "${WebSiteUrl}/userprofile.jsp?sbsrid=${SubscriberAddressId}");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -852,7 +852,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "${WebSiteUrl}/referral.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -863,7 +863,7 @@ DELIMITER ;
 			ps.setString(3, "");
 			ps.setString(4, "");
 			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, "${WebSiteUrl}/images/logo.gif");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -912,10 +912,10 @@ DELIMITER ;
 					"${FooterWithUnsubLink}<br/>" +
 					"${EmailOpenCountImgTag}"
 					);
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.PERSONALIZED);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.NO_CODE);
+			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			SchedulesBlob blob = new SchedulesBlob();
 			try {
@@ -944,10 +944,10 @@ DELIMITER ;
 				"<a target='_blank' href='$%7BWebSiteUrl%7D/SamplePromoPage.jsp?msgid=$%7BBroadcastMsgId%7D&listid=$%7BMailingListId%7D&sbsrid=$%7BSubscriberAddressId%7D'>Click here</a> to see our promotions<p/>" + LF +
 				"${FooterWithUnsubAddr}<br/>" +
 				"${EmailOpenCountImgTag}");
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.TRADITIONAL);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.NO_CODE);
+			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
 			try {
@@ -975,10 +975,10 @@ DELIMITER ;
 				"To see our promotions, copy and paste the following link in your browser:" + LF +
 				"${WebSiteUrl}/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}" + LF +
 				"${FooterWithUnsubAddr}");
-			ps.setString(5, Constants.NO_CODE);
+			ps.setString(5, Constants.N);
 			ps.setString(6, MailingListType.TRADITIONAL);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.NO_CODE);
+			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
 			try {
@@ -1032,10 +1032,10 @@ DELIMITER ;
 //					"<a href='http://localhost:10080/es/testclickcount.php?msgid=$%7BBroadcastMsgId%7D&amp;listid=$%7BMailingListId%7D&amp;sbsrid=$%7BSubscriberAddressId%7D' target='_blank'>" + LF +
 //					"Click Here to Update Click Count</a>"
 //					);
-//			ps.setString(5, Constants.YES_CODE);
+//			ps.setString(5, Constants.Y);
 //			ps.setString(6, Constants.TRADITIONAL);
 //			ps.setString(7, Constants.ALL_ON_LIST);
-//			ps.setString(8, Constants.NO_CODE);
+//			ps.setString(8, Constants.N);
 //			blob = new SchedulesBlob();
 //			try {
 //				byte[] baosarray = BlobUtil.objectToBytes(blob);
@@ -1059,11 +1059,11 @@ DELIMITER ;
 					"If this is incorrect, you do not need to do anything, simply delete this message.<p/>" + LF +
 					"Thank you" + LF
 					);
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.TRADITIONAL);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.NO_CODE);
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.N);
 			blob = new SchedulesBlob();
 			try {
 				byte[] baosarray = BlobUtil.objectToBytes(blob);
@@ -1088,11 +1088,11 @@ DELIMITER ;
 					"To update your profile please <a href='$%7BUserProfileURL%7D' target='_blank'>click here</a>.<p/>" + LF +
 					"Thank you<br/>" + LF
 					);
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.TRADITIONAL);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.NO_CODE);
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.N);
 			blob = new SchedulesBlob();
 			try {
 				byte[] baosarray = BlobUtil.objectToBytes(blob);
@@ -1116,11 +1116,11 @@ DELIMITER ;
 					" and follow the steps.<p/>" + LF +
 					"Thank you<br/>" + LF
 					);
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.TRADITIONAL);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.NO_CODE);
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.N);
 			blob = new SchedulesBlob();
 			try {
 				byte[] baosarray = BlobUtil.objectToBytes(blob);
@@ -1146,10 +1146,10 @@ DELIMITER ;
 					"<a href='$%7BUserProfileURL%7D' target='_blank'>visiting this web page</a>.<p/>" + LF +
 					"Thank you<br/>" + LF
 					);
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.PERSONALIZED);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
 			try {
@@ -1173,10 +1173,10 @@ DELIMITER ;
 					"<a href='$%7BUserProfileURL%7D' target='_blank'>click here</a> to update your information.<p/>" + LF +
 					"Thank you<br/>" + LF
 					);
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.PERSONALIZED);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
 			try {
@@ -1198,10 +1198,10 @@ DELIMITER ;
 //					"this change. Please visit this web site to activate your new email address.<p/>" + LF +
 //					"Thank you<br/>" + LF
 //					);
-//			ps.setString(5, Constants.YES_CODE);
+//			ps.setString(5, Constants.Y);
 //			ps.setString(6, Constants.PERSONALIZED);
 //			ps.setString(7, Constants.ALL_ON_LIST);
-//			ps.setString(8, Constants.YES_CODE);
+//			ps.setString(8, Constants.Y);
 //			ps.setString(9, " "); // use system default
 //			blob = new SchedulesBlob();
 //			try {
@@ -1225,11 +1225,11 @@ DELIMITER ;
 					"${_ReferrerComments}" +
 					"We look forward to your visit!<br/>" + LF
 					);
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.PERSONALIZED);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.NO_CODE); // do not embed email id
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.N); // do not embed email id
 			blob = new SchedulesBlob();
 			try {
 				byte[] baosarray = BlobUtil.objectToBytes(blob);
@@ -1252,10 +1252,10 @@ DELIMITER ;
 				"If this in incorrect, you can un-subscribe from this mailing list." + LF +
 				"Simply send an e-mail to: ${MailingListAddress}" + LF +
 				"with \"unsubscribe\" (no quotation marks) in your email subject." + LF);
-			ps.setString(5, Constants.NO_CODE);
+			ps.setString(5, Constants.N);
 			ps.setString(6, MailingListType.TRADITIONAL);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
 			try {
@@ -1279,10 +1279,10 @@ DELIMITER ;
 				"If you signed up for this subscription in error, you can un-subscribe." + LF +
 				"Simply send an e-mail to <a href='mailto:$%7BMailingListAddress%7D' target='_blank'>${MailingListAddress}</a>" + LF +
 				"with \"unsubscribe\" (no quotation marks) in your email subject.<br>" + LF);
-			ps.setString(5, Constants.YES_CODE);
+			ps.setString(5, Constants.Y);
 			ps.setString(6, MailingListType.TRADITIONAL);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
 			try {
@@ -1367,10 +1367,10 @@ DELIMITER ;
 					"Emailsphere Team" + LF +
 					"Legacy System Solutions, LLC" + LF
 					);
-			ps.setString(5, Constants.NO_CODE);
+			ps.setString(5, Constants.N);
 			ps.setString(6, MailingListType.PERSONALIZED);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.NO_CODE);
+			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			SchedulesBlob blob = new SchedulesBlob();
 			try {
@@ -1405,10 +1405,10 @@ DELIMITER ;
 					"Emailsphere.com Customer Service" + LF +
 					"http://www.emailsphere.com" + LF
 					);
-			ps.setString(5, Constants.NO_CODE);
+			ps.setString(5, Constants.N);
 			ps.setString(6, MailingListType.PERSONALIZED);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.NO_CODE);
+			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
 			try {
@@ -1429,10 +1429,10 @@ DELIMITER ;
 					"Module: ${_ModuleName}" + LF +
 					"Error: ${_Error}" + LF
 					);
-			ps.setString(5, Constants.NO_CODE);
+			ps.setString(5, Constants.N);
 			ps.setString(6, MailingListType.TRADITIONAL);
 			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
-			ps.setString(8, Constants.NO_CODE);
+			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
 			try {

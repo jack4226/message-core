@@ -122,7 +122,7 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 			replyBean.setSubject(renderVo.getSubject());
 			String body = renderVo.getBody();
 			if (renderVo.getEmailTemplateVo() != null && renderVo.getEmailTemplateVo().getIsHtml()) {
-				if (Constants.YES_CODE.equals(vo.getAcceptHtml())) {
+				if (Constants.Y.equals(vo.getAcceptHtml())) {
 					replyBean.setContentType("text/html");
 				}
 				else {

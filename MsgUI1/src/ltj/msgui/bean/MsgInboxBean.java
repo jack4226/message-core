@@ -3,8 +3,8 @@ package ltj.msgui.bean;
 import static ltj.message.constant.Constants.DASHES_OF_33;
 import static ltj.message.constant.Constants.MSG_DELIMITER_BEGIN;
 import static ltj.message.constant.Constants.MSG_DELIMITER_END;
-import static ltj.message.constant.Constants.NO_CODE;
-import static ltj.message.constant.Constants.YES_CODE;
+import static ltj.message.constant.Constants.N;
+import static ltj.message.constant.Constants.Y;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -506,8 +506,8 @@ public class MsgInboxBean {
 			MsgInboxWebVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				vo.setMarkedForDeletion(false);
-				if (!YES_CODE.equalsIgnoreCase(vo.getFlagged())) {
-					vo.setFlagged(YES_CODE);
+				if (!Y.equalsIgnoreCase(vo.getFlagged())) {
+					vo.setFlagged(Y);
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
 					int rowsUpdated = getMsgInboxDao().updateCounts(vo);
 					if (rowsUpdated > 0) {
@@ -533,8 +533,8 @@ public class MsgInboxBean {
 			MsgInboxWebVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				vo.setMarkedForDeletion(false);
-				if (!NO_CODE.equalsIgnoreCase(vo.getFlagged())) {
-					vo.setFlagged(NO_CODE);
+				if (!N.equalsIgnoreCase(vo.getFlagged())) {
+					vo.setFlagged(N);
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
 					int rowsUpdated = getMsgInboxDao().updateCounts(vo);
 					if (rowsUpdated > 0) {

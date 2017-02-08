@@ -879,7 +879,7 @@ public class MsgRulesBean {
 		MsgActionUIVo vo = new MsgActionUIVo(new MsgActionVo());
 		vo.setActionSeq(0);
 		vo.setStartTime(new Timestamp(new Date().getTime()));
-		vo.setStatusId(Constants.YES_CODE);
+		vo.setStatusId(Constants.Y);
 		vo.setMarkedForEdition(true);
 		list.add(vo);
 		return TO_SELF;

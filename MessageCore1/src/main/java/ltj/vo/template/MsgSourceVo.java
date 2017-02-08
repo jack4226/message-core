@@ -16,15 +16,15 @@ public class MsgSourceVo extends BaseVoWithRowId implements Serializable {
 	private String subjTemplateId = "";
 	private String bodyTemplateId = "";
 	private String templateVariableId = null;
-	private String excludingIdToken = Constants.NO_CODE;
+	private String excludingIdToken = Constants.N;
 	// Y - No email id will be embedded into message
 	private String carrierCode = CarrierCodeType.SMTPMAIL_CODE.value();
 	// Internet, WebMail, Internal Routing, ...
-	private String allowOverride = Constants.YES_CODE;
+	private String allowOverride = Constants.Y;
 	// allow override templates, addresses to be supplied at runtime
-	private String saveMsgStream = Constants.YES_CODE;
+	private String saveMsgStream = Constants.Y;
 	// Y - save rendered SMTP message stream to MSGOBSTREAM
-	private String archiveInd = Constants.NO_CODE;
+	private String archiveInd = Constants.N;
 	// Y - archive the rendered messages
 	private Integer purgeAfter = null; // in month
 	

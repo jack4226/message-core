@@ -155,7 +155,7 @@ public final class RenderUtil {
 					null);
 			if (map.containsKey(vo.getVariableName())) {
 				RenderVariable v2 = map.get(vo.getVariableName());
-				if (Constants.YES_CODE.equalsIgnoreCase(v2.getAllowOverride())) {
+				if (Constants.Y.equalsIgnoreCase(v2.getAllowOverride())) {
 					map.put(vo.getVariableName(), var);
 				}
 			}
@@ -170,7 +170,7 @@ public final class RenderUtil {
 				String key = it.next();
 				if (map.containsKey(key)) {
 					RenderVariable v2 = map.get(key);
-					if (Constants.YES_CODE.equalsIgnoreCase(v2.getAllowOverride())) {
+					if (Constants.Y.equalsIgnoreCase(v2.getAllowOverride())) {
 						map.put(key, variables.get(key));
 					}
 				}
@@ -237,7 +237,7 @@ public final class RenderUtil {
 						null);
 				if (map.containsKey(vo.getVariableName())) {
 					RenderVariable v2 = map.get(vo.getVariableName());
-					if (Constants.YES_CODE.equalsIgnoreCase(v2.getAllowOverride())) {
+					if (Constants.Y.equalsIgnoreCase(v2.getAllowOverride())) {
 						map.put(vo.getVariableName(), var);
 					}
 				}
@@ -253,7 +253,7 @@ public final class RenderUtil {
 				String key = it.next();
 				if (map.containsKey(key)) {
 					RenderVariable v2 = map.get(key);
-					if (Constants.YES_CODE.equalsIgnoreCase(v2.getAllowOverride())) {
+					if (Constants.Y.equalsIgnoreCase(v2.getAllowOverride())) {
 						map.put(key, variables.get(key));
 					}
 				}
@@ -505,8 +505,8 @@ public final class RenderUtil {
 				value = vo.getDefaultValue();
 			}
 			logger.info("renderEmailVariables() - name=" + name + ", value=" + value);
-			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT, Constants.YES_CODE,
-					Constants.NO_CODE, null);
+			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT, Constants.Y,
+					Constants.N, null);
 			vars.put(name, var);
 		}
 		return vars;
@@ -533,8 +533,8 @@ public final class RenderUtil {
 					sbsrId.toString(),
 					null,
 					VariableType.TEXT,
-					Constants.YES_CODE,
-					Constants.NO_CODE,
+					Constants.Y,
+					Constants.N,
 					null);
 			vars.put("SubscriberAddressId", var);
 		}
@@ -644,7 +644,7 @@ public final class RenderUtil {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
 				RenderVariable var = new RenderVariable(key, variables.get(key), null, VariableType.TEXT,
-						Constants.YES_CODE, Constants.NO_CODE, null);
+						Constants.Y, Constants.N, null);
 				vars.put(key, var);
 			}
 		}
@@ -793,7 +793,7 @@ public final class RenderUtil {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
 				RenderVariable var = new RenderVariable(key, variables.get(key), null,
-						VariableType.TEXT, Constants.YES_CODE, Constants.NO_CODE, null);
+						VariableType.TEXT, Constants.Y, Constants.N, null);
 				vars.put(key, var);
 			}
 		}

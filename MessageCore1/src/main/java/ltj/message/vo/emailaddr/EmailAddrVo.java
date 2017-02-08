@@ -40,7 +40,7 @@ public class EmailAddrVo extends BaseVo implements Serializable {
     @XmlJavaTypeAdapter(TimestampAdapter.class)
 	private Timestamp lastRcptTime= null;
     @XmlElement
-	private String acceptHtml = Constants.YES_CODE;
+	private String acceptHtml = Constants.Y;
 
     // used when join with MsgInbox table
 	private String ruleName = null;

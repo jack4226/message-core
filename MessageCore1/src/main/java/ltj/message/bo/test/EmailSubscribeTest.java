@@ -77,7 +77,7 @@ public class EmailSubscribeTest extends BoTestBase {
 		assertTrue(list.size()>0);
 		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
 		assertNotNull(vo);
-		assertEquals(Constants.YES_CODE, vo.getSubscribed());
+		assertEquals(Constants.Y, vo.getSubscribed());
 		
 		List<MsgInboxVo> miFrom = msgInboxDao.getByFromAddrId(addrVo.getEmailAddrId());
 		assertFalse(miFrom.isEmpty());

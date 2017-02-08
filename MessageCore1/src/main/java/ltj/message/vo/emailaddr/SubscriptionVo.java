@@ -34,11 +34,11 @@ public class SubscriptionVo extends BaseVo implements Serializable {
 	}
 	
 	public String getSubscribedDesc() {
-		return Constants.NO_CODE.equals(subscribed) ? Constants.NO : Constants.YES;
+		return Constants.N.equals(subscribed) ? Constants.NO : Constants.YES;
 	}
 	
 	public String getAcceptHtmlDesc() {
-		return Constants.NO_CODE.equals(acceptHtml) ? Constants.NO : Constants.YES;
+		return Constants.N.equals(acceptHtml) ? Constants.NO : Constants.YES;
 	}
 	
 	public String getCustomerName() {

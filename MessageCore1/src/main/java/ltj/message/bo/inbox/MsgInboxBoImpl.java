@@ -201,7 +201,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			if (msgBean.getRenderId() != null && msgRenderedDao.getByPrimaryKey(msgBean.getRenderId()) != null) {
 				msgVo.setRenderId(msgBean.getRenderId());
 			}
-			msgVo.setOverrideTestAddr(msgBean.getOverrideTestAddr() ? Constants.YES_CODE : Constants.NO_CODE);
+			msgVo.setOverrideTestAddr(msgBean.getOverrideTestAddr() ? Constants.Y : Constants.N);
 			// check original message body's content type
 			if (msgBean.getOriginalMail() != null) {
 				String origContentType = msgBean.getOriginalMail().getBodyContentType();

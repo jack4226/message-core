@@ -12,7 +12,7 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	private String domainName = "";
 	private String irsTaxId = null;
 	private String webSiteUrl = null;
-	private String saveRawMsg = Constants.YES_CODE;
+	private String saveRawMsg = Constants.Y;
 	private String contactName = null;
 	private String contactPhone = null;
 	private String contactEmail = "";

@@ -35,7 +35,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 			emailTemplateVo.setSubject(rs.getString("Subject"));
 			emailTemplateVo.setBodyText(rs.getString("BodyText"));
 			String isHtml = rs.getString("IsHtml");
-			emailTemplateVo.setIsHtml(Constants.YES_CODE.equals(isHtml) ? true : false);
+			emailTemplateVo.setIsHtml(Constants.Y.equals(isHtml) ? true : false);
 			emailTemplateVo.setListType(rs.getString("ListType"));
 			emailTemplateVo.setDeliveryOption(rs.getString("DeliveryOption"));
 			emailTemplateVo.setSelectCriteria(rs.getString("SelectCriteria"));
@@ -119,7 +119,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		keys.add(emailTemplateVo.getListId());
 		keys.add(emailTemplateVo.getSubject());
 		keys.add(emailTemplateVo.getBodyText());
-		keys.add(emailTemplateVo.getIsHtml() ? Constants.YES_CODE : Constants.NO_CODE);
+		keys.add(emailTemplateVo.getIsHtml() ? Constants.Y : Constants.N);
 		keys.add(emailTemplateVo.getListType());
 		keys.add(emailTemplateVo.getDeliveryOption());
 		keys.add(emailTemplateVo.getSelectCriteria());
@@ -183,7 +183,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 				emailTemplateVo.getListId(),
 				emailTemplateVo.getSubject(),
 				emailTemplateVo.getBodyText(),
-				emailTemplateVo.getIsHtml() ? Constants.YES_CODE : Constants.NO_CODE,
+				emailTemplateVo.getIsHtml() ? Constants.Y : Constants.N,
 				emailTemplateVo.getListType(),
 				emailTemplateVo.getDeliveryOption(),
 				emailTemplateVo.getSelectCriteria(),

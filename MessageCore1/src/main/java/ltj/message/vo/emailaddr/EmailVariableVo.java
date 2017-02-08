@@ -12,7 +12,7 @@ public class EmailVariableVo extends BaseVoWithRowId implements Serializable {
 	private String variableType = "";
 	private String tableName = null;
 	private String columnName = null;
-	private String isBuiltIn = Constants.NO_CODE;
+	private String isBuiltIn = Constants.N;
 	private String defaultValue = null;
 	private String variableQuery = null;
 	private String variableProc = null;
@@ -47,7 +47,7 @@ public class EmailVariableVo extends BaseVoWithRowId implements Serializable {
 	}
 	
 	public boolean getIsBuiltInVariable() {
-		return Constants.YES_CODE.equals(isBuiltIn);
+		return Constants.Y.equals(isBuiltIn);
 	}
 	/** end of UI components */
 	

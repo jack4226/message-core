@@ -56,7 +56,7 @@ public class ClientTable extends CreateTableBase {
 					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " // 'A' or 'I'
 					+ "IrsTaxId varchar(10), " // IRS Tax Id
 					+ "WebSiteUrl varchar(100), "
-					+ "SaveRawMsg char(1) NOT NULL DEFAULT '" + Constants.YES_CODE + "', " 
+					+ "SaveRawMsg char(1) NOT NULL DEFAULT '" + Constants.Y + "', " 
 						// save SMTP message stream to MSGSTREAM? used by RuleEngine
 					+ "ContactName varchar(60), "
 					+ "ContactPhone varchar(18), "
@@ -199,7 +199,7 @@ public class ClientTable extends CreateTableBase {
 		ps.setString(5, StatusIdCode.ACTIVE);
 		ps.setString(6, "0000000000");
 		ps.setString(7, "http://localhost:8080/MsgUI/publicsite");
-		ps.setString(8, Constants.YES_CODE); // save raw stream
+		ps.setString(8, Constants.Y); // save raw stream
 		if (loadTestData) {
 			ps.setString(9, "sitemaster@emailsphere.com");
 			ps.setString(10, "security@localhost");
@@ -246,7 +246,7 @@ public class ClientTable extends CreateTableBase {
 		ps.setString(5, StatusIdCode.ACTIVE);
 		ps.setString(6, "0000000000");
 		ps.setString(7, "http://www.jbatch.com");
-		ps.setString(8, Constants.YES_CODE); // save raw stream
+		ps.setString(8, Constants.Y); // save raw stream
 		ps.setString(9, "sitemaster@jbatch.com");
 		ps.setString(10, "security@jbatch.com");
 		ps.setString(11, "custcare@jbatch.com");
@@ -280,7 +280,7 @@ public class ClientTable extends CreateTableBase {
 		vo.setStatusId(StatusIdCode.ACTIVE);
 		vo.setIrsTaxId("0000000000");
 		vo.setWebSiteUrl("http://www.emailsphere.com/newsletter");
-		vo.setSaveRawMsg(Constants.YES_CODE); // save raw stream
+		vo.setSaveRawMsg(Constants.Y); // save raw stream
 		vo.setContactEmail("sitemaster@emailsphere.com");
 		vo.setSecurityEmail("security@emailsphere.com");
 		vo.setCustcareEmail("custcare@emailsphere.com");

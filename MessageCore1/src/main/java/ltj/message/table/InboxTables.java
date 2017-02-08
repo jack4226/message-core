@@ -281,7 +281,7 @@ public class InboxTables extends CreateTableBase {
 			"ReadCount int NOT NULL DEFAULT 0, " + // how many times it's been read
 			"ReplyCount int NOT NULL DEFAULT 0, " + // how many times it's been replied
 			"ForwardCount int NOT NULL DEFAULT 0, " + // how many times it's been forwarded
-			"Flagged char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', " +
+			"Flagged char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
 			"DeliveryTime datetime(3), " + // for out-bound messages only, updated by MailSender
 			"StatusId char(1) NOT NULL, " + // P - pending, D - delivered by MailSender, F - delivery failed, C/O - closed/Open (for received mail)
 			"SmtpMessageId varchar(255), " + // SMTP message Id, updated by MailSender once delivered

@@ -64,7 +64,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	@Override
 	public List<EmailVariableVo> getAllCustomVariables() {
 		String sql = "select * from EmailVariable " +
-			" where IsBuiltIn!='" + Constants.YES_CODE + "' " +
+			" where IsBuiltIn!='" + Constants.Y + "' " +
 			" order by RowId";
 		List<EmailVariableVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<EmailVariableVo>(EmailVariableVo.class));
@@ -74,7 +74,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	@Override
 	public List<EmailVariableVo> getAllBuiltinVariables() {
 		String sql = "select * from EmailVariable " +
-			" where IsBuiltIn='" + Constants.YES_CODE + "' " +
+			" where IsBuiltIn='" + Constants.Y + "' " +
 			" order by RowId";
 		List<EmailVariableVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<EmailVariableVo>(EmailVariableVo.class));

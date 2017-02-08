@@ -21,7 +21,7 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	private String deliveryOption = MailingListDeliveryOption.ALL_ON_LIST;
 	private String selectCriteria = null;
 	private String embedEmailId = " "; // use system default
-	private String isBuiltIn = Constants.NO_CODE;
+	private String isBuiltIn = Constants.N;
 	private SchedulesBlob schedulesBlob = null;
 	private String origTemplateId = null;
 	private String clientId = "";
@@ -49,7 +49,7 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	}
 	
 	public boolean getIsBuiltInTemplate() {
-		return Constants.YES_CODE.equals(isBuiltIn);
+		return Constants.Y.equals(isBuiltIn);
 	}
 	/** end of UI */
 

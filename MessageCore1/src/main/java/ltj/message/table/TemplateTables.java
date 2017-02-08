@@ -124,9 +124,9 @@ public class TemplateTables extends CreateTableBase {
 				// A - address, X - Xheader, L - LOB(Attachment)
 				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', "
 				// A - Active, I - Inactive
-				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.YES_CODE + "', "
+				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime, Y/N/M, M=Mandatory
-				+ "Required char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
+				+ "Required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to be present in body template
 				+ "VariableValue varchar(255), "
 				+ "PRIMARY KEY (RowId), "
@@ -152,9 +152,9 @@ public class TemplateTables extends CreateTableBase {
 				// T - text, N - numeric, D - DateField/time,
 				// A - address, X - Xheader, L - LOB(Attachment)
 				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', "
-				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.YES_CODE + "', "
+				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime
-				+ "Required char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
+				+ "Required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to present in body template
 				+ "VariableValue text, "
 				+ "PRIMARY KEY (RowId), "
@@ -183,9 +183,9 @@ public class TemplateTables extends CreateTableBase {
 				// T - text, N - numeric, D - DateField/time,
 				// A - address, X - X header, L - LOB(Attachment)
 				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', "
-				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.YES_CODE + "', "
+				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime
-				+ "Required char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
+				+ "Required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to present in body template
 				+ "VariableValue text, "
 				+ "PRIMARY KEY (RowId), "
@@ -214,15 +214,15 @@ public class TemplateTables extends CreateTableBase {
 				+ "SubjTemplateId varchar(16) NOT NULL, "
 				+ "BodyTemplateId varchar(16) NOT NULL, "
 				+ "TemplateVariableId varchar(16), "
-				+ "ExcludingIdToken char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
+				+ "ExcludingIdToken char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// Y - No email id will be embedded into message
 				+ "CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCodeType.SMTPMAIL_CODE.value() + "', "
 				// Internet, WebMail, Internal Routing, ...
-				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.YES_CODE + "', "
+				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override templates, addrs to be supplied at runtime
-				+ "SaveMsgStream char(1) NOT NULL DEFAULT '" + Constants.YES_CODE + "', "
+				+ "SaveMsgStream char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// Y - save rendered smtp message stream to MSGSTREAM
-				+ "ArchiveInd char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', "
+				+ "ArchiveInd char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// Y - archive the rendered messages
 				+ "PurgeAfter int, " // in month
 				+ "UpdtTime datetime(3) NOT NULL, "

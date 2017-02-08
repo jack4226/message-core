@@ -404,7 +404,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		// msgFlag
 		if (vo.getFlagged() != null && vo.getFlagged().booleanValue()) {
 			whereSql += CRIT[parms.size()] + " a.Flagged = ? ";
-			parms.add(Constants.YES_CODE);
+			parms.add(Constants.Y);
 		}
 		// subject
 		if (StringUtils.isNotBlank(vo.getSubject())) {

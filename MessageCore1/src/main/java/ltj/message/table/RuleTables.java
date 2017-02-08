@@ -70,8 +70,8 @@ public class RuleTables extends CreateTableBase {
 			"StartTime datetime(3) NOT NULL, " +
 			"MailType varchar(8) NOT NULL, " + // smtpmail, webmail, ...
 			"RuleCategory char(1) DEFAULT '" + RuleBase.MAIN_RULE + "', " + // E - Pre Scan, 'M' - Main Rule, P - Post Scan
-			"IsSubRule char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', " +
-			"builtInRule char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', " +
+			"IsSubRule char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
+			"builtInRule char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
 			"Description varchar(255), " +
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (RuleName, RuleSeq) " + // use index to allow update to rule name
@@ -93,7 +93,7 @@ public class RuleTables extends CreateTableBase {
 			"DataName varchar(26) NOT NULL, " +
 			"HeaderName varchar(50), " + // X-Header name if DataName is X-Header
 			"Criteria varchar(16) NOT NULL, " +
-			"CaseSensitive char(1) NOT NULL DEFAULT '" + Constants.NO_CODE + "', " + // Y/N
+			"CaseSensitive char(1) NOT NULL DEFAULT '" + Constants.N + "', " + // Y/N
 			"TargetText varchar(2000), " + 
 			"TargetProc varchar(100), " +
 			"Exclusions text, " + // delimited
@@ -155,8 +155,8 @@ public class RuleTables extends CreateTableBase {
 			ps.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.PRE_RULE);
-			ps.setString(8, Constants.NO_CODE); // sub rule?
-			ps.setString(9, Constants.NO_CODE); // built-in rule?
+			ps.setString(8, Constants.N); // sub rule?
+			ps.setString(9, Constants.N); // built-in rule?
 			ps.setString(10, "simply get rid of the messages from the mailbox.");
 			ps.execute();
 			
@@ -166,7 +166,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ANY_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(9, Constants.YES_CODE); // built-in rule?
+			ps.setString(9, Constants.Y); // built-in rule?
 			ps.setString(10, "from RFC Scan Routine, or from postmaster with sub-rules");
 			ps.execute();
 			
@@ -309,7 +309,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ALL_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(9, Constants.NO_CODE); // built-in rule?
+			ps.setString(9, Constants.N); // built-in rule?
 			ps.setString(10, "Emails with executable attachment file(s)");
 			ps.execute();
 			
@@ -317,7 +317,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 201);
 			ps.setString(3, RuleBase.ALL_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(9, Constants.NO_CODE);
+			ps.setString(9, Constants.N);
 			ps.setString(10, "Contact Us Form submitted from web site");
 			ps.execute();
 			
@@ -325,7 +325,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 205);
 			ps.setString(3, RuleBase.ALL_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(9, Constants.NO_CODE);
+			ps.setString(9, Constants.N);
 			ps.setString(10, "ouf of the office auto reply");
 			ps.execute();
 			
@@ -334,7 +334,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.SIMPLE_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(9, Constants.NO_CODE);
+			ps.setString(9, Constants.N);
 			ps.setString(10, "Examine x-headers for SPAM score.");
 			ps.execute();
 			
@@ -343,7 +343,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ALL_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.POST_RULE);
-			ps.setString(9, Constants.NO_CODE);
+			ps.setString(9, Constants.N);
 			ps.setString(10, "post rule for hard bounced emails.");
 			ps.execute();
 			
@@ -352,7 +352,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ALL_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.POST_RULE);
-			ps.setString(9, Constants.NO_CODE);
+			ps.setString(9, Constants.N);
 			ps.setString(10, "post rule for hard bounces without final recipient.");
 			ps.execute();
 			
@@ -364,8 +364,8 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ANY_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.YES_CODE); // sub rule?
-			ps.setString(9, Constants.YES_CODE); // built-in rule?
+			ps.setString(8, Constants.Y); // sub rule?
+			ps.setString(9, Constants.Y); // built-in rule?
 			ps.setString(10, "Sub rule for hard bounces from postmaster");
 			ps.execute();
 			
@@ -374,8 +374,8 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ANY_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.Y);
 			ps.setString(10, "Sub rule for hard bounces from postmaster");
 			ps.execute();
 			
@@ -384,8 +384,8 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ALL_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.Y);
 			ps.setString(10, "Sub rule for mailbox full");
 			ps.execute();
 			
@@ -394,8 +394,8 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ANY_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.Y);
 			ps.setString(10, "Sub rule for spam block");
 			ps.execute();
 			
@@ -404,8 +404,8 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ANY_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.Y);
 			ps.setString(10, "Sub rule for virus block");
 			ps.execute();
 			
@@ -414,8 +414,8 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.ANY_RULE);
 			ps.setString(6, Constants.SMTP_MAIL);
 			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.YES_CODE);
-			ps.setString(9, Constants.YES_CODE);
+			ps.setString(8, Constants.Y);
+			ps.setString(9, Constants.Y);
 			ps.setString(10, "Sub rule for challenge response");
 			ps.execute();
 			
@@ -450,7 +450,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.MAILBOX_USER);
 			ps.setString(4, null);
 			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "noreply");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -463,7 +463,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.RETURN_PATH);
 			ps.setString(4, null);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^<?.+@.+>?$"); // make sure the return path is not blank or <>
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -475,7 +475,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.FROM_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^(?:postmaster|mailmaster|mailadmin|administrator)\\S*\\@");
 			ps.setString(9, "postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME);
 			ps.setString(10, "excludingPostmastersBo");
@@ -486,7 +486,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.FROM_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^(?:mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@");
 			ps.setString(9, "mailer-daemon@legacytojave.com,mailer-daemon@" + Constants.VENDER_DOMAIN_NAME);
 			ps.setString(10, null);
@@ -497,7 +497,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.FROM_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 					"^(?:postmaster|mailmaster|mailadmin|administrator" +
 					"|mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@");
@@ -510,7 +510,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 					"^Spam rapport \\/ Spam report \\S+ -\\s+\\(\\S+\\)$" +
 					"|^GWAVA Sender Notification .(?:RBL block|Spam|Content filter).$" +
@@ -526,7 +526,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "EarthLink\\b.*(?:spamBlocker|spamArrest)");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -538,7 +538,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 2);
 			ps.setString(3, RuleBase.FROM_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "(?:^surfcontrol|.*You_Got_Spammed)\\S*\\@");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -551,7 +551,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.X_HEADER);
 			ps.setString(4, XHeaderName.RETURN_PATH.value());
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^(?:pleaseforward|quotaagent)\\S*\\@");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -564,7 +564,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.X_HEADER);
 			ps.setString(4, "Precedence");
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^(?:spam)$");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -577,7 +577,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.X_HEADER);
 			ps.setString(4, XHeaderName.RETURN_PATH.value());
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 					"(?:spamblocker-challenge|spamhippo|devnull-quarantine)\\@" +
 					"|\\@(?:spamstomp\\.com|ipermitmail\\.com)");
@@ -592,7 +592,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(4, null);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 					"^(?:Your email requires verification verify:" +
 					"|Please Verify Your Email Address" +
@@ -609,7 +609,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 2);
 			ps.setString(3, RuleBase.FROM_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "confirm-\\S+\\@spamguard\\.vanquish\\.com");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -621,7 +621,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 					"(?:Exception.*(?:Out\\b.*of\\b.*Office|Autoreply:)|\\(Auto Response\\))" +
 				 	"|^(?:Automatically Generated Response from|Auto-Respond E-?Mail from" +
@@ -636,7 +636,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.FROM_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^(?:automated-response|autoresponder|autoresponse-\\S+)\\S*\\@");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -648,7 +648,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 2);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 					"^This messages was created automatically by mail delivery software" +
 					"|(?:\\bThis is an autoresponder. I'll never see your message\\b" +
@@ -665,7 +665,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 					"^(?:Disallowed attachment type found" +
 					"|Norton Anti.?Virus failed to scan an attachment in a message you sent" +
@@ -696,7 +696,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 				"^(?:Undeliverable mail, invalid characters in header" +
 					"|Delivery (?:warning|error) report id=" +
@@ -728,7 +728,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 2);
 			ps.setString(3, RuleBase.FROM_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "(?:virus|scanner|devnull)\\S*\\@");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -740,7 +740,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "Message\\b.*blocked\\b.*bulk email filter");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -752,7 +752,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "blocked by\\b.*Spam Firewall");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -764,7 +764,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.RULE_NAME);
 			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, RuleNameType.BROADCAST.toString());
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -776,7 +776,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.TO_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^mailinglist@.*|^jwang@localhost$");
 			ps.setString(8, "mailingListRegExBo");
 			ps.setString(9, null);
@@ -788,7 +788,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "unsubscribe");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -800,7 +800,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.TO_ADDR);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^mailinglist@.*|^jwang@localhost$");
 			ps.setString(8, "mailingListRegExBo");
 			ps.setString(9, null);
@@ -812,7 +812,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "\\s*subscribe\\s*");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -824,7 +824,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.RULE_NAME);
 			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, RuleNameType.RMA_REQUEST.toString());
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -836,7 +836,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "(?:out\\s+of\\s+.*office|\\(away from the office\\)$)");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -848,7 +848,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "^.{0,100}\\bwill\\b.{0,50}return|^.{4,100}\\breturning\\b|^.{2,100}\\bvacation\\b");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -860,7 +860,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.MAILBOX_USER);
 			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "support");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -872,7 +872,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.STARTS_WITH);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "Inquiry About:");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -884,7 +884,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(5, RuleBase.VALUED);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "dummy");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -896,7 +896,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.FILE_NAME);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, ".*\\.(?:exe|bat|cmd|com|msi|ocx)");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -909,7 +909,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.X_HEADER);
 			ps.setString(4,"X_Spam_Score");
 			ps.setString(5, RuleBase.GREATER_THAN);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "100");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -921,7 +921,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.RULE_NAME);
 			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, RuleNameType.HARD_BOUNCE.toString());
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -933,7 +933,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.TO_ADDR);
 			ps.setString(5, RuleBase.STARTS_WITH);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "watched_maibox@");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -945,7 +945,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.RULE_NAME);
 			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.YES_CODE);
+			ps.setString(6, Constants.Y);
 			ps.setString(7, RuleNameType.HARD_BOUNCE.toString());
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -957,7 +957,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, AddressType.FINAL_RCPT_ADDR.value());
 			ps.setString(5, RuleBase.NOT_VALUED);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -969,7 +969,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 2);
 			ps.setString(3, AddressType.ORIG_RCPT_ADDR.value());
 			ps.setString(5, RuleBase.NOT_VALUED);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -982,7 +982,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.SUBJECT);
 			ps.setString(4, null);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 				"^(?:Returned mail:\\s(?:User unknown|Data format error)" +
 					"|Undeliverable: |Undeliver(?:able|ed) Mail\\b|Undeliverable Message" +
@@ -1001,7 +1001,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 				"(?:\\bYou(?:.ve| have) reached a non.?working address\\.\\s+Please check\\b" +
 				"|eTrust Secure Content Manager SMTPMAIL could not deliver the e-?mail" +
@@ -1017,7 +1017,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "(?:mailbox|inbox|account).{1,50}(?:exceed|is|was).{1,40}(?:storage|full|limit|size|quota)");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -1029,7 +1029,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "(?:storage|full|limit|size|quota)");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -1041,7 +1041,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.MSG_REF_ID);
 			ps.setString(5, RuleBase.NOT_VALUED);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, "dummy");
 			ps.setString(8, null);
 			ps.setString(9, null);
@@ -1054,7 +1054,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(4, null);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 				"(?:Your mail .* requires your confirmation" +
 				"|Your message .* anti-spam system.* iPermitMail" +
@@ -1071,7 +1071,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 					"(?:a potentially executable attachment " +
 					"|\\bhas stripped one or more attachments from the following message\\b" +
@@ -1097,7 +1097,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setInt(2, 1);
 			ps.setString(3, RuleBase.BODY);
 			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.NO_CODE);
+			ps.setString(6, Constants.N);
 			ps.setString(7, 
 				"(?:Reason: Rejected by filter" +
 					"|antivirus system report" +

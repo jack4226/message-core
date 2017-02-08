@@ -63,7 +63,7 @@ public class PremiumUpgradeSetup {
 	private void setTemplateData(EmailTemplateVo vo) {
 		vo.setIsHtml(true);
 		vo.setListId("ORDERLST");
-		vo.setEmbedEmailId(Constants.YES_CODE);
+		vo.setEmbedEmailId(Constants.Y);
 		vo.setDeliveryOption(MailingListDeliveryOption.ALL_ON_LIST);
 		vo.setListType(MailingListType.TRADITIONAL);
 		vo.setSubject("Product Key for EmailSphere premium version included");
@@ -103,8 +103,8 @@ public class PremiumUpgradeSetup {
 		vo.setStatusId(StatusIdCode.ACTIVE);
 		vo.setMailType(Constants.SMTP_MAIL);
 		vo.setRuleCategory(RuleBase.MAIN_RULE);
-		vo.setIsSubRule(Constants.NO_CODE);
-		vo.setBuiltInRule(Constants.NO_CODE);
+		vo.setIsSubRule(Constants.N);
+		vo.setBuiltInRule(Constants.N);
 		vo.setDescription("A limited time free Premium upgrade");
 	}
 
@@ -119,7 +119,7 @@ public class PremiumUpgradeSetup {
 		vo.setElementSeq(0);
 		vo.setDataName(VariableName.SUBJECT);
 		vo.setCriteria(RuleBase.EQUALS);
-		vo.setCaseSensitive(Constants.NO_CODE);
+		vo.setCaseSensitive(Constants.N);
 		vo.setTargetText("Inquiry About: Free Premium Upgrade");
 		int rows = dao.insert(vo);
 		vo.setElementSeq(1);

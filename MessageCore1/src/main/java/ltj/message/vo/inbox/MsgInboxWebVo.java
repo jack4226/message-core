@@ -65,7 +65,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	}
 	
 	public boolean isFlaggedMsg() {
-		return (Constants.YES_CODE.equalsIgnoreCase(flagged));
+		return (Constants.Y.equalsIgnoreCase(flagged));
 	}
 	
 	public boolean isReceivedMsg() {

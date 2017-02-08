@@ -45,8 +45,8 @@ public class TaskDispatcherTest extends BoTestBase {
 	@Test
 	@Rollback(value=false)
 	public void test0() throws Exception {
-		String digits = StringUtils.leftPad("" + new Random().nextInt(1000), 4, "0");
-		testFromAddress = "sbsr" + digits + "@localhost";
+		String digits = StringUtils.leftPad("" + new Random().nextInt(100), 2, "0");
+		testFromAddress = "user" + digits + "@localhost";
 		emailAddrDao.findByAddress(testFromAddress);
 	}
 	
@@ -87,7 +87,7 @@ public class TaskDispatcherTest extends BoTestBase {
 		assertTrue(list.size() > 0);
 		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
 		assertNotNull("Subscription must have been added to database.", vo);
-		assertEquals(Constants.YES_CODE, vo.getSubscribed());
+		assertEquals(Constants.Y, vo.getSubscribed());
 		
 		List<MsgInboxWebVo> msglist = selectMsgInboxByMsgRefId(messageBean.getMsgId());
 		assertTrue(msglist.size() > 0);

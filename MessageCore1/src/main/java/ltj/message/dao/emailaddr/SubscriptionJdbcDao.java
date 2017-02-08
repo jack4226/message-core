@@ -43,12 +43,12 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			vo = new SubscriptionVo();
 			vo.setEmailAddrId(addrId);
 			vo.setListId(listId);
-			vo.setSubscribed(Constants.YES_CODE);
+			vo.setSubscribed(Constants.Y);
 			rowsAffected = insert(vo);
 		}
 		else { // update
-			if (!(Constants.YES_CODE.equals(vo.getSubscribed()))) {
-				vo.setSubscribed(Constants.YES_CODE);
+			if (!(Constants.Y.equals(vo.getSubscribed()))) {
+				vo.setSubscribed(Constants.Y);
 				rowsAffected = update(vo);
 			}
 		}
@@ -70,8 +70,8 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		SubscriptionVo vo = getByPrimaryKey(addrId, listId);
 		int rowsAffected = 0;
 		if (vo != null) { // update
-			if (!Constants.NO_CODE.equals(vo.getSubscribed())) {
-				vo.setSubscribed(Constants.NO_CODE);
+			if (!Constants.N.equals(vo.getSubscribed())) {
+				vo.setSubscribed(Constants.N);
 				rowsAffected = update(vo);
 			}
 		}
@@ -105,7 +105,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			rowsAffected = insert(vo);
 		}
 		else { // update
-			if (!Constants.YES_CODE.equals(vo.getSubscribed())
+			if (!Constants.Y.equals(vo.getSubscribed())
 					&& !MsgStatusCode.PENDING.equals(vo.getSubscribed())) {
 				vo.setSubscribed(MsgStatusCode.PENDING);
 				rowsAffected = update(vo);
@@ -130,7 +130,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		int rowsAffected = 0;
 		if (vo != null) { // update
 			if (MsgStatusCode.PENDING.equals(vo.getSubscribed())) {
-				vo.setSubscribed(Constants.YES_CODE);
+				vo.setSubscribed(Constants.Y);
 				rowsAffected = update(vo);
 			}
 		}
@@ -249,7 +249,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			parms.add(vo.getStatusId());
 		}
 		//whereSql += CRIT[parms.size()] + " a.Subscribed = ? ";
-		//parms.add(Constants.YES_CODE);
+		//parms.add(Constants.Y);
 		// search by address
 		if (vo.getSearchString() != null && vo.getSearchString().trim().length() > 0) {
 			String addr = vo.getSearchString().trim();
@@ -288,7 +288,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
-		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.YES_CODE};
+		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.Y};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
 		return list;
@@ -318,7 +318,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
-		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.YES_CODE};
+		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.Y};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
 		return list;
@@ -345,7 +345,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" and b.StatusId=? " +
 				" and a.Subscribed=? " +
 				" and not exists (select 1 from Customers where EmailAddrId=b.EmailAddrId) ";
-		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.YES_CODE};
+		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.Y};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
 		return list;

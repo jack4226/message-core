@@ -45,7 +45,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	private int readCount = 0;
 	private int replyCount = 0;
 	private int forwardCount = 0;
-	private String flagged = Constants.NO_CODE;
+	private String flagged = Constants.N;
 	private String msgDirection = "";
 	
 	private Timestamp deliveryTime;
@@ -132,7 +132,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	}
 	
 	public boolean isFlaggedMsg() {
-		return (Constants.YES_CODE.equalsIgnoreCase(flagged));
+		return (Constants.Y.equalsIgnoreCase(flagged));
 	}
 	
 	public boolean isReceivedMsg() {

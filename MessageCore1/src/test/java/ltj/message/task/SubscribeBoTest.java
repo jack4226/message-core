@@ -52,7 +52,7 @@ public class SubscribeBoTest extends BoTestBase {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
 		unsubscribeBo.process(messageBean);
-		verifyDataRecord(Constants.NO_CODE);
+		verifyDataRecord(Constants.N);
 	}
 	@Test
 	@Rollback(value=true)
@@ -67,7 +67,7 @@ public class SubscribeBoTest extends BoTestBase {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
 		subscribeBo.process(messageBean);
-		verifyDataRecord(Constants.YES_CODE);
+		verifyDataRecord(Constants.Y);
 	}
 	private void prepare(Action action) {
 		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);

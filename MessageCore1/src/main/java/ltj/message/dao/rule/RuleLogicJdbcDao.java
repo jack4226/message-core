@@ -115,7 +115,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = getSelectClause();
 		
 		if (builtInRule) {
-			sql += " where r.BuiltInRule=? and r.IsSubRule!='" + Constants.YES_CODE + "' ";
+			sql += " where r.BuiltInRule=? and r.IsSubRule!='" + Constants.Y + "' ";
 		}
 		else {
 			sql += " where r.BuiltInRule!=? ";
@@ -123,7 +123,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		sql += getGroupByClause();
 		sql += " order by r.ruleCategory asc, r.ruleSeq asc, r.ruleName asc ";
 		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(Constants.YES_CODE);
+		fields.add(Constants.Y);
 		List<RuleLogicVo> list = getJdbcTemplate().query(sql, fields.toArray(), 
 				new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
 		return list;
@@ -134,9 +134,9 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = 
 			"select *, 0 as SubRuleCount " +
 			" from RuleLogic " +
-				" where IsSubRule='" + Constants.YES_CODE + "' ";
+				" where IsSubRule='" + Constants.Y + "' ";
 		if (excludeBuiltIn) {
-			sql += " and BuiltInRule!='" + Constants.YES_CODE + "' ";
+			sql += " and BuiltInRule!='" + Constants.Y + "' ";
 		}
 		
 		List<RuleLogicVo> list = getJdbcTemplate().query(sql, 
@@ -153,8 +153,8 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			" order by RuleName ";
 		
 		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(Constants.YES_CODE);
-		fields.add(Constants.YES_CODE);
+		fields.add(Constants.Y);
+		fields.add(Constants.Y);
 		fields.add(RuleBase.MAIN_RULE);
 		List<String> list = getJdbcTemplate().queryForList(sql, fields.toArray(), String.class);
 		return list;
@@ -169,8 +169,8 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			" order by RuleName ";
 
 		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(Constants.YES_CODE);
-		fields.add(Constants.YES_CODE);
+		fields.add(Constants.Y);
+		fields.add(Constants.Y);
 		fields.add(RuleBase.MAIN_RULE);
 		List<String> list = getJdbcTemplate().queryForList(sql, fields.toArray(), String.class);
 		return list;

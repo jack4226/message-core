@@ -78,8 +78,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat("yyyy-MM-dd HH:mm:ss");
 		in.setVariableType(VariableType.DATETIME);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 		globalVariableDao.insert(in);
 
 		in.setVariableName("CurrentDate");
@@ -88,8 +88,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat("yyyy-MM-dd");
 		in.setVariableType(VariableType.DATETIME);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 		globalVariableDao.insert(in);
 
 		in.setVariableName("CurrentTime");
@@ -98,8 +98,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat("hh:mm:ss a");
 		in.setVariableType(VariableType.DATETIME);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 		globalVariableDao.insert(in);
 
 		// load default client id
@@ -111,8 +111,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.X_HEADER);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 		globalVariableDao.insert(in);
 		
 		in = new GlobalVariableVo();
@@ -122,8 +122,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.TEXT);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.NO_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.N);
+		in.setRequired(Constants.N);
 		globalVariableDao.insert(in);
 		
 		System.out.println("load() completed.\n"+in);
@@ -140,8 +140,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.DATETIME);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 
 		clientVariableDao.insert(in);
 
@@ -152,8 +152,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat("yyyy-MM-dd");
 		in.setVariableType(VariableType.DATETIME);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 
 		clientVariableDao.insert(in);
 
@@ -164,8 +164,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat("hh:mm:ss a");
 		in.setVariableType(VariableType.DATETIME);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 
 		clientVariableDao.insert(in);
 
@@ -184,8 +184,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.DATETIME);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 
 		templateVariableDao.insert(in);
 
@@ -197,8 +197,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat("yyyy-MM-dd");
 		in.setVariableType(VariableType.DATETIME);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 
 		templateVariableDao.insert(in);
 
@@ -250,11 +250,11 @@ public class LoadTemplateTables {
 		in.setSubjTemplateId("WeekendDeals");
 		in.setBodyTemplateId("WeekendDeals");
 		in.setTemplateVariableId("WeekendDeals");
-		in.setExcludingIdToken(Constants.NO_CODE);
+		in.setExcludingIdToken(Constants.N);
 		in.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setSaveMsgStream(Constants.YES_CODE);
-		in.setArchiveInd(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setSaveMsgStream(Constants.Y);
+		in.setArchiveInd(Constants.N);
 		in.setPurgeAfter(null);
 		in.setUpdtUserId("testuser");
 
@@ -306,11 +306,11 @@ public class LoadTemplateTables {
 		in.setSubjTemplateId("WeekendDeals");
 		in.setBodyTemplateId("testTemplate");
 		in.setTemplateVariableId("WeekendDeals");
-		in.setExcludingIdToken(Constants.NO_CODE);
+		in.setExcludingIdToken(Constants.N);
 		in.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setSaveMsgStream(Constants.YES_CODE);
-		in.setArchiveInd(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setSaveMsgStream(Constants.Y);
+		in.setArchiveInd(Constants.N);
 		in.setPurgeAfter(null);
 		in.setUpdtUserId("testuser");
 
@@ -330,8 +330,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.TEXT);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.NO_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.N);
 
 		clientVariableDao.insert(in);
 
@@ -350,8 +350,8 @@ public class LoadTemplateTables {
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.TEXT);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.YES_CODE);
-		in.setRequired(Constants.YES_CODE);
+		in.setAllowOverride(Constants.Y);
+		in.setRequired(Constants.Y);
 
 		templateVariableDao.insert(in);
 
@@ -369,7 +369,7 @@ public class LoadTemplateTables {
 		in.setVariableType(VariableType.ADDRESS);
 		in.setStatusId(StatusIdCode.ACTIVE);
 		in.setAllowOverride(VariableStatus.MANDATORY);
-		in.setRequired(Constants.YES_CODE);
+		in.setRequired(Constants.Y);
 
 		globalVariableDao.insert(in);
 

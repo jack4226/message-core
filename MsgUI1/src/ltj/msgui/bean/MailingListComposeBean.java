@@ -220,10 +220,10 @@ public class MailingListComposeBean {
 			MessageBean mBean = new MessageBean();
 			mBean.setMailingListId(listId);
 			mBean.setRuleName(RuleNameType.BROADCAST.toString());
-			if (Constants.YES_CODE.equals(embedEmailId)) {
+			if (Constants.Y.equals(embedEmailId)) {
 				mBean.setEmBedEmailId(Boolean.valueOf(true));
 			}
-			else if (Constants.NO_CODE.equals(embedEmailId)) {
+			else if (Constants.N.equals(embedEmailId)) {
 				mBean.setEmBedEmailId(Boolean.valueOf(false));
 			}
 			if (MailingListDeliveryOption.CUSTOMERS_ONLY.equals(deliveryOption)) {

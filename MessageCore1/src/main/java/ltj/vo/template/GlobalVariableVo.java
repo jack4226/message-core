@@ -18,9 +18,9 @@ public class GlobalVariableVo extends BaseVoWithRowId implements Serializable
 	// A - address, X - Xheader, L - LOB(Attachment)
 	//private String statusId = Constants.ACTIVE;
 	// A - Active, I - Inactive
-	private String allowOverride = Constants.YES_CODE;
+	private String allowOverride = Constants.Y;
 	// allow override value to be supplied at runtime, Y/N/M, M=Mandatory
-	private String required = Constants.NO_CODE;
+	private String required = Constants.N;
 	
 	public String getAllowOverride() {
 		return allowOverride;
