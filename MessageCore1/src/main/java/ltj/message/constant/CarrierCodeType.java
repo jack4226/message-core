@@ -1,8 +1,5 @@
 package ltj.message.constant;
 
-/*
- * Can't implement until Spring support enum in JdbcTemplate
- */
 public enum CarrierCodeType {
 	SMTPMAIL_CODE("S"),
 	WEBMAIL_CODE("W"),
