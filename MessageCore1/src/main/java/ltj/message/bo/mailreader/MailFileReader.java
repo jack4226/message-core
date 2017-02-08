@@ -16,7 +16,7 @@ import ltj.message.bean.BodypartUtil;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bean.MessageNode;
-import ltj.message.constant.CarrierCodeType;
+import ltj.message.constant.MailCodeType;
 import ltj.message.util.FileUtil;
 import ltj.spring.util.SpringUtil;
 
@@ -51,7 +51,7 @@ public class MailFileReader {
 		jmsProcessor.setQueueName("mailReaderOutput");
 
 		MessageBean msgBean = readMessageBean(filePath);
-		msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
+		msgBean.setCarrierCode(MailCodeType.SMTPMAIL.value());
 		
 		try {
 			String msgId = jmsProcessor.writeMsg(msgBean, "MailReader");
@@ -80,7 +80,7 @@ public class MailFileReader {
 		jmsProcessor.setQueueName("mailReaderOutput");
 
 		MessageBean msgBean = readMessageBean(filePath);
-		msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
+		msgBean.setCarrierCode(MailCodeType.SMTPMAIL.value());
 		
 		TransactionStatus tStatus = null;
 		try {

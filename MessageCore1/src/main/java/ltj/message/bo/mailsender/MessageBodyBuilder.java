@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MsgHeader;
-import ltj.message.constant.CarrierCodeType;
+import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.dao.idtokens.EmailIdParser;
@@ -194,7 +194,7 @@ public final class MessageBodyBuilder {
 		if (msgBean.getOriginalMail() == null) {
 			return "";
 		}
-		if (CarrierCodeType.WEBMAIL_CODE.value().equalsIgnoreCase(msgBean.getOriginalMail().getCarrierCode())) {
+		if (MailCodeType.WEBMAIL.value().equalsIgnoreCase(msgBean.getOriginalMail().getCarrierCode())) {
 			// drop the original message if it's a WebMail
 			return "";
 		}
@@ -260,7 +260,7 @@ public final class MessageBodyBuilder {
 	 */
 	private static String getEmailIdSection(MessageBean msgBean, boolean isHtml) {
 		String section = "";
-		if (!CarrierCodeType.WEBMAIL_CODE.value().equalsIgnoreCase(msgBean.getCarrierCode()) && msgBean.getMsgId() != null) {
+		if (!MailCodeType.WEBMAIL.value().equalsIgnoreCase(msgBean.getCarrierCode()) && msgBean.getMsgId() != null) {
 			if (isHtml) {
 				section += LF + "<div style='color: darkgray;'><p>";
 				section += EmailIdParser.getDefaultParser().wrapupEmailId(msgBean.getMsgId())
@@ -447,7 +447,7 @@ public final class MessageBodyBuilder {
 		msgBean.setSubject("Test Embedding Email_Id");
 		msgBean.setBody("<HTML>This is the original message." + Constants.MSG_DELIMITER_BEGIN
 				+ "abcdefg" + Constants.MSG_DELIMITER_END + "</HTML>");
-		msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
+		msgBean.setCarrierCode(MailCodeType.SMTPMAIL.value());
 		msgBean.setMsgId(Long.valueOf(999999));
 		msgBean.setBody(getBody(msgBean));
 		System.out.println(">>>>>>>>>>>>>>>>HTML Message:" + LF + msgBean);
@@ -458,7 +458,7 @@ public final class MessageBodyBuilder {
 		msgBean.setSubject("Test Embedding Email_Id");
 		msgBean.setBody("This is the original message.\n" + Constants.MSG_DELIMITER_BEGIN
 				+ "abcdefg" + Constants.MSG_DELIMITER_END);
-		msgBean.setCarrierCode(CarrierCodeType.SMTPMAIL_CODE.value());
+		msgBean.setCarrierCode(MailCodeType.SMTPMAIL.value());
 		msgBean.setMsgId(Long.valueOf(999999));
 		msgBean.setBody(getBody(msgBean));
 		System.out.println(">>>>>>>>>>>>>>>>TEXT Message:" + LF +msgBean);

@@ -2,7 +2,7 @@ package ltj.message.table;
 
 import java.sql.SQLException;
 
-import ltj.message.constant.CarrierCodeType;
+import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailingListDeliveryOption;
 import ltj.message.main.CreateTableBase;
@@ -262,7 +262,7 @@ public class InboxTables extends CreateTableBase {
 			"MsgId bigint NOT NULL, " +
 			"MsgRefId bigint, " + // link to another MSGINBOX record (a reply or a bounce)
 			"LeadMsgId bigint NOT NULL, " +
-			"CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCodeType.SMTPMAIL_CODE.value() + "', " + // S - SmtpMail, W - WebMail
+			"CarrierCode char(1) NOT NULL DEFAULT '" + MailCodeType.SMTPMAIL.value() + "', " + // S - SmtpMail, W - WebMail
 			"MsgDirection char(1) NOT NULL, " + // R - Received, S - Sent
 			"RuleName varchar(26) NOT NULL, " + // link to RuleLogic.RuleName
 			"MsgSubject varchar(255), " +

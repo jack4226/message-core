@@ -1,12 +1,12 @@
 package ltj.message.constant;
 
-public enum CarrierCodeType {
-	SMTPMAIL_CODE("S"),
-	WEBMAIL_CODE("W"),
-	READONLY_CODE("R");
+public enum MailCodeType {
+	SMTPMAIL("S"),
+	WEBMAIL("W"),
+	READONLY("R");
 
 	private String value;
-	CarrierCodeType(String value) {
+	MailCodeType(String value) {
 		this.value=value;
 	}
 	public String value() {
@@ -15,8 +15,8 @@ public enum CarrierCodeType {
 	@Override public String toString() {
 		return value();
 	}
-	public CarrierCodeType fromValue(String value) {
-		for (CarrierCodeType v : CarrierCodeType.values()) {
+	public MailCodeType fromValue(String value) {
+		for (MailCodeType v : MailCodeType.values()) {
 			if (v.value().equalsIgnoreCase(value)) {
 				return v;
 			}
