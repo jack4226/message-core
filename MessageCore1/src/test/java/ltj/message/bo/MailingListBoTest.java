@@ -110,7 +110,7 @@ public class MailingListBoTest extends BoTestBase {
 		assertNotNull(mlvo);
 		
 		for (SubscriptionVo subsVo : subsList) {
-			if (CodeType.N.getValue().equals(subsVo.getSubscribed())) {
+			if (CodeType.N.value().equals(subsVo.getSubscribed())) {
 				continue;
 			}
 			EmailAddrVo addrVo = emailAddrDao.getByAddress(subsVo.getEmailAddr());
