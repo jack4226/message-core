@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.exception.DataValidationException;
@@ -61,22 +61,22 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 			String addrs = null;
 			if (token != null && token.startsWith("$")) { // address variable
 				token = token.substring(1);
-				if (EmailAddressType.FROM_ADDR.equals(token)) {
+				if (AddressType.FROM_ADDR.value().equals(token)) {
 					addrs = messageBean.getFromAsString();
 				}
-				else if (EmailAddressType.FINAL_RCPT_ADDR.equals(token)) {
+				else if (AddressType.FINAL_RCPT_ADDR.value().equals(token)) {
 					addrs = messageBean.getFinalRcpt();
 				}
-				else if (EmailAddressType.ORIG_RCPT_ADDR.equals(token)) {
+				else if (AddressType.ORIG_RCPT_ADDR.value().equals(token)) {
 					addrs = messageBean.getOrigRcpt();
 				}
-				else if (EmailAddressType.FORWARD_ADDR.equals(token)) {
+				else if (AddressType.FORWARD_ADDR.value().equals(token)) {
 					addrs = messageBean.getForwardAsString();
 				}
-				else if (EmailAddressType.TO_ADDR.equals(token)) {
+				else if (AddressType.TO_ADDR.value().equals(token)) {
 					addrs = messageBean.getToAsString();
 				}
-				else if (EmailAddressType.REPLYTO_ADDR.equals(token)) {
+				else if (AddressType.REPLYTO_ADDR.value().equals(token)) {
 					addrs = messageBean.getReplytoAsString();
 				}
 			}

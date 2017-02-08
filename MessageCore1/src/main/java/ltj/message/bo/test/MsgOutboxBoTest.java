@@ -27,8 +27,8 @@ import ltj.message.bo.template.RenderRequest;
 import ltj.message.bo.template.RenderResponse;
 import ltj.message.bo.template.RenderVariable;
 import ltj.message.bo.template.Renderer;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.inbox.MsgInboxDao;
@@ -156,7 +156,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 		Map<String, RenderVariable> map=new HashMap<String, RenderVariable>();
 		
 		RenderVariable toAddr = new RenderVariable(
-				EmailAddressType.TO_ADDR, 
+				AddressType.TO_ADDR.value(), 
 				"testto@localhost",
 				null, 
 				VariableType.ADDRESS, 

@@ -17,8 +17,8 @@ import javax.mail.internet.InternetAddress;
 import org.apache.log4j.Logger;
 
 import ltj.message.bo.mailinglist.MailingListUtil;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.VariableDelimiter;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
@@ -661,9 +661,9 @@ public final class RenderUtil {
 		catch (ParseException e) {
 			throw new DataValidationException("ParseException caught", e);
 		}
-		if (vars.containsKey(EmailAddressType.CC_ADDR)) {
+		if (vars.containsKey(AddressType.CC_ADDR.value())) {
 			// set CC if it was passed as an input variable
-			RenderVariable cc = vars.get(EmailAddressType.CC_ADDR);
+			RenderVariable cc = vars.get(AddressType.CC_ADDR.value());
 			if (cc != null && VariableType.TEXT.equals(cc.getVariableType()) && cc.getVariableValue() != null) {
 				try {
 					validateFromAddress((String) cc.getVariableValue());
@@ -675,9 +675,9 @@ public final class RenderUtil {
 				}
 			}
 		}
-		if (vars.containsKey(EmailAddressType.BCC_ADDR)) {
+		if (vars.containsKey(AddressType.BCC_ADDR.value())) {
 			// set BCC if it was passed as an input variable
-			RenderVariable bcc = vars.get(EmailAddressType.BCC_ADDR);
+			RenderVariable bcc = vars.get(AddressType.BCC_ADDR.value());
 			if (bcc != null && VariableType.TEXT.equals(bcc.getVariableType()) && bcc.getVariableValue() != null) {
 				try {
 					validateFromAddress((String) bcc.getVariableValue());

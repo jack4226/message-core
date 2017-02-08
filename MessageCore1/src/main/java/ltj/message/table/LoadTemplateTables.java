@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 
 import org.springframework.context.ApplicationContext;
 
+import ltj.message.constant.AddressType;
 import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableStatus;
@@ -105,7 +105,7 @@ public class LoadTemplateTables {
 		// load default client id
 		in = new GlobalVariableVo();
 		
-		in.setVariableName(XHeaderName.XHEADER_CLIENT_ID);
+		in.setVariableName(XHeaderName.CLIENT_ID.value());
 		in.setStartTime(updtTime);
 		in.setVariableValue(Constants.DEFAULT_CLIENTID);
 		in.setVariableFormat(null);
@@ -362,7 +362,7 @@ public class LoadTemplateTables {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		GlobalVariableVo in = new GlobalVariableVo();
 		
-		in.setVariableName(EmailAddressType.TO_ADDR);
+		in.setVariableName(AddressType.TO_ADDR.value());
 		in.setStartTime(updtTime);
 		in.setVariableValue(null);
 		in.setVariableFormat(null);

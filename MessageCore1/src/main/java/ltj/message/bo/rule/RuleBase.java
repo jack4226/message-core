@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import ltj.message.constant.EmailAddressType;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.VariableName;
 
 public abstract class RuleBase implements java.io.Serializable {
@@ -41,16 +41,16 @@ public abstract class RuleBase implements java.io.Serializable {
 		{ STARTS_WITH, ENDS_WITH, CONTAINS, EQUALS, GREATER_THAN, LESS_THAN, VALUED, NOT_VALUED, REG_EX };
 
 	/** define data type constants for Internet mail */
-	public static final String FROM_ADDR = EmailAddressType.FROM_ADDR;
-	public static final String TO_ADDR = EmailAddressType.TO_ADDR;
-	public static final String REPLYTO_ADDR = EmailAddressType.REPLYTO_ADDR;
-	public static final String CC_ADDR = EmailAddressType.CC_ADDR;
-	public static final String BCC_ADDR = EmailAddressType.BCC_ADDR;
+	public static final String FROM_ADDR = AddressType.FROM_ADDR.value();
+	public static final String TO_ADDR = AddressType.TO_ADDR.value();
+	public static final String REPLYTO_ADDR = AddressType.REPLYTO_ADDR.value();
+	public static final String CC_ADDR = AddressType.CC_ADDR.value();
+	public static final String BCC_ADDR = AddressType.BCC_ADDR.value();
 	public static final String SUBJECT = VariableName.SUBJECT;
 	public static final String BODY = VariableName.BODY;
 	public static final String MSG_REF_ID = VariableName.MSG_REF_ID;
 	public static final String RULE_NAME = VariableName.RULE_NAME;
-	public static final String X_HEADER = VariableName.XHEADER_DATA_NAME;
+	public static final String X_HEADER = VariableName.DATA_NAME;
 	public static final String RETURN_PATH = "ReturnPath";
 	// mailbox properties
 	public static final String MAILBOX_USER = VariableName.MAILBOX_USER;

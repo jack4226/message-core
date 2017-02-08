@@ -8,9 +8,9 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import ltj.message.bo.mailsender.MessageBodyBuilder;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.MsgDirectionCode;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -174,7 +174,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		// first locate To from header
 		List<MsgHeadersVo> headers = getMsgHeaders();
 		for (MsgHeadersVo header : headers) {
-			if (EmailAddressType.TO_ADDR.equalsIgnoreCase(header.getHeaderName())) {
+			if (AddressType.TO_ADDR.value().equalsIgnoreCase(header.getHeaderName())) {
 				if (StringUtils.isNotBlank(header.getHeaderValue())) {
 					return header.getHeaderValue();
 				}
@@ -208,7 +208,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		StringBuffer sb = new StringBuffer();
 		for (int i=0; i<msgAddrs.size(); i++) {
 			MsgAddrsVo vo = msgAddrs.get(i);
-			if (EmailAddressType.CC_ADDR.equals(vo.getAddrType())) {
+			if (AddressType.CC_ADDR.value().equals(vo.getAddrType())) {
 				if (sb.length() > 0) {
 					sb.append(",");
 				}

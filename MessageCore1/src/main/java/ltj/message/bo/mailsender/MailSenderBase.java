@@ -263,7 +263,7 @@ public abstract class MailSenderBase {
 	}
 	
 	private void addXHeadersToBean(MessageBean msgBean, javax.mail.Message mimeMsg) throws MessagingException {
-		String[] renderId = mimeMsg.getHeader(XHeaderName.XHEADER_RENDER_ID);
+		String[] renderId = mimeMsg.getHeader(XHeaderName.RENDER_ID.value());
 		if (renderId != null && renderId.length > 0) {
 			String renderIdStr = renderId[0];
 			try {
@@ -271,11 +271,11 @@ public abstract class MailSenderBase {
 			}
 			catch (NumberFormatException e) {
 				logger.error("addXHeadersToBean() - NumberFormatException caught from converting "
-						+ XHeaderName.XHEADER_RENDER_ID + ": " + renderIdStr);
+						+ XHeaderName.RENDER_ID.value() + ": " + renderIdStr);
 			}
 		}
 		
-		String[] msgRefId = mimeMsg.getHeader(XHeaderName.XHEADER_MSG_REF_ID);
+		String[] msgRefId = mimeMsg.getHeader(XHeaderName.MSG_REF_ID.value());
 		if (msgRefId != null && msgRefId.length > 0) {
 			String msgRefIdStr = msgRefId[0];
 			try {
@@ -283,13 +283,13 @@ public abstract class MailSenderBase {
 			}
 			catch (NumberFormatException e) {
 				logger.error("addXHeadersToBean() - NumberFormatException caught from converting "
-						+ XHeaderName.XHEADER_MSG_REF_ID + ": " + msgRefIdStr);
+						+ XHeaderName.MSG_REF_ID.value() + ": " + msgRefIdStr);
 			}
 		}
 		
 		boolean isSecure = false;
 		// retrieve secure transport flag from X-Header
-		String[] st = mimeMsg.getHeader(XHeaderName.XHEADER_USE_SECURE_SMTP);
+		String[] st = mimeMsg.getHeader(XHeaderName.USE_SECURE_SMTP.value());
 		if (st != null && st.length > 0) {
 			if (YES.equals(st[0])) {
 				isSecure = true;
@@ -297,26 +297,26 @@ public abstract class MailSenderBase {
 		}
 		msgBean.setUseSecureServer(isSecure);
 		
-		//String[] ruleName = mimeMsg.getHeader(XHEADER_RULE_NAME);
+		//String[] ruleName = mimeMsg.getHeader(RULE_NAME);
 		//if (ruleName != null && ruleName.length > 0) {
 		//	msgBean.setRuleName(ruleName[0]);
 		//}
 		
-		String[] overrideTestAddr = mimeMsg.getHeader(XHeaderName.XHEADER_OVERRIDE_TEST_ADDR);
+		String[] overrideTestAddr = mimeMsg.getHeader(XHeaderName.OVERRIDE_TEST_ADDR.value());
 		if (overrideTestAddr != null && overrideTestAddr.length > 0) {
 			if (YES.equalsIgnoreCase(overrideTestAddr[0])) {
 				msgBean.setOverrideTestAddr(true);
 			}
 		}
 		
-		String[] saveRawStream = mimeMsg.getHeader(XHeaderName.XHEADER_SAVE_RAW_STREAM);
+		String[] saveRawStream = mimeMsg.getHeader(XHeaderName.SAVE_RAW_STREAM.value());
 		if (saveRawStream != null && saveRawStream.length > 0) {
 			if (NO.equalsIgnoreCase(saveRawStream[0])) {
 				msgBean.setSaveMsgStream(false);
 			}
 		}
 		
-		String[] embedEmailId = mimeMsg.getHeader(XHeaderName.XHEADER_EMBED_EMAILID);
+		String[] embedEmailId = mimeMsg.getHeader(XHeaderName.EMBED_EMAILID.value());
 		if (embedEmailId != null && embedEmailId.length > 0) {
 			if (NO.equalsIgnoreCase(embedEmailId[0])) {
 				msgBean.setEmBedEmailId(Boolean.valueOf(false));

@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import ltj.message.bo.rule.RuleBase;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.RuleNameType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.constant.XHeaderName;
@@ -955,7 +955,7 @@ public class RuleTables extends CreateTableBase {
 			
 			ps.setString(1, "HardBounce_NoFinalRcpt");
 			ps.setInt(2, 1);
-			ps.setString(3, EmailAddressType.FINAL_RCPT_ADDR);
+			ps.setString(3, AddressType.FINAL_RCPT_ADDR.value());
 			ps.setString(5, RuleBase.NOT_VALUED);
 			ps.setString(6, Constants.NO_CODE);
 			ps.setString(7, "");
@@ -967,7 +967,7 @@ public class RuleTables extends CreateTableBase {
 			
 			ps.setString(1, "HardBounce_NoFinalRcpt");
 			ps.setInt(2, 2);
-			ps.setString(3, EmailAddressType.ORIG_RCPT_ADDR);
+			ps.setString(3, AddressType.ORIG_RCPT_ADDR.value());
 			ps.setString(5, RuleBase.NOT_VALUED);
 			ps.setString(6, Constants.NO_CODE);
 			ps.setString(7, "");

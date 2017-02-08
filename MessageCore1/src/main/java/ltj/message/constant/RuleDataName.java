@@ -15,7 +15,7 @@ public enum RuleDataName {
 	MSG_ID(RuleDataTypeEnum.EMAIL_PROPERTY, VariableName.MSG_ID),
 	MSG_REF_ID(RuleDataTypeEnum.EMAIL_PROPERTY, VariableName.MSG_REF_ID),
 	RULE_NAME(RuleDataTypeEnum.EMAIL_PROPERTY, VariableName.RULE_NAME),
-	X_HEADER(RuleDataTypeEnum.EMAIL_PROPERTY, VariableName.XHEADER_DATA_NAME),
+	X_HEADER(RuleDataTypeEnum.EMAIL_PROPERTY, VariableName.DATA_NAME),
 	RETURN_PATH(RuleDataTypeEnum.EMAIL_PROPERTY, "ReturnPath"),
 	// mailbox properties
 	MAILBOX_USER(RuleDataTypeEnum.EMAIL_PROPERTY, VariableName.MAILBOX_USER),

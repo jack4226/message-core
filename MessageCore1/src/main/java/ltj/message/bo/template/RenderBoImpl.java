@@ -23,8 +23,8 @@ import org.springframework.stereotype.Component;
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MsgHeader;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableStatus;
 import ltj.message.constant.VariableType;
@@ -251,7 +251,7 @@ public class RenderBoImpl implements RenderBo {
 		for (Iterator<RenderVariable> it=c.iterator(); it.hasNext();) {
 			RenderVariable r = it.next();
 			if (VariableType.ADDRESS.equals(r.getVariableType()) && r.getVariableValue() != null) {
-				if (EmailAddressType.FROM_ADDR.equals(r.getVariableName())) {
+				if (AddressType.FROM_ADDR.value().equals(r.getVariableName())) {
 					if (r.getVariableValue() instanceof String) {
 						mBean.setFrom(InternetAddress.parse((String) r.getVariableValue()));
 					}
@@ -259,7 +259,7 @@ public class RenderBoImpl implements RenderBo {
 						mBean.setFrom(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
 				}
-				else if (EmailAddressType.REPLYTO_ADDR.equals(r.getVariableName())) {
+				else if (AddressType.REPLYTO_ADDR.value().equals(r.getVariableName())) {
 					if (r.getVariableValue() instanceof String) {
 						mBean.setReplyto(InternetAddress.parse((String) r.getVariableValue()));
 					}
@@ -267,7 +267,7 @@ public class RenderBoImpl implements RenderBo {
 						mBean.setReplyto(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
 				}
-				else if (EmailAddressType.TO_ADDR.equals(r.getVariableName())) {
+				else if (AddressType.TO_ADDR.value().equals(r.getVariableName())) {
 					if (r.getVariableValue() instanceof String) {
 						mBean.setTo(InternetAddress.parse((String) r.getVariableValue()));
 					}
@@ -275,7 +275,7 @@ public class RenderBoImpl implements RenderBo {
 						mBean.setTo(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
 				}
-				else if (EmailAddressType.CC_ADDR.equals(r.getVariableName())) {
+				else if (AddressType.CC_ADDR.value().equals(r.getVariableName())) {
 					if (r.getVariableValue() instanceof String) {
 						mBean.setCc(InternetAddress.parse((String) r.getVariableValue()));
 					}
@@ -283,7 +283,7 @@ public class RenderBoImpl implements RenderBo {
 						mBean.setCc(InternetAddress.parse(((Address)r.getVariableValue()).toString()));
 					}
 				}
-				else if (EmailAddressType.BCC_ADDR.equals(r.getVariableName())) {
+				else if (AddressType.BCC_ADDR.value().equals(r.getVariableName())) {
 					if (r.getVariableValue() instanceof String) {
 						mBean.setBcc(InternetAddress.parse((String) r.getVariableValue()));
 					}
@@ -416,12 +416,12 @@ public class RenderBoImpl implements RenderBo {
 				msgHeader.setValue((String) r.getVariableValue());
 				headers.add(msgHeader);
 				// set ClientId for MessageBean
-				if (XHeaderName.XHEADER_CLIENT_ID.equals(r.getVariableName())) {
+				if (XHeaderName.CLIENT_ID.value().equals(r.getVariableName())) {
 					if (StringUtil.isEmpty(mBean.getClientId())) {
 						mBean.setClientId((String) r.getVariableValue());
 					}
 				}
-				else if (XHeaderName.XHEADER_CUSTOMER_ID.equals(r.getVariableName())) {
+				else if (XHeaderName.CUSTOMER_ID.value().equals(r.getVariableName())) {
 					if (StringUtil.isEmpty(mBean.getCustId())) {
 						mBean.setCustId((String) r.getVariableValue());
 					}
@@ -461,7 +461,7 @@ public class RenderBoImpl implements RenderBo {
 		s_ht.put(vreq.getVariableName(), vreq);
 		
 		vreq = new RenderVariable(
-			EmailAddressType.FROM_ADDR,
+			AddressType.FROM_ADDR.value(),
 			emailAddrDao.getByAddrId(msgSourceVo.getFromAddrId().longValue()).getEmailAddr(),
 			null,
 			VariableType.ADDRESS, 
@@ -472,7 +472,7 @@ public class RenderBoImpl implements RenderBo {
 		
 		if (msgSourceVo.getReplyToAddrId()!=null) {
 			vreq = new RenderVariable(
-				EmailAddressType.REPLYTO_ADDR,
+				AddressType.REPLYTO_ADDR.value(),
 				emailAddrDao.getByAddrId(msgSourceVo.getReplyToAddrId().longValue()).getEmailAddr(),
 				null,
 				VariableType.ADDRESS, 

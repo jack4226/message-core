@@ -124,7 +124,7 @@ public class EmailSender implements java.io.Serializable {
 		msg.setSubject(m.getMsgSubject());
 		msg.setText(m.getMsgBody());
 		if (m.getXMailer() != null) {
-			msg.setHeader(XHeaderName.XHEADER_MAILER, m.getXMailer());
+			msg.setHeader(XHeaderName.MAILER.value(), m.getXMailer());
 		}
 		msg.setSentDate(new Date());
 		// could also use Session.getTransport() and Transport.connect()

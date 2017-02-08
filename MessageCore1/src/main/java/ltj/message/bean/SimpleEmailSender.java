@@ -176,7 +176,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 		msg.setSubject(m.getSubject());
 		msg.setText(m.getBody());
 		if (m.getXmailer() != null && m.getXmailer().length > 0) {
-			msg.setHeader(XHeaderName.XHEADER_MAILER, m.getXmailer()[0]);
+			msg.setHeader(XHeaderName.MAILER.value(), m.getXmailer()[0]);
 		}
 		msg.setSentDate(new Date());
 		// send the thing off
@@ -308,7 +308,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 			msg.setSubject(m.getSubject());
 			msg.setText(m.getBody());
 			if (m.getXmailer() != null && m.getXmailer().length > 0) {
-				msg.setHeader(XHeaderName.XHEADER_MAILER, m.getXmailer()[0]);
+				msg.setHeader(XHeaderName.MAILER.value(), m.getXmailer()[0]);
 			}
 			msg.setSentDate(new Date());
 			// use a Transport instance to send the message via a specified smtp

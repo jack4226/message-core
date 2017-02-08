@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.bean.MessageBeanUtil;
-import ltj.message.constant.EmailAddressType;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.TableColumnName;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.exception.DataValidationException;
@@ -67,22 +67,22 @@ public class ForwardBoImpl extends TaskBaseAdaptor {
 			String addr = null;
 			if (token != null && token.startsWith("$")) { // address type
 				token = token.substring(1);
-				if (EmailAddressType.FROM_ADDR.equals(token)) {
+				if (AddressType.FROM_ADDR.value().equals(token)) {
 					addr = messageBean.getFromAsString();
 				}
-				else if (EmailAddressType.FINAL_RCPT_ADDR.equals(token)) {
+				else if (AddressType.FINAL_RCPT_ADDR.value().equals(token)) {
 					addr = messageBean.getFinalRcpt();
 				}
-				else if (EmailAddressType.ORIG_RCPT_ADDR.equals(token)) {
+				else if (AddressType.ORIG_RCPT_ADDR.value().equals(token)) {
 					addr = messageBean.getOrigRcpt();
 				}
-				else if (EmailAddressType.FORWARD_ADDR.equals(token)) {
+				else if (AddressType.FORWARD_ADDR.value().equals(token)) {
 					addr = messageBean.getForwardAsString();
 				}
-				else if (EmailAddressType.TO_ADDR.equals(token)) {
+				else if (AddressType.TO_ADDR.value().equals(token)) {
 					addr = messageBean.getToAsString();
 				}
-				else if (EmailAddressType.REPLYTO_ADDR.equals(token)) {
+				else if (AddressType.REPLYTO_ADDR.value().equals(token)) {
 					addr = messageBean.getReplytoAsString();
 				}
 				// E-mail addresses from Client table

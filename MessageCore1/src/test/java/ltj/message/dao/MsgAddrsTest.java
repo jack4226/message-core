@@ -10,8 +10,8 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgAddrsDao;
 import ltj.message.vo.inbox.MsgAddrsVo;
@@ -20,7 +20,7 @@ public class MsgAddrsTest extends DaoTestBase {
 	@Resource
 	private MsgAddrsDao msgAddrsDao;
 	long testMsgId = 2L;
-	String testAddrType = EmailAddressType.FROM_ADDR;
+	String testAddrType = AddressType.FROM_ADDR.value();
 
 	@Test
 	public void insertUpdateDelete() {

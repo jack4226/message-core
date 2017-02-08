@@ -26,8 +26,8 @@ import ltj.message.bo.template.RenderResponse;
 import ltj.message.bo.template.RenderVariable;
 import ltj.message.bo.template.Renderer;
 import ltj.message.bo.test.BoTestBase;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.template.BodyTemplateDao;
 import ltj.message.dao.template.SubjTemplateDao;
@@ -139,7 +139,7 @@ public class RenderTest extends BoTestBase {
 		
 		try {
 			RenderVariable toAddr = new RenderVariable(
-					EmailAddressType.TO_ADDR, 
+					AddressType.TO_ADDR.value(), 
 					new InternetAddress("testto@localhost"),
 					null, 
 					VariableType.ADDRESS, 

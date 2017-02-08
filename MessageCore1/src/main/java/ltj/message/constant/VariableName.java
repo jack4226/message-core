@@ -12,7 +12,7 @@ public class VariableName {
 	public final static String SUBJECT = "Subject";
 	public final static String BODY = "Body";
 	// X-Header data type
-	public static final String XHEADER_DATA_NAME = "X-Header";
+	public static final String DATA_NAME = "X-Header";
 	// template names
 	public final static String SUBJECT_TEMPLATE = "SubjTemplate";
 	public final static String BODY_TEMPLATE = "BodyTemplate";

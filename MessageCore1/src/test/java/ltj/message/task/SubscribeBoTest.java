@@ -15,8 +15,8 @@ import org.springframework.test.annotation.Rollback;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -47,7 +47,7 @@ public class SubscribeBoTest extends BoTestBase {
 		messageBean.setFrom(InternetAddress.parse(testFromAddress));
 		messageBean.setTo(InternetAddress.parse(mailingListAddr));
 		messageBean.setSubject("unsubscribe");
-		subscribeBo.setTaskArguments("$"+EmailAddressType.FROM_ADDR);
+		subscribeBo.setTaskArguments("$"+AddressType.FROM_ADDR.value());
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
@@ -62,7 +62,7 @@ public class SubscribeBoTest extends BoTestBase {
 		messageBean.setFrom(InternetAddress.parse(testFromAddress));
 		messageBean.setTo(InternetAddress.parse(mailingListAddr));
 		messageBean.setSubject("subscribe");
-		subscribeBo.setTaskArguments("$"+EmailAddressType.FROM_ADDR);
+		subscribeBo.setTaskArguments("$"+AddressType.FROM_ADDR.value());
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}

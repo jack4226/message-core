@@ -7,9 +7,9 @@ import javax.mail.Part;
 
 import org.springframework.context.ApplicationContext;
 
+import ltj.message.constant.AddressType;
 import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.MsgDirectionCode;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.constant.RuleNameType;
@@ -172,7 +172,7 @@ public class LoadInboxTables {
 		MsgAddrsVo in = new MsgAddrsVo();
 		
 		in.setMsgId(msgId);
-		in.setAddrType(EmailAddressType.FROM_ADDR);
+		in.setAddrType(AddressType.FROM_ADDR.value());
 		in.setAddrSeq(1);
 		in.setAddrValue("test@test.com");
 
@@ -202,7 +202,7 @@ public class LoadInboxTables {
 		
 		in.setMsgId(msgId);
 		in.setHeaderSeq(1);
-		in.setHeaderName(XHeaderName.XHEADER_MAILER);
+		in.setHeaderName(XHeaderName.MAILER.value());
 		in.setHeaderValue("MailSender");
 
 		msgHeadersDao.insert(in);

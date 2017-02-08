@@ -10,7 +10,7 @@ import org.junit.Test;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
-import ltj.message.constant.EmailAddressType;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 
@@ -21,7 +21,7 @@ public class ActivateBoTest extends BoTestBase {
 	@Test
 	public void activate() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
-		activateBo.setTaskArguments(new String[] {"$"+EmailAddressType.FINAL_RCPT_ADDR, "$"+EmailAddressType.FROM_ADDR});
+		activateBo.setTaskArguments(new String[] {"$"+AddressType.FINAL_RCPT_ADDR.value(), "$"+AddressType.FROM_ADDR.value()});
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}

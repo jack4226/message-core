@@ -83,7 +83,7 @@ public class MailReaderReply {
 			}
 		}
 		// retrieve other headers
-		String x_mailer = ((MimeMessage)msg).getHeader(XHeaderName.XHEADER_MAILER,LF);
+		String x_mailer = ((MimeMessage)msg).getHeader(XHeaderName.MAILER.value(),LF);
 		String mime_ver = ((MimeMessage)msg).getHeader("MIME-Version",LF);
 		// construct rfc822 headers
 		String rfc822Str = LF + // don't remove this

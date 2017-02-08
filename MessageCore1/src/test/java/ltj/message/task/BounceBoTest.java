@@ -10,7 +10,7 @@ import org.junit.Test;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
-import ltj.message.constant.EmailAddressType;
+import ltj.message.constant.AddressType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 
@@ -22,7 +22,7 @@ public class BounceBoTest extends BoTestBase {
 	@Test
 	public void bounce() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
-		bounceBo.setTaskArguments(new String[] {"$"+EmailAddressType.FINAL_RCPT_ADDR, "$"+EmailAddressType.FROM_ADDR});
+		bounceBo.setTaskArguments(new String[] {"$"+AddressType.FINAL_RCPT_ADDR.value(), "$"+AddressType.FROM_ADDR.value()});
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}

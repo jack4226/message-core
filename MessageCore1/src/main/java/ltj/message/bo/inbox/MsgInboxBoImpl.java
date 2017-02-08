@@ -21,9 +21,9 @@ import ltj.message.bean.MessageNode;
 import ltj.message.bean.MsgHeader;
 import ltj.message.bo.customer.CustomerBo;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.CarrierCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.MailingListDeliveryOption;
 import ltj.message.constant.MsgDirectionCode;
 import ltj.message.constant.MsgStatusCode;
@@ -373,11 +373,11 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		}
 		
 		// save addresses
-		saveAddress(msgBean.getFrom(), EmailAddressType.FROM_ADDR, msgVo.getMsgId());
-		saveAddress(msgBean.getTo(), EmailAddressType.TO_ADDR, msgVo.getMsgId());
-		saveAddress(msgBean.getReplyto(), EmailAddressType.REPLYTO_ADDR, msgVo.getMsgId());
-		saveAddress(msgBean.getCc(), EmailAddressType.CC_ADDR, msgVo.getMsgId());
-		saveAddress(msgBean.getBcc(), EmailAddressType.BCC_ADDR, msgVo.getMsgId());
+		saveAddress(msgBean.getFrom(), AddressType.FROM_ADDR, msgVo.getMsgId());
+		saveAddress(msgBean.getTo(), AddressType.TO_ADDR, msgVo.getMsgId());
+		saveAddress(msgBean.getReplyto(), AddressType.REPLYTO_ADDR, msgVo.getMsgId());
+		saveAddress(msgBean.getCc(), AddressType.CC_ADDR, msgVo.getMsgId());
+		saveAddress(msgBean.getBcc(), AddressType.BCC_ADDR, msgVo.getMsgId());
 		
 		// save message raw stream if received by MailReader
 		if (msgBean.getHashMap().containsKey(MessageBeanBuilder.MSG_RAW_STREAM) && msgBean.getIsReceived()) {
@@ -469,7 +469,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		return msgInboxVo;
 	}
 	
-	private void saveAddress(Address[] addrs, String addrType, long msgId) {
+	private void saveAddress(Address[] addrs, AddressType addrType, long msgId) {
 		if (addrs == null || addrs.length == 0) {
 			return;
 		}
@@ -478,7 +478,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			if (addr != null) {
 				MsgAddrsVo addrVo = new MsgAddrsVo();
 				addrVo.setMsgId(msgId);
-				addrVo.setAddrType(addrType);
+				addrVo.setAddrType(addrType.value());
 				addrVo.setAddrSeq(i + 1);
 				addrVo.setAddrValue(StringUtils.left(addr.toString(),255));
 				msgAddrsDao.insert(addrVo);

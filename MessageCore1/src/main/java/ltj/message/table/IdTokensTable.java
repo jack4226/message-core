@@ -65,7 +65,7 @@ public class IdTokensTable extends CreateTableBase {
 			ps.setString(2, "Default SenderId");
 			ps.setString(3, EmailIdToken.BODY_BEGIN);
 			ps.setString(4, EmailIdToken.BODY_END);
-			ps.setString(5, EmailIdToken.XHEADER_NAME);
+			ps.setString(5, EmailIdToken.NAME);
 			ps.setString(6, EmailIdToken.XHDR_BEGIN);
 			ps.setString(7, EmailIdToken.XHDR_END);
 			ps.setInt(8, EmailIdToken.MAXIMUM_LENGTH);

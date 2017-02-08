@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
 
 import ltj.jbatch.app.HostUtil;
 import ltj.jbatch.common.EmailSender;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.EmailAddressType;
 import ltj.message.constant.XHeaderName;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.EmailAddrUtil;
@@ -403,7 +403,7 @@ public final class MessageBeanBuilder {
 		}
 		// X-MAILER
 		try {
-			String[] hdrs = msg.getHeader(XHeaderName.XHEADER_MAILER);
+			String[] hdrs = msg.getHeader(XHeaderName.MAILER.value());
 			if (hdrs != null) {
 				xmailer = hdrs;
 				msgBean.setXmailer(xmailer);
@@ -415,7 +415,7 @@ public final class MessageBeanBuilder {
 
 		// X-Priority: 1 (High), 2 (Normal), 3 (Low)
 		try {
-			String[] priority = ((MimeMessage) msg).getHeader(XHeaderName.XHEADER_PRIORITY);
+			String[] priority = ((MimeMessage) msg).getHeader(XHeaderName.PRIORITY.value());
 			if (priority != null) {
 				msgBean.setPriority(priority);
 			}
@@ -438,11 +438,11 @@ public final class MessageBeanBuilder {
 	 */
 	private static void addXHeadersToBean(MessageBean msgBean, Message mimeMsg) throws MessagingException {
 		// check X Headers and populate MessageBean properties
-		String[] clientId = mimeMsg.getHeader(XHeaderName.XHEADER_CLIENT_ID);
+		String[] clientId = mimeMsg.getHeader(XHeaderName.CLIENT_ID.value());
 		if (clientId != null && clientId.length > 0) {
 			msgBean.setClientId(clientId[0]);
 		}
-		String[] custId = mimeMsg.getHeader(XHeaderName.XHEADER_CUSTOMER_ID);
+		String[] custId = mimeMsg.getHeader(XHeaderName.CUSTOMER_ID.value());
 		if (custId != null && custId.length > 0) {
 			msgBean.setCustId(custId[0]);
 		}
@@ -1138,7 +1138,7 @@ public final class MessageBeanBuilder {
 			String bccAddr = null;
 			for (int i = 0; i < addrsVo.size(); i++) {
 				MsgAddrsVo addrVo = addrsVo.get(i);
-				if (EmailAddressType.FROM_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
+				if (AddressType.FROM_ADDR.value().equalsIgnoreCase(addrVo.getAddrType())) {
 					if (fromAddr == null) {
 						fromAddr = addrVo.getAddrValue();
 					}
@@ -1146,7 +1146,7 @@ public final class MessageBeanBuilder {
 						fromAddr += "," + addrVo.getAddrValue();
 					}
 				}
-				else if (EmailAddressType.TO_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
+				else if (AddressType.TO_ADDR.value().equalsIgnoreCase(addrVo.getAddrType())) {
 					if (toAddr == null) {
 						toAddr = addrVo.getAddrValue();
 					}
@@ -1154,7 +1154,7 @@ public final class MessageBeanBuilder {
 						toAddr += "," + addrVo.getAddrValue();
 					}
 				}
-				else if (EmailAddressType.REPLYTO_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
+				else if (AddressType.REPLYTO_ADDR.value().equalsIgnoreCase(addrVo.getAddrType())) {
 					if (replyToAddr == null) {
 						replyToAddr = addrVo.getAddrValue();
 					}
@@ -1162,7 +1162,7 @@ public final class MessageBeanBuilder {
 						replyToAddr += "," + addrVo.getAddrValue();
 					}
 				}
-				else if (EmailAddressType.CC_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
+				else if (AddressType.CC_ADDR.value().equalsIgnoreCase(addrVo.getAddrType())) {
 					if (ccAddr == null) {
 						ccAddr = addrVo.getAddrValue();
 					}
@@ -1170,7 +1170,7 @@ public final class MessageBeanBuilder {
 						ccAddr += "," + addrVo.getAddrValue();
 					}
 				}
-				else if (EmailAddressType.BCC_ADDR.equalsIgnoreCase(addrVo.getAddrType())) {
+				else if (AddressType.BCC_ADDR.value().equalsIgnoreCase(addrVo.getAddrType())) {
 					if (bccAddr == null) {
 						bccAddr = addrVo.getAddrValue();
 					}

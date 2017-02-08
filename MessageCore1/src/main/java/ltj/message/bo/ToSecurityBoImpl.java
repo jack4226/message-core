@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.constant.EmailAddressType;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.TableColumnName;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.exception.DataValidationException;
@@ -62,10 +62,10 @@ public class ToSecurityBoImpl extends TaskBaseAdaptor {
 				if (token != null && token.startsWith("$")) { // address type
 					token = token.substring(1);
 					// only $Forward and $To can be cc'ed.
-					if (EmailAddressType.FORWARD_ADDR.equals(token)) {
+					if (AddressType.FORWARD_ADDR.value().equals(token)) {
 						cc_addrs = messageBean.getForwardAsString();
 					}
-					else if (EmailAddressType.TO_ADDR.equals(token)) {
+					else if (AddressType.TO_ADDR.value().equals(token)) {
 						cc_addrs = messageBean.getToAsString();
 					}
 					// E-mail addresses from Client table

@@ -114,8 +114,8 @@ public final class MessageBeanUtil {
 		if (msgBean.getReturnPath() != null && msgBean.getReturnPath().trim().length() > 0) {
 			msg.setHeader(XHeaderName.RETURN_PATH.value(), msgBean.getReturnPath());
 		}
-		msg.setHeader(XHeaderName.XHEADER_PRIORITY, getMsgPriority(msgBean.getPriority()));
-		msg.setHeader(XHeaderName.XHEADER_MAILER, MAILER);
+		msg.setHeader(XHeaderName.PRIORITY.value(), getMsgPriority(msgBean.getPriority()));
+		msg.setHeader(XHeaderName.MAILER.value(), MAILER);
 		msg.setSentDate(new Date());
 
 		msg.setSubject(msgBean.getSubject() == null ? "" : msgBean.getSubject());
@@ -174,49 +174,49 @@ public final class MessageBeanUtil {
 	 */
 	public static void addBeanFieldsToHeader(MessageBean messageBean, Message msg) throws MessagingException {
 		if (messageBean.getClientId() != null) {
-			msg.setHeader(XHeaderName.XHEADER_CLIENT_ID, messageBean.getClientId());
+			msg.setHeader(XHeaderName.CLIENT_ID.value(), messageBean.getClientId());
 		}
 		if (messageBean.getCustId() != null) {
-			msg.setHeader(XHeaderName.XHEADER_CUSTOMER_ID, messageBean.getCustId());
+			msg.setHeader(XHeaderName.CUSTOMER_ID.value(), messageBean.getCustId());
 		}
 		if (messageBean.getMsgId() != null) {
-			msg.setHeader(XHeaderName.XHEADER_MSG_ID, messageBean.getMsgId().toString());
+			msg.setHeader(XHeaderName.MSG_ID.value(), messageBean.getMsgId().toString());
 		}
 		if (messageBean.getMsgRefId() != null) {
-			msg.setHeader(XHeaderName.XHEADER_MSG_REF_ID, messageBean.getMsgRefId().toString());
+			msg.setHeader(XHeaderName.MSG_REF_ID.value(), messageBean.getMsgRefId().toString());
 		}
 		if (messageBean.getRenderId() != null) {
-			msg.setHeader(XHeaderName.XHEADER_RENDER_ID, messageBean.getRenderId().toString());
+			msg.setHeader(XHeaderName.RENDER_ID.value(), messageBean.getRenderId().toString());
 		}
 		if (messageBean.getRuleName() != null) {
-			msg.setHeader(XHeaderName.XHEADER_RULE_NAME, messageBean.getRuleName());
+			msg.setHeader(XHeaderName.RULE_NAME.value(), messageBean.getRuleName());
 		}
 		
 		if (messageBean.isUseSecureServer()) {
-			msg.setHeader(XHeaderName.XHEADER_USE_SECURE_SMTP, Constants.YES);
+			msg.setHeader(XHeaderName.USE_SECURE_SMTP.value(), Constants.YES);
 		}
 		else {
-			msg.setHeader(XHeaderName.XHEADER_USE_SECURE_SMTP, Constants.NO);
+			msg.setHeader(XHeaderName.USE_SECURE_SMTP.value(), Constants.NO);
 		}
 		if (messageBean.getSaveMsgStream() == true) {
-			msg.setHeader(XHeaderName.XHEADER_SAVE_RAW_STREAM, Constants.YES);
+			msg.setHeader(XHeaderName.SAVE_RAW_STREAM.value(), Constants.YES);
 		}
 		else {
-			msg.setHeader(XHeaderName.XHEADER_SAVE_RAW_STREAM, Constants.NO);
+			msg.setHeader(XHeaderName.SAVE_RAW_STREAM.value(), Constants.NO);
 		}
 		if (messageBean.getEmBedEmailId() != null) {
 			if (messageBean.getEmBedEmailId().booleanValue()) {
-				msg.setHeader(XHeaderName.XHEADER_EMBED_EMAILID, Constants.YES);
+				msg.setHeader(XHeaderName.EMBED_EMAILID.value(), Constants.YES);
 			}
 			else {
-				msg.setHeader(XHeaderName.XHEADER_EMBED_EMAILID, Constants.NO);
+				msg.setHeader(XHeaderName.EMBED_EMAILID.value(), Constants.NO);
 			}
 		}
 		if (messageBean.getOverrideTestAddr() == true) {
-			msg.setHeader(XHeaderName.XHEADER_OVERRIDE_TEST_ADDR, Constants.YES);
+			msg.setHeader(XHeaderName.OVERRIDE_TEST_ADDR.value(), Constants.YES);
 		}
 		else {
-			msg.setHeader(XHeaderName.XHEADER_OVERRIDE_TEST_ADDR, Constants.NO);
+			msg.setHeader(XHeaderName.OVERRIDE_TEST_ADDR.value(), Constants.NO);
 		}
 	}
 	
@@ -395,12 +395,12 @@ public final class MessageBeanUtil {
 			msg.setHeader(parser.getEmailIdXHdrName(), xHeaderText);
 		}
 
-		msg.setHeader(XHeaderName.XHEADER_PRIORITY, getMsgPriority(msgBean.getPriority()));
-		msg.setHeader(XHeaderName.XHEADER_MAILER, MAILER);
-		msg.setHeader(XHeaderName.XHEADER_SAVE_RAW_STREAM, Constants.YES);
+		msg.setHeader(XHeaderName.PRIORITY.value(), getMsgPriority(msgBean.getPriority()));
+		msg.setHeader(XHeaderName.MAILER.value(), MAILER);
+		msg.setHeader(XHeaderName.SAVE_RAW_STREAM.value(), Constants.YES);
 		msg.setSentDate(new Date());
 
-		String xMailer = ((MimeMessage) msg).getHeader(XHeaderName.XHEADER_MAILER, LF);
+		String xMailer = ((MimeMessage) msg).getHeader(XHeaderName.MAILER.value(), LF);
 		String mimeVer = ((MimeMessage) msg).getHeader("MIME-Version", LF);
 
 		// if (msgBean.getCc() != null)

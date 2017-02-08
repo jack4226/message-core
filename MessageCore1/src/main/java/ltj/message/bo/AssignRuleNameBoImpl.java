@@ -48,7 +48,7 @@ public class AssignRuleNameBoImpl extends TaskBaseAdaptor {
 		if (messageBean.getRuleName() != null) {
 			List<MsgHeader> headers = messageBean.getHeaders();
 			MsgHeader newHeader = new MsgHeader();
-			newHeader.setName(XHeaderName.XHEADER_ORIG_RULE_NAME);
+			newHeader.setName(XHeaderName.ORIG_RULE_NAME.value());
 			newHeader.setValue(messageBean.getRuleName());
 			headers.add(newHeader);
 		}

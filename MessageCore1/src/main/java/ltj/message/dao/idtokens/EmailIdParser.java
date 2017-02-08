@@ -43,7 +43,7 @@ public final class EmailIdParser implements Serializable {
 			this.idTokensVo.setBodyEndToken(EmailIdToken.BODY_END);
 			this.idTokensVo.setXhdrBeginToken(EmailIdToken.XHDR_BEGIN);
 			this.idTokensVo.setXhdrEndToken(EmailIdToken.XHDR_END);
-			this.idTokensVo.setXHeaderName(EmailIdToken.XHEADER_NAME);
+			this.idTokensVo.setXHeaderName(EmailIdToken.NAME);
 			this.idTokensVo.setMaxLength(EmailIdToken.MAXIMUM_LENGTH);
 		}
 		/*

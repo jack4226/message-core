@@ -44,7 +44,7 @@ public enum RuleNameEnum {
 	UNATTENDED_MAILBOX("Unattended_Mailbox", RuleType.ALL, RuleCategory.PRE_RULE, false, false, "Simply get rid of the messages from the mailbox."),
 	OUF_OF_OFFICE_AUTO_REPLY("OutOfOffice_AutoReply", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Ouf of the office auto reply"),
 	CONTACT_US("Contact_Us", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Contact Us Form submitted from web site"),
-	XHEADER_SPAM_SCORE("XHeader_SpamScore", RuleType.SIMPLE, RuleCategory.MAIN_RULE, false, false, "Examine x-headers for Spam score."),
+	SPAM_SCORE("XHeader_SpamScore", RuleType.SIMPLE, RuleCategory.MAIN_RULE, false, false, "Examine x-headers for Spam score."),
 	EXECUTABLE_ATTACHMENT("Executable_Attachment", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Emails with executable attachment file(s)"),
 	HARD_BOUNCE_WATCHED_MAILBOX("HardBouce_WatchedMailbox", RuleType.ALL, RuleCategory.POST_RULE, false, false, "Post rule for hard bounced emails."),
 	HARD_BOUNCE_NO_FINAL_RCPT("HardBounce_NoFinalRcpt", RuleType.ALL, RuleCategory.POST_RULE, false, false, "Post rule for hard bounces without final recipient."),

@@ -15,7 +15,7 @@ import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.constant.EmailAddressType;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.RuleNameType;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
@@ -34,7 +34,7 @@ public class ForwardBoTest extends BoTestBase {
 	@Rollback(value=false)
 	public void test1() throws Exception { // forward
 		messageBean = buildMessageBeanFromMsgStream();
-		forwardBo.setTaskArguments("$" + EmailAddressType.FROM_ADDR);
+		forwardBo.setTaskArguments("$" + AddressType.FROM_ADDR.value());
 		forwardBo.setTaskArguments(forwardAddress);
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);

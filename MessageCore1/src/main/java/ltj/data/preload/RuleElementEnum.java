@@ -178,7 +178,7 @@ public enum RuleElementEnum {
 			".*\\.(?:exe|bat|cmd|com|msi|ocx)", null,
 			null, null, null),
 
-	XHEADER_SPAM_SCORE_1(RuleNameEnum.XHEADER_SPAM_SCORE,1,RuleDataName.X_HEADER, XHeaderName.SPAM_SCORE, RuleCriteria.GREATER_THAN,false,
+	SPAM_SCORE_1(RuleNameEnum.SPAM_SCORE,1,RuleDataName.X_HEADER, XHeaderName.SPAM_SCORE, RuleCriteria.GREATER_THAN,false,
 			"100", null,
 			null, null, null),
 

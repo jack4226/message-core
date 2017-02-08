@@ -35,7 +35,7 @@ import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
-import ltj.message.constant.EmailAddressType;
+import ltj.message.constant.AddressType;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.user.SessionUploadDao;
@@ -801,7 +801,7 @@ public class MsgInboxBean {
 				}
 				// process the message
 				TaskBaseBo forwardBo = (TaskBaseBo) SpringUtil.getWebAppContext().getBean("forwardBo");
-				forwardBo.setTaskArguments("$" + EmailAddressType.TO_ADDR);
+				forwardBo.setTaskArguments("$" + AddressType.TO_ADDR.value());
 				msgsSent = (Long) forwardBo.process(messageBean);
 				logger.info("sendMessage() - Message to send:\n" + messageBean);
 			}
