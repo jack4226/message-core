@@ -7,9 +7,9 @@ import ltj.message.constant.VariableType;
  * define sample sender variables
  */
 public enum SenderVariableEnum {
-	CurrentDateTime(null,null,VariableType.DATETIME,CodeType.Y),
-	CurrentDate(null,"yyyy-MM-dd",VariableType.DATETIME,CodeType.Y),
-	CurrentTime(null,"hh:mm:ss a",VariableType.DATETIME,CodeType.Y),
+	CurrentDateTime(null, null, VariableType.DATETIME, CodeType.Y),
+	CurrentDate(null, "yyyy-MM-dd", VariableType.DATETIME, CodeType.Y),
+	CurrentTime(null, "hh:mm:ss a", VariableType.DATETIME, CodeType.Y),
 	//SenderId(Constants.DEFAULT_SENDER_ID,null,VariableType.TEXT,CodeType.YES_CODE)
 	;
 	

@@ -22,7 +22,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"${FooterWithUnsubLink}<br/>" +
 			"${EmailOpenCountImgTag}"),
 	
-	SampleNewsletter2(MailingListEnum.SMPLLST2,false,null,true,
+	SampleNewsletter2(MailingListEnum.SMPLLST2, false, null, true,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"Sample HTML newsletter to ${SubscriberAddress}",
 			"Dear ${SubscriberAddress},<p/>" + LF +
@@ -40,7 +40,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"${FooterWithUnsubAddr}<br/>" +
 			"${EmailOpenCountImgTag}"),
 	
-	SampleNewsletter3(MailingListEnum.SMPLLST2,false,null,false,
+	SampleNewsletter3(MailingListEnum.SMPLLST2, false, null, false,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"Sample Plain text newsletter to ${SubscriberAddress}",
 			"Dear ${SubscriberAddress}," + LF + LF + 
@@ -57,7 +57,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"${WebSiteUrl}/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}" + LF +
 			"${FooterWithUnsubAddr}"),
 	
-	SubscriptionConfirmation(MailingListEnum.SYSLIST1,true,false,true,
+	SubscriptionConfirmation(MailingListEnum.SYSLIST1, true, false, true,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"Request for subscription confirmation",
 			"Dear ${SubscriberAddress},<br/>" + LF +
@@ -69,7 +69,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"If this is incorrect, you do not need to do anything, simply delete this message.<p/>" + LF +
 			"Thank you" + LF),
 	
-	SubscriptionWelcomeLetter(MailingListEnum.SYSLIST1,true,false,true,
+	SubscriptionWelcomeLetter(MailingListEnum.SYSLIST1, true, false, true,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"Your subscription has been confirmed",
 			"Dear ${SubscriberAddress},<br/>" + LF +
@@ -82,7 +82,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"To update your profile please <a href='$%7BUserProfileURL%7D' target='_blank'>click here</a>.<p/>" + LF +
 			"Thank you<br/>" + LF),
 	
-	UnsubscriptionLetter(MailingListEnum.SYSLIST1,true,false,true,
+	UnsubscriptionLetter(MailingListEnum.SYSLIST1, true, false, true,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"You have unsubscribed from our Newsletter",
 			"Dear ${SubscriberAddress},<br/>" + LF +
@@ -94,7 +94,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			" and follow the steps.<p/>" + LF +
 			"Thank you<br/>" + LF),
 	
-	UserProfileChangeLetter(MailingListEnum.SYSLIST1,true,null,true,
+	UserProfileChangeLetter(MailingListEnum.SYSLIST1, true, null, true,
 			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
 			"[notify] Changes of user profile details",
 			"Dear ${SubscriberName},<br/>" + LF +
@@ -108,7 +108,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"<a href='$%7BUserProfileURL%7D' target='_blank'>visiting this web page</a>.<p/>" + LF +
 			"Thank you<br/>" + LF),
 	
-	EmailAddressChangeLetter(MailingListEnum.SYSLIST1,true,null,true,
+	EmailAddressChangeLetter(MailingListEnum.SYSLIST1, true, null, true,
 			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
 			"[notify] Change of your email address",
 			"Dear ${SubscriberName},<br/>" + LF +
@@ -119,7 +119,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"<a href='$%7BUserProfileURL%7D' target='_blank'>click here</a> to update your information.<p/>" + LF +
 			"Thank you<br/>" + LF),
 	
-	TellAFriendLetter(MailingListEnum.SYSLIST1,true,false,true,
+	TellAFriendLetter(MailingListEnum.SYSLIST1, true, false, true,
 			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
 			"A web site recommendation from ${_ReferrerName}",
 			"Dear ${_FriendsEmailAddress},<p/>" + LF +
@@ -130,7 +130,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"${_ReferrerComments}" +
 			"We look forward to your visit!<br/>" + LF),
 	
-	SubscribeByEmailReply(MailingListEnum.SYSLIST1,true,null,false,
+	SubscribeByEmailReply(MailingListEnum.SYSLIST1, true, null, false,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"You have subscribed to mailing list ${MailingListName}",
 			"Dear ${SubscriberAddress}," + LF + LF +
@@ -142,7 +142,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Simply send an e-mail to: ${MailingListAddress}" + LF +
 			"with \"unsubscribe\" (no quotation marks) in your email subject." + LF),
 	
-	SubscribeByEmailReplyHtml(MailingListEnum.SYSLIST1,true,null,true,
+	SubscribeByEmailReplyHtml(MailingListEnum.SYSLIST1, true, null, true,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"You have subscribed to ${MailingListName} at ${DomainName}",
 			"Dear ${SubscriberAddress},<br>" + LF +
@@ -157,7 +157,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 	/*
 	 * Email templates for production
 	 */
-	EmailsphereOrderReceipt(MailingListEnum.ORDER_LIST,false,null,false,
+	EmailsphereOrderReceipt(MailingListEnum.ORDER_LIST, false, null, false,
 			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
 			"Emailsphere Purchase Receipt",
 			"Dear ${_BillingFirstName}," + LF + LF +
@@ -182,7 +182,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Emailsphere Team" + LF +
 			"Legacy System Solutions, LLC" + LF),
 	
-	EmailsphereOrderException(MailingListEnum.ALERT_LIST,false,null,false,
+	EmailsphereOrderException(MailingListEnum.ALERT_LIST, false, null, false,
 			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
 			"Important Notice: Your Emailsphere Order # ${_OrderNumber}",
 			"Regarding Order ${_OrderNumber} you placed on ${_OrderDate} from Emailsphere.com" + LF +
@@ -204,7 +204,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Emailsphere.com Subscriber Service" + LF +
 			"http://www.emailsphere.com" + LF),
 	
-	EmailsphereInternalAlert(MailingListEnum.ALERT_LIST,false,null,false,
+	EmailsphereInternalAlert(MailingListEnum.ALERT_LIST, false, null, false,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"Notify: Alert from Emailsphere.com",
 			"Internal error or exception caught from Emailsphere.com" + LF + LF +

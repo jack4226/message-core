@@ -5,8 +5,8 @@ package ltj.data.preload;
  */
 public enum SubscriberEnum {
 
-	SUBLST1(MailingListEnum.SMPLLST1, Subscriber.values(),true),
-	SUBLST2(MailingListEnum.SMPLLST2, Subscriber.values(),true);
+	SUBLST1(MailingListEnum.SMPLLST1, Subscriber.values(), true),
+	SUBLST2(MailingListEnum.SMPLLST2, Subscriber.values(), true);
 	
 	private MailingListEnum mailingList;
 	private Subscriber[] subscribers;
