@@ -112,7 +112,7 @@ public final class MessageBeanUtil {
 		addBeanFieldsToHeader(msgBean, msg);
 		
 		if (msgBean.getReturnPath() != null && msgBean.getReturnPath().trim().length() > 0) {
-			msg.setHeader(XHeaderName.RETURN_PATH, msgBean.getReturnPath());
+			msg.setHeader(XHeaderName.RETURN_PATH.value(), msgBean.getReturnPath());
 		}
 		msg.setHeader(XHeaderName.XHEADER_PRIORITY, getMsgPriority(msgBean.getPriority()));
 		msg.setHeader(XHeaderName.XHEADER_MAILER, MAILER);

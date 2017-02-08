@@ -168,7 +168,7 @@ public final class MessageBeanBuilder {
 					logger.info(">>>>>Message-ID retrieved: " + messageId);
 					msgBean.setSmtpMessageId(messageId);
 				}
-				if (XHeaderName.RETURN_PATH.equalsIgnoreCase(name)) {
+				if (XHeaderName.RETURN_PATH.value().equalsIgnoreCase(name)) {
 					msgBean.setReturnPath(hdr.getValue());
 				}
 				if ("Date".equals(name) && receivedTime == null) {
@@ -242,7 +242,7 @@ public final class MessageBeanBuilder {
 				}
 				from = InternetAddress.parse(addrStr);
 			}
-			else if ((_froms = msg.getHeader(XHeaderName.RETURN_PATH)) != null && _froms.length > 0) {
+			else if ((_froms = msg.getHeader(XHeaderName.RETURN_PATH.value())) != null && _froms.length > 0) {
 				logger.warn("FROM is missing from envelope, use Return-Path instead.");
 				String addrStr = checkAddr(_froms[0]);
 				for (int j = 1; j < _froms.length; j++) {

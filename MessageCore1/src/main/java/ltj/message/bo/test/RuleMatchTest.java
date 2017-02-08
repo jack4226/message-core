@@ -118,7 +118,7 @@ public class RuleMatchTest extends BoTestBase {
 		// test #7 - CHALLENGE RESPONSE
 		mBean.setSubject("Re: A Exception occured.");
 		MsgHeader header = new MsgHeader();
-		header.setName(XHeaderName.RETURN_PATH);
+		header.setName(XHeaderName.RETURN_PATH.value());
 		header.setValue("<spamblocker-challenge@bounce.earthlink.net>");
 		mBean.getHeaders().add(header);
 		String body = "I apologize for this automatic reply to your email." + LF + LF;

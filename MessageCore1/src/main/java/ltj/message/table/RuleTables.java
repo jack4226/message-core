@@ -549,7 +549,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
 			ps.setInt(2, 3);
 			ps.setString(3, RuleBase.X_HEADER);
-			ps.setString(4, XHeaderName.RETURN_PATH);
+			ps.setString(4, XHeaderName.RETURN_PATH.value());
 			ps.setString(5, RuleBase.REG_EX);
 			ps.setString(6, Constants.NO_CODE);
 			ps.setString(7, "^(?:pleaseforward|quotaagent)\\S*\\@");
@@ -575,7 +575,7 @@ public class RuleTables extends CreateTableBase {
 			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.X_HEADER);
-			ps.setString(4, XHeaderName.RETURN_PATH);
+			ps.setString(4, XHeaderName.RETURN_PATH.value());
 			ps.setString(5, RuleBase.REG_EX);
 			ps.setString(6, Constants.NO_CODE);
 			ps.setString(7, 

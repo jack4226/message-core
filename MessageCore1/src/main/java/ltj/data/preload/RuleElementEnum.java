@@ -6,7 +6,7 @@ import java.util.List;
 import ltj.message.constant.Constants;
 import ltj.message.constant.RuleCriteria;
 import ltj.message.constant.RuleDataName;
-import ltj.message.constant.XHeaderNameEnum;
+import ltj.message.constant.XHeaderName;
 
 public enum RuleElementEnum {
 	/*
@@ -36,14 +36,14 @@ public enum RuleElementEnum {
 	SPAM_BLOCK_3(RuleNameEnum.SPAM_BLOCK,3,RuleDataName.FROM_ADDR, null, RuleCriteria.REG_EX,false,
 			"(?:^surfcontrol|.*You_Got_Spammed)\\S*\\@", null,
 			null,null,null),
-	SPAM_BLOCK_4(RuleNameEnum.SPAM_BLOCK,4,RuleDataName.X_HEADER, XHeaderNameEnum.RETURN_PATH, RuleCriteria.REG_EX,false,
+	SPAM_BLOCK_4(RuleNameEnum.SPAM_BLOCK,4,RuleDataName.X_HEADER, XHeaderName.RETURN_PATH, RuleCriteria.REG_EX,false,
 			"^(?:pleaseforward|quotaagent)\\S*\\@", null,
 			null,null,null),
-	SPAM_BLOCK_5(RuleNameEnum.SPAM_BLOCK,5,RuleDataName.X_HEADER, XHeaderNameEnum.PRECEDENCE, RuleCriteria.REG_EX,false,
+	SPAM_BLOCK_5(RuleNameEnum.SPAM_BLOCK,5,RuleDataName.X_HEADER, XHeaderName.PRECEDENCE, RuleCriteria.REG_EX,false,
 			"^(?:spam)$", null,
 			null,null,null),
 
-	CHALLENGE_RESPONSE_1(RuleNameEnum.CHALLENGE_RESPONSE,1,RuleDataName.X_HEADER, XHeaderNameEnum.RETURN_PATH, RuleCriteria.REG_EX,false,
+	CHALLENGE_RESPONSE_1(RuleNameEnum.CHALLENGE_RESPONSE,1,RuleDataName.X_HEADER, XHeaderName.RETURN_PATH, RuleCriteria.REG_EX,false,
 			"(?:spamblocker-challenge|spamhippo|devnull-quarantine)\\@" +
 					"|\\@(?:spamstomp\\.com|ipermitmail\\.com)", null,
 			null,null,null),
@@ -178,7 +178,7 @@ public enum RuleElementEnum {
 			".*\\.(?:exe|bat|cmd|com|msi|ocx)", null,
 			null, null, null),
 
-	XHEADER_SPAM_SCORE_1(RuleNameEnum.XHEADER_SPAM_SCORE,1,RuleDataName.X_HEADER, XHeaderNameEnum.SPAM_SCORE, RuleCriteria.GREATER_THAN,false,
+	XHEADER_SPAM_SCORE_1(RuleNameEnum.XHEADER_SPAM_SCORE,1,RuleDataName.X_HEADER, XHeaderName.SPAM_SCORE, RuleCriteria.GREATER_THAN,false,
 			"100", null,
 			null, null, null),
 
@@ -265,7 +265,7 @@ public enum RuleElementEnum {
 	private RuleNameEnum ruleName;
 	private int ruleSequence;
 	private RuleDataName ruleDataName;
-	private XHeaderNameEnum xheaderName;
+	private XHeaderName xheaderName;
 	private RuleCriteria ruleCriteria;
 	private boolean isCaseSensitive;
 	private String targetText;
@@ -274,7 +274,7 @@ public enum RuleElementEnum {
 	private String exclListProcName;
 	private String delimiter;
 	private RuleElementEnum(RuleNameEnum ruleName, int ruleSeq,
-			RuleDataName dataName, XHeaderNameEnum headerName, RuleCriteria criteria,
+			RuleDataName dataName, XHeaderName headerName, RuleCriteria criteria,
 			boolean isCaseSensitive, String targetText, String targetProcName, 
 			String exclusions, String exclListProcName, String delimiter) {
 		this.ruleName=ruleName;
@@ -309,7 +309,7 @@ public enum RuleElementEnum {
 	public RuleDataName getRuleDataName() {
 		return ruleDataName;
 	}
-	public XHeaderNameEnum getXheaderNameEnum() {
+	public XHeaderName getXheaderNameEnum() {
 		return xheaderName;
 	}
 	public RuleCriteria getRuleCriteria() {
