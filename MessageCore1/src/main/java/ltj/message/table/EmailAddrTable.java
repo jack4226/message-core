@@ -7,15 +7,19 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
+import ltj.data.preload.MailingListEnum;
+import ltj.data.preload.SubscriberEnum;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailingListDeliveryOption;
 import ltj.message.constant.MailingListType;
 import ltj.message.constant.StatusIdCode;
+import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.dao.emailaddr.SchedulesBlob;
 import ltj.message.main.CreateTableBase;
 import ltj.message.util.BlobUtil;
+import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 import ltj.spring.util.SpringUtil;
 
@@ -383,44 +387,60 @@ DELIMITER ;
 				"UpdtTime," +
 				"UpdtUserId) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			ps.setString(1, "jsmith@test.com");
-			ps.setString(2, "jsmith@test.com");
-			ps.setString(3, "A");
-			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(5, "testuser 1");
-			ps.setInt(6, 0);
-			ps.setTimestamp(7, null);
-			ps.setTimestamp(8, null);
-			ps.setTimestamp(9, null);
-			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(11, Constants.DEFAULT_USER_ID);
-			ps.execute();
+
+			for (SubscriberEnum.Subscriber sub : SubscriberEnum.Subscriber.values()) {
+				ps.setString(1, sub.getAddress());
+				ps.setString(2, sub.getAddress());
+				ps.setString(3, StatusIdCode.ACTIVE);
+				ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+				ps.setString(5, "testuser 1");
+				ps.setInt(6, 0);
+				ps.setTimestamp(7, null);
+				ps.setTimestamp(8, null);
+				ps.setTimestamp(9, null);
+				ps.setTimestamp(10, new Timestamp(System.currentTimeMillis()));
+				ps.setString(11, Constants.DEFAULT_USER_ID);
+				ps.execute();
+			}
 			
-			ps.setString(1, "test@test.com");
-			ps.setString(2, "test@test.com");
-			ps.setString(3, "A");
-			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(5, "testuser 2");
-			ps.setInt(6, 0);
-			ps.setTimestamp(7, null);
-			ps.setTimestamp(8, null);
-			ps.setTimestamp(9, null);
-			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(11, Constants.DEFAULT_USER_ID);
-			ps.execute();
-			
-			ps.setString(1, "testuser@test.com");
-			ps.setString(2, "testuser@test.com");
-			ps.setString(3, "A");
-			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(5, "testuser 3");
-			ps.setInt(6, 0);
-			ps.setTimestamp(7, null);
-			ps.setTimestamp(8, null);
-			ps.setTimestamp(9, null);
-			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(11, Constants.DEFAULT_USER_ID);
-			ps.execute();
+//			ps.setString(1, "jsmith@test.com");
+//			ps.setString(2, "jsmith@test.com");
+//			ps.setString(3, "A");
+//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(5, "testuser 1");
+//			ps.setInt(6, 0);
+//			ps.setTimestamp(7, null);
+//			ps.setTimestamp(8, null);
+//			ps.setTimestamp(9, null);
+//			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(11, Constants.DEFAULT_USER_ID);
+//			ps.execute();
+//			
+//			ps.setString(1, "test@test.com");
+//			ps.setString(2, "test@test.com");
+//			ps.setString(3, "A");
+//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(5, "testuser 2");
+//			ps.setInt(6, 0);
+//			ps.setTimestamp(7, null);
+//			ps.setTimestamp(8, null);
+//			ps.setTimestamp(9, null);
+//			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(11, Constants.DEFAULT_USER_ID);
+//			ps.execute();
+//			
+//			ps.setString(1, "testuser@test.com");
+//			ps.setString(2, "testuser@test.com");
+//			ps.setString(3, "A");
+//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(5, "testuser 3");
+//			ps.setInt(6, 0);
+//			ps.setTimestamp(7, null);
+//			ps.setTimestamp(8, null);
+//			ps.setTimestamp(9, null);
+//			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(11, Constants.DEFAULT_USER_ID);
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
@@ -444,35 +464,48 @@ DELIMITER ;
 				"CreateTime)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 			
-			ps.setString(1, "SMPLLST1");
-			ps.setString(2, "Sample List 1");
-			ps.setString(3, "demolist1");
-			ps.setString(4, "Sample mailing list 1");
-			ps.setString(5, Constants.DEFAULT_CLIENTID);
-			ps.setString(6, StatusIdCode.ACTIVE);
-			ps.setString(7, Constants.N);
-			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
-			
-			ps.setString(1, "SMPLLST2");
-			ps.setString(2, "Sample List 2");
-			ps.setString(3, "demolist2");
-			ps.setString(4, "Sample mailing list 2");
-			ps.setString(5, Constants.DEFAULT_CLIENTID);
-			ps.setString(6, StatusIdCode.ACTIVE);
-			ps.setString(7, Constants.N);
-			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
-			
-			ps.setString(1, "SYSLIST1");
-			ps.setString(2, "NOREPLY Empty List");
-			ps.setString(3, "noreply");
-			ps.setString(4, "Auto-Responder, used by Subscription and confirmation Templates");
-			ps.setString(5, Constants.DEFAULT_CLIENTID);
-			ps.setString(6, StatusIdCode.INACTIVE);
-			ps.setString(7, Constants.Y);
-			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
+			for (MailingListEnum enu : MailingListEnum.values()) {
+				if (enu.isProd() == false) {
+					ps.setString(1, enu.name());
+					ps.setString(2, enu.getDescription());
+					ps.setString(3, enu.getAcctName());
+					ps.setString(4, enu.getDescription());
+					ps.setString(5, Constants.DEFAULT_CLIENTID);
+					ps.setString(6, enu.getStatusId());
+					ps.setString(7, enu.isBuiltin() ? Constants.Y : Constants.N);
+					ps.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
+					ps.execute();
+				}
+			}
+//			ps.setString(1, "SMPLLST1");
+//			ps.setString(2, "Sample List 1");
+//			ps.setString(3, "demolist1");
+//			ps.setString(4, "Sample mailing list 1");
+//			ps.setString(5, Constants.DEFAULT_CLIENTID);
+//			ps.setString(6, StatusIdCode.ACTIVE);
+//			ps.setString(7, Constants.N);
+//			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
+//			
+//			ps.setString(1, "SMPLLST2");
+//			ps.setString(2, "Sample List 2");
+//			ps.setString(3, "demolist2");
+//			ps.setString(4, "Sample mailing list 2");
+//			ps.setString(5, Constants.DEFAULT_CLIENTID);
+//			ps.setString(6, StatusIdCode.ACTIVE);
+//			ps.setString(7, Constants.N);
+//			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
+//			
+//			ps.setString(1, "SYSLIST1");
+//			ps.setString(2, "NOREPLY Empty List");
+//			ps.setString(3, "noreply");
+//			ps.setString(4, "Auto-Responder, used by Subscription and confirmation Templates");
+//			ps.setString(5, Constants.DEFAULT_CLIENTID);
+//			ps.setString(6, StatusIdCode.INACTIVE);
+//			ps.setString(7, Constants.Y);
+//			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
@@ -496,15 +529,29 @@ DELIMITER ;
 				"CreateTime)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 			
-			ps.setString(1, "ORDERLST");
-			ps.setString(2, "Sales ORDER List");
-			ps.setString(3, "support");
-			ps.setString(4, "Auto-Responder, used by order processing");
-			ps.setString(5, Constants.DEFAULT_CLIENTID);
-			ps.setString(6, StatusIdCode.INACTIVE);
-			ps.setString(7, Constants.Y);
-			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
+			for (MailingListEnum enu : MailingListEnum.values()) {
+				if (enu.isProd() == true) {
+					ps.setString(1, enu.name());
+					ps.setString(2, enu.getDescription());
+					ps.setString(3, enu.getAcctName());
+					ps.setString(4, enu.getDescription());
+					ps.setString(5, Constants.DEFAULT_CLIENTID);
+					ps.setString(6, enu.getStatusId());
+					ps.setString(7, enu.isBuiltin() ? Constants.Y : Constants.N);
+					ps.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
+					ps.execute();
+				}
+			}
+
+//			ps.setString(1, "ORDERLST");
+//			ps.setString(2, "Sales ORDER List");
+//			ps.setString(3, "support");
+//			ps.setString(4, "Auto-Responder, used by order processing");
+//			ps.setString(5, Constants.DEFAULT_CLIENTID);
+//			ps.setString(6, StatusIdCode.INACTIVE);
+//			ps.setString(7, Constants.Y);
+//			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
@@ -524,35 +571,48 @@ DELIMITER ;
 				"CreateTime)" +
 				"VALUES (?, ?, ?, ?)");
 			
-			ps.setLong(1, 1);
-			ps.setString(2, "SMPLLST1");
-			ps.setString(3, Constants.Y);
-			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
+			EmailAddrDao emailDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
 			
-			ps.setLong(1, 2);
-			ps.setString(2, "SMPLLST1");
-			ps.setString(3, Constants.Y);
-			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
+			for (SubscriberEnum sublst : SubscriberEnum.values()) {
+				for (SubscriberEnum.Subscriber sbsr : SubscriberEnum.Subscriber.values()) {
+					EmailAddrVo emailVo = emailDao.findByAddress(sbsr.getAddress());
+					ps.setLong(1, emailVo.getEmailAddrId());
+					ps.setString(2, sublst.getMailingList().name());
+					ps.setString(3, Constants.Y);
+					ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+					ps.execute();
+				}
+			}
 			
-			ps.setLong(1, 3);
-			ps.setString(2, "SMPLLST1");
-			ps.setString(3, Constants.Y);
-			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
-			
-			ps.setLong(1, 1);
-			ps.setString(2, "SMPLLST2");
-			ps.setString(3, Constants.Y);
-			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
-			
-			ps.setLong(1, 2);
-			ps.setString(2, "SMPLLST2");
-			ps.setString(3, Constants.Y);
-			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-			ps.execute();
+//			ps.setLong(1, 1);
+//			ps.setString(2, "SMPLLST1");
+//			ps.setString(3, Constants.Y);
+//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
+//			
+//			ps.setLong(1, 2);
+//			ps.setString(2, "SMPLLST1");
+//			ps.setString(3, Constants.Y);
+//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
+//			
+//			ps.setLong(1, 3);
+//			ps.setString(2, "SMPLLST1");
+//			ps.setString(3, Constants.Y);
+//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
+//			
+//			ps.setLong(1, 1);
+//			ps.setString(2, "SMPLLST2");
+//			ps.setString(3, Constants.Y);
+//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
+//			
+//			ps.setLong(1, 2);
+//			ps.setString(2, "SMPLLST2");
+//			ps.setString(3, Constants.Y);
+//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all rows...");

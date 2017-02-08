@@ -157,7 +157,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 	/*
 	 * Email templates for production
 	 */
-	EmailsphereOrderReceipt(MailingListEnum.ORDER_LIST, false, null, false,
+	EmailsphereOrderReceipt(MailingListEnum.ORDERLST, false, null, false,
 			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
 			"Emailsphere Purchase Receipt",
 			"Dear ${_BillingFirstName}," + LF + LF +
@@ -182,7 +182,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Emailsphere Team" + LF +
 			"Legacy System Solutions, LLC" + LF),
 	
-	EmailsphereOrderException(MailingListEnum.ALERT_LIST, false, null, false,
+	EmailsphereOrderException(MailingListEnum.ALERTLST, false, null, false,
 			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
 			"Important Notice: Your Emailsphere Order # ${_OrderNumber}",
 			"Regarding Order ${_OrderNumber} you placed on ${_OrderDate} from Emailsphere.com" + LF +
@@ -204,7 +204,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Emailsphere.com Subscriber Service" + LF +
 			"http://www.emailsphere.com" + LF),
 	
-	EmailsphereInternalAlert(MailingListEnum.ALERT_LIST, false, null, false,
+	EmailsphereInternalAlert(MailingListEnum.ALERTLST, false, null, false,
 			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
 			"Notify: Alert from Emailsphere.com",
 			"Internal error or exception caught from Emailsphere.com" + LF + LF +
