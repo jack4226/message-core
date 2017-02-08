@@ -69,7 +69,7 @@ function checkLength(element, maxvalue) {
 <%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
 <%@page import="ltj.message.util.StringUtil"%>
 <%@page import="ltj.message.constant.Constants"%>
-<%@page import="ltj.message.constant.EmailAddressType"%>
+<%@page import="ltj.message.constant.AddressType"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	//String serverInfo = application.getServerInfo();
@@ -102,7 +102,7 @@ function checkLength(element, maxvalue) {
 	 		listMap.put("_ReferrerComments", "");
 	 	}
 	 	if ("yes".equals(sendCopy)) {
-	 		listMap.put(EmailAddressType.CC_ADDR, yourEmail);
+	 		listMap.put(AddressType.CC_ADDR.value(), yourEmail);
 	 	}
 	 	// send the notification email off
 		getMailingListBo(ctx).send(rcptEmail, listMap, "TellAFriendLetter");

@@ -106,8 +106,8 @@
 					sbsrId.toString(),
 					null,
 					VariableType.TEXT,
-					Constants.YES_CODE,
-					Constants.NO_CODE,
+					Constants.Y,
+					Constants.N,
 					null);
 			vars.put(var.getVariableName(), var);
 		}
@@ -117,8 +117,8 @@
 					listId,
 					null,
 					VariableType.TEXT,
-					Constants.YES_CODE,
-					Constants.NO_CODE,
+					Constants.Y,
+					Constants.N,
 					null);
 			vars.put(var.getVariableName(), var);
 		}
@@ -128,8 +128,8 @@
 					msgId.toString(),
 					null,
 					VariableType.TEXT,
-					Constants.YES_CODE,
-					Constants.NO_CODE,
+					Constants.Y,
+					Constants.N,
 					null);
 			vars.put(var.getVariableName(), var);
 		}
