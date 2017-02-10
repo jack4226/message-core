@@ -21,7 +21,7 @@ public enum RuleActionEnum {
 			"$" + AddressType.FINAL_RCPT_ADDR.value() + "," + "$" + AddressType.ORIG_RCPT_ADDR.value()),
 	MAILBOX_FULL_3(RuleNameEnum.MAILBOX_FULL, 3, RuleActionDetailEnum.CLOSE, null),
 	SIZE_TOO_LARGE_1(RuleNameEnum.SIZE_TOO_LARGE, 1, RuleActionDetailEnum.SAVE, null),
-	SIZE_TOO_LARGE_2(RuleNameEnum.SIZE_TOO_LARGE, 2, RuleActionDetailEnum.TO_CSR, "$" + QueueNameEnum.SUBSCRIBER_CARE_INPUT.name()),
+	SIZE_TOO_LARGE_2(RuleNameEnum.SIZE_TOO_LARGE, 2, RuleActionDetailEnum.TO_CSR, "$" + QueueNameEnum.CUSTOMER_CARE_INPUT.name()),
 	MAIL_BLOCK_1(RuleNameEnum.MAIL_BLOCK, 1, RuleActionDetailEnum.SAVE, null),
 	MAIL_BLOCK_2(RuleNameEnum.MAIL_BLOCK, 2, RuleActionDetailEnum.FORWARD, "$" + TableColumnName.SPAM_CONTROL_ADDR),
 	SPAM_BLOCK_1(RuleNameEnum.SPAM_BLOCK, 1, RuleActionDetailEnum.SAVE, null),

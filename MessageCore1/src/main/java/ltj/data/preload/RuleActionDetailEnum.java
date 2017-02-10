@@ -56,7 +56,8 @@ public enum RuleActionDetailEnum {
 	}
 	
 	static String serviceName(Class<?> clazz) {
-		return StringUtils.uncapitalize(clazz.getSimpleName());
+		String name = StringUtils.uncapitalize(clazz.getSimpleName());
+		return StringUtils.removeEnd(name, "Impl");
 	}
 
 	public String getDescription() {

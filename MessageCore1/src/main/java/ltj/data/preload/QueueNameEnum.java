@@ -1,14 +1,14 @@
 package ltj.data.preload;
 
 public enum QueueNameEnum {
-	RMA_REQUEST_INPUT("rmaRequestInputJmsTemplate"),
-	SUBSCRIBER_CARE_INPUT("subscriberCareInputJmsTemplate");
+	RMA_REQUEST_INPUT("rmaRequestInput"),
+	CUSTOMER_CARE_INPUT("customerCareInput");
 	
-	private String jmstemplate;
-	private QueueNameEnum(String jmstemplate) {
-		this.jmstemplate = jmstemplate;
+	private String queueName;
+	private QueueNameEnum(String queueName) {
+		this.queueName = queueName;
 	}
-	public String getJmstemplate() {
-		return jmstemplate;
+	public String getQueueName() {
+		return queueName;
 	}
 }

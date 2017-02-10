@@ -13,7 +13,6 @@ import ltj.data.preload.MailingListEnum;
 import ltj.data.preload.SubscriberEnum;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
-import ltj.message.constant.MailingListType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
@@ -915,6 +914,9 @@ DELIMITER ;
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			
 			for (EmailTemplateEnum tmplt : EmailTemplateEnum.values()) {
+				if (tmplt.isProd()) {
+					continue;
+				}
 				ps.setString(1, tmplt.name());
 				ps.setString(2, tmplt.getMailingList().name());
 				ps.setString(3, tmplt.getSubject());
@@ -923,7 +925,13 @@ DELIMITER ;
 				ps.setString(6, tmplt.getListType().value());
 				ps.setString(7, tmplt.getDeliveryType().value());
 				ps.setString(8, tmplt.isBuiltin() ? Constants.Y : Constants.N);
-				ps.setString(9, " "); // use system default
+				if (tmplt.getIsEmbedEmailId() == null) {
+					ps.setString(9, " "); // use system default
+				}
+				else {
+					boolean embedEmailId = tmplt.getIsEmbedEmailId().booleanValue();
+					ps.setString(9,  embedEmailId ? Constants.Y : Constants.N);
+				}
 				SchedulesBlob blob = new SchedulesBlob();
 				try {
 					byte[] baosarray = BlobUtil.objectToBytes(blob);
@@ -935,149 +943,62 @@ DELIMITER ;
 				ps.execute();
 			}
 			
-			ps.setString(1, "SampleNewsletter1");
-			ps.setString(2, "SMPLLST1");
-			ps.setString(3, "Sample newsletter to ${SubscriberAddress} with Open/Click/Unsubscribe tracking");
-			ps.setString(4,
-					"Dear ${CustomerName},<p/>" + LF +
-					"This is a sample newsletter message for a web-based mailing list. With a web-based " + LF +
-					"mailing list, people who want to subscribe to the list must visit a web page and " + LF +
-					"fill out a form with their email address. After submitting the form, they will " + LF +
-					"receive a confirmation letter in their email and must activate the subscription " + LF +
-					"by following the steps in the email (usually a simple click).<p/>" + LF +
-					"Unsubscription information will be included in the newsletters they receive. People " + LF +
-					"who want to unsubscribe can do so by simply following the steps in the newsletter.<p/>" + LF +
-					"Date sent: ${CurrentDate} <p/>" + LF +
-					"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}, SubscriberAddressId: ${SubscriberAddressId}<p/>" + LF +
-					"Contact Email: ${ContactEmailAddress}<p>" + LF +
-					"<a target='_blank' href='$%7BWebSiteUrl%7D/SamplePromoPage.jsp?msgid=$%7BBroadcastMsgId%7D&listid=$%7BMailingListId%7D&sbsrid=$%7BSubscriberAddressId%7D'>Click here</a> to see our promotions<p/>" + LF +
-					"${FooterWithUnsubLink}<br/>" +
-					"${EmailOpenCountImgTag}"
-					);
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.PERSONALIZED.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.N);
-			ps.setString(9, " "); // use system default
-			SchedulesBlob blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-			ps.setString(1, "SampleNewsletter2");
-			ps.setString(2, "SMPLLST2");
-			ps.setString(3, "Sample HTML newsletter to ${SubscriberAddress}");
-			ps.setString(4, "Dear ${SubscriberAddress},<p/>" + LF +
-				"This is a sample HTML newsletter message for a traditional mailing list. " + LF +
-				"With a traditional mailing list, people who want to subscribe to the list " + LF +
-				"must send an email from their account to the mailing list address with " + LF +
-				"\"subscribe\" in the email subject.<p/>" + LF +
-				"Unsubscribing from a traditional mailing list is just as easy; simply send " + LF +
-				"an email to the mailing list address with \"unsubscribe\" in subject.<p/>" + LF + 
-				"The mailing list address for this newsletter is: ${MailingListAddress}.<p/>" + LF +
-				"Date this newsletter is sent: ${CurrentDate}.<p/>" + LF +
-				"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}<p/>" + LF +
-				"Contact Email: ${ContactEmailAddress}<p/>" + LF +
-				"<a target='_blank' href='$%7BWebSiteUrl%7D/SamplePromoPage.jsp?msgid=$%7BBroadcastMsgId%7D&listid=$%7BMailingListId%7D&sbsrid=$%7BSubscriberAddressId%7D'>Click here</a> to see our promotions<p/>" + LF +
-				"${FooterWithUnsubAddr}<br/>" +
-				"${EmailOpenCountImgTag}");
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.N);
-			ps.setString(9, " "); // use system default
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-			ps.setString(1, "SampleNewsletter3");
-			ps.setString(2, "SMPLLST2");
-			ps.setString(3, "Sample Plain text newsletter to ${SubscriberAddress}");
-			ps.setString(4, "Dear ${SubscriberAddress}," + LF + LF + 
-				"This is a sample text newsletter message for a traditional mailing list." + LF +
-				"With a traditional mailing list, people who want to subscribe to the list " + LF +
-				"must send an email from their account to the mailing list address with " + LF +
-				"\"subscribe\" in the email subject." + LF + LF + 
-				"Unsubscribing from a traditional mailing list is just as easy; simply send " + LF +
-				"an email to the mailing list address with \"unsubscribe\" in subject." + LF + LF +
-				"Date sent: ${CurrentDate}" + LF + LF +
-				"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}" + LF + LF +
-				"Contact Email: ${ContactEmailAddress}" + LF + LF +
-				"To see our promotions, copy and paste the following link in your browser:" + LF +
-				"${WebSiteUrl}/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}" + LF +
-				"${FooterWithUnsubAddr}");
-			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.TRADITIONAL.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.N);
-			ps.setString(9, " "); // use system default
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
 //			ps.setString(1, "SampleNewsletter1");
 //			ps.setString(2, "SMPLLST1");
-//			ps.setString(3, "Sample template with Open/Click tracking to ${CustomerName}");
+//			ps.setString(3, "Sample newsletter to ${SubscriberAddress} with Open/Click/Unsubscribe tracking");
 //			ps.setString(4,
-//					"Dear ${CustomerName}," + LF +
-//					"<script type=\"text/javascript\">" + LF +
-//					"var http_request = false;" + LF +
-//					"function makeRequest(url, async) {" + LF +
-//					"  if (window.XMLHttpRequest) { // Mozilla, Safari, IE7..." + LF +
-//					"      http_request = new XMLHttpRequest();" + LF +
-//					"  } else if (window.ActiveXObject) { // IE6 and older" + LF +
-//					"      http_request = new ActiveXObject(\"Microsoft.XMLHTTP\");" + LF +
-//					"  }" + LF +
-//					"  http_request.onreadystatechange = alertContents;" + LF +
-//					"  http_request.open('GET', url, async);" + LF +
-//					"  http_request.send(null);" + LF +
-//					"}" + LF +
-//					"function alertContents() {" + LF +
-//					"  if (http_request.readyState == 4) {" + LF +
-//					"      if (http_request.status == 200) {" + LF +
-//					"          alert(http_request.responseText);" + LF +
-//					"      } else {" + LF +
-//					"          alert('There was a problem with the request.');" + LF +
-//					"      }" + LF +
-//					"  }" + LF +
-//					"}" + LF +
-//					"function updateClickCount() {" + LF +
-//					"  makeRequest( 'http://localhost:10080/es/wsmclick.php?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}', false);" + LF +
-//					"}" + LF +
-//					"</script>" + LF +
-//					"<p>This is test template message body to ${SubscriberAddress}. <br></p>" + LF +
-//					"<p>Time sent: ${CurrentDate} <br></p>" + LF +
-//					"<p>BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}, SubscriberAddressId: ${SubscriberAddressId}</p>" + LF +
-//					"<p>Contact Email: ${ContactEmailAddress} <br></p>" + LF +
-//					"<p><input value=\"Update Click Count\" onclick=\"updateClickCount()\" type=\"button\">" + LF +
-//					"<br></p>" + LF +
-//					"<p>To unsubscribe from this mailing list, send an e-mail to: ${MailingListAddress}" + LF +
-//					"with \"unsubscribe\" (no quotation marks) in the subject.</p>" + LF +
-//					"<img src='http://localhost:10080/es/wsmopen.php?msgid=$%7BBroadcastMsgId%7D&amp;listid=$%7BMailingListId%7D&amp;sbsrid=$%7BSubscriberAddressId%7D' alt='' height='1' width='1'>" + LF +
-//					"<a href='http://localhost:10080/es/testclickcount.php?msgid=$%7BBroadcastMsgId%7D&amp;listid=$%7BMailingListId%7D&amp;sbsrid=$%7BSubscriberAddressId%7D' target='_blank'>" + LF +
-//					"Click Here to Update Click Count</a>"
+//					"Dear ${CustomerName},<p/>" + LF +
+//					"This is a sample newsletter message for a web-based mailing list. With a web-based " + LF +
+//					"mailing list, people who want to subscribe to the list must visit a web page and " + LF +
+//					"fill out a form with their email address. After submitting the form, they will " + LF +
+//					"receive a confirmation letter in their email and must activate the subscription " + LF +
+//					"by following the steps in the email (usually a simple click).<p/>" + LF +
+//					"Unsubscription information will be included in the newsletters they receive. People " + LF +
+//					"who want to unsubscribe can do so by simply following the steps in the newsletter.<p/>" + LF +
+//					"Date sent: ${CurrentDate} <p/>" + LF +
+//					"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}, SubscriberAddressId: ${SubscriberAddressId}<p/>" + LF +
+//					"Contact Email: ${ContactEmailAddress}<p>" + LF +
+//					"<a target='_blank' href='$%7BWebSiteUrl%7D/SamplePromoPage.jsp?msgid=$%7BBroadcastMsgId%7D&listid=$%7BMailingListId%7D&sbsrid=$%7BSubscriberAddressId%7D'>Click here</a> to see our promotions<p/>" + LF +
+//					"${FooterWithUnsubLink}<br/>" +
+//					"${EmailOpenCountImgTag}"
 //					);
 //			ps.setString(5, Constants.Y);
-//			ps.setString(6, Constants.TRADITIONAL);
-//			ps.setString(7, Constants.ALL_ON_LIST);
+//			ps.setString(6, MailingListType.PERSONALIZED.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 //			ps.setString(8, Constants.N);
+//			ps.setString(9, " "); // use system default
+//			SchedulesBlob blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "SampleNewsletter2");
+//			ps.setString(2, "SMPLLST2");
+//			ps.setString(3, "Sample HTML newsletter to ${SubscriberAddress}");
+//			ps.setString(4, "Dear ${SubscriberAddress},<p/>" + LF +
+//				"This is a sample HTML newsletter message for a traditional mailing list. " + LF +
+//				"With a traditional mailing list, people who want to subscribe to the list " + LF +
+//				"must send an email from their account to the mailing list address with " + LF +
+//				"\"subscribe\" in the email subject.<p/>" + LF +
+//				"Unsubscribing from a traditional mailing list is just as easy; simply send " + LF +
+//				"an email to the mailing list address with \"unsubscribe\" in subject.<p/>" + LF + 
+//				"The mailing list address for this newsletter is: ${MailingListAddress}.<p/>" + LF +
+//				"Date this newsletter is sent: ${CurrentDate}.<p/>" + LF +
+//				"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}<p/>" + LF +
+//				"Contact Email: ${ContactEmailAddress}<p/>" + LF +
+//				"<a target='_blank' href='$%7BWebSiteUrl%7D/SamplePromoPage.jsp?msgid=$%7BBroadcastMsgId%7D&listid=$%7BMailingListId%7D&sbsrid=$%7BSubscriberAddressId%7D'>Click here</a> to see our promotions<p/>" + LF +
+//				"${FooterWithUnsubAddr}<br/>" +
+//				"${EmailOpenCountImgTag}");
+//			ps.setString(5, Constants.Y);
+//			ps.setString(6, MailingListType.TRADITIONAL.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.N);
+//			ps.setString(9, " "); // use system default
 //			blob = new SchedulesBlob();
 //			try {
 //				byte[] baosarray = BlobUtil.objectToBytes(blob);
@@ -1087,162 +1008,141 @@ DELIMITER ;
 //				throw new SQLException("IOException caught - " + e.toString());
 //			}
 //			ps.execute();
-			
-			ps.setString(1, "SubscriptionConfirmation");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "Request for subscription confirmation");
-			ps.setString(4, 
-					"Dear ${SubscriberAddress},<br/>" + LF +
-					"This is an automatically generated message to confirm that you have " + LF +
-					"submitted request to add your email address to the following mailing lists:<br/>" + LF +
-					"<pre>${_RequestedMailingLists}</pre>" + LF +
-					"If this is correct, please <a href='$%7BConfirmationURL%7D' target='_blank'>click here</a> " + LF +
-					"to confirm your subscription.<br/>" + LF +
-					"If this is incorrect, you do not need to do anything, simply delete this message.<p/>" + LF +
-					"Thank you" + LF
-					);
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.N);
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-			ps.setString(1, "SubscriptionWelcomeLetter");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "Your subscription has been confirmed");
-			ps.setString(4, 
-					"Dear ${SubscriberAddress},<br/>" + LF +
-					"Welcome to our mailing lists. Your email address has been added to the" + LF +
-					"following mailing lists:<br/>" + LF +
-					"<pre>${_SubscribedMailingLists}</pre>" + LF +
-					"Please keep this email for latter reference.<p/>" + LF +
-					"To unsubscribe please <a href='$%7BUnsubscribeURL%7D' target='_blank'>click here</a> " + LF +
-					"and follow the steps.<br/>" + LF + LF +
-					"To update your profile please <a href='$%7BUserProfileURL%7D' target='_blank'>click here</a>.<p/>" + LF +
-					"Thank you<br/>" + LF
-					);
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.N);
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-			ps.setString(1, "UnsubscriptionLetter");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "You have unsubscribed from our Newsletter");
-			ps.setString(4, 
-					"Dear ${SubscriberAddress},<br/>" + LF +
-					"Goodbye from our Newsletter, sorry to see you go.<br/>" + LF +
-					"You have been unsubscribed from the following newsletters:<br/>" + LF +
-					"<pre>${_UnsubscribedMailingLists}</pre>" + LF +
-					"If this is an error, you can re-subscribe. Please " +
-					"<a href='$%7BSubscribeURL%7D' target='_blank'>click here</a>" + LF +
-					" and follow the steps.<p/>" + LF +
-					"Thank you<br/>" + LF
-					);
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.N);
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-			ps.setString(1, "UserProfileChangeLetter");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "[notify] Changes of user profile details");
-			ps.setString(4, 
-					"Dear ${CustomerName},<br/>" + LF +
-					"This message is to inform you of a change of your user profile details" + LF +
-					"on our newsletter database. You are currently subscribed to our following" + LF +
-					"newsletters:<br/>" + LF +
-					"<pre>${_SubscribedMailingLists}</pre>" + LF +
-					"The information on our system for you is as follows:<br/>" + LF +
-					"<pre>${_UserProfileData}</pre>" + LF +
-					"If this is not correct, please update your information by " + LF +
-					"<a href='$%7BUserProfileURL%7D' target='_blank'>visiting this web page</a>.<p/>" + LF +
-					"Thank you<br/>" + LF
-					);
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.PERSONALIZED.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.Y);
-			ps.setString(9, " "); // use system default
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-			ps.setString(1, "EmailAddressChangeLetter");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "[notify] Change of your email address");
-			ps.setString(4, 
-					"Dear ${CustomerName},<br/>" + LF +
-					"When updating your user profile details, your email address has changed.<br/>" + LF +
-					"Please confirm your new email address by " +
-					"<a href='$%7BConfirmationURL%7D' target='_blank'>visiting this web page</a>.<br/>" + LF +
-					"If this is not correct, " + LF +
-					"<a href='$%7BUserProfileURL%7D' target='_blank'>click here</a> to update your information.<p/>" + LF +
-					"Thank you<br/>" + LF
-					);
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.PERSONALIZED.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.Y);
-			ps.setString(9, " "); // use system default
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-//			ps.setString(1, "EmailAddressChangeLetter2");
+//			
+//			ps.setString(1, "SampleNewsletter3");
+//			ps.setString(2, "SMPLLST2");
+//			ps.setString(3, "Sample Plain text newsletter to ${SubscriberAddress}");
+//			ps.setString(4, "Dear ${SubscriberAddress}," + LF + LF + 
+//				"This is a sample text newsletter message for a traditional mailing list." + LF +
+//				"With a traditional mailing list, people who want to subscribe to the list " + LF +
+//				"must send an email from their account to the mailing list address with " + LF +
+//				"\"subscribe\" in the email subject." + LF + LF + 
+//				"Unsubscribing from a traditional mailing list is just as easy; simply send " + LF +
+//				"an email to the mailing list address with \"unsubscribe\" in subject." + LF + LF +
+//				"Date sent: ${CurrentDate}" + LF + LF +
+//				"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}" + LF + LF +
+//				"Contact Email: ${ContactEmailAddress}" + LF + LF +
+//				"To see our promotions, copy and paste the following link in your browser:" + LF +
+//				"${WebSiteUrl}/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}" + LF +
+//				"${FooterWithUnsubAddr}");
+//			ps.setString(5, Constants.N);
+//			ps.setString(6, MailingListType.TRADITIONAL.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.N);
+//			ps.setString(9, " "); // use system default
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "SubscriptionConfirmation");
 //			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "[notify] Change of your email address");
+//			ps.setString(3, "Request for subscription confirmation");
 //			ps.setString(4, 
-//					"Dear ${CustomerName},<br/>" + LF +
-//					"Please Note: when updating your profile details, your email address has changed.<br/>" + LF +
-//					"A message has been sent to your new email address with a URL to confirm" + LF + 
-//					"this change. Please visit this web site to activate your new email address.<p/>" + LF +
+//					"Dear ${SubscriberAddress},<br/>" + LF +
+//					"This is an automatically generated message to confirm that you have " + LF +
+//					"submitted request to add your email address to the following mailing lists:<br/>" + LF +
+//					"<pre>${_RequestedMailingLists}</pre>" + LF +
+//					"If this is correct, please <a href='$%7BConfirmationURL%7D' target='_blank'>click here</a> " + LF +
+//					"to confirm your subscription.<br/>" + LF +
+//					"If this is incorrect, you do not need to do anything, simply delete this message.<p/>" + LF +
+//					"Thank you" + LF
+//					);
+//			ps.setString(5, Constants.Y);
+//			ps.setString(6, MailingListType.TRADITIONAL.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.N);
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "SubscriptionWelcomeLetter");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "Your subscription has been confirmed");
+//			ps.setString(4, 
+//					"Dear ${SubscriberAddress},<br/>" + LF +
+//					"Welcome to our mailing lists. Your email address has been added to the" + LF +
+//					"following mailing lists:<br/>" + LF +
+//					"<pre>${_SubscribedMailingLists}</pre>" + LF +
+//					"Please keep this email for latter reference.<p/>" + LF +
+//					"To unsubscribe please <a href='$%7BUnsubscribeURL%7D' target='_blank'>click here</a> " + LF +
+//					"and follow the steps.<br/>" + LF + LF +
+//					"To update your profile please <a href='$%7BUserProfileURL%7D' target='_blank'>click here</a>.<p/>" + LF +
 //					"Thank you<br/>" + LF
 //					);
 //			ps.setString(5, Constants.Y);
-//			ps.setString(6, Constants.PERSONALIZED);
-//			ps.setString(7, Constants.ALL_ON_LIST);
+//			ps.setString(6, MailingListType.TRADITIONAL.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.N);
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "UnsubscriptionLetter");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "You have unsubscribed from our Newsletter");
+//			ps.setString(4, 
+//					"Dear ${SubscriberAddress},<br/>" + LF +
+//					"Goodbye from our Newsletter, sorry to see you go.<br/>" + LF +
+//					"You have been unsubscribed from the following newsletters:<br/>" + LF +
+//					"<pre>${_UnsubscribedMailingLists}</pre>" + LF +
+//					"If this is an error, you can re-subscribe. Please " +
+//					"<a href='$%7BSubscribeURL%7D' target='_blank'>click here</a>" + LF +
+//					" and follow the steps.<p/>" + LF +
+//					"Thank you<br/>" + LF
+//					);
+//			ps.setString(5, Constants.Y);
+//			ps.setString(6, MailingListType.TRADITIONAL.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.N);
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "UserProfileChangeLetter");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "[notify] Changes of user profile details");
+//			ps.setString(4, 
+//					"Dear ${CustomerName},<br/>" + LF +
+//					"This message is to inform you of a change of your user profile details" + LF +
+//					"on our newsletter database. You are currently subscribed to our following" + LF +
+//					"newsletters:<br/>" + LF +
+//					"<pre>${_SubscribedMailingLists}</pre>" + LF +
+//					"The information on our system for you is as follows:<br/>" + LF +
+//					"<pre>${_UserProfileData}</pre>" + LF +
+//					"If this is not correct, please update your information by " + LF +
+//					"<a href='$%7BUserProfileURL%7D' target='_blank'>visiting this web page</a>.<p/>" + LF +
+//					"Thank you<br/>" + LF
+//					);
+//			ps.setString(5, Constants.Y);
+//			ps.setString(6, MailingListType.PERSONALIZED.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 //			ps.setString(8, Constants.Y);
 //			ps.setString(9, " "); // use system default
 //			blob = new SchedulesBlob();
@@ -1254,87 +1154,114 @@ DELIMITER ;
 //				throw new SQLException("IOException caught - " + e.toString());
 //			}
 //			ps.execute();
-			
-			ps.setString(1, "TellAFriendLetter");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "A web site recommendation from ${_ReferrerName}");
-			ps.setString(4, 
-					"Dear ${_FriendsEmailAddress},<p/>" + LF +
-					"${_ReferrerName}, whose email address is ${_ReferrerEmailAddress} thought you " + LF +
-					"may be interested in this web page.<p/>" + LF +
-					"<a target='_blank' href='$%7BWebSiteUrl%7D'>${WebSiteUrl}</a><p/>" + LF +
-					"${_ReferrerName} has used our Tell-a-Friend form to send you this note.<p/>" + LF +
-					"${_ReferrerComments}" +
-					"We look forward to your visit!<br/>" + LF
-					);
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.PERSONALIZED.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.N); // do not embed email id
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-			ps.setString(1, "SubscribeByEmailReply");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "You have subscribed to mailing list ${MailingListName}");
-			ps.setString(4, 
-				"Dear ${SubscriberAddress}," + LF + LF +
-				"This is an automatically generated message to confirm that you have" + LF +
-				"subscribed to our mailing list: ${MailingListName}" + LF + LF +
-				"To ensure that you continue to receive e-mails from ${DomainName} in your " + LF +
-				"inbox, you can add the sender of this e-mail to your address book or white list." + LF + LF +
-				"If this in incorrect, you can un-subscribe from this mailing list." + LF +
-				"Simply send an e-mail to: ${MailingListAddress}" + LF +
-				"with \"unsubscribe\" (no quotation marks) in your email subject." + LF);
-			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.TRADITIONAL.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.Y);
-			ps.setString(9, " "); // use system default
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-			
-			ps.setString(1, "SubscribeByEmailReplyHtml");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "You have subscribed to ${MailingListName} at ${DomainName}");
-			ps.setString(4, 
-				"Dear ${SubscriberAddress},<br>" + LF +
-				"This is an automatically generated message to confirm that you have " + LF +
-				"subscribed to our mailing list: <b>${MailingListName}</b>.<br>" + LF +
-				"To ensure that you continue to receive e-mails from ${DomainName} in your " + LF +
-				"inbox, you can add the sender of this e-mail to your address book or white list.<br>" + LF +
-				"If you signed up for this subscription in error, you can un-subscribe." + LF +
-				"Simply send an e-mail to <a href='mailto:$%7BMailingListAddress%7D' target='_blank'>${MailingListAddress}</a>" + LF +
-				"with \"unsubscribe\" (no quotation marks) in your email subject.<br>" + LF);
-			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.Y);
-			ps.setString(9, " "); // use system default
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
+//			
+//			ps.setString(1, "EmailAddressChangeLetter");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "[notify] Change of your email address");
+//			ps.setString(4, 
+//					"Dear ${CustomerName},<br/>" + LF +
+//					"When updating your user profile details, your email address has changed.<br/>" + LF +
+//					"Please confirm your new email address by " +
+//					"<a href='$%7BConfirmationURL%7D' target='_blank'>visiting this web page</a>.<br/>" + LF +
+//					"If this is not correct, " + LF +
+//					"<a href='$%7BUserProfileURL%7D' target='_blank'>click here</a> to update your information.<p/>" + LF +
+//					"Thank you<br/>" + LF
+//					);
+//			ps.setString(5, Constants.Y);
+//			ps.setString(6, MailingListType.PERSONALIZED.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, " "); // use system default
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "TellAFriendLetter");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "A web site recommendation from ${_ReferrerName}");
+//			ps.setString(4, 
+//					"Dear ${_FriendsEmailAddress},<p/>" + LF +
+//					"${_ReferrerName}, whose email address is ${_ReferrerEmailAddress} thought you " + LF +
+//					"may be interested in this web page.<p/>" + LF +
+//					"<a target='_blank' href='$%7BWebSiteUrl%7D'>${WebSiteUrl}</a><p/>" + LF +
+//					"${_ReferrerName} has used our Tell-a-Friend form to send you this note.<p/>" + LF +
+//					"${_ReferrerComments}" +
+//					"We look forward to your visit!<br/>" + LF
+//					);
+//			ps.setString(5, Constants.Y);
+//			ps.setString(6, MailingListType.PERSONALIZED.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.N); // do not embed email id
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "SubscribeByEmailReply");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "You have subscribed to mailing list ${MailingListName}");
+//			ps.setString(4, 
+//				"Dear ${SubscriberAddress}," + LF + LF +
+//				"This is an automatically generated message to confirm that you have" + LF +
+//				"subscribed to our mailing list: ${MailingListName}" + LF + LF +
+//				"To ensure that you continue to receive e-mails from ${DomainName} in your " + LF +
+//				"inbox, you can add the sender of this e-mail to your address book or white list." + LF + LF +
+//				"If this in incorrect, you can un-subscribe from this mailing list." + LF +
+//				"Simply send an e-mail to: ${MailingListAddress}" + LF +
+//				"with \"unsubscribe\" (no quotation marks) in your email subject." + LF);
+//			ps.setString(5, Constants.N);
+//			ps.setString(6, MailingListType.TRADITIONAL.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, " "); // use system default
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "SubscribeByEmailReplyHtml");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "You have subscribed to ${MailingListName} at ${DomainName}");
+//			ps.setString(4, 
+//				"Dear ${SubscriberAddress},<br>" + LF +
+//				"This is an automatically generated message to confirm that you have " + LF +
+//				"subscribed to our mailing list: <b>${MailingListName}</b>.<br>" + LF +
+//				"To ensure that you continue to receive e-mails from ${DomainName} in your " + LF +
+//				"inbox, you can add the sender of this e-mail to your address book or white list.<br>" + LF +
+//				"If you signed up for this subscription in error, you can un-subscribe." + LF +
+//				"Simply send an e-mail to <a href='mailto:$%7BMailingListAddress%7D' target='_blank'>${MailingListAddress}</a>" + LF +
+//				"with \"unsubscribe\" (no quotation marks) in your email subject.<br>" + LF);
+//			ps.setString(5, Constants.Y);
+//			ps.setString(6, MailingListType.TRADITIONAL.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, " "); // use system default
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted EmailTemplate...");
@@ -1383,109 +1310,139 @@ DELIMITER ;
 				"Schedules)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			
-			ps.setString(1, "EmailsphereOrderReceipt");
-			ps.setString(2, "ORDERLST");
-			ps.setString(3, "Emailsphere Purchase Receipt");
-			ps.setString(4,
-					"Dear ${_BillingFirstName}," + LF + LF +
-					"Thank you for your recent purchase from Emailsphere, your purchase, as described below, has been completed." + LF + LF +
-					"Order number: ${_OrderNumber}" + LF +
-					"Order Date: ${_OrderDate}" + LF + LF +
-					"Billing Information:" + LF +
-					"${_BillingName}" + LF +
-					"${_BillingStreetAddress}" + LF +
-					"${_BillingCityStateZip}" + LF + LF +
-					"Item purchased: Emailsphere enterprise server." + LF + 
-					"Price: ${_UnitPrice}" + LF +
-					"Tax:   ${_Tax}" + LF +
-					"Total Price: ${_TotalPrice}" + LF + LF +
-					"Billed to ${_CardTypeName} ending in ${_CardNumberLast4}: ${_TotalPrice}" + LF + LF +
-					"Please contact ${MailingListAddress} with any questions or concerns regarding this transaction." + LF + LF +
-					"Your product key is: ${_ProductKey}" + LF +
-					"Please login to your Emailsphere system management console, click \"Enter Product Key\", and copy this key to the input field and submit." + LF + LF +
-					"If you have any technical questions, please visit our contact us page by point your browser to:" + LF +
-					"${_ContactUsUrl}" + LF + LF +
-					"Thank you for your purchase!" + LF + LF +
-					"Emailsphere Team" + LF +
-					"Legacy System Solutions, LLC" + LF
-					);
-			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.PERSONALIZED.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.N);
-			ps.setString(9, " "); // use system default
-			SchedulesBlob blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
+			for (EmailTemplateEnum tmplt : EmailTemplateEnum.values()) {
+				if (tmplt.isProd() == false) {
+					continue;
+				}
+				ps.setString(1, tmplt.name());
+				ps.setString(2, tmplt.getMailingList().name());
+				ps.setString(3, tmplt.getSubject());
+				ps.setString(4, tmplt.getBodyText());
+				ps.setString(5, tmplt.isHtml() ? Constants.Y : Constants.N);
+				ps.setString(6, tmplt.getListType().value());
+				ps.setString(7, tmplt.getDeliveryType().value());
+				ps.setString(8, tmplt.isBuiltin() ? Constants.Y : Constants.N);
+				if (tmplt.getIsEmbedEmailId() == null) {
+					ps.setString(9, " "); // use system default
+				}
+				else {
+					boolean embedEmailId = tmplt.getIsEmbedEmailId().booleanValue();
+					ps.setString(9,  embedEmailId ? Constants.Y : Constants.N);
+				}
+				SchedulesBlob blob = new SchedulesBlob();
+				try {
+					byte[] baosarray = BlobUtil.objectToBytes(blob);
+					ps.setBytes(10, baosarray);
+				}
+				catch (IOException e) {
+					throw new SQLException("IOException caught - " + e.toString());
+				}
+				ps.execute();
 			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
 			
-			ps.setString(1, "EmailsphereOrderException");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "Important Notice: Your Emailsphere Order # ${_OrderNumber}");
-			ps.setString(4,
-					"Regarding Order ${_OrderNumber} you placed on ${_OrderDate} from Emailsphere.com" + LF +
-					"1 Emailsphere Enterprise Server" + LF + LF +
-					"Greetings from Emailsphere.com," + LF + LF +
-					"Your credit card payment for the above transaction could not be completed." + LF +
-					"An issuing bank will often decline an attempt to charge a credit card if" + LF +
-					"the name, expiration date, or ZIP Code you entered at Emailsphere.com does" + LF +
-					"not exactly match the bank's information." + LF + LF +
-					"Valid payment information must be received within 3 days, otherwise your" + LF + 
-					"order will be canceled." + LF + LF +
-					"Once you have confirmed your account information with your issuing bank," + LF +
-					"please follow the link below to resubmit your payment." + LF + LF +
-					"http://www.emailsphere.com/es/edit.html/?orderID=${_OrderNumber}" + LF + LF +
-					"We hope that you are able to resolve this issue promptly." + LF + LF +
-					"Please note: This e-mail was sent from a notification-only address that" + LF +
-					"cannot accept incoming e-mail. Please do not reply to this message." + LF + LF +
-					"Thank you for shopping at Emailsphere.com." + LF + LF +
-					"Emailsphere.com Customer Service" + LF +
-					"http://www.emailsphere.com" + LF
-					);
-			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.PERSONALIZED.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.N);
-			ps.setString(9, " "); // use system default
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-
-			ps.setString(1, "EmailsphereInternalAlert");
-			ps.setString(2, "SYSLIST1");
-			ps.setString(3, "Notify: Alert from Emailsphere.com");
-			ps.setString(4,
-					"Internal error or exception caught from Emailsphere.com" + LF + LF +
-					"Time: ${_DateTime}" + LF +
-					"Module: ${_ModuleName}" + LF +
-					"Error: ${_Error}" + LF
-					);
-			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.TRADITIONAL.value());
-			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-			ps.setString(8, Constants.N);
-			ps.setString(9, " "); // use system default
-			blob = new SchedulesBlob();
-			try {
-				byte[] baosarray = BlobUtil.objectToBytes(blob);
-				ps.setBytes(10, baosarray);
-			}
-			catch (IOException e) {
-				throw new SQLException("IOException caught - " + e.toString());
-			}
-			ps.execute();
-
+//			ps.setString(1, "EmailsphereOrderReceipt");
+//			ps.setString(2, "ORDERLST");
+//			ps.setString(3, "Emailsphere Purchase Receipt");
+//			ps.setString(4,
+//					"Dear ${_BillingFirstName}," + LF + LF +
+//					"Thank you for your recent purchase from Emailsphere, your purchase, as described below, has been completed." + LF + LF +
+//					"Order number: ${_OrderNumber}" + LF +
+//					"Order Date: ${_OrderDate}" + LF + LF +
+//					"Billing Information:" + LF +
+//					"${_BillingName}" + LF +
+//					"${_BillingStreetAddress}" + LF +
+//					"${_BillingCityStateZip}" + LF + LF +
+//					"Item purchased: Emailsphere enterprise server." + LF + 
+//					"Price: ${_UnitPrice}" + LF +
+//					"Tax:   ${_Tax}" + LF +
+//					"Total Price: ${_TotalPrice}" + LF + LF +
+//					"Billed to ${_CardTypeName} ending in ${_CardNumberLast4}: ${_TotalPrice}" + LF + LF +
+//					"Please contact ${MailingListAddress} with any questions or concerns regarding this transaction." + LF + LF +
+//					"Your product key is: ${_ProductKey}" + LF +
+//					"Please login to your Emailsphere system management console, click \"Enter Product Key\", and copy this key to the input field and submit." + LF + LF +
+//					"If you have any technical questions, please visit our contact us page by point your browser to:" + LF +
+//					"${_ContactUsUrl}" + LF + LF +
+//					"Thank you for your purchase!" + LF + LF +
+//					"Emailsphere Team" + LF +
+//					"Legacy System Solutions, LLC" + LF
+//					);
+//			ps.setString(5, Constants.N);
+//			ps.setString(6, MailingListType.PERSONALIZED.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.N);
+//			ps.setString(9, " "); // use system default
+//			SchedulesBlob blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//			
+//			ps.setString(1, "EmailsphereOrderException");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "Important Notice: Your Emailsphere Order # ${_OrderNumber}");
+//			ps.setString(4,
+//					"Regarding Order ${_OrderNumber} you placed on ${_OrderDate} from Emailsphere.com" + LF +
+//					"1 Emailsphere Enterprise Server" + LF + LF +
+//					"Greetings from Emailsphere.com," + LF + LF +
+//					"Your credit card payment for the above transaction could not be completed." + LF +
+//					"An issuing bank will often decline an attempt to charge a credit card if" + LF +
+//					"the name, expiration date, or ZIP Code you entered at Emailsphere.com does" + LF +
+//					"not exactly match the bank's information." + LF + LF +
+//					"Valid payment information must be received within 3 days, otherwise your" + LF + 
+//					"order will be canceled." + LF + LF +
+//					"Once you have confirmed your account information with your issuing bank," + LF +
+//					"please follow the link below to resubmit your payment." + LF + LF +
+//					"http://www.emailsphere.com/es/edit.html/?orderID=${_OrderNumber}" + LF + LF +
+//					"We hope that you are able to resolve this issue promptly." + LF + LF +
+//					"Please note: This e-mail was sent from a notification-only address that" + LF +
+//					"cannot accept incoming e-mail. Please do not reply to this message." + LF + LF +
+//					"Thank you for shopping at Emailsphere.com." + LF + LF +
+//					"Emailsphere.com Customer Service" + LF +
+//					"http://www.emailsphere.com" + LF
+//					);
+//			ps.setString(5, Constants.N);
+//			ps.setString(6, MailingListType.PERSONALIZED.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.N);
+//			ps.setString(9, " "); // use system default
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//
+//			ps.setString(1, "EmailsphereInternalAlert");
+//			ps.setString(2, "SYSLIST1");
+//			ps.setString(3, "Notify: Alert from Emailsphere.com");
+//			ps.setString(4,
+//					"Internal error or exception caught from Emailsphere.com" + LF + LF +
+//					"Time: ${_DateTime}" + LF +
+//					"Module: ${_ModuleName}" + LF +
+//					"Error: ${_Error}" + LF
+//					);
+//			ps.setString(5, Constants.N);
+//			ps.setString(6, MailingListType.TRADITIONAL.value());
+//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
+//			ps.setString(8, Constants.N);
+//			ps.setString(9, " "); // use system default
+//			blob = new SchedulesBlob();
+//			try {
+//				byte[] baosarray = BlobUtil.objectToBytes(blob);
+//				ps.setBytes(10, baosarray);
+//			}
+//			catch (IOException e) {
+//				throw new SQLException("IOException caught - " + e.toString());
+//			}
+//			ps.execute();
+//
 			ps.close();
 			System.out.println("Inserted Product EmailTemplate...");
 		} catch (SQLException e) {
