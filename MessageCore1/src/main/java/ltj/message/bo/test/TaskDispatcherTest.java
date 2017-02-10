@@ -54,7 +54,7 @@ public class TaskDispatcherTest extends BoTestBase {
 	@Rollback(value=false)
 	public void test1() throws Exception { // testTaskScheduler
 		assertNotNull(dispr);
-		messageBean = buildMessageBeanFromMsgStream();
+		messageBean = new MessageBean();
 		
 		messageBean.setFrom(InternetAddress.parse(testFromAddress));
 		messageBean.setTo(InternetAddress.parse(mailingListAddr));

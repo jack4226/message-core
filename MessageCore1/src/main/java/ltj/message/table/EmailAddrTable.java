@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
+import ltj.data.preload.EmailVariableEnum;
 import ltj.data.preload.MailingListEnum;
 import ltj.data.preload.SubscriberEnum;
 import ltj.message.constant.Constants;
@@ -15,7 +16,6 @@ import ltj.message.constant.MailingListType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
-import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.dao.emailaddr.SchedulesBlob;
 import ltj.message.main.CreateTableBase;
 import ltj.message.util.BlobUtil;
@@ -637,297 +637,257 @@ DELIMITER ;
 				"VariableProc)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			
-			ps.setString(1, "CustomerName");
-			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-			ps.setString(3, "customers");
-			ps.setString(4, "FirstName,LastName");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "Valued Customer");
-			ps.setString(8, "SELECT CONCAT(c.FirstName, ' ', c.LastName) as ResultStr " +
-					"FROM customers c, emailaddr e " +
-					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-			ps.setString(9, "ltj.message.external.CustomerNameResolver");
-			ps.execute();
+			for (EmailVariableEnum var : EmailVariableEnum.values()) {
+				ps.setString(1, var.name());
+				ps.setString(2, var.getVariableType().value());
+				ps.setString(3, var.getTableName());
+				ps.setString(4, var.getColumnName());
+				ps.setString(5, StatusIdCode.ACTIVE);
+				ps.setString(6, var.isBuiltin() ? Constants.Y : Constants.N);
+				ps.setString(7, var.getDefaultValue());
+				ps.setString(8, var.getVariableQuery());
+				ps.setString(9, var.getVariableProcName());
+				ps.execute();
+			}
 			
-			ps.setString(1, "CustomerFirstName");
-			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-			ps.setString(3, "customers");
-			ps.setString(4, "FirstName");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "Valued Customer");
-			ps.setString(8, "SELECT c.FirstName as ResultStr " +
-					"FROM customers c, emailaddr e " +
-					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-			ps.setString(9, "ltj.message.external.CustomerNameResolver");
-			ps.execute();
-			
-			ps.setString(1, "CustomerLastName");
-			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-			ps.setString(3, "customers");
-			ps.setString(4, "LastName");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "Valued Customer");
-			ps.setString(8, "SELECT c.LastName as ResultStr " +
-					"FROM customers c, emailaddr e " +
-					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-			ps.setString(9, "ltj.message.external.CustomerNameResolver");
-			ps.execute();
-			
-//			ps.setString(1, "CustomerMiddleName");
+//			ps.setString(1, "CustomerName");
 //			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
 //			ps.setString(3, "customers");
-//			ps.setString(4, "MiddleName");
-//			ps.setString(5, Constants.ACTIVE);
+//			ps.setString(4, "FirstName,LastName");
+//			ps.setString(5, StatusIdCode.ACTIVE);
 //			ps.setString(6, Constants.N);
 //			ps.setString(7, "Valued Customer");
-//			ps.setString(8, "SELECT c.MiddleName as ResultStr " +
+//			ps.setString(8, "SELECT CONCAT(c.FirstName, ' ', c.LastName) as ResultStr " +
 //					"FROM customers c, emailaddr e " +
 //					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
 //			ps.setString(9, "ltj.message.external.CustomerNameResolver");
 //			ps.execute();
-			
-			ps.setString(1, "CustomerAddress");
-			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-			ps.setString(3, "customers");
-			ps.setString(4, "StreetAddress");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "");
-			ps.setString(8, "SELECT CONCAT_WS(',',c.StreetAddress2,c.StreetAddress) as ResultStr " +
-					"FROM customers c, emailaddr e " +
-					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "CustomerCityName");
-			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-			ps.setString(3, "customers");
-			ps.setString(4, "CityName");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "");
-			ps.setString(8, "SELECT c.CityName as ResultStr " +
-					"FROM customers c, emailaddr e " +
-					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "CustomerStateCode");
-			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-			ps.setString(3, "customers");
-			ps.setString(4, "StateCode");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "");
-			ps.setString(8, "SELECT CONCAT_WS(',',c.StateCode,c.ProvinceName) as ResultStr " +
-					"FROM customers c, emailaddr e " +
-					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "CustomerZipCode");
-			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-			ps.setString(3, "customers");
-			ps.setString(4, "ZipCode");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "");
-			ps.setString(8, "SELECT CONCAT_WS('-',c.ZipCode5,ZipCode4) as ResultStr " +
-					"FROM customers c, emailaddr e " +
-					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-			ps.setString(9, null);
-			ps.execute();
-			
-//			ps.setString(1, "CustomerPostalCode");
+//			
+//			ps.setString(1, "CustomerFirstName");
 //			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
 //			ps.setString(3, "customers");
-//			ps.setString(4, "PostalCode");
-//			ps.setString(5, Constants.ACTIVE);
+//			ps.setString(4, "FirstName");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "Valued Customer");
+//			ps.setString(8, "SELECT c.FirstName as ResultStr " +
+//					"FROM customers c, emailaddr e " +
+//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
+//			ps.setString(9, "ltj.message.external.CustomerNameResolver");
+//			ps.execute();
+//			
+//			ps.setString(1, "CustomerLastName");
+//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
+//			ps.setString(3, "customers");
+//			ps.setString(4, "LastName");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "Valued Customer");
+//			ps.setString(8, "SELECT c.LastName as ResultStr " +
+//					"FROM customers c, emailaddr e " +
+//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
+//			ps.setString(9, "ltj.message.external.CustomerNameResolver");
+//			ps.execute();
+//			
+//			ps.setString(1, "CustomerAddress");
+//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
+//			ps.setString(3, "customers");
+//			ps.setString(4, "StreetAddress");
+//			ps.setString(5, StatusIdCode.ACTIVE);
 //			ps.setString(6, Constants.N);
 //			ps.setString(7, "");
-//			ps.setString(8, "SELECT c.PostalCode as ResultStr " +
+//			ps.setString(8, "SELECT CONCAT_WS(',',c.StreetAddress2,c.StreetAddress) as ResultStr " +
 //					"FROM customers c, emailaddr e " +
 //					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
 //			ps.setString(9, null);
 //			ps.execute();
-			
-			ps.setString(1, "CustomerCountry");
-			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-			ps.setString(3, "customers");
-			ps.setString(4, "Country");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "");
-			ps.setString(8, "SELECT c.Country as ResultStr " +
-					"FROM customers c, emailaddr e " +
-					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-			ps.setString(9, null);
-			ps.execute();
-			
-//			ps.setString(1, "CustomerFullAddress");
+//			
+//			ps.setString(1, "CustomerCityName");
 //			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
 //			ps.setString(3, "customers");
-//			ps.setString(4, "Full Address");
-//			ps.setString(5, Constants.ACTIVE);
+//			ps.setString(4, "CityName");
+//			ps.setString(5, StatusIdCode.ACTIVE);
 //			ps.setString(6, Constants.N);
 //			ps.setString(7, "");
-//			ps.setString(8, "SELECT CONCAT_WS(',',c.StreetAddress,c.StreetAddress2,c.CityName," +
-//					"CONCAT(c.StateCode,c.PostalCode), c.Country) as ResultStr " +
+//			ps.setString(8, "SELECT c.CityName as ResultStr " +
 //					"FROM customers c, emailaddr e " +
 //					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
 //			ps.setString(9, null);
 //			ps.execute();
-			
-//			ps.setString(1, "CustomerProfession");
+//			
+//			ps.setString(1, "CustomerStateCode");
 //			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
 //			ps.setString(3, "customers");
-//			ps.setString(4, "Profession");
-//			ps.setString(5, Constants.ACTIVE);
+//			ps.setString(4, "StateCode");
+//			ps.setString(5, StatusIdCode.ACTIVE);
 //			ps.setString(6, Constants.N);
 //			ps.setString(7, "");
-//			ps.setString(8, "SELECT c.Profession as ResultStr " +
+//			ps.setString(8, "SELECT CONCAT_WS(',',c.StateCode,c.ProvinceName) as ResultStr " +
 //					"FROM customers c, emailaddr e " +
 //					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
 //			ps.setString(9, null);
 //			ps.execute();
-			
-			ps.setString(1, "EmailOpenCountImgTag");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "<img src='${WebSiteUrl}/msgopen.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "EmailClickCountImgTag");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "<img src='${WebSiteUrl}/msgclick.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "EmailUnsubscribeImgTag");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "<img src=='${WebSiteUrl}/msgunsub.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "EmailTrackingTokens");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "FooterWithUnsubLink");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, LF + "<p>To unsubscribe from this mailing list, " + LF +
-					"<a target='_blank' href='${WebSiteUrl}/MsgUnsubPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}'>click here</a>.</p>"
-					+ LF);
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "FooterWithUnsubAddr");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, LF + "To unsubscribe from this mailing list, send an e-mail to: ${MailingListAddress}" + LF +
-					"with \"unsubscribe\" (no quotation marks) in the subject." + LF);
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "SubscribeURL");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "${WebSiteUrl}/subscribe.jsp?sbsrid=${SubscriberAddressId}");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "ConfirmationURL");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "${WebSiteUrl}/confirmsub.jsp?sbsrid=${_EncodedSubcriberId}&listids=${_SubscribedListIds}&sbsraddr=${SubscriberAddress}");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "UnsubscribeURL");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "${WebSiteUrl}/unsubscribe.jsp?sbsrid=${_EncodedSubcriberId}&listids=${_SubscribedListIds}&sbsraddr=${SubscriberAddress}");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "UserProfileURL");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "${WebSiteUrl}/userprofile.jsp?sbsrid=${SubscriberAddressId}");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "TellAFriendURL");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "${WebSiteUrl}/referral.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
-			
-			ps.setString(1, "SiteLogoURL");
-			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-			ps.setString(3, "");
-			ps.setString(4, "");
-			ps.setString(5, StatusIdCode.ACTIVE);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, "${WebSiteUrl}/images/logo.gif");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.execute();
+//			
+//			ps.setString(1, "CustomerZipCode");
+//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
+//			ps.setString(3, "customers");
+//			ps.setString(4, "ZipCode");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "");
+//			ps.setString(8, "SELECT CONCAT_WS('-',c.ZipCode5,ZipCode4) as ResultStr " +
+//					"FROM customers c, emailaddr e " +
+//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "CustomerCountry");
+//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
+//			ps.setString(3, "customers");
+//			ps.setString(4, "Country");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "");
+//			ps.setString(8, "SELECT c.Country as ResultStr " +
+//					"FROM customers c, emailaddr e " +
+//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "EmailOpenCountImgTag");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "<img src='${WebSiteUrl}/msgopen.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "EmailClickCountImgTag");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "<img src='${WebSiteUrl}/msgclick.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "EmailUnsubscribeImgTag");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "<img src=='${WebSiteUrl}/msgunsub.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "EmailTrackingTokens");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "FooterWithUnsubLink");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, LF + "<p>To unsubscribe from this mailing list, " + LF +
+//					"<a target='_blank' href='${WebSiteUrl}/MsgUnsubPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}'>click here</a>.</p>"
+//					+ LF);
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "FooterWithUnsubAddr");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, LF + "To unsubscribe from this mailing list, send an e-mail to: ${MailingListAddress}" + LF +
+//					"with \"unsubscribe\" (no quotation marks) in the subject." + LF);
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "SubscribeURL");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "${WebSiteUrl}/subscribe.jsp?sbsrid=${SubscriberAddressId}");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "ConfirmationURL");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "${WebSiteUrl}/confirmsub.jsp?sbsrid=${_EncodedSubcriberId}&listids=${_SubscribedListIds}&sbsraddr=${SubscriberAddress}");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "UnsubscribeURL");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "${WebSiteUrl}/unsubscribe.jsp?sbsrid=${_EncodedSubcriberId}&listids=${_SubscribedListIds}&sbsraddr=${SubscriberAddress}");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "UserProfileURL");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "${WebSiteUrl}/userprofile.jsp?sbsrid=${SubscriberAddressId}");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "TellAFriendURL");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "${WebSiteUrl}/referral.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "SiteLogoURL");
+//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
+//			ps.setString(3, "");
+//			ps.setString(4, "");
+//			ps.setString(5, StatusIdCode.ACTIVE);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, "${WebSiteUrl}/images/logo.gif");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
