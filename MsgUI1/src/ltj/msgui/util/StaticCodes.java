@@ -23,7 +23,7 @@ import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailProtocol;
 import ltj.message.constant.MailServerType;
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
 import ltj.message.constant.MobileCarrier;
 import ltj.message.constant.MsgStatusCode;
@@ -377,8 +377,8 @@ public class StaticCodes {
 	}
 	
 	private static SelectItem[] smtpServerTypeItems = {
-		new SelectItem(MailServerType.SMTP, "SMTP"),
-		new SelectItem(MailServerType.EXCH, "Exchange")
+		new SelectItem(MailServerType.SMTP.value(), "SMTP"),
+		new SelectItem(MailServerType.EXCH.value(), "Exchange")
 	};
 
 	// PROPERTY: SMTP Server Type Items
@@ -421,8 +421,8 @@ public class StaticCodes {
 	}
 	
 	private static SelectItem[] mailingListTypeItems = {
-		new SelectItem(MailingListType.TRADITIONAL),
-		new SelectItem(MailingListType.PERSONALIZED)
+		new SelectItem(MailingListType.TRADITIONAL.value()),
+		new SelectItem(MailingListType.PERSONALIZED.value())
 	};
 
 	// PROPERTY: Mailing List Delivery Option Items
@@ -431,9 +431,9 @@ public class StaticCodes {
 	}
 	
 	private static SelectItem[] mailingListDeliveryOptionItems = {
-		new SelectItem(MailingListDeliveryOption.ALL_ON_LIST, "All on list"),
-		new SelectItem(MailingListDeliveryOption.CUSTOMERS_ONLY, "Customers only"),
-		new SelectItem(MailingListDeliveryOption.PROSPECTS_ONLY, "Prospects only")
+		new SelectItem(MLDeliveryType.ALL_ON_LIST.value(), "All on list"),
+		new SelectItem(MLDeliveryType.CUSTOMERS_ONLY.value(), "Customers only"),
+		new SelectItem(MLDeliveryType.PROSPECTS_ONLY.value(), "Prospects only")
 	};
 
 	// PROPERTY: Days of Week Items

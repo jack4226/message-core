@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgInboxDao;
@@ -97,7 +97,7 @@ public class DeliveryStatusTest extends DaoTestBase {
 		}
 		else {
 			DeliveryStatusVo vo = new DeliveryStatusVo();
-			vo.setDeliveryStatus(MailingListDeliveryOption.ALL_ON_LIST);
+			vo.setDeliveryStatus(MLDeliveryType.ALL_ON_LIST.value());
 			EmailAddrVo addrVo = selectByAddress(testEmailAddr);
 			assertNotNull(addrVo);
 			vo.setMsgId(msgId);

@@ -18,7 +18,7 @@ import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
@@ -214,8 +214,8 @@ public class MailingListBoImpl implements MailingListBo {
 		else if (Constants.N.equalsIgnoreCase(tmpltVo.getEmbedEmailId())) {
 			msgBean.setEmBedEmailId(Boolean.FALSE);
 		}
-		msgBean.setToCustomersOnly(MailingListDeliveryOption.CUSTOMERS_ONLY.equals(tmpltVo.getDeliveryOption()));
-		msgBean.setToProspectsOnly(MailingListDeliveryOption.PROSPECTS_ONLY.equals(tmpltVo.getDeliveryOption()));
+		msgBean.setToCustomersOnly(MLDeliveryType.CUSTOMERS_ONLY.value().equals(tmpltVo.getDeliveryOption()));
+		msgBean.setToProspectsOnly(MLDeliveryType.PROSPECTS_ONLY.value().equals(tmpltVo.getDeliveryOption()));
 		
 		// set message body and attachments
 		String msgBody = tmpltVo.getBodyText();

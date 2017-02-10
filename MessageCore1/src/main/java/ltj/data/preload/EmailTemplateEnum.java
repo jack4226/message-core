@@ -1,11 +1,11 @@
 package ltj.data.preload;
 
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
 
 public enum EmailTemplateEnum implements EnumInterface {
 	SampleNewsletter1(MailingListEnum.SMPLLST1, false, null, true,
-			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.PERSONALIZED, MLDeliveryType.ALL_ON_LIST,
 			"Sample newsletter to ${SubscriberAddress} with Open/Click/Unsubscribe tracking",
 			"Dear ${SubscriberName},<p/>" + LF +
 			"This is a sample newsletter message for a web-based mailing list. With a web-based " + LF +
@@ -23,7 +23,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"${EmailOpenCountImgTag}"),
 	
 	SampleNewsletter2(MailingListEnum.SMPLLST2, false, null, true,
-			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.TRADITIONAL, MLDeliveryType.ALL_ON_LIST,
 			"Sample HTML newsletter to ${SubscriberAddress}",
 			"Dear ${SubscriberAddress},<p/>" + LF +
 			"This is a sample HTML newsletter message for a traditional mailing list. " + LF +
@@ -41,7 +41,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"${EmailOpenCountImgTag}"),
 	
 	SampleNewsletter3(MailingListEnum.SMPLLST2, false, null, false,
-			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.TRADITIONAL, MLDeliveryType.ALL_ON_LIST,
 			"Sample Plain text newsletter to ${SubscriberAddress}",
 			"Dear ${SubscriberAddress}," + LF + LF + 
 			"This is a sample text newsletter message for a traditional mailing list." + LF +
@@ -58,7 +58,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"${FooterWithUnsubAddr}"),
 	
 	SubscriptionConfirmation(MailingListEnum.SYSLIST1, true, false, true,
-			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.TRADITIONAL, MLDeliveryType.ALL_ON_LIST,
 			"Request for subscription confirmation",
 			"Dear ${SubscriberAddress},<br/>" + LF +
 			"This is an automatically generated message to confirm that you have " + LF +
@@ -70,7 +70,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Thank you" + LF),
 	
 	SubscriptionWelcomeLetter(MailingListEnum.SYSLIST1, true, false, true,
-			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.TRADITIONAL, MLDeliveryType.ALL_ON_LIST,
 			"Your subscription has been confirmed",
 			"Dear ${SubscriberAddress},<br/>" + LF +
 			"Welcome to our mailing lists. Your email address has been added to the" + LF +
@@ -83,7 +83,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Thank you<br/>" + LF),
 	
 	UnsubscriptionLetter(MailingListEnum.SYSLIST1, true, false, true,
-			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.TRADITIONAL, MLDeliveryType.ALL_ON_LIST,
 			"You have unsubscribed from our Newsletter",
 			"Dear ${SubscriberAddress},<br/>" + LF +
 			"Goodbye from our Newsletter, sorry to see you go.<br/>" + LF +
@@ -95,7 +95,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Thank you<br/>" + LF),
 	
 	UserProfileChangeLetter(MailingListEnum.SYSLIST1, true, null, true,
-			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.PERSONALIZED, MLDeliveryType.ALL_ON_LIST,
 			"[notify] Changes of user profile details",
 			"Dear ${SubscriberName},<br/>" + LF +
 			"This message is to inform you of a change of your user profile details" + LF +
@@ -109,7 +109,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Thank you<br/>" + LF),
 	
 	EmailAddressChangeLetter(MailingListEnum.SYSLIST1, true, null, true,
-			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.PERSONALIZED, MLDeliveryType.ALL_ON_LIST,
 			"[notify] Change of your email address",
 			"Dear ${SubscriberName},<br/>" + LF +
 			"When updating your user profile details, your email address has changed.<br/>" + LF +
@@ -120,7 +120,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Thank you<br/>" + LF),
 	
 	TellAFriendLetter(MailingListEnum.SYSLIST1, true, false, true,
-			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.PERSONALIZED, MLDeliveryType.ALL_ON_LIST,
 			"A web site recommendation from ${_ReferrerName}",
 			"Dear ${_FriendsEmailAddress},<p/>" + LF +
 			"${_ReferrerName}, whose email address is ${_ReferrerEmailAddress} thought you " + LF +
@@ -131,7 +131,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"We look forward to your visit!<br/>" + LF),
 	
 	SubscribeByEmailReply(MailingListEnum.SYSLIST1, true, null, false,
-			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.TRADITIONAL, MLDeliveryType.ALL_ON_LIST,
 			"You have subscribed to mailing list ${MailingListName}",
 			"Dear ${SubscriberAddress}," + LF + LF +
 			"This is an automatically generated message to confirm that you have" + LF +
@@ -143,7 +143,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"with \"unsubscribe\" (no quotation marks) in your email subject." + LF),
 	
 	SubscribeByEmailReplyHtml(MailingListEnum.SYSLIST1, true, null, true,
-			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.TRADITIONAL, MLDeliveryType.ALL_ON_LIST,
 			"You have subscribed to ${MailingListName} at ${DomainName}",
 			"Dear ${SubscriberAddress},<br>" + LF +
 			"This is an automatically generated message to confirm that you have " + LF +
@@ -158,7 +158,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 	 * Email templates for production
 	 */
 	EmailsphereOrderReceipt(MailingListEnum.ORDERLST, false, null, false,
-			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.PERSONALIZED, MLDeliveryType.ALL_ON_LIST,
 			"Emailsphere Purchase Receipt",
 			"Dear ${_BillingFirstName}," + LF + LF +
 			"Thank you for your recent purchase from Emailsphere, your purchase, as described below, has been completed." + LF + LF +
@@ -183,7 +183,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"Legacy System Solutions, LLC" + LF),
 	
 	EmailsphereOrderException(MailingListEnum.ALERTLST, false, null, false,
-			MailingListType.PERSONALIZED, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.PERSONALIZED, MLDeliveryType.ALL_ON_LIST,
 			"Important Notice: Your Emailsphere Order # ${_OrderNumber}",
 			"Regarding Order ${_OrderNumber} you placed on ${_OrderDate} from Emailsphere.com" + LF +
 			"1 Emailsphere Enterprise Server" + LF + LF +
@@ -205,7 +205,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 			"http://www.emailsphere.com" + LF),
 	
 	EmailsphereInternalAlert(MailingListEnum.ALERTLST, false, null, false,
-			MailingListType.TRADITIONAL, MailingListDeliveryOption.ALL_ON_LIST,
+			MailingListType.TRADITIONAL, MLDeliveryType.ALL_ON_LIST,
 			"Notify: Alert from Emailsphere.com",
 			"Internal error or exception caught from Emailsphere.com" + LF + LF +
 			"Time: ${_DateTime}" + LF +
@@ -216,13 +216,13 @@ public enum EmailTemplateEnum implements EnumInterface {
 	private boolean isBuiltin;
 	private Boolean isEmbedEmailId;
 	private boolean isHtml;
-	private String listType;
-	private String deliveryType;
+	private MailingListType listType;
+	private MLDeliveryType deliveryType;
 	private String subject;
 	private String bodyText;
 	private EmailTemplateEnum(MailingListEnum mailingList, boolean isBuiltin,
-			Boolean isEmbedEmailId, boolean isHtml, String listType,
-			String deliveryType, String subject,
+			Boolean isEmbedEmailId, boolean isHtml, MailingListType listType,
+			MLDeliveryType deliveryType, String subject,
 			String bodyText) {
 		this.mailingList = mailingList;
 		this.isBuiltin = isBuiltin;
@@ -245,10 +245,10 @@ public enum EmailTemplateEnum implements EnumInterface {
 	public boolean isHtml() {
 		return isHtml;
 	}
-	public String getListType() {
+	public MailingListType getListType() {
 		return listType;
 	}
-	public String getDeliveryType() {
+	public MLDeliveryType getDeliveryType() {
 		return deliveryType;
 	}
 	public String getSubject() {

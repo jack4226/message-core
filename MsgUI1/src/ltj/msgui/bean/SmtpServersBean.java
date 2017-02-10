@@ -178,10 +178,10 @@ public class SmtpServersBean {
 		if ("yes".equalsIgnoreCase(smtpServer.getUseSsl())) {
 			sys_props.put("mail.smtps.auth", "true");
 			sys_props.put("mail.user", userId);
-			protocol = MailServerType.SMTPS;
+			protocol = MailServerType.SMTPS.value();
 		}
 		else {
-			protocol = MailServerType.SMTP;
+			protocol = MailServerType.SMTP.value();
 		}
 		sys_props.put("mail.host", smtpHost);
 		sys_props.put("mail.smtp.connectiontimeout", "2000");

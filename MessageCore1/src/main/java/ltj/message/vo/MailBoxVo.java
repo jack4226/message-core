@@ -12,7 +12,7 @@ public class MailBoxVo extends ServerBaseVo implements Serializable {
 	private String hostName = "";
 	private int portNumber = -1;
 	private String protocol = "";
-	private String serverType = MailServerType.SMTP;
+	private String serverType = MailServerType.SMTP.value();
 	private String folderName = "INBOX";
 	private String mailBoxDesc = null;
 	private String carrierCode = MailCodeType.SMTPMAIL.value();

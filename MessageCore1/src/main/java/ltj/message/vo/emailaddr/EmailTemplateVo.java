@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
 import ltj.message.dao.emailaddr.SchedulesBlob;
 import ltj.message.vo.BaseVoWithRowId;
@@ -17,8 +17,8 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	private String subject = null;
 	private String bodyText = null;
 	private boolean isHtml = true;
-	private String listType = MailingListType.TRADITIONAL;
-	private String deliveryOption = MailingListDeliveryOption.ALL_ON_LIST;
+	private String listType = MailingListType.TRADITIONAL.value();
+	private String deliveryOption = MLDeliveryType.ALL_ON_LIST.value();
 	private String selectCriteria = null;
 	private String embedEmailId = " "; // use system default
 	private String isBuiltIn = Constants.N;
@@ -28,13 +28,13 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	
 	/** define components for UI */
 	public String getDeliveryOptionDesc() {
-		if (MailingListDeliveryOption.ALL_ON_LIST.equals(deliveryOption)) {
+		if (MLDeliveryType.ALL_ON_LIST.value().equals(deliveryOption)) {
 			return "All on list";
 		}
-		else if (MailingListDeliveryOption.CUSTOMERS_ONLY.equals(deliveryOption)) {
+		else if (MLDeliveryType.CUSTOMERS_ONLY.value().equals(deliveryOption)) {
 			return "Customers only";
 		}
-		else if (MailingListDeliveryOption.PROSPECTS_ONLY.equals(deliveryOption)) {
+		else if (MLDeliveryType.PROSPECTS_ONLY.value().equals(deliveryOption)) {
 			return "Prospects only";
 		}
 		return "";
@@ -45,7 +45,7 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	}
 	
 	public boolean isPersonalized() {
-		return MailingListType.PERSONALIZED.equalsIgnoreCase(listType);
+		return MailingListType.PERSONALIZED.value().equalsIgnoreCase(listType);
 	}
 	
 	public boolean getIsBuiltInTemplate() {

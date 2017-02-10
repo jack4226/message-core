@@ -48,7 +48,7 @@ public class ObjectPool implements java.io.Serializable {
 	 *            the maximum number of connections allowed
 	 */
 	public ObjectPool(String pool_item, int max_conns) {
-		this(pool_item, max_conns, "pool-" + getNextNumber(), MailServerType.SMTP, 100);
+		this(pool_item, max_conns, "pool-" + getNextNumber(), MailServerType.SMTP.value(), 100);
 	}
 
 	/**

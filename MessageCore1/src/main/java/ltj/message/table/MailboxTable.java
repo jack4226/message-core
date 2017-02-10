@@ -71,7 +71,7 @@ public class MailboxTable extends CreateTableBase {
 			"HostName varchar(100) NOT NULL, " +
 			"PortNumber integer NOT NULL, " +
 			"Protocol char(4) NOT NULL, " +
-			"ServerType varchar(5) DEFAULT '" + MailServerType.SMTP + "', " +
+			"ServerType varchar(5) DEFAULT '" + MailServerType.SMTP.value() + "', " +
 			"FolderName varchar(30), " +
 			"MailBoxDesc varchar(50), " +
 			"StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " +

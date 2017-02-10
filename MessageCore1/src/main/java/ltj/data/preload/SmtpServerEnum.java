@@ -26,7 +26,7 @@ public enum SmtpServerEnum {
 	private String userPswd;
 	private boolean isPersistence;
 	private String status;
-	private String serverType;
+	private MailServerType serverType;
 	private int numberOfThreads;
 	private Integer maximumRetries;
 	private int retryFreq;
@@ -36,7 +36,7 @@ public enum SmtpServerEnum {
 	private int messageCount;
 	private SmtpServerEnum(String hostName,
 			int port, String serverName, String description, boolean isUseSsl, String userId, String userPswd, 
-			boolean isPersistence, String status, String serverType, 
+			boolean isPersistence, String status, MailServerType serverType, 
 			int numberOfThreads, Integer maximumRetries, int retryFreq,
 			Integer minimumWait, Integer alertAfter, String alertLevel, int messageCount) {
 		this.smtpHost = hostName;
@@ -84,7 +84,7 @@ public enum SmtpServerEnum {
 	public String getStatus() {
 		return status;
 	}
-	public String getServerType() {
+	public MailServerType getServerType() {
 		return serverType;
 	}
 	public int getNumberOfThreads() {

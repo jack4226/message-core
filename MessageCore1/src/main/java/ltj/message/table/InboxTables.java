@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.main.CreateTableBase;
 
 public class InboxTables extends CreateTableBase {
@@ -475,7 +475,7 @@ public class InboxTables extends CreateTableBase {
 			stm.execute("CREATE TABLE MSGCLICKCOUNTS ( " +
 			"MsgId bigint NOT NULL, " +
 			"ListId varchar(8) NOT NULL, " +
-			"DeliveryOption varchar(4) NOT NULL DEFAULT '" + MailingListDeliveryOption.ALL_ON_LIST + "', " +
+			"DeliveryOption varchar(4) NOT NULL DEFAULT '" + MLDeliveryType.ALL_ON_LIST.value() + "', " +
 			"SentCount int NOT NULL DEFAULT 0, " +
 			"OpenCount int NOT NULL DEFAULT 0, " +
 			"ClickCount int NOT NULL DEFAULT 0, " +

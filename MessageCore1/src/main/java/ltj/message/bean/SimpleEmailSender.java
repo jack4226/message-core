@@ -87,7 +87,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 		
 		session = Session.getDefaultInstance(props);
 		// get the smtp transport
-		transport = session.getTransport(MailServerType.SMTP);
+		transport = session.getTransport(MailServerType.SMTP.value());
 		transport.connect(smtphost, Integer.parseInt(smtpport), user, password);
 	}
 

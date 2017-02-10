@@ -165,7 +165,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		
 		// If your version of Exchange doesn't implement POP3 properly, you need to tell JavaMail 
 		// to forget about TOP headers by setting the mail.pop3.forgettopheaders property to true.
-		if (MailServerType.EXCH.equalsIgnoreCase(mailBoxVo.getServerType())) {
+		if (MailServerType.EXCH.value().equalsIgnoreCase(mailBoxVo.getServerType())) {
 			m_props.setProperty("mail.pop3.forgettopheaders","true");
 		}
 		

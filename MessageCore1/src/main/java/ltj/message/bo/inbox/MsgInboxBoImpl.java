@@ -24,7 +24,7 @@ import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MsgDirectionCode;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.constant.RuleNameType;
@@ -273,13 +273,13 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			String listId = msgBean.getMailingListId() == null ? "" : msgBean.getMailingListId();
 			msgClickCountsVo.setListId(listId);
 			if (msgBean.getToCustomersOnly()) {
-				msgClickCountsVo.setDeliveryOption(MailingListDeliveryOption.CUSTOMERS_ONLY);
+				msgClickCountsVo.setDeliveryOption(MLDeliveryType.CUSTOMERS_ONLY.value());
 			}
 			else if (msgBean.getToProspectsOnly()) {
-				msgClickCountsVo.setDeliveryOption(MailingListDeliveryOption.PROSPECTS_ONLY);
+				msgClickCountsVo.setDeliveryOption(MLDeliveryType.PROSPECTS_ONLY.value());
 			}
 			else {
-				msgClickCountsVo.setDeliveryOption(MailingListDeliveryOption.ALL_ON_LIST);
+				msgClickCountsVo.setDeliveryOption(MLDeliveryType.ALL_ON_LIST.value());
 			}
 			msgClickCountsVo.setSentCount(0);
 			msgClickCountsVo.setClickCount(0);

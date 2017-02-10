@@ -7,11 +7,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
+import ltj.data.preload.EmailTemplateEnum;
 import ltj.data.preload.EmailVariableEnum;
 import ltj.data.preload.MailingListEnum;
 import ltj.data.preload.SubscriberEnum;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -200,7 +201,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "BodyText mediumtext, "
 					+ "IsHtml char(1) NOT NULL DEFAULT '" + Constants.N + "', " // Y or N
 					+ "ListType varchar(12) NOT NULL, " // Traditional/Personalized
-					+ "DeliveryOption varchar(4) NOT NULL DEFAULT '" + MailingListDeliveryOption.ALL_ON_LIST + "', " // when ListType is Personalized
+					+ "DeliveryOption varchar(4) NOT NULL DEFAULT '" + MLDeliveryType.ALL_ON_LIST.value() + "', " // when ListType is Personalized
 						// ALL - all on list, CUST - only email addresses with customer record
 					+ "SelectCriteria varchar(100), " 
 						// additional selection criteria - to be implemented
@@ -913,6 +914,27 @@ DELIMITER ;
 				"Schedules)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			
+			for (EmailTemplateEnum tmplt : EmailTemplateEnum.values()) {
+				ps.setString(1, tmplt.name());
+				ps.setString(2, tmplt.getMailingList().name());
+				ps.setString(3, tmplt.getSubject());
+				ps.setString(4, tmplt.getBodyText());
+				ps.setString(5, tmplt.isHtml() ? Constants.Y : Constants.N);
+				ps.setString(6, tmplt.getListType().value());
+				ps.setString(7, tmplt.getDeliveryType().value());
+				ps.setString(8, tmplt.isBuiltin() ? Constants.Y : Constants.N);
+				ps.setString(9, " "); // use system default
+				SchedulesBlob blob = new SchedulesBlob();
+				try {
+					byte[] baosarray = BlobUtil.objectToBytes(blob);
+					ps.setBytes(10, baosarray);
+				}
+				catch (IOException e) {
+					throw new SQLException("IOException caught - " + e.toString());
+				}
+				ps.execute();
+			}
+			
 			ps.setString(1, "SampleNewsletter1");
 			ps.setString(2, "SMPLLST1");
 			ps.setString(3, "Sample newsletter to ${SubscriberAddress} with Open/Click/Unsubscribe tracking");
@@ -933,8 +955,8 @@ DELIMITER ;
 					"${EmailOpenCountImgTag}"
 					);
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.PERSONALIZED);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.PERSONALIZED.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			SchedulesBlob blob = new SchedulesBlob();
@@ -965,8 +987,8 @@ DELIMITER ;
 				"${FooterWithUnsubAddr}<br/>" +
 				"${EmailOpenCountImgTag}");
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.TRADITIONAL.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
@@ -996,8 +1018,8 @@ DELIMITER ;
 				"${WebSiteUrl}/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}" + LF +
 				"${FooterWithUnsubAddr}");
 			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.TRADITIONAL);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.TRADITIONAL.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
@@ -1080,8 +1102,8 @@ DELIMITER ;
 					"Thank you" + LF
 					);
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.TRADITIONAL.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.Y);
 			ps.setString(9, Constants.N);
 			blob = new SchedulesBlob();
@@ -1109,8 +1131,8 @@ DELIMITER ;
 					"Thank you<br/>" + LF
 					);
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.TRADITIONAL.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.Y);
 			ps.setString(9, Constants.N);
 			blob = new SchedulesBlob();
@@ -1137,8 +1159,8 @@ DELIMITER ;
 					"Thank you<br/>" + LF
 					);
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.TRADITIONAL.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.Y);
 			ps.setString(9, Constants.N);
 			blob = new SchedulesBlob();
@@ -1167,8 +1189,8 @@ DELIMITER ;
 					"Thank you<br/>" + LF
 					);
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.PERSONALIZED);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.PERSONALIZED.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.Y);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
@@ -1194,8 +1216,8 @@ DELIMITER ;
 					"Thank you<br/>" + LF
 					);
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.PERSONALIZED);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.PERSONALIZED.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.Y);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
@@ -1246,8 +1268,8 @@ DELIMITER ;
 					"We look forward to your visit!<br/>" + LF
 					);
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.PERSONALIZED);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.PERSONALIZED.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.Y);
 			ps.setString(9, Constants.N); // do not embed email id
 			blob = new SchedulesBlob();
@@ -1273,8 +1295,8 @@ DELIMITER ;
 				"Simply send an e-mail to: ${MailingListAddress}" + LF +
 				"with \"unsubscribe\" (no quotation marks) in your email subject." + LF);
 			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.TRADITIONAL);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.TRADITIONAL.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.Y);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
@@ -1300,8 +1322,8 @@ DELIMITER ;
 				"Simply send an e-mail to <a href='mailto:$%7BMailingListAddress%7D' target='_blank'>${MailingListAddress}</a>" + LF +
 				"with \"unsubscribe\" (no quotation marks) in your email subject.<br>" + LF);
 			ps.setString(5, Constants.Y);
-			ps.setString(6, MailingListType.TRADITIONAL);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.TRADITIONAL.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.Y);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
@@ -1388,8 +1410,8 @@ DELIMITER ;
 					"Legacy System Solutions, LLC" + LF
 					);
 			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.PERSONALIZED);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.PERSONALIZED.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			SchedulesBlob blob = new SchedulesBlob();
@@ -1426,8 +1448,8 @@ DELIMITER ;
 					"http://www.emailsphere.com" + LF
 					);
 			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.PERSONALIZED);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.PERSONALIZED.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();
@@ -1450,8 +1472,8 @@ DELIMITER ;
 					"Error: ${_Error}" + LF
 					);
 			ps.setString(5, Constants.N);
-			ps.setString(6, MailingListType.TRADITIONAL);
-			ps.setString(7, MailingListDeliveryOption.ALL_ON_LIST);
+			ps.setString(6, MailingListType.TRADITIONAL.value());
+			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
 			ps.setString(8, Constants.N);
 			ps.setString(9, " "); // use system default
 			blob = new SchedulesBlob();

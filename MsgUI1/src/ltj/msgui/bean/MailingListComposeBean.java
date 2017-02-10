@@ -25,7 +25,7 @@ import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
@@ -226,10 +226,10 @@ public class MailingListComposeBean {
 			else if (Constants.N.equals(embedEmailId)) {
 				mBean.setEmBedEmailId(Boolean.valueOf(false));
 			}
-			if (MailingListDeliveryOption.CUSTOMERS_ONLY.equals(deliveryOption)) {
+			if (MLDeliveryType.CUSTOMERS_ONLY.value().equals(deliveryOption)) {
 				mBean.setToCustomersOnly(true);
 			}
-			else if (MailingListDeliveryOption.PROSPECTS_ONLY.equals(deliveryOption)) {
+			else if (MLDeliveryType.PROSPECTS_ONLY.value().equals(deliveryOption)) {
 				mBean.setToProspectsOnly(true);
 			}
 			String contentType = "text/plain";

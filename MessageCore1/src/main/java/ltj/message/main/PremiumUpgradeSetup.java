@@ -8,7 +8,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 import ltj.message.bo.rule.RuleBase;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.constant.VariableName;
@@ -64,8 +64,8 @@ public class PremiumUpgradeSetup {
 		vo.setIsHtml(true);
 		vo.setListId("ORDERLST");
 		vo.setEmbedEmailId(Constants.Y);
-		vo.setDeliveryOption(MailingListDeliveryOption.ALL_ON_LIST);
-		vo.setListType(MailingListType.TRADITIONAL);
+		vo.setDeliveryOption(MLDeliveryType.ALL_ON_LIST.value());
+		vo.setListType(MailingListType.TRADITIONAL.value());
 		vo.setSubject("Product Key for EmailSphere premium version included");
 		vo.setBodyText(bodyText);
 	}

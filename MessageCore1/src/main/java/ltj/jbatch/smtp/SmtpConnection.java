@@ -86,12 +86,12 @@ public final class SmtpConnection implements java.io.Serializable {
 		}
 		if ("yes".equalsIgnoreCase(vo.getUseSsl())) {
 			sys_props.setProperty("mail.smtps.auth", "true");
-			protocol = MailServerType.SMTPS;
+			protocol = MailServerType.SMTPS.value();
 			sys_props.setProperty("mail.user", userId);
 			sys_props.setProperty("mail.password", password);
 		}
 		else {
-			protocol = MailServerType.SMTP;
+			protocol = MailServerType.SMTP.value();
 			if ("yes".equalsIgnoreCase(vo.getUseAuth())) {
 				sys_props.setProperty("mail.smtp.auth", "true");
 				sys_props.setProperty("mail.user", userId);
@@ -141,7 +141,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		}
 		TIME_TO_ISSUE_ALERT *= 60;
 
-		if (MailServerType.EXCH.equalsIgnoreCase(serverType)) {
+		if (MailServerType.EXCH.value().equalsIgnoreCase(serverType)) {
 			retryFreqArray = retryFreqArrayExch;
 		}
 		else {
@@ -211,7 +211,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		vo.setServerName(props.getProperty("server_name", vo.getSmtpHost()));
 		vo.setUserId(props.getProperty("userid"));
 		vo.setUserPswd(props.getProperty("password"));
-		vo.setServerType(props.getProperty("server_type", MailServerType.SMTP));
+		vo.setServerType(props.getProperty("server_type", MailServerType.SMTP.value()));
 		vo.setUseSsl(props.getProperty("use_ssl"));
 		vo.setPersistence(props.getProperty("persistence"));
 		vo.setUseAuth(props.getProperty("use_auth"));

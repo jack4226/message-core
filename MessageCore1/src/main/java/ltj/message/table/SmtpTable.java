@@ -59,7 +59,7 @@ public class SmtpTable extends CreateTableBase {
 			"UserPswd varchar(30) NOT NULL, " +
 			"Persistence varchar(3) NOT NULL, " +
 			"StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " +
-			"ServerType varchar(5) DEFAULT '" + MailServerType.SMTP + "', " +
+			"ServerType varchar(5) DEFAULT '" + MailServerType.SMTP.value() + "', " +
 			"Threads integer NOT NULL, " +
 			"Retries integer NOT NULL, " +
 			"RetryFreq integer NOT NULL, " +
@@ -151,7 +151,7 @@ public class SmtpTable extends CreateTableBase {
 			ps.setString(7, "support"); // user password
 			ps.setString(8, Constants.NO); // persistence
 			ps.setString(9, StatusIdCode.ACTIVE); // status id
-			ps.setString(10, MailServerType.SMTP); // server type
+			ps.setString(10, MailServerType.SMTP.value()); // server type
 			ps.setInt(11, 4); // Threads
 			ps.setInt(12, 10); // retries
 			ps.setInt(13, 6); // retry freq
@@ -183,7 +183,7 @@ public class SmtpTable extends CreateTableBase {
 			ps.setString(7, "jackwng01"); // user password
 			ps.setString(8, Constants.NO); // persistence
 			ps.setString(9, StatusIdCode.INACTIVE); // status id
-			ps.setString(10, MailServerType.SMTP); // server type
+			ps.setString(10, MailServerType.SMTP.value()); // server type
 			ps.setInt(11, 1); // Threads
 			ps.setInt(12, 10); // retries
 			ps.setInt(13, 5); // retry freq
@@ -203,7 +203,7 @@ public class SmtpTable extends CreateTableBase {
 			ps.setString(7, "jackwng01"); // user password
 			ps.setString(8, Constants.NO); // persistence
 			ps.setString(9, StatusIdCode.INACTIVE); // status id
-			ps.setString(10, MailServerType.SMTP); // server type
+			ps.setString(10, MailServerType.SMTP.value()); // server type
 			ps.setInt(11, 2); // Threads
 			ps.setInt(12, 10); // retries
 			ps.setInt(13, 5); // retry freq
@@ -223,7 +223,7 @@ public class SmtpTable extends CreateTableBase {
 			ps.setString(7, "pwd"); // user password
 			ps.setString(8, Constants.NO); // persistence
 			ps.setString(9, StatusIdCode.ACTIVE); // status id
-			ps.setString(10, MailServerType.EXCH); // server type
+			ps.setString(10, MailServerType.EXCH.value()); // server type
 			ps.setInt(11, 1); // Threads
 			ps.setInt(12, 4); // retries
 			ps.setInt(13, 1); // retry freq

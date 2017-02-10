@@ -3,14 +3,14 @@ package ltj.message.vo.inbox;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import ltj.message.constant.MailingListDeliveryOption;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.vo.BaseVo;
 
 public class MsgClickCountsVo extends BaseVo implements Serializable {
 	private static final long serialVersionUID = 8405577701544401054L;
 	private long msgId = -1;
 	private String listId = "";
-	private String deliveryOption = MailingListDeliveryOption.ALL_ON_LIST;
+	private String deliveryOption = MLDeliveryType.ALL_ON_LIST.value();
 	private int sentCount = 0;
 	private int openCount = 0;
 	private int clickCount = 0;
@@ -25,10 +25,10 @@ public class MsgClickCountsVo extends BaseVo implements Serializable {
 	/** define components for UI */
 	
 	public String getDeliveryOptionDesc() {
-		if (MailingListDeliveryOption.CUSTOMERS_ONLY.equals(deliveryOption)) {
+		if (MLDeliveryType.CUSTOMERS_ONLY.value().equals(deliveryOption)) {
 			return "Customers only";
 		}
-		else if (MailingListDeliveryOption.PROSPECTS_ONLY.equals(deliveryOption)) {
+		else if (MLDeliveryType.PROSPECTS_ONLY.value().equals(deliveryOption)) {
 			return "Prospects only";
 		}
 		else {
