@@ -93,7 +93,7 @@ public class MailingListBoTest extends BoTestBase {
 	@Rollback(value=false)
 	public void test2() {
 		try {
-			Thread.sleep(WaitTimeInMillis / 2);
+			Thread.sleep(WaitTimeInMillis * 2);
 		} catch (InterruptedException e) {}
 	}
 	
