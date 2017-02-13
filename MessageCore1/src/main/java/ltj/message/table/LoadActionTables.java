@@ -208,9 +208,16 @@ public class LoadActionTables {
 	void load(MsgActionDao msgActionDao) {
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 		
-		// TODO 
+		// TODO complete
 //		for (RuleActionEnum act : RuleActionEnum.values()) {
-//			MsgActionVo vo = new MsgActionVo(act.getRuleName().name(), act.getSequence(), now, null,
+//			String ruleName = null;
+//			if (act.getRuleName().isBuiltin()) {
+//				ruleName = act.getRuleName().name();
+//			}
+//			else {
+//				ruleName = act.getRuleName().getValue();
+//			}
+//			MsgActionVo vo = new MsgActionVo(ruleName, act.getSequence(), now, null,
 //					act.getActionDetail().name(), StatusIdCode.ACTIVE, act.getFieldValues());
 //			msgActionDao.insert(vo);
 //		}
