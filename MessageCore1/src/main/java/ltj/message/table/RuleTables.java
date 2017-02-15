@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import ltj.data.preload.RuleNameEnum;
+import ltj.data.preload.RuleSubruleMapEnum;
 import ltj.message.bo.rule.RuleBase;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
@@ -148,276 +150,332 @@ public class RuleTables extends CreateTableBase {
 					"Description) " +
 				" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			
-			ps.setString(1, "Unattended_Mailbox");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(4, StatusIdCode.ACTIVE);
-			ps.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.PRE_RULE);
-			ps.setString(8, Constants.N); // sub rule?
-			ps.setString(9, Constants.N); // built-in rule?
-			ps.setString(10, "simply get rid of the messages from the mailbox.");
-			ps.execute();
+			int seq = 100;
+			for (RuleNameEnum rl : RuleNameEnum.getBuiltinRules()) {
+				ps.setString(1, rl.name());
+				ps.setInt(2, ++seq);
+				ps.setString(3, rl.getRuleType().getValue());
+				ps.setString(4, StatusIdCode.ACTIVE);
+				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+				ps.setString(6, Constants.SMTP_MAIL);
+				ps.setString(7, rl.getRuleCategory().getValue());
+				ps.setString(8, rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
+				ps.setString(9, rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
+				ps.setString(10, rl.getDescription());
+				ps.execute();
+			}
+ 			
+			seq = 200;
+			for (RuleNameEnum rl : RuleNameEnum.getCustomRules()) {
+				ps.setString(1, rl.name());
+				if (rl.equals(RuleNameEnum.Unattended_Mailbox)) {
+					ps.setInt(2, 0);
+				}
+				else {
+					ps.setInt(2, ++seq);
+				}
+				ps.setString(3, rl.getRuleType().getValue());
+				ps.setString(4, StatusIdCode.ACTIVE);
+				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+				ps.setString(6, Constants.SMTP_MAIL);
+				ps.setString(7, rl.getRuleCategory().getValue());
+				ps.setString(8, rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
+				ps.setString(9, rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
+				ps.setString(10, rl.getDescription());
+				ps.execute();
+			}
+ 			
+			seq = 225;
+			for (RuleNameEnum rl : RuleNameEnum.getSubRules()) {
+				ps.setString(1, rl.name());
+				if (rl.equals(RuleNameEnum.Unattended_Mailbox)) {
+					ps.setInt(2, 0);
+				}
+				else {
+					ps.setInt(2, ++seq);
+				}
+				ps.setString(3, rl.getRuleType().getValue());
+				ps.setString(4, StatusIdCode.ACTIVE);
+				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+				ps.setString(6, Constants.SMTP_MAIL);
+				ps.setString(7, rl.getRuleCategory().getValue());
+				ps.setString(8, rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
+				ps.setString(9, rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
+				ps.setString(10, rl.getDescription());
+				ps.execute();
+			}
+
 			
-			// built-in rules
-			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
-			ps.setInt(2, 101);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(9, Constants.Y); // built-in rule?
-			ps.setString(10, "from RFC Scan Routine, or from postmaster with sub-rules");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SOFT_BOUNCE.toString());
-			ps.setInt(2, 102);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "Soft bounce, from RFC scan routine");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
-			ps.setInt(2, 103);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "Mailbox full from postmaster with sub-rules");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.MSGSIZE_TOO_BIG.toString());
-			ps.setInt(2, 104);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "Message size too large");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.MAIL_BLOCK.toString());
-			ps.setInt(2, 105);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "Bounced from Bulk Email Filter");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
-			ps.setInt(2, 106);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(10, "Bounced from Spam blocker");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
-			ps.setInt(2, 107);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(10, "Bounced from Virus blocker");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
-			ps.setInt(2, 108);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(10, "Bounced from Challenge Response");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.AUTO_REPLY.toString());
-			ps.setInt(2, 109);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(10, "Auto reply from email client software");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.CC_USER.toString());
-			ps.setInt(2, 110);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "from scan routine, message received as recipient of CC or BCC");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.MDN_RECEIPT.toString());
-			ps.setInt(2, 111);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "from RFC scan, Message Delivery Notification, a positive receipt");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.GENERIC.toString());
-			ps.setInt(2, 112);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "Non bounce or system could not recognize it");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.UNSUBSCRIBE.toString());
-			ps.setInt(2, 113);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "remove from a mailing list");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SUBSCRIBE.toString());
-			ps.setInt(2, 114);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "subscribe to a mailing list");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.RMA_REQUEST.toString());
-			ps.setInt(2, 115);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "RMA request, internal only");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.CSR_REPLY.toString());
-			ps.setInt(2, 116);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "called from internal program");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.BROADCAST.toString());
-			ps.setInt(2, 117);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "called from internal program");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SEND_MAIL.toString());
-			ps.setInt(2, 118);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(10, "called from internal program");
-			ps.execute();
-			// end of built-in rules
-			
-			// Custom Rules
-			ps.setString(1, "Executable_Attachment");
-			ps.setInt(2, 200);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(9, Constants.N); // built-in rule?
-			ps.setString(10, "Emails with executable attachment file(s)");
-			ps.execute();
-			
-			ps.setString(1, "Contact_Us");
-			ps.setInt(2, 201);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(9, Constants.N);
-			ps.setString(10, "Contact Us Form submitted from web site");
-			ps.execute();
-			
-			ps.setString(1, "OutOfOffice_AutoReply");
-			ps.setInt(2, 205);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(9, Constants.N);
-			ps.setString(10, "ouf of the office auto reply");
-			ps.execute();
-			
-			ps.setString(1, "XHeader_SpamScore");
-			ps.setInt(2, 210);
-			ps.setString(3, RuleBase.SIMPLE_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(9, Constants.N);
-			ps.setString(10, "Examine x-headers for SPAM score.");
-			ps.execute();
-			
-			ps.setString(1, "HardBouce_WatchedMailbox");
-			ps.setInt(2, 215);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.POST_RULE);
-			ps.setString(9, Constants.N);
-			ps.setString(10, "post rule for hard bounced emails.");
-			ps.execute();
-			
-			ps.setString(1, "HardBounce_NoFinalRcpt");
-			ps.setInt(2, 216);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.POST_RULE);
-			ps.setString(9, Constants.N);
-			ps.setString(10, "post rule for hard bounces without final recipient.");
-			ps.execute();
-			
-			/*
-			 * define SubRules
-			 */
-			ps.setString(1, "HardBounce_Subj_Match");
-			ps.setInt(2, 218);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.Y); // sub rule?
-			ps.setString(9, Constants.Y); // built-in rule?
-			ps.setString(10, "Sub rule for hard bounces from postmaster");
-			ps.execute();
-			
-			ps.setString(1, "HardBounce_Body_Match");
-			ps.setInt(2, 219);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.Y);
-			ps.setString(10, "Sub rule for hard bounces from postmaster");
-			ps.execute();
-			
-			ps.setString(1, "MailboxFull_Body_Match");
-			ps.setInt(2, 220);
-			ps.setString(3, RuleBase.ALL_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.Y);
-			ps.setString(10, "Sub rule for mailbox full");
-			ps.execute();
-			
-			ps.setString(1, "SpamBlock_Body_Match");
-			ps.setInt(2, 221);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.Y);
-			ps.setString(10, "Sub rule for spam block");
-			ps.execute();
-			
-			ps.setString(1, "VirusBlock_Body_Match");
-			ps.setInt(2, 222);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.Y);
-			ps.setString(10, "Sub rule for virus block");
-			ps.execute();
-			
-			ps.setString(1, "ChalResp_Body_Match");
-			ps.setInt(2, 223);
-			ps.setString(3, RuleBase.ANY_RULE);
-			ps.setString(6, Constants.SMTP_MAIL);
-			ps.setString(7, RuleBase.MAIN_RULE);
-			ps.setString(8, Constants.Y);
-			ps.setString(9, Constants.Y);
-			ps.setString(10, "Sub rule for challenge response");
-			ps.execute();
+//			ps.setString(1, "Unattended_Mailbox");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(4, StatusIdCode.ACTIVE);
+//			ps.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.PRE_RULE);
+//			ps.setString(8, Constants.N); // sub rule?
+//			ps.setString(9, Constants.N); // built-in rule?
+//			ps.setString(10, "simply get rid of the messages from the mailbox.");
+//			ps.execute();
+//			
+//			// built-in rules
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setInt(2, 101);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(9, Constants.Y); // built-in rule?
+//			ps.setString(10, "from RFC Scan Routine, or from postmaster with sub-rules");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SOFT_BOUNCE.toString());
+//			ps.setInt(2, 102);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "Soft bounce, from RFC scan routine");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
+//			ps.setInt(2, 103);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "Mailbox full from postmaster with sub-rules");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.MSGSIZE_TOO_BIG.toString());
+//			ps.setInt(2, 104);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "Message size too large");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.MAIL_BLOCK.toString());
+//			ps.setInt(2, 105);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "Bounced from Bulk Email Filter");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
+//			ps.setInt(2, 106);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(10, "Bounced from Spam blocker");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setInt(2, 107);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(10, "Bounced from Virus blocker");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
+//			ps.setInt(2, 108);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(10, "Bounced from Challenge Response");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.AUTO_REPLY.toString());
+//			ps.setInt(2, 109);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(10, "Auto reply from email client software");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.CC_USER.toString());
+//			ps.setInt(2, 110);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "from scan routine, message received as recipient of CC or BCC");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.MDN_RECEIPT.toString());
+//			ps.setInt(2, 111);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "from RFC scan, Message Delivery Notification, a positive receipt");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.GENERIC.toString());
+//			ps.setInt(2, 112);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "Non bounce or system could not recognize it");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.UNSUBSCRIBE.toString());
+//			ps.setInt(2, 113);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "remove from a mailing list");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SUBSCRIBE.toString());
+//			ps.setInt(2, 114);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "subscribe to a mailing list");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.RMA_REQUEST.toString());
+//			ps.setInt(2, 115);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "RMA request, internal only");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.CSR_REPLY.toString());
+//			ps.setInt(2, 116);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "called from internal program");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.BROADCAST.toString());
+//			ps.setInt(2, 117);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "called from internal program");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SEND_MAIL.toString());
+//			ps.setInt(2, 118);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(10, "called from internal program");
+//			ps.execute();
+//			// end of built-in rules
+//			
+//			// Custom Rules
+//			ps.setString(1, "Executable_Attachment");
+//			ps.setInt(2, 200);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(9, Constants.N); // built-in rule?
+//			ps.setString(10, "Emails with executable attachment file(s)");
+//			ps.execute();
+//			
+//			ps.setString(1, "Contact_Us");
+//			ps.setInt(2, 201);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(9, Constants.N);
+//			ps.setString(10, "Contact Us Form submitted from web site");
+//			ps.execute();
+//			
+//			ps.setString(1, "OutOfOffice_AutoReply");
+//			ps.setInt(2, 205);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(9, Constants.N);
+//			ps.setString(10, "ouf of the office auto reply");
+//			ps.execute();
+//			
+//			ps.setString(1, "XHeader_SpamScore");
+//			ps.setInt(2, 210);
+//			ps.setString(3, RuleBase.SIMPLE_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(9, Constants.N);
+//			ps.setString(10, "Examine x-headers for SPAM score.");
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBouce_WatchedMailbox");
+//			ps.setInt(2, 215);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.POST_RULE);
+//			ps.setString(9, Constants.N);
+//			ps.setString(10, "post rule for hard bounced emails.");
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBounce_NoFinalRcpt");
+//			ps.setInt(2, 216);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.POST_RULE);
+//			ps.setString(9, Constants.N);
+//			ps.setString(10, "post rule for hard bounces without final recipient.");
+//			ps.execute();
+//			
+//			/*
+//			 * define SubRules
+//			 */
+//			ps.setString(1, "HardBounce_Subj_Match");
+//			ps.setInt(2, 218);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(8, Constants.Y); // sub rule?
+//			ps.setString(9, Constants.Y); // built-in rule?
+//			ps.setString(10, "Sub rule for hard bounces from postmaster");
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBounce_Body_Match");
+//			ps.setInt(2, 219);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.Y);
+//			ps.setString(10, "Sub rule for hard bounces from postmaster");
+//			ps.execute();
+//			
+//			ps.setString(1, "MailboxFull_Body_Match");
+//			ps.setInt(2, 220);
+//			ps.setString(3, RuleBase.ALL_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.Y);
+//			ps.setString(10, "Sub rule for mailbox full");
+//			ps.execute();
+//			
+//			ps.setString(1, "SpamBlock_Body_Match");
+//			ps.setInt(2, 221);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.Y);
+//			ps.setString(10, "Sub rule for spam block");
+//			ps.execute();
+//			
+//			ps.setString(1, "VirusBlock_Body_Match");
+//			ps.setInt(2, 222);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.Y);
+//			ps.setString(10, "Sub rule for virus block");
+//			ps.execute();
+//			
+//			ps.setString(1, "ChalResp_Body_Match");
+//			ps.setInt(2, 223);
+//			ps.setString(3, RuleBase.ANY_RULE);
+//			ps.setString(6, Constants.SMTP_MAIL);
+//			ps.setString(7, RuleBase.MAIN_RULE);
+//			ps.setString(8, Constants.Y);
+//			ps.setString(9, Constants.Y);
+//			ps.setString(10, "Sub rule for challenge response");
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all RuleLogic rows...");
@@ -445,6 +503,22 @@ public class RuleTables extends CreateTableBase {
 					"Delimiter) " +
 				" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			
+			// TODO complete
+//			for (RuleElementEnum re : RuleElementEnum.values()) {
+//				ps.setString(1, re.getRuleName().name());
+//				ps.setInt(2, re.getRuleSequence());
+//				ps.setString(3, re.getRuleDataName().getValue());
+//				ps.setString(4, re.getXheaderNameEnum() == null ? null : re.getXheaderNameEnum().value());
+//				ps.setString(5, re.getRuleCriteria().getValue());
+//				ps.setString(6, re.isCaseSensitive() ? Constants.Y : Constants.N);
+//				ps.setString(7, re.getTargetText());
+//				ps.setString(8, re.getTargetProcName());
+//				ps.setString(9, re.getExclusions());
+//				ps.setString(10, re.getExclListProcName());
+//				ps.setString(11, re.getDelimiter());
+//				ps.execute();
+//			}
+//			
 			ps.setString(1, "Unattended_Mailbox");
 			ps.setInt(2, 0);
 			ps.setString(3, RuleBase.MAILBOX_USER);
@@ -1133,35 +1207,42 @@ public class RuleTables extends CreateTableBase {
 					"SubRuleSeq) " +
 				" VALUES (?, ?, ?)");
 			
-			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
-			ps.setString(2, "HardBounce_Subj_Match");
-			ps.setInt(3,0);
-			ps.execute();
+			for (RuleSubruleMapEnum sub : RuleSubruleMapEnum.values()) {
+				ps.setString(1, sub.getRuleName().name());
+				ps.setString(2, sub.getSubruleName().name());
+				ps.setInt(3, sub.getSequence());
+				ps.execute();
+			}
 			
-			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
-			ps.setString(2, "HardBounce_Body_Match");
-			ps.setInt(3,1);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
-			ps.setString(2, "MailboxFull_Body_Match");
-			ps.setInt(3,2);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
-			ps.setString(2, "SpamBlock_Body_Match");
-			ps.setInt(3,0);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
-			ps.setString(2, "ChalResp_Body_Match");
-			ps.setInt(3,0);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
-			ps.setString(2, "VirusBlock_Body_Match");
-			ps.setInt(3,0);
-			ps.execute();
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(2, "HardBounce_Subj_Match");
+//			ps.setInt(3,0);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(2, "HardBounce_Body_Match");
+//			ps.setInt(3,1);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
+//			ps.setString(2, "MailboxFull_Body_Match");
+//			ps.setInt(3,2);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
+//			ps.setString(2, "SpamBlock_Body_Match");
+//			ps.setInt(3,0);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
+//			ps.setString(2, "ChalResp_Body_Match");
+//			ps.setInt(3,0);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setString(2, "VirusBlock_Body_Match");
+//			ps.setInt(3,0);
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all RuleSubRuleMap rows...");

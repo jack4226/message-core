@@ -14,7 +14,7 @@ public enum RuleElementEnum {
 	 */
 	HARD_BOUNCE_1(RuleNameEnum.HARD_BOUNCE, 1, RuleDataName.FROM_ADDR, null, RuleCriteria.REG_EX, false,
 			"^(?:postmaster|mailmaster|mailadmin|administrator)\\S*\\@", null,
-			"postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME, "postmasterTargetText", ","),
+			"postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME, "excludingPostmastersBo", ","),
 	HARD_BOUNCE_2(RuleNameEnum.HARD_BOUNCE, 2, RuleDataName.FROM_ADDR, null, RuleCriteria.REG_EX, false,
 			"^(?:mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@", null,
 			"mailer-daemon@legacytojave.com,mailer-daemon@" + Constants.VENDER_DOMAIN_NAME, null, ","),
@@ -22,7 +22,7 @@ public enum RuleElementEnum {
 	MAILBOX_FULL_1(RuleNameEnum.MAILBOX_FULL, 1, RuleDataName.FROM_ADDR, null, RuleCriteria.REG_EX, false,
 			"^(?:postmaster|mailmaster|mailadmin|administrator" +
 					"|mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@", null,
-			"postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME, null, ","),
+			"postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME, "excludingPostmastersBo", ","),
 
 	SPAM_BLOCK_1(RuleNameEnum.SPAM_BLOCK, 1, RuleDataName.SUBJECT, null, RuleCriteria.REG_EX, false,
 			"^Spam rapport \\/ Spam report \\S+ -\\s+\\(\\S+\\)$" +
@@ -130,14 +130,14 @@ public enum RuleElementEnum {
 			null, null, null),
 
 	UNSUBSCRIBE_1(RuleNameEnum.UNSUBSCRIBE, 1, RuleDataName.TO_ADDR, null, RuleCriteria.REG_EX, false,
-			"^mailinglist@.*|^jwang@localhost$", "mailingListTargetText",
+			"^mailinglist@.*|^jwang@localhost$", "mailingListRegExBo",
 			null, null, null),
 	UNSUBSCRIBE_2(RuleNameEnum.UNSUBSCRIBE, 2, RuleDataName.SUBJECT, null, RuleCriteria.EQUALS, false,
 			"unsubscribe", null,
 			null, null, null),
 
 	SUBSCRIBE_1(RuleNameEnum.SUBSCRIBE, 1, RuleDataName.TO_ADDR, null, RuleCriteria.REG_EX, false,
-			"^mailinglist@.*|^jwang@localhost$", "mailingListTargetText",
+			"^mailinglist@.*|^jwang@localhost$", "mailingListRegExBo",
 			null, null, null),
 	SUBSCRIBE_2(RuleNameEnum.SUBSCRIBE, 2, RuleDataName.SUBJECT, null, RuleCriteria.REG_EX, false,
 			"\\s*subscribe\\s*", null,
