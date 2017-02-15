@@ -20,7 +20,7 @@ public enum RuleNameEnum {
 	HARD_BOUNCE("Hard Bounce", RuleType.ANY, RuleCategory.MAIN_RULE, true, false, "From RFC Scan Routine, or from postmaster with sub-rules"), // Hard bounce - suspend,notify,close
 	SOFT_BOUNCE("Soft Bounce", RuleType.SIMPLE, RuleCategory.MAIN_RULE, true, false, "Soft bounce, from RFC scan routine"), // Soft bounce - bounce++,close
 	MAILBOX_FULL("Mailbox Full", RuleType.ANY, RuleCategory.MAIN_RULE, true, false, "Mailbox full from postmaster with sub-rules"), // treated as Soft Bounce
-	SIZE_TOO_LARGE("Size Too Large", RuleType.SIMPLE, RuleCategory.MAIN_RULE, true, false, "Message size too large"), // message length exceeded administrative limit, treat as Soft Bounce
+	MSGSIZE_TOO_BIG("Size Too Large", RuleType.SIMPLE, RuleCategory.MAIN_RULE, true, false, "Message size too large"), // message length exceeded administrative limit, treat as Soft Bounce
 	MAIL_BLOCK("Mail Block", RuleType.ALL, RuleCategory.MAIN_RULE, true, false, "Bounced from Bulk Email Filter"), // message content rejected, treat as Soft Bounce
 	SPAM_BLOCK("Spam Block", RuleType.ANY, RuleCategory.MAIN_RULE, true, false, "Bounced from Spam blocker"), // blocked by Spam filter, 
 	VIRUS_BLOCK("Virus Block", RuleType.ANY, RuleCategory.MAIN_RULE, true, false, "Bounced from Virus blocker"), // blocked by Virus Scan,
@@ -41,13 +41,13 @@ public enum RuleNameEnum {
 	/*
 	 * Custom rules
 	 */
-	UNATTENDED_MAILBOX("Unattended_Mailbox", RuleType.ALL, RuleCategory.PRE_RULE, false, false, "Simply get rid of the messages from the mailbox."),
-	OUF_OF_OFFICE_AUTO_REPLY("OutOfOffice_AutoReply", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Ouf of the office auto reply"),
-	CONTACT_US("Contact_Us", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Contact Us Form submitted from web site"),
-	SPAM_SCORE("XHeader_SpamScore", RuleType.SIMPLE, RuleCategory.MAIN_RULE, false, false, "Examine x-headers for Spam score."),
-	EXECUTABLE_ATTACHMENT("Executable_Attachment", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Emails with executable attachment file(s)"),
-	HARD_BOUNCE_WATCHED_MAILBOX("HardBouce_WatchedMailbox", RuleType.ALL, RuleCategory.POST_RULE, false, false, "Post rule for hard bounced emails."),
-	HARD_BOUNCE_NO_FINAL_RCPT("HardBounce_NoFinalRcpt", RuleType.ALL, RuleCategory.POST_RULE, false, false, "Post rule for hard bounces without final recipient."),
+	Unattended_Mailbox("Unattended_Mailbox", RuleType.ALL, RuleCategory.PRE_RULE, false, false, "Simply get rid of the messages from the mailbox."),
+	OutOfOffice_AutoReply("OutOfOffice_AutoReply", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Ouf of the office auto reply"),
+	Contact_Us("Contact_Us", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Contact Us Form submitted from web site"),
+	XHeader_SpamScore("XHeader_SpamScore", RuleType.SIMPLE, RuleCategory.MAIN_RULE, false, false, "Examine x-headers for Spam score."),
+	Executable_Attachment("Executable_Attachment", RuleType.ALL, RuleCategory.MAIN_RULE, false, false, "Emails with executable attachment file(s)"),
+	HardBouce_WatchedMailbox("HardBouce_WatchedMailbox", RuleType.ALL, RuleCategory.POST_RULE, false, false, "Post rule for hard bounced emails."),
+	HardBounce_NoFinalRcpt("HardBounce_NoFinalRcpt", RuleType.ALL, RuleCategory.POST_RULE, false, false, "Post rule for hard bounces without final recipient."),
 
 	/*
 	 * Sub rules

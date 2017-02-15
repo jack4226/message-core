@@ -2,16 +2,18 @@ package ltj.message.table;
 
 import java.sql.Timestamp;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 
+import ltj.data.preload.ClientVariableEnum;
+import ltj.data.preload.GlobalVariableEnum;
 import ltj.message.constant.AddressType;
-import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
+import ltj.message.constant.MailCodeType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableStatus;
 import ltj.message.constant.VariableType;
-import ltj.message.constant.XHeaderName;
 import ltj.message.dao.template.BodyTemplateDao;
 import ltj.message.dao.template.ClientVariableDao;
 import ltj.message.dao.template.GlobalVariableDao;
@@ -70,106 +72,142 @@ public class LoadTemplateTables {
 		
 	void load(GlobalVariableDao globalVariableDao) {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
-		GlobalVariableVo in = new GlobalVariableVo();
 		
-		in.setVariableName("CurrentDateTime");
-		in.setStartTime(updtTime);
-		in.setVariableValue(null);
-		in.setVariableFormat("yyyy-MM-dd HH:mm:ss");
-		in.setVariableType(VariableType.DATETIME);
-		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
-		globalVariableDao.insert(in);
-
-		in.setVariableName("CurrentDate");
-		in.setStartTime(updtTime);
-		in.setVariableValue(null);
-		in.setVariableFormat("yyyy-MM-dd");
-		in.setVariableType(VariableType.DATETIME);
-		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
-		globalVariableDao.insert(in);
-
-		in.setVariableName("CurrentTime");
-		in.setStartTime(updtTime);
-		in.setVariableValue(null);
-		in.setVariableFormat("hh:mm:ss a");
-		in.setVariableType(VariableType.DATETIME);
-		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
-		globalVariableDao.insert(in);
-
-		// load default client id
-		in = new GlobalVariableVo();
+		for (GlobalVariableEnum var : GlobalVariableEnum.values()) {
+			GlobalVariableVo in = new GlobalVariableVo();
+			if (StringUtils.isNotBlank(var.getVariableName())) {
+				in.setVariableName(var.getVariableName());
+			}
+			else {
+				in.setVariableName(var.name());
+			}
+			in.setStartTime(updtTime);
+			in.setVariableValue(var.getDefaultValue());
+			in.setVariableFormat(var.getVariableFormat());
+			in.setVariableType(var.getVariableType());
+			in.setStatusId(StatusIdCode.ACTIVE);
+			in.setAllowOverride(var.getAllowOverride().value());
+			in.setRequired(Constants.N);
+			globalVariableDao.insert(in);
+		}
 		
-		in.setVariableName(XHeaderName.CLIENT_ID.value());
-		in.setStartTime(updtTime);
-		in.setVariableValue(Constants.DEFAULT_CLIENTID);
-		in.setVariableFormat(null);
-		in.setVariableType(VariableType.X_HEADER);
-		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
-		globalVariableDao.insert(in);
+//		GlobalVariableVo in = new GlobalVariableVo();
+//
+//		in.setVariableName("CurrentDateTime");
+//		in.setStartTime(updtTime);
+//		in.setVariableValue(null);
+//		in.setVariableFormat("yyyy-MM-dd HH:mm:ss");
+//		in.setVariableType(VariableType.DATETIME);
+//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setAllowOverride(Constants.Y);
+//		in.setRequired(Constants.N);
+//		globalVariableDao.insert(in);
+//
+//		in.setVariableName("CurrentDate");
+//		in.setStartTime(updtTime);
+//		in.setVariableValue(null);
+//		in.setVariableFormat("yyyy-MM-dd");
+//		in.setVariableType(VariableType.DATETIME);
+//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setAllowOverride(Constants.Y);
+//		in.setRequired(Constants.N);
+//		globalVariableDao.insert(in);
+//
+//		in.setVariableName("CurrentTime");
+//		in.setStartTime(updtTime);
+//		in.setVariableValue(null);
+//		in.setVariableFormat("hh:mm:ss a");
+//		in.setVariableType(VariableType.DATETIME);
+//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setAllowOverride(Constants.Y);
+//		in.setRequired(Constants.N);
+//		globalVariableDao.insert(in);
+//
+//		// load default client id
+//		in = new GlobalVariableVo();
+//		
+//		in.setVariableName(XHeaderName.CLIENT_ID.value());
+//		in.setStartTime(updtTime);
+//		in.setVariableValue(Constants.DEFAULT_CLIENTID);
+//		in.setVariableFormat(null);
+//		in.setVariableType(VariableType.X_HEADER);
+//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setAllowOverride(Constants.Y);
+//		in.setRequired(Constants.N);
+//		globalVariableDao.insert(in);
+//		
+//		in = new GlobalVariableVo();
+//		in.setVariableName("PoweredBySignature");
+//		in.setStartTime(updtTime);
+//		in.setVariableValue(Constants.POWERED_BY_HTML_TAG);
+//		in.setVariableFormat(null);
+//		in.setVariableType(VariableType.TEXT);
+//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setAllowOverride(Constants.N);
+//		in.setRequired(Constants.N);
+//		globalVariableDao.insert(in);
 		
-		in = new GlobalVariableVo();
-		in.setVariableName("PoweredBySignature");
-		in.setStartTime(updtTime);
-		in.setVariableValue(Constants.POWERED_BY_HTML_TAG);
-		in.setVariableFormat(null);
-		in.setVariableType(VariableType.TEXT);
-		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.N);
-		in.setRequired(Constants.N);
-		globalVariableDao.insert(in);
-		
-		System.out.println("load() completed.\n"+in);
+		System.out.println("load() completed.");
 	}
 	
 	void load(ClientVariableDao clientVariableDao) {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
-		ClientVariableVo in = new ClientVariableVo();
 		
-		in.setClientId(Constants.DEFAULT_CLIENTID);
-		in.setVariableName("CurrentDateTime");
-		in.setStartTime(updtTime);
-		in.setVariableValue(null);
-		in.setVariableFormat(null);
-		in.setVariableType(VariableType.DATETIME);
-		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
+		for (ClientVariableEnum var : ClientVariableEnum.values()) {
+			ClientVariableVo in = new ClientVariableVo();
+			
+			in.setClientId(Constants.DEFAULT_CLIENTID);
+			in.setVariableName(var.name());
+			in.setStartTime(updtTime);
+			in.setVariableValue(var.getDefaultValue());
+			in.setVariableFormat(var.getVariableFormat());
+			in.setVariableType(var.getVariableType());
+			in.setStatusId(StatusIdCode.ACTIVE);
+			in.setAllowOverride(var.getAllowOverride().value());
+			in.setRequired(Constants.N);
 
-		clientVariableDao.insert(in);
+			clientVariableDao.insert(in);
+		}
+		
+//		ClientVariableVo in = new ClientVariableVo();
+//		
+//		in.setClientId(Constants.DEFAULT_CLIENTID);
+//		in.setVariableName("CurrentDateTime");
+//		in.setStartTime(updtTime);
+//		in.setVariableValue(null);
+//		in.setVariableFormat(null);
+//		in.setVariableType(VariableType.DATETIME);
+//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setAllowOverride(Constants.Y);
+//		in.setRequired(Constants.N);
+//
+//		clientVariableDao.insert(in);
+//
+//		in.setClientId(Constants.DEFAULT_CLIENTID);
+//		in.setVariableName("CurrentDate");
+//		in.setStartTime(updtTime);
+//		in.setVariableValue(null);
+//		in.setVariableFormat("yyyy-MM-dd");
+//		in.setVariableType(VariableType.DATETIME);
+//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setAllowOverride(Constants.Y);
+//		in.setRequired(Constants.N);
+//
+//		clientVariableDao.insert(in);
+//
+//		in.setClientId(Constants.DEFAULT_CLIENTID);
+//		in.setVariableName("CurrentTime");
+//		in.setStartTime(updtTime);
+//		in.setVariableValue(null);
+//		in.setVariableFormat("hh:mm:ss a");
+//		in.setVariableType(VariableType.DATETIME);
+//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setAllowOverride(Constants.Y);
+//		in.setRequired(Constants.N);
+//
+//		clientVariableDao.insert(in);
 
-		in.setClientId(Constants.DEFAULT_CLIENTID);
-		in.setVariableName("CurrentDate");
-		in.setStartTime(updtTime);
-		in.setVariableValue(null);
-		in.setVariableFormat("yyyy-MM-dd");
-		in.setVariableType(VariableType.DATETIME);
-		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
-
-		clientVariableDao.insert(in);
-
-		in.setClientId(Constants.DEFAULT_CLIENTID);
-		in.setVariableName("CurrentTime");
-		in.setStartTime(updtTime);
-		in.setVariableValue(null);
-		in.setVariableFormat("hh:mm:ss a");
-		in.setVariableType(VariableType.DATETIME);
-		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
-
-		clientVariableDao.insert(in);
-
-		System.out.println("load() completed.\n"+in);
+		System.out.println("load() completed.");
 	}
 	
 	void load(TemplateVariableDao templateVariableDao) {

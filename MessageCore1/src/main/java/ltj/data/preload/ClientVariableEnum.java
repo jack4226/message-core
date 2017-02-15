@@ -6,7 +6,7 @@ import ltj.message.constant.VariableType;
 /*
  * define sample sender variables
  */
-public enum SenderVariableEnum {
+public enum ClientVariableEnum {
 	CurrentDateTime(null, null, VariableType.DATETIME, CodeType.Y),
 	CurrentDate(null, "yyyy-MM-dd", VariableType.DATETIME, CodeType.Y),
 	CurrentTime(null, "hh:mm:ss a", VariableType.DATETIME, CodeType.Y),
@@ -17,7 +17,7 @@ public enum SenderVariableEnum {
 	private String format;
 	private String type;
 	private CodeType allowOverride;
-	private SenderVariableEnum(String value, String format, String type, CodeType allowOverride) {
+	private ClientVariableEnum(String value, String format, String type, CodeType allowOverride) {
 		this.value=value;
 		this.format=format;
 		this.type=type;

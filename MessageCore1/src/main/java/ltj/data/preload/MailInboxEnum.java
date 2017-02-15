@@ -20,9 +20,9 @@ public enum MailInboxEnum {
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
 	TESTFROM("testfrom", "testfrom", "localhost", -1, MailProtocol.POP3, "Test FROM Address", StatusIdCode.ACTIVE,
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
-	CUSTCARE("custcare", "custcare", "localhost", -1, MailProtocol.POP3, "Customer Care Address", StatusIdCode.INACTIVE,
+	CUSTCARE("custcare", "custcare", "localhost", -1, MailProtocol.POP3, "Customer Care Address", StatusIdCode.ACTIVE,
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
-	ALERT("alert", "alert", "localhost", -1, MailProtocol.POP3, "Customer Care Address", StatusIdCode.INACTIVE,
+	ALERT("alert", "alert", "localhost", -1, MailProtocol.POP3, "Alert Address", StatusIdCode.INACTIVE,
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
 
 	postmaster("postmaster", "postmaster", "localhost", -1, MailProtocol.POP3, "James Server postmaster", StatusIdCode.ACTIVE,
@@ -35,7 +35,7 @@ public enum MailInboxEnum {
 			true, 4, false, 2, 5, 8, -1, false, "legacytojava.com,jbatch.com", true, true, true, 24),
 	jackwng("jackwng", "jackwng", "pop.gmail.com", 995, MailProtocol.POP3, "GMail Secure Server", StatusIdCode.INACTIVE,
 			false, 4, true, 2, 5, 8, -1, false, "legacytojava.com,emailsphere.com", true, true, true, 24),
-	jwang_rr("jwang", "jwang", "pop-server.nc.rr.com", -1, MailProtocol.POP3, "Road Runner Server",	StatusIdCode.INACTIVE,
+	jwangrr("jwang", "jwang", "pop-server.nc.rr.com", -1, MailProtocol.POP3, "Road Runner Server",	StatusIdCode.INACTIVE,
 			false, 4, false, 2, 5, 6, -1, false, "legacytojava.com,emailsphere.com", true, true, true, 24),
 	df153("df153", "df153", "imap.aim.com", -1, MailProtocol.IMAP, "AIM Mail Server", StatusIdCode.INACTIVE,
 			false, 10, false, 2, 5, 10, -1, false, "legacytojava.com,emailsphere.com", true, true, true, 24);
