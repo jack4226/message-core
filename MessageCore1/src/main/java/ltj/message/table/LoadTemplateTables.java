@@ -14,12 +14,14 @@ import ltj.message.constant.StatusIdCode;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableStatus;
 import ltj.message.constant.VariableType;
+import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.template.BodyTemplateDao;
 import ltj.message.dao.template.ClientVariableDao;
 import ltj.message.dao.template.GlobalVariableDao;
 import ltj.message.dao.template.MsgSourceDao;
 import ltj.message.dao.template.SubjTemplateDao;
 import ltj.message.dao.template.TemplateVariableDao;
+import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.spring.util.SpringUtil;
 import ltj.vo.template.BodyTemplateVo;
 import ltj.vo.template.ClientVariableVo;
@@ -210,13 +212,19 @@ public class LoadTemplateTables {
 		System.out.println("load() completed.");
 	}
 	
+	private static final String TestTemplateId_1 = "WeekendDeals";
+	private static final String TestTemplateId_2 = "testTemplate";
+	
+	private static final String TestMsgSourceId_1 = "WeekendDeals";
+	private static final String TestMsgSourceId_2 = "testMsgSource";
+	
 	void load(TemplateVariableDao templateVariableDao) {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		TemplateVariableVo in = new TemplateVariableVo();
 		
-		in.setTemplateId("WeekendDeals");
+		in.setTemplateId(TestTemplateId_1);
 		in.setClientId(Constants.DEFAULT_CLIENTID);
-		in.setVariableName("CurrentDateTime");
+		in.setVariableName(GlobalVariableEnum.CurrentDateTime.name());
 		in.setStartTime(updtTime);
 		in.setVariableValue(null);
 		in.setVariableFormat(null);
@@ -227,9 +235,9 @@ public class LoadTemplateTables {
 
 		templateVariableDao.insert(in);
 
-		in.setTemplateId("WeekendDeals");
+		in.setTemplateId(TestTemplateId_1);
 		in.setClientId(Constants.DEFAULT_CLIENTID);
-		in.setVariableName("CurrentDate");
+		in.setVariableName(GlobalVariableEnum.CurrentDate.name());
 		in.setStartTime(updtTime);
 		in.setVariableValue(null);
 		in.setVariableFormat("yyyy-MM-dd");
@@ -247,7 +255,7 @@ public class LoadTemplateTables {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		SubjTemplateVo in = new SubjTemplateVo();
 		
-		in.setTemplateId("WeekendDeals");
+		in.setTemplateId(TestTemplateId_1);
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setStartTime(updtTime);
 		in.setDescription(null);
@@ -263,7 +271,7 @@ public class LoadTemplateTables {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		BodyTemplateVo in = new BodyTemplateVo();
 		
-		in.setTemplateId("WeekendDeals");
+		in.setTemplateId(TestTemplateId_1);
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setStartTime(updtTime);
 		in.setDescription(null);
@@ -277,17 +285,19 @@ public class LoadTemplateTables {
 	}
 	
 	void load(MsgSourceDao msgSourceDao) {
-		//Timestamp updtTime = new Timestamp(System.currentTimeMillis());
+
+		EmailAddrVo emailVo = getEmailAddrdao().findByAddress("jsmith@test.com");
+		
 		MsgSourceVo in = new MsgSourceVo();
 		
-		in.setMsgSourceId("WeekendDeals");
+		in.setMsgSourceId(TestMsgSourceId_1);
 		in.setDescription("Default Message Source");
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setFromAddrId(Long.valueOf(1));
+		in.setFromAddrId(emailVo.getEmailAddrId());
 		in.setReplyToAddrId(null);
-		in.setSubjTemplateId("WeekendDeals");
-		in.setBodyTemplateId("WeekendDeals");
-		in.setTemplateVariableId("WeekendDeals");
+		in.setSubjTemplateId(TestTemplateId_1);
+		in.setBodyTemplateId(TestTemplateId_1);
+		in.setTemplateVariableId(TestTemplateId_1);
 		in.setExcludingIdToken(Constants.N);
 		in.setCarrierCode(MailCodeType.SMTPMAIL.value());
 		in.setAllowOverride(Constants.Y);
@@ -319,7 +329,7 @@ public class LoadTemplateTables {
 			+ "${name4}<br>\n"
 			+ "EndTemplate<br>\n";
 		
-		in.setTemplateId("testTemplate");
+		in.setTemplateId(TestTemplateId_2);
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setStartTime(updtTime);
 		in.setDescription(null);
@@ -333,17 +343,19 @@ public class LoadTemplateTables {
 	}
 	
 	void load2(MsgSourceDao msgSourceDao) {
-		//Timestamp updtTime = new Timestamp(System.currentTimeMillis());
+
+		EmailAddrVo emailVo = getEmailAddrdao().findByAddress("jsmith@test.com");
+		
 		MsgSourceVo in = new MsgSourceVo();
 		
-		in.setMsgSourceId("testMsgSource");
-		in.setDescription("Message Source");
+		in.setMsgSourceId(TestMsgSourceId_2);
+		in.setDescription("Test Message Source");
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setFromAddrId(Long.valueOf(1));
+		in.setFromAddrId(emailVo.getEmailAddrId());
 		in.setReplyToAddrId(null);
-		in.setSubjTemplateId("WeekendDeals");
-		in.setBodyTemplateId("testTemplate");
-		in.setTemplateVariableId("WeekendDeals");
+		in.setSubjTemplateId(TestTemplateId_1);
+		in.setBodyTemplateId(TestTemplateId_2);
+		in.setTemplateVariableId(TestTemplateId_1);
 		in.setExcludingIdToken(Constants.N);
 		in.setCarrierCode(MailCodeType.SMTPMAIL.value());
 		in.setAllowOverride(Constants.Y);
@@ -380,7 +392,7 @@ public class LoadTemplateTables {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		TemplateVariableVo in = new TemplateVariableVo();
 		
-		in.setTemplateId("WeekendDeals");
+		in.setTemplateId(TestTemplateId_1);
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setVariableName(VariableName.CUSTOMER_ID);
 		in.setStartTime(updtTime);
@@ -412,5 +424,13 @@ public class LoadTemplateTables {
 		globalVariableDao.insert(in);
 
 		System.out.println("load() completed.\n"+in);
+	}
+	
+	private EmailAddrDao emailAddrDao = null;
+	private EmailAddrDao getEmailAddrdao() {
+		if (emailAddrDao == null) {
+			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+		}
+		return emailAddrDao;
 	}
 }

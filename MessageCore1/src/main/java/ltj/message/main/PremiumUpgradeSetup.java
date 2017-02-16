@@ -71,7 +71,7 @@ public class PremiumUpgradeSetup {
 	}
 	
 	void insertRuleLogic() {
-		RuleLogicDao dao = (RuleLogicDao) context.getBean("ruleLogicDao");
+		RuleLogicDao dao = context.getBean(RuleLogicDao.class);
 		List<RuleLogicVo> contact_us = dao.getByRuleName("Contact_Us");
 		int ruleSeq = 201;
 		if (!contact_us.isEmpty()) {
@@ -109,7 +109,7 @@ public class PremiumUpgradeSetup {
 	}
 
 	void insertRuleElements() {
-		RuleElementDao dao = (RuleElementDao)context.getBean("ruleElementDao");
+		RuleElementDao dao = context.getBean(RuleElementDao.class);
 		int rowsDeleted = dao.deleteByRuleName(ruleName);
 		if (rowsDeleted > 0) {
 			logger.warn("RuleElement - Record deleted: " + rowsDeleted);
@@ -130,7 +130,7 @@ public class PremiumUpgradeSetup {
 	}
 
 	void insertMsgActions() {
-		MsgActionDao dao = (MsgActionDao) context.getBean("msgActionDao");
+		MsgActionDao dao = context.getBean(MsgActionDao.class);
 		int rowsDeleted = dao.deleteByRuleName(ruleName);
 		if (rowsDeleted > 0) {
 			logger.warn("MsgAction - Record deleted: " + rowsDeleted);

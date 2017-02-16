@@ -221,9 +221,9 @@ public enum EmailTemplateEnum implements EnumInterface {
 	private boolean isProd;
 	private String subject;
 	private String bodyText;
-	private EmailTemplateEnum(MailingListEnum mailingList, boolean isBuiltin,
-			Boolean isEmbedEmailId, boolean isHtml, MailingListType listType,
-			MLDeliveryType deliveryType, boolean isProd, String subject, String bodyText) {
+
+	private EmailTemplateEnum(MailingListEnum mailingList, boolean isBuiltin, Boolean isEmbedEmailId, boolean isHtml,
+			MailingListType listType, MLDeliveryType deliveryType, boolean isProd, String subject, String bodyText) {
 		this.mailingList = mailingList;
 		this.isBuiltin = isBuiltin;
 		this.isEmbedEmailId = isEmbedEmailId;
@@ -234,6 +234,7 @@ public enum EmailTemplateEnum implements EnumInterface {
 		this.subject = subject;
 		this.bodyText = bodyText;
 	}
+	
 	public MailingListEnum getMailingList() {
 		return mailingList;
 	}
