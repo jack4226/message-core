@@ -25,9 +25,12 @@ import ltj.spring.util.SpringUtil;
 
 public class EmailAddrTable extends CreateTableBase {
 
-	/** Creates a new instance of EmailAddrTables 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException */
+	/**
+	 * Creates a new instance of EmailAddrTables
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public EmailAddrTable() throws ClassNotFoundException, SQLException {
 		init();
 	}

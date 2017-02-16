@@ -10,9 +10,12 @@ import ltj.message.main.CreateTableBase;
 import ltj.message.vo.inbox.SearchFieldsVo;
 
 public class UserTable extends CreateTableBase {
-	/** Creates a new instance of MailTables 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException */
+	/**
+	 * Creates a new instance of MailTables
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public UserTable() throws ClassNotFoundException, SQLException {
 		init();
 	}

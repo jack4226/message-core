@@ -20,13 +20,13 @@ public enum RuleCriteria {
 		this.value = value;
 	}
 	
-	public String getValue() {
+	public String value() {
 		return value;
 	}
 
 	public static RuleCriteria getByValue(String value) {
 		for (RuleCriteria type : RuleCriteria.values()) {
-			if (type.getValue().equals(value)) {
+			if (type.value().equals(value)) {
 				return type;
 			}
 		}

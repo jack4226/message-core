@@ -8,9 +8,12 @@ import ltj.message.constant.StatusIdCode;
 import ltj.message.main.CreateTableBase;
 
 public class TemplateTables extends CreateTableBase {
-	/** Creates a new instance of TemplateTables 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException */
+	/**
+	 * Creates a new instance of TemplateTables
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public TemplateTables() throws ClassNotFoundException, SQLException {
 		init();
 	}

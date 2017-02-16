@@ -6,16 +6,16 @@ import ltj.message.constant.StatusIdCode;
 public enum SmtpServerEnum {
 	SUPPORT("localhost", -1, "smtpServer", "smtp server on localhost", false,
 			"support", "support", false, StatusIdCode.ACTIVE, MailServerType.SMTP,
-			4, 10, 6, 10, 5, "error", 0),
+			4, 10, 6, 10, 5, "error", 0, false),
 	EXCHANGE("localhost", 25, "exchServer", "exch server on localhost", false,
 			"uid", "pwd", false, StatusIdCode.ACTIVE, MailServerType.EXCH,
-			1, 4, 1, 10, 15, "error", 0),
+			1, 4, 1, 10, 15, "error", 0, true),
 	DynMailRelay("outbound.mailhop.org", 465, "DyndnsMailRelay", "smtp server on dyndns", true,
-			"jackwng", "jackwng", false, StatusIdCode.INACTIVE, MailServerType.SMTP,
-			1, 10, 5, 10, 5, "error", 0),
+			"jackwng", "jackwng01", false, StatusIdCode.INACTIVE, MailServerType.SMTP,
+			1, 10, 5, 10, 5, "error", 0, true),
 	GMailSmtp("smtp.gmail.com", -1, "gmailServer", "smtp server on gmail.com", true,
-			"jackwng", "jackwng", false, StatusIdCode.INACTIVE, MailServerType.SMTP,
-			2, 10, 5, 10, 5, "error", 0);
+			"jackwng", "jackwng01", false, StatusIdCode.INACTIVE, MailServerType.SMTP,
+			2, 10, 5, 10, 5, "error", 0, true);
 
 	private String smtpHost;
 	private int smtpPort;
@@ -34,11 +34,12 @@ public enum SmtpServerEnum {
 	private Integer alertAfter;
 	private String alertLevel;
 	private int messageCount;
-	private SmtpServerEnum(String hostName,
-			int port, String serverName, String description, boolean isUseSsl, String userId, String userPswd, 
-			boolean isPersistence, String status, MailServerType serverType, 
-			int numberOfThreads, Integer maximumRetries, int retryFreq,
-			Integer minimumWait, Integer alertAfter, String alertLevel, int messageCount) {
+	private boolean isTestOnly;
+
+	private SmtpServerEnum(String hostName, int port, String serverName, String description, boolean isUseSsl,
+			String userId, String userPswd, boolean isPersistence, String status, MailServerType serverType,
+			int numberOfThreads, Integer maximumRetries, int retryFreq, Integer minimumWait, Integer alertAfter,
+			String alertLevel, int messageCount, boolean isTestOnly) {
 		this.smtpHost = hostName;
 		this.smtpPort = port;
 		this.serverName = serverName;
@@ -56,7 +57,9 @@ public enum SmtpServerEnum {
 		this.alertAfter = alertAfter;
 		this.alertLevel = alertLevel;
 		this.messageCount = messageCount;
+		this.isTestOnly = isTestOnly;
 	}
+	
 	public String getSmtpHost() {
 		return smtpHost;
 	}
@@ -107,5 +110,8 @@ public enum SmtpServerEnum {
 	}
 	public int getMessageCount() {
 		return messageCount;
+	}
+	public boolean isTestOnly() {
+		return isTestOnly;
 	}
 }

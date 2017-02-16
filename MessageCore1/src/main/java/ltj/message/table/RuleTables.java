@@ -7,14 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import ltj.data.preload.RuleElementEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.data.preload.RuleSubruleMapEnum;
 import ltj.message.bo.rule.RuleBase;
-import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.RuleNameType;
 import ltj.message.constant.StatusIdCode;
-import ltj.message.constant.XHeaderName;
 import ltj.message.main.CreateTableBase;
 
 public class RuleTables extends CreateTableBase {
@@ -154,11 +152,11 @@ public class RuleTables extends CreateTableBase {
 			for (RuleNameEnum rl : RuleNameEnum.getBuiltinRules()) {
 				ps.setString(1, rl.name());
 				ps.setInt(2, ++seq);
-				ps.setString(3, rl.getRuleType().getValue());
+				ps.setString(3, rl.getRuleType().value());
 				ps.setString(4, StatusIdCode.ACTIVE);
 				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 				ps.setString(6, Constants.SMTP_MAIL);
-				ps.setString(7, rl.getRuleCategory().getValue());
+				ps.setString(7, rl.getRuleCategory().value());
 				ps.setString(8, rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
 				ps.setString(9, rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
 				ps.setString(10, rl.getDescription());
@@ -174,11 +172,11 @@ public class RuleTables extends CreateTableBase {
 				else {
 					ps.setInt(2, ++seq);
 				}
-				ps.setString(3, rl.getRuleType().getValue());
+				ps.setString(3, rl.getRuleType().value());
 				ps.setString(4, StatusIdCode.ACTIVE);
 				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 				ps.setString(6, Constants.SMTP_MAIL);
-				ps.setString(7, rl.getRuleCategory().getValue());
+				ps.setString(7, rl.getRuleCategory().value());
 				ps.setString(8, rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
 				ps.setString(9, rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
 				ps.setString(10, rl.getDescription());
@@ -194,11 +192,11 @@ public class RuleTables extends CreateTableBase {
 				else {
 					ps.setInt(2, ++seq);
 				}
-				ps.setString(3, rl.getRuleType().getValue());
+				ps.setString(3, rl.getRuleType().value());
 				ps.setString(4, StatusIdCode.ACTIVE);
 				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 				ps.setString(6, Constants.SMTP_MAIL);
-				ps.setString(7, rl.getRuleCategory().getValue());
+				ps.setString(7, rl.getRuleCategory().value());
 				ps.setString(8, rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
 				ps.setString(9, rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
 				ps.setString(10, rl.getDescription());
@@ -503,691 +501,691 @@ public class RuleTables extends CreateTableBase {
 					"Delimiter) " +
 				" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			
-			// TODO complete
-//			for (RuleElementEnum re : RuleElementEnum.values()) {
-//				ps.setString(1, re.getRuleName().name());
-//				ps.setInt(2, re.getRuleSequence());
-//				ps.setString(3, re.getRuleDataName().getValue());
-//				ps.setString(4, re.getXheaderNameEnum() == null ? null : re.getXheaderNameEnum().value());
-//				ps.setString(5, re.getRuleCriteria().getValue());
-//				ps.setString(6, re.isCaseSensitive() ? Constants.Y : Constants.N);
-//				ps.setString(7, re.getTargetText());
-//				ps.setString(8, re.getTargetProcName());
-//				ps.setString(9, re.getExclusions());
-//				ps.setString(10, re.getExclListProcName());
-//				ps.setString(11, re.getDelimiter());
-//				ps.execute();
-//			}
+
+			for (RuleElementEnum re : RuleElementEnum.values()) {
+				ps.setString(1, re.getRuleName().name());
+				ps.setInt(2, re.getRuleSequence());
+				ps.setString(3, re.getRuleDataName().getValue());
+				ps.setString(4, re.getXheaderNameEnum() == null ? null : re.getXheaderNameEnum().value());
+				ps.setString(5, re.getRuleCriteria().value());
+				ps.setString(6, re.isCaseSensitive() ? Constants.Y : Constants.N);
+				ps.setString(7, re.getTargetText());
+				ps.setString(8, re.getTargetProcName());
+				ps.setString(9, re.getExclusions());
+				ps.setString(10, re.getExclListProcName());
+				ps.setString(11, re.getDelimiter());
+				ps.execute();
+			}
+			
+//			ps.setString(1, "Unattended_Mailbox");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.MAILBOX_USER);
+//			ps.setString(4, null);
+//			ps.setString(5, RuleBase.EQUALS);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "noreply");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
 //			
-			ps.setString(1, "Unattended_Mailbox");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.MAILBOX_USER);
-			ps.setString(4, null);
-			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "noreply");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "Unattended_Mailbox");
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.RETURN_PATH);
-			ps.setString(4, null);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^<?.+@.+>?$"); // make sure the return path is not blank or <>
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.FROM_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^(?:postmaster|mailmaster|mailadmin|administrator)\\S*\\@");
-			ps.setString(9, "postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME);
-			ps.setString(10, "excludingPostmastersBo");
-			ps.setString(11, ",");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.FROM_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^(?:mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@");
-			ps.setString(9, "mailer-daemon@legacytojave.com,mailer-daemon@" + Constants.VENDER_DOMAIN_NAME);
-			ps.setString(10, null);
-			ps.setString(11, ",");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.FROM_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-					"^(?:postmaster|mailmaster|mailadmin|administrator" +
-					"|mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@");
-			ps.setString(9, "postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME);
-			ps.setString(10, "excludingPostmastersBo");
-			ps.setString(11, ",");
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-					"^Spam rapport \\/ Spam report \\S+ -\\s+\\(\\S+\\)$" +
-					"|^GWAVA Sender Notification .(?:RBL block|Spam|Content filter).$" +
-					"|^\\[MailServer Notification\\]" +
-					"|^MailMarshal has detected possible spam in your message");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "EarthLink\\b.*(?:spamBlocker|spamArrest)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
-			ps.setInt(2, 2);
-			ps.setString(3, RuleBase.FROM_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "(?:^surfcontrol|.*You_Got_Spammed)\\S*\\@");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
-			ps.setInt(2, 3);
-			ps.setString(3, RuleBase.X_HEADER);
-			ps.setString(4, XHeaderName.RETURN_PATH.value());
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^(?:pleaseforward|quotaagent)\\S*\\@");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
-			ps.setInt(2, 4);
-			ps.setString(3, RuleBase.X_HEADER);
-			ps.setString(4, "Precedence");
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^(?:spam)$");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.X_HEADER);
-			ps.setString(4, XHeaderName.RETURN_PATH.value());
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-					"(?:spamblocker-challenge|spamhippo|devnull-quarantine)\\@" +
-					"|\\@(?:spamstomp\\.com|ipermitmail\\.com)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(4, null);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-					"^(?:Your email requires verification verify:" +
-					"|Please Verify Your Email Address" +
-					"|Unverified email to " +
-					"|Your mail to .* requires confirmation)" +
-					"|\\[Qurb .\\d+\\]$");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
-			ps.setInt(2, 2);
-			ps.setString(3, RuleBase.FROM_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "confirm-\\S+\\@spamguard\\.vanquish\\.com");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.AUTO_REPLY.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-					"(?:Exception.*(?:Out\\b.*of\\b.*Office|Autoreply:)|\\(Auto Response\\))" +
-				 	"|^(?:Automatically Generated Response from|Auto-Respond E-?Mail from" +
-				 	"|AutoResponse - Email Returned|automated response|Yahoo! Auto Response)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.AUTO_REPLY.toString());
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.FROM_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^(?:automated-response|autoresponder|autoresponse-\\S+)\\S*\\@");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.AUTO_REPLY.toString());
-			ps.setInt(2, 2);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-					"^This messages was created automatically by mail delivery software" +
-					"|(?:\\bThis is an autoresponder. I'll never see your message\\b" +
-					"|(?:\\bI(?:.m|\\s+am|\\s+will\\s+be|.ll\\s+be)\\s+(?:(?:out\\s+of|away\\s+from)\\s+the\\s+office|on\\s+vacation)\\s+(?:from|to|until|after)\\b)" +
-					"|\\bI\\s+am\\s+currently\\s+out\\s+of\\s+the\\s+office\\b" +
-					"|\\bI ?.m\\s+away\\s+until\\s+.{10,20}\\s+and\\s+am\\s+unable\\s+to\\s+read\\s+your\\s+message\\b)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-					"^(?:Disallowed attachment type found" +
-					"|Norton Anti.?Virus failed to scan an attachment in a message you sent" +
-					"|Norton Anti.?Virus detected and quarantined" +
-					"|Warning - You sent a Virus Infected Email to " +
-					"|Warning:\\s*E-?mail virus(es)? detected" +
-					"|MailMarshal has detected a Virus in your message" +
-					"|Banned or potentially offensive material" +
-					"|Failed to clean virus\\b" +
-					"|Virus Alert\\b" +
-					"|Virus detected " +
-					"|Virus to sender" +
-					"|NAV detected a virus in a document " +
-					"|InterScan MSS for SMTP has delivered a message" +
-					"|InterScan NT Alert" +
-					"|Antigen found\\b" +
-					"|MMS Notification" +
-					"|VIRUS IN YOUR MAIL " +
-					"|Scan.?Mail Message: ?.{0,30} virus found " +
-					"|McAfee GroupShield Alert)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-				"^(?:Undeliverable mail, invalid characters in header" +
-					"|Delivery (?:warning|error) report id=" +
-					"|The MIME information you requested" +
-					"|Content violation" +
-					"|Report to Sender" +
-					"|RAV Anti.?Virus scan results" +
-					"|Symantec AVF detected " +
-					"|Symantec E-Mail-Proxy " +
-					"|Virus Found in message" +
-					"|Inflex scan report \\[" +
-					"|\\[Mail Delivery .{10,100} infected attachment.*removed)" +
-				"|(?:(Re: ?)+Wicked screensaver\\b" +
-					"|\\bmailsweeper\\b" +
-					"|\\bFile type Forbidden\\b" +
-					"|AntiVirus scan results" +
-					"|Security.?Scan Anti.?Virus" +
-					"|Norton\\sAntiVirus\\b.*detected)" +
-				"|^(?:Message Undeliverable: Possible Junk\\/Spam Mail Identified" +
-					"|EMAIL REJECTED" +
-					"|Virusmelding)$");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
-			ps.setInt(2, 2);
-			ps.setString(3, RuleBase.FROM_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "(?:virus|scanner|devnull)\\S*\\@");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.MAIL_BLOCK.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "Message\\b.*blocked\\b.*bulk email filter");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.MAIL_BLOCK.toString());
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "blocked by\\b.*Spam Firewall");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.BROADCAST.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.RULE_NAME);
-			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, RuleNameType.BROADCAST.toString());
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.UNSUBSCRIBE.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.TO_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^mailinglist@.*|^jwang@localhost$");
-			ps.setString(8, "mailingListRegExBo");
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.UNSUBSCRIBE.toString());
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "unsubscribe");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SUBSCRIBE.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.TO_ADDR);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^mailinglist@.*|^jwang@localhost$");
-			ps.setString(8, "mailingListRegExBo");
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.SUBSCRIBE.toString());
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "\\s*subscribe\\s*");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, RuleNameType.RMA_REQUEST.toString());
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.RULE_NAME);
-			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, RuleNameType.RMA_REQUEST.toString());
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "OutOfOffice_AutoReply");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "(?:out\\s+of\\s+.*office|\\(away from the office\\)$)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "OutOfOffice_AutoReply");
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "^.{0,100}\\bwill\\b.{0,50}return|^.{4,100}\\breturning\\b|^.{2,100}\\bvacation\\b");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "Contact_Us");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.MAILBOX_USER);
-			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "support");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "Contact_Us");
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.STARTS_WITH);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "Inquiry About:");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "Executable_Attachment");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(5, RuleBase.VALUED);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "dummy");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "Executable_Attachment");
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.FILE_NAME);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, ".*\\.(?:exe|bat|cmd|com|msi|ocx)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "XHeader_SpamScore");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.X_HEADER);
-			ps.setString(4,"X_Spam_Score");
-			ps.setString(5, RuleBase.GREATER_THAN);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "100");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "HardBouce_WatchedMailbox");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.RULE_NAME);
-			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, RuleNameType.HARD_BOUNCE.toString());
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "HardBouce_WatchedMailbox");
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.TO_ADDR);
-			ps.setString(5, RuleBase.STARTS_WITH);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "watched_maibox@");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "HardBounce_NoFinalRcpt");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.RULE_NAME);
-			ps.setString(5, RuleBase.EQUALS);
-			ps.setString(6, Constants.Y);
-			ps.setString(7, RuleNameType.HARD_BOUNCE.toString());
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "HardBounce_NoFinalRcpt");
-			ps.setInt(2, 1);
-			ps.setString(3, AddressType.FINAL_RCPT_ADDR.value());
-			ps.setString(5, RuleBase.NOT_VALUED);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "HardBounce_NoFinalRcpt");
-			ps.setInt(2, 2);
-			ps.setString(3, AddressType.ORIG_RCPT_ADDR.value());
-			ps.setString(5, RuleBase.NOT_VALUED);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "HardBounce_Subj_Match");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.SUBJECT);
-			ps.setString(4, null);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-				"^(?:Returned mail:\\s(?:User unknown|Data format error)" +
-					"|Undeliverable: |Undeliver(?:able|ed) Mail\\b|Undeliverable Message" +
-					"|Returned mail.{0,5}(?:Error During Delivery|see transcript for details)" +
-					"|e-?mail addressing error \\(|No valid recipient in )" +
-				"|(?:User.*unknown|failed.*delivery|delivery.*(?:failed|failure|problem)" +
-					"|Returned mail:.*(?:failed|failure|error)|\\(Failure\\)|failure notice" +
-					"|not.*delivered)" );
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "HardBounce_Body_Match");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-				"(?:\\bYou(?:.ve| have) reached a non.?working address\\.\\s+Please check\\b" +
-				"|eTrust Secure Content Manager SMTPMAIL could not deliver the e-?mail" +
-				"|\\bPlease do not resend your original message\\." +
-				"|\\s[45]\\.\\d{1,3}\\.\\d{1,3}\\s)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "MailboxFull_Body_Match");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "(?:mailbox|inbox|account).{1,50}(?:exceed|is|was).{1,40}(?:storage|full|limit|size|quota)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "MailboxFull_Body_Match");
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "(?:storage|full|limit|size|quota)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "SpamBlock_Body_Match");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.MSG_REF_ID);
-			ps.setString(5, RuleBase.NOT_VALUED);
-			ps.setString(6, Constants.N);
-			ps.setString(7, "dummy");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "ChalResp_Body_Match");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(4, null);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-				"(?:Your mail .* requires your confirmation" +
-				"|Your message .* anti-spam system.* iPermitMail" +
-				"|apologize .* automatic reply.* control spam.* approved senders" +
-				"|Vanquish to avoid spam.* automated message" +
-				"|automated message.* apologize .* approved senders)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "VirusBlock_Body_Match");
-			ps.setInt(2, 0);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-					"(?:a potentially executable attachment " +
-					"|\\bhas stripped one or more attachments from the following message\\b" +
-					"|message contains file attachments that are not permitted" +
-					"|host \\S+ said: 5\\d\\d\\s+Error: Message content rejected" +
-					"|TRANSACTION FAILED - Unrepairable Virus Detected. " +
-					"|Mail.?Marshal Rule: Inbound Messages : Block Dangerous Attachments" +
-					"|The mail message \\S+ \\S+ you sent to \\S+ contains the virus" +
-					"|mailsweeper has found that a \\S+ \\S+ \\S+ \\S+ one or more virus" +
-					"|Attachment.{0,40}was Deleted" +
-					"|Virus.{1,40}was found" +
-					"|\\bblocked by Mailsweeper\\b" +
-					"|\\bvirus scanner deleted your message\\b" +
-					"|\\bThe attachment was quarantined\\b" +
-					"|\\bGROUP securiQ.Wall\\b)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
-			
-			ps.setString(1, "VirusBlock_Body_Match");
-			ps.setInt(2, 1);
-			ps.setString(3, RuleBase.BODY);
-			ps.setString(5, RuleBase.REG_EX);
-			ps.setString(6, Constants.N);
-			ps.setString(7, 
-				"(?:Reason: Rejected by filter" +
-					"|antivirus system report" +
-					"|the antivirus module has" +
-					"|the infected attachment" +
-					"|illegal attachment" +
-					"|Unrepairable Virus Detected" +
-					"|Reporting-MTA: Norton Anti.?Virus Gateway" +
-					"|\\bV I R U S\\b)" +
-				"|^(?:Found virus \\S+ in file \\S+" +
-					"|Incident Information:)");
-			ps.setString(8, null);
-			ps.setString(9, null);
-			ps.setString(10, null);
-			ps.setString(11, null);
-			ps.execute();
+//			ps.setString(1, "Unattended_Mailbox");
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.RETURN_PATH);
+//			ps.setString(4, null);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^<?.+@.+>?$"); // make sure the return path is not blank or <>
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.FROM_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^(?:postmaster|mailmaster|mailadmin|administrator)\\S*\\@");
+//			ps.setString(9, "postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME);
+//			ps.setString(10, "excludingPostmastersBo");
+//			ps.setString(11, ",");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.FROM_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^(?:mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@");
+//			ps.setString(9, "mailer-daemon@legacytojave.com,mailer-daemon@" + Constants.VENDER_DOMAIN_NAME);
+//			ps.setString(10, null);
+//			ps.setString(11, ",");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.FROM_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//					"^(?:postmaster|mailmaster|mailadmin|administrator" +
+//					"|mailer-(?:daemon|deamon)|smtp.gateway|majordomo)\\S*\\@");
+//			ps.setString(9, "postmaster@legacytojava.com,postmaster@" + Constants.VENDER_DOMAIN_NAME);
+//			ps.setString(10, "excludingPostmastersBo");
+//			ps.setString(11, ",");
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//					"^Spam rapport \\/ Spam report \\S+ -\\s+\\(\\S+\\)$" +
+//					"|^GWAVA Sender Notification .(?:RBL block|Spam|Content filter).$" +
+//					"|^\\[MailServer Notification\\]" +
+//					"|^MailMarshal has detected possible spam in your message");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "EarthLink\\b.*(?:spamBlocker|spamArrest)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
+//			ps.setInt(2, 2);
+//			ps.setString(3, RuleBase.FROM_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "(?:^surfcontrol|.*You_Got_Spammed)\\S*\\@");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
+//			ps.setInt(2, 3);
+//			ps.setString(3, RuleBase.X_HEADER);
+//			ps.setString(4, XHeaderName.RETURN_PATH.value());
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^(?:pleaseforward|quotaagent)\\S*\\@");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SPAM_BLOCK.toString());
+//			ps.setInt(2, 4);
+//			ps.setString(3, RuleBase.X_HEADER);
+//			ps.setString(4, "Precedence");
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^(?:spam)$");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.X_HEADER);
+//			ps.setString(4, XHeaderName.RETURN_PATH.value());
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//					"(?:spamblocker-challenge|spamhippo|devnull-quarantine)\\@" +
+//					"|\\@(?:spamstomp\\.com|ipermitmail\\.com)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(4, null);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//					"^(?:Your email requires verification verify:" +
+//					"|Please Verify Your Email Address" +
+//					"|Unverified email to " +
+//					"|Your mail to .* requires confirmation)" +
+//					"|\\[Qurb .\\d+\\]$");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.CHALLENGE_RESPONSE.toString());
+//			ps.setInt(2, 2);
+//			ps.setString(3, RuleBase.FROM_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "confirm-\\S+\\@spamguard\\.vanquish\\.com");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.AUTO_REPLY.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//					"(?:Exception.*(?:Out\\b.*of\\b.*Office|Autoreply:)|\\(Auto Response\\))" +
+//				 	"|^(?:Automatically Generated Response from|Auto-Respond E-?Mail from" +
+//				 	"|AutoResponse - Email Returned|automated response|Yahoo! Auto Response)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.AUTO_REPLY.toString());
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.FROM_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^(?:automated-response|autoresponder|autoresponse-\\S+)\\S*\\@");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.AUTO_REPLY.toString());
+//			ps.setInt(2, 2);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//					"^This messages was created automatically by mail delivery software" +
+//					"|(?:\\bThis is an autoresponder. I'll never see your message\\b" +
+//					"|(?:\\bI(?:.m|\\s+am|\\s+will\\s+be|.ll\\s+be)\\s+(?:(?:out\\s+of|away\\s+from)\\s+the\\s+office|on\\s+vacation)\\s+(?:from|to|until|after)\\b)" +
+//					"|\\bI\\s+am\\s+currently\\s+out\\s+of\\s+the\\s+office\\b" +
+//					"|\\bI ?.m\\s+away\\s+until\\s+.{10,20}\\s+and\\s+am\\s+unable\\s+to\\s+read\\s+your\\s+message\\b)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//					"^(?:Disallowed attachment type found" +
+//					"|Norton Anti.?Virus failed to scan an attachment in a message you sent" +
+//					"|Norton Anti.?Virus detected and quarantined" +
+//					"|Warning - You sent a Virus Infected Email to " +
+//					"|Warning:\\s*E-?mail virus(es)? detected" +
+//					"|MailMarshal has detected a Virus in your message" +
+//					"|Banned or potentially offensive material" +
+//					"|Failed to clean virus\\b" +
+//					"|Virus Alert\\b" +
+//					"|Virus detected " +
+//					"|Virus to sender" +
+//					"|NAV detected a virus in a document " +
+//					"|InterScan MSS for SMTP has delivered a message" +
+//					"|InterScan NT Alert" +
+//					"|Antigen found\\b" +
+//					"|MMS Notification" +
+//					"|VIRUS IN YOUR MAIL " +
+//					"|Scan.?Mail Message: ?.{0,30} virus found " +
+//					"|McAfee GroupShield Alert)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//				"^(?:Undeliverable mail, invalid characters in header" +
+//					"|Delivery (?:warning|error) report id=" +
+//					"|The MIME information you requested" +
+//					"|Content violation" +
+//					"|Report to Sender" +
+//					"|RAV Anti.?Virus scan results" +
+//					"|Symantec AVF detected " +
+//					"|Symantec E-Mail-Proxy " +
+//					"|Virus Found in message" +
+//					"|Inflex scan report \\[" +
+//					"|\\[Mail Delivery .{10,100} infected attachment.*removed)" +
+//				"|(?:(Re: ?)+Wicked screensaver\\b" +
+//					"|\\bmailsweeper\\b" +
+//					"|\\bFile type Forbidden\\b" +
+//					"|AntiVirus scan results" +
+//					"|Security.?Scan Anti.?Virus" +
+//					"|Norton\\sAntiVirus\\b.*detected)" +
+//				"|^(?:Message Undeliverable: Possible Junk\\/Spam Mail Identified" +
+//					"|EMAIL REJECTED" +
+//					"|Virusmelding)$");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setInt(2, 2);
+//			ps.setString(3, RuleBase.FROM_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "(?:virus|scanner|devnull)\\S*\\@");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.MAIL_BLOCK.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "Message\\b.*blocked\\b.*bulk email filter");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.MAIL_BLOCK.toString());
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "blocked by\\b.*Spam Firewall");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.BROADCAST.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.RULE_NAME);
+//			ps.setString(5, RuleBase.EQUALS);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, RuleNameType.BROADCAST.toString());
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.UNSUBSCRIBE.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.TO_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^mailinglist@.*|^jwang@localhost$");
+//			ps.setString(8, "mailingListRegExBo");
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.UNSUBSCRIBE.toString());
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.EQUALS);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "unsubscribe");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SUBSCRIBE.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.TO_ADDR);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^mailinglist@.*|^jwang@localhost$");
+//			ps.setString(8, "mailingListRegExBo");
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.SUBSCRIBE.toString());
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "\\s*subscribe\\s*");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, RuleNameType.RMA_REQUEST.toString());
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.RULE_NAME);
+//			ps.setString(5, RuleBase.EQUALS);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, RuleNameType.RMA_REQUEST.toString());
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "OutOfOffice_AutoReply");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "(?:out\\s+of\\s+.*office|\\(away from the office\\)$)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "OutOfOffice_AutoReply");
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "^.{0,100}\\bwill\\b.{0,50}return|^.{4,100}\\breturning\\b|^.{2,100}\\bvacation\\b");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "Contact_Us");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.MAILBOX_USER);
+//			ps.setString(5, RuleBase.EQUALS);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "support");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "Contact_Us");
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.STARTS_WITH);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "Inquiry About:");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "Executable_Attachment");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(5, RuleBase.IS_NOT_BLANK);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "dummy");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "Executable_Attachment");
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.FILE_NAME);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, ".*\\.(?:exe|bat|cmd|com|msi|ocx)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "XHeader_SpamScore");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.X_HEADER);
+//			ps.setString(4,"X_Spam_Score");
+//			ps.setString(5, RuleBase.GREATER_THAN);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "100");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBouce_WatchedMailbox");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.RULE_NAME);
+//			ps.setString(5, RuleBase.EQUALS);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBouce_WatchedMailbox");
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.TO_ADDR);
+//			ps.setString(5, RuleBase.STARTS_WITH);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "watched_maibox@");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBounce_NoFinalRcpt");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.RULE_NAME);
+//			ps.setString(5, RuleBase.EQUALS);
+//			ps.setString(6, Constants.Y);
+//			ps.setString(7, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBounce_NoFinalRcpt");
+//			ps.setInt(2, 1);
+//			ps.setString(3, AddressType.FINAL_RCPT_ADDR.value());
+//			ps.setString(5, RuleBase.IS_BLANK);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBounce_NoFinalRcpt");
+//			ps.setInt(2, 2);
+//			ps.setString(3, AddressType.ORIG_RCPT_ADDR.value());
+//			ps.setString(5, RuleBase.IS_BLANK);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBounce_Subj_Match");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.SUBJECT);
+//			ps.setString(4, null);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//				"^(?:Returned mail:\\s(?:User unknown|Data format error)" +
+//					"|Undeliverable: |Undeliver(?:able|ed) Mail\\b|Undeliverable Message" +
+//					"|Returned mail.{0,5}(?:Error During Delivery|see transcript for details)" +
+//					"|e-?mail addressing error \\(|No valid recipient in )" +
+//				"|(?:User.*unknown|failed.*delivery|delivery.*(?:failed|failure|problem)" +
+//					"|Returned mail:.*(?:failed|failure|error)|\\(Failure\\)|failure notice" +
+//					"|not.*delivered)" );
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "HardBounce_Body_Match");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//				"(?:\\bYou(?:.ve| have) reached a non.?working address\\.\\s+Please check\\b" +
+//				"|eTrust Secure Content Manager SMTPMAIL could not deliver the e-?mail" +
+//				"|\\bPlease do not resend your original message\\." +
+//				"|\\s[45]\\.\\d{1,3}\\.\\d{1,3}\\s)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "MailboxFull_Body_Match");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "(?:mailbox|inbox|account).{1,50}(?:exceed|is|was).{1,40}(?:storage|full|limit|size|quota)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "MailboxFull_Body_Match");
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "(?:storage|full|limit|size|quota)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "SpamBlock_Body_Match");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.MSG_REF_ID);
+//			ps.setString(5, RuleBase.IS_BLANK);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, "dummy");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "ChalResp_Body_Match");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(4, null);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//				"(?:Your mail .* requires your confirmation" +
+//				"|Your message .* anti-spam system.* iPermitMail" +
+//				"|apologize .* automatic reply.* control spam.* approved senders" +
+//				"|Vanquish to avoid spam.* automated message" +
+//				"|automated message.* apologize .* approved senders)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "VirusBlock_Body_Match");
+//			ps.setInt(2, 0);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//					"(?:a potentially executable attachment " +
+//					"|\\bhas stripped one or more attachments from the following message\\b" +
+//					"|message contains file attachments that are not permitted" +
+//					"|host \\S+ said: 5\\d\\d\\s+Error: Message content rejected" +
+//					"|TRANSACTION FAILED - Unrepairable Virus Detected. " +
+//					"|Mail.?Marshal Rule: Inbound Messages : Block Dangerous Attachments" +
+//					"|The mail message \\S+ \\S+ you sent to \\S+ contains the virus" +
+//					"|mailsweeper has found that a \\S+ \\S+ \\S+ \\S+ one or more virus" +
+//					"|Attachment.{0,40}was Deleted" +
+//					"|Virus.{1,40}was found" +
+//					"|\\bblocked by Mailsweeper\\b" +
+//					"|\\bvirus scanner deleted your message\\b" +
+//					"|\\bThe attachment was quarantined\\b" +
+//					"|\\bGROUP securiQ.Wall\\b)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
+//			
+//			ps.setString(1, "VirusBlock_Body_Match");
+//			ps.setInt(2, 1);
+//			ps.setString(3, RuleBase.BODY);
+//			ps.setString(5, RuleBase.REG_EX);
+//			ps.setString(6, Constants.N);
+//			ps.setString(7, 
+//				"(?:Reason: Rejected by filter" +
+//					"|antivirus system report" +
+//					"|the antivirus module has" +
+//					"|the infected attachment" +
+//					"|illegal attachment" +
+//					"|Unrepairable Virus Detected" +
+//					"|Reporting-MTA: Norton Anti.?Virus Gateway" +
+//					"|\\bV I R U S\\b)" +
+//				"|^(?:Found virus \\S+ in file \\S+" +
+//					"|Incident Information:)");
+//			ps.setString(8, null);
+//			ps.setString(9, null);
+//			ps.setString(10, null);
+//			ps.setString(11, null);
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all RuleElement rows...");

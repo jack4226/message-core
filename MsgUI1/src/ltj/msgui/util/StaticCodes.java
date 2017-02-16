@@ -490,8 +490,8 @@ public class StaticCodes {
 		new SelectItem(RuleBase.EQUALS, "Equals"),
 		new SelectItem(RuleBase.GREATER_THAN, "Greater Than"),
 		new SelectItem(RuleBase.LESS_THAN, "Less Than"),
-		new SelectItem(RuleBase.VALUED, "Valued"),
-		new SelectItem(RuleBase.NOT_VALUED, "Not Valued"),
+		new SelectItem(RuleBase.IS_NOT_BLANK, "Is Not Blank"),
+		new SelectItem(RuleBase.IS_BLANK, "Is Blank"),
 		new SelectItem(RuleBase.REG_EX, "Regular Expression")
 	};
 

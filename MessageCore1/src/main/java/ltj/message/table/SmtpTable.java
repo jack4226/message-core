@@ -4,15 +4,19 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import ltj.data.preload.SmtpServerEnum;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailServerType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.main.CreateTableBase;
 
 public class SmtpTable extends CreateTableBase {
-	/** Creates a new instance of MailTables 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException */
+	/**
+	 * Creates a new instance of MailTables
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public SmtpTable() throws ClassNotFoundException, SQLException {
 		init();
 	}
@@ -141,27 +145,52 @@ public class SmtpTable extends CreateTableBase {
 	void insertReleaseSmtpData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(insertSql);
-
-			ps.setString(1, "localhost"); // smtpHost
-			ps.setString(2, "-1"); // smtpPort
-			ps.setString(3, "smtpServer"); // server name
-			ps.setString(4, "smtp server on localhost"); // description
-			ps.setString(5, Constants.NO); // use ssl
-			ps.setString(6, "support"); // user id
-			ps.setString(7, "support"); // user password
-			ps.setString(8, Constants.NO); // persistence
-			ps.setString(9, StatusIdCode.ACTIVE); // status id
-			ps.setString(10, MailServerType.SMTP.value()); // server type
-			ps.setInt(11, 4); // Threads
-			ps.setInt(12, 10); // retries
-			ps.setInt(13, 6); // retry freq
-			ps.setInt(14, 5); // alertAfter
-			ps.setString(15, "error"); // alert level
-			ps.setInt(16, 0); // message count
-			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(18, Constants.DEFAULT_USER_ID);
-			ps.execute();
 			
+			for (SmtpServerEnum ss : SmtpServerEnum.values()) {
+				if (ss.isTestOnly()) {
+					continue;
+				}
+				ps.setString(1, ss.getSmtpHost()); // smtpHost
+				ps.setInt(2, ss.getSmtpPort()); // smtpPort
+				ps.setString(3, ss.getServerName()); // server name
+				ps.setString(4, ss.getDescription()); // description
+				ps.setString(5, ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
+				ps.setString(6, ss.getUserId()); // user id
+				ps.setString(7, ss.getUserPswd()); // user password
+				ps.setString(8, ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
+				ps.setString(9, ss.getStatus()); // status id
+				ps.setString(10, ss.getServerType().value()); // server type
+				ps.setInt(11, ss.getNumberOfThreads()); // Threads
+				ps.setInt(12, ss.getMaximumRetries()); // retries
+				ps.setInt(13, ss.getRetryFreq()); // retry freq
+				ps.setInt(14, ss.getAlertAfter()); // alertAfter
+				ps.setString(15, ss.getAlertLevel()); // alert level
+				ps.setInt(16, ss.getMessageCount()); // message count
+				ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
+				ps.setString(18, Constants.DEFAULT_USER_ID);
+				ps.execute();
+			}
+
+//			ps.setString(1, "localhost"); // smtpHost
+//			ps.setString(2, "-1"); // smtpPort
+//			ps.setString(3, "smtpServer"); // server name
+//			ps.setString(4, "smtp server on localhost"); // description
+//			ps.setString(5, Constants.NO); // use ssl
+//			ps.setString(6, "support"); // user id
+//			ps.setString(7, "support"); // user password
+//			ps.setString(8, Constants.NO); // persistence
+//			ps.setString(9, StatusIdCode.ACTIVE); // status id
+//			ps.setString(10, MailServerType.SMTP.value()); // server type
+//			ps.setInt(11, 4); // Threads
+//			ps.setInt(12, 10); // retries
+//			ps.setInt(13, 6); // retry freq
+//			ps.setInt(14, 5); // alertAfter
+//			ps.setString(15, "error"); // alert level
+//			ps.setInt(16, 0); // message count
+//			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(18, Constants.DEFAULT_USER_ID);
+//			ps.execute();
+
 			ps.close();
 			System.out.println("Inserted all rows...");
 		} catch (SQLException e) {
@@ -174,61 +203,86 @@ public class SmtpTable extends CreateTableBase {
 		try {
 			PreparedStatement ps = con.prepareStatement(insertSql);
 			
-			ps.setString(1, "outbound.mailhop.org"); // smtpHost
-			ps.setString(2, "465"); // smtpPort
-			ps.setString(3, "DyndnsMailRelay"); // server name
-			ps.setString(4, "smtp server on dyndns"); // description
-			ps.setString(5, Constants.YES); // use ssl
-			ps.setString(6, "jackwng"); // user id
-			ps.setString(7, "jackwng01"); // user password
-			ps.setString(8, Constants.NO); // persistence
-			ps.setString(9, StatusIdCode.INACTIVE); // status id
-			ps.setString(10, MailServerType.SMTP.value()); // server type
-			ps.setInt(11, 1); // Threads
-			ps.setInt(12, 10); // retries
-			ps.setInt(13, 5); // retry freq
-			ps.setInt(14, 5); // alertAfter
-			ps.setString(15, "error"); // alert level
-			ps.setInt(16, 0); // message count
-			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(18, Constants.DEFAULT_USER_ID);
-			ps.execute();
-			
-			ps.setString(1, "smtp.gmail.com"); // smtpHost
-			ps.setString(2, "-1"); // smtpPort
-			ps.setString(3, "gmailServer"); // server name
-			ps.setString(4, "smtp server on gmail.com"); // description
-			ps.setString(5, Constants.YES); // use ssl
-			ps.setString(6, "jackwng"); // user id
-			ps.setString(7, "jackwng01"); // user password
-			ps.setString(8, Constants.NO); // persistence
-			ps.setString(9, StatusIdCode.INACTIVE); // status id
-			ps.setString(10, MailServerType.SMTP.value()); // server type
-			ps.setInt(11, 2); // Threads
-			ps.setInt(12, 10); // retries
-			ps.setInt(13, 5); // retry freq
-			ps.setInt(14, 5); // alertAfter
-			ps.setString(15, "error"); // alert level
-			ps.setInt(16, 0); // message count
-			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(18, Constants.DEFAULT_USER_ID);
-			ps.execute();
-			
-			ps.setString(1, "localhost"); // smtpHost
-			ps.setString(2, "25"); // smtpPort
-			ps.setString(3, "exchServer"); // server name
-			ps.setString(4, "exch server on localhost"); // description
-			ps.setString(5, Constants.NO); // use ssl
-			ps.setString(6, "uid"); // user id
-			ps.setString(7, "pwd"); // user password
-			ps.setString(8, Constants.NO); // persistence
-			ps.setString(9, StatusIdCode.ACTIVE); // status id
-			ps.setString(10, MailServerType.EXCH.value()); // server type
-			ps.setInt(11, 1); // Threads
-			ps.setInt(12, 4); // retries
-			ps.setInt(13, 1); // retry freq
-			ps.setInt(14, 15); // alertAfter
-			ps.execute();
+			for (SmtpServerEnum ss : SmtpServerEnum.values()) {
+				if (ss.isTestOnly()) {
+					ps.setString(1, ss.getSmtpHost()); // smtpHost
+					ps.setInt(2, ss.getSmtpPort()); // smtpPort
+					ps.setString(3, ss.getServerName()); // server name
+					ps.setString(4, ss.getDescription()); // description
+					ps.setString(5, ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
+					ps.setString(6, ss.getUserId()); // user id
+					ps.setString(7, ss.getUserPswd()); // user password
+					ps.setString(8, ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
+					ps.setString(9, ss.getStatus()); // status id
+					ps.setString(10, ss.getServerType().value()); // server type
+					ps.setInt(11, ss.getNumberOfThreads()); // Threads
+					ps.setInt(12, ss.getMaximumRetries()); // retries
+					ps.setInt(13, ss.getRetryFreq()); // retry freq
+					ps.setInt(14, ss.getAlertAfter()); // alertAfter
+					ps.setString(15, ss.getAlertLevel()); // alert level
+					ps.setInt(16, ss.getMessageCount()); // message count
+					ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
+					ps.setString(18, Constants.DEFAULT_USER_ID);
+					ps.execute();
+				}
+			}
+
+
+//			ps.setString(1, "outbound.mailhop.org"); // smtpHost
+//			ps.setString(2, "465"); // smtpPort
+//			ps.setString(3, "DyndnsMailRelay"); // server name
+//			ps.setString(4, "smtp server on dyndns"); // description
+//			ps.setString(5, Constants.YES); // use ssl
+//			ps.setString(6, "jackwng"); // user id
+//			ps.setString(7, "jackwng01"); // user password
+//			ps.setString(8, Constants.NO); // persistence
+//			ps.setString(9, StatusIdCode.INACTIVE); // status id
+//			ps.setString(10, MailServerType.SMTP.value()); // server type
+//			ps.setInt(11, 1); // Threads
+//			ps.setInt(12, 10); // retries
+//			ps.setInt(13, 5); // retry freq
+//			ps.setInt(14, 5); // alertAfter
+//			ps.setString(15, "error"); // alert level
+//			ps.setInt(16, 0); // message count
+//			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(18, Constants.DEFAULT_USER_ID);
+//			ps.execute();
+//			
+//			ps.setString(1, "smtp.gmail.com"); // smtpHost
+//			ps.setString(2, "-1"); // smtpPort
+//			ps.setString(3, "gmailServer"); // server name
+//			ps.setString(4, "smtp server on gmail.com"); // description
+//			ps.setString(5, Constants.YES); // use ssl
+//			ps.setString(6, "jackwng"); // user id
+//			ps.setString(7, "jackwng01"); // user password
+//			ps.setString(8, Constants.NO); // persistence
+//			ps.setString(9, StatusIdCode.INACTIVE); // status id
+//			ps.setString(10, MailServerType.SMTP.value()); // server type
+//			ps.setInt(11, 2); // Threads
+//			ps.setInt(12, 10); // retries
+//			ps.setInt(13, 5); // retry freq
+//			ps.setInt(14, 5); // alertAfter
+//			ps.setString(15, "error"); // alert level
+//			ps.setInt(16, 0); // message count
+//			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
+//			ps.setString(18, Constants.DEFAULT_USER_ID);
+//			ps.execute();
+//			
+//			ps.setString(1, "localhost"); // smtpHost
+//			ps.setString(2, "25"); // smtpPort
+//			ps.setString(3, "exchServer"); // server name
+//			ps.setString(4, "exch server on localhost"); // description
+//			ps.setString(5, Constants.NO); // use ssl
+//			ps.setString(6, "uid"); // user id
+//			ps.setString(7, "pwd"); // user password
+//			ps.setString(8, Constants.NO); // persistence
+//			ps.setString(9, StatusIdCode.ACTIVE); // status id
+//			ps.setString(10, MailServerType.EXCH.value()); // server type
+//			ps.setInt(11, 1); // Threads
+//			ps.setInt(12, 4); // retries
+//			ps.setInt(13, 1); // retry freq
+//			ps.setInt(14, 15); // alertAfter
+//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
@@ -243,16 +297,16 @@ public class SmtpTable extends CreateTableBase {
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			
-			ps.setString(1, StatusIdCode.INACTIVE); // statusid
-			ps.setString(2, "smtpServer"); // smtpPort
+			ps.setString(1, StatusIdCode.INACTIVE); // status id
+			ps.setString(2, SmtpServerEnum.SUPPORT.getServerName()); // server name
 			ps.execute();
 			
-			ps.setString(1, StatusIdCode.ACTIVE); // statusid
-			ps.setString(2, "DyndnsMailRelay"); // smtpPort
+			ps.setString(1, StatusIdCode.ACTIVE); // status id
+			ps.setString(2, SmtpServerEnum.DynMailRelay.getServerName()); // server name
 			ps.execute();
 			
-			ps.setString(1, StatusIdCode.INACTIVE); // statusid
-			ps.setString(2, "exchServer"); // smtpPort
+			ps.setString(1, StatusIdCode.INACTIVE); // status id
+			ps.setString(2, SmtpServerEnum.EXCHANGE.getServerName()); // server name
 			ps.execute();
 			
 			ps.close();
@@ -285,7 +339,7 @@ public class SmtpTable extends CreateTableBase {
 			ps.setString(5, "testto@localhost");
 			ps.setString(6, "testreplyto@localhost");
 			ps.setString(7, Constants.NO);
-			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
+			ps.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
 			ps.setString(9, "SysAdmin");
 			ps.execute();
 			

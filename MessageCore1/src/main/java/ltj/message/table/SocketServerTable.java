@@ -9,9 +9,12 @@ import ltj.message.constant.StatusIdCode;
 import ltj.message.main.CreateTableBase;
 
 public class SocketServerTable extends CreateTableBase {
-	/** Creates a new instance of MailTables 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException */
+	/**
+	 * Creates a new instance of MailTables
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public SocketServerTable() throws SQLException, ClassNotFoundException {
 		init();
 	}

@@ -9,8 +9,9 @@ import ltj.message.main.CreateTableBase;
 
 public class InboxTables extends CreateTableBase {
 	/**
-	 * Creates a new instance of InboxTables 
-	 * @throws SQLException 
+	 * Creates a new instance of InboxTables
+	 * 
+	 * @throws SQLException
 	 * @throws ClassNotFoundException
 	 */
 	public InboxTables() throws ClassNotFoundException, SQLException {

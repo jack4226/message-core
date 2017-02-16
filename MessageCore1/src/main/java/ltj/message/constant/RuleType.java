@@ -12,13 +12,13 @@ public enum RuleType {
 		this.value = value;
 	}
 	
-	public String getValue() {
+	public String value() {
 		return value;
 	}
 	
 	public static RuleType getByValue(String value) {
 		for (RuleType type : RuleType.values()) {
-			if (type.getValue().equals(value)) {
+			if (type.value().equals(value)) {
 				return type;
 			}
 		}

@@ -136,12 +136,12 @@ public class RuleSimple extends RuleBase {
 				criteria_met = true;
 			}
 		}
-		else if (criteria.equals(VALUED)) {
+		else if (criteria.equals(IS_NOT_BLANK)) {
 			if (data.trim().length() > 0) {
 				criteria_met = true;
 			}
 		}
-		else if (criteria.equals(NOT_VALUED)) {
+		else if (criteria.equals(IS_BLANK)) {
 			if (data.trim().length() == 0)
 				criteria_met = true;
 		}

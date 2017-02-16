@@ -17,9 +17,12 @@ import ltj.message.vo.ClientVo;
 import ltj.spring.util.SpringUtil;
 
 public class ClientTable extends CreateTableBase {
-	/** Creates a new instance of ClientTables 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException */
+	/**
+	 * Creates a new instance of ClientTables
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public ClientTable() throws ClassNotFoundException, SQLException {
 		init();
 	}

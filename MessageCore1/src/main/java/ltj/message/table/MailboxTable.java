@@ -20,9 +20,12 @@ import ltj.message.vo.MailBoxVo;
 import ltj.spring.util.SpringUtil;
 
 public class MailboxTable extends CreateTableBase {
-	/** Creates a new instance of MailTables 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException */
+	/**
+	 * Creates a new instance of MailTables
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public MailboxTable() throws ClassNotFoundException, SQLException {
 		init();
 	}

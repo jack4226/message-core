@@ -7,9 +7,12 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.EmailIdToken;
 import ltj.message.main.CreateTableBase;
 public class IdTokensTable extends CreateTableBase {
-	/** Creates a new instance of IdTokenTables 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException */
+	/**
+	 * Creates a new instance of IdTokenTables
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public IdTokensTable() throws ClassNotFoundException, SQLException {
 		init();
 	}
