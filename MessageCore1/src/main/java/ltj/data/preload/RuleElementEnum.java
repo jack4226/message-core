@@ -126,7 +126,7 @@ public enum RuleElementEnum {
 			null, null, null),
 
 	BROADCAST_1(RuleNameEnum.BROADCAST, 1, RuleDataName.RULE_NAME, null, RuleCriteria.EQUALS, true,
-			RuleNameEnum.BROADCAST.getValue(), null,
+			RuleNameEnum.BROADCAST.name(), null,
 			null, null, null),
 
 	UNSUBSCRIBE_1(RuleNameEnum.UNSUBSCRIBE, 1, RuleDataName.TO_ADDR, null, RuleCriteria.REG_EX, false,
@@ -144,7 +144,7 @@ public enum RuleElementEnum {
 			null, null, null),
 
 	RMA_REQUEST_1(RuleNameEnum.RMA_REQUEST, 1, RuleDataName.RULE_NAME, null, RuleCriteria.EQUALS, true,
-			RuleNameEnum.RMA_REQUEST.getValue(), null,
+			RuleNameEnum.RMA_REQUEST.name(), null,
 			null, null, null),
 	
 	/*
@@ -183,14 +183,14 @@ public enum RuleElementEnum {
 			null, null, null),
 
 	HARD_BOUNCE_WATCHED_MAILBOX_1(RuleNameEnum.HardBouce_WatchedMailbox, 1, RuleDataName.RULE_NAME, null, RuleCriteria.EQUALS, true,
-			RuleNameEnum.HARD_BOUNCE.getValue(), null,
+			RuleNameEnum.HARD_BOUNCE.name(), null,
 			null, null, null),
 	HARD_BOUNCE_WATCHED_MAILBOX_2(RuleNameEnum.HardBouce_WatchedMailbox, 2, RuleDataName.TO_ADDR, null, RuleCriteria.STARTS_WITH, false,
 			"watched_maibox@", null,
 			null, null, null),
 
 	HARD_BOUNCE_NO_FINAL_RCPT_1(RuleNameEnum.HardBounce_NoFinalRcpt, 1, RuleDataName.RULE_NAME, null, RuleCriteria.EQUALS, true,
-			RuleNameEnum.HARD_BOUNCE.getValue(), null,
+			RuleNameEnum.HARD_BOUNCE.name(), null,
 			null, null, null),
 	HARD_BOUNCE_NO_FINAL_RCPT_2(RuleNameEnum.HardBounce_NoFinalRcpt, 2, RuleDataName.FINAL_RCPT_ADDR, null, RuleCriteria.IS_BLANK, false,
 			"", null,
