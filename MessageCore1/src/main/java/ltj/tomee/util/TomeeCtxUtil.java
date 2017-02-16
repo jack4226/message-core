@@ -33,7 +33,7 @@ public class TomeeCtxUtil {
 		Properties p = new Properties();
 		p.put("java.naming.factory.initial", "org.apache.openejb.client.RemoteInitialContextFactory");
 		//p.put("java.naming.provider.url", "ejbd://localhost:4201"); // OpenEjb
-		int port = findHttpPort(new int[] {8181,8080});
+		int port = findHttpPort(new int[] { 8181, 8080 });
 		p.put("java.naming.provider.url", "http://127.0.0.1:" + port + "/tomee/ejb"); // TomEE
 		// user and pass optional
 		p.put("java.naming.security.principal", "tomee");
