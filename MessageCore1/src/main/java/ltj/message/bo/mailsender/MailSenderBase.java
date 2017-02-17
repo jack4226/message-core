@@ -138,7 +138,7 @@ public abstract class MailSenderBase {
 				logger.warn("process() - Render Id is null, the message was not rendered");
 			}
 			// set rule name to SEND_MAIL
-			msgBean.setRuleName(RuleNameType.SEND_MAIL.toString());
+			msgBean.setRuleName(RuleNameType.SEND_MAIL.name());
 			clientVo = ClientUtil.getClientVo(msgBean.getClientId());
 			msgBean.setIsReceived(false); // out going message
 			if (msgBean.getEmBedEmailId() == null) { // not provided by calling program

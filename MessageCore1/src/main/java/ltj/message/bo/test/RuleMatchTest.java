@@ -69,7 +69,7 @@ public class RuleMatchTest extends BoTestBase {
 		mBean.setSubject("A Exception occured - out of the office");
 		ruleName = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName+LF);
-		assertEquals(RuleNameType.AUTO_REPLY.toString(), ruleName);
+		assertEquals(RuleNameType.AUTO_REPLY.name(), ruleName);
 
 		// test #3.2 - Out Of Office
 		mBean.setSubject("Out of the office auto reply");
@@ -84,7 +84,7 @@ public class RuleMatchTest extends BoTestBase {
 		mBean.setSubject("Delivery Status Notification (Failure)");
 		ruleName = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName+LF);
-		assertEquals(RuleNameType.HARD_BOUNCE.toString(), ruleName);
+		assertEquals(RuleNameType.HARD_BOUNCE.name(), ruleName);
 		
 		// test #4.2 - MAILBOX FULL (postmaster)
 		mBean.setSubject("A Exception occured");
@@ -92,13 +92,13 @@ public class RuleMatchTest extends BoTestBase {
 		ruleName = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName+LF);
 		//assertEquals("MailboxFull_Body_Match", ruleName);
-		assertEquals(RuleNameType.MAILBOX_FULL.toString(), ruleName);
+		assertEquals(RuleNameType.MAILBOX_FULL.name(), ruleName);
 		
 		// test #4.3 - HARD BOUNCE (postmaster)
 		mBean.setSubject("Returned Mail: User unknown");
 		ruleName = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName+LF);
-		assertEquals(RuleNameType.HARD_BOUNCE.toString(), ruleName);
+		assertEquals(RuleNameType.HARD_BOUNCE.name(), ruleName);
 		
 		// test #5 - VIRUS BLOCK
 		mBean.setFrom(InternetAddress.parse("event.alert@localhost", false));
@@ -106,14 +106,14 @@ public class RuleMatchTest extends BoTestBase {
 		mBean.setSubject("A Exception occured. norton antivirus detected");
 		ruleName = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName+LF);
-		assertEquals(RuleNameType.VIRUS_BLOCK.toString(), ruleName);
+		assertEquals(RuleNameType.VIRUS_BLOCK.name(), ruleName);
 		
 		// test #6 - SPAM BLOCK
 		mBean.setSubject("A Exception occured.");
 		mBean.setValue(new Date()+ "Test body message. earthlink spamblocker.");
 		ruleName = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName+LF);
-		assertEquals(RuleNameType.SPAM_BLOCK.toString(), ruleName);
+		assertEquals(RuleNameType.SPAM_BLOCK.name(), ruleName);
 		
 		// test #7 - CHALLENGE RESPONSE
 		mBean.setSubject("Re: A Exception occured.");
@@ -129,7 +129,7 @@ public class RuleMatchTest extends BoTestBase {
 		mBean.setValue(body);
 		ruleName = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### ruleName: "+ruleName+LF);
-		assertEquals(RuleNameType.CHALLENGE_RESPONSE.toString(), ruleName);
+		assertEquals(RuleNameType.CHALLENGE_RESPONSE.name(), ruleName);
 		
 		// test #8 - xheader_spam_score
 		mBean.setSubject("Test X-Header rule");
@@ -146,7 +146,7 @@ public class RuleMatchTest extends BoTestBase {
 		mBean.getHeaders().clear();
 		mBean.setSubject("Test Post Rule");
 		mBean.setValue(new Date()+ "Test body message.");
-		mBean.setRuleName(RuleNameType.HARD_BOUNCE.toString());
+		mBean.setRuleName(RuleNameType.HARD_BOUNCE.name());
 		ruleName = matcher.match(mBean, loader.getPostRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName+LF);
 		assertEquals("HardBouce_WatchedMailbox", ruleName);
@@ -156,7 +156,7 @@ public class RuleMatchTest extends BoTestBase {
 		mBean.setSubject("Test Post Rule No recipient found");
 		mBean.setValue(new Date()+ "Test body message.");
 		mBean.setTo(InternetAddress.parse("support@localhost"));
-		mBean.setRuleName(RuleNameType.HARD_BOUNCE.toString());
+		mBean.setRuleName(RuleNameType.HARD_BOUNCE.name());
 		ruleName = matcher.match(mBean, loader.getPostRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName+LF);
 		assertEquals("HardBounce_NoFinalRcpt", ruleName);
@@ -191,7 +191,7 @@ public class RuleMatchTest extends BoTestBase {
 		mBean.setAttachments(null);
 		String ruleName_s2 = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName_s2+LF);
-		assertTrue(RuleNameType.SUBSCRIBE.toString().equals(ruleName_s1) || RuleNameType.SUBSCRIBE.toString().equals(ruleName_s2));
+		assertTrue(RuleNameType.SUBSCRIBE.name().equals(ruleName_s1) || RuleNameType.SUBSCRIBE.name().equals(ruleName_s2));
 		
 		// test #12 - UnSubscribe
 		mBean.setRuleName(null);
@@ -209,7 +209,7 @@ public class RuleMatchTest extends BoTestBase {
 		mBean.setAttachments(null);
 		String ruleName_u2 = matcher.match(mBean, loader.getRuleSet(), loader.getSubRuleSet());
 		logger.info("##### RuleName: "+ruleName_u2+LF);
-		assertTrue(RuleNameType.UNSUBSCRIBE.toString().equals(ruleName_u1)||RuleNameType.UNSUBSCRIBE.toString().equals(ruleName_u2));
+		assertTrue(RuleNameType.UNSUBSCRIBE.name().equals(ruleName_u1)||RuleNameType.UNSUBSCRIBE.name().equals(ruleName_u2));
 		
 		// test #13 - Contact Us
 		mBean.setRuleName(null);

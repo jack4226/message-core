@@ -41,7 +41,7 @@ public class BroadcastBoTest extends BoTestBase {
 			messageBean.setMsgId(msgBean.getMsgId());
 			messageBean.setTo(msgBean.getTo());
 			messageBean.setFinalRcpt(msgBean.getFinalRcpt());
-			messageBean.setRuleName(RuleNameType.BROADCAST.toString());
+			messageBean.setRuleName(RuleNameType.BROADCAST.name());
 			messageBean.setBody("Dear ${CustomerName}:\n" + messageBean.getBody());
 			if (isDebugEnabled) {
 				logger.debug("MessageBean created:" + LF + messageBean);
@@ -75,7 +75,7 @@ public class BroadcastBoTest extends BoTestBase {
 	@Test
 	public void broadcastRuleEngine() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
-		messageBean.setRuleName(RuleNameType.BROADCAST.toString());
+		messageBean.setRuleName(RuleNameType.BROADCAST.name());
 		messageBean.setMailingListId("SMPLLST1");
 		messageBean.setBody("Dear ${CustomerName}:\n" + messageBean.getBody());
 		if (isDebugEnabled) {

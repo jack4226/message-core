@@ -128,7 +128,7 @@ public class MailingListBoImpl implements MailingListBo {
 		//msgBean.getBodyNode().setValue(renderVo.getBody());
 		msgBean.setBody(renderVo.getBody());
 		msgBean.setSubject(renderVo.getSubject());
-		msgBean.setRuleName(RuleNameType.SEND_MAIL.toString());
+		msgBean.setRuleName(RuleNameType.SEND_MAIL.name());
 		try {
 			msgBean.setTo(InternetAddress.parse(toAddr));
 		}
@@ -207,7 +207,7 @@ public class MailingListBoImpl implements MailingListBo {
 		
 		msgBean.setIsReceived(false);
 		msgBean.setOverrideTestAddr(false);
-		msgBean.setRuleName(RuleNameType.BROADCAST.toString());
+		msgBean.setRuleName(RuleNameType.BROADCAST.name());
 		if (Constants.Y.equalsIgnoreCase(tmpltVo.getEmbedEmailId())) {
 			msgBean.setEmBedEmailId(Boolean.TRUE);
 		}

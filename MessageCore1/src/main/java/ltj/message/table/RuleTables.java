@@ -217,7 +217,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.execute();
 //			
 //			// built-in rules
-//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.name());
 //			ps.setInt(2, 101);
 //			ps.setString(3, RuleBase.ANY_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -226,7 +226,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(10, "from RFC Scan Routine, or from postmaster with sub-rules");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.SOFT_BOUNCE.toString());
+//			ps.setString(1, RuleNameType.SOFT_BOUNCE.name());
 //			ps.setInt(2, 102);
 //			ps.setString(3, RuleBase.SIMPLE_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -234,7 +234,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(10, "Soft bounce, from RFC scan routine");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
+//			ps.setString(1, RuleNameType.MAILBOX_FULL.name());
 //			ps.setInt(2, 103);
 //			ps.setString(3, RuleBase.ANY_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -265,7 +265,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(10, "Bounced from Spam blocker");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.name());
 //			ps.setInt(2, 107);
 //			ps.setString(3, RuleBase.ANY_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -286,7 +286,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(10, "Auto reply from email client software");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.CC_USER.toString());
+//			ps.setString(1, RuleNameType.CC_USER.name());
 //			ps.setInt(2, 110);
 //			ps.setString(3, RuleBase.SIMPLE_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -294,7 +294,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(10, "from scan routine, message received as recipient of CC or BCC");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.MDN_RECEIPT.toString());
+//			ps.setString(1, RuleNameType.MDN_RECEIPT.name());
 //			ps.setInt(2, 111);
 //			ps.setString(3, RuleBase.SIMPLE_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -302,7 +302,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(10, "from RFC scan, Message Delivery Notification, a positive receipt");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.GENERIC.toString());
+//			ps.setString(1, RuleNameType.GENERIC.name());
 //			ps.setInt(2, 112);
 //			ps.setString(3, RuleBase.SIMPLE_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -342,7 +342,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(10, "called from internal program");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.BROADCAST.toString());
+//			ps.setString(1, RuleNameType.BROADCAST.name());
 //			ps.setInt(2, 117);
 //			ps.setString(3, RuleBase.SIMPLE_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -350,7 +350,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(10, "called from internal program");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.SEND_MAIL.toString());
+//			ps.setString(1, RuleNameType.SEND_MAIL.name());
 //			ps.setInt(2, 118);
 //			ps.setString(3, RuleBase.SIMPLE_RULE);
 //			ps.setString(6, Constants.SMTP_MAIL);
@@ -543,7 +543,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(11, null);
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.name());
 //			ps.setInt(2, 0);
 //			ps.setString(3, RuleBase.FROM_ADDR);
 //			ps.setString(5, RuleBase.REG_EX);
@@ -554,7 +554,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(11, ",");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.name());
 //			ps.setInt(2, 1);
 //			ps.setString(3, RuleBase.FROM_ADDR);
 //			ps.setString(5, RuleBase.REG_EX);
@@ -565,7 +565,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(11, ",");
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
+//			ps.setString(1, RuleNameType.MAILBOX_FULL.name());
 //			ps.setInt(2, 0);
 //			ps.setString(3, RuleBase.FROM_ADDR);
 //			ps.setString(5, RuleBase.REG_EX);
@@ -733,7 +733,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(11, null);
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.name());
 //			ps.setInt(2, 0);
 //			ps.setString(3, RuleBase.SUBJECT);
 //			ps.setString(5, RuleBase.REG_EX);
@@ -764,7 +764,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(11, null);
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.name());
 //			ps.setInt(2, 1);
 //			ps.setString(3, RuleBase.SUBJECT);
 //			ps.setString(5, RuleBase.REG_EX);
@@ -796,7 +796,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(11, null);
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.name());
 //			ps.setInt(2, 2);
 //			ps.setString(3, RuleBase.FROM_ADDR);
 //			ps.setString(5, RuleBase.REG_EX);
@@ -832,12 +832,12 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(11, null);
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.BROADCAST.toString());
+//			ps.setString(1, RuleNameType.BROADCAST.name());
 //			ps.setInt(2, 0);
 //			ps.setString(3, RuleBase.RULE_NAME);
 //			ps.setString(5, RuleBase.EQUALS);
 //			ps.setString(6, Constants.Y);
-//			ps.setString(7, RuleNameType.BROADCAST.toString());
+//			ps.setString(7, RuleNameType.BROADCAST.name());
 //			ps.setString(8, null);
 //			ps.setString(9, null);
 //			ps.setString(10, null);
@@ -994,7 +994,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(3, RuleBase.RULE_NAME);
 //			ps.setString(5, RuleBase.EQUALS);
 //			ps.setString(6, Constants.Y);
-//			ps.setString(7, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(7, RuleNameType.HARD_BOUNCE.name());
 //			ps.setString(8, null);
 //			ps.setString(9, null);
 //			ps.setString(10, null);
@@ -1018,7 +1018,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(3, RuleBase.RULE_NAME);
 //			ps.setString(5, RuleBase.EQUALS);
 //			ps.setString(6, Constants.Y);
-//			ps.setString(7, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(7, RuleNameType.HARD_BOUNCE.name());
 //			ps.setString(8, null);
 //			ps.setString(9, null);
 //			ps.setString(10, null);
@@ -1212,17 +1212,17 @@ public class RuleTables extends CreateTableBase {
 				ps.execute();
 			}
 			
-//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.name());
 //			ps.setString(2, "HardBounce_Subj_Match");
 //			ps.setInt(3,0);
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.HARD_BOUNCE.toString());
+//			ps.setString(1, RuleNameType.HARD_BOUNCE.name());
 //			ps.setString(2, "HardBounce_Body_Match");
 //			ps.setInt(3,1);
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.MAILBOX_FULL.toString());
+//			ps.setString(1, RuleNameType.MAILBOX_FULL.name());
 //			ps.setString(2, "MailboxFull_Body_Match");
 //			ps.setInt(3,2);
 //			ps.execute();
@@ -1237,7 +1237,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setInt(3,0);
 //			ps.execute();
 //			
-//			ps.setString(1, RuleNameType.VIRUS_BLOCK.toString());
+//			ps.setString(1, RuleNameType.VIRUS_BLOCK.name());
 //			ps.setString(2, "VirusBlock_Body_Match");
 //			ps.setInt(3,0);
 //			ps.execute();

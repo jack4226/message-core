@@ -22,7 +22,7 @@ public class MsgActionTest extends DaoTestBase {
 	// this instance will be dependency injected by name
 	@Resource
 	private MsgActionDao msgActionDao;
-	final String testRuleName = RuleNameType.HARD_BOUNCE.toString();
+	final String testRuleName = RuleNameType.HARD_BOUNCE.name();
 	
 	@Test
 	public void testSelects() {
@@ -41,7 +41,7 @@ public class MsgActionTest extends DaoTestBase {
 	public void insertSelectDelete() {
 		MsgActionVo msgActionVo = insert();
 		assertNotNull(msgActionVo);
-		assertEquals(RuleNameType.CC_USER.toString(), msgActionVo.getRuleName());
+		assertEquals(RuleNameType.CC_USER.name(), msgActionVo.getRuleName());
 		MsgActionVo msgActionVo2 = select(msgActionVo);
 		assertNotNull(msgActionVo2);
 		assertTrue(msgActionVo.equalsTo(msgActionVo2));
@@ -67,7 +67,7 @@ public class MsgActionTest extends DaoTestBase {
 	}
 	
 	private List<MsgActionVo> selectByBestMatch() {
-		List<MsgActionVo> list = msgActionDao.getByBestMatch(RuleNameType.GENERIC.toString(), null, "JBatchCorp");
+		List<MsgActionVo> list = msgActionDao.getByBestMatch(RuleNameType.GENERIC.name(), null, "JBatchCorp");
 		for (int i=0; i<list.size(); i++) {
 			MsgActionVo msgActionVo = list.get(i);
 			System.out.println("MsgActionDao - selectByBestMatch: "+LF+msgActionVo);
@@ -108,7 +108,7 @@ public class MsgActionTest extends DaoTestBase {
 	}
 
 	private MsgActionVo insert() {
-		List<MsgActionVo> list = msgActionDao.getByRuleName(RuleNameType.CC_USER.toString());
+		List<MsgActionVo> list = msgActionDao.getByRuleName(RuleNameType.CC_USER.name());
 		if (list.size()>0) {
 			MsgActionVo msgActionVo = list.get(list.size()-1);
 			msgActionVo.setActionSeq((msgActionVo.getActionSeq()+1));

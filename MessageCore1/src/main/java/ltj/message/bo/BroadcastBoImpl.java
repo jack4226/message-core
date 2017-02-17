@@ -69,7 +69,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		if (msgBean.getMsgId()==null) {
 			throw new DataValidationException("MsgId is null");
 		}
-		if (!RuleNameType.BROADCAST.toString().equals(msgBean.getRuleName())) {
+		if (!RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
 			throw new DataValidationException("Invalid Rule Name: " + msgBean.getRuleName());
 		}
 		if (getArgumentList(taskArguments).size() > 0) {

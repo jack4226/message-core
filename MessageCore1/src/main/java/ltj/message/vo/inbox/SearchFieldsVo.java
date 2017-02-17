@@ -44,7 +44,7 @@ public final class SearchFieldsVo extends BasePagingVo implements Serializable {
 		SearchFieldsVo vo2 = new SearchFieldsVo();
 		vo2.setMsgType(MsgType.Closed);
 		vo.setSubject("auto-reply");
-		vo2.setRuleName(RuleNameType.HARD_BOUNCE.toString());
+		vo2.setRuleName(RuleNameType.HARD_BOUNCE.name());
 		vo.setBody("test message");
 		vo2.setFromAddrId(10L);
 		vo.setFromAddr("test@test.com");

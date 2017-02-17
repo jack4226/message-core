@@ -119,7 +119,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 		msgVo.setPurgeAfter(rsp.getMsgSourceVo().getPurgeAfter());
 		
 		msgBean.setPurgeAfter(rsp.getMsgSourceVo().getPurgeAfter());
-		msgBean.setRuleName(RuleNameType.SEND_MAIL.toString());
+		msgBean.setRuleName(RuleNameType.SEND_MAIL.name());
 		
 		if (msgBean.getCarrierCode() == null) {
 			msgBean.setCarrierCode(rsp.getMsgSourceVo().getCarrierCode());

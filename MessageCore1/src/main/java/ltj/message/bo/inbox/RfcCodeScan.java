@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -26,11 +27,11 @@ public final class RfcCodeScan {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final int maxLenToScan = 8192*4; // scan up to 32k
 	
-	private static final HashMap<String, String> RFC1893_STATUS_CODE = new HashMap<String, String>();
-	private static final HashMap<String, String> RFC1893_STATUS_DESC = new HashMap<String, String>();
-	private static final HashMap<String, String> RFC2821_STATUS_CODE = new HashMap<String, String>();
-	private static final HashMap<String, String> RFC2821_STATUS_DESC = new HashMap<String, String>();
-	private static final HashMap<String, String> RFC2821_STATUS_MATCHINGTEXT = new HashMap<String, String>();
+	private static final Map<String, String> RFC1893_STATUS_CODE = new HashMap<String, String>();
+	private static final Map<String, String> RFC1893_STATUS_DESC = new HashMap<String, String>();
+	private static final Map<String, String> RFC2821_STATUS_CODE = new HashMap<String, String>();
+	private static final Map<String, String> RFC2821_STATUS_DESC = new HashMap<String, String>();
+	private static final Map<String, String> RFC2821_STATUS_MATCHINGTEXT = new HashMap<String, String>();
 	
 	private static RfcCodeScan rfcCodeScan = null;
 	
@@ -71,7 +72,7 @@ public final class RfcCodeScan {
 			return RuleName;
 		}
 		else {
-			return RuleNameType.GENERIC.toString();
+			return RuleNameType.GENERIC.name();
 		}
 	}
 	
@@ -126,14 +127,14 @@ public final class RfcCodeScan {
 					return RuleName.toString();
 				}
 				else if (token.startsWith("5.")) { // 5.x.x
-					return RuleNameType.HARD_BOUNCE.toString();
+					return RuleNameType.HARD_BOUNCE.name();
 				}
 				else if (token.startsWith("4.")) { // 4.x.x
-					return RuleNameType.SOFT_BOUNCE.toString();
+					return RuleNameType.SOFT_BOUNCE.name();
 				}
 				else if (token.startsWith("2.")) { // 2.x.x
 					// 2.x.x = OK message returned, MDN receipt.
-					return RuleNameType.MDN_RECEIPT.toString();
+					return RuleNameType.MDN_RECEIPT.name();
 				}
 			}
 		}
@@ -206,7 +207,7 @@ public final class RfcCodeScan {
 			Matcher m = p.matcher(rfcText);
 			if (m.find()) {
 				logger.info("Match Succeeded: [" + rfcText + "] matched [" + matchingText + "]");
-				return ruleName.toString();
+				return ruleName.name();
 			}
 			else {
 				logger.info("Match Failed: [" + rfcText + "] did not match [" + matchingText + "]");
@@ -245,7 +246,7 @@ public final class RfcCodeScan {
 	 *            either RFC1893_STATUS_CODE or RFC2821_STATUS_CODE
 	 * @return message id of the token
 	 */
-	private RuleNameType searchRfcCodeTable(String token, HashMap<String, String> map) {
+	private RuleNameType searchRfcCodeTable(String token, Map<String, String> map) {
 		String type = map.get(token);
 
 		if (type != null) { // found RFC status code

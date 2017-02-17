@@ -228,7 +228,7 @@ public class MsgInboxTest extends DaoTestBase {
 	
 	private MsgInboxWebVo selectBroadcastMsg() {
 		SearchFieldsVo vo = new SearchFieldsVo();
-		vo.setRuleName(RuleNameType.BROADCAST.toString());
+		vo.setRuleName(RuleNameType.BROADCAST.name());
 		vo.setMsgType(SearchFieldsVo.MsgType.Closed);
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		for (MsgInboxWebVo webVo : list) {
@@ -240,7 +240,7 @@ public class MsgInboxTest extends DaoTestBase {
 
 	private MsgInboxWebVo selectInboundGenericMsg() {
 		SearchFieldsVo vo = new SearchFieldsVo();
-		vo.setRuleName(RuleNameType.GENERIC.toString());
+		vo.setRuleName(RuleNameType.GENERIC.name());
 		vo.setMsgType(SearchFieldsVo.MsgType.Received);
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		for (MsgInboxWebVo webVo : list) {

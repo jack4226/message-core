@@ -66,7 +66,7 @@ public class BroadcastTest extends BoTestBase {
 			messageBean.setTo(InternetAddress.parse(bcstAddr));
 			messageBean.setSubject("Test Broadcast message - " + suffix);
 			messageBean.setBody("Test Broadcast message body.");
-			messageBean.setRuleName(RuleNameType.BROADCAST.toString());
+			messageBean.setRuleName(RuleNameType.BROADCAST.name());
 			messageBean.setMailingListId("SMPLLST1");
 			messageBean.setBody("Dear ${CustomerName}:" + LF + messageBean.getBody());
 			messageParser.parse(messageBean);

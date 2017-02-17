@@ -17,7 +17,7 @@ public class RuleSubRuleMapTest extends DaoTestBase {
 	@Resource
 	private RuleSubRuleMapDao ruleSubRuleMapDao;
 	
-	final String testRuleName = RuleNameType.HARD_BOUNCE.toString();
+	final String testRuleName = RuleNameType.HARD_BOUNCE.name();
 	final String testSubRuleName = "MailboxFull_Body_Match";
 	
 	@Test

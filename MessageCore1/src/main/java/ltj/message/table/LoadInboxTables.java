@@ -117,7 +117,7 @@ public class LoadInboxTables {
 		in.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		in.setLockTime(null);
 		in.setLockId(null);
-		in.setRuleName(RuleNameType.GENERIC.toString());
+		in.setRuleName(RuleNameType.GENERIC.name());
 		in.setMsgContentType("multipart/mixed");
 		in.setBodyContentType("text/plain");
 		in.setMsgBody("Test Message Body");
@@ -144,7 +144,7 @@ public class LoadInboxTables {
 		in.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		in.setLockTime(null);
 		in.setLockId(null);
-		in.setRuleName(RuleNameType.BROADCAST.toString());
+		in.setRuleName(RuleNameType.BROADCAST.name());
 		in.setMsgContentType("text/plain");
 		in.setBodyContentType("text/plain");
 		in.setMsgBody("Test Broadcast Message Body");

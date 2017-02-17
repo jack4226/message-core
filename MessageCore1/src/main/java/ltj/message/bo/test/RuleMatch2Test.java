@@ -46,7 +46,7 @@ public class RuleMatch2Test extends BoTestBase {
 			RuleVo ruleVo = rulesDataBo.getRuleByPrimaryKey("HardBouce_WatchedMailbox");
 			System.out.println("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
 			
-			ruleVo = rulesDataBo.getRuleByPrimaryKey(RuleNameType.VIRUS_BLOCK.toString());
+			ruleVo = rulesDataBo.getRuleByPrimaryKey(RuleNameType.VIRUS_BLOCK.name());
 			System.out.println("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
 			
 			loader.listRuleNames();
@@ -147,7 +147,7 @@ public class RuleMatch2Test extends BoTestBase {
 			mBean.getHeaders().clear();
 			mBean.setSubject("Test Post Rule");
 			mBean.setValue(new Date()+ "Post Rule test body message.");
-			mBean.setRuleName(RuleNameType.HARD_BOUNCE.toString());
+			mBean.setRuleName(RuleNameType.HARD_BOUNCE.name());
 			ruleName = matcher.match(mBean, loader.getPostRuleSet(), loader.getSubRuleSet());
 			logger.info("##### ruleName: "+ruleName+LF);
 			
@@ -156,7 +156,7 @@ public class RuleMatch2Test extends BoTestBase {
 			mBean.setSubject("Test Post Rule No recipient found");
 			mBean.setValue(new Date()+ "Test body message.");
 			mBean.setTo(InternetAddress.parse("support@localhost"));
-			mBean.setRuleName(RuleNameType.HARD_BOUNCE.toString());
+			mBean.setRuleName(RuleNameType.HARD_BOUNCE.name());
 			ruleName = matcher.match(mBean, loader.getPostRuleSet(), loader.getSubRuleSet());
 			logger.info("##### RuleName: "+ruleName+LF);
 			

@@ -219,7 +219,7 @@ public class MailingListComposeBean {
 			// construct messageBean for new message
 			MessageBean mBean = new MessageBean();
 			mBean.setMailingListId(listId);
-			mBean.setRuleName(RuleNameType.BROADCAST.toString());
+			mBean.setRuleName(RuleNameType.BROADCAST.name());
 			if (Constants.Y.equals(embedEmailId)) {
 				mBean.setEmBedEmailId(Boolean.valueOf(true));
 			}

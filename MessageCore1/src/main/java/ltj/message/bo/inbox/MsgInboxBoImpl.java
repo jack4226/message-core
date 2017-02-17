@@ -266,7 +266,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		msgInboxDao.insert(msgVo);
 		
 		// insert click count record for Broadcasting e-mail
-		if (RuleNameType.BROADCAST.toString().equals(msgBean.getRuleName())) {
+		if (RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
 			MsgClickCountsVo msgClickCountsVo = new MsgClickCountsVo();
 			msgClickCountsVo.setMsgId(msgId);
 			// msgBean.getMailingListId() should always returns a value. just for safety.
@@ -420,7 +420,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (msgActionLogsVo.getLeadMsgId() < 0) {
 			msgActionLogsVo.setLeadMsgId(msgBean.getMsgId());
 		}
-		msgActionLogsVo.setActionBo(RuleNameType.SEND_MAIL.toString());
+		msgActionLogsVo.setActionBo(RuleNameType.SEND_MAIL.name());
 		msgActionLogsDao.insert(msgActionLogsVo);
 	}
 	
