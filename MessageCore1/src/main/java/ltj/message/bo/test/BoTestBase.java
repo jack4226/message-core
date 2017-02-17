@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.bean.MessageBeanUtil;
@@ -32,7 +33,6 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.dao.inbox.MsgInboxDao;
@@ -159,7 +159,7 @@ public class BoTestBase {
 				logger.debug("MessageBean After:" + LF + messageBean);
 			}
 			if (messageBean.getRuleName()==null) {
-				messageBean.setRuleName(RuleNameType.GENERIC.name());
+				messageBean.setRuleName(RuleNameEnum.GENERIC.name());
 			}
 			long msgId = msgInboxBo.saveMessage(messageBean);
 			logger.info("msgInboxBo.saveMessage - MsgId returned: " + msgId);
@@ -177,14 +177,14 @@ public class BoTestBase {
 	/*
 	 * Define assignable rule names
 	 */
-	protected final static RuleNameType[] RuleNames = {
-			RuleNameType.HARD_BOUNCE,
-			RuleNameType.SOFT_BOUNCE,
-			RuleNameType.MAILBOX_FULL,
-			RuleNameType.MAIL_BLOCK,
-			RuleNameType.SPAM_BLOCK,
-			RuleNameType.VIRUS_BLOCK,
-			//RuleNameType.CSR_REPLY, // TODO must add "Original Message" to message bean
-			RuleNameType.RMA_REQUEST
+	protected final static RuleNameEnum[] RuleNames = {
+			RuleNameEnum.HARD_BOUNCE,
+			RuleNameEnum.SOFT_BOUNCE,
+			RuleNameEnum.MAILBOX_FULL,
+			RuleNameEnum.MAIL_BLOCK,
+			RuleNameEnum.SPAM_BLOCK,
+			RuleNameEnum.VIRUS_BLOCK,
+			//RuleNameEnum.CSR_REPLY, // TODO must add "Original Message" to message bean
+			RuleNameEnum.RMA_REQUEST
 	};
 }

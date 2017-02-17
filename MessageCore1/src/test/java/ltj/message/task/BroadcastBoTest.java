@@ -12,6 +12,7 @@ import javax.mail.internet.AddressException;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.template.RenderBo;
@@ -20,7 +21,6 @@ import ltj.message.bo.template.RenderResponse;
 import ltj.message.bo.template.RenderVariable;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
-import ltj.message.constant.RuleNameType;
 import ltj.message.exception.DataValidationException;
 
 /*** Please start MailEngine and MailReader before running this test ***/
@@ -41,7 +41,7 @@ public class BroadcastBoTest extends BoTestBase {
 			messageBean.setMsgId(msgBean.getMsgId());
 			messageBean.setTo(msgBean.getTo());
 			messageBean.setFinalRcpt(msgBean.getFinalRcpt());
-			messageBean.setRuleName(RuleNameType.BROADCAST.name());
+			messageBean.setRuleName(RuleNameEnum.BROADCAST.name());
 			messageBean.setBody("Dear ${CustomerName}:\n" + messageBean.getBody());
 			if (isDebugEnabled) {
 				logger.debug("MessageBean created:" + LF + messageBean);
@@ -75,7 +75,7 @@ public class BroadcastBoTest extends BoTestBase {
 	@Test
 	public void broadcastRuleEngine() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
-		messageBean.setRuleName(RuleNameType.BROADCAST.name());
+		messageBean.setRuleName(RuleNameEnum.BROADCAST.name());
 		messageBean.setMailingListId("SMPLLST1");
 		messageBean.setBody("Dear ${CustomerName}:\n" + messageBean.getBody());
 		if (isDebugEnabled) {

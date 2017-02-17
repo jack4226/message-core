@@ -21,8 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.exception.DataValidationException;
@@ -62,7 +62,7 @@ public class TaskDispatcher {
 		}
 		
 		if (msgBean.getFrom() == null) {
-			if (RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
+			if (RuleNameEnum.BROADCAST.name().equals(msgBean.getRuleName())) {
 				msgBean.setFrom(InternetAddress.parse("bcst_tmplt@localhost"));
 			}
 			else {
@@ -70,7 +70,7 @@ public class TaskDispatcher {
 			}
 		}
 		if (msgBean.getTo() == null) {
-			if (RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
+			if (RuleNameEnum.BROADCAST.name().equals(msgBean.getRuleName())) {
 				msgBean.setTo(InternetAddress.parse("bcst_tmplt@localhost"));
 			}
 			else {

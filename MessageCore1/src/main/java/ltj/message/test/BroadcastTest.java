@@ -14,12 +14,12 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.CodeType;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -66,7 +66,7 @@ public class BroadcastTest extends BoTestBase {
 			messageBean.setTo(InternetAddress.parse(bcstAddr));
 			messageBean.setSubject("Test Broadcast message - " + suffix);
 			messageBean.setBody("Test Broadcast message body.");
-			messageBean.setRuleName(RuleNameType.BROADCAST.name());
+			messageBean.setRuleName(RuleNameEnum.BROADCAST.name());
 			messageBean.setMailingListId("SMPLLST1");
 			messageBean.setBody("Dear ${CustomerName}:" + LF + messageBean.getBody());
 			messageParser.parse(messageBean);
@@ -87,7 +87,7 @@ public class BroadcastTest extends BoTestBase {
 		List<MsgInboxVo> milist2 = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		assertEquals(sizeBefore + 1, milist2.size());
 		MsgInboxVo mivo = milist2.get(milist2.size() - 1);
-		assertEquals(RuleNameType.BROADCAST.name(), mivo.getRuleName());
+		assertEquals(RuleNameEnum.BROADCAST.name(), mivo.getRuleName());
 		assertEquals("Test Broadcast message - " + suffix, mivo.getMsgSubject());
 	}
 	

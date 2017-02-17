@@ -142,8 +142,8 @@ public class LoadActionTables {
 //		msgDataTypeDao.insert(vo);
 		
 		// insert rule names
-//		for (RuleNameType name : RuleNameType.values()) {
-//			if (RuleNameType.GENERIC.equals(name)) {
+//		for (RuleNameEnum name : RuleNameEnum.values()) {
+//			if (RuleNameEnum.GENERIC.equals(name)) {
 //				continue; // skip GENERIC
 //			}
 //			String ruleName = name.toString();
@@ -214,91 +214,91 @@ public class LoadActionTables {
 		
 //		MsgActionVo act = null;
 //		// for build-in rules
-//		act = new MsgActionVo(RuleNameType.HARD_BOUNCE.name(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.HARD_BOUNCE.name(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.HARD_BOUNCE.name(),2,now,null,"SUSPEND","A","$"+AddressType.FINAL_RCPT_ADDR.value()+","+"$"+AddressType.ORIG_RCPT_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.HARD_BOUNCE.name(),2,now,null,"SUSPEND","A","$"+AddressType.FINAL_RCPT_ADDR.value()+","+"$"+AddressType.ORIG_RCPT_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.HARD_BOUNCE.name(),3,now,null,"MARK_DLVR_ERR","A",null);
+//		act = new MsgActionVo(RuleNameEnum.HARD_BOUNCE.name(),3,now,null,"MARK_DLVR_ERR","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.HARD_BOUNCE.name(),4,now,null,"CLOSE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.HARD_BOUNCE.name(),4,now,null,"CLOSE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SOFT_BOUNCE.name(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.SOFT_BOUNCE.name(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SOFT_BOUNCE.name(),2,now,null,"BOUNCE_UP","A","$"+AddressType.FINAL_RCPT_ADDR.value()+","+"$"+AddressType.ORIG_RCPT_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.SOFT_BOUNCE.name(),2,now,null,"BOUNCE_UP","A","$"+AddressType.FINAL_RCPT_ADDR.value()+","+"$"+AddressType.ORIG_RCPT_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SOFT_BOUNCE.name(),3,now,null,"CLOSE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.SOFT_BOUNCE.name(),3,now,null,"CLOSE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MAILBOX_FULL.name(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.MAILBOX_FULL.name(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MAILBOX_FULL.name(),2,now,null,"BOUNCE_UP","A","$"+AddressType.FINAL_RCPT_ADDR.value()+","+"$"+AddressType.ORIG_RCPT_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.MAILBOX_FULL.name(),2,now,null,"BOUNCE_UP","A","$"+AddressType.FINAL_RCPT_ADDR.value()+","+"$"+AddressType.ORIG_RCPT_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MAILBOX_FULL.name(),3,now,null,"CLOSE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.MAILBOX_FULL.name(),3,now,null,"CLOSE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MSGSIZE_TOO_BIG.toString(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.MSGSIZE_TOO_BIG.toString(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MSGSIZE_TOO_BIG.toString(),2,now,null,"TO_CSR","A","$CUSTOMER_CARE_INPUT");
+//		act = new MsgActionVo(RuleNameEnum.MSGSIZE_TOO_BIG.toString(),2,now,null,"TO_CSR","A","$CUSTOMER_CARE_INPUT");
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MAIL_BLOCK.toString(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.MAIL_BLOCK.toString(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MAIL_BLOCK.toString(),2,now,null,"FORWARD","A","$" + TableColumnName.SPAM_CONTROL_ADDR);
+//		act = new MsgActionVo(RuleNameEnum.MAIL_BLOCK.toString(),2,now,null,"FORWARD","A","$" + TableColumnName.SPAM_CONTROL_ADDR);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SPAM_BLOCK.toString(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.SPAM_BLOCK.toString(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SPAM_BLOCK.toString(),2,now,null,"FORWARD","A","$"+TableColumnName.SPAM_CONTROL_ADDR);
+//		act = new MsgActionVo(RuleNameEnum.SPAM_BLOCK.toString(),2,now,null,"FORWARD","A","$"+TableColumnName.SPAM_CONTROL_ADDR);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.VIRUS_BLOCK.name(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.VIRUS_BLOCK.name(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.VIRUS_BLOCK.name(),2,now,null,"FORWARD","A","$"+TableColumnName.VIRUS_CONTROL_ADDR);
+//		act = new MsgActionVo(RuleNameEnum.VIRUS_BLOCK.name(),2,now,null,"FORWARD","A","$"+TableColumnName.VIRUS_CONTROL_ADDR);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.CHALLENGE_RESPONSE.toString(),1,now,null,"FORWARD","A","$"+TableColumnName.CHALLENGE_HANDLER_ADDR);
+//		act = new MsgActionVo(RuleNameEnum.CHALLENGE_RESPONSE.toString(),1,now,null,"FORWARD","A","$"+TableColumnName.CHALLENGE_HANDLER_ADDR);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.AUTO_REPLY.toString(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.AUTO_REPLY.toString(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.AUTO_REPLY.toString(),2,now,null,"CLOSE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.AUTO_REPLY.toString(),2,now,null,"CLOSE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.CC_USER.name(),1,now,null,"DROP","A",null);
+//		act = new MsgActionVo(RuleNameEnum.CC_USER.name(),1,now,null,"DROP","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MDN_RECEIPT.name(),1,now,null,"ACTIVATE","A","$"+AddressType.FINAL_RCPT_ADDR.value()+","+"$"+AddressType.ORIG_RCPT_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.MDN_RECEIPT.name(),1,now,null,"ACTIVATE","A","$"+AddressType.FINAL_RCPT_ADDR.value()+","+"$"+AddressType.ORIG_RCPT_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.MDN_RECEIPT.name(),2,now,null,"DROP","A",null);
+//		act = new MsgActionVo(RuleNameEnum.MDN_RECEIPT.name(),2,now,null,"DROP","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.CSR_REPLY.toString(),1,now,null,"CSR_REPLY","A",null);
+//		act = new MsgActionVo(RuleNameEnum.CSR_REPLY.toString(),1,now,null,"CSR_REPLY","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SEND_MAIL.name(),1,now,null,"SENDMAIL","A","$"+AddressType.TO_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.SEND_MAIL.name(),1,now,null,"SENDMAIL","A","$"+AddressType.TO_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.RMA_REQUEST.toString(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.RMA_REQUEST.toString(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.RMA_REQUEST.toString(),2,now,null,"ACTIVATE","A","$"+AddressType.FROM_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.RMA_REQUEST.toString(),2,now,null,"ACTIVATE","A","$"+AddressType.FROM_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.RMA_REQUEST.toString(),3,now,null,"TO_CSR","A","$RMA_REQUEST_INPUT");
+//		act = new MsgActionVo(RuleNameEnum.RMA_REQUEST.toString(),3,now,null,"TO_CSR","A","$RMA_REQUEST_INPUT");
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.UNSUBSCRIBE.toString(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.UNSUBSCRIBE.toString(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.UNSUBSCRIBE.toString(),2,now,null,"UNSUBSCRIBE","A","$"+AddressType.FROM_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.UNSUBSCRIBE.toString(),2,now,null,"UNSUBSCRIBE","A","$"+AddressType.FROM_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.UNSUBSCRIBE.toString(),3,now,null,"CLOSE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.UNSUBSCRIBE.toString(),3,now,null,"CLOSE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SUBSCRIBE.toString(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.SUBSCRIBE.toString(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SUBSCRIBE.toString(),2,now,null,"SUBSCRIBE","A","$"+AddressType.FROM_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.SUBSCRIBE.toString(),2,now,null,"SUBSCRIBE","A","$"+AddressType.FROM_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SUBSCRIBE.toString(),3,now,null,"ACTIVATE","A","$"+AddressType.FROM_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.SUBSCRIBE.toString(),3,now,null,"ACTIVATE","A","$"+AddressType.FROM_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SUBSCRIBE.toString(),4,now,null,"AUTO_REPLY","A","SubscribeByEmailReply");
+//		act = new MsgActionVo(RuleNameEnum.SUBSCRIBE.toString(),4,now,null,"AUTO_REPLY","A","SubscribeByEmailReply");
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.SUBSCRIBE.toString(),5,now,null,"CLOSE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.SUBSCRIBE.toString(),5,now,null,"CLOSE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.BROADCAST.name(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.BROADCAST.name(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.BROADCAST.name(),2,now,null,"BROADCAST","A",null);
+//		act = new MsgActionVo(RuleNameEnum.BROADCAST.name(),2,now,null,"BROADCAST","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.BROADCAST.name(),3,now,null,"CLOSE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.BROADCAST.name(),3,now,null,"CLOSE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.GENERIC.name(),1,now,null,"SAVE","A",null);
+//		act = new MsgActionVo(RuleNameEnum.GENERIC.name(),1,now,null,"SAVE","A",null);
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.GENERIC.name(),2,now,null,"ACTIVATE","A","$"+AddressType.FROM_ADDR.value());
+//		act = new MsgActionVo(RuleNameEnum.GENERIC.name(),2,now,null,"ACTIVATE","A","$"+AddressType.FROM_ADDR.value());
 //		msgActionDao.insert(act);
-//		act = new MsgActionVo(RuleNameType.GENERIC.name(),3,now,null,"TO_CSR","A","$CUSTOMER_CARE_INPUT");
+//		act = new MsgActionVo(RuleNameEnum.GENERIC.name(),3,now,null,"TO_CSR","A","$CUSTOMER_CARE_INPUT");
 //		msgActionDao.insert(act);
 //		
 //		// for custom rules

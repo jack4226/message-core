@@ -12,9 +12,9 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.constant.RuleNameType;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 
 @FixMethodOrder
@@ -70,7 +70,7 @@ public class ToCsrBoTest extends BoTestBase {
 		for (MsgInboxWebVo vo : list) {
 			if (testSubject.equals(vo.getMsgSubject())) {
 				found = true;
-				assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
+				assertEquals(RuleNameEnum.SEND_MAIL.name(), vo.getRuleName());
 			}
 		}
 		assertEquals(true, found);

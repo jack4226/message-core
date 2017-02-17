@@ -10,9 +10,9 @@ import javax.mail.internet.InternetAddress;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.test.BoTestBase;
-import ltj.message.constant.RuleNameType;
 
 public class MessageParserTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MessageParserTest.class);
@@ -34,7 +34,7 @@ public class MessageParserTest extends BoTestBase {
 			
 			String ruleName = parser.parse(mBean);
 			logger.info("### RuleName: " + ruleName);
-			assertEquals(RuleNameType.GENERIC.name(), ruleName);
+			assertEquals(RuleNameEnum.GENERIC.name(), ruleName);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -60,7 +60,7 @@ public class MessageParserTest extends BoTestBase {
 			
 			String ruleName = parser.parse(mBean);
 			logger.info("### RuleName: " + ruleName);
-			assertEquals(RuleNameType.HARD_BOUNCE.name(), ruleName);
+			assertEquals(RuleNameEnum.HARD_BOUNCE.name(), ruleName);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

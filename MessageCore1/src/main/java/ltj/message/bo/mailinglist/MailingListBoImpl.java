@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.MailingListDao;
@@ -128,7 +128,7 @@ public class MailingListBoImpl implements MailingListBo {
 		//msgBean.getBodyNode().setValue(renderVo.getBody());
 		msgBean.setBody(renderVo.getBody());
 		msgBean.setSubject(renderVo.getSubject());
-		msgBean.setRuleName(RuleNameType.SEND_MAIL.name());
+		msgBean.setRuleName(RuleNameEnum.SEND_MAIL.name());
 		try {
 			msgBean.setTo(InternetAddress.parse(toAddr));
 		}
@@ -207,7 +207,7 @@ public class MailingListBoImpl implements MailingListBo {
 		
 		msgBean.setIsReceived(false);
 		msgBean.setOverrideTestAddr(false);
-		msgBean.setRuleName(RuleNameType.BROADCAST.name());
+		msgBean.setRuleName(RuleNameEnum.BROADCAST.name());
 		if (Constants.Y.equalsIgnoreCase(tmpltVo.getEmbedEmailId())) {
 			msgBean.setEmBedEmailId(Boolean.TRUE);
 		}

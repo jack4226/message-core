@@ -17,12 +17,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.HtmlConverter;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MobileCarrier;
-import ltj.message.constant.RuleNameType;
 import ltj.message.constant.VariableName;
 import ltj.message.dao.customer.CustomerDao;
 import ltj.message.dao.emailaddr.MailingListDao;
@@ -69,7 +69,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		if (msgBean.getMsgId()==null) {
 			throw new DataValidationException("MsgId is null");
 		}
-		if (!RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
+		if (!RuleNameEnum.BROADCAST.name().equals(msgBean.getRuleName())) {
 			throw new DataValidationException("Invalid Rule Name: " + msgBean.getRuleName());
 		}
 		if (getArgumentList(taskArguments).size() > 0) {

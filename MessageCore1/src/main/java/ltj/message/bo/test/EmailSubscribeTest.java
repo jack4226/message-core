@@ -16,11 +16,11 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirectionCode;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -87,7 +87,7 @@ public class EmailSubscribeTest extends BoTestBase {
 				if (StringUtils.contains(mivo.getMsgBody(),"Test Subscription Body Message")) {
 					if (mailingListAddr.equalsIgnoreCase(mivo.getToAddress())) {
 						foundFrom = true;
-						assertEquals(RuleNameType.SUBSCRIBE.name(), mivo.getRuleName());
+						assertEquals(RuleNameEnum.SUBSCRIBE.name(), mivo.getRuleName());
 						assertEquals(MsgDirectionCode.MSG_RECEIVED, mivo.getMsgDirection());
 					}
 				}
@@ -103,7 +103,7 @@ public class EmailSubscribeTest extends BoTestBase {
 				if (StringUtils.contains(mivo.getMsgBody(), "This is an automatically generated message to confirm")) {
 					if (mailingListAddr.equals(mivo.getFromAddress())) {
 						foundTo = true;
-						assertEquals(RuleNameType.SEND_MAIL.name(), mivo.getRuleName());
+						assertEquals(RuleNameEnum.SEND_MAIL.name(), mivo.getRuleName());
 						assertEquals(MsgDirectionCode.MSG_SENT, mivo.getMsgDirection());
 					}
 					

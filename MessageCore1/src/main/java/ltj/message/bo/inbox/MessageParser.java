@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.BodypartUtil;
 import ltj.message.bean.MessageBean;
@@ -29,7 +30,6 @@ import ltj.message.bo.rule.RuleBase;
 import ltj.message.bo.rule.RuleLoader;
 import ltj.message.bo.rule.RuleMatcher;
 import ltj.message.constant.Constants;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.dao.inbox.MsgInboxDao;
@@ -112,7 +112,7 @@ public final class MessageParser {
 		 * preassigned rule name is an internal rule, use it directly.
 		 */
 		if (msgBean.getRuleName() != null) {
-			for (RuleNameType rn : RuleNameType.values()) {
+			for (RuleNameEnum rn : RuleNameEnum.values()) {
 				if (rn.name().equals(msgBean.getRuleName())) {
 					ruleName = rn.name();
 					break;
@@ -168,7 +168,7 @@ public final class MessageParser {
 								+ ">-----");
 					}
 					if (ruleName == null) {
-						ruleName = RuleNameType.MDN_RECEIPT.name();
+						ruleName = RuleNameEnum.MDN_RECEIPT.name();
 					}
 					// MDN comes with original and final recipients
 					parseDsn(attchValue, msgBean);
@@ -290,7 +290,7 @@ public final class MessageParser {
 				Address to = msgBean.getTo()[i];
 				if (containsNoAddress(msgBean.getToEnvelope(), to)) {
 					if (containsAddress(msgBean.getCc(), to) || containsAddress(msgBean.getBcc(), to)) {
-						ruleName = RuleNameType.CC_USER.name();
+						ruleName = RuleNameEnum.CC_USER.name();
 						break;
 					}
 				}
@@ -327,7 +327,7 @@ public final class MessageParser {
 					// a bounced mail shouldn't have Return-Path
 					String rPath = msgBean.getReturnPath() == null ? "" : msgBean.getReturnPath();
 					if (StringUtil.isEmpty(rPath) || "<>".equals(rPath.trim())) {
-						ruleName = RuleNameType.SOFT_BOUNCE.name();
+						ruleName = RuleNameEnum.SOFT_BOUNCE.name();
 					}
 				}
 				break;
@@ -356,7 +356,7 @@ public final class MessageParser {
 			// yes, retrieve the final recipient from original "sent" message
 			EmailAddrVo addrVo = emailAddrDao.getToByMsgRefId(msgBean.getMsgRefId());
 			if (addrVo != null) {
-				if (RuleNameType.SEND_MAIL.name().equals(addrVo.getRuleName())) {
+				if (RuleNameEnum.SEND_MAIL.name().equals(addrVo.getRuleName())) {
 					// only if the original message is an "sent" message
 					if (StringUtil.isEmpty(msgBean.getFinalRcpt()) && StringUtil.isEmpty(msgBean.getOrigRcpt())) {
 						// and nothing was found from delivery status or rfc822
@@ -390,8 +390,8 @@ public final class MessageParser {
 
 		// if it's hard or soft bounce and no final recipient was found, scan
 		// message body for final recipient using known patterns.
-		if (RuleNameType.HARD_BOUNCE.name().equals(ruleName)
-				|| RuleNameType.SOFT_BOUNCE.name().equals(ruleName)) {
+		if (RuleNameEnum.HARD_BOUNCE.name().equals(ruleName)
+				|| RuleNameEnum.SOFT_BOUNCE.name().equals(ruleName)) {
 			if (StringUtil.isEmpty(msgBean.getFinalRcpt()) && StringUtil.isEmpty(msgBean.getOrigRcpt())) {
 				String finalRcpt = BounceAddressFinder.getInstance().find(body);
 				if (!StringUtil.isEmpty(finalRcpt)) {
@@ -413,7 +413,7 @@ public final class MessageParser {
 		}
 
 		if (ruleName == null) { // use default
-			ruleName = RuleNameType.GENERIC.name();
+			ruleName = RuleNameEnum.GENERIC.name();
 		}
 
 		msgBean.setRuleName(ruleName);

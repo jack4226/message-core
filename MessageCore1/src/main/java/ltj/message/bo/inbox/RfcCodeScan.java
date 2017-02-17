@@ -16,7 +16,7 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import ltj.message.constant.RuleNameType;
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.util.StringUtil;
 
 /**
@@ -72,7 +72,7 @@ public final class RfcCodeScan {
 			return RuleName;
 		}
 		else {
-			return RuleNameType.GENERIC.name();
+			return RuleNameEnum.GENERIC.name();
 		}
 	}
 	
@@ -117,7 +117,7 @@ public final class RfcCodeScan {
 		if (StringUtil.isEmpty(body)) { // sanity check
 			return null;
 		}
-		RuleNameType RuleName = null;
+		RuleNameEnum RuleName = null;
 		if (pass == 1) {
 			Matcher m = pattern1.matcher(StringUtils.left(body, maxLenToScan));
 			if (m.find()) { // only one time
@@ -127,14 +127,14 @@ public final class RfcCodeScan {
 					return RuleName.toString();
 				}
 				else if (token.startsWith("5.")) { // 5.x.x
-					return RuleNameType.HARD_BOUNCE.name();
+					return RuleNameEnum.HARD_BOUNCE.name();
 				}
 				else if (token.startsWith("4.")) { // 4.x.x
-					return RuleNameType.SOFT_BOUNCE.name();
+					return RuleNameEnum.SOFT_BOUNCE.name();
 				}
 				else if (token.startsWith("2.")) { // 2.x.x
 					// 2.x.x = OK message returned, MDN receipt.
-					return RuleNameType.MDN_RECEIPT.name();
+					return RuleNameEnum.MDN_RECEIPT.name();
 				}
 			}
 		}
@@ -152,17 +152,17 @@ public final class RfcCodeScan {
 				}
 				if (token.startsWith("5")) {
 					// 5xx = permanent failure, re-send will fail
-					String r = matchRfcText(RuleNameType.HARD_BOUNCE, token, body, end);
+					String r = matchRfcText(RuleNameEnum.HARD_BOUNCE, token, body, end);
 					if (r != null) return r;
 					// else look for the second token
 				}
 				else if(token.equals("422")) {
 					// 422 = mailbox full, re-send may be successful
-					return matchRfcText(RuleNameType.MAILBOX_FULL, token, body, end);
+					return matchRfcText(RuleNameEnum.MAILBOX_FULL, token, body, end);
 				}
 				else if (token.startsWith("4")) {
 					// 4xx = persistent transient failure, re-send may be successful
-					String r = matchRfcText(RuleNameType.SOFT_BOUNCE, token, body, end);
+					String r = matchRfcText(RuleNameEnum.SOFT_BOUNCE, token, body, end);
 					if (r != null) return r;
 					// else look for the second token
 				}
@@ -187,7 +187,7 @@ public final class RfcCodeScan {
 	 *            where the RFC2821 code located in the array
 	 * @return ruleName, or null if failed to match reply text.
 	 */
-	private String matchRfcText(RuleNameType ruleName, String code, String body, int idx) {
+	private String matchRfcText(RuleNameEnum ruleName, String code, String body, int idx) {
 		String matchingText = RFC2821_STATUS_MATCHINGTEXT.get(code);
 		if (matchingText == null) {
 			if (code.startsWith("4")) {
@@ -226,9 +226,9 @@ public final class RfcCodeScan {
 	 *            DSN status token, for example: 5.0.0
 	 * @return message id related to the token
 	 */
-	private RuleNameType searchRfc1893CodeTable(String token) {
+	private RuleNameEnum searchRfc1893CodeTable(String token) {
 		// search rfc1893 hash table - x.x.x
-		RuleNameType RuleName = searchRfcCodeTable(token, RFC1893_STATUS_CODE);
+		RuleNameEnum RuleName = searchRfcCodeTable(token, RFC1893_STATUS_CODE);
 		// search rfc1893 hash table - .x.x
 		if (RuleName == null) {
 			RuleName = searchRfcCodeTable(token.substring(1), RFC1893_STATUS_CODE);
@@ -246,35 +246,35 @@ public final class RfcCodeScan {
 	 *            either RFC1893_STATUS_CODE or RFC2821_STATUS_CODE
 	 * @return message id of the token
 	 */
-	private RuleNameType searchRfcCodeTable(String token, Map<String, String> map) {
+	private RuleNameEnum searchRfcCodeTable(String token, Map<String, String> map) {
 		String type = map.get(token);
 
 		if (type != null) { // found RFC status code
 			logger.info("searchRfcCodeTable(): A match is found for type: " + type);
 			if (type.equals(LETTER_H)) {
-				return RuleNameType.HARD_BOUNCE;
+				return RuleNameEnum.HARD_BOUNCE;
 			}
 			else if (type.equals(LETTER_S)) {
-				return RuleNameType.SOFT_BOUNCE;
+				return RuleNameEnum.SOFT_BOUNCE;
 			}
 			else if (type.equals(LETTER_F)) {
-				return RuleNameType.MAILBOX_FULL;
+				return RuleNameEnum.MAILBOX_FULL;
 			}
 			else if (type.equals(LETTER_L)) {
-				return RuleNameType.MSGSIZE_TOO_BIG;
+				return RuleNameEnum.MSGSIZE_TOO_BIG;
 			}
 			else if (type.equals(LETTER_B)) {
-				return RuleNameType.MAIL_BLOCK;
+				return RuleNameEnum.MAIL_BLOCK;
 			}
 			else if (type.equals(LETTER_K)) {
-				return RuleNameType.MDN_RECEIPT;
+				return RuleNameEnum.MDN_RECEIPT;
 			}
 			else if (type.equals(LETTER_U)) {
 				if (token.startsWith("4")) {
-					return RuleNameType.SOFT_BOUNCE;
+					return RuleNameEnum.SOFT_BOUNCE;
 				}
 				else if (token.startsWith("5")) {
-					return RuleNameType.HARD_BOUNCE;
+					return RuleNameEnum.HARD_BOUNCE;
 				}
 			}
 		}
@@ -288,7 +288,7 @@ public final class RfcCodeScan {
 	 *            RFC2821 token, for example: 500
 	 * @return message id of the token
 	 */
-	private RuleNameType searchRfc2821CodeTable(String token) {
+	private RuleNameEnum searchRfc2821CodeTable(String token) {
 		return searchRfcCodeTable(token, RFC2821_STATUS_CODE);
 	}
 	

@@ -23,13 +23,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.template.RenderBo;
 import ltj.message.bo.template.RenderRequest;
 import ltj.message.bo.template.RenderResponse;
 import ltj.message.bo.template.RenderVariable;
 import ltj.message.constant.Constants;
-import ltj.message.constant.RuleNameType;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
@@ -119,7 +119,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 		msgVo.setPurgeAfter(rsp.getMsgSourceVo().getPurgeAfter());
 		
 		msgBean.setPurgeAfter(rsp.getMsgSourceVo().getPurgeAfter());
-		msgBean.setRuleName(RuleNameType.SEND_MAIL.name());
+		msgBean.setRuleName(RuleNameEnum.SEND_MAIL.name());
 		
 		if (msgBean.getCarrierCode() == null) {
 			msgBean.setCarrierCode(rsp.getMsgSourceVo().getCarrierCode());

@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.BodypartUtil;
 import ltj.message.bean.MessageBean;
@@ -27,7 +28,6 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MsgDirectionCode;
 import ltj.message.constant.MsgStatusCode;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.AttachmentsDao;
 import ltj.message.dao.inbox.MsgActionLogsDao;
@@ -266,7 +266,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		msgInboxDao.insert(msgVo);
 		
 		// insert click count record for Broadcasting e-mail
-		if (RuleNameType.BROADCAST.name().equals(msgBean.getRuleName())) {
+		if (RuleNameEnum.BROADCAST.name().equals(msgBean.getRuleName())) {
 			MsgClickCountsVo msgClickCountsVo = new MsgClickCountsVo();
 			msgClickCountsVo.setMsgId(msgId);
 			// msgBean.getMailingListId() should always returns a value. just for safety.
@@ -420,7 +420,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (msgActionLogsVo.getLeadMsgId() < 0) {
 			msgActionLogsVo.setLeadMsgId(msgBean.getMsgId());
 		}
-		msgActionLogsVo.setActionBo(RuleNameType.SEND_MAIL.name());
+		msgActionLogsVo.setActionBo(RuleNameEnum.SEND_MAIL.name());
 		msgActionLogsDao.insert(msgActionLogsVo);
 	}
 	

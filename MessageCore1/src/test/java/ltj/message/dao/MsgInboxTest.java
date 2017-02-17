@@ -14,8 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.constant.MailCodeType;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgClickCountsDao;
 import ltj.message.dao.inbox.MsgInboxDao;
@@ -228,7 +228,7 @@ public class MsgInboxTest extends DaoTestBase {
 	
 	private MsgInboxWebVo selectBroadcastMsg() {
 		SearchFieldsVo vo = new SearchFieldsVo();
-		vo.setRuleName(RuleNameType.BROADCAST.name());
+		vo.setRuleName(RuleNameEnum.BROADCAST.name());
 		vo.setMsgType(SearchFieldsVo.MsgType.Closed);
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		for (MsgInboxWebVo webVo : list) {
@@ -240,7 +240,7 @@ public class MsgInboxTest extends DaoTestBase {
 
 	private MsgInboxWebVo selectInboundGenericMsg() {
 		SearchFieldsVo vo = new SearchFieldsVo();
-		vo.setRuleName(RuleNameType.GENERIC.name());
+		vo.setRuleName(RuleNameEnum.GENERIC.name());
 		vo.setMsgType(SearchFieldsVo.MsgType.Received);
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		for (MsgInboxWebVo webVo : list) {

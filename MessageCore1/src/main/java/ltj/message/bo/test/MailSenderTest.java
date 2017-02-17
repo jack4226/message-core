@@ -17,10 +17,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.jbatch.smtp.SmtpException;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.mailsender.MailSenderBoImpl;
-import ltj.message.constant.RuleNameType;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
@@ -92,7 +92,7 @@ public class MailSenderTest extends BoTestBase {
 			boolean found = false;
 			for (MsgInboxVo vo : list) {
 				if (vo.getMsgSubject().startsWith("Test MailSender - " + suffixes.get(i))) {
-					if (user.equals(vo.getToAddress()) && RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
+					if (user.equals(vo.getToAddress()) && RuleNameEnum.SEND_MAIL.name().equals(vo.getRuleName())) {
 						found = true;
 					}
 				}

@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bo.rule.RulesDataBo;
 import ltj.message.bo.test.BoTestBase;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.rule.RuleDao;
 import ltj.message.util.PrintUtil;
 import ltj.message.vo.rule.RuleElementVo;
@@ -36,7 +36,7 @@ public class RuleDataBoTest extends BoTestBase {
 	public void setup() {
 		ruleList = ruleDao.getActiveRules();
 		for (RuleVo vo : ruleList) {
-			if (RuleNameType.HARD_BOUNCE.name().equals(vo.getRuleName())) {
+			if (RuleNameEnum.HARD_BOUNCE.name().equals(vo.getRuleName())) {
 				for (RuleElementVo elmVo : vo.getRuleElementVos()) {
 					if ("excludingPostmastersBo".equals(elmVo.getExclListProc())) {
 						postmasterEexclusions = elmVo.getExclusions();
@@ -44,7 +44,7 @@ public class RuleDataBoTest extends BoTestBase {
 					}
 				}
 			}
-			else if (RuleNameType.SUBSCRIBE.name().equals(vo.getRuleName())) {
+			else if (RuleNameEnum.SUBSCRIBE.name().equals(vo.getRuleName())) {
 				for (RuleElementVo elmVo : vo.getRuleElementVos()) {
 					if ("mailingListRegExBo".equals(elmVo.getTargetProc())) {
 						subsTargerText = elmVo.getTargetText();
@@ -63,7 +63,7 @@ public class RuleDataBoTest extends BoTestBase {
 		String new_targetText = null;
 		for (RuleVo vo : rules) {
 			assertTrue(containsRule(vo.getRuleName()));
-			if (RuleNameType.HARD_BOUNCE.name().equals(vo.getRuleName())) {
+			if (RuleNameEnum.HARD_BOUNCE.name().equals(vo.getRuleName())) {
 				logger.info(PrintUtil.prettyPrint(vo, 2));
 				for (RuleElementVo elmVo : vo.getRuleElementVos()) {
 					if ("excludingPostmastersBo".equals(elmVo.getExclListProc())) {
@@ -72,7 +72,7 @@ public class RuleDataBoTest extends BoTestBase {
 					}
 				}
 			}
-			else if (RuleNameType.SUBSCRIBE.name().equals(vo.getRuleName())) {
+			else if (RuleNameEnum.SUBSCRIBE.name().equals(vo.getRuleName())) {
 				logger.info(PrintUtil.prettyPrint(vo, 2));
 				for (RuleElementVo elmVo : vo.getRuleElementVos()) {
 					if ("mailingListRegExBo".equals(elmVo.getTargetProc())) {

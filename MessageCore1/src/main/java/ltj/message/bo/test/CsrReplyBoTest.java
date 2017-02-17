@@ -15,9 +15,9 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.constant.RuleNameType;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 
 @FixMethodOrder
@@ -73,7 +73,7 @@ public class CsrReplyBoTest extends BoTestBase {
 				if (vo.getMsgSubject().startsWith("Re:")) {
 					found = true;
 					//logger.info("Verify result: " + vo);
-					assertEquals(RuleNameType.SEND_MAIL.name(), vo.getRuleName());
+					assertEquals(RuleNameEnum.SEND_MAIL.name(), vo.getRuleName());
 				}
 			}
 		}

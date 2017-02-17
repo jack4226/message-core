@@ -13,9 +13,9 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.constant.RuleNameType;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 
 @FixMethodOrder
@@ -113,7 +113,7 @@ public class SendMailBoTest extends BoTestBase {
 			for (MsgInboxWebVo vo : list) {
 				if ((testSubject + suffixes[i]).equals(vo.getMsgSubject())) {
 					if (StringUtils.contains(vo.getToAddress(), suffixes[i])) {
-						if (RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
+						if (RuleNameEnum.SEND_MAIL.name().equals(vo.getRuleName())) {
 							found = true;
 						}
 					}
@@ -129,7 +129,7 @@ public class SendMailBoTest extends BoTestBase {
 			boolean found = false;
 			for (MsgInboxWebVo vo : list) {
 				if ((testSubject + nbr).equals(vo.getMsgSubject())) {
-					if (RuleNameType.SEND_MAIL.name().equals(vo.getRuleName())) {
+					if (RuleNameEnum.SEND_MAIL.name().equals(vo.getRuleName())) {
 						found = true;
 					}
 				}

@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.jbatch.smtp.SmtpException;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
@@ -37,7 +38,6 @@ import ltj.message.bo.outbox.MsgOutboxBo;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.EmailIdToken;
 import ltj.message.constant.MsgStatusCode;
-import ltj.message.constant.RuleNameType;
 import ltj.message.constant.XHeaderName;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -138,7 +138,7 @@ public abstract class MailSenderBase {
 				logger.warn("process() - Render Id is null, the message was not rendered");
 			}
 			// set rule name to SEND_MAIL
-			msgBean.setRuleName(RuleNameType.SEND_MAIL.name());
+			msgBean.setRuleName(RuleNameEnum.SEND_MAIL.name());
 			clientVo = ClientUtil.getClientVo(msgBean.getClientId());
 			msgBean.setIsReceived(false); // out going message
 			if (msgBean.getEmBedEmailId() == null) { // not provided by calling program

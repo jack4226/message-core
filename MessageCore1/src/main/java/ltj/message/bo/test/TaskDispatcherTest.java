@@ -15,11 +15,11 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.constant.Constants;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -97,7 +97,7 @@ public class TaskDispatcherTest extends BoTestBase {
 			if (testFromAddress.equals(mivo.getToAddress())) {
 				if (StringUtils.startsWith(mivo.getMsgSubject(), subj)) {
 					found = true;
-					assertEquals(RuleNameType.SEND_MAIL.name(), mivo.getRuleName());
+					assertEquals(RuleNameEnum.SEND_MAIL.name(), mivo.getRuleName());
 				}
 			}
 		}

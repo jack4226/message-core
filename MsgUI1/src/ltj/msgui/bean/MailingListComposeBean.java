@@ -19,6 +19,7 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
@@ -26,7 +27,6 @@ import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
-import ltj.message.constant.RuleNameType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.MailingListDao;
@@ -219,7 +219,7 @@ public class MailingListComposeBean {
 			// construct messageBean for new message
 			MessageBean mBean = new MessageBean();
 			mBean.setMailingListId(listId);
-			mBean.setRuleName(RuleNameType.BROADCAST.name());
+			mBean.setRuleName(RuleNameEnum.BROADCAST.name());
 			if (Constants.Y.equals(embedEmailId)) {
 				mBean.setEmBedEmailId(Boolean.valueOf(true));
 			}

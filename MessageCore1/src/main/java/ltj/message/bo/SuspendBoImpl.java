@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.RuleNameType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgInboxDao;
@@ -139,7 +139,7 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 		if (msgInboxVo == null) {
 			logger.warn("Failed to find MsgInbox record by MsgId: " + msgId);
 		}
-		else if (!RuleNameType.SEND_MAIL.name().equals(msgInboxVo.getRuleName())) {
+		else if (!RuleNameEnum.SEND_MAIL.name().equals(msgInboxVo.getRuleName())) {
 			logger.error("Message from MsgRefId is not a 'SEND_MAIL', ignored." + LF + messageBean);
 		}
 		else if (msgInboxVo.getToAddrId() != null) { // should always valued

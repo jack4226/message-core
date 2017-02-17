@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageNode;
@@ -22,7 +23,6 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.rule.RuleLoader;
 import ltj.message.bo.rule.RuleMatcher;
 import ltj.message.bo.rule.RulesDataBo;
-import ltj.message.constant.RuleNameType;
 import ltj.message.constant.XHeaderName;
 import ltj.message.vo.rule.RuleVo;
 
@@ -46,7 +46,7 @@ public class RuleMatch2Test extends BoTestBase {
 			RuleVo ruleVo = rulesDataBo.getRuleByPrimaryKey("HardBouce_WatchedMailbox");
 			System.out.println("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
 			
-			ruleVo = rulesDataBo.getRuleByPrimaryKey(RuleNameType.VIRUS_BLOCK.name());
+			ruleVo = rulesDataBo.getRuleByPrimaryKey(RuleNameEnum.VIRUS_BLOCK.name());
 			System.out.println("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
 			
 			loader.listRuleNames();
@@ -147,7 +147,7 @@ public class RuleMatch2Test extends BoTestBase {
 			mBean.getHeaders().clear();
 			mBean.setSubject("Test Post Rule");
 			mBean.setValue(new Date()+ "Post Rule test body message.");
-			mBean.setRuleName(RuleNameType.HARD_BOUNCE.name());
+			mBean.setRuleName(RuleNameEnum.HARD_BOUNCE.name());
 			ruleName = matcher.match(mBean, loader.getPostRuleSet(), loader.getSubRuleSet());
 			logger.info("##### ruleName: "+ruleName+LF);
 			
@@ -156,7 +156,7 @@ public class RuleMatch2Test extends BoTestBase {
 			mBean.setSubject("Test Post Rule No recipient found");
 			mBean.setValue(new Date()+ "Test body message.");
 			mBean.setTo(InternetAddress.parse("support@localhost"));
-			mBean.setRuleName(RuleNameType.HARD_BOUNCE.name());
+			mBean.setRuleName(RuleNameEnum.HARD_BOUNCE.name());
 			ruleName = matcher.match(mBean, loader.getPostRuleSet(), loader.getSubRuleSet());
 			logger.info("##### RuleName: "+ruleName+LF);
 			

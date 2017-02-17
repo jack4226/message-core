@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import ltj.message.constant.RuleNameType;
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.rule.RuleSubRuleMapDao;
 import ltj.message.vo.rule.RuleSubRuleMapVo;
@@ -17,7 +17,7 @@ public class RuleSubRuleMapTest extends DaoTestBase {
 	@Resource
 	private RuleSubRuleMapDao ruleSubRuleMapDao;
 	
-	final String testRuleName = RuleNameType.HARD_BOUNCE.name();
+	final String testRuleName = RuleNameEnum.HARD_BOUNCE.name();
 	final String testSubRuleName = "MailboxFull_Body_Match";
 	
 	@Test

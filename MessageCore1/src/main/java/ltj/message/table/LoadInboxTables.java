@@ -7,12 +7,12 @@ import javax.mail.Part;
 
 import org.springframework.context.ApplicationContext;
 
+import ltj.data.preload.RuleNameEnum;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirectionCode;
 import ltj.message.constant.MsgStatusCode;
-import ltj.message.constant.RuleNameType;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.XHeaderName;
 import ltj.message.dao.client.ClientUtil;
@@ -117,7 +117,7 @@ public class LoadInboxTables {
 		in.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		in.setLockTime(null);
 		in.setLockId(null);
-		in.setRuleName(RuleNameType.GENERIC.name());
+		in.setRuleName(RuleNameEnum.GENERIC.name());
 		in.setMsgContentType("multipart/mixed");
 		in.setBodyContentType("text/plain");
 		in.setMsgBody("Test Message Body");
@@ -144,7 +144,7 @@ public class LoadInboxTables {
 		in.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		in.setLockTime(null);
 		in.setLockId(null);
-		in.setRuleName(RuleNameType.BROADCAST.name());
+		in.setRuleName(RuleNameEnum.BROADCAST.name());
 		in.setMsgContentType("text/plain");
 		in.setBodyContentType("text/plain");
 		in.setMsgBody("Test Broadcast Message Body");
