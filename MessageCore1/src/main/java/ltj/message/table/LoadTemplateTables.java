@@ -8,11 +8,11 @@ import org.springframework.context.ApplicationContext;
 import ltj.data.preload.ClientVariableEnum;
 import ltj.data.preload.GlobalVariableEnum;
 import ltj.message.constant.AddressType;
+import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.StatusIdCode;
 import ltj.message.constant.VariableName;
-import ltj.message.constant.VariableStatus;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.template.BodyTemplateDao;
@@ -418,7 +418,7 @@ public class LoadTemplateTables {
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.ADDRESS);
 		in.setStatusId(StatusIdCode.ACTIVE);
-		in.setAllowOverride(VariableStatus.MANDATORY);
+		in.setAllowOverride(CodeType.MANDATORY.value());
 		in.setRequired(Constants.Y);
 
 		globalVariableDao.insert(in);

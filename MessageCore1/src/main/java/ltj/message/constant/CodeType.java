@@ -3,7 +3,7 @@ package ltj.message.constant;
 public enum CodeType {
 	Y("Y"),
 	N("N"),
-	MANDATORY_CODE("M"),
+	MANDATORY("M"),
 	Yes("Yes"),
 	No("No");
 	

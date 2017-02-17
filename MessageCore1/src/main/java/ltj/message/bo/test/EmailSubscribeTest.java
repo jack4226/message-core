@@ -88,7 +88,7 @@ public class EmailSubscribeTest extends BoTestBase {
 					if (mailingListAddr.equalsIgnoreCase(mivo.getToAddress())) {
 						foundFrom = true;
 						assertEquals(RuleNameEnum.SUBSCRIBE.name(), mivo.getRuleName());
-						assertEquals(MsgDirectionCode.MSG_RECEIVED, mivo.getMsgDirection());
+						assertEquals(MsgDirectionCode.RECEIVED, mivo.getMsgDirection());
 					}
 				}
 			}
@@ -104,7 +104,7 @@ public class EmailSubscribeTest extends BoTestBase {
 					if (mailingListAddr.equals(mivo.getFromAddress())) {
 						foundTo = true;
 						assertEquals(RuleNameEnum.SEND_MAIL.name(), mivo.getRuleName());
-						assertEquals(MsgDirectionCode.MSG_SENT, mivo.getMsgDirection());
+						assertEquals(MsgDirectionCode.SENT, mivo.getMsgDirection());
 					}
 					
 				}

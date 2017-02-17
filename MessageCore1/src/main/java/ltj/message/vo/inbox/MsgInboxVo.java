@@ -136,7 +136,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	}
 	
 	public boolean isReceivedMsg() {
-		return (MsgDirectionCode.MSG_RECEIVED.equalsIgnoreCase(msgDirection));
+		return (MsgDirectionCode.RECEIVED.equalsIgnoreCase(msgDirection));
 	}
 	
 	public boolean isShowAllHeaders() {

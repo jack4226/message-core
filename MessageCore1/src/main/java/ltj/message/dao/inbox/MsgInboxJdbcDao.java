@@ -214,7 +214,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				" and MsgDirection=? " +
 				" and (StatusId is null OR StatusId!=?) ";
 		List<Object> parms = new ArrayList<Object>();
-		parms.add(MsgDirectionCode.MSG_RECEIVED);
+		parms.add(MsgDirectionCode.RECEIVED);
 		parms.add(MsgStatusCode.CLOSED);
 		int inboxUnreadCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		getMsgUnreadCountDao().resetInboxUnreadCount(inboxUnreadCount);
@@ -231,7 +231,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				" and MsgDirection=? " +
 				" and (StatusId is null OR StatusId!=?) ";
 		List<Object> parms = new ArrayList<Object>();
-		parms.add(MsgDirectionCode.MSG_SENT);
+		parms.add(MsgDirectionCode.SENT);
 		parms.add(MsgStatusCode.CLOSED);
 		int sentUnreadCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		getMsgUnreadCountDao().resetSentUnreadCount(sentUnreadCount);
@@ -364,10 +364,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String direction = null;
 		if (vo.getMsgType() != null) {
 			if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Received)) {
-				direction = MsgDirectionCode.MSG_RECEIVED;
+				direction = MsgDirectionCode.RECEIVED;
 			}
 			else if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Sent)) {
-				direction = MsgDirectionCode.MSG_SENT;
+				direction = MsgDirectionCode.SENT;
 			}
 		}
 		if (direction != null && closed == null) { // and not closed
@@ -544,19 +544,19 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	}
 	
 	private void updateCounts(MsgInboxVo msgInboxVo, int count) {
-		if (MsgDirectionCode.MSG_RECEIVED.equals(msgInboxVo.getMsgDirection())) {
+		if (MsgDirectionCode.RECEIVED.equals(msgInboxVo.getMsgDirection())) {
 			getMsgUnreadCountDao().updateInboxUnreadCount(count);
 		}
-		else if (MsgDirectionCode.MSG_SENT.equals(msgInboxVo.getMsgDirection())) {
+		else if (MsgDirectionCode.SENT.equals(msgInboxVo.getMsgDirection())) {
 			getMsgUnreadCountDao().updateSentUnreadCount(count);
 		}
 	}
 	
 	private void updateCounts(MsgInboxWebVo msgInboxVo, int count) {
-		if (MsgDirectionCode.MSG_RECEIVED.equals(msgInboxVo.getMsgDirection())) {
+		if (MsgDirectionCode.RECEIVED.equals(msgInboxVo.getMsgDirection())) {
 			getMsgUnreadCountDao().updateInboxUnreadCount(count);
 		}
-		else if (MsgDirectionCode.MSG_SENT.equals(msgInboxVo.getMsgDirection())) {
+		else if (MsgDirectionCode.SENT.equals(msgInboxVo.getMsgDirection())) {
 			getMsgUnreadCountDao().updateSentUnreadCount(count);
 		}
 	}
@@ -697,10 +697,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted > 0 && msgInboxVo.getOrigReadCount() == 0
 				&& !MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())) {
-			if (MsgDirectionCode.MSG_RECEIVED.equals(msgInboxVo.getMsgDirection())) {
+			if (MsgDirectionCode.RECEIVED.equals(msgInboxVo.getMsgDirection())) {
 				getMsgUnreadCountDao().updateInboxUnreadCount(-1);
 			}
-			else if (MsgDirectionCode.MSG_SENT.equals(msgInboxVo.getMsgDirection())) {
+			else if (MsgDirectionCode.SENT.equals(msgInboxVo.getMsgDirection())) {
 				getMsgUnreadCountDao().updateSentUnreadCount(-1);
 			}
 		}
@@ -717,10 +717,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		//msgInboxVo.setMsgId(getJdbcTemplate().queryForInt(getRowIdSql()));
 		if (rowsInserted > 0 && msgInboxVo.getReadCount() == 0
 				&& !MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())) {
-			if (MsgDirectionCode.MSG_RECEIVED.equals(msgInboxVo.getMsgDirection())) {
+			if (MsgDirectionCode.RECEIVED.equals(msgInboxVo.getMsgDirection())) {
 				getMsgUnreadCountDao().updateInboxUnreadCount(1);
 			}
-			else if (MsgDirectionCode.MSG_SENT.equals(msgInboxVo.getMsgDirection())) {
+			else if (MsgDirectionCode.SENT.equals(msgInboxVo.getMsgDirection())) {
 				getMsgUnreadCountDao().updateSentUnreadCount(1);
 			}
 		}

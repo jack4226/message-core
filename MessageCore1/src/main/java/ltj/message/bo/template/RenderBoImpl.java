@@ -24,9 +24,9 @@ import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MsgHeader;
 import ltj.message.constant.AddressType;
+import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.VariableName;
-import ltj.message.constant.VariableStatus;
 import ltj.message.constant.VariableType;
 import ltj.message.constant.XHeaderName;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -511,7 +511,7 @@ public class RenderBoImpl implements RenderBo {
 			if (to.get(name) != null) {
 				RenderVariable req = (RenderVariable) to.get(name);
 				if (Constants.Y.equalsIgnoreCase(req.getAllowOverride())
-						|| VariableStatus.MANDATORY.equalsIgnoreCase(req.getAllowOverride())) {
+						|| CodeType.MANDATORY.value().equalsIgnoreCase(req.getAllowOverride())) {
 					to.put(name, from.get(name));
 				}
 				else {
@@ -531,7 +531,7 @@ public class RenderBoImpl implements RenderBo {
 		for (Iterator<String> it=keys.iterator(); it.hasNext();) {
 			String name = it.next();
 			RenderVariable req = (RenderVariable) ht.get(name);
-			if (VariableStatus.MANDATORY.equalsIgnoreCase(req.getAllowOverride())) {
+			if (CodeType.MANDATORY.value().equalsIgnoreCase(req.getAllowOverride())) {
 				req.setErrorMsg("Variable Override is mandatory.");
 				error.put(name, req);
 			}

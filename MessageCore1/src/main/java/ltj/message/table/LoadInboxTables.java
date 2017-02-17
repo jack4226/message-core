@@ -100,7 +100,7 @@ public class LoadInboxTables {
 		in.setMsgRefId(null);
 		in.setLeadMsgId(msgId);
 		in.setCarrierCode(MailCodeType.SMTPMAIL.value());
-		in.setMsgDirection(MsgDirectionCode.MSG_RECEIVED);
+		in.setMsgDirection(MsgDirectionCode.RECEIVED);
 		in.setMsgSubject("Test Subject");
 		in.setMsgPriority("2 (Normal)");
 		in.setReceivedTime(updtTime);
@@ -129,7 +129,7 @@ public class LoadInboxTables {
 		in.setMsgRefId(null);
 		in.setLeadMsgId(msgId);
 		in.setCarrierCode(MailCodeType.SMTPMAIL.value());
-		in.setMsgDirection(MsgDirectionCode.MSG_SENT);
+		in.setMsgDirection(MsgDirectionCode.SENT);
 		in.setMsgSubject("Test Broadcast Subject");
 		in.setMsgPriority("2 (Normal)");
 		in.setReceivedTime(updtTime);

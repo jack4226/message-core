@@ -177,7 +177,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		
 		if (msgBean.getIsReceived()) {
 			/* from MailReader */
-			msgVo.setMsgDirection(MsgDirectionCode.MSG_RECEIVED);
+			msgVo.setMsgDirection(MsgDirectionCode.RECEIVED);
 			msgVo.setStatusId(MsgStatusCode.OPENED);
 			msgVo.setSmtpMessageId(StringUtils.left(msgBean.getSmtpMessageId(),255));
 			String msgBody = msgBean.getBody();
@@ -194,7 +194,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		}
 		else {
 			/* from MailSender */
-			msgVo.setMsgDirection(MsgDirectionCode.MSG_SENT);
+			msgVo.setMsgDirection(MsgDirectionCode.SENT);
 			msgVo.setSmtpMessageId(null);
 			msgVo.setDeliveryTime(null); // delivery time
 			msgVo.setStatusId(MsgStatusCode.PENDING);
