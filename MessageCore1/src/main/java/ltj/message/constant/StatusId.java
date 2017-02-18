@@ -3,14 +3,14 @@ package ltj.message.constant;
 public enum StatusId {
 
 	//
-	// define general statusId
+	// define general status
 	//
 	ACTIVE("A", IdType.Record),
 	INACTIVE("I", IdType.Record),
 	SUSPENDED("S", IdType.Record), // for Email Address
 
 	//
-	// define out-bound message statusId
+	// define out-bound message status
 	//
 	PENDING("P", IdType.Outbound),
 	DELIVERED("D", IdType.Outbound),
