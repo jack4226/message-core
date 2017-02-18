@@ -158,7 +158,7 @@ public class RenderBoImpl implements RenderBo {
 		if (rsp.variableFinal.containsKey(VariableName.BODY_TEMPLATE)
 				&& Constants.Y.equalsIgnoreCase(srcVo.getAllowOverride())) {
 			RenderVariable var = (RenderVariable) rsp.variableFinal.get(VariableName.BODY_TEMPLATE);
-			if (VariableType.TEXT.equals(var.getVariableType())) {
+			if (VariableType.TEXT.value().equals(var.getVariableType())) {
 				bodyTemplate = (String) var.getVariableValue();
 				contentType = var.getVariableFormat() == null ? "text/plain" : var.getVariableFormat();
 			}
@@ -191,7 +191,7 @@ public class RenderBoImpl implements RenderBo {
 		if (rsp.variableFinal.containsKey(VariableName.SUBJECT_TEMPLATE)
 				&& Constants.Y.equalsIgnoreCase(srcVo.getAllowOverride())) {
 			RenderVariable var = (RenderVariable) rsp.variableFinal.get(VariableName.SUBJECT_TEMPLATE);
-			if (VariableType.TEXT.equals(var.getVariableType())) {
+			if (VariableType.TEXT.value().equals(var.getVariableType())) {
 				subjTemplate = (String) var.getVariableValue();
 			}
 		}
@@ -218,7 +218,7 @@ public class RenderBoImpl implements RenderBo {
 		Collection<RenderVariable> c = varbls.values();
 		for (Iterator<RenderVariable> it = c.iterator(); it.hasNext();) {
 			RenderVariable r = it.next();
-			if (VariableType.LOB.equals(r.getVariableType()) && r.getVariableValue() != null) {
+			if (VariableType.LOB.value().equals(r.getVariableType()) && r.getVariableValue() != null) {
 				BodypartBean attNode = new BodypartBean();
 				if (r.getVariableFormat() != null && r.getVariableFormat().indexOf(";") > 0
 						&& r.getVariableFormat().indexOf("name=") > 0) {
@@ -250,7 +250,7 @@ public class RenderBoImpl implements RenderBo {
 		Collection<RenderVariable> c = varbls.values();
 		for (Iterator<RenderVariable> it=c.iterator(); it.hasNext();) {
 			RenderVariable r = it.next();
-			if (VariableType.ADDRESS.equals(r.getVariableType()) && r.getVariableValue() != null) {
+			if (VariableType.ADDRESS.value().equals(r.getVariableType()) && r.getVariableValue() != null) {
 				if (AddressType.FROM_ADDR.value().equals(r.getVariableName())) {
 					if (r.getVariableValue() instanceof String) {
 						mBean.setFrom(InternetAddress.parse((String) r.getVariableValue()));
@@ -304,7 +304,7 @@ public class RenderBoImpl implements RenderBo {
 		Collection<RenderVariable> c = varbls.values();
 		for (Iterator<RenderVariable> it=c.iterator(); it.hasNext();) {
 			RenderVariable r = it.next();
-			if (r.getVariableValue() != null && VariableType.TEXT.equals(r.getVariableType())) {
+			if (r.getVariableValue() != null && VariableType.TEXT.value().equals(r.getVariableType())) {
 				if (VariableName.PRIORITY.equals(r.getVariableName())) {
 					String[] s = { (String) r.getVariableValue() };
 					mBean.setPriority(s);
@@ -340,7 +340,7 @@ public class RenderBoImpl implements RenderBo {
 					mBean.setToPlainText(Constants.Y.equals((String)r.getVariableValue()));
 				}
 			}
-			else if (r.getVariableValue() != null && VariableType.NUMERIC.equals(r.getVariableType())) {
+			else if (r.getVariableValue() != null && VariableType.NUMERIC.value().equals(r.getVariableType())) {
 				if (VariableName.MSG_REF_ID.equals(r.getVariableName())) {
 					if (r.getVariableValue() instanceof Long) {
 						mBean.setMsgRefId((Long) r.getVariableValue());
@@ -350,7 +350,7 @@ public class RenderBoImpl implements RenderBo {
 					}
 				}
 			}
-			else if (VariableType.DATETIME.equals(r.getVariableType())) {
+			else if (VariableType.DATETIME.value().equals(r.getVariableType())) {
 				if (VariableName.SEND_DATE.equals(r.getVariableName())) {
 					if (r.getVariableValue() == null) {
 						mBean.setSendDate(new java.util.Date());
@@ -410,7 +410,7 @@ public class RenderBoImpl implements RenderBo {
 		Collection<RenderVariable> c = varbls.values();
 		for (Iterator<RenderVariable> it=c.iterator(); it.hasNext();) {
 			RenderVariable r = it.next();
-			if (VariableType.X_HEADER.equals(r.getVariableType()) && r.getVariableValue() != null) {
+			if (VariableType.X_HEADER.value().equals(r.getVariableType()) && r.getVariableValue() != null) {
 				MsgHeader msgHeader = new MsgHeader();
 				msgHeader.setName(r.getVariableName());
 				msgHeader.setValue((String) r.getVariableValue());
@@ -454,7 +454,7 @@ public class RenderBoImpl implements RenderBo {
 				VariableName.CLIENT_ID,
 				req.clientId,
 				null,
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				Constants.Y,
 				Constants.Y,
 				null);
@@ -464,7 +464,7 @@ public class RenderBoImpl implements RenderBo {
 			AddressType.FROM_ADDR.value(),
 			emailAddrDao.getByAddrId(msgSourceVo.getFromAddrId().longValue()).getEmailAddr(),
 			null,
-			VariableType.ADDRESS, 
+			VariableType.ADDRESS.value(), 
 			Constants.Y,
 			Constants.Y,
 			null);
@@ -475,7 +475,7 @@ public class RenderBoImpl implements RenderBo {
 				AddressType.REPLYTO_ADDR.value(),
 				emailAddrDao.getByAddrId(msgSourceVo.getReplyToAddrId().longValue()).getEmailAddr(),
 				null,
-				VariableType.ADDRESS, 
+				VariableType.ADDRESS.value(), 
 				Constants.Y,
 				Constants.N,
 				null);
@@ -516,7 +516,7 @@ public class RenderBoImpl implements RenderBo {
 				}
 				else {
 					RenderVariable r = (RenderVariable) from.get(name);
-					r.setErrorMsg("Variable Override is not allowed.");
+					r.setErrorMsg("VariableType Override is not allowed.");
 					error.put(name, r);
 				}
 			}
@@ -532,7 +532,7 @@ public class RenderBoImpl implements RenderBo {
 			String name = it.next();
 			RenderVariable req = (RenderVariable) ht.get(name);
 			if (CodeType.MANDATORY.value().equalsIgnoreCase(req.getAllowOverride())) {
-				req.setErrorMsg("Variable Override is mandatory.");
+				req.setErrorMsg("VariableType Override is mandatory.");
 				error.put(name, req);
 			}
 		}

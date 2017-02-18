@@ -15,10 +15,10 @@ public enum GlobalVariableEnum {
 	
 	private String value;
 	private String format;
-	private String type;
+	private VariableType type;
 	private CodeType allowOverride;
 	private String name;
-	private GlobalVariableEnum(String value, String format, String type, CodeType allowOverride, String name) {
+	private GlobalVariableEnum(String value, String format, VariableType type, CodeType allowOverride, String name) {
 		this.value=value;
 		this.format=format;
 		this.type=type;
@@ -32,7 +32,7 @@ public enum GlobalVariableEnum {
 	public String getVariableFormat() {
 		return format;
 	}
-	public String getVariableType() {
+	public VariableType getVariableType() {
 		return type;
 	}
 	public CodeType getAllowOverride() {

@@ -51,7 +51,7 @@ public class RenderVariable implements Serializable {
 		this.required=required;
 		this.errorMsg=errorMsg;
 		
-		if (VariableType.NUMERIC.equals(variableType)) {
+		if (VariableType.NUMERIC.value().equals(variableType)) {
 			if (variableFormat!=null) {
 				new DecimalFormat(variableFormat);
 			}
@@ -73,7 +73,7 @@ public class RenderVariable implements Serializable {
 				}
 			}
 		}
-		else if (VariableType.DATETIME.equals(variableType)) {
+		else if (VariableType.DATETIME.value().equals(variableType)) {
 			SimpleDateFormat fmt = new SimpleDateFormat(Constants.DEFAULT_DATETIME_FORMAT);
 			if (variableFormat!=null) {
 				fmt.applyPattern(variableFormat);
@@ -94,7 +94,7 @@ public class RenderVariable implements Serializable {
 				}
 			}
 		}
-		else if (VariableType.ADDRESS.equals(variableType)) {
+		else if (VariableType.ADDRESS.value().equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof Address) && !(variableValue instanceof String)) {
 					throw new IllegalArgumentException(
@@ -111,7 +111,7 @@ public class RenderVariable implements Serializable {
 				}
 			}
 		}
-		else if (VariableType.LOB.equals(variableType)) {
+		else if (VariableType.LOB.value().equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof String) && !(variableValue instanceof byte[])) {
 					throw new IllegalArgumentException(
@@ -123,7 +123,7 @@ public class RenderVariable implements Serializable {
 						"VariableFormat must be provided for LOB variable, by " + variableName);
 			}
 		}
-		else if (VariableType.COLLECTION.equals(variableType)) {
+		else if (VariableType.COLLECTION.value().equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof Collection)) {
 					throw new IllegalArgumentException(
@@ -131,8 +131,8 @@ public class RenderVariable implements Serializable {
 				}
 			}
 		}
-		else if (!VariableType.TEXT.equals(variableType) && !VariableType.X_HEADER.equals(variableType)) {
-			throw new IllegalArgumentException("Invalid Variable Type: " + variableType + ", by " + variableName);
+		else if (!VariableType.TEXT.value().equals(variableType) && !VariableType.X_HEADER.value().equals(variableType)) {
+			throw new IllegalArgumentException("Invalid VariableType Type: " + variableType + ", by " + variableName);
 		}
     }
 	

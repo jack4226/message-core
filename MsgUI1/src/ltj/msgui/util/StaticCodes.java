@@ -338,7 +338,7 @@ public class StaticCodes {
 		new SelectItem(StatusId.INACTIVE.value(), "Inactive")
 	};
 
-	// PROPERTY: Email Variable Type Items
+	// PROPERTY: Email VariableType Type Items
 	public SelectItem[] getEmailVariableTypeItems() {
 		return emailVariableTypeItems;
 	}

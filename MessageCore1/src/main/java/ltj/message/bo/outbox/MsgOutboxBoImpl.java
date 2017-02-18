@@ -173,7 +173,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			int i=0;
 			for (Iterator<?> it=c.iterator(); it.hasNext(); ) {
 				RenderVariable req = (RenderVariable)it.next();
-				if (VariableType.LOB.equalsIgnoreCase(req.getVariableType())) {
+				if (VariableType.LOB.value().equalsIgnoreCase(req.getVariableType())) {
 					// save to RenderAttachment
 					RenderAttachmentVo renderAttachmentVo = new RenderAttachmentVo();
 					renderAttachmentVo.setRenderId(msgVo.getRenderId());
@@ -201,7 +201,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 					// create a record
 					renderAttachmentDao.insert(renderAttachmentVo);
 				}
-				else if (VariableType.COLLECTION.equalsIgnoreCase(req.getVariableType())) {
+				else if (VariableType.COLLECTION.value().equalsIgnoreCase(req.getVariableType())) {
 					// save to RenderObject
 					RenderObjectVo renderObjectVo = new RenderObjectVo();
 					renderObjectVo.setRenderId(msgVo.getRenderId());
@@ -231,11 +231,11 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 					renderVariableVo.setVariableName(req.getVariableName());
 					renderVariableVo.setVariableFormat(req.getVariableFormat());
 					renderVariableVo.setVariableType(req.getVariableType());
-					if (VariableType.TEXT.equalsIgnoreCase(req.getVariableType())
-							|| VariableType.X_HEADER.equalsIgnoreCase(req.getVariableType())) {
+					if (VariableType.TEXT.value().equalsIgnoreCase(req.getVariableType())
+							|| VariableType.X_HEADER.value().equalsIgnoreCase(req.getVariableType())) {
 						renderVariableVo.setVariableValue((String)req.getVariableValue());
 					}
-					else if (VariableType.ADDRESS.equalsIgnoreCase(req.getVariableType())) {
+					else if (VariableType.ADDRESS.value().equalsIgnoreCase(req.getVariableType())) {
 						if (req.getVariableValue() instanceof Address) {
 							renderVariableVo.setVariableValue(((Address)req.getVariableValue()).toString());
 						}
@@ -243,7 +243,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 							renderVariableVo.setVariableValue((String)req.getVariableValue());
 						}
 					}
-					else if (VariableType.NUMERIC.equalsIgnoreCase(req.getVariableType())) {
+					else if (VariableType.NUMERIC.value().equalsIgnoreCase(req.getVariableType())) {
 						if (req.getVariableValue() instanceof Long) {
 							renderVariableVo.setVariableValue(((Long)req.getVariableValue()).toString());
 						}
@@ -251,7 +251,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 							renderVariableVo.setVariableValue((String)req.getVariableValue());
 						}
 					}
-					else if (VariableType.DATETIME.equalsIgnoreCase(req.getVariableType())) {
+					else if (VariableType.DATETIME.value().equalsIgnoreCase(req.getVariableType())) {
 						SimpleDateFormat fmt = new SimpleDateFormat(Constants.DEFAULT_DATETIME_FORMAT);
 						if (req.getVariableFormat()!=null) {
 							fmt = new SimpleDateFormat(req.getVariableFormat());
@@ -393,7 +393,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 					attVo.getAttchmntName(), 
 					value, 
 					attVo.getAttchmntType(), // content type as format
-					VariableType.LOB, 
+					VariableType.LOB.value(), 
 					Constants.Y, 
 					Constants.N, 
 					null

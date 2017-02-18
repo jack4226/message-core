@@ -12,8 +12,8 @@ import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.StatusId;
-import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
+import ltj.message.constant.VariableName;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.template.BodyTemplateDao;
 import ltj.message.dao.template.ClientVariableDao;
@@ -86,7 +86,7 @@ public class LoadTemplateTables {
 			in.setStartTime(updtTime);
 			in.setVariableValue(var.getDefaultValue());
 			in.setVariableFormat(var.getVariableFormat());
-			in.setVariableType(var.getVariableType());
+			in.setVariableType(var.getVariableType().value());
 			in.setStatusId(StatusId.ACTIVE.value());
 			in.setAllowOverride(var.getAllowOverride().value());
 			in.setRequired(Constants.N);
@@ -99,7 +99,7 @@ public class LoadTemplateTables {
 //		in.setStartTime(updtTime);
 //		in.setVariableValue(null);
 //		in.setVariableFormat("yyyy-MM-dd HH:mm:ss");
-//		in.setVariableType(VariableType.DATETIME);
+//		in.setVariableType(VariableType.DATETIME.value());
 //		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
@@ -109,7 +109,7 @@ public class LoadTemplateTables {
 //		in.setStartTime(updtTime);
 //		in.setVariableValue(null);
 //		in.setVariableFormat("yyyy-MM-dd");
-//		in.setVariableType(VariableType.DATETIME);
+//		in.setVariableType(VariableType.DATETIME.value());
 //		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
@@ -119,7 +119,7 @@ public class LoadTemplateTables {
 //		in.setStartTime(updtTime);
 //		in.setVariableValue(null);
 //		in.setVariableFormat("hh:mm:ss a");
-//		in.setVariableType(VariableType.DATETIME);
+//		in.setVariableType(VariableType.DATETIME.value());
 //		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
@@ -132,7 +132,7 @@ public class LoadTemplateTables {
 //		in.setStartTime(updtTime);
 //		in.setVariableValue(Constants.DEFAULT_CLIENTID);
 //		in.setVariableFormat(null);
-//		in.setVariableType(VariableType.X_HEADER);
+//		in.setVariableType(VariableType.X_HEADER.value());
 //		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
@@ -143,7 +143,7 @@ public class LoadTemplateTables {
 //		in.setStartTime(updtTime);
 //		in.setVariableValue(Constants.POWERED_BY_HTML_TAG);
 //		in.setVariableFormat(null);
-//		in.setVariableType(VariableType.TEXT);
+//		in.setVariableType(VariableType.TEXT.value());
 //		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.N);
 //		in.setRequired(Constants.N);
@@ -163,7 +163,7 @@ public class LoadTemplateTables {
 			in.setStartTime(updtTime);
 			in.setVariableValue(var.getDefaultValue());
 			in.setVariableFormat(var.getVariableFormat());
-			in.setVariableType(var.getVariableType());
+			in.setVariableType(var.getVariableType().value());
 			in.setStatusId(StatusId.ACTIVE.value());
 			in.setAllowOverride(var.getAllowOverride().value());
 			in.setRequired(Constants.N);
@@ -178,7 +178,7 @@ public class LoadTemplateTables {
 //		in.setStartTime(updtTime);
 //		in.setVariableValue(null);
 //		in.setVariableFormat(null);
-//		in.setVariableType(VariableType.DATETIME);
+//		in.setVariableType(VariableType.DATETIME.value());
 //		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
@@ -190,7 +190,7 @@ public class LoadTemplateTables {
 //		in.setStartTime(updtTime);
 //		in.setVariableValue(null);
 //		in.setVariableFormat("yyyy-MM-dd");
-//		in.setVariableType(VariableType.DATETIME);
+//		in.setVariableType(VariableType.DATETIME.value());
 //		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
@@ -202,7 +202,7 @@ public class LoadTemplateTables {
 //		in.setStartTime(updtTime);
 //		in.setVariableValue(null);
 //		in.setVariableFormat("hh:mm:ss a");
-//		in.setVariableType(VariableType.DATETIME);
+//		in.setVariableType(VariableType.DATETIME.value());
 //		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
@@ -228,7 +228,7 @@ public class LoadTemplateTables {
 		in.setStartTime(updtTime);
 		in.setVariableValue(null);
 		in.setVariableFormat(null);
-		in.setVariableType(VariableType.DATETIME);
+		in.setVariableType(VariableType.DATETIME.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
 		in.setRequired(Constants.N);
@@ -241,7 +241,7 @@ public class LoadTemplateTables {
 		in.setStartTime(updtTime);
 		in.setVariableValue(null);
 		in.setVariableFormat("yyyy-MM-dd");
-		in.setVariableType(VariableType.DATETIME);
+		in.setVariableType(VariableType.DATETIME.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
 		in.setRequired(Constants.N);
@@ -378,7 +378,7 @@ public class LoadTemplateTables {
 		in.setStartTime(updtTime);
 		in.setVariableValue(Constants.DEFAULT_CLIENTID);
 		in.setVariableFormat(null);
-		in.setVariableType(VariableType.TEXT);
+		in.setVariableType(VariableType.TEXT.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
 		in.setRequired(Constants.N);
@@ -398,7 +398,7 @@ public class LoadTemplateTables {
 		in.setStartTime(updtTime);
 		in.setVariableValue(null);
 		in.setVariableFormat(null);
-		in.setVariableType(VariableType.TEXT);
+		in.setVariableType(VariableType.TEXT.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
 		in.setRequired(Constants.Y);
@@ -416,7 +416,7 @@ public class LoadTemplateTables {
 		in.setStartTime(updtTime);
 		in.setVariableValue(null);
 		in.setVariableFormat(null);
-		in.setVariableType(VariableType.ADDRESS);
+		in.setVariableType(VariableType.ADDRESS.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(CodeType.MANDATORY.value());
 		in.setRequired(Constants.Y);

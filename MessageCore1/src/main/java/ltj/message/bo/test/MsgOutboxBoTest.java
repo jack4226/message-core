@@ -159,7 +159,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				AddressType.TO_ADDR.value(), 
 				"testto@localhost",
 				null, 
-				VariableType.ADDRESS, 
+				VariableType.ADDRESS.value(), 
 				"Y",
 				"N", 
 				null
@@ -170,7 +170,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				VariableName.CUSTOMER_ID, 
 				"test",
 				"maximum 16 characters", 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -181,7 +181,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"name1", 
 				"Jack Wang", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -190,7 +190,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"name2", 
 				"Rendered User2", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -199,16 +199,16 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"name3", 
 				"Rendered User3", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
 			);
 		RenderVariable req4 = new RenderVariable(
 				"name4", 
-				"Recursive Variable ${name1} End", 
+				"Recursive VariableType ${name1} End", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -217,7 +217,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"name5", 
 				"Rendered User5", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -227,7 +227,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"attachment1.txt", 
 				"Attachment Text ============================================", 
 				"text/plain; charset=\"iso-8859-1\"", 
-				VariableType.LOB, 
+				VariableType.LOB.value(), 
 				"Y",
 				"N", 
 				null
@@ -249,7 +249,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 					"jndi.bin",
 					buffer,
 					"application/octet-stream",
-					VariableType.LOB, 
+					VariableType.LOB.value(), 
 					"Y",
 					"N", 
 					null
@@ -265,7 +265,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"name2", 
 				"Rendered User2 - Row 1", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -274,7 +274,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"name2", 
 				"Rendered User2 - Row 2", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -292,7 +292,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				Renderer.TableVariableName, 
 				collection, 
 				null, 
-				VariableType.COLLECTION, 
+				VariableType.COLLECTION.value(), 
 				"Y",
 				"N", 
 				null

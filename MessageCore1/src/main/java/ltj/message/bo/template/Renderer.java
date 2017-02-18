@@ -160,7 +160,7 @@ public final class Renderer implements java.io.Serializable {
 				logger.info("Table Row <" + arrayRow + ">");
 				if (variables != null) {
 					RenderVariable r = (RenderVariable) variables.get(TableVariableName);
-					if (r != null && r.getVariableValue() != null && VariableType.COLLECTION.equals(r.getVariableType())
+					if (r != null && r.getVariableValue() != null && VariableType.COLLECTION.value().equals(r.getVariableType())
 							&& r.getVariableValue() instanceof Collection) {
 						Collection<Map<String, RenderVariable>> c = (Collection<Map<String, RenderVariable>>) r.getVariableValue();
 						for (Iterator<Map<String, RenderVariable>> it = c.iterator(); it.hasNext();) {
@@ -179,7 +179,7 @@ public final class Renderer implements java.io.Serializable {
 			}
 			else if (variables.get(varProps.name) != null) { // main section
 				RenderVariable r = (RenderVariable) variables.get(varProps.name);
-				if (VariableType.TEXT.equals(r.getVariableType())) {
+				if (VariableType.TEXT.value().equals(r.getVariableType())) {
 					if (r.getVariableValue() != null) {
 						if (getVariableName((String) r.getVariableValue(), 0) != null) {
 							// recursive variable
@@ -193,7 +193,7 @@ public final class Renderer implements java.io.Serializable {
 						}
 					}
 				}
-				else if (VariableType.NUMERIC.equals(r.getVariableType())) {
+				else if (VariableType.NUMERIC.value().equals(r.getVariableType())) {
 					if (r.getVariableValue() != null) {
 						DecimalFormat formatter = new DecimalFormat();
 						if (r.getVariableFormat()!=null) {
@@ -218,7 +218,7 @@ public final class Renderer implements java.io.Serializable {
 						}
 					}
 				}
-				else if (VariableType.DATETIME.equals(r.getVariableType())) {
+				else if (VariableType.DATETIME.value().equals(r.getVariableType())) {
 					SimpleDateFormat fmt = new SimpleDateFormat(Constants.DEFAULT_DATETIME_FORMAT);
 					if (r.getVariableFormat() != null) {
 						fmt.applyPattern(r.getVariableFormat());
@@ -237,7 +237,7 @@ public final class Renderer implements java.io.Serializable {
 						}
 					}
 				}
-				else if (VariableType.ADDRESS.equals(r.getVariableType())) {
+				else if (VariableType.ADDRESS.value().equals(r.getVariableType())) {
 					if (r.getVariableValue() != null) {
 						if (r.getVariableValue() instanceof String) {
 							sb.append((String) r.getVariableValue());
@@ -258,7 +258,7 @@ public final class Renderer implements java.io.Serializable {
 			}
 			else { // variable name not on render variables list
 				RenderVariable req = buildErrorRecord(varProps.name, "" + varProps.bgnPos,
-						"Variable Name could not be resolved.");
+						"VariableType Name could not be resolved.");
 				errors.put(req.getVariableName(), req);
 				sb.append(openDelimiter + varProps.name + closeDelimiter);
 			}
@@ -274,7 +274,7 @@ public final class Renderer implements java.io.Serializable {
 			name, 
 			value, 
 			null, 
-			VariableType.TEXT, 
+			VariableType.TEXT.value(), 
 			"Y", 
 			null, 
 			error
@@ -361,7 +361,7 @@ public final class Renderer implements java.io.Serializable {
 				"CurrentDate", 
 				null, 
 				"yyyy-MM-dd", 
-				VariableType.DATETIME, 
+				VariableType.DATETIME.value(), 
 				"Y",
 				"N", 
 				null
@@ -372,7 +372,7 @@ public final class Renderer implements java.io.Serializable {
 				"name1", 
 				"Jack Wang", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -381,7 +381,7 @@ public final class Renderer implements java.io.Serializable {
 				"name2", 
 				"Rendered User2", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -390,16 +390,16 @@ public final class Renderer implements java.io.Serializable {
 				"name3", 
 				"Rendered User3", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
 			);
 		RenderVariable req4 = new RenderVariable(
 				"name4", 
-				"Recursive Variable ${name1} End", 
+				"Recursive VariableType ${name1} End", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -408,7 +408,7 @@ public final class Renderer implements java.io.Serializable {
 				"name5", 
 				"Rendered User5", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -418,7 +418,7 @@ public final class Renderer implements java.io.Serializable {
 				"numeric1", 
 				"12345.678", 
 				null, 
-				VariableType.NUMERIC, 
+				VariableType.NUMERIC.value(), 
 				"Y",
 				"N", 
 				null
@@ -428,7 +428,7 @@ public final class Renderer implements java.io.Serializable {
 				"numeric2", 
 				"-12345.678",
 				"000,000,000.0#;(-000,000,000.0#)",
-				VariableType.NUMERIC, 
+				VariableType.NUMERIC.value(), 
 				"Y",
 				"N", 
 				null
@@ -438,7 +438,7 @@ public final class Renderer implements java.io.Serializable {
 				"datetime1", 
 				"2007-10-01 15:23:12",
 				null,  // default format
-				VariableType.DATETIME, 
+				VariableType.DATETIME.value(), 
 				"Y",
 				"N", 
 				null
@@ -448,7 +448,7 @@ public final class Renderer implements java.io.Serializable {
 				"datetime2", 
 				"12/01/2007", 
 				"MM/dd/yyyy", // custom format
-				VariableType.DATETIME,
+				VariableType.DATETIME.value(),
 				"Y",
 				"N", 
 				null
@@ -458,7 +458,7 @@ public final class Renderer implements java.io.Serializable {
 				"datetime3", 
 				null, // use current time
 				"yyyy-MM-dd:hh.mm.ss a", // custom format
-				VariableType.DATETIME,
+				VariableType.DATETIME.value(),
 				"Y",
 				"N", 
 				null
@@ -468,7 +468,7 @@ public final class Renderer implements java.io.Serializable {
 				"address1", 
 				"str.address@legacytojava.com",
 				null,
-				VariableType.ADDRESS,
+				VariableType.ADDRESS.value(),
 				"Y",
 				"N", 
 				null
@@ -480,7 +480,7 @@ public final class Renderer implements java.io.Serializable {
 					"address2", 
 					new InternetAddress("inet.address@legacytojava.com"),
 					null,
-					VariableType.ADDRESS,
+					VariableType.ADDRESS.value(),
 					"Y",
 					"N", 
 					null
@@ -496,7 +496,7 @@ public final class Renderer implements java.io.Serializable {
 				"name2", 
 				"Rendered User2 - Row 1", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -505,7 +505,7 @@ public final class Renderer implements java.io.Serializable {
 				"name2", 
 				"Rendered User2 - Row 2", 
 				null, 
-				VariableType.TEXT, 
+				VariableType.TEXT.value(), 
 				"Y",
 				"N", 
 				null
@@ -523,7 +523,7 @@ public final class Renderer implements java.io.Serializable {
 				TableVariableName, 
 				collection, 
 				null, 
-				VariableType.COLLECTION, 
+				VariableType.COLLECTION.value(), 
 				"Y",
 				"N", 
 				null

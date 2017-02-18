@@ -15,9 +15,9 @@ public enum ClientVariableEnum {
 	
 	private String value;
 	private String format;
-	private String type;
+	private VariableType type;
 	private CodeType allowOverride;
-	private ClientVariableEnum(String value, String format, String type, CodeType allowOverride) {
+	private ClientVariableEnum(String value, String format, VariableType type, CodeType allowOverride) {
 		this.value=value;
 		this.format=format;
 		this.type=type;
@@ -30,7 +30,7 @@ public enum ClientVariableEnum {
 	public String getVariableFormat() {
 		return format;
 	}
-	public String getVariableType() {
+	public VariableType getVariableType() {
 		return type;
 	}
 	public CodeType getAllowOverride() {

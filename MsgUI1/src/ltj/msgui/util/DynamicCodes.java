@@ -166,7 +166,7 @@ public class DynamicCodes {
 		return dataTypes;
 	}
 	
-	// PROPERTY: Email Variable Name Items 
+	// PROPERTY: Email VariableType Name Items 
 	public SelectItem[] getEmailVariableNameItems() {
 		// 1) custom variables
 		List<EmailVariableVo> list = getEmailVariableDao().getAll();
@@ -179,7 +179,7 @@ public class DynamicCodes {
 		return dataTypes;
 	}
 	
-	// PROPERTY: Global Email Variable Name Items 
+	// PROPERTY: Global Email VariableType Name Items 
 	public SelectItem[] getGlobalVariableNameItems() {
 		// 2) Mailing List built-in variables
 		VariableName.LIST_VARIABLE_NAME[] listVarNames = VariableName.LIST_VARIABLE_NAME.values();

@@ -114,7 +114,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		// extract variables from message body
 		List<String> varNames = RenderUtil.retrieveVariableNames(bodyText);
 		if (isDebugEnabled) {
-			logger.debug("Body Variable names: " + varNames);
+			logger.debug("Body VariableType names: " + varNames);
 		}
 		// extract variables from message subject
 		String subjText = msgBean.getSubject() == null ? "" : msgBean.getSubject();
@@ -122,7 +122,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		if (!subjVarNames.isEmpty()) {
 			varNames.addAll(subjVarNames);
 			if (isDebugEnabled) {
-				logger.debug("Subject Variable names: " + subjVarNames);
+				logger.debug("Subject VariableType names: " + subjVarNames);
 			}
 		}
 		// get subscribers

@@ -296,7 +296,7 @@ public final class RenderUtil {
 								+ " from position " + bgnPos + ", around: " + text.substring(bgnPos, _endPos));
 					}
 					else {
-						throw new DataValidationException("Variable name: ${" + name
+						throw new DataValidationException("VariableType name: ${" + name
 								+ "} exceeded maximum length: " + VariableDelimiter.VARIABLE_NAME_LENGTH);
 					}
 				}
@@ -408,7 +408,7 @@ public final class RenderUtil {
 										+ "} from position " + bgnPos + ", around: " + text.substring(bgnPos, _endPos));
 					}
 					else {
-						throw new DataValidationException("Variable name: ${" + name + "} exceeded maximum length: "
+						throw new DataValidationException("VariableType name: ${" + name + "} exceeded maximum length: "
 								+ VariableDelimiter.VARIABLE_NAME_LENGTH + " in ${" + loopName + "}");
 					}
 				}
@@ -424,7 +424,7 @@ public final class RenderUtil {
 						continue;
 					}
 					RenderVariable var = vars == null ? null : vars.get(name);
-					if (var != null && VariableType.TEXT.equals(var.getVariableType())) {
+					if (var != null && VariableType.TEXT.value().equals(var.getVariableType())) {
 						String newText = (String) vars.get(name).getVariableValue();
 						checkVariableLoop(newText, loopName, varNames, ++loops, vars);
 					}
@@ -493,7 +493,7 @@ public final class RenderUtil {
 						value = ((VariableResolver)obj).process(addrId);
 					}
 					else {
-						logger.error("Variable class is not a VariableResolver.");
+						logger.error("VariableType class is not a VariableResolver.");
 					}
 				}
 				catch (Exception e) {
@@ -505,7 +505,7 @@ public final class RenderUtil {
 				value = vo.getDefaultValue();
 			}
 			logger.info("renderEmailVariables() - name=" + name + ", value=" + value);
-			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT, Constants.Y,
+			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT.value(), Constants.Y,
 					Constants.N, null);
 			vars.put(name, var);
 		}
@@ -532,7 +532,7 @@ public final class RenderUtil {
 					"SubscriberAddressId",
 					sbsrId.toString(),
 					null,
-					VariableType.TEXT,
+					VariableType.TEXT.value(),
 					Constants.Y,
 					Constants.N,
 					null);
@@ -624,7 +624,7 @@ public final class RenderUtil {
 		// retrieve variable names from body template
 		List<String> varNames = RenderUtil.retrieveVariableNames(tmpltVo.getBodyText());
 		if (isDebugEnabled) {
-			logger.debug("renderEmailTemplate() - Body Variable names: " + varNames);
+			logger.debug("renderEmailTemplate() - Body VariableType names: " + varNames);
 		}
 		// retrieve variable names from subject template
 		String subjText = tmpltVo.getSubject() == null ? "" : tmpltVo.getSubject();
@@ -632,7 +632,7 @@ public final class RenderUtil {
 		if (!subjVarNames.isEmpty()) {
 			varNames.addAll(subjVarNames);
 			if (isDebugEnabled) {
-				logger.debug("renderEmailTemplate() - Subject Variable names: " + subjVarNames);
+				logger.debug("renderEmailTemplate() - Subject VariableType names: " + subjVarNames);
 			}
 		}
 		// TODO fix deadlock issue when running from JUnit test
@@ -643,7 +643,7 @@ public final class RenderUtil {
 		if (variables != null) {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
-				RenderVariable var = new RenderVariable(key, variables.get(key), null, VariableType.TEXT,
+				RenderVariable var = new RenderVariable(key, variables.get(key), null, VariableType.TEXT.value(),
 						Constants.Y, Constants.N, null);
 				vars.put(key, var);
 			}
@@ -664,7 +664,7 @@ public final class RenderUtil {
 		if (vars.containsKey(AddressType.CC_ADDR.value())) {
 			// set CC if it was passed as an input variable
 			RenderVariable cc = vars.get(AddressType.CC_ADDR.value());
-			if (cc != null && VariableType.TEXT.equals(cc.getVariableType()) && cc.getVariableValue() != null) {
+			if (cc != null && VariableType.TEXT.value().equals(cc.getVariableType()) && cc.getVariableValue() != null) {
 				try {
 					validateFromAddress((String) cc.getVariableValue());
 					renderVo.setCcAddr((String) cc.getVariableValue());
@@ -678,7 +678,7 @@ public final class RenderUtil {
 		if (vars.containsKey(AddressType.BCC_ADDR.value())) {
 			// set BCC if it was passed as an input variable
 			RenderVariable bcc = vars.get(AddressType.BCC_ADDR.value());
-			if (bcc != null && VariableType.TEXT.equals(bcc.getVariableType()) && bcc.getVariableValue() != null) {
+			if (bcc != null && VariableType.TEXT.value().equals(bcc.getVariableType()) && bcc.getVariableValue() != null) {
 				try {
 					validateFromAddress((String) bcc.getVariableValue());
 					renderVo.setBccAddr((String) bcc.getVariableValue());
@@ -770,7 +770,7 @@ public final class RenderUtil {
 			// retrieve variable names from message body
 			varNames = RenderUtil.retrieveVariableNames(body);
 			if (isDebugEnabled) {
-				logger.debug("Body Variable names: " + varNames);
+				logger.debug("Body VariableType names: " + varNames);
 			}
 			// retrieve variable names from message subject
 			String subject = subj == null ? "" : subj;
@@ -778,7 +778,7 @@ public final class RenderUtil {
 			if (!subjVarNames.isEmpty()) {
 				varNames.addAll(subjVarNames);
 				if (isDebugEnabled) {
-					logger.debug("Subject Variable names: " + subjVarNames);
+					logger.debug("Subject VariableType names: " + subjVarNames);
 				}
 			}
 		}
@@ -793,7 +793,7 @@ public final class RenderUtil {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
 				RenderVariable var = new RenderVariable(key, variables.get(key), null,
-						VariableType.TEXT, Constants.Y, Constants.N, null);
+						VariableType.TEXT.value(), Constants.Y, Constants.N, null);
 				vars.put(key, var);
 			}
 		}

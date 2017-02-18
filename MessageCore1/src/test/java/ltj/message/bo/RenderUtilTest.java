@@ -73,7 +73,7 @@ public class RenderUtilTest extends BoTestBase {
 				"WebSiteUrl",
 				varValue,
 				null,
-				VariableType.TEXT,
+				VariableType.TEXT.value(),
 				null,
 				null,
 				null);
@@ -114,7 +114,7 @@ public class RenderUtilTest extends BoTestBase {
 					"name1",
 					name1Value,
 					null,
-					VariableType.TEXT,
+					VariableType.TEXT.value(),
 					null,
 					null,
 					null);
@@ -156,12 +156,12 @@ public class RenderUtilTest extends BoTestBase {
 	public void testRenderEmailVariable() {
 		String emailVar = "UserProfileURL";
 		EmailVariableVo emailVarVo = emailVariableDao.getByName(emailVar);
-		logger.info("Email Variable Vo: " + emailVarVo);
+		logger.info("Email VariableType Vo: " + emailVarVo);
 		assertNotNull(emailVarVo);
 		assertTrue(StringUtils.contains(emailVarVo.getDefaultValue(), "${SubscriberAddressId}"));
 		try {
 			String renderedVar = RenderUtil.renderEmailVariable("UserProfileURL", Long.valueOf(101));
-			logger.info("Render Variable: " + renderedVar);
+			logger.info("Render VariableType: " + renderedVar);
 			assertTrue(StringUtils.contains(renderedVar, "sbsrid=101"));
 		}
 		catch (Exception e) {

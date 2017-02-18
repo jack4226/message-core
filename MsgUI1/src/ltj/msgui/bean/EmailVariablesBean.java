@@ -164,7 +164,7 @@ public class EmailVariablesBean {
 			try {
 				Object obj = proc.newInstance();
 				if (!(obj instanceof VariableResolver)) {
-					throw new Exception("Variable class is not a VariableResolver");
+					throw new Exception("VariableType class is not a VariableResolver");
 				}
 			}
 			catch (Exception e) {
