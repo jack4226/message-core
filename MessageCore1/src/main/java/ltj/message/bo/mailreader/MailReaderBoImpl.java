@@ -239,7 +239,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		}
 		logger.info("MESSAGE_COUNT has been set to " + MESSAGE_COUNT);
 		String protocol = mailBoxVo.getProtocol();
-		if (!MailProtocol.IMAP.equalsIgnoreCase(protocol) && !MailProtocol.POP3.equalsIgnoreCase(protocol)) {
+		if (!MailProtocol.IMAP.value().equalsIgnoreCase(protocol) && !MailProtocol.POP3.value().equalsIgnoreCase(protocol)) {
 			throw new DataValidationException("Invalid protocol " + protocol);
 		}
 		if (store == null) {
@@ -260,13 +260,13 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 			// reset debug mode
 			session.setDebug(debugSession);
 			// only IMAP support MessageCountListener
-			if (MailProtocol.IMAP.equalsIgnoreCase(protocol)) {
+			if (MailProtocol.IMAP.value().equalsIgnoreCase(protocol)) {
 				final String _folder = mailBoxVo.getFolderName();
 				// Add messageCountListener to listen to new messages from IMAP
 				// server
 				addMsgCountListener(folder, _folder, fromTimer);
 			}
-			if (MailProtocol.POP3.equalsIgnoreCase(protocol)) {
+			if (MailProtocol.POP3.value().equalsIgnoreCase(protocol)) {
 				pop3(fromTimer);
 			}
 			else { // IMAP protocol

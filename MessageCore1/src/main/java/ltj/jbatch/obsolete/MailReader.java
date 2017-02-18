@@ -226,8 +226,8 @@ public class MailReader extends JbThread implements Serializable, JbEventListene
 		session.setDebug(true); // DON'T CHANGE THIS
 
 		String protocol = mailBoxVo.getProtocol();
-		if (!MailProtocol.IMAP.equalsIgnoreCase(protocol)
-				&& !MailProtocol.POP3.equalsIgnoreCase(protocol)) {
+		if (!MailProtocol.IMAP.value().equalsIgnoreCase(protocol)
+				&& !MailProtocol.POP3.value().equalsIgnoreCase(protocol)) {
 			eventBroker.putException(new Exception("Invalid protocol " + protocol));
 			return;
 		}
@@ -253,12 +253,12 @@ public class MailReader extends JbThread implements Serializable, JbEventListene
 
 			final Thread thisThread = this;
 			// only imap support MessageCountListener
-			if (MailProtocol.IMAP.equalsIgnoreCase(protocol)) {
+			if (MailProtocol.IMAP.value().equalsIgnoreCase(protocol)) {
 				// Add messageCountListener to listen to new messages for IMAP
 				addMsgCountListener(folder, thisThread, _folder);
 			}
 
-			if (MailProtocol.POP3.equalsIgnoreCase(protocol)) {
+			if (MailProtocol.POP3.value().equalsIgnoreCase(protocol)) {
 				pop3();
 			}
 			else { // imap protocol

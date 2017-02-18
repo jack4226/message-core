@@ -20,7 +20,7 @@ import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MsgDirectionCode;
+import ltj.message.constant.MsgDirection;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -88,7 +88,7 @@ public class EmailSubscribeTest extends BoTestBase {
 					if (mailingListAddr.equalsIgnoreCase(mivo.getToAddress())) {
 						foundFrom = true;
 						assertEquals(RuleNameEnum.SUBSCRIBE.name(), mivo.getRuleName());
-						assertEquals(MsgDirectionCode.RECEIVED, mivo.getMsgDirection());
+						assertEquals(MsgDirection.RECEIVED.value(), mivo.getMsgDirection());
 					}
 				}
 			}
@@ -104,7 +104,7 @@ public class EmailSubscribeTest extends BoTestBase {
 					if (mailingListAddr.equals(mivo.getFromAddress())) {
 						foundTo = true;
 						assertEquals(RuleNameEnum.SEND_MAIL.name(), mivo.getRuleName());
-						assertEquals(MsgDirectionCode.SENT, mivo.getMsgDirection());
+						assertEquals(MsgDirection.SENT.value(), mivo.getMsgDirection());
 					}
 					
 				}

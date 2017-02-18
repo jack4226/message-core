@@ -11,7 +11,7 @@ import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MsgDirectionCode;
+import ltj.message.constant.MsgDirection;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgStreamDao;
@@ -136,7 +136,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	}
 	
 	public boolean isReceivedMsg() {
-		return (MsgDirectionCode.RECEIVED.equalsIgnoreCase(msgDirection));
+		return (MsgDirection.RECEIVED.value().equalsIgnoreCase(msgDirection));
 	}
 	
 	public boolean isShowAllHeaders() {

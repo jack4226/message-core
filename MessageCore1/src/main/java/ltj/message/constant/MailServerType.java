@@ -1,6 +1,7 @@
 package ltj.message.constant;
 
 public enum MailServerType {
+	// define mail server type
 	SMTP("smtp"),
 	SMTPS("smtps"),
 	EXCH("exch");
@@ -14,9 +15,4 @@ public enum MailServerType {
 		return value;
 	}
 	
-	// define mail server type
-//	public static final String SMTP = "smtp";
-//	public static final String SMTPS = "smtps";
-//	public static final String EXCH = "exch";
-
 }

@@ -1,6 +1,7 @@
 package ltj.message.constant;
 
 public enum MLDeliveryType {
+	// define mailing list delivery options
 	ALL_ON_LIST("ALL"),
 	CUSTOMERS_ONLY("CUST"),
 	PROSPECTS_ONLY("PROS");
@@ -13,10 +14,5 @@ public enum MLDeliveryType {
 	public String value() {
 		return value;
 	}
-	
-	// define mailing list delivery options
-//	public static final String ALL_ON_LIST = "ALL";
-//	public static final String CUSTOMERS_ONLY = "CUST";
-//	public static final String PROSPECTS_ONLY = "PROS";
 
 }

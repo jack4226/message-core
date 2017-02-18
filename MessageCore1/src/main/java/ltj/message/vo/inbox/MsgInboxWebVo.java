@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.MsgDirectionCode;
+import ltj.message.constant.MsgDirection;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.vo.BaseVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -69,7 +69,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	}
 	
 	public boolean isReceivedMsg() {
-		return (MsgDirectionCode.RECEIVED.equalsIgnoreCase(msgDirection));
+		return (MsgDirection.RECEIVED.value().equalsIgnoreCase(msgDirection));
 	}
 	
 	public String getFromAddress() {

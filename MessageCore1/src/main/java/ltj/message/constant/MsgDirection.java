@@ -1,13 +1,15 @@
 package ltj.message.constant;
 
-public enum MailProtocol {
+public enum MsgDirection {
 
-	// define mail protocol
-	POP3("pop3"),
-	IMAP("imap");
+	//
+	// define message direction id
+	//
+	RECEIVED("R"),
+	SENT("S");
 
 	private final String value;
-	private MailProtocol(String value) {
+	private MsgDirection(String value) {
 		this.value = value;
 	}
 	

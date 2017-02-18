@@ -51,7 +51,7 @@ public class EmailSender implements java.io.Serializable {
 		this.smtpProps = smtpProps;
 		smtphost = this.smtpProps.getProperty("smtphost", "localhost");
 		smtpport = (String) this.smtpProps.getProperty("smtpport", "25");
-		protocol = this.smtpProps.getProperty("protocol", MailProtocol.POP3);
+		protocol = this.smtpProps.getProperty("protocol", MailProtocol.POP3.value());
 		user = this.smtpProps.getProperty("user");
 		password = this.smtpProps.getProperty("password");
 		host = this.smtpProps.getProperty("host", smtphost);
@@ -140,7 +140,7 @@ public class EmailSender implements java.io.Serializable {
 	}
 	
 	void keepACopy(String url, Session session, Message msg, SimpleEmailVo m) throws MessagingException {
-		if (protocol.equalsIgnoreCase(MailProtocol.IMAP) && m.getSaveToFolder() != null) {
+		if (protocol.equalsIgnoreCase(MailProtocol.IMAP.value()) && m.getSaveToFolder() != null) {
 			// Get a Store object
 			Store store = null;
 			if (url != null) {

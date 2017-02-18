@@ -11,7 +11,7 @@ import ltj.data.preload.RuleNameEnum;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MsgDirectionCode;
+import ltj.message.constant.MsgDirection;
 import ltj.message.constant.MsgStatusCode;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.XHeaderName;
@@ -100,7 +100,7 @@ public class LoadInboxTables {
 		in.setMsgRefId(null);
 		in.setLeadMsgId(msgId);
 		in.setCarrierCode(MailCodeType.SMTPMAIL.value());
-		in.setMsgDirection(MsgDirectionCode.RECEIVED);
+		in.setMsgDirection(MsgDirection.RECEIVED.value());
 		in.setMsgSubject("Test Subject");
 		in.setMsgPriority("2 (Normal)");
 		in.setReceivedTime(updtTime);
@@ -129,7 +129,7 @@ public class LoadInboxTables {
 		in.setMsgRefId(null);
 		in.setLeadMsgId(msgId);
 		in.setCarrierCode(MailCodeType.SMTPMAIL.value());
-		in.setMsgDirection(MsgDirectionCode.SENT);
+		in.setMsgDirection(MsgDirection.SENT.value());
 		in.setMsgSubject("Test Broadcast Subject");
 		in.setMsgPriority("2 (Normal)");
 		in.setReceivedTime(updtTime);

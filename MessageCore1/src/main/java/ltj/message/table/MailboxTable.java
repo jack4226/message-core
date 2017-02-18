@@ -167,7 +167,7 @@ public class MailboxTable extends CreateTableBase {
 				ps.setString(2, in.getUserPswd());
 				ps.setString(3, in.getHostName());
 				ps.setInt(4, in.getPort());
-				ps.setString(5, in.getProtocol());
+				ps.setString(5, in.getProtocol().value());
 				ps.setString(6, "INBOX");
 				ps.setString(7, in.getDescription());
 				ps.setString(8, in.getStatus().value());
@@ -197,7 +197,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "support");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(6, "INBOX");
 //		ps.setString(7, "Default Site Return Path");
 //		ps.setString(8, StatusId.ACTIVE.value());
@@ -224,7 +224,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "sitemaster");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Default site owner's mailbox");
 //		ps.setString(8, StatusId.ACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -240,7 +240,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "bounce");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Default VERP Bounce");
 //		ps.setString(8, StatusId.ACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -256,7 +256,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "noreply");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "For all NOREPLY messages");
 //		ps.setString(8, StatusId.ACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -272,7 +272,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "demolist1");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Default Test List 1");
 //		ps.setString(8, StatusId.ACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -288,7 +288,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "demolist2");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Default Test List 2");
 //		ps.setString(8, StatusId.ACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -304,7 +304,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "testto");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(6, "INBOX");
 //		ps.setString(7, "Default Test TO Address");
 //		ps.setString(8, StatusId.ACTIVE.value());
@@ -321,7 +321,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "testfrom");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(6, "INBOX");
 //		ps.setString(7, "Default Test FROM Address");
 //		ps.setString(8, StatusId.ACTIVE.value());
@@ -346,7 +346,7 @@ public class MailboxTable extends CreateTableBase {
 				ps.setString(2, in.getUserPswd());
 				ps.setString(3, in.getHostName());
 				ps.setInt(4, in.getPort());
-				ps.setString(5, in.getProtocol());
+				ps.setString(5, in.getProtocol().value());
 				ps.setString(6, "INBOX");
 				ps.setString(7, in.getDescription());
 				ps.setString(8, in.getStatus().value());
@@ -375,7 +375,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "jwang");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(6, "INBOX");
 //		ps.setString(7, "local pop3 Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
@@ -402,7 +402,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "twang");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "local pop3 Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -418,7 +418,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "jackwng");
 //		ps.setString(3, "pop.gmail.com");
 //		ps.setInt(4, 995);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "GMail Secure Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -444,7 +444,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "jwang");
 //		ps.setString(3, "pop-server.nc.rr.com");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Road Runner Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -460,7 +460,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "df153");
 //		ps.setString(3, "imap.aim.com");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.IMAP);
+//		ps.setString(5, MailProtocol.IMAP.value());
 //		ps.setString(7, "AIM Mail Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -476,7 +476,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "postmaster");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "James Server postmaster's mailbox");
 //		ps.setString(8, StatusId.ACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -492,7 +492,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(2, "webmaster");
 //		ps.setString(3, "localhost");
 //		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3);
+//		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Emailsphere demo webmaster's mailbox");
 //		ps.setString(8, StatusId.ACTIVE.value());
 //		ps.setString(9, MailCodeType.SMTPMAIL.value());
@@ -511,7 +511,7 @@ public class MailboxTable extends CreateTableBase {
 		MailBoxVo vo = new MailBoxVo();
 		vo.setHostName("localhost");
 		vo.setPortNumber(-1);
-		vo.setProtocol(MailProtocol.POP3);
+		vo.setProtocol(MailProtocol.POP3.value());
 		vo.setFolderName("INBOX");
 		vo.setMailBoxDesc("Test User");
 		vo.setStatusId(StatusId.ACTIVE.value());

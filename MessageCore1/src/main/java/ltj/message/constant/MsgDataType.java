@@ -1,9 +1,9 @@
 package ltj.message.constant;
 
-public class MsgDataType {
+public enum MsgDataType {
 
 	// define a MsgDataType
-	public final static String TEMPLATE_ID = "TEMPLATE_ID";
-	public final static String EMAIL_ADDRESS = "EMAIL_ADDRESS";
+	TEMPLATE_ID,
+	EMAIL_ADDRESS ;
 
 }

@@ -309,8 +309,8 @@ public class StaticCodes {
 	}
 	
 	private static SelectItem[] mailProtocolItems = {
-		new SelectItem(MailProtocol.POP3, "POP3"),
-		new SelectItem(MailProtocol.IMAP, "IMAP")
+		new SelectItem(MailProtocol.POP3.value(), "POP3"),
+		new SelectItem(MailProtocol.IMAP.value(), "IMAP")
 	};
 	
 	// PROPERTY: Mail Carrier Code Items

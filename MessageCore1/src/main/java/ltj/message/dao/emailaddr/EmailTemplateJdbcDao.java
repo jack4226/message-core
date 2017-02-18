@@ -219,7 +219,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	/*
 	 * define methods that sync up template id to MsgDataType table.
 	 */
-	private final String DataType = MsgDataType.TEMPLATE_ID;
+	private final String DataType = MsgDataType.TEMPLATE_ID.name();
 	private int insertMsgDataType(EmailTemplateVo vo) {
 		int rowsInserted = 0;
 		// 1) retrieve the record

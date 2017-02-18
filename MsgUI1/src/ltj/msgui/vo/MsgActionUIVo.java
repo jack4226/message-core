@@ -116,14 +116,14 @@ public class MsgActionUIVo extends BaseVo {
 	 * @return true if current data type is an email address type
 	 */
 	public boolean getIsDataTypeEmailAddress() {
-		return (MsgDataType.EMAIL_ADDRESS.equals(getCurrentDataType()));
+		return (MsgDataType.EMAIL_ADDRESS.name().equals(getCurrentDataType()));
 	}
 	
 	/**
 	 * @return true if current data type is not an email address type
 	 */
 	public boolean getIsDataTypeNotEmailAddress() {
-		return !(MsgDataType.EMAIL_ADDRESS.equals(getCurrentDataType()));
+		return !(MsgDataType.EMAIL_ADDRESS.name().equals(getCurrentDataType()));
 	}
 	
 	/**

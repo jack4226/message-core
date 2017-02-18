@@ -59,7 +59,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 		this.smtpProps = smtpProps;
 		smtphost = this.smtpProps.getProperty("smtphost", "localhost");
 		smtpport = (String) this.smtpProps.getProperty("smtpport", "25");
-		protocol = this.smtpProps.getProperty("protocol", MailProtocol.POP3);
+		protocol = this.smtpProps.getProperty("protocol", MailProtocol.POP3.value());
 		user = this.smtpProps.getProperty("user", "jwang");
 		password = this.smtpProps.getProperty("password", "jwang");
 		host = this.smtpProps.getProperty("host", smtphost);
@@ -193,7 +193,7 @@ public class SimpleEmailSender implements java.io.Serializable {
 	} // end of sendUseTransient
 	
 	void keepACopy(String record, String url, Message msg, MessageBean m) throws MessagingException {
-		if (record != null && MailProtocol.IMAP.equalsIgnoreCase(protocol)) {
+		if (record != null && MailProtocol.IMAP.value().equalsIgnoreCase(protocol)) {
 			// Get a Store object
 			Store store = null;
 			if (url != null) {

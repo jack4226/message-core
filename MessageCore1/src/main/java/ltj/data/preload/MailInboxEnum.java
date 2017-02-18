@@ -44,7 +44,7 @@ public enum MailInboxEnum {
 	private String userPswd;
 	private String hostName;
 	private int port;
-	private String protocol;
+	private MailProtocol protocol;
 	private String description;
 	private StatusId status;
 	private Boolean isInternalOnly;
@@ -61,7 +61,7 @@ public enum MailInboxEnum {
 	private Boolean isLogDuplicate;
 	private Integer purgeDupsAfter;
 
-	private MailInboxEnum(String userId, String userPswd, String hostName, int port, String protocol,
+	private MailInboxEnum(String userId, String userPswd, String hostName, int port, MailProtocol protocol,
 			String description, StatusId status, Boolean isInternalOnly, int readPerPass, boolean isUseSsl,
 			int numberOfThreads, Integer maximumRetries, Integer minimumWait, int messageCount, Boolean isToPlainText,
 			String toAddressDomain, Boolean isCheckDuplicate, Boolean isAlertDuplicate, Boolean isLogDuplicate,
@@ -99,7 +99,7 @@ public enum MailInboxEnum {
 	public int getPort() {
 		return port;
 	}
-	public String getProtocol() {
+	public MailProtocol getProtocol() {
 		return protocol;
 	}
 	public String getDescription() {
