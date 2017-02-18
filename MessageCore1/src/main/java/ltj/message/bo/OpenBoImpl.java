@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.inbox.MsgInboxVo;
@@ -43,8 +43,8 @@ public class OpenBoImpl extends TaskBaseAdaptor {
 		if (msgInboxVo != null) {
 			msgId = msgInboxVo.getMsgId();
 			int rowsUpdated = 0;
-			if (!MsgStatusCode.OPENED.equals(msgInboxVo.getStatusId())) {
-				msgInboxVo.setStatusId(MsgStatusCode.OPENED);
+			if (!StatusId.OPENED.value().equals(msgInboxVo.getStatusId())) {
+				msgInboxVo.setStatusId(StatusId.OPENED.value());
 				rowsUpdated = msgInboxDao.updateStatusId(msgInboxVo);
 			}
 			if (isDebugEnabled) {

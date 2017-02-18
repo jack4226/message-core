@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.MsgStatusCode;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
@@ -101,13 +100,13 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			vo = new SubscriptionVo();
 			vo.setEmailAddrId(addrId);
 			vo.setListId(listId);
-			vo.setSubscribed(MsgStatusCode.PENDING);
+			vo.setSubscribed(StatusId.PENDING.value());
 			rowsAffected = insert(vo);
 		}
 		else { // update
 			if (!Constants.Y.equals(vo.getSubscribed())
-					&& !MsgStatusCode.PENDING.equals(vo.getSubscribed())) {
-				vo.setSubscribed(MsgStatusCode.PENDING);
+					&& !StatusId.PENDING.value().equals(vo.getSubscribed())) {
+				vo.setSubscribed(StatusId.PENDING.value());
 				rowsAffected = update(vo);
 			}
 		}
@@ -129,7 +128,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		SubscriptionVo vo = getByPrimaryKey(addrId, listId);
 		int rowsAffected = 0;
 		if (vo != null) { // update
-			if (MsgStatusCode.PENDING.equals(vo.getSubscribed())) {
+			if (StatusId.PENDING.value().equals(vo.getSubscribed())) {
 				vo.setSubscribed(Constants.Y);
 				rowsAffected = update(vo);
 			}

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.vo.inbox.MsgInboxVo;
@@ -215,7 +215,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				" and (StatusId is null OR StatusId!=?) ";
 		List<Object> parms = new ArrayList<Object>();
 		parms.add(MsgDirection.RECEIVED.value());
-		parms.add(MsgStatusCode.CLOSED);
+		parms.add(StatusId.CLOSED.value());
 		int inboxUnreadCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		getMsgUnreadCountDao().resetInboxUnreadCount(inboxUnreadCount);
 		return inboxUnreadCount;
@@ -232,7 +232,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				" and (StatusId is null OR StatusId!=?) ";
 		List<Object> parms = new ArrayList<Object>();
 		parms.add(MsgDirection.SENT.value());
-		parms.add(MsgStatusCode.CLOSED);
+		parms.add(StatusId.CLOSED.value());
 		int sentUnreadCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		getMsgUnreadCountDao().resetSentUnreadCount(sentUnreadCount);
 		return sentUnreadCount;
@@ -349,16 +349,16 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String closed = null;
 		if (vo.getMsgType() != null) {
 			if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Closed)) {
-				closed = MsgStatusCode.CLOSED;
+				closed = StatusId.CLOSED.value();
 			}
 		}
 		if (closed != null) {
 			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
-			parms.add(MsgStatusCode.CLOSED);
+			parms.add(StatusId.CLOSED.value());
 		}
 		else {
 			whereSql += CRIT[parms.size()] + " a.StatusId != ? ";
-			parms.add(MsgStatusCode.CLOSED);
+			parms.add(StatusId.CLOSED.value());
 		}
 		// msgDirection
 		String direction = null;
@@ -506,38 +506,38 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	}
 
 	private void adjustUnreadCounts(MsgInboxWebVo msgInboxVo) {
-		if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getOrigStatusId())) { // Was Open
+		if (!StatusId.CLOSED.value().equals(msgInboxVo.getOrigStatusId())) { // Was Open
 			if (msgInboxVo.getOrigReadCount() == 0 && msgInboxVo.getReadCount() > 0) {
 				updateCounts(msgInboxVo, -1);
 			}
 			else if (msgInboxVo.getOrigReadCount() > 0 && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, 1);
 			}
-			else if (MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
+			else if (StatusId.CLOSED.value().equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, -1);
 			}
 		}
 		else { // Was Closed
-			if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
+			if (!StatusId.CLOSED.value().equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, 1);
 			}
 		}
 	}
 	
 	private void adjustUnreadCounts(MsgInboxVo msgInboxVo) {
-		if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getOrigStatusId())) { // Was Open
+		if (!StatusId.CLOSED.value().equals(msgInboxVo.getOrigStatusId())) { // Was Open
 			if (msgInboxVo.getOrigReadCount() == 0 && msgInboxVo.getReadCount() > 0) {
 				updateCounts(msgInboxVo, -1);
 			}
 			else if (msgInboxVo.getOrigReadCount() > 0 && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, 1);
 			}
-			else if (MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
+			else if (StatusId.CLOSED.value().equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, -1);
 			}
 		}
 		else { // Was Closed
-			if (!MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
+			if (!StatusId.CLOSED.value().equals(msgInboxVo.getStatusId()) && msgInboxVo.getReadCount() == 0) {
 				updateCounts(msgInboxVo, 1);
 			}
 		}
@@ -696,7 +696,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsDeleted > 0 && msgInboxVo.getOrigReadCount() == 0
-				&& !MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())) {
+				&& !StatusId.CLOSED.value().equals(msgInboxVo.getStatusId())) {
 			if (MsgDirection.RECEIVED.value().equals(msgInboxVo.getMsgDirection())) {
 				getMsgUnreadCountDao().updateInboxUnreadCount(-1);
 			}
@@ -716,7 +716,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		msgInboxVo.setOrigUpdtTime(msgInboxVo.getUpdtTime());
 		//msgInboxVo.setMsgId(getJdbcTemplate().queryForInt(getRowIdSql()));
 		if (rowsInserted > 0 && msgInboxVo.getReadCount() == 0
-				&& !MsgStatusCode.CLOSED.equals(msgInboxVo.getStatusId())) {
+				&& !StatusId.CLOSED.value().equals(msgInboxVo.getStatusId())) {
 			if (MsgDirection.RECEIVED.value().equals(msgInboxVo.getMsgDirection())) {
 				getMsgUnreadCountDao().updateInboxUnreadCount(1);
 			}

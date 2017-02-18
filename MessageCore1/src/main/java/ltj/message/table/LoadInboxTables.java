@@ -12,7 +12,7 @@ import ltj.message.constant.AddressType;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.XHeaderName;
 import ltj.message.dao.client.ClientUtil;
@@ -148,7 +148,7 @@ public class LoadInboxTables {
 		in.setMsgContentType("text/plain");
 		in.setBodyContentType("text/plain");
 		in.setMsgBody("Test Broadcast Message Body");
-		in.setStatusId(MsgStatusCode.CLOSED);
+		in.setStatusId(StatusId.CLOSED.value());
 
 		msgInboxDao.insert(in);
 

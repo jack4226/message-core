@@ -14,7 +14,7 @@ import javax.faces.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.util.StringUtil;
@@ -246,7 +246,7 @@ public class SubscribersListBean {
 		reset();
 		this.subscriber = new SubscriptionVo();
 		subscriber.setListId(listId);
-		subscriber.setSubscribed(MsgStatusCode.PENDING);
+		subscriber.setSubscribed(StatusId.PENDING.value());
 		subscriber.setMarkedForEdition(true);
 		editMode = false;
 		return TO_EDIT;

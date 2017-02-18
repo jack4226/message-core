@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.outbox.DeliveryStatusDao;
@@ -115,7 +115,7 @@ public class DeliveryErrorBoImpl extends TaskBaseAdaptor {
 			 */
 		}
 		// update MsgInbox status (delivery failure)
-		msgInboxVo.setStatusId(MsgStatusCode.DELIVERY_FAILED);
+		msgInboxVo.setStatusId(StatusId.DELIVERY_FAILED.value());
 		msgInboxVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 		msgInboxVo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		

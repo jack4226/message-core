@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.inbox.MsgInboxVo;
@@ -42,7 +42,7 @@ public class CloseBoImpl extends TaskBaseAdaptor {
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(messageBean.getMsgId());
 		if (msgInboxVo != null) {
 			msgId = msgInboxVo.getMsgId();
-			msgInboxVo.setStatusId(MsgStatusCode.CLOSED);
+			msgInboxVo.setStatusId(StatusId.CLOSED.value());
 			int rowsUpdated = msgInboxDao.updateStatusId(msgInboxVo);
 			if (isDebugEnabled) {
 				logger.debug("Rows updated to Closed status: " + rowsUpdated);

@@ -12,7 +12,7 @@ import ltj.message.constant.AddressType;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgStreamDao;
 import ltj.message.util.EmailAddrUtil;
@@ -88,7 +88,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	private boolean isForward = false;
 	
 	public MsgInboxVo() {
-		setStatusId(MsgStatusCode.OPENED); // default in-bound message status
+		setStatusId(StatusId.OPENED.value()); // default in-bound message status
 	}
 
 	public int getThreadLevel() {
@@ -156,7 +156,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	}
 	
 	public boolean isClosedStatus() {
-		return MsgStatusCode.CLOSED.equals(getStatusId());
+		return StatusId.CLOSED.value().equals(getStatusId());
 	}
 	
 	public String getFromAddress() {

@@ -26,7 +26,6 @@ import ltj.message.constant.MailServerType;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
 import ltj.message.constant.MobileCarrier;
-import ltj.message.constant.MsgStatusCode;
 import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableName;
 import ltj.message.dao.emailaddr.EmailVariableDao;
@@ -366,9 +365,9 @@ public class StaticCodes {
 	}
 	
 	private static SelectItem[] outboxStatusIdItems = {
-		new SelectItem(MsgStatusCode.PENDING, "Pending"),
-		new SelectItem(MsgStatusCode.DELIVERED, "Delivered"),
-		new SelectItem(MsgStatusCode.DELIVERY_FAILED, "Failed")
+		new SelectItem(StatusId.PENDING.value(), "Pending"),
+		new SelectItem(StatusId.DELIVERED.value(), "Delivered"),
+		new SelectItem(StatusId.DELIVERY_FAILED.value(), "Failed")
 	};
 
 	// PROPERTY: SMTP Server Type Items

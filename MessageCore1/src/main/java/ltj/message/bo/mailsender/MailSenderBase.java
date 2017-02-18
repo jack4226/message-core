@@ -37,7 +37,7 @@ import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.EmailIdToken;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.constant.XHeaderName;
 import ltj.message.dao.client.ClientUtil;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -585,7 +585,7 @@ public abstract class MailSenderBase {
 			return 0;
 		}
 		Timestamp ts = new Timestamp(new java.util.Date().getTime());
-		msgInboxVo.setStatusId(MsgStatusCode.DELIVERED);
+		msgInboxVo.setStatusId(StatusId.DELIVERED.value());
 		msgInboxVo.setDeliveryTime(ts);
 		msgInboxVo.setUpdtTime(ts);
 		msgInboxVo.setUpdtUserId(DEFAULT_USER_ID);

@@ -27,7 +27,7 @@ import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MsgDirection;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.AttachmentsDao;
 import ltj.message.dao.inbox.MsgActionLogsDao;
@@ -178,7 +178,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (msgBean.getIsReceived()) {
 			/* from MailReader */
 			msgVo.setMsgDirection(MsgDirection.RECEIVED.value());
-			msgVo.setStatusId(MsgStatusCode.OPENED);
+			msgVo.setStatusId(StatusId.OPENED.value());
 			msgVo.setSmtpMessageId(StringUtils.left(msgBean.getSmtpMessageId(),255));
 			String msgBody = msgBean.getBody();
 			msgVo.setMsgBody(msgBody);
@@ -197,7 +197,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			msgVo.setMsgDirection(MsgDirection.SENT.value());
 			msgVo.setSmtpMessageId(null);
 			msgVo.setDeliveryTime(null); // delivery time
-			msgVo.setStatusId(MsgStatusCode.PENDING);
+			msgVo.setStatusId(StatusId.PENDING.value());
 			if (msgBean.getRenderId() != null && msgRenderedDao.getByPrimaryKey(msgBean.getRenderId()) != null) {
 				msgVo.setRenderId(msgBean.getRenderId());
 			}

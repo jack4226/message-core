@@ -36,7 +36,7 @@ import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.constant.AddressType;
-import ltj.message.constant.MsgStatusCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.user.SessionUploadDao;
 import ltj.message.exception.DataValidationException;
@@ -575,7 +575,7 @@ public class MsgInboxBean {
 			logger.error("closeMessage() - MsgInboxVo is null");
 			return TO_FAILED;
 		}
-		message.setStatusId(MsgStatusCode.CLOSED);
+		message.setStatusId(StatusId.CLOSED.value());
 		message.setUpdtUserId(FacesUtil.getLoginUserId());
 		int rowsUpdated = getMsgInboxDao().updateStatusId(message);
 		if (rowsUpdated > 0) {
@@ -591,7 +591,7 @@ public class MsgInboxBean {
 			logger.error("closeThread() - MsgInboxVo is null");
 			return TO_FAILED;
 		}
-		message.setStatusId(MsgStatusCode.CLOSED);
+		message.setStatusId(StatusId.CLOSED.value());
 		message.setUpdtUserId(FacesUtil.getLoginUserId());
 		int rowsUpdated = getMsgInboxDao().updateStatusIdByLeadMsgId(message);
 		if (rowsUpdated > 0) {
@@ -607,7 +607,7 @@ public class MsgInboxBean {
 			logger.error("closeMessage() - MsgInboxVo is null");
 			return TO_FAILED;
 		}
-		message.setStatusId(MsgStatusCode.OPENED);
+		message.setStatusId(StatusId.OPENED.value());
 		message.setUpdtUserId(FacesUtil.getLoginUserId());
 		int rowsUpdated = getMsgInboxDao().updateStatusId(message);
 		if (rowsUpdated > 0) {
