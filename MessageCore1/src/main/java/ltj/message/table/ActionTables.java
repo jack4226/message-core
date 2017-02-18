@@ -2,7 +2,7 @@ package ltj.message.table;
 
 import java.sql.SQLException;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.main.CreateTableBase;
 
 /**
@@ -99,7 +99,7 @@ public class ActionTables extends CreateTableBase {
 			"ActionSeq int NOT NULL, " +
 			"StartTime datetime(3) NOT NULL, " +
 			"ClientId varchar(16), " + 
-			"StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " +
+			"StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
 			"ActionId varchar(16) NOT NULL, " +
 			"DataTypeValues text, " + // maximum size of 65,535, to accommodate template text
 			"PRIMARY KEY (RowId), " +

@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
@@ -210,7 +210,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		int rowsInserted = 0;
 		ClientVariableVo vo = new ClientVariableVo();
 		vo.setClientId(clientVo.getClientId());
-		vo.setStatusId(StatusIdCode.ACTIVE);
+		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setStartTime(new Timestamp(new java.util.Date().getTime()));
 		
 		vo.setVariableName("DomainName");

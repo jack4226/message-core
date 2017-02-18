@@ -1,43 +1,43 @@
 package ltj.data.preload;
 
 import ltj.message.constant.MailProtocol;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 
 public enum MailInboxEnum {
-	SUPPORT("support", "support", "localhost", -1, MailProtocol.POP3, "Site Return Path", StatusIdCode.ACTIVE,
+	SUPPORT("support", "support", "localhost", -1, MailProtocol.POP3, "Site Return Path", StatusId.ACTIVE,
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
-	SITEMASTER("sitemaster", "sitemaster", "localhost", -1, MailProtocol.POP3, "Site owner's mailbox", StatusIdCode.ACTIVE,
+	SITEMASTER("sitemaster", "sitemaster", "localhost", -1, MailProtocol.POP3, "Site owner's mailbox", StatusId.ACTIVE,
 			false, 4, false, 2, 5, 8, -1, false, null, true, true, true, 24),
-	BOUNCE("bounce", "bounce", "localhost", -1, MailProtocol.POP3, "VERP Bounce", StatusIdCode.ACTIVE,
+	BOUNCE("bounce", "bounce", "localhost", -1, MailProtocol.POP3, "VERP Bounce", StatusId.ACTIVE,
 			false, 4, false, 2, 5, 8, -1, false, null, true, true, true, 24),
-	NOREPLY("noreply", "noreply", "localhost", -1, MailProtocol.POP3, "For all NOREPLY messages", StatusIdCode.ACTIVE,
+	NOREPLY("noreply", "noreply", "localhost", -1, MailProtocol.POP3, "For all NOREPLY messages", StatusId.ACTIVE,
 			false, 4, false, 2, 5, 8, -1, false, null, true, true, true, 24),
-	DEMOLST1("demolist1", "demolist1", "localhost", -1, MailProtocol.POP3, "Test List 1", StatusIdCode.ACTIVE,
+	DEMOLST1("demolist1", "demolist1", "localhost", -1, MailProtocol.POP3, "Test List 1", StatusId.ACTIVE,
 			false, 4, false, 2, 5, 8, -1, false, null, true, true, true, 24),
-	DEMOLST2("demolist2", "demolist2", "localhost", -1, MailProtocol.POP3, "Test List 2", StatusIdCode.ACTIVE,
+	DEMOLST2("demolist2", "demolist2", "localhost", -1, MailProtocol.POP3, "Test List 2", StatusId.ACTIVE,
 			false, 4, false, 2, 5, 8, -1, false, null, true, true, true, 24),
-	TESTTO("testto", "testto", "localhost", -1, MailProtocol.POP3, "Test TO Address", StatusIdCode.ACTIVE,
+	TESTTO("testto", "testto", "localhost", -1, MailProtocol.POP3, "Test TO Address", StatusId.ACTIVE,
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
-	TESTFROM("testfrom", "testfrom", "localhost", -1, MailProtocol.POP3, "Test FROM Address", StatusIdCode.ACTIVE,
+	TESTFROM("testfrom", "testfrom", "localhost", -1, MailProtocol.POP3, "Test FROM Address", StatusId.ACTIVE,
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
-	CUSTCARE("custcare", "custcare", "localhost", -1, MailProtocol.POP3, "Customer Care Address", StatusIdCode.ACTIVE,
+	CUSTCARE("custcare", "custcare", "localhost", -1, MailProtocol.POP3, "Customer Care Address", StatusId.ACTIVE,
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
-	ALERT("alert", "alert", "localhost", -1, MailProtocol.POP3, "Alert Address", StatusIdCode.INACTIVE,
+	ALERT("alert", "alert", "localhost", -1, MailProtocol.POP3, "Alert Address", StatusId.INACTIVE,
 			false, 5, false, 4, 5, 10, -1, false, null, true, true, true, 24),
 
-	postmaster("postmaster", "postmaster", "localhost", -1, MailProtocol.POP3, "James Server postmaster", StatusIdCode.ACTIVE,
+	postmaster("postmaster", "postmaster", "localhost", -1, MailProtocol.POP3, "James Server postmaster", StatusId.ACTIVE,
 			false, 4, false, 2, 5, 8, -1, false, "legacytojava.com,emailsphere.com", true, true, true, 24),
-	webmaster("webmaster", "webmaster", "localhost", -1, MailProtocol.POP3, "Emailsphere demo webmaster", StatusIdCode.ACTIVE,
+	webmaster("webmaster", "webmaster", "localhost", -1, MailProtocol.POP3, "Emailsphere demo webmaster", StatusId.ACTIVE,
 			false, 4, false, 2, 5, 8, -1, false, "legacytojava.com,emailsphere.com", true, true, true, 24),
-	jwang("jwang", "jwang", "localhost", -1, MailProtocol.POP3, "local pop3 Server", StatusIdCode.INACTIVE,
+	jwang("jwang", "jwang", "localhost", -1, MailProtocol.POP3, "local pop3 Server", StatusId.INACTIVE,
 			true, 4, false, 2, 5, 8, -1, false, "legacytojava.com,jbatch.com", true, true, true, 24),
-	twang("twang", "twang", "localhost", -1, MailProtocol.POP3, "local pop3 Server", StatusIdCode.INACTIVE,
+	twang("twang", "twang", "localhost", -1, MailProtocol.POP3, "local pop3 Server", StatusId.INACTIVE,
 			true, 4, false, 2, 5, 8, -1, false, "legacytojava.com,jbatch.com", true, true, true, 24),
-	jackwng("jackwng", "jackwng", "pop.gmail.com", 995, MailProtocol.POP3, "GMail Secure Server", StatusIdCode.INACTIVE,
+	jackwng("jackwng", "jackwng", "pop.gmail.com", 995, MailProtocol.POP3, "GMail Secure Server", StatusId.INACTIVE,
 			false, 4, true, 2, 5, 8, -1, false, "legacytojava.com,emailsphere.com", true, true, true, 24),
-	jwangrr("jwang", "jwang", "pop-server.nc.rr.com", -1, MailProtocol.POP3, "Road Runner Server",	StatusIdCode.INACTIVE,
+	jwangrr("jwang", "jwang", "pop-server.nc.rr.com", -1, MailProtocol.POP3, "Road Runner Server",	StatusId.INACTIVE,
 			false, 4, false, 2, 5, 6, -1, false, "legacytojava.com,emailsphere.com", true, true, true, 24),
-	df153("df153", "df153", "imap.aim.com", -1, MailProtocol.IMAP, "AIM Mail Server", StatusIdCode.INACTIVE,
+	df153("df153", "df153", "imap.aim.com", -1, MailProtocol.IMAP, "AIM Mail Server", StatusId.INACTIVE,
 			false, 10, false, 2, 5, 10, -1, false, "legacytojava.com,emailsphere.com", true, true, true, 24);
 
 	private String userId;
@@ -46,7 +46,7 @@ public enum MailInboxEnum {
 	private int port;
 	private String protocol;
 	private String description;
-	private String status;
+	private StatusId status;
 	private Boolean isInternalOnly;
 	private int readPerPass;
 	private boolean isUseSsl;
@@ -62,7 +62,7 @@ public enum MailInboxEnum {
 	private Integer purgeDupsAfter;
 
 	private MailInboxEnum(String userId, String userPswd, String hostName, int port, String protocol,
-			String description, String status, Boolean isInternalOnly, int readPerPass, boolean isUseSsl,
+			String description, StatusId status, Boolean isInternalOnly, int readPerPass, boolean isUseSsl,
 			int numberOfThreads, Integer maximumRetries, Integer minimumWait, int messageCount, Boolean isToPlainText,
 			String toAddressDomain, Boolean isCheckDuplicate, Boolean isAlertDuplicate, Boolean isLogDuplicate,
 			Integer purgeDupsAfter) {
@@ -105,7 +105,7 @@ public enum MailInboxEnum {
 	public String getDescription() {
 		return description;
 	}
-	public String getStatus() {
+	public StatusId getStatus() {
 		return status;
 	}
 	public Boolean getIsInternalOnly() {

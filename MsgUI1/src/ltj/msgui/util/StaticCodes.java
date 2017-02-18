@@ -27,7 +27,7 @@ import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
 import ltj.message.constant.MobileCarrier;
 import ltj.message.constant.MsgStatusCode;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableName;
 import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.external.RuleTargetProc;
@@ -335,8 +335,8 @@ public class StaticCodes {
 	}
 	
 	private static SelectItem[] simpleStatusIdItems = {
-		new SelectItem(StatusIdCode.ACTIVE, "Active"),
-		new SelectItem(StatusIdCode.INACTIVE, "Inactive")
+		new SelectItem(StatusId.ACTIVE.value(), "Active"),
+		new SelectItem(StatusId.INACTIVE.value(), "Inactive")
 	};
 
 	// PROPERTY: Email Variable Type Items
@@ -355,9 +355,9 @@ public class StaticCodes {
 	}
 	
 	private static SelectItem[] mailAddressStatusIdItems = {
-		new SelectItem(StatusIdCode.ACTIVE, "Active"),
-		new SelectItem(StatusIdCode.INACTIVE, "Inactive"),
-		new SelectItem(StatusIdCode.SUSPENDED, "Suspended")
+		new SelectItem(StatusId.ACTIVE.value(), "Active"),
+		new SelectItem(StatusId.INACTIVE.value(), "Inactive"),
+		new SelectItem(StatusId.SUSPENDED.value(), "Suspended")
 	};
 
 	// PROPERTY: Message out-box StatudId Items

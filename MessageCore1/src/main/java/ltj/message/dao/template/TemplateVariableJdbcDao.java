@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.vo.template.TemplateVariableVo;
@@ -136,7 +136,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 				"  on a.variablename=c.variablename and a.starttime=c.maxtime " +
 				"    and a.templateid=c.templateid and a.clientid=c.clientid " +
 				" order by a.variableName asc ";
-			Object[] parms = new Object[] { StatusIdCode.ACTIVE,
+			Object[] parms = new Object[] { StatusId.ACTIVE.value(),
 					new Timestamp(new java.util.Date().getTime()), templateId, clientId };
 			List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
 					new BeanPropertyRowMapper<TemplateVariableVo>(TemplateVariableVo.class));

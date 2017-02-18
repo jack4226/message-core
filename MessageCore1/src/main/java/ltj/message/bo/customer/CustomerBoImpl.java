@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.customer.CustSequenceDao;
 import ltj.message.dao.customer.CustomerDao;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -90,7 +90,7 @@ public class CustomerBoImpl implements CustomerBo {
 			vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		}
 		if (StringUtil.isEmpty(vo.getStatusId())) {
-			vo.setStatusId(StatusIdCode.ACTIVE);
+			vo.setStatusId(StatusId.ACTIVE.value());
 		}
 		if (vo.getStartDate() == null) {
 			vo.setStartDate(new java.util.Date());
@@ -151,7 +151,7 @@ public class CustomerBoImpl implements CustomerBo {
 		}
 		// ready for insert
 		vo.setEmailAddrId(emailAddrVo.getEmailAddrId());
-		vo.setStatusId(StatusIdCode.ACTIVE);
+		vo.setStatusId(StatusId.ACTIVE.value());
 		if (vo.getStartDate() == null) {
 			vo.setStartDate(new java.sql.Date(new java.util.Date().getTime()));
 		}

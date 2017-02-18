@@ -10,7 +10,7 @@ import ltj.message.bo.rule.RuleBase;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableName;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
@@ -100,7 +100,7 @@ public class PremiumUpgradeSetup {
 
 	void setRuleData(RuleLogicVo vo) {
 		vo.setRuleType(RuleBase.ALL_RULE);
-		vo.setStatusId(StatusIdCode.ACTIVE);
+		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setMailType(Constants.SMTP_MAIL);
 		vo.setRuleCategory(RuleBase.MAIN_RULE);
 		vo.setIsSubRule(Constants.N);
@@ -139,7 +139,7 @@ public class PremiumUpgradeSetup {
 		Timestamp startTime = new Timestamp(System.currentTimeMillis());
 		vo.setRuleName(ruleName);
 		vo.setActionSeq(1);
-		vo.setStatusId(StatusIdCode.ACTIVE);
+		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setStartTime(startTime);
 		vo.setActionId("SAVE");
 		int rows = dao.insert(vo);

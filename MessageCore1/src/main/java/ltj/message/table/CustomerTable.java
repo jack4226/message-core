@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.MobileCarrier;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -79,7 +79,7 @@ public class CustomerTable extends CreateTableBase {
 					+ "MsgFooter varchar(100), "
 					+ "TimeZoneCode char(1), " // 30
 					+ "MemoText varchar(255), "
-					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " 
+					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " 
 					+ "SecurityQuestion varchar(100), "
 					+ "SecurityAnswer varchar(26), "
 					+ "EmailAddr varchar(255) NOT NULL, " // 35

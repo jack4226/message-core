@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.vo.SmtpConnVo;
@@ -39,7 +39,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		String sql = "select * from SmtpServers ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
-			keys.add(StatusIdCode.ACTIVE);
+			keys.add(StatusId.ACTIVE.value());
 		}
 		sql += " order by ServerName ";
 		List<SmtpConnVo> list = getJdbcTemplate().query(sql, keys.toArray(), 
@@ -53,7 +53,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		String sql = "select * from SmtpServers ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
-			keys.add(StatusIdCode.ACTIVE);
+			keys.add(StatusId.ACTIVE.value());
 		}
 		sql += " order by RowId limit 1 ";
 		int fetchSize = getJdbcTemplate().getFetchSize();
@@ -74,7 +74,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		String sql = "select * from SmtpServers where ServerType=?";
 		if (onlyActive) {
 			sql += " and StatusId=? ";
-			keys.add(StatusIdCode.ACTIVE);
+			keys.add(StatusId.ACTIVE.value());
 		}
 		sql += " order by ServerName ";
 		List<SmtpConnVo> list = getJdbcTemplate().query(sql, keys.toArray(), 
@@ -90,7 +90,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		String sql = "select * from SmtpServers where UseSsl=?";
 		if (onlyActive) {
 			sql += " and StatusId=? ";
-			keys.add(StatusIdCode.ACTIVE);
+			keys.add(StatusId.ACTIVE.value());
 		}
 		sql += " order by RowId ";
 		List<?> list = (List<?>)getJdbcTemplate().query(sql, keys.toArray(), 
@@ -106,7 +106,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 		String sql = "select * from SmtpServers where UseSsl=?";
 		if (onlyActive) {
 			sql += " and StatusId=? ";
-			keys.add(StatusIdCode.ACTIVE);
+			keys.add(StatusId.ACTIVE.value());
 		}
 		sql += " order by RowId limit 1 ";
 		List<?> list = (List<?>)getJdbcTemplate().query(sql, keys.toArray(), 

@@ -12,7 +12,7 @@ import ltj.data.preload.RuleActionEnum;
 import ltj.data.preload.RuleDataTypeEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.constant.AddressType;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.constant.TableColumnName;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.dao.action.MsgActionDetailDao;
@@ -208,7 +208,7 @@ public class LoadActionTables {
 		for (RuleActionEnum act : RuleActionEnum.values()) {
 			String ruleName = act.getRuleName().name();
 			MsgActionVo vo = new MsgActionVo(ruleName, act.getSequence(), now, null,
-					act.getActionDetail().name(), StatusIdCode.ACTIVE, act.getFieldValues());
+					act.getActionDetail().name(), StatusId.ACTIVE.value(), act.getFieldValues());
 			msgActionDao.insert(vo);
 		}
 		

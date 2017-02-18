@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.vo.MailBoxVo;
@@ -69,8 +69,8 @@ public class MailBoxTest extends DaoTestBase {
 	}
 	
 	private int update(MailBoxVo mailBoxVo) {
-		if (!StatusIdCode.ACTIVE.equals(mailBoxVo.getStatusId())) {
-			mailBoxVo.setStatusId(StatusIdCode.ACTIVE);
+		if (!StatusId.ACTIVE.value().equals(mailBoxVo.getStatusId())) {
+			mailBoxVo.setStatusId(StatusId.ACTIVE.value());
 		}
 		mailBoxVo.setAllowExtraWorkers(false);
 		mailBoxVo.setPurgeDupsAfter(365);

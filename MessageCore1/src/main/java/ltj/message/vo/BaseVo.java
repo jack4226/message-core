@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.util.Printf;
 
 @XmlAccessorType (XmlAccessType.NONE)
@@ -28,7 +28,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 	@XmlElement
 	protected String primaryKey = null;
 	@XmlElement
-	private String statusId = StatusIdCode.ACTIVE;
+	private String statusId = StatusId.ACTIVE.value();
 	@XmlElement
     @XmlJavaTypeAdapter(TimestampAdapter.class)
 	protected Timestamp updtTime = null;
@@ -53,7 +53,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 	
 	public BaseVo() {
 		primaryKey = null;	
-		statusId = StatusIdCode.ACTIVE;
+		statusId = StatusId.ACTIVE.value();
 		updtTime = null;
 		updtUserId = null;
 		
@@ -88,13 +88,13 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 		try {
 			Method method = this.getClass().getMethod("getStatusId", (Class[])null);
 			String desc = (String) method.invoke(this, (Object[])null);
-			if (StatusIdCode.ACTIVE.equals(desc)) {
+			if (StatusId.ACTIVE.value().equals(desc)) {
 				desc = "Active";
 			}
-			else if (StatusIdCode.INACTIVE.equals(desc)) {
+			else if (StatusId.INACTIVE.value().equals(desc)) {
 				desc = "Inactive";
 			}
-			else if (StatusIdCode.SUSPENDED.equals(desc)) {
+			else if (StatusId.SUSPENDED.value().equals(desc)) {
 				desc = "Suspended";
 			}
 			return desc;

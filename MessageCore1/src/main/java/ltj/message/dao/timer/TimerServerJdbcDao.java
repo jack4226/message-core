@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.vo.TimerServerVo;
@@ -36,7 +36,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 		
 		String sql = "select * from TimerServers ";
 		if (onlyActive) {
-			sql += " where StatusId='" + StatusIdCode.ACTIVE + "'";
+			sql += " where StatusId='" + StatusId.ACTIVE.value() + "'";
 		}
 		List<TimerServerVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<TimerServerVo>(TimerServerVo.class));

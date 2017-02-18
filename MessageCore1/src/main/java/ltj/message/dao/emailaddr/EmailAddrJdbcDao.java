@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.util.EmailAddrUtil;
@@ -272,7 +272,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 				EmailAddrVo emailAddrVo = new EmailAddrVo();
 				emailAddrVo.setEmailAddr(address);
 				emailAddrVo.setBounceCount(0);
-				emailAddrVo.setStatusId(StatusIdCode.ACTIVE);
+				emailAddrVo.setStatusId(StatusId.ACTIVE.value());
 				emailAddrVo.setStatusChangeTime(updtTime);
 				emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 				emailAddrVo.setAcceptHtml(Constants.Y);
@@ -322,7 +322,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 			EmailAddrVo emailAddrVo = new EmailAddrVo();
 			emailAddrVo.setEmailAddr(address);
 			emailAddrVo.setBounceCount(0);
-			emailAddrVo.setStatusId(StatusIdCode.ACTIVE);
+			emailAddrVo.setStatusId(StatusId.ACTIVE.value());
 			emailAddrVo.setStatusChangeTime(updtTime);
 			emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 			emailAddrVo.setAcceptHtml(Constants.Y);
@@ -511,9 +511,9 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		emailAddrVo.setBounceCount(emailAddrVo.getBounceCount() + 1);
 		keys.add(emailAddrVo.getBounceCount());
 
-		if (emailAddrVo.getBounceCount() > StatusIdCode.BOUNCE_SUSPEND_THRESHOLD) {
-			if (!StatusIdCode.SUSPENDED.equals(emailAddrVo.getStatusId())) {
-				emailAddrVo.setStatusId(StatusIdCode.SUSPENDED);
+		if (emailAddrVo.getBounceCount() > Constants.BOUNCE_SUSPEND_THRESHOLD) {
+			if (!StatusId.SUSPENDED.value().equals(emailAddrVo.getStatusId())) {
+				emailAddrVo.setStatusId(StatusId.SUSPENDED.value());
 				if (!StringUtil.isEmpty(emailAddrVo.getUpdtUserId())) {
 					emailAddrVo.setStatusChangeUserId(emailAddrVo.getUpdtUserId());
 				} else {

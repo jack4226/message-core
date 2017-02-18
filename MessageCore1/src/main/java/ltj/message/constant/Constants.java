@@ -31,6 +31,9 @@ public final class Constants {
 	public final static String YES = CodeType.Yes.value();
 	public final static String NO = CodeType.No.value();
 	
+	// suspend email address after 5 times of consecutive bounces
+	public final static int BOUNCE_SUSPEND_THRESHOLD = 5;
+
 	//
 	// define VERP constants
 	//

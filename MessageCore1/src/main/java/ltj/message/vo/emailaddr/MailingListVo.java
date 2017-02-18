@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.vo.BaseVoWithRowId;
 
 public class MailingListVo extends BaseVoWithRowId implements Serializable {
@@ -29,7 +29,7 @@ public class MailingListVo extends BaseVoWithRowId implements Serializable {
 	
 	/** define components for UI */
 	public boolean isActive() {
-		return StatusIdCode.ACTIVE.equalsIgnoreCase(getStatusId());
+		return StatusId.ACTIVE.value().equalsIgnoreCase(getStatusId());
 	}
 	
 	public boolean getIsSubscribed() {

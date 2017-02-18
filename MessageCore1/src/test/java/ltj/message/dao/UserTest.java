@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.user.UserDao;
 import ltj.message.vo.UserVo;
@@ -58,8 +58,8 @@ public class UserTest extends DaoTestBase {
 		return vo2;
 	}
 	private int update(UserVo userVo) {
-		if (StatusIdCode.ACTIVE.equals(userVo.getStatusId())) {
-			userVo.setStatusId(StatusIdCode.ACTIVE);
+		if (StatusId.ACTIVE.value().equals(userVo.getStatusId())) {
+			userVo.setStatusId(StatusId.ACTIVE.value());
 		}
 		int rows = userDao.update(userVo);
 		System.out.println("UserDao - update: rows updated "+rows);

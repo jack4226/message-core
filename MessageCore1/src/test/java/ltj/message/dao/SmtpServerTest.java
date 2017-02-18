@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.smtp.SmtpServerDao;
 import ltj.message.vo.SmtpConnVo;
@@ -70,8 +70,8 @@ public class SmtpServerTest extends DaoTestBase {
 	}
 	
 	private int update(SmtpConnVo smtpConnVo) {
-		if (StatusIdCode.ACTIVE.equals(smtpConnVo.getStatusId())) {
-			smtpConnVo.setStatusId(StatusIdCode.ACTIVE);
+		if (StatusId.ACTIVE.value().equals(smtpConnVo.getStatusId())) {
+			smtpConnVo.setStatusId(StatusId.ACTIVE.value());
 		}
 		int rows = smtpServerDao.update(smtpConnVo);
 		System.out.println("SmtpServerDao - update: rows updated " + rows );

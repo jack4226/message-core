@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.timer.TimerServerDao;
 import ltj.message.vo.TimerServerVo;
@@ -58,8 +58,8 @@ public class TimerServerTest extends DaoTestBase {
 	}
 
 	private int update(TimerServerVo timerServerVo) {
-		if (StatusIdCode.ACTIVE.equals(timerServerVo.getStatusId())) {
-			timerServerVo.setStatusId(StatusIdCode.ACTIVE);
+		if (StatusId.ACTIVE.value().equals(timerServerVo.getStatusId())) {
+			timerServerVo.setStatusId(StatusId.ACTIVE.value());
 		}
 		int rows = timerServerDao.update(timerServerVo);
 		System.out.println("TimerServerDao - update: rows updated "+rows);

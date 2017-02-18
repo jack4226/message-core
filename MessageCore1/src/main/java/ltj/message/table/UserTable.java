@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.inbox.SearchFieldsVo;
 
@@ -130,7 +130,7 @@ public class UserTable extends CreateTableBase {
 			ps.setString(3, "default");
 			ps.setString(4, "admin");
 			ps.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(6, StatusIdCode.ACTIVE);
+			ps.setString(6, StatusId.ACTIVE.value());
 			ps.setString(7, Constants.ADMIN_ROLE);
 			ps.setString(8, SearchFieldsVo.MsgType.Received.toString()); //"All");
 			ps.setString(9, Constants.DEFAULT_CLIENTID);
@@ -141,7 +141,7 @@ public class UserTable extends CreateTableBase {
 			ps.setString(3, "default");
 			ps.setString(4, "user");
 			ps.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(6, StatusIdCode.ACTIVE);
+			ps.setString(6, StatusId.ACTIVE.value());
 			ps.setString(7, Constants.USER_ROLE);
 			ps.setString(8, SearchFieldsVo.MsgType.Received.toString());
 			ps.setString(9, Constants.DEFAULT_CLIENTID);

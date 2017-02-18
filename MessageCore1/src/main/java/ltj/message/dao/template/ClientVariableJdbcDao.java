@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.vo.template.ClientVariableVo;
@@ -104,7 +104,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 					"  on a.variablename=c.variablename and a.starttime=c.maxtime " +
 					"    and a.clientid=c.clientid " +
 					" order by a.rowId asc ";
-			Object[] parms = new Object[] { StatusIdCode.ACTIVE, new Timestamp(System.currentTimeMillis()), clientId };
+			Object[] parms = new Object[] { StatusId.ACTIVE.value(), new Timestamp(System.currentTimeMillis()), clientId };
 			List<ClientVariableVo> list = getJdbcTemplate().query(sql, parms,
 					new BeanPropertyRowMapper<ClientVariableVo>(ClientVariableVo.class));
 			currentVariablesCache.put(clientId, list);

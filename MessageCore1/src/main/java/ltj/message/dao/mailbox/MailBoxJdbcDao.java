@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.client.ClientDao;
@@ -65,7 +65,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 				"from MailBoxes ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
-			keys.add(StatusIdCode.ACTIVE);
+			keys.add(StatusId.ACTIVE.value());
 		}
 		sql += " order by HostName, UserId ";
 		List<MailBoxVo> list = getJdbcTemplate().query(sql, keys.toArray(),
@@ -81,7 +81,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 				"from MailBoxes ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
-			keys.add(StatusIdCode.ACTIVE);
+			keys.add(StatusId.ACTIVE.value());
 		}
 		sql += " order by RowId limit 1";
 		int fetchSize = getJdbcTemplate().getFetchSize();

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import ltj.message.bean.MessageBean;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -100,11 +100,11 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 					logger.debug("Address to actiavte: " + addr);
 				}
 				EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(addr);
-				if (!StatusIdCode.ACTIVE.equals(emailAddrVo.getStatusId())) {
+				if (!StatusId.ACTIVE.value().equals(emailAddrVo.getStatusId())) {
 					if (isDebugEnabled) {
 						logger.debug("Activating EmailAddr: " + addr);
 					}
-					emailAddrVo.setStatusId(StatusIdCode.ACTIVE);
+					emailAddrVo.setStatusId(StatusId.ACTIVE.value());
 					emailAddrVo.setBounceCount(0); // reset bounce count
 					emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 					emailAddrVo.setStatusChangeTime(updtTime);

@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.vo.UserVo;
@@ -48,7 +48,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		
 		String sql = "select * from Users ";
 		if (onlyActive) {
-			sql += " where StatusId='" + StatusIdCode.ACTIVE + "' limit 100";
+			sql += " where StatusId='" + StatusId.ACTIVE.value() + "' limit 100";
 		}
 		List<UserVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<UserVo>(UserVo.class));
 		return list;

@@ -1,27 +1,27 @@
 package ltj.data.preload;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 
 /*
  * define sample mailing lists
  */
 public enum MailingListEnum {
 
-	SMPLLST1("Sample List 1", "demolist1", "Sample mailing list 1", StatusIdCode.ACTIVE, false, false),
-	SMPLLST2("Sample List 2", "demolist2", "Sample mailing list 2", StatusIdCode.ACTIVE, false, false),
-	SYSLIST1("NOREPLY Empty List", "noreply", "Auto-Responder, confirm subscription", StatusIdCode.INACTIVE, true, false),
-	ALERTLST("NOREPLY Empty List", "noreply", "System alert, subscriber order or internal errors", StatusIdCode.INACTIVE, true, true),
-	ORDERLST("Order Confirmation List", "support", "Auto-Responder, confirm subscriber order", StatusIdCode.INACTIVE, true, true);
+	SMPLLST1("Sample List 1", "demolist1", "Sample mailing list 1", StatusId.ACTIVE, false, false),
+	SMPLLST2("Sample List 2", "demolist2", "Sample mailing list 2", StatusId.ACTIVE, false, false),
+	SYSLIST1("NOREPLY Empty List", "noreply", "Auto-Responder, confirm subscription", StatusId.INACTIVE, true, false),
+	ALERTLST("NOREPLY Empty List", "noreply", "System alert, subscriber order or internal errors", StatusId.INACTIVE, true, true),
+	ORDERLST("Order Confirmation List", "support", "Auto-Responder, confirm subscriber order", StatusId.INACTIVE, true, true);
 	
 	private String displayName;
 	private String acctName;
 	private String description;
-	private String statusId;
+	private StatusId statusId;
 	private boolean isBuiltin;
 	private boolean isProd;
 
 	private MailingListEnum(String displayName, String acctName,
-			String description, String statusId, boolean isBuiltin,
+			String description, StatusId statusId, boolean isBuiltin,
 			boolean isProd) {
 		this.displayName = displayName;
 		this.acctName = acctName;
@@ -39,7 +39,7 @@ public enum MailingListEnum {
 	public String getDescription() {
 		return description;
 	}
-	public String getStatusId() {
+	public StatusId getStatusId() {
 		return statusId;
 	}
 	public boolean isBuiltin() {

@@ -13,9 +13,5 @@ public enum MailingListType {
 	public String value() {
 		return value;
 	}
-	
-	// define mailing list types
-//	public static final String TRADITIONAL = "Traditional";
-//	public static final String PERSONALIZED = "Personalized";
 
 }

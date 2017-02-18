@@ -11,7 +11,7 @@ import ltj.message.constant.AddressType;
 import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailCodeType;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -87,7 +87,7 @@ public class LoadTemplateTables {
 			in.setVariableValue(var.getDefaultValue());
 			in.setVariableFormat(var.getVariableFormat());
 			in.setVariableType(var.getVariableType());
-			in.setStatusId(StatusIdCode.ACTIVE);
+			in.setStatusId(StatusId.ACTIVE.value());
 			in.setAllowOverride(var.getAllowOverride().value());
 			in.setRequired(Constants.N);
 			globalVariableDao.insert(in);
@@ -100,7 +100,7 @@ public class LoadTemplateTables {
 //		in.setVariableValue(null);
 //		in.setVariableFormat("yyyy-MM-dd HH:mm:ss");
 //		in.setVariableType(VariableType.DATETIME);
-//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
 //		globalVariableDao.insert(in);
@@ -110,7 +110,7 @@ public class LoadTemplateTables {
 //		in.setVariableValue(null);
 //		in.setVariableFormat("yyyy-MM-dd");
 //		in.setVariableType(VariableType.DATETIME);
-//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
 //		globalVariableDao.insert(in);
@@ -120,7 +120,7 @@ public class LoadTemplateTables {
 //		in.setVariableValue(null);
 //		in.setVariableFormat("hh:mm:ss a");
 //		in.setVariableType(VariableType.DATETIME);
-//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
 //		globalVariableDao.insert(in);
@@ -133,7 +133,7 @@ public class LoadTemplateTables {
 //		in.setVariableValue(Constants.DEFAULT_CLIENTID);
 //		in.setVariableFormat(null);
 //		in.setVariableType(VariableType.X_HEADER);
-//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
 //		globalVariableDao.insert(in);
@@ -144,7 +144,7 @@ public class LoadTemplateTables {
 //		in.setVariableValue(Constants.POWERED_BY_HTML_TAG);
 //		in.setVariableFormat(null);
 //		in.setVariableType(VariableType.TEXT);
-//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.N);
 //		in.setRequired(Constants.N);
 //		globalVariableDao.insert(in);
@@ -164,7 +164,7 @@ public class LoadTemplateTables {
 			in.setVariableValue(var.getDefaultValue());
 			in.setVariableFormat(var.getVariableFormat());
 			in.setVariableType(var.getVariableType());
-			in.setStatusId(StatusIdCode.ACTIVE);
+			in.setStatusId(StatusId.ACTIVE.value());
 			in.setAllowOverride(var.getAllowOverride().value());
 			in.setRequired(Constants.N);
 
@@ -179,7 +179,7 @@ public class LoadTemplateTables {
 //		in.setVariableValue(null);
 //		in.setVariableFormat(null);
 //		in.setVariableType(VariableType.DATETIME);
-//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
 //
@@ -191,7 +191,7 @@ public class LoadTemplateTables {
 //		in.setVariableValue(null);
 //		in.setVariableFormat("yyyy-MM-dd");
 //		in.setVariableType(VariableType.DATETIME);
-//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
 //
@@ -203,7 +203,7 @@ public class LoadTemplateTables {
 //		in.setVariableValue(null);
 //		in.setVariableFormat("hh:mm:ss a");
 //		in.setVariableType(VariableType.DATETIME);
-//		in.setStatusId(StatusIdCode.ACTIVE);
+//		in.setStatusId(StatusId.ACTIVE.value());
 //		in.setAllowOverride(Constants.Y);
 //		in.setRequired(Constants.N);
 //
@@ -229,7 +229,7 @@ public class LoadTemplateTables {
 		in.setVariableValue(null);
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.DATETIME);
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
 		in.setRequired(Constants.N);
 
@@ -242,7 +242,7 @@ public class LoadTemplateTables {
 		in.setVariableValue(null);
 		in.setVariableFormat("yyyy-MM-dd");
 		in.setVariableType(VariableType.DATETIME);
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
 		in.setRequired(Constants.N);
 
@@ -259,7 +259,7 @@ public class LoadTemplateTables {
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setStartTime(updtTime);
 		in.setDescription(null);
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setTemplateValue("Weekend Deals at MyBesyDeals.com");
 
 		subjTemplateDao.insert(in);
@@ -275,7 +275,7 @@ public class LoadTemplateTables {
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setStartTime(updtTime);
 		in.setDescription(null);
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setTemplateValue("Dear customer, here is a list of great deals on gardening tools provided to you by mydot.com.");
 		in.setContentType("text/plain");
 
@@ -292,7 +292,7 @@ public class LoadTemplateTables {
 		
 		in.setMsgSourceId(TestMsgSourceId_1);
 		in.setDescription("Default Message Source");
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setFromAddrId(emailVo.getEmailAddrId());
 		in.setReplyToAddrId(null);
 		in.setSubjTemplateId(TestTemplateId_1);
@@ -333,7 +333,7 @@ public class LoadTemplateTables {
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setStartTime(updtTime);
 		in.setDescription(null);
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setTemplateValue(template);
 		in.setContentType("text/html");
 
@@ -350,7 +350,7 @@ public class LoadTemplateTables {
 		
 		in.setMsgSourceId(TestMsgSourceId_2);
 		in.setDescription("Test Message Source");
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setFromAddrId(emailVo.getEmailAddrId());
 		in.setReplyToAddrId(null);
 		in.setSubjTemplateId(TestTemplateId_1);
@@ -379,7 +379,7 @@ public class LoadTemplateTables {
 		in.setVariableValue(Constants.DEFAULT_CLIENTID);
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.TEXT);
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
 		in.setRequired(Constants.N);
 
@@ -399,7 +399,7 @@ public class LoadTemplateTables {
 		in.setVariableValue(null);
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.TEXT);
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
 		in.setRequired(Constants.Y);
 
@@ -417,7 +417,7 @@ public class LoadTemplateTables {
 		in.setVariableValue(null);
 		in.setVariableFormat(null);
 		in.setVariableType(VariableType.ADDRESS);
-		in.setStatusId(StatusIdCode.ACTIVE);
+		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(CodeType.MANDATORY.value());
 		in.setRequired(Constants.Y);
 

@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.vo.template.GlobalVariableVo;
@@ -98,7 +98,7 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 					" ) as c " +
 					"  on a.variablename=c.variablename and a.starttime=c.maxtime " +
 					" order by a.variableName asc ";
-			Object[] parms = new Object[] { StatusIdCode.ACTIVE, new Timestamp(new java.util.Date().getTime()) };
+			Object[] parms = new Object[] { StatusId.ACTIVE.value(), new Timestamp(new java.util.Date().getTime()) };
 			List<GlobalVariableVo> list = getJdbcTemplate().query(sql, parms, 
 					new BeanPropertyRowMapper<GlobalVariableVo>(GlobalVariableVo.class));
 			currentVariablesCache.addAll(list);

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgStatusCode;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.util.StringUtil;
@@ -288,7 +288,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
-		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.Y};
+		Object[] parms = new Object[] {listId, StatusId.ACTIVE.value(), Constants.Y};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
 		return list;
@@ -318,7 +318,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
-		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.Y};
+		Object[] parms = new Object[] {listId, StatusId.ACTIVE.value(), Constants.Y};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
 		return list;
@@ -345,7 +345,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" and b.StatusId=? " +
 				" and a.Subscribed=? " +
 				" and not exists (select 1 from Customers where EmailAddrId=b.EmailAddrId) ";
-		Object[] parms = new Object[] {listId, StatusIdCode.ACTIVE, Constants.Y};
+		Object[] parms = new Object[] {listId, StatusId.ACTIVE.value(), Constants.Y};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
 		return list;

@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.data.preload.RuleNameEnum;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.vo.action.MsgActionVo;
@@ -85,8 +85,8 @@ public class MsgActionTest extends DaoTestBase {
 	private int update(MsgActionVo msgActionVo) {
 		int rowsUpdated = 0;
 		if (msgActionVo!=null) {
-			if (!StatusIdCode.ACTIVE.equals(msgActionVo.getStatusId())) {
-				msgActionVo.setStatusId(StatusIdCode.ACTIVE);
+			if (!StatusId.ACTIVE.value().equals(msgActionVo.getStatusId())) {
+				msgActionVo.setStatusId(StatusId.ACTIVE.value());
 			}
 			rowsUpdated = msgActionDao.update(msgActionVo);
 			System.out.println("MsgActionDao - update: Rows updated: "+rowsUpdated);

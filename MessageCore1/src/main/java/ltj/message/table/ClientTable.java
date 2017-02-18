@@ -9,7 +9,7 @@ import java.util.List;
 import ltj.jbatch.common.ProductKey;
 import ltj.jbatch.obsolete.ProductUtil;
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.client.ClientDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.util.TimestampUtil;
@@ -56,7 +56,7 @@ public class ClientTable extends CreateTableBase {
 					+ "ClientType char(1), " // TBD
 					+ "DomainName varchar(100) NOT NULL, " 
 						// used by VERP and System E-Mails to set Return-Path
-					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " // 'A' or 'I'
+					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // 'A' or 'I'
 					+ "IrsTaxId varchar(10), " // IRS Tax Id
 					+ "WebSiteUrl varchar(100), "
 					+ "SaveRawMsg char(1) NOT NULL DEFAULT '" + Constants.Y + "', " 
@@ -199,7 +199,7 @@ public class ClientTable extends CreateTableBase {
 			ps.setString(4, "localhost"); // domain name
 		else
 			ps.setString(4, "espheredemo.com"); // domain name
-		ps.setString(5, StatusIdCode.ACTIVE);
+		ps.setString(5, StatusId.ACTIVE.value());
 		ps.setString(6, "0000000000");
 		ps.setString(7, "http://localhost:8080/MsgUI/publicsite");
 		ps.setString(8, Constants.Y); // save raw stream
@@ -246,7 +246,7 @@ public class ClientTable extends CreateTableBase {
 		ps.setString(2, "JBatch Corp. Site");
 		ps.setString(3, null);
 		ps.setString(4, "jbatch.com"); // domain name
-		ps.setString(5, StatusIdCode.ACTIVE);
+		ps.setString(5, StatusId.ACTIVE.value());
 		ps.setString(6, "0000000000");
 		ps.setString(7, "http://www.jbatch.com");
 		ps.setString(8, Constants.Y); // save raw stream
@@ -280,7 +280,7 @@ public class ClientTable extends CreateTableBase {
 		vo.setClientName("Emailsphere");
 		vo.setClientType(null);
 		vo.setDomainName("emailsphere.com"); // domain name
-		vo.setStatusId(StatusIdCode.ACTIVE);
+		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setIrsTaxId("0000000000");
 		vo.setWebSiteUrl("http://www.emailsphere.com/newsletter");
 		vo.setSaveRawMsg(Constants.Y); // save raw stream

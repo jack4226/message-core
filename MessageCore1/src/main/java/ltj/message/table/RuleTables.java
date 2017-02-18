@@ -12,7 +12,7 @@ import ltj.data.preload.RuleNameEnum;
 import ltj.data.preload.RuleSubruleMapEnum;
 import ltj.message.bo.rule.RuleBase;
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.main.CreateTableBase;
 
 public class RuleTables extends CreateTableBase {
@@ -66,7 +66,7 @@ public class RuleTables extends CreateTableBase {
 			"RuleName varchar(26) NOT NULL, " +
 			"RuleSeq int NOT NULL, " +
 			"RuleType varchar(8) NOT NULL, " + // simple/or/and/none
-			"StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " +
+			"StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
 			"StartTime datetime(3) NOT NULL, " +
 			"MailType varchar(8) NOT NULL, " + // smtpmail, webmail, ...
 			"RuleCategory char(1) DEFAULT '" + RuleBase.MAIN_RULE + "', " + // E - Pre Scan, 'M' - Main Rule, P - Post Scan
@@ -153,7 +153,7 @@ public class RuleTables extends CreateTableBase {
 				ps.setString(1, rl.name());
 				ps.setInt(2, ++seq);
 				ps.setString(3, rl.getRuleType().value());
-				ps.setString(4, StatusIdCode.ACTIVE);
+				ps.setString(4, StatusId.ACTIVE.value());
 				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 				ps.setString(6, Constants.SMTP_MAIL);
 				ps.setString(7, rl.getRuleCategory().value());
@@ -173,7 +173,7 @@ public class RuleTables extends CreateTableBase {
 					ps.setInt(2, ++seq);
 				}
 				ps.setString(3, rl.getRuleType().value());
-				ps.setString(4, StatusIdCode.ACTIVE);
+				ps.setString(4, StatusId.ACTIVE.value());
 				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 				ps.setString(6, Constants.SMTP_MAIL);
 				ps.setString(7, rl.getRuleCategory().value());
@@ -193,7 +193,7 @@ public class RuleTables extends CreateTableBase {
 					ps.setInt(2, ++seq);
 				}
 				ps.setString(3, rl.getRuleType().value());
-				ps.setString(4, StatusIdCode.ACTIVE);
+				ps.setString(4, StatusId.ACTIVE.value());
 				ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 				ps.setString(6, Constants.SMTP_MAIL);
 				ps.setString(7, rl.getRuleCategory().value());
@@ -207,7 +207,7 @@ public class RuleTables extends CreateTableBase {
 //			ps.setString(1, "Unattended_Mailbox");
 //			ps.setInt(2, 0);
 //			ps.setString(3, RuleBase.ALL_RULE);
-//			ps.setString(4, StatusIdCode.ACTIVE);
+//			ps.setString(4, StatusId.ACTIVE.value());
 //			ps.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 //			ps.setString(6, Constants.SMTP_MAIL);
 //			ps.setString(7, RuleBase.PRE_RULE);

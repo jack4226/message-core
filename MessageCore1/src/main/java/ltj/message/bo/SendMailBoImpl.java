@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -60,7 +60,7 @@ public class SendMailBoImpl extends TaskBaseAdaptor {
 				continue;
 			}
 			EmailAddrVo vo = emailAddrDao.findByAddress(addr.toString());
-			if (StatusIdCode.ACTIVE.equalsIgnoreCase(vo.getStatusId())) {
+			if (StatusId.ACTIVE.value().equalsIgnoreCase(vo.getStatusId())) {
 				String jmsMsgId = jmsProcessor.writeMsg(messageBean);
 				mailsSent++;
 				if (isDebugEnabled) {

@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.client.ReloadFlagsDao;
@@ -66,7 +66,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		ArrayList<Object> keys = new ArrayList<Object>();
 		keys.add(ruleName);
 		keys.add(startTime);
-		keys.add(StatusIdCode.ACTIVE);
+		keys.add(StatusId.ACTIVE.value());
 		if (clientId == null) {
 			sql += " and clientId is null ";
 		}
@@ -154,7 +154,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		keys.add(ruleName);
 		keys.add(actionSeq);
 		keys.add(startTime);
-		keys.add(StatusIdCode.ACTIVE);
+		keys.add(StatusId.ACTIVE.value());
 		if (clientId == null) {
 			sql += " and clientId is null ";
 		}

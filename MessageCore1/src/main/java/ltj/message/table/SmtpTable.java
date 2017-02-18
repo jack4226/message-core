@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import ltj.data.preload.SmtpServerEnum;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailServerType;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.main.CreateTableBase;
 
 public class SmtpTable extends CreateTableBase {
@@ -62,7 +62,7 @@ public class SmtpTable extends CreateTableBase {
 			"UserId varchar(30) NOT NULL, " + 
 			"UserPswd varchar(30) NOT NULL, " +
 			"Persistence varchar(3) NOT NULL, " +
-			"StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " +
+			"StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
 			"ServerType varchar(5) DEFAULT '" + MailServerType.SMTP.value() + "', " +
 			"Threads integer NOT NULL, " +
 			"Retries integer NOT NULL, " +
@@ -158,7 +158,7 @@ public class SmtpTable extends CreateTableBase {
 				ps.setString(6, ss.getUserId()); // user id
 				ps.setString(7, ss.getUserPswd()); // user password
 				ps.setString(8, ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
-				ps.setString(9, ss.getStatus()); // status id
+				ps.setString(9, ss.getStatus().value()); // status id
 				ps.setString(10, ss.getServerType().value()); // server type
 				ps.setInt(11, ss.getNumberOfThreads()); // Threads
 				ps.setInt(12, ss.getMaximumRetries()); // retries
@@ -179,7 +179,7 @@ public class SmtpTable extends CreateTableBase {
 //			ps.setString(6, "support"); // user id
 //			ps.setString(7, "support"); // user password
 //			ps.setString(8, Constants.NO); // persistence
-//			ps.setString(9, StatusIdCode.ACTIVE); // status id
+//			ps.setString(9, StatusId.ACTIVE.value()); // status id
 //			ps.setString(10, MailServerType.SMTP.value()); // server type
 //			ps.setInt(11, 4); // Threads
 //			ps.setInt(12, 10); // retries
@@ -213,7 +213,7 @@ public class SmtpTable extends CreateTableBase {
 					ps.setString(6, ss.getUserId()); // user id
 					ps.setString(7, ss.getUserPswd()); // user password
 					ps.setString(8, ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
-					ps.setString(9, ss.getStatus()); // status id
+					ps.setString(9, ss.getStatus().value()); // status id
 					ps.setString(10, ss.getServerType().value()); // server type
 					ps.setInt(11, ss.getNumberOfThreads()); // Threads
 					ps.setInt(12, ss.getMaximumRetries()); // retries
@@ -236,7 +236,7 @@ public class SmtpTable extends CreateTableBase {
 //			ps.setString(6, "jackwng"); // user id
 //			ps.setString(7, "jackwng01"); // user password
 //			ps.setString(8, Constants.NO); // persistence
-//			ps.setString(9, StatusIdCode.INACTIVE); // status id
+//			ps.setString(9, StatusId.INACTIVE.value()); // status id
 //			ps.setString(10, MailServerType.SMTP.value()); // server type
 //			ps.setInt(11, 1); // Threads
 //			ps.setInt(12, 10); // retries
@@ -256,7 +256,7 @@ public class SmtpTable extends CreateTableBase {
 //			ps.setString(6, "jackwng"); // user id
 //			ps.setString(7, "jackwng01"); // user password
 //			ps.setString(8, Constants.NO); // persistence
-//			ps.setString(9, StatusIdCode.INACTIVE); // status id
+//			ps.setString(9, StatusId.INACTIVE.value()); // status id
 //			ps.setString(10, MailServerType.SMTP.value()); // server type
 //			ps.setInt(11, 2); // Threads
 //			ps.setInt(12, 10); // retries
@@ -276,7 +276,7 @@ public class SmtpTable extends CreateTableBase {
 //			ps.setString(6, "uid"); // user id
 //			ps.setString(7, "pwd"); // user password
 //			ps.setString(8, Constants.NO); // persistence
-//			ps.setString(9, StatusIdCode.ACTIVE); // status id
+//			ps.setString(9, StatusId.ACTIVE.value()); // status id
 //			ps.setString(10, MailServerType.EXCH.value()); // server type
 //			ps.setInt(11, 1); // Threads
 //			ps.setInt(12, 4); // retries
@@ -297,15 +297,15 @@ public class SmtpTable extends CreateTableBase {
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			
-			ps.setString(1, StatusIdCode.INACTIVE); // status id
+			ps.setString(1, StatusId.INACTIVE.value()); // status id
 			ps.setString(2, SmtpServerEnum.SUPPORT.getServerName()); // server name
 			ps.execute();
 			
-			ps.setString(1, StatusIdCode.ACTIVE); // status id
+			ps.setString(1, StatusId.ACTIVE.value()); // status id
 			ps.setString(2, SmtpServerEnum.DynMailRelay.getServerName()); // server name
 			ps.execute();
 			
-			ps.setString(1, StatusIdCode.INACTIVE); // status id
+			ps.setString(1, StatusId.INACTIVE.value()); // status id
 			ps.setString(2, SmtpServerEnum.EXCHANGE.getServerName()); // server name
 			ps.execute();
 			

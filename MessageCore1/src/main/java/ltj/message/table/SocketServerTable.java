@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.main.CreateTableBase;
 
 public class SocketServerTable extends CreateTableBase {
@@ -94,7 +94,7 @@ public class SocketServerTable extends CreateTableBase {
 			ps.setString(6, "minute");
 			ps.setInt(7, 10);
 			ps.setString(8, "high");
-			ps.setString(9, StatusIdCode.ACTIVE);
+			ps.setString(9, StatusId.ACTIVE.value());
 			ps.setString(10, "socketProcessor");
 			ps.setInt(11, 0);
 			ps.setTimestamp(12, new Timestamp(new java.util.Date().getTime()));

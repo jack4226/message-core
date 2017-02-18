@@ -1,20 +1,20 @@
 package ltj.data.preload;
 
 import ltj.message.constant.MailServerType;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 
 public enum SmtpServerEnum {
 	SUPPORT("localhost", -1, "smtpServer", "smtp server on localhost", false,
-			"support", "support", false, StatusIdCode.ACTIVE, MailServerType.SMTP,
+			"support", "support", false, StatusId.ACTIVE, MailServerType.SMTP,
 			4, 10, 6, 10, 5, "error", 0, false),
 	EXCHANGE("localhost", 25, "exchServer", "exch server on localhost", false,
-			"uid", "pwd", false, StatusIdCode.ACTIVE, MailServerType.EXCH,
+			"uid", "pwd", false, StatusId.ACTIVE, MailServerType.EXCH,
 			1, 4, 1, 10, 15, "error", 0, true),
 	DynMailRelay("outbound.mailhop.org", 465, "DyndnsMailRelay", "smtp server on dyndns", true,
-			"jackwng", "jackwng01", false, StatusIdCode.INACTIVE, MailServerType.SMTP,
+			"jackwng", "jackwng01", false, StatusId.INACTIVE, MailServerType.SMTP,
 			1, 10, 5, 10, 5, "error", 0, true),
 	GMailSmtp("smtp.gmail.com", -1, "gmailServer", "smtp server on gmail.com", true,
-			"jackwng", "jackwng01", false, StatusIdCode.INACTIVE, MailServerType.SMTP,
+			"jackwng", "jackwng01", false, StatusId.INACTIVE, MailServerType.SMTP,
 			2, 10, 5, 10, 5, "error", 0, true);
 
 	private String smtpHost;
@@ -25,7 +25,7 @@ public enum SmtpServerEnum {
 	private String userId;
 	private String userPswd;
 	private boolean isPersistence;
-	private String status;
+	private StatusId status;
 	private MailServerType serverType;
 	private int numberOfThreads;
 	private Integer maximumRetries;
@@ -37,7 +37,7 @@ public enum SmtpServerEnum {
 	private boolean isTestOnly;
 
 	private SmtpServerEnum(String hostName, int port, String serverName, String description, boolean isUseSsl,
-			String userId, String userPswd, boolean isPersistence, String status, MailServerType serverType,
+			String userId, String userPswd, boolean isPersistence, StatusId status, MailServerType serverType,
 			int numberOfThreads, Integer maximumRetries, int retryFreq, Integer minimumWait, Integer alertAfter,
 			String alertLevel, int messageCount, boolean isTestOnly) {
 		this.smtpHost = hostName;
@@ -84,7 +84,7 @@ public enum SmtpServerEnum {
 	public boolean isPersistence() {
 		return isPersistence;
 	}
-	public String getStatus() {
+	public StatusId getStatus() {
 		return status;
 	}
 	public MailServerType getServerType() {

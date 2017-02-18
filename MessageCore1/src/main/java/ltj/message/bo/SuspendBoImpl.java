@@ -16,7 +16,7 @@ import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.exception.DataValidationException;
@@ -108,11 +108,11 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 			while (st2.hasMoreTokens()) {
 				String addr = st2.nextToken();
 				EmailAddrVo emailAddrVo = emailAddrDao.getByAddress(addr);
-				if (emailAddrVo != null && !StatusIdCode.SUSPENDED.equals(emailAddrVo.getStatusId())) {
+				if (emailAddrVo != null && !StatusId.SUSPENDED.value().equals(emailAddrVo.getStatusId())) {
 					if (isDebugEnabled) {
 						logger.debug("Suspending EmailAddr: " + addr);
 					}
-					emailAddrVo.setStatusId(StatusIdCode.SUSPENDED);
+					emailAddrVo.setStatusId(StatusId.SUSPENDED.value());
 					emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 					emailAddrVo.setStatusChangeTime(updtTime);
 					emailAddrDao.update(emailAddrVo);
@@ -145,11 +145,11 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 		else if (msgInboxVo.getToAddrId() != null) { // should always valued
 			long toAddr = msgInboxVo.getToAddrId().longValue();
 			EmailAddrVo emailAddrVo = emailAddrDao.getByAddrId(toAddr);
-			if (!StatusIdCode.SUSPENDED.equals(emailAddrVo.getStatusId())) {
+			if (!StatusId.SUSPENDED.value().equals(emailAddrVo.getStatusId())) {
 				if (isDebugEnabled) {
 					logger.debug("Suspending EmailAddr: " + emailAddrVo.getEmailAddr());
 				}
-				emailAddrVo.setStatusId(StatusIdCode.SUSPENDED);
+				emailAddrVo.setStatusId(StatusId.SUSPENDED.value());
 				emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 				emailAddrVo.setStatusChangeTime(updtTime);
 				emailAddrDao.update(emailAddrVo);

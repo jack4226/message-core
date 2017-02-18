@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.main.CreateTableBase;
 
 public class TimerTable extends CreateTableBase {
@@ -72,7 +72,7 @@ public class TimerTable extends CreateTableBase {
 			ps.setInt(4, 5000);
 			ps.setTimestamp(5, null);
 			ps.setInt(6, 1);
-			ps.setString(7, StatusIdCode.ACTIVE);
+			ps.setString(7, StatusId.ACTIVE.value());
 			ps.setString(8, "timerProcessor");
 			ps.setTimestamp(9, new Timestamp(new java.util.Date().getTime()));
 			ps.setString(10, Constants.DEFAULT_USER_ID);

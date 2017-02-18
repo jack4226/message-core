@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.rule.RuleLogicDao;
 import ltj.message.vo.rule.RuleLogicVo;
@@ -80,8 +80,8 @@ public class RuleLogicTest extends DaoTestBase {
 	}
 
 	private int update(RuleLogicVo ruleLogicVo) {
-		if (StatusIdCode.ACTIVE.equals(ruleLogicVo.getStatusId())) {
-			ruleLogicVo.setStatusId(StatusIdCode.ACTIVE);
+		if (StatusId.ACTIVE.value().equals(ruleLogicVo.getStatusId())) {
+			ruleLogicVo.setStatusId(StatusId.ACTIVE.value());
 		}
 		int rows = ruleLogicDao.update(ruleLogicVo);
 		System.out.println("RuleLogicDao - update: rows updated " + rows);

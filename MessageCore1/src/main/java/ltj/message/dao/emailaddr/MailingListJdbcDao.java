@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.vo.emailaddr.MailingListVo;
@@ -106,7 +106,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		String sql = getSelectClause();
 		if (onlyActive) {
 			sql += " where a.StatusId = ? ";
-			parms.add(StatusIdCode.ACTIVE);
+			parms.add(StatusId.ACTIVE.value());
 		}
 		sql += getGroupByClause();
 		sql += " order by a.RowId ";
@@ -121,7 +121,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		String sql = getSelectClause();
 		if (onlyActive) {
 			sql += " where a.StatusId = ? ";
-			parms.add(StatusIdCode.ACTIVE);
+			parms.add(StatusId.ACTIVE.value());
 		}
 		sql += getGroupByClause();
 		sql += " order by a.RowId limit 5";

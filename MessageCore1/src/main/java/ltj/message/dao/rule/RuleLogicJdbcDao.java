@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.bo.rule.RuleBase;
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.client.ReloadFlagsDao;
@@ -104,7 +104,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			" where r.statusId=? and r.startTime<=? " +
 			getGroupByClause() +
 			" order by r.ruleCategory asc, r.ruleSeq asc, r.ruleName asc ";
-		Object[] parms = new Object[] {StatusIdCode.ACTIVE, new Timestamp(System.currentTimeMillis())};
+		Object[] parms = new Object[] {StatusId.ACTIVE.value(), new Timestamp(System.currentTimeMillis())};
 		List<RuleLogicVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
 		return list;

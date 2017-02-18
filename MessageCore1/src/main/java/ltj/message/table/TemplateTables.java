@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ltj.message.constant.MailCodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.StatusIdCode;
+import ltj.message.constant.StatusId;
 import ltj.message.main.CreateTableBase;
 
 public class TemplateTables extends CreateTableBase {
@@ -78,7 +78,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "ClientId varchar(16), "
 				+ "StartTime timestamp NOT NULL, "
 				+ "Description varchar(100), "
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', " // A - active, V - verification, I - inactive
+				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // A - active, V - verification, I - inactive
 				+ "TemplateValue varchar(255), "
 				+ "PRIMARY KEY (RowId), "
 				+ "FOREIGN KEY (ClientId) REFERENCES CLIENTS (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
@@ -100,7 +100,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "ClientId varchar(16), "
 				+ "StartTime timestamp NOT NULL, "
 				+ "Description varchar(100), "
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', "
+				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				+ "ContentType varchar(100) NOT NULL, " // content mime type
 				+ "TemplateValue text, "
 				+ "PRIMARY KEY (RowId), "
@@ -125,7 +125,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "VariableType char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
 				// A - address, X - Xheader, L - LOB(Attachment)
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', "
+				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				// A - Active, I - Inactive
 				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime, Y/N/M, M=Mandatory
@@ -154,7 +154,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "VariableType char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
 				// A - address, X - Xheader, L - LOB(Attachment)
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', "
+				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime
 				+ "Required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
@@ -185,7 +185,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "VariableType char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
 				// A - address, X - X header, L - LOB(Attachment)
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', "
+				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime
 				+ "Required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
@@ -211,7 +211,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "MsgSourceId varchar(16) NOT NULL, "
 				+ "Description varchar(100), "
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusIdCode.ACTIVE + "', "
+				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				+ "FromAddrId bigint NOT NULL, "
 				+ "ReplyToAddrId bigint, "
 				+ "SubjTemplateId varchar(16) NOT NULL, "
