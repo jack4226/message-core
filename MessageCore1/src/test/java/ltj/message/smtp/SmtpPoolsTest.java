@@ -183,11 +183,12 @@ public class SmtpPoolsTest {
 			Integer count = (Integer) map.get(name);
 			int dist = pools.getDistribution(name);
 			System.out.println("name=" + name + ", count=" + count.intValue() + ", dist=" + dist);
-			if (dist == 0)
+			if (dist == 0) {
 				assertTrue(count.intValue() == 0);
+			}
 			else {
-				assertTrue(((float) count.intValue() / dist) > 0.7);
-				assertTrue(((float) count.intValue() / dist) < 1.3);
+				assertTrue(count + "/" + dist + " must > 0.7", ((float) count.intValue() / dist) > 0.7);
+				assertTrue(count + "/" + dist + " must < 1.3", ((float) count.intValue() / dist) < 1.3);
 			}
 		}
 		System.out.println();
