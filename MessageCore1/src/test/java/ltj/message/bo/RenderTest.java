@@ -125,7 +125,7 @@ public class RenderTest extends BoTestBase {
 			String key = it.next();
 			RenderVariable var = vars.get(key);
 			assertNotNull(var);
-			if (VariableType.TEXT.value().equals(var.getVariableType()) && var.getVariableValue() != null) {
+			if (VariableType.TEXT.equals(var.getVariableType()) && var.getVariableValue() != null) {
 				String value = (String) var.getVariableValue();
 				if (StringUtils.contains(tmplt, "${" + key + "}")) {
 					StringUtils.contains(renderedText, value);
@@ -142,7 +142,7 @@ public class RenderTest extends BoTestBase {
 					AddressType.TO_ADDR.value(), 
 					new InternetAddress("testto@localhost"),
 					null, 
-					VariableType.ADDRESS.value(), 
+					VariableType.ADDRESS, 
 					"Y",
 					"N", 
 					null
@@ -157,7 +157,7 @@ public class RenderTest extends BoTestBase {
 				"name1", 
 				"Jack Wang", 
 				null, 
-				VariableType.TEXT.value(), 
+				VariableType.TEXT, 
 				"Y",
 				"N", 
 				null
@@ -166,7 +166,7 @@ public class RenderTest extends BoTestBase {
 				"name2", 
 				"Rendered User2", 
 				null, 
-				VariableType.TEXT.value(), 
+				VariableType.TEXT, 
 				"Y",
 				"N", 
 				null
@@ -175,7 +175,7 @@ public class RenderTest extends BoTestBase {
 				"name3", 
 				"Rendered User3", 
 				null, 
-				VariableType.TEXT.value(), 
+				VariableType.TEXT, 
 				"Y",
 				"N", 
 				null
@@ -184,7 +184,7 @@ public class RenderTest extends BoTestBase {
 				"name4", 
 				"Recursive VariableType ${name1} End", 
 				null, 
-				VariableType.TEXT.value(), 
+				VariableType.TEXT, 
 				"Y",
 				"N", 
 				null
@@ -193,7 +193,7 @@ public class RenderTest extends BoTestBase {
 				"name5", 
 				"Rendered User5", 
 				null, 
-				VariableType.TEXT.value(), 
+				VariableType.TEXT, 
 				"Y",
 				"N", 
 				null
@@ -203,7 +203,7 @@ public class RenderTest extends BoTestBase {
 				"attachment1.txt", 
 				"Attachment Text ============================================", 
 				"text/plain", 
-				VariableType.LOB.value(), 
+				VariableType.LOB, 
 				"Y",
 				"N", 
 				null
@@ -235,7 +235,7 @@ public class RenderTest extends BoTestBase {
 					"jndi.txt",
 					buffer,
 					"text/plain",
-					VariableType.LOB.value(), 
+					VariableType.LOB, 
 					"Y",
 					"N", 
 					null
@@ -251,7 +251,7 @@ public class RenderTest extends BoTestBase {
 				"name2", 
 				"Rendered User2 - Row 1", 
 				null, 
-				VariableType.TEXT.value(), 
+				VariableType.TEXT, 
 				"Y",
 				"N", 
 				null
@@ -260,7 +260,7 @@ public class RenderTest extends BoTestBase {
 				"name2", 
 				"Rendered User2 - Row 2", 
 				null, 
-				VariableType.TEXT.value(), 
+				VariableType.TEXT, 
 				"Y",
 				"N", 
 				null
@@ -278,7 +278,7 @@ public class RenderTest extends BoTestBase {
 				Renderer.TableVariableName, 
 				collection, 
 				null, 
-				VariableType.COLLECTION.value(), 
+				VariableType.COLLECTION, 
 				"Y",
 				"N", 
 				null

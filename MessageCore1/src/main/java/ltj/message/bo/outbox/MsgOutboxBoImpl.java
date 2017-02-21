@@ -173,7 +173,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			int i=0;
 			for (Iterator<?> it=c.iterator(); it.hasNext(); ) {
 				RenderVariable req = (RenderVariable)it.next();
-				if (VariableType.LOB.value().equalsIgnoreCase(req.getVariableType())) {
+				if (VariableType.LOB.equals(req.getVariableType())) {
 					// save to RenderAttachment
 					RenderAttachmentVo renderAttachmentVo = new RenderAttachmentVo();
 					renderAttachmentVo.setRenderId(msgVo.getRenderId());
@@ -201,13 +201,13 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 					// create a record
 					renderAttachmentDao.insert(renderAttachmentVo);
 				}
-				else if (VariableType.COLLECTION.value().equalsIgnoreCase(req.getVariableType())) {
+				else if (VariableType.COLLECTION.equals(req.getVariableType())) {
 					// save to RenderObject
 					RenderObjectVo renderObjectVo = new RenderObjectVo();
 					renderObjectVo.setRenderId(msgVo.getRenderId());
 					renderObjectVo.setVariableName(req.getVariableName());
 					renderObjectVo.setVariableFormat(req.getVariableFormat());
-					renderObjectVo.setVariableType(req.getVariableType());
+					renderObjectVo.setVariableType(req.getVariableType().value());
 				    try {
 					    ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					    ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -230,12 +230,12 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 					renderVariableVo.setRenderId(msgVo.getRenderId());
 					renderVariableVo.setVariableName(req.getVariableName());
 					renderVariableVo.setVariableFormat(req.getVariableFormat());
-					renderVariableVo.setVariableType(req.getVariableType());
-					if (VariableType.TEXT.value().equalsIgnoreCase(req.getVariableType())
-							|| VariableType.X_HEADER.value().equalsIgnoreCase(req.getVariableType())) {
+					renderVariableVo.setVariableType(req.getVariableType().value());
+					if (VariableType.TEXT.equals(req.getVariableType())
+							|| VariableType.X_HEADER.equals(req.getVariableType())) {
 						renderVariableVo.setVariableValue((String)req.getVariableValue());
 					}
-					else if (VariableType.ADDRESS.value().equalsIgnoreCase(req.getVariableType())) {
+					else if (VariableType.ADDRESS.equals(req.getVariableType())) {
 						if (req.getVariableValue() instanceof Address) {
 							renderVariableVo.setVariableValue(((Address)req.getVariableValue()).toString());
 						}
@@ -243,7 +243,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 							renderVariableVo.setVariableValue((String)req.getVariableValue());
 						}
 					}
-					else if (VariableType.NUMERIC.value().equalsIgnoreCase(req.getVariableType())) {
+					else if (VariableType.NUMERIC.equals(req.getVariableType())) {
 						if (req.getVariableValue() instanceof Long) {
 							renderVariableVo.setVariableValue(((Long)req.getVariableValue()).toString());
 						}
@@ -251,7 +251,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 							renderVariableVo.setVariableValue((String)req.getVariableValue());
 						}
 					}
-					else if (VariableType.DATETIME.value().equalsIgnoreCase(req.getVariableType())) {
+					else if (VariableType.DATETIME.equals(req.getVariableType())) {
 						SimpleDateFormat fmt = new SimpleDateFormat(Constants.DEFAULT_DATETIME_FORMAT);
 						if (req.getVariableFormat()!=null) {
 							fmt = new SimpleDateFormat(req.getVariableFormat());
@@ -336,7 +336,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 						varVo.getVariableName(),
 						varVo.getVariableValue(),
 						varVo.getVariableFormat(),
-						varVo.getVariableType(), 
+						VariableType.getByValue(varVo.getVariableType()), 
 						Constants.Y, // allow override
 						Constants.N, // required
 						null // error message
@@ -367,7 +367,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 						varVo.getVariableName(),
 						value,
 						varVo.getVariableFormat(),
-						varVo.getVariableType(),
+						VariableType.getByValue(varVo.getVariableType()),
 						Constants.Y, // allow override
 						Constants.N, // required
 						null // error message
@@ -393,7 +393,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 					attVo.getAttchmntName(), 
 					value, 
 					attVo.getAttchmntType(), // content type as format
-					VariableType.LOB.value(), 
+					VariableType.LOB, 
 					Constants.Y, 
 					Constants.N, 
 					null

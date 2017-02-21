@@ -26,7 +26,7 @@ public final class MailingListUtil {
 				varName,
 				listVo.getListId(),
 				null,
-				VariableType.TEXT.value(),
+				VariableType.TEXT,
 				Constants.Y,
 				Constants.N,
 				null);
@@ -37,7 +37,7 @@ public final class MailingListUtil {
 				varName,
 				listVo.getDisplayName(),
 				null,
-				VariableType.TEXT.value(),
+				VariableType.TEXT,
 				Constants.Y,
 				Constants.N,
 				null);
@@ -48,7 +48,7 @@ public final class MailingListUtil {
 				varName,
 				listVo.getEmailAddr(),
 				null,
-				VariableType.TEXT.value(),
+				VariableType.TEXT,
 				Constants.Y,
 				Constants.N,
 				null);
@@ -59,7 +59,7 @@ public final class MailingListUtil {
 				varName,
 				subscriberAddress,
 				null,
-				VariableType.TEXT.value(),
+				VariableType.TEXT,
 				Constants.Y,
 				Constants.N,
 				null);
@@ -70,7 +70,7 @@ public final class MailingListUtil {
 				varName,
 				String.valueOf(subscriberAddressId),
 				null,
-				VariableType.TEXT.value(),
+				VariableType.TEXT,
 				Constants.Y,
 				Constants.N,
 				null);

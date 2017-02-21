@@ -73,7 +73,7 @@ public class RenderUtilTest extends BoTestBase {
 				"WebSiteUrl",
 				varValue,
 				null,
-				VariableType.TEXT.value(),
+				VariableType.TEXT,
 				null,
 				null,
 				null);
@@ -114,7 +114,7 @@ public class RenderUtilTest extends BoTestBase {
 					"name1",
 					name1Value,
 					null,
-					VariableType.TEXT.value(),
+					VariableType.TEXT,
 					null,
 					null,
 					null);

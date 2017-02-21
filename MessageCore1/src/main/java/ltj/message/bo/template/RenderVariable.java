@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.validation.constraints.NotNull;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.VariableType;
@@ -29,16 +30,16 @@ public class RenderVariable implements Serializable {
 	
 	// T - text, N - numeric, D - Datetime, A - address, X - X header, 
 	// L - LOB(Attachment), C - Collection
-	private final String variableType; // TODO: use enum
+	private final VariableType variableType;
 	private final String allowOverride;
 	private final String required;
 	private String errorMsg;
     
     public RenderVariable(
-			String variableName,
+			@NotNull String variableName,
 			Object variableValue,
 			String variableFormat,
-			String variableType,
+			@NotNull VariableType variableType,
 			String allowOverride,
 			String required,
 			String errorMsg) {
@@ -51,7 +52,7 @@ public class RenderVariable implements Serializable {
 		this.required=required;
 		this.errorMsg=errorMsg;
 		
-		if (VariableType.NUMERIC.value().equals(variableType)) {
+		if (VariableType.NUMERIC.equals(variableType)) {
 			if (variableFormat!=null) {
 				new DecimalFormat(variableFormat);
 			}
@@ -73,7 +74,7 @@ public class RenderVariable implements Serializable {
 				}
 			}
 		}
-		else if (VariableType.DATETIME.value().equals(variableType)) {
+		else if (VariableType.DATETIME.equals(variableType)) {
 			SimpleDateFormat fmt = new SimpleDateFormat(Constants.DEFAULT_DATETIME_FORMAT);
 			if (variableFormat!=null) {
 				fmt.applyPattern(variableFormat);
@@ -94,7 +95,7 @@ public class RenderVariable implements Serializable {
 				}
 			}
 		}
-		else if (VariableType.ADDRESS.value().equals(variableType)) {
+		else if (VariableType.ADDRESS.equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof Address) && !(variableValue instanceof String)) {
 					throw new IllegalArgumentException(
@@ -111,7 +112,7 @@ public class RenderVariable implements Serializable {
 				}
 			}
 		}
-		else if (VariableType.LOB.value().equals(variableType)) {
+		else if (VariableType.LOB.equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof String) && !(variableValue instanceof byte[])) {
 					throw new IllegalArgumentException(
@@ -123,7 +124,7 @@ public class RenderVariable implements Serializable {
 						"VariableFormat must be provided for LOB variable, by " + variableName);
 			}
 		}
-		else if (VariableType.COLLECTION.value().equals(variableType)) {
+		else if (VariableType.COLLECTION.equals(variableType)) {
 			if (variableValue!=null) {
 				if (!(variableValue instanceof Collection)) {
 					throw new IllegalArgumentException(
@@ -131,22 +132,22 @@ public class RenderVariable implements Serializable {
 				}
 			}
 		}
-		else if (!VariableType.TEXT.value().equals(variableType) && !VariableType.X_HEADER.value().equals(variableType)) {
+		else if (!VariableType.TEXT.equals(variableType) && !VariableType.X_HEADER.equals(variableType)) {
 			throw new IllegalArgumentException("Invalid VariableType Type: " + variableType + ", by " + variableName);
 		}
     }
 	
 	public String toString() {
-		String LF = System.getProperty("line.separator","\n");
+		String LF = System.getProperty("line.separator", "\n");
 		StringBuffer sb = new StringBuffer();
-		sb.append("========== Display RenderVariable Fields =========="+LF);
-		sb.append("VariableName:   "+variableName+LF);
-		sb.append("VariableValue:  "+(variableValue==null?"null":variableValue.toString())+LF);
-		sb.append("VariableFormat: "+variableFormat+LF);
-		sb.append("VariableType:   "+variableType+LF);
-		sb.append("AllowOverride:  "+allowOverride+LF);
-		sb.append("Required:       "+required+LF);
-		sb.append("ErrorMsg:       "+errorMsg+LF);
+		sb.append("========== Display RenderVariable Fields ==========" + LF);
+		sb.append("VariableName:   " + variableName + LF);
+		sb.append("VariableValue:  " + (variableValue == null ? "null" : variableValue.toString()) + LF);
+		sb.append("VariableFormat: " + variableFormat + LF);
+		sb.append("VariableType:   " + variableType.value() + LF);
+		sb.append("AllowOverride:  " + allowOverride + LF);
+		sb.append("Required:       " + required + LF);
+		sb.append("ErrorMsg:       " + errorMsg + LF);
 		return sb.toString();
 	}
 
@@ -174,7 +175,7 @@ public class RenderVariable implements Serializable {
 		return variableName;
 	}
 
-	public String getVariableType() {
+	public VariableType getVariableType() {
 		return variableType;
 	}
 

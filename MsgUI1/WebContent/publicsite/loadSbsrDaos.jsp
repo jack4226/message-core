@@ -105,7 +105,7 @@
 					"SubscriberAddressId",
 					sbsrId.toString(),
 					null,
-					VariableType.TEXT.value(),
+					VariableType.TEXT,
 					Constants.Y,
 					Constants.N,
 					null);
@@ -116,7 +116,7 @@
 					"MailingListId",
 					listId,
 					null,
-					VariableType.TEXT.value(),
+					VariableType.TEXT,
 					Constants.Y,
 					Constants.N,
 					null);
@@ -127,7 +127,7 @@
 					"BroadcastMsgId",
 					msgId.toString(),
 					null,
-					VariableType.TEXT.value(),
+					VariableType.TEXT,
 					Constants.Y,
 					Constants.N,
 					null);

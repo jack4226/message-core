@@ -149,7 +149,7 @@ public final class RenderUtil {
 					vo.getVariableName(),
 					vo.getVariableValue(),
 					vo.getVariableFormat(),
-					vo.getVariableType(),
+					VariableType.getByValue(vo.getVariableType()),
 					vo.getAllowOverride(),
 					vo.getRequired(),
 					null);
@@ -215,7 +215,7 @@ public final class RenderUtil {
 					vo.getVariableName(),
 					vo.getVariableValue(),
 					vo.getVariableFormat(),
-					vo.getVariableType(),
+					VariableType.getByValue(vo.getVariableType()),
 					vo.getAllowOverride(),
 					vo.getRequired(),
 					null);
@@ -231,7 +231,7 @@ public final class RenderUtil {
 						vo.getVariableName(),
 						vo.getVariableValue(),
 						vo.getVariableFormat(),
-						vo.getVariableType(),
+						VariableType.getByValue(vo.getVariableType()),
 						vo.getAllowOverride(),
 						vo.getRequired(),
 						null);
@@ -424,7 +424,7 @@ public final class RenderUtil {
 						continue;
 					}
 					RenderVariable var = vars == null ? null : vars.get(name);
-					if (var != null && VariableType.TEXT.value().equals(var.getVariableType())) {
+					if (var != null && VariableType.TEXT.equals(var.getVariableType())) {
 						String newText = (String) vars.get(name).getVariableValue();
 						checkVariableLoop(newText, loopName, varNames, ++loops, vars);
 					}
@@ -505,7 +505,7 @@ public final class RenderUtil {
 				value = vo.getDefaultValue();
 			}
 			logger.info("renderEmailVariables() - name=" + name + ", value=" + value);
-			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT.value(), Constants.Y,
+			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT, Constants.Y,
 					Constants.N, null);
 			vars.put(name, var);
 		}
@@ -532,7 +532,7 @@ public final class RenderUtil {
 					"SubscriberAddressId",
 					sbsrId.toString(),
 					null,
-					VariableType.TEXT.value(),
+					VariableType.TEXT,
 					Constants.Y,
 					Constants.N,
 					null);
@@ -643,7 +643,7 @@ public final class RenderUtil {
 		if (variables != null) {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
-				RenderVariable var = new RenderVariable(key, variables.get(key), null, VariableType.TEXT.value(),
+				RenderVariable var = new RenderVariable(key, variables.get(key), null, VariableType.TEXT,
 						Constants.Y, Constants.N, null);
 				vars.put(key, var);
 			}
@@ -664,7 +664,7 @@ public final class RenderUtil {
 		if (vars.containsKey(AddressType.CC_ADDR.value())) {
 			// set CC if it was passed as an input variable
 			RenderVariable cc = vars.get(AddressType.CC_ADDR.value());
-			if (cc != null && VariableType.TEXT.value().equals(cc.getVariableType()) && cc.getVariableValue() != null) {
+			if (cc != null && VariableType.TEXT.equals(cc.getVariableType()) && cc.getVariableValue() != null) {
 				try {
 					validateFromAddress((String) cc.getVariableValue());
 					renderVo.setCcAddr((String) cc.getVariableValue());
@@ -678,7 +678,7 @@ public final class RenderUtil {
 		if (vars.containsKey(AddressType.BCC_ADDR.value())) {
 			// set BCC if it was passed as an input variable
 			RenderVariable bcc = vars.get(AddressType.BCC_ADDR.value());
-			if (bcc != null && VariableType.TEXT.value().equals(bcc.getVariableType()) && bcc.getVariableValue() != null) {
+			if (bcc != null && VariableType.TEXT.equals(bcc.getVariableType()) && bcc.getVariableValue() != null) {
 				try {
 					validateFromAddress((String) bcc.getVariableValue());
 					renderVo.setBccAddr((String) bcc.getVariableValue());
@@ -793,7 +793,7 @@ public final class RenderUtil {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
 				RenderVariable var = new RenderVariable(key, variables.get(key), null,
-						VariableType.TEXT.value(), Constants.Y, Constants.N, null);
+						VariableType.TEXT, Constants.Y, Constants.N, null);
 				vars.put(key, var);
 			}
 		}

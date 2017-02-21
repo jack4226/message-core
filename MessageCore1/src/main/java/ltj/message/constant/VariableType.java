@@ -12,4 +12,13 @@ public enum VariableType {
 	public String value() {
 		return value;
 	}
+	
+	public static VariableType getByValue(String value) {
+		for (VariableType type : VariableType.values()) {
+			if (type.value().equals(value)) {
+				return type;
+			}
+		}
+		throw new IllegalArgumentException("VariableType does not exist with value \"" + value + "\".");
+	}
 }
