@@ -19,7 +19,7 @@ import javax.faces.model.SelectItem;
 
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bo.rule.RuleBase;
-import ltj.message.constant.MailCodeType;
+import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailProtocol;
 import ltj.message.constant.MailServerType;
@@ -318,7 +318,7 @@ public class StaticCodes {
 	}
 	
 	private static SelectItem[] mailCarrierCodeItems = {
-		new SelectItem(MailCodeType.SMTPMAIL.value(), "SMTP Mail")
+		new SelectItem(CarrierCode.SMTPMAIL.value(), "SMTP Mail")
 		//,new SelectItem(Constants.WEBMAIL_CODE, "Web Mail")
 		//,new SelectItem(Constants.READONLY_CODE, "Leave on server")
 	};

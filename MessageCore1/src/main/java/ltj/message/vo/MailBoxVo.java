@@ -2,7 +2,7 @@ package ltj.message.vo;
 
 import java.io.Serializable;
 
-import ltj.message.constant.MailCodeType;
+import ltj.message.constant.CarrierCode;
 import ltj.message.constant.MailServerType;
 
 public class MailBoxVo extends ServerBaseVo implements Serializable {
@@ -15,7 +15,7 @@ public class MailBoxVo extends ServerBaseVo implements Serializable {
 	private String serverType = MailServerType.SMTP.value();
 	private String folderName = "INBOX";
 	private String mailBoxDesc = null;
-	private String carrierCode = MailCodeType.SMTPMAIL.value();
+	private String carrierCode = CarrierCode.SMTPMAIL.value();
 	private String internalOnly = null;
 	private int readPerPass = -1;
 	private String useSsl = "";

@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import ltj.message.constant.MailCodeType;
+import ltj.message.constant.CarrierCode;
 import ltj.data.preload.MailInboxEnum;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailProtocol;
@@ -79,7 +79,7 @@ public class MailboxTable extends CreateTableBase {
 			"FolderName varchar(30), " +
 			"MailBoxDesc varchar(50), " +
 			"StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
-			"CarrierCode char(1) NOT NULL DEFAULT '" + MailCodeType.SMTPMAIL.value() + "', " +
+			"CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', " +
 			"InternalOnly varchar(3), " +
 			"ReadPerPass integer NOT NULL, " +
 			"UseSsl varchar(3) NOT NULL, " +
@@ -171,7 +171,7 @@ public class MailboxTable extends CreateTableBase {
 				ps.setString(6, "INBOX");
 				ps.setString(7, in.getDescription());
 				ps.setString(8, in.getStatus().value());
-				ps.setString(9, MailCodeType.SMTPMAIL.value());
+				ps.setString(9, CarrierCode.SMTPMAIL.value());
 				ps.setString(10, in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
 				ps.setInt(11, in.getReadPerPass()); // ReadPerPass
 				ps.setString(12, in.isUseSsl() ? Constants.YES : Constants.NO);
@@ -201,7 +201,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(6, "INBOX");
 //		ps.setString(7, "Default Site Return Path");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 5); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -227,7 +227,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Default site owner's mailbox");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -243,7 +243,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Default VERP Bounce");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -259,7 +259,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "For all NOREPLY messages");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -275,7 +275,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Default Test List 1");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -291,7 +291,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Default Test List 2");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -308,7 +308,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(6, "INBOX");
 //		ps.setString(7, "Default Test TO Address");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 5); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -325,7 +325,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(6, "INBOX");
 //		ps.setString(7, "Default Test FROM Address");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 5); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -350,7 +350,7 @@ public class MailboxTable extends CreateTableBase {
 				ps.setString(6, "INBOX");
 				ps.setString(7, in.getDescription());
 				ps.setString(8, in.getStatus().value());
-				ps.setString(9, MailCodeType.SMTPMAIL.value());
+				ps.setString(9, CarrierCode.SMTPMAIL.value());
 				ps.setString(10, in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
 				ps.setInt(11, in.getReadPerPass()); // ReadPerPass
 				ps.setString(12, in.isUseSsl() ? Constants.YES : Constants.NO);
@@ -379,7 +379,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(6, "INBOX");
 //		ps.setString(7, "local pop3 Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -405,7 +405,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "local pop3 Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.YES);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -421,7 +421,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "GMail Secure Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.YES);
@@ -447,7 +447,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Road Runner Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -463,7 +463,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.IMAP.value());
 //		ps.setString(7, "AIM Mail Server");
 //		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 10); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -479,7 +479,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "James Server postmaster's mailbox");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -495,7 +495,7 @@ public class MailboxTable extends CreateTableBase {
 //		ps.setString(5, MailProtocol.POP3.value());
 //		ps.setString(7, "Emailsphere demo webmaster's mailbox");
 //		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, MailCodeType.SMTPMAIL.value());
+//		ps.setString(9, CarrierCode.SMTPMAIL.value());
 //		ps.setString(10, Constants.NO);
 //		ps.setInt(11, 4); // ReadPerPass
 //		ps.setString(12, Constants.NO);
@@ -515,7 +515,7 @@ public class MailboxTable extends CreateTableBase {
 		vo.setFolderName("INBOX");
 		vo.setMailBoxDesc("Test User");
 		vo.setStatusId(StatusId.ACTIVE.value());
-		vo.setCarrierCode(MailCodeType.SMTPMAIL.value());
+		vo.setCarrierCode(CarrierCode.SMTPMAIL.value());
 		vo.setInternalOnly(Constants.NO);
 		vo.setReadPerPass(5);
 		vo.setUseSsl(Constants.NO);

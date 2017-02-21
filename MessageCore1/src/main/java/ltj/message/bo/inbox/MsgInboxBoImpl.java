@@ -23,7 +23,7 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.customer.CustomerBo;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.constant.AddressType;
-import ltj.message.constant.MailCodeType;
+import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MsgDirection;
@@ -120,7 +120,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		msgVo.setMsgRefId(msgBean.getMsgRefId());
 		if (msgBean.getCarrierCode() == null) {
 			logger.warn("saveMessage() - carrierCode field is null, set to S (SMTP)");
-			msgBean.setCarrierCode(MailCodeType.SMTPMAIL.value());
+			msgBean.setCarrierCode(CarrierCode.SMTPMAIL.value());
 		}
 		msgVo.setCarrierCode(StringUtils.left(msgBean.getCarrierCode(),1));
 		msgVo.setMsgSubject(StringUtils.left(msgBean.getSubject(),255));

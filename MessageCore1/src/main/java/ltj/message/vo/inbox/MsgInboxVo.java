@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.constant.AddressType;
-import ltj.message.constant.MailCodeType;
+import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
 import ltj.message.constant.StatusId;
@@ -29,7 +29,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	private long msgId = -1;
 	private Long msgRefId = null;
 	private long leadMsgId = -1;
-	private String carrierCode = MailCodeType.SMTPMAIL.value();
+	private String carrierCode = CarrierCode.SMTPMAIL.value();
 	private String msgSubject = null;
 	private String msgPriority = null;
 	private Timestamp receivedTime;

@@ -35,7 +35,7 @@ import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
-import ltj.message.constant.MailCodeType;
+import ltj.message.constant.CarrierCode;
 import ltj.message.constant.EmailIdToken;
 import ltj.message.constant.StatusId;
 import ltj.message.constant.XHeaderName;
@@ -555,7 +555,7 @@ public abstract class MailSenderBase {
 	 */
 	public int sendDeliveryReport(MessageBean m) throws MessagingException {
 		int rspCount = 0;
-		if (MailCodeType.SMTPMAIL.value().equalsIgnoreCase(m.getCarrierCode())) {
+		if (CarrierCode.SMTPMAIL.value().equalsIgnoreCase(m.getCarrierCode())) {
 			if (m.isInternalOnly()) {
 				rspCount = updateMsgStatus(m.getMsgId());
 			}

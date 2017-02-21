@@ -17,7 +17,7 @@ import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.template.RenderUtil;
-import ltj.message.constant.MailCodeType;
+import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -200,7 +200,7 @@ public class MailingListBoImpl implements MailingListBo {
 			logger.debug("Entering createMessageBean() method...");
 		}
 		MessageBean msgBean = new MessageBean();
-		msgBean.setCarrierCode(MailCodeType.SMTPMAIL.value());
+		msgBean.setCarrierCode(CarrierCode.SMTPMAIL.value());
 		msgBean.setClientId(tmpltVo.getClientId());
 		msgBean.setSubject(tmpltVo.getSubject());
 		msgBean.setSendDate(new java.util.Date());

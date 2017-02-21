@@ -10,7 +10,7 @@ import ltj.data.preload.GlobalVariableEnum;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;
-import ltj.message.constant.MailCodeType;
+import ltj.message.constant.CarrierCode;
 import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableType;
 import ltj.message.constant.VariableName;
@@ -299,7 +299,7 @@ public class LoadTemplateTables {
 		in.setBodyTemplateId(TestTemplateId_1);
 		in.setTemplateVariableId(TestTemplateId_1);
 		in.setExcludingIdToken(Constants.N);
-		in.setCarrierCode(MailCodeType.SMTPMAIL.value());
+		in.setCarrierCode(CarrierCode.SMTPMAIL.value());
 		in.setAllowOverride(Constants.Y);
 		in.setSaveMsgStream(Constants.Y);
 		in.setArchiveInd(Constants.N);
@@ -357,7 +357,7 @@ public class LoadTemplateTables {
 		in.setBodyTemplateId(TestTemplateId_2);
 		in.setTemplateVariableId(TestTemplateId_1);
 		in.setExcludingIdToken(Constants.N);
-		in.setCarrierCode(MailCodeType.SMTPMAIL.value());
+		in.setCarrierCode(CarrierCode.SMTPMAIL.value());
 		in.setAllowOverride(Constants.Y);
 		in.setSaveMsgStream(Constants.Y);
 		in.setArchiveInd(Constants.N);
