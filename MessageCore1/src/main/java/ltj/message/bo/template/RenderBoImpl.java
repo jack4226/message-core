@@ -155,9 +155,9 @@ public class RenderBoImpl implements RenderBo {
 		String bodyTemplate = null;
 		String contentType = null;
 		// body template may come from variables
-		if (rsp.variableFinal.containsKey(VariableName.BODY_TEMPLATE)
+		if (rsp.variableFinal.containsKey(VariableName.BODY_TEMPLATE.value())
 				&& Constants.Y.equalsIgnoreCase(srcVo.getAllowOverride())) {
-			RenderVariable var = (RenderVariable) rsp.variableFinal.get(VariableName.BODY_TEMPLATE);
+			RenderVariable var = rsp.variableFinal.get(VariableName.BODY_TEMPLATE.value());
 			if (VariableType.TEXT.equals(var.getVariableType())) {
 				bodyTemplate = (String) var.getVariableValue();
 				contentType = var.getVariableFormat() == null ? "text/plain" : var.getVariableFormat();
@@ -188,9 +188,9 @@ public class RenderBoImpl implements RenderBo {
 
 		String subjTemplate = null;
 		// subject template may come from variables
-		if (rsp.variableFinal.containsKey(VariableName.SUBJECT_TEMPLATE)
+		if (rsp.variableFinal.containsKey(VariableName.SUBJECT_TEMPLATE.value())
 				&& Constants.Y.equalsIgnoreCase(srcVo.getAllowOverride())) {
-			RenderVariable var = (RenderVariable) rsp.variableFinal.get(VariableName.SUBJECT_TEMPLATE);
+			RenderVariable var = rsp.variableFinal.get(VariableName.SUBJECT_TEMPLATE.value());
 			if (VariableType.TEXT.equals(var.getVariableType())) {
 				subjTemplate = (String) var.getVariableValue();
 			}
@@ -305,43 +305,43 @@ public class RenderBoImpl implements RenderBo {
 		for (Iterator<RenderVariable> it=c.iterator(); it.hasNext();) {
 			RenderVariable r = it.next();
 			if (r.getVariableValue() != null && VariableType.TEXT.equals(r.getVariableType())) {
-				if (VariableName.PRIORITY.equals(r.getVariableName())) {
+				if (VariableName.PRIORITY.value().equals(r.getVariableName())) {
 					String[] s = { (String) r.getVariableValue() };
 					mBean.setPriority(s);
 				}
-				else if (VariableName.RULE_NAME.equals(r.getVariableName())) {
+				else if (VariableName.RULE_NAME.value().equals(r.getVariableName())) {
 					mBean.setRuleName((String)r.getVariableValue());
 				}
-				else if (VariableName.CARRIER_CODE.equals(r.getVariableName())) {
+				else if (VariableName.CARRIER_CODE.value().equals(r.getVariableName())) {
 					mBean.setCarrierCode((String)r.getVariableValue());
 				}
-				else if (VariableName.MAILBOX_HOST.equals(r.getVariableName())) {
+				else if (VariableName.MAILBOX_HOST.value().equals(r.getVariableName())) {
 					mBean.setMailboxHost((String)r.getVariableValue());
 				}
-				else if (VariableName.MAILBOX_HOST.equals(r.getVariableName())) {
+				else if (VariableName.MAILBOX_HOST.value().equals(r.getVariableName())) {
 					mBean.setMailboxHost((String)r.getVariableValue());
 				}
-				else if (VariableName.MAILBOX_NAME.equals(r.getVariableName())) {
+				else if (VariableName.MAILBOX_NAME.value().equals(r.getVariableName())) {
 					mBean.setMailboxName((String)r.getVariableValue());
 				}
-				else if (VariableName.MAILBOX_USER.equals(r.getVariableName())) {
+				else if (VariableName.MAILBOX_USER.value().equals(r.getVariableName())) {
 					mBean.setMailboxUser((String)r.getVariableValue());
 				}
-				else if (VariableName.FOLDER_NAME.equals(r.getVariableName())) {
+				else if (VariableName.FOLDER_NAME.value().equals(r.getVariableName())) {
 					mBean.setFolderName((String)r.getVariableValue());
 				}
-				else if (VariableName.CLIENT_ID.equals(r.getVariableName())) {
+				else if (VariableName.CLIENT_ID.value().equals(r.getVariableName())) {
 					mBean.setClientId((String)r.getVariableValue());
 				}
-				else if (VariableName.CUSTOMER_ID.equals(r.getVariableName())) {
+				else if (VariableName.CUSTOMER_ID.value().equals(r.getVariableName())) {
 					mBean.setCustId((String)r.getVariableValue());
 				}
-				else if (VariableName.TO_PLAIN_TEXT.equals(r.getVariableName())) {
+				else if (VariableName.TO_PLAIN_TEXT.value().equals(r.getVariableName())) {
 					mBean.setToPlainText(Constants.Y.equals((String)r.getVariableValue()));
 				}
 			}
 			else if (r.getVariableValue() != null && VariableType.NUMERIC.equals(r.getVariableType())) {
-				if (VariableName.MSG_REF_ID.equals(r.getVariableName())) {
+				if (VariableName.MSG_REF_ID.value().equals(r.getVariableName())) {
 					if (r.getVariableValue() instanceof Long) {
 						mBean.setMsgRefId((Long) r.getVariableValue());
 					}
@@ -351,7 +351,7 @@ public class RenderBoImpl implements RenderBo {
 				}
 			}
 			else if (VariableType.DATETIME.equals(r.getVariableType())) {
-				if (VariableName.SEND_DATE.equals(r.getVariableName())) {
+				if (VariableName.SEND_DATE.value().equals(r.getVariableName())) {
 					if (r.getVariableValue() == null) {
 						mBean.setSendDate(new java.util.Date());
 					}
@@ -451,7 +451,7 @@ public class RenderBoImpl implements RenderBo {
 		// variables from req and MsgSource table
 		Map<String, RenderVariable> s_ht = new HashMap<String, RenderVariable>();
 		RenderVariable vreq = new RenderVariable(
-				VariableName.CLIENT_ID,
+				VariableName.CLIENT_ID.value(),
 				req.clientId,
 				null,
 				VariableType.TEXT, 

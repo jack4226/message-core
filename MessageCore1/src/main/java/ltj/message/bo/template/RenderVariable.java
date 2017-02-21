@@ -26,7 +26,7 @@ public class RenderVariable implements Serializable {
 	private final Object variableValue;
 	
 	// used for Type: N/D/L, for L: Mime Type(include name/content type, etc)
-	private final String variableFormat; // TODO: use enum
+	private final String variableFormat;
 	
 	// T - text, N - numeric, D - Datetime, A - address, X - X header, 
 	// L - LOB(Attachment), C - Collection

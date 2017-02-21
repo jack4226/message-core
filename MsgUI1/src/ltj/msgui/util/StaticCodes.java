@@ -499,7 +499,7 @@ public class StaticCodes {
 	public synchronized SelectItem[] getRuleDataNameItems() {
 		if (ruleDataNameItems == null) {
 			List<String> names = MessageBeanUtil.getMessageBeanMethodNames();
-			names.add(VariableName.DATA_NAME);
+			names.add(VariableName.DATA_NAME.value());
 			//names.add(RuleBase.FILE_NAME);
 			ruleDataNameItems = new SelectItem[names.size()];
 			for (int i=0; i<names.size(); i++) {

@@ -214,7 +214,7 @@ public class LoadInboxTables {
 		RfcFieldsVo in = new RfcFieldsVo();
 		
 		in.setMsgId(msgId);
-		in.setRfcType(VariableName.RFC822);
+		in.setRfcType(VariableName.RFC822.value());
 		in.setRfcStatus(null);
 		in.setRfcAction(null);
 		in.setFinalRcpt(null);

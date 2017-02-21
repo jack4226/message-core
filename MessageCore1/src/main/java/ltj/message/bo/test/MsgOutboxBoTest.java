@@ -167,7 +167,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 		map.put(toAddr.getVariableName(), toAddr);
 		
 		RenderVariable customer = new RenderVariable(
-				VariableName.CUSTOMER_ID, 
+				VariableName.CUSTOMER_ID.value(), 
 				"test",
 				"maximum 16 characters", 
 				VariableType.TEXT, 

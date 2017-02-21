@@ -374,7 +374,7 @@ public class LoadTemplateTables {
 		ClientVariableVo in = new ClientVariableVo();
 		
 		in.setClientId(Constants.DEFAULT_CLIENTID);
-		in.setVariableName(VariableName.CLIENT_ID);
+		in.setVariableName(VariableName.CLIENT_ID.value());
 		in.setStartTime(updtTime);
 		in.setVariableValue(Constants.DEFAULT_CLIENTID);
 		in.setVariableFormat(null);
@@ -394,7 +394,7 @@ public class LoadTemplateTables {
 		
 		in.setTemplateId(TestTemplateId_1);
 		in.setClientId(Constants.DEFAULT_CLIENTID);
-		in.setVariableName(VariableName.CUSTOMER_ID);
+		in.setVariableName(VariableName.CUSTOMER_ID.value());
 		in.setStartTime(updtTime);
 		in.setVariableValue(null);
 		in.setVariableFormat(null);

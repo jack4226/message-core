@@ -118,7 +118,7 @@ public class RuleMatcher implements java.io.Serializable {
 	static String getFieldData(RuleBase r, MessageBean mobj) {
 		String data_name = r.getDataName();
 		String data = null;
-		if (VariableName.DATA_NAME.equals(data_name)) {
+		if (VariableName.DATA_NAME.value().equals(data_name)) {
 			String headerName = r.getHeaderName();
 			if (headerName != null) {
 				List<MsgHeader> headers = mobj.getHeaders();

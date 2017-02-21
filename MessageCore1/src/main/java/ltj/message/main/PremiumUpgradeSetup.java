@@ -117,13 +117,13 @@ public class PremiumUpgradeSetup {
 		RuleElementVo vo = new RuleElementVo();
 		vo.setRuleName(ruleName);
 		vo.setElementSeq(0);
-		vo.setDataName(VariableName.SUBJECT);
+		vo.setDataName(VariableName.SUBJECT.value());
 		vo.setCriteria(RuleBase.EQUALS);
 		vo.setCaseSensitive(Constants.N);
 		vo.setTargetText("Inquiry About: Free Premium Upgrade");
 		int rows = dao.insert(vo);
 		vo.setElementSeq(1);
-		vo.setDataName(VariableName.MAILBOX_USER);
+		vo.setDataName(VariableName.MAILBOX_USER.value());
 		vo.setTargetText("support");
 		rows += dao.insert(vo);
 		logger.info("RuleElement - Record inserted: " + rows);

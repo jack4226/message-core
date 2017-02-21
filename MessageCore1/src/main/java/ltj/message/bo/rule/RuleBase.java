@@ -47,18 +47,18 @@ public abstract class RuleBase implements java.io.Serializable {
 	public static final String REPLYTO_ADDR = AddressType.REPLYTO_ADDR.value();
 	public static final String CC_ADDR = AddressType.CC_ADDR.value();
 	public static final String BCC_ADDR = AddressType.BCC_ADDR.value();
-	public static final String SUBJECT = VariableName.SUBJECT;
-	public static final String BODY = VariableName.BODY;
-	public static final String MSG_REF_ID = VariableName.MSG_REF_ID;
-	public static final String RULE_NAME = VariableName.RULE_NAME;
-	public static final String X_HEADER = VariableName.DATA_NAME;
+	public static final String SUBJECT = VariableName.SUBJECT.value();
+	public static final String BODY = VariableName.BODY.value();
+	public static final String MSG_REF_ID = VariableName.MSG_REF_ID.value();
+	public static final String RULE_NAME = VariableName.RULE_NAME.value();
+	public static final String X_HEADER = VariableName.DATA_NAME.value();
 	public static final String RETURN_PATH = RuleDataName.RETURN_PATH.getValue(); //"ReturnPath";
 	// mailbox properties
-	public static final String MAILBOX_USER = VariableName.MAILBOX_USER;
-	public static final String MAILBOX_HOST = VariableName.MAILBOX_HOST;
+	public static final String MAILBOX_USER = VariableName.MAILBOX_USER.value();
+	public static final String MAILBOX_HOST = VariableName.MAILBOX_HOST.value();
 	// the next two items are not implemented yet
-	public static final String RFC822 = VariableName.RFC822;
-	public static final String DELIVERY_STATUS = VariableName.DELIVERY_STATUS;
+	public static final String RFC822 = VariableName.RFC822.value();
+	public static final String DELIVERY_STATUS = VariableName.DELIVERY_STATUS.value();
 
 	/** define data type constants for Internet email attachments */
 	public static final String MIME_TYPE = RuleDataName.MIME_TYPE.getValue(); //"MimeType";
