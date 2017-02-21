@@ -6,7 +6,7 @@ public class VariableName {
 	//
 	
 	public static enum MailingListVariableName {
-		MailingListAddress, MailingListId, MailingListName, SubscriberAddress, SubscriberAddressId, BroadcastMsgId
+		MailingListAddress, MailingListId, MailingListName, SubscriberAddress, SubscriberAddressId, BroadcastMsgId;
 	}
 	// content names
 	public final static String SUBJECT = "Subject";
