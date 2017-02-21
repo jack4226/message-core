@@ -513,9 +513,9 @@ public final class RenderUtil {
 	}
 	
 	private static boolean isListVariable(String name) {
-		VariableName.LIST_VARIABLE_NAME[] listNames = VariableName.LIST_VARIABLE_NAME.values();
-		for (VariableName.LIST_VARIABLE_NAME listName : listNames) {
-			if (listName.toString().equals(name)) {
+		VariableName.MailingListVariableName[] listNames = VariableName.MailingListVariableName.values();
+		for (VariableName.MailingListVariableName listName : listNames) {
+			if (listName.name().equals(name)) {
 				return true;
 			}
 		}

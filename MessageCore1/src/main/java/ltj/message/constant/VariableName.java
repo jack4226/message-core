@@ -5,7 +5,7 @@ public class VariableName {
 	// define variable names
 	//
 	
-	public static enum LIST_VARIABLE_NAME {
+	public static enum MailingListVariableName {
 		MailingListAddress, MailingListId, MailingListName, SubscriberAddress, SubscriberAddressId, BroadcastMsgId
 	}
 	// content names

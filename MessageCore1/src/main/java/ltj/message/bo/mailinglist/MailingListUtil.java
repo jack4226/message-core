@@ -21,7 +21,7 @@ public final class MailingListUtil {
 		String varName = null;
 		RenderVariable var = null;
 		
-		varName = VariableName.LIST_VARIABLE_NAME.MailingListId.toString();
+		varName = VariableName.MailingListVariableName.MailingListId.name();
 		var = new RenderVariable(
 				varName,
 				listVo.getListId(),
@@ -32,7 +32,7 @@ public final class MailingListUtil {
 				null);
 		variables.put(varName, var);
 		
-		varName = VariableName.LIST_VARIABLE_NAME.MailingListName.toString();
+		varName = VariableName.MailingListVariableName.MailingListName.name();
 		var = new RenderVariable(
 				varName,
 				listVo.getDisplayName(),
@@ -43,7 +43,7 @@ public final class MailingListUtil {
 				null);
 		variables.put(varName, var);
 		
-		varName = VariableName.LIST_VARIABLE_NAME.MailingListAddress.toString();
+		varName = VariableName.MailingListVariableName.MailingListAddress.name();
 		var = new RenderVariable(
 				varName,
 				listVo.getEmailAddr(),
@@ -54,7 +54,7 @@ public final class MailingListUtil {
 				null);
 		variables.put(varName, var);
 		
-		varName = VariableName.LIST_VARIABLE_NAME.SubscriberAddress.toString();
+		varName = VariableName.MailingListVariableName.SubscriberAddress.name();
 		var = new RenderVariable(
 				varName,
 				subscriberAddress,
@@ -65,7 +65,7 @@ public final class MailingListUtil {
 				null);
 		variables.put(varName, var);
 		
-		varName = VariableName.LIST_VARIABLE_NAME.SubscriberAddressId.toString();
+		varName = VariableName.MailingListVariableName.SubscriberAddressId.name();
 		var = new RenderVariable(
 				varName,
 				String.valueOf(subscriberAddressId),

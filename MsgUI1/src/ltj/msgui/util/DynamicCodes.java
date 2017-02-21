@@ -182,21 +182,19 @@ public class DynamicCodes {
 	// PROPERTY: Global Email VariableType Name Items 
 	public SelectItem[] getGlobalVariableNameItems() {
 		// 2) Mailing List built-in variables
-		VariableName.LIST_VARIABLE_NAME[] listVarNames = VariableName.LIST_VARIABLE_NAME.values();
+		VariableName.MailingListVariableName[] listVarNames = VariableName.MailingListVariableName.values();
 		// 3) Client built-in variables
-		List<ClientVariableVo> clientVars = getClientVariableDao().getCurrentByClientId(
-				Constants.DEFAULT_CLIENTID);
+		List<ClientVariableVo> clientVars = getClientVariableDao().getCurrentByClientId(Constants.DEFAULT_CLIENTID);
 		List<String> clientVarNames = new ArrayList<String>();
 		for (ClientVariableVo clientVar : clientVars) {
 			if (!"ClientId".equalsIgnoreCase(clientVar.getVariableName())) {
 				clientVarNames.add(clientVar.getVariableName());
 			}
 		}
-		SelectItem[] dataTypes = new SelectItem[listVarNames.length
-				+ clientVarNames.size()];
+		SelectItem[] dataTypes = new SelectItem[listVarNames.length + clientVarNames.size()];
 		// include mailing list variable names
 		for (int i = 0; i < listVarNames.length; i++) {
-			String variableName = listVarNames[i].toString();
+			String variableName = listVarNames[i].name();
 			dataTypes[i] = new SelectItem(variableName);
 		}
 		// include client variable names

@@ -199,7 +199,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		*/
 		Map<String, String> variables = new HashMap<String, String>();
 		if (msgBean.getMsgId() != null) {
-			String varName = VariableName.LIST_VARIABLE_NAME.BroadcastMsgId.toString();
+			String varName = VariableName.MailingListVariableName.BroadcastMsgId.name();
 			variables.put(varName, String.valueOf(msgBean.getMsgId()));
 		}
 		logger.info("Sending Broadcast Email to: " + toAddress);
