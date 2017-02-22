@@ -1,5 +1,6 @@
 package ltj.spring.util;
 
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
@@ -72,51 +73,78 @@ public final class SpringUtil {
 		}
 	}
 	
-	private static final ThreadLocal<PlatformTransactionManager> txmgrThreadLocal = new ThreadLocal<>();
-	private static final ThreadLocal<TransactionStatus> statusThreadLocal = new ThreadLocal<>();
+	private static final ThreadLocal<Stack<PlatformTransactionManager>> txmgrThreadLocal = new ThreadLocal<>();
+	private static final ThreadLocal<Stack<TransactionStatus>> statusThreadLocal = new ThreadLocal<>();
 	
 	public static void beginTransaction() {
+		int level = txmgrThreadLocal.get() == null ? 0 : txmgrThreadLocal.get().size();
+		logger.info("In beginTransaction()... level = " + level);
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setName("service_" + TX_COUNTER.get().incrementAndGet());
+		def.setName("service_"+ TX_COUNTER.get().incrementAndGet());
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		PlatformTransactionManager txmgr = (PlatformTransactionManager) SpringUtil.getDaoAppContext().getBean("mysqlTransactionManager");
+		PlatformTransactionManager txmgr = (PlatformTransactionManager) SpringUtil.getAppContext().getBean("mysqlTransactionManager");
 		TransactionStatus status = txmgr.getTransaction(def);
-		txmgrThreadLocal.set(txmgr);
-		statusThreadLocal.set(status);
+		if (txmgrThreadLocal.get() == null) {
+			txmgrThreadLocal.set(new Stack<PlatformTransactionManager>());
+		}
+		if (statusThreadLocal.get() == null) {
+			statusThreadLocal.set(new Stack<TransactionStatus>());
+		}
+		txmgrThreadLocal.get().push(txmgr);
+		statusThreadLocal.get().push(status);
 	}
 
 	public static void commitTransaction() {
-		PlatformTransactionManager txmgr = txmgrThreadLocal.get();
-		TransactionStatus status = statusThreadLocal.get();
-		if (txmgr == null || status == null) {
+		int level = txmgrThreadLocal.get() == null ? 0 : txmgrThreadLocal.get().size() - 1;
+		logger.info("In commitTransaction()... level = " + level);
+		if (txmgrThreadLocal.get() == null || txmgrThreadLocal.get().isEmpty()) {
+			throw new IllegalStateException("No transaction manager is in progress.");
+		}
+		if (statusThreadLocal.get() == null || statusThreadLocal.get().isEmpty()) {
 			throw new IllegalStateException("No transaction is in progress.");
 		}
-		if (!status.isCompleted()) {
-			txmgr.commit(status);
+		PlatformTransactionManager txmgr = txmgrThreadLocal.get().pop();
+		TransactionStatus status = statusThreadLocal.get().pop();
+		try {
+			if (!status.isCompleted()) {
+				txmgr.commit(status);
+			}
 		}
-		txmgrThreadLocal.remove();
-		statusThreadLocal.remove();
+		finally {
+		}
 	}
 
 	public static void rollbackTransaction() {
-		PlatformTransactionManager txmgr = txmgrThreadLocal.get();
-		TransactionStatus status = statusThreadLocal.get();
-		if (txmgr == null || status == null) {
+		if (txmgrThreadLocal.get() == null || txmgrThreadLocal.get().isEmpty()) {
+			throw new IllegalStateException("No transaction manager is in progress.");
+		}
+		if (statusThreadLocal.get() == null || statusThreadLocal.get().isEmpty()) {
 			throw new IllegalStateException("No transaction is in progress.");
 		}
-		if (!status.isCompleted()) {
-			txmgr.rollback(status);
+		PlatformTransactionManager txmgr = txmgrThreadLocal.get().pop();
+		TransactionStatus status = statusThreadLocal.get().pop();
+		try {
+			if (!status.isCompleted()) {
+				txmgr.rollback(status);
+			}
 		}
-		txmgrThreadLocal.remove();
-		statusThreadLocal.remove();
+		finally {
+		}
 	}
 
 	public static void clearTransaction() {
-		PlatformTransactionManager txmgr = txmgrThreadLocal.get();
-		TransactionStatus status = statusThreadLocal.get();
-		if (txmgr != null && status != null) {
-			rollbackTransaction();
+		if (statusThreadLocal.get() != null && !statusThreadLocal.get().isEmpty()) {
+			TransactionStatus status = statusThreadLocal.get().pop();
+			if (status != null) {
+				status.setRollbackOnly();
+			}
+			statusThreadLocal.get().clear();
 		}
+		if (txmgrThreadLocal.get() != null) {
+			txmgrThreadLocal.get().clear();
+		}
+		txmgrThreadLocal.remove();
+		statusThreadLocal.remove();
 	}
 	
 	public static boolean isInTransaction() {
