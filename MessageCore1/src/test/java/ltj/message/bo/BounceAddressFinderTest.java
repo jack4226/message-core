@@ -22,7 +22,8 @@ public class BounceAddressFinderTest extends BoTestBase {
 
 	@Test
 	public void findBounceAddr() {
-		InputStream is = getClass().getResourceAsStream("bouncedmails/bounceBodySamples2.txt");
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		InputStream is = loader.getResourceAsStream("bouncedmails/bounceBodySamples2.txt");
 		if (is == null) {
 			logger.warn("InputStream not found.");
 			return;
