@@ -3,6 +3,8 @@ package ltj.spring.util;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -73,41 +75,33 @@ public final class SpringUtil {
 		}
 	}
 	
-	private static final ThreadLocal<Stack<PlatformTransactionManager>> txmgrThreadLocal = new ThreadLocal<>();
-	private static final ThreadLocal<Stack<TransactionStatus>> statusThreadLocal = new ThreadLocal<>();
+	private static final ThreadLocal<Stack<TransTuple>> transThreadLocal = new ThreadLocal<>();
 	
 	public static void beginTransaction() {
-		int level = txmgrThreadLocal.get() == null ? 0 : txmgrThreadLocal.get().size();
+		int level = transThreadLocal.get() == null ? 0 : transThreadLocal.get().size();
 		logger.info("In beginTransaction()... level = " + level);
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setName("service_"+ TX_COUNTER.get().incrementAndGet());
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		PlatformTransactionManager txmgr = (PlatformTransactionManager) SpringUtil.getAppContext().getBean("mysqlTransactionManager");
 		TransactionStatus status = txmgr.getTransaction(def);
-		if (txmgrThreadLocal.get() == null) {
-			txmgrThreadLocal.set(new Stack<PlatformTransactionManager>());
+		TransTuple tuple = new TransTuple(txmgr, status);
+		if (transThreadLocal.get() == null) {
+			transThreadLocal.set(new Stack<TransTuple>());
 		}
-		if (statusThreadLocal.get() == null) {
-			statusThreadLocal.set(new Stack<TransactionStatus>());
-		}
-		txmgrThreadLocal.get().push(txmgr);
-		statusThreadLocal.get().push(status);
+		transThreadLocal.get().push(tuple);
 	}
 
 	public static void commitTransaction() {
-		int level = txmgrThreadLocal.get() == null ? 0 : txmgrThreadLocal.get().size() - 1;
+		int level = transThreadLocal.get() == null ? 0 : transThreadLocal.get().size() - 1;
 		logger.info("In commitTransaction()... level = " + level);
-		if (txmgrThreadLocal.get() == null || txmgrThreadLocal.get().isEmpty()) {
-			throw new IllegalStateException("No transaction manager is in progress.");
-		}
-		if (statusThreadLocal.get() == null || statusThreadLocal.get().isEmpty()) {
+		if (transThreadLocal.get() == null || transThreadLocal.get().isEmpty()) {
 			throw new IllegalStateException("No transaction is in progress.");
 		}
-		PlatformTransactionManager txmgr = txmgrThreadLocal.get().pop();
-		TransactionStatus status = statusThreadLocal.get().pop();
+		TransTuple tuple = transThreadLocal.get().pop();
 		try {
-			if (!status.isCompleted()) {
-				txmgr.commit(status);
+			if (!tuple.status.isCompleted()) {
+				tuple.txmgr.commit(tuple.status);
 			}
 		}
 		finally {
@@ -115,17 +109,13 @@ public final class SpringUtil {
 	}
 
 	public static void rollbackTransaction() {
-		if (txmgrThreadLocal.get() == null || txmgrThreadLocal.get().isEmpty()) {
-			throw new IllegalStateException("No transaction manager is in progress.");
-		}
-		if (statusThreadLocal.get() == null || statusThreadLocal.get().isEmpty()) {
+		if (transThreadLocal.get() == null || transThreadLocal.get().isEmpty()) {
 			throw new IllegalStateException("No transaction is in progress.");
 		}
-		PlatformTransactionManager txmgr = txmgrThreadLocal.get().pop();
-		TransactionStatus status = statusThreadLocal.get().pop();
+		TransTuple tuple = transThreadLocal.get().pop();
 		try {
-			if (!status.isCompleted()) {
-				txmgr.rollback(status);
+			if (!tuple.status.isCompleted()) {
+				tuple.txmgr.rollback(tuple.status);
 			}
 		}
 		finally {
@@ -133,24 +123,32 @@ public final class SpringUtil {
 	}
 
 	public static void clearTransaction() {
-		if (statusThreadLocal.get() != null && !statusThreadLocal.get().isEmpty()) {
-			TransactionStatus status = statusThreadLocal.get().pop();
-			if (status != null) {
-				status.setRollbackOnly();
+		if (transThreadLocal.get() != null && !transThreadLocal.get().isEmpty()) {
+			TransTuple tuple = transThreadLocal.get().pop();
+			if (tuple.status != null) {
+				tuple.status.setRollbackOnly();
 			}
-			statusThreadLocal.get().clear();
+			transThreadLocal.get().clear();
 		}
-		if (txmgrThreadLocal.get() != null) {
-			txmgrThreadLocal.get().clear();
+		if (transThreadLocal.get() != null) {
+			transThreadLocal.remove();
 		}
-		txmgrThreadLocal.remove();
-		statusThreadLocal.remove();
 	}
 	
 	public static boolean isInTransaction() {
 		return TransactionSynchronizationManager.isActualTransactionActive();
 	}
 
+	private static class TransTuple {
+		final PlatformTransactionManager txmgr;
+		final TransactionStatus status;
+		
+		TransTuple(@NotNull PlatformTransactionManager txmgr, @NotNull TransactionStatus status) {
+			this.txmgr = txmgr;
+			this.status = status;
+		}
+	}
+	
 	private static final ThreadLocal<AtomicInteger> TX_COUNTER = new ThreadLocal<AtomicInteger>() {
 		public AtomicInteger initialValue() {
 			return new AtomicInteger(1);
