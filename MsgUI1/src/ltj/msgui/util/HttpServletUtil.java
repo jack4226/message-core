@@ -172,8 +172,7 @@ public class HttpServletUtil {
 			response.reset();
 			response.setContentLength(contentLength);
 			response.setContentType(contentType);
-			response.setHeader("Content-disposition", disposition + "; filename=\"" + fileName
-					+ "\"");
+			response.setHeader("Content-disposition", disposition + "; filename=\"" + fileName + "\"");
 			output = new BufferedOutputStream(response.getOutputStream());
 
 			// Write file contents to response
