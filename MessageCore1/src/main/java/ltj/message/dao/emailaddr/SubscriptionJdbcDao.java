@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,6 +19,7 @@ import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingSbsrVo;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
@@ -146,9 +148,9 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		" and ", " and ", " and ", " and " };
 	
 	@Override
-	public int getSubscriberCount(String listId, PagingVo vo) {
+	public int getSubscriberCount(PagingSbsrVo vo) {
 		List<Object> parms = new ArrayList<Object>();
-		String whereSql = buildWhereClause(listId, vo, parms);
+		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
 			"select count(*) " +
 			" from Subscription a " +
@@ -159,9 +161,9 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	}
 	
 	@Override
-	public List<SubscriptionVo> getSubscribersWithPaging(String listId, PagingVo vo) {
+	public List<SubscriptionVo> getSubscribersWithPaging(PagingSbsrVo vo) {
 		List<Object> parms = new ArrayList<Object>();
-		String whereSql = buildWhereClause(listId, vo, parms);
+		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic
 		 */
@@ -170,15 +172,15 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			// do nothing
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
-			if (vo.getIdLast() > -1) {
+			if (vo.getNbrIdLast() > -1) {
 				whereSql += CRIT[parms.size()] + " a.EmailAddrId > ? ";
-				parms.add(vo.getIdLast());
+				parms.add(vo.getNbrIdLast());
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
-			if (vo.getIdFirst() > -1) {
+			if (vo.getNbrIdFirst() > -1) {
 				whereSql += CRIT[parms.size()] + " a.EmailAddrId < ? ";
-				parms.add(vo.getIdFirst());
+				parms.add(vo.getNbrIdFirst());
 				fetchOrder = "desc";
 			}
 		}
@@ -186,10 +188,10 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			List<SubscriptionVo> lastList = new ArrayList<SubscriptionVo>();
 			vo.setPageAction(PagingVo.PageAction.NEXT);
 			while (true) {
-				List<SubscriptionVo> nextList = getSubscribersWithPaging(listId, vo);
+				List<SubscriptionVo> nextList = getSubscribersWithPaging(vo);
 				if (!nextList.isEmpty()) {
 					lastList = nextList;
-					vo.setIdLast(nextList.get(nextList.size() - 1).getEmailAddrId());
+					vo.setNbrIdLast(nextList.get(nextList.size() - 1).getEmailAddrId());
 				}
 				else {
 					break;
@@ -198,9 +200,9 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			return lastList;
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			if (vo.getIdFirst() > -1) {
+			if (vo.getNbrIdFirst() > -1) {
 				whereSql += CRIT[parms.size()] + " a.EmailAddrId >= ? ";
-				parms.add(vo.getIdFirst());
+				parms.add(vo.getNbrIdFirst());
 			}
 		}
 		String sql = 
@@ -240,24 +242,31 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		return list;
 	}
 	
-	private String buildWhereClause(String listId, PagingVo vo, List<Object> parms) {
-		String whereSql = CRIT[parms.size()] + " a.ListId = ? ";
-		parms.add(listId);
+	private String buildWhereClause(PagingSbsrVo vo, List<Object> parms) {
+		String whereSql = "";
+		if (StringUtils.isNotBlank(vo.getListId())) {
+			whereSql = CRIT[parms.size()] + " a.ListId = ? ";
+			parms.add(vo.getListId().trim());
+		}
 		if (!StringUtil.isEmpty(vo.getStatusId())) {
 			whereSql += CRIT[parms.size()] + " b.StatusId = ? ";
 			parms.add(vo.getStatusId());
 		}
-		//whereSql += CRIT[parms.size()] + " a.Subscribed = ? ";
-		//parms.add(Constants.Y);
+		if (vo.getSubscribed() != null) {
+			whereSql += CRIT[parms.size()] + " a.Subscribed = ? ";
+			parms.add(vo.getSubscribed() ? Constants.Y : Constants.N);
+		}
 		// search by address
-		if (vo.getSearchString() != null && vo.getSearchString().trim().length() > 0) {
-			String addr = vo.getSearchString().trim();
+		if (StringUtils.isNotBlank(vo.getEmailAddr())) {
+			String addr = vo.getEmailAddr().trim();
 			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE '%" + addr + "%' ";
+				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE ? ";
+				parms.add("%" + addr + "%");
 			}
 			else {
-				String regex = StringUtil.replaceAll(addr, " ", ".+");
-				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP '" + regex + "' ";
+				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
+				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP ? ";
+				parms.add(regex);
 			}
 		}
 		return whereSql;

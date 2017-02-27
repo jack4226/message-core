@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,6 +40,7 @@ import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 
@@ -95,7 +97,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	}
 
 	@Override
-	public int getEmailAddressCount(PagingVo vo) {
+	public int getEmailAddressCount(PagingAddrVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = "select count(*) from EmailAddr a " + whereSql;
@@ -104,7 +106,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	}
 
 	@Override
-	public List<EmailAddrVo> getEmailAddrsWithPaging(PagingVo vo) {
+	public List<EmailAddrVo> getEmailAddrsWithPaging(PagingAddrVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
@@ -181,26 +183,29 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ",
 			" and ", " and ", " and ", " and ", " and ", " and " };
 
-	private String buildWhereClause(PagingVo vo, List<Object> parms) {
+	private String buildWhereClause(PagingAddrVo vo, List<Object> parms) {
 		String whereSql = "";
 		if (!StringUtil.isEmpty(vo.getStatusId())) {
 			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
 			parms.add(vo.getStatusId());
-		} else { // make sure parms.size() is greater than zero
-			whereSql += CRIT[parms.size()] + " a.StatusId >= ? ";
-			parms.add("");
 		}
 		// search by address
-		if (vo.getSearchString() != null && vo.getSearchString().trim().length() > 0) {
-			String addr = vo.getSearchString().trim();
+		if (StringUtils.isNotBlank(vo.getEmailAddr())) {
+			String addr = vo.getEmailAddr().trim();
 			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr LIKE '%" + addr + "%' ";
+				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr LIKE ? ";
+				parms.add("%" + addr + "%");
 			} else {
 				//String regex = (addr + "").replaceAll("[ ]+", ".+");
-				String regex = (addr + "").replaceAll("[ ]+", "|");
-				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr REGEXP '" + regex + "' ";
+				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
+				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr REGEXP ? ";
+				parms.add(regex);
 			}
 		}
+//		if (parms.isEmpty()) { // make sure the parameter list is not empty
+//			whereSql += CRIT[parms.size()] + " a.EmailAddrId >= ? ";
+//			parms.add(Long.valueOf(0));
+//		}
 		return whereSql;
 	}
 

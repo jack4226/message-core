@@ -2,12 +2,17 @@ package ltj.message.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
 
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgClickCountsDao;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.PrintUtil;
+import ltj.message.vo.PagingCountVo;
 import ltj.message.vo.inbox.MsgClickCountsVo;
 
 public class MsgClickCountsTest extends DaoTestBase {
@@ -29,6 +34,27 @@ public class MsgClickCountsTest extends DaoTestBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
+		}
+	}
+	
+	@Test
+	public void testWithPaging() {
+		PagingCountVo vo = new PagingCountVo();
+		
+		List<MsgClickCountsVo> listAll = msgClickCountsDao.getBroadcastsWithPaging(vo);
+		
+		assertFalse(listAll.isEmpty());
+		
+		String addr1 = listAll.get(0).getFromAddr();
+		String addr2 = listAll.get(listAll.size() - 1).getFromAddr();
+		
+		vo.setFromEmailAddr(EmailAddrUtil.getEmailDomainName(addr1) + " " + EmailAddrUtil.getEmailUserName(addr2));
+		vo.setSentCount(listAll.get(0).getSentCount() > 0 ? 1 : 0);
+		vo.setOpenCount(0);
+		vo.setClickCount(0);
+		List<MsgClickCountsVo> listSrch  = msgClickCountsDao.getBroadcastsWithPaging(vo);
+		for (MsgClickCountsVo count : listSrch) {
+			System.out.println("Search result: " + PrintUtil.prettyPrint(count, 2));
 		}
 	}
 

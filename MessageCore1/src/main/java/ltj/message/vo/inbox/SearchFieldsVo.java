@@ -5,9 +5,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import ltj.data.preload.RuleNameEnum;
-import ltj.message.vo.BasePagingVo;
+import ltj.message.vo.PagingVo;
 
-public final class SearchFieldsVo extends BasePagingVo implements Serializable {
+public final class SearchFieldsVo extends PagingVo implements Serializable {
 	private static final long serialVersionUID = 8888455019361283024L;
 	public static enum MsgType {All, Received, Sent, Draft, Closed, Trash};
 	public static enum RuleName {All};
@@ -31,10 +31,6 @@ public final class SearchFieldsVo extends BasePagingVo implements Serializable {
 	private Timestamp receivedTimeLast = null;
 	private long msgIdFirst = -1;
 	private long msgIdLast = -1;
-	public static enum PageAction {FIRST, NEXT, PREVIOUS, CURRENT, LAST};
-	private PageAction pageAction = PageAction.CURRENT;
-	private int pageSize = MSG_INBOX_PAGE_SIZE;
-	private int rowCount = -1;
 	// end of paging
 	
 	public static void main(String[] args) {
@@ -55,23 +51,13 @@ public final class SearchFieldsVo extends BasePagingVo implements Serializable {
 	}
 	
 	public SearchFieldsVo() {
+		super();
+		setPageSize(MSG_INBOX_PAGE_SIZE);
 		init();
 	}
 	
 	private void init() {
 		msgType = MsgType.Received;
-		setSearchableFields();
-	}
-	
-	protected void setSearchableFields() {
-		searchFields.add("msgType");
-		searchFields.add("ruleName");
-		searchFields.add("fromAddrId");
-		searchFields.add("toAddrId");
-		searchFields.add("fromAddr");
-		searchFields.add("toAddr");
-		searchFields.add("subject");
-		searchFields.add("body");
 	}
 	
 	public void resetFlags() {
@@ -80,30 +66,10 @@ public final class SearchFieldsVo extends BasePagingVo implements Serializable {
 		recent = null;
 	}
 	
-	public void resetPageContext() {
-		receivedTimeFirst = null;
-		receivedTimeLast = null;
-		msgIdFirst = -1;
-		msgIdLast = -1;
-		pageAction = PageAction.CURRENT;
-		rowCount = -1;
-	}
-	
-	public void resetSearchFields() {
-		ruleName = RuleName.All.toString();
-		fromAddrId = null;
-		toAddrId = null;
-		fromAddr = null;
-		toAddr = null;
-		subject = null;
-		body = null;
-	}
-	
 	public void resetAll() {
 		init();
 		resetFlags();
 		resetPageContext();
-		resetSearchFields();
 	}
 
 
@@ -288,24 +254,6 @@ public final class SearchFieldsVo extends BasePagingVo implements Serializable {
 	}
 	public void setReceivedTimeLast(Timestamp receivedTimeLast) {
 		this.receivedTimeLast = receivedTimeLast;
-	}
-	public PageAction getPageAction() {
-		return pageAction;
-	}
-	public void setPageAction(PageAction action) {
-		this.pageAction = action;
-	}
-	public int getPageSize() {
-		return pageSize;
-	}
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-	public int getRowCount() {
-		return rowCount;
-	}
-	public void setRowCount(int rowCount) {
-		this.rowCount = rowCount;
 	}
 	public long getMsgIdFirst() {
 		return msgIdFirst;

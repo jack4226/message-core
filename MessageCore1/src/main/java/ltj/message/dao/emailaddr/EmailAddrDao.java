@@ -2,7 +2,7 @@ package ltj.message.dao.emailaddr;
 
 import java.util.List;
 
-import ltj.message.vo.PagingVo;
+import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 
 public interface EmailAddrDao {
@@ -11,8 +11,8 @@ public interface EmailAddrDao {
 	public EmailAddrVo getRandomRecord();
 	public EmailAddrVo getFromByMsgRefId(Long msgRefId);
 	public EmailAddrVo getToByMsgRefId(Long msgRefId);
-	public int getEmailAddressCount(PagingVo vo);
-	public List<EmailAddrVo> getEmailAddrsWithPaging(PagingVo vo);
+	public int getEmailAddressCount(PagingAddrVo vo);
+	public List<EmailAddrVo> getEmailAddrsWithPaging(PagingAddrVo vo);
 	public long getEmailAddrIdForPreview();
 	/**
 	 * find by email address. if it does not exist, add it to database.

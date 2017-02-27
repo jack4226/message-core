@@ -1,79 +1,145 @@
 package ltj.message.vo;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-public class PagingVo extends BasePagingVo implements Serializable {
-	private static final long serialVersionUID = -3937664465278379794L;
+import org.apache.commons.lang.StringUtils;
+
+public abstract class PagingVo extends BaseVo implements java.io.Serializable, Cloneable {
+	private static final long serialVersionUID = -1139494427014770362L;
 	
 	// define paging context
 	public static final int PAGE_SIZE = 20;
-	private Timestamp dateTimeFirst = null;
-	private Timestamp dateTimeLast = null;
-	private long idFirst = -1;
-	private long idLast = -1;
-	private String strIdFirst = null;
-	private String strIdLast = null;
+	protected long nbrIdFirst = -1;
+	protected long nbrIdLast = -1;
+	protected String strIdFirst = null;
+	protected String strIdLast = null;
 	public static enum PageAction {FIRST, NEXT, PREVIOUS, CURRENT, LAST};
-	private PageAction pageAction = PageAction.CURRENT;
-	private int pageSize = PAGE_SIZE;
-	private int rowCount = -1;
+	protected PageAction pageAction = PageAction.CURRENT;
+	protected int pageSize = PAGE_SIZE;
+	protected int rowCount = -1;
 	// end of paging
 	
-	private String searchString = null;
-
-	public static void main(String[] args) {
-		PagingVo vo = new PagingVo();
-		vo.printMethodNames();
-		System.out.println(vo.toString());
-		PagingVo vo2 = new PagingVo();
-		vo2.setStatusId("A");
-		vo.setSearchString("abcd");
-		System.out.println(vo.equalsToSearch(vo2));
-		System.out.println(vo.listChanges());
-	}
+	protected final Set<String> searchFields = new LinkedHashSet<String>();
 	
 	public PagingVo() {
-		init();
+		setSearchFields();
 		setStatusId(null);
 	}
 	
-	private void init() {
-		setSearchableFields();
-	}
-	
-	protected void setSearchableFields() {
-		searchFields.add("searchString");
-		searchFields.add("statusId");
-	}
-	
 	public void resetPageContext() {
-		dateTimeFirst = null;
-		dateTimeLast = null;
-		idFirst = -1;
-		idLast = -1;
+		nbrIdFirst = -1;
+		nbrIdLast = -1;
 		strIdFirst = null;
 		strIdLast = null;
 		pageAction = PageAction.CURRENT;
 		rowCount = -1;
+		
+		Field[] fields = this.getClass().getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			Field field = fields[i];
+			try {
+				if (searchFields.contains(field.getName())) {
+					if (field.getType().isAssignableFrom(Class.forName("java.lang.Object"))) {
+						field.set(field.getType(), null);
+					}
+				}
+			}
+			catch (Exception e) {e.printStackTrace();}
+		}
 	}
 	
-	public Timestamp getDateTimeFirst() {
-		return dateTimeFirst;
+	protected final void setSearchFields() {
+		searchFields.add("statusId");
+		Field[] fields = this.getClass().getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			Field field = fields[i];
+			int mod = field.getModifiers();
+			if (Modifier.isPrivate(mod) && !Modifier.isFinal(mod) && !Modifier.isStatic(mod) && !Modifier.isAbstract(mod)) {
+				searchFields.add(field.getName());
+			}
+		}
 	}
-
-	public void setDateTimeFirst(Timestamp dateTimeFirst) {
-		this.dateTimeFirst = dateTimeFirst;
+	
+	public boolean equalsToSearch(PagingVo vo) {
+		getLogList().clear();
+		if (this == vo) {
+			return true;
+		}
+		if (vo == null) {
+			return false;
+		}
+		String className = this.getClass().getName();
+		Method thisMethods[] = this.getClass().getMethods();
+		for (int i = 0; i < thisMethods.length; i++) {
+			Method method = thisMethods[i];
+			String methodName = method.getName();
+			Class<?>[] params = method.getParameterTypes();
+			if (methodName.length() > 3 && methodName.startsWith("get") && params.length == 0) {
+				String key = StringUtils.uncapitalize(methodName.substring(3));
+				if (!searchFields.contains(key)) {
+					continue;
+				}
+				Method voMethod = null;
+				try {
+					voMethod = vo.getClass().getMethod(methodName, params);
+				}
+				catch (NoSuchMethodException e) {
+					System.err.println(className + ".equalsToSearch(): " + e.getMessage());
+					return false;
+				}
+				try {
+					Class<?> returnType = method.getReturnType();
+					String returnTypeName = returnType.getName();
+					if (isValidReturnType(returnType) || (returnTypeName.endsWith("MsgType"))) {
+						Object thisValue = method.invoke((Object)this, (Object[])params);
+						Object voValue = voMethod.invoke((Object)vo, (Object[])params);
+						if (thisValue == null) {
+							if (voValue != null) {
+								addChangeLog(methodName.substring(3), thisValue, voValue);
+							}
+						}
+						else {
+							if (!thisValue.equals(voValue)) {
+								addChangeLog(methodName.substring(3), thisValue, voValue);
+							}
+						}
+					}
+				}
+				catch (Exception e) {
+					System.err.println(className + ".equalsToSearch(): " + e.getMessage());
+					return false;
+				}
+			}
+		}
+		if (getLogList().size() > 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
-
-	public Timestamp getDateTimeLast() {
-		return dateTimeLast;
+	
+	public void printMethodNames() {
+		Method thisMethods[] = this.getClass().getDeclaredMethods();
+		for (int i = 0; i < thisMethods.length; i++) {
+			Method method = (Method) thisMethods[i];
+			String name = method.getName();
+			Class<?>[] params = method.getParameterTypes();
+			if (name.startsWith("get") && params.length == 0) {
+				System.out.println("Method Name: " + name + ", Return Type: " + method.getReturnType().getName());
+			}
+		}
+		for (Iterator<String> it=searchFields.iterator(); it.hasNext();) {
+			String searchField = it.next();
+			System.out.println("Search Field: " + searchField);
+		}
 	}
-
-	public void setDateTimeLast(Timestamp dateTimeLast) {
-		this.dateTimeLast = dateTimeLast;
-	}
-
+	
 	public PageAction getPageAction() {
 		return pageAction;
 	}
@@ -98,30 +164,22 @@ public class PagingVo extends BasePagingVo implements Serializable {
 		this.rowCount = rowCount;
 	}
 
-	public long getIdFirst() {
-		return idFirst;
+	public long getNbrIdFirst() {
+		return nbrIdFirst;
 	}
 
-	public void setIdFirst(long idFirst) {
-		this.idFirst = idFirst;
+	public void setNbrIdFirst(long nbrIdFirst) {
+		this.nbrIdFirst = nbrIdFirst;
 	}
 
-	public long getIdLast() {
-		return idLast;
+	public long getNbrIdLast() {
+		return nbrIdLast;
 	}
 
-	public void setIdLast(long idLast) {
-		this.idLast = idLast;
+	public void setNbrIdLast(long nbrIdLast) {
+		this.nbrIdLast = nbrIdLast;
 	}
 
-	public String getSearchString() {
-		return searchString;
-	}
-
-	public void setSearchString(String searchString) {
-		this.searchString = searchString;
-	}
-	
 	public String getStrIdFirst() {
 		return strIdFirst;
 	}
@@ -137,4 +195,5 @@ public class PagingVo extends BasePagingVo implements Serializable {
 	public void setStrIdLast(String strIdLast) {
 		this.strIdLast = strIdLast;
 	}
+
 }

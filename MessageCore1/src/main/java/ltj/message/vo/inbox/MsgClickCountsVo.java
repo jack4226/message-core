@@ -22,6 +22,9 @@ public class MsgClickCountsVo extends BaseVo implements Serializable {
 	private int complaintCount = 0;
 	private int referralCount = 0;
 	
+	// for UI paging
+	private String fromAddr;
+	
 	/** define components for UI */
 	
 	public String getDeliveryOptionDesc() {
@@ -110,12 +113,17 @@ public class MsgClickCountsVo extends BaseVo implements Serializable {
 	public void setComplaintCount(int complaintCount) {
 		this.complaintCount = complaintCount;
 	}
-
 	public int getReferralCount() {
 		return referralCount;
 	}
-
 	public void setReferralCount(int referralCount) {
 		this.referralCount = referralCount;
+	}
+	
+	public String getFromAddr() {
+		return fromAddr;
+	}
+	public void setFromAddr(String fromAddr) {
+		this.fromAddr = fromAddr;
 	}
 }

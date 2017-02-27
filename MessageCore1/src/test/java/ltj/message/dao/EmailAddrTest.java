@@ -11,7 +11,8 @@ import org.junit.Test;
 
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.vo.PagingVo;
+import ltj.message.vo.PagingVo.PageAction;
+import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 
 public class EmailAddrTest extends DaoTestBase {
@@ -47,24 +48,33 @@ public class EmailAddrTest extends DaoTestBase {
 
 	@Test
 	public void testWithPaging() {
-		PagingVo pagingVo =  new PagingVo();
-		pagingVo.resetPageContext();
+		PagingAddrVo pagingAddrVo =  new PagingAddrVo();
+		pagingAddrVo.resetPageContext();
 		
-		List<EmailAddrVo> emailAddrList = emailAddrDao.getEmailAddrsWithPaging(pagingVo);
-		assertFalse(emailAddrList.isEmpty());
-		int listSize1 = emailAddrList.size();
-		for (EmailAddrVo vo : emailAddrList) {
-			logger.info(vo.getOrigEmailAddr());
+		List<EmailAddrVo> listAll = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
+		assertFalse(listAll.isEmpty());
+		int listSize1 = listAll.size();
+		for (EmailAddrVo vo : listAll) {
+			logger.info("Search result 1 - Original email address: " + vo.getOrigEmailAddr());
 		}
 
-		pagingVo.setSearchString("Jane  Joe  Test"); // any word search
-		emailAddrList = emailAddrDao.getEmailAddrsWithPaging(pagingVo);
-		assertFalse(emailAddrList.isEmpty());
-		assertTrue(listSize1 >= emailAddrList.size());
-		for (EmailAddrVo vo : emailAddrList) {
+		 
+		pagingAddrVo.setEmailAddr("Jane  Joe  Test"); // any word search
+		listAll = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
+		assertFalse(listAll.isEmpty());
+		assertTrue(listSize1 >= listAll.size());
+		for (EmailAddrVo vo : listAll) {
 			assertTrue(StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Jane")
 					|| StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Joe")
 					|| StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Test"));
+		}
+		
+		pagingAddrVo.setEmailAddr(null);
+		pagingAddrVo.setPageAction(PageAction.LAST);
+		listAll = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
+		assertFalse(listAll.isEmpty());
+		for (EmailAddrVo vo : listAll) {
+			logger.info("Search result 2 - Original email address: " + vo.getOrigEmailAddr());
 		}
 	}
 	
@@ -79,7 +89,6 @@ public class EmailAddrTest extends DaoTestBase {
 		if (emailAddr!=null) {
 			System.out.println("EmailAddrDao - selectByAddrId: "+LF+emailAddr);
 		}
-		emailAddrDao.getEmailAddrsWithPaging(new PagingVo());
 		return emailAddr;
 	}
 	

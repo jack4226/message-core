@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingCountVo;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.inbox.MsgClickCountsVo;
 
@@ -64,12 +67,10 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		}
 	}
 	
-	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and " };
-	
 	@Override
-	public List<MsgClickCountsVo> getBroadcastsWithPaging(PagingVo vo) {
+	public List<MsgClickCountsVo> getBroadcastsWithPaging(PagingCountVo vo) {
 		List<Object> parms = new ArrayList<Object>();
-		String whereSql = "";
+		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic
 		 */
@@ -78,15 +79,15 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 			// do nothing
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
-			if (vo.getIdLast() > -1) {
+			if (vo.getNbrIdLast() > -1) {
 				whereSql += CRIT[parms.size()] + " a.MsgId < ? ";
-				parms.add(vo.getIdLast());
+				parms.add(vo.getNbrIdLast());
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
-			if (vo.getIdFirst() > -1) {
+			if (vo.getNbrIdFirst() > -1) {
 				whereSql += CRIT[parms.size()] + " a.MsgId > ? ";
-				parms.add(vo.getIdFirst());
+				parms.add(vo.getNbrIdFirst());
 				fetchOrder = "asc";
 			}
 		}
@@ -97,7 +98,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 				List<MsgClickCountsVo> nextList = getBroadcastsWithPaging(vo);
 				if (!nextList.isEmpty()) {
 					lastList = nextList;
-					vo.setIdLast(nextList.get(nextList.size() - 1).getMsgId());
+					vo.setNbrIdLast(nextList.get(nextList.size() - 1).getMsgId());
 				}
 				else {
 					break;
@@ -106,17 +107,17 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 			return lastList;
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			if (vo.getIdFirst() > -1) {
+			if (vo.getNbrIdFirst() > -1) {
 				whereSql += CRIT[parms.size()] + " a.MsgId <= ? ";
-				parms.add(vo.getIdFirst());
+				parms.add(vo.getNbrIdFirst());
 			}
 		}
-		whereSql += CRIT[parms.size()] + " a.SentCount > ? ";
-		parms.add(0);
 		
 		String sql = 
-			"select a.* " +
-			" from MsgClickCounts a " +
+			"select a.*, e.EmailAddrId, e.EmailAddr as fromAddr " +
+			" from MsgClickCounts a "
+			+ " join MsgInbox m on m.MsgId=a.MsgId "
+			+ " join EmailAddr e on e.EmailAddrId=m.FromAddrid " +
 			whereSql +
 			" and a.StartTime is not null " +
 			" order by a.MsgId " + fetchOrder +
@@ -134,6 +135,42 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 			Collections.reverse(list);
 		}
 		return list;
+	}
+
+	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ",
+			" and ", " and ", " and ", " and ", " and ", " and " };
+
+	private String buildWhereClause(PagingCountVo vo, List<Object> parms) {
+		String whereSql = "";
+		if (!StringUtil.isEmpty(vo.getStatusId())) {
+			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
+			parms.add(vo.getStatusId());
+		}
+		if (vo.getSentCount() != null) {
+			whereSql += CRIT[parms.size()] + " a.SentCount >= ? ";
+			parms.add(vo.getSentCount());
+		}
+		if (vo.getOpenCount() != null) {
+			whereSql += CRIT[parms.size()] + " a.OpenCount >= ? ";
+			parms.add(vo.getOpenCount());
+		}
+		if (vo.getClickCount() != null) {
+			whereSql += CRIT[parms.size()] + " a.ClickCount >= ? ";
+			parms.add(vo.getClickCount());
+		}
+		// search by address
+		if (StringUtils.isNotBlank(vo.getFromEmailAddr())) {
+			String addr = vo.getFromEmailAddr().trim();
+			if (addr.indexOf(" ") < 0) {
+				whereSql += CRIT[parms.size()] + " e.OrigEmailAddr LIKE ? ";
+				parms.add("%" + addr + "%");
+			} else {
+				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
+				whereSql += CRIT[parms.size()] + " e.OrigEmailAddr REGEXP ? ";
+				parms.add(regex);
+			}
+		}
+		return whereSql;
 	}
 
 	@Override

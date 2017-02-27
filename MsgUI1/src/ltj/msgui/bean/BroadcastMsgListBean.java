@@ -13,6 +13,7 @@ import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgClickCountsDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingCountVo;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.inbox.MsgClickCountsVo;
 import ltj.message.vo.inbox.MsgInboxVo;
@@ -32,7 +33,7 @@ public class BroadcastMsgListBean {
 	private MsgInboxVo broadcastMsg = null;
 
 	private HtmlDataTable dataTable;
-	private final PagingVo pagingVo =  new PagingVo();;
+	private final PagingCountVo pagingAddrVo =  new PagingCountVo();;
 	
 	private String testResult = null;
 	private String actionFailure = null;
@@ -50,45 +51,45 @@ public class BroadcastMsgListBean {
 			resetPagingVo();
 		}
 		// retrieve total number of rows
-		if (pagingVo.getRowCount() < 0) {
+		if (pagingAddrVo.getRowCount() < 0) {
 			int rowCount = getMsgClickCountsDao().getMsgCountForWeb();
-			pagingVo.setRowCount(rowCount);
+			pagingAddrVo.setRowCount(rowCount);
 		}
-		if (broadcasts == null || !pagingVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<MsgClickCountsVo> brdList = getMsgClickCountsDao().getBroadcastsWithPaging(pagingVo);
+		if (broadcasts == null || !pagingAddrVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
+			List<MsgClickCountsVo> brdList = getMsgClickCountsDao().getBroadcastsWithPaging(pagingAddrVo);
 			/* set keys for paging */
 			if (!brdList.isEmpty()) {
 				MsgClickCountsVo firstRow = (MsgClickCountsVo) brdList.get(0);
-				pagingVo.setIdFirst(firstRow.getMsgId());
+				pagingAddrVo.setNbrIdFirst(firstRow.getMsgId());
 				MsgClickCountsVo lastRow = (MsgClickCountsVo) brdList.get(brdList.size() - 1);
-				pagingVo.setIdLast(lastRow.getMsgId());
+				pagingAddrVo.setNbrIdLast(lastRow.getMsgId());
 			}
 			else {
-				pagingVo.setIdFirst(-1);
-				pagingVo.setIdLast(-1);
+				pagingAddrVo.setNbrIdFirst(-1);
+				pagingAddrVo.setNbrIdLast(-1);
 			}
-			//logger.info("PagingVo After: " + pagingVo);
-			pagingVo.setPageAction(PagingVo.PageAction.CURRENT);
-			broadcasts = new PagedListDataModel(brdList, pagingVo.getRowCount(), pagingVo.getPageSize());
+			//logger.info("PagingAddrVo After: " + pagingAddrVo);
+			pagingAddrVo.setPageAction(PagingVo.PageAction.CURRENT);
+			broadcasts = new PagedListDataModel(brdList, pagingAddrVo.getRowCount(), pagingAddrVo.getPageSize());
 		}
 		return broadcasts;
 	}
 	
 	public String pageFirst() {
 		dataTable.setFirst(0);
-		pagingVo.setPageAction(PagingVo.PageAction.FIRST);
+		pagingAddrVo.setPageAction(PagingVo.PageAction.FIRST);
 		return TO_PAGING;
 	}
 
 	public String pagePrevious() {
 		dataTable.setFirst(dataTable.getFirst() - dataTable.getRows());
-		pagingVo.setPageAction(PagingVo.PageAction.PREVIOUS);
+		pagingAddrVo.setPageAction(PagingVo.PageAction.PREVIOUS);
 		return TO_PAGING;
 	}
 
 	public String pageNext() {
 		dataTable.setFirst(dataTable.getFirst() + dataTable.getRows());
-		pagingVo.setPageAction(PagingVo.PageAction.NEXT);
+		pagingAddrVo.setPageAction(PagingVo.PageAction.NEXT);
 		return TO_PAGING;
 	}
 
@@ -96,7 +97,7 @@ public class BroadcastMsgListBean {
 		int count = dataTable.getRowCount();
 		int rows = dataTable.getRows();
 		dataTable.setFirst(count - ((count % rows != 0) ? count % rows : rows));
-		pagingVo.setPageAction(PagingVo.PageAction.LAST);
+		pagingAddrVo.setPageAction(PagingVo.PageAction.LAST);
 		return TO_PAGING;
 	}
     
@@ -110,8 +111,8 @@ public class BroadcastMsgListBean {
 		}
 	}
 	
-	public PagingVo getPagingVo() {
-		return pagingVo;
+	public PagingCountVo getPagingVo() {
+		return pagingAddrVo;
 	}
 	
 	public void refresh() {
@@ -124,12 +125,12 @@ public class BroadcastMsgListBean {
 
 	public String refreshPage() {
 		refresh();
-		pagingVo.setRowCount(-1);
+		pagingAddrVo.setRowCount(-1);
 		return "";
 	}
 	
 	public void resetPagingVo() {
-		pagingVo.resetPageContext();
+		pagingAddrVo.resetPageContext();
 		if (dataTable != null) {
 			dataTable.setFirst(0);
 		}
@@ -197,7 +198,7 @@ public class BroadcastMsgListBean {
 				int rowsDeleted = getMsgClickCountsDao().deleteByPrimaryKey(vo.getMsgId());
 				if (rowsDeleted > 0) {
 					logger.info("deleteBroadcasts() - Broadcast deleted: " + vo.getMsgId());
-					pagingVo.setRowCount(pagingVo.getRowCount() - rowsDeleted);
+					pagingAddrVo.setRowCount(pagingAddrVo.getRowCount() - rowsDeleted);
 				}
 			}
 		}

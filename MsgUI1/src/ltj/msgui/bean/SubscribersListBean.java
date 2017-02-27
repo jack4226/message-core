@@ -18,7 +18,9 @@ import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingSbsrVo;
 import ltj.message.vo.PagingVo;
+import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
@@ -35,7 +37,7 @@ public class SubscribersListBean {
 	private String listId = null;
 
 	private HtmlDataTable dataTable;
-	private final PagingVo pagingVo =  new PagingVo();;
+	private final PagingSbsrVo pagingVo =  new PagingSbsrVo();
 	private String searchString = null;
 	
 	private String testResult = null;
@@ -52,26 +54,27 @@ public class SubscribersListBean {
 		if (FacesUtil.getRequestParameter("listId") != null) {
 			listId = FacesUtil.getRequestParameter("listId");
 			resetPagingVo();
+			pagingVo.setListId(listId);
 		}
 		// retrieve total number of rows
 		if (pagingVo.getRowCount() < 0) {
-			int rowCount = getSubscriptionDao().getSubscriberCount(listId, pagingVo);
+			int rowCount = getSubscriptionDao().getSubscriberCount(pagingVo);
 			pagingVo.setRowCount(rowCount);
 		}
 		if (subscribers == null || !pagingVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<SubscriptionVo> subscriberList = getSubscriptionDao().getSubscribersWithPaging(listId, pagingVo);
+			List<SubscriptionVo> subscriberList = getSubscriptionDao().getSubscribersWithPaging(pagingVo);
 			/* set keys for paging */
 			if (!subscriberList.isEmpty()) {
 				SubscriptionVo firstRow = subscriberList.get(0);
-				pagingVo.setIdFirst(firstRow.getEmailAddrId());
+				pagingVo.setNbrIdFirst(firstRow.getEmailAddrId());
 				SubscriptionVo lastRow = subscriberList.get(subscriberList.size() - 1);
-				pagingVo.setIdLast(lastRow.getEmailAddrId());
+				pagingVo.setNbrIdLast(lastRow.getEmailAddrId());
 			}
 			else {
-				pagingVo.setIdFirst(-1);
-				pagingVo.setIdLast(-1);
+				pagingVo.setNbrIdFirst(-1);
+				pagingVo.setNbrIdLast(-1);
 			}
-			logger.info("PagingVo After: " + pagingVo);
+			logger.info("PagingAddrVo After: " + pagingVo);
 			pagingVo.setPageAction(PagingVo.PageAction.CURRENT);
 			//subscribers = new ListDataModel(subscriberList);
 			subscribers = new PagedListDataModel(subscriberList, pagingVo.getRowCount(), pagingVo.getPageSize());
@@ -82,25 +85,25 @@ public class SubscribersListBean {
 	public String searchByAddress() {
 		boolean changed = false;
 		if (this.searchString == null) {
-			if (pagingVo.getSearchString() != null) {
+			if (pagingVo.getEmailAddr() != null) {
 				changed = true;
 			}
 		}
 		else {
-			if (!this.searchString.equals(pagingVo.getSearchString())) {
+			if (!this.searchString.equals(pagingVo.getEmailAddr())) {
 				changed = true;
 			}
 		}
 		if (changed) {
 			resetPagingVo();
-			pagingVo.setSearchString(searchString);
+			pagingVo.setEmailAddr(searchString);
 		}
 		return null;
 	}
 	
 	public String resetSearch() {
 		searchString = null;
-		pagingVo.setSearchString(null);
+		pagingVo.setEmailAddr(null);
 		resetPagingVo();
 		return null;
 	}
@@ -141,7 +144,7 @@ public class SubscribersListBean {
 		}
 	}
 	
-	public PagingVo getPagingVo() {
+	public PagingAddrVo getPagingVo() {
 		return pagingVo;
 	}
 	

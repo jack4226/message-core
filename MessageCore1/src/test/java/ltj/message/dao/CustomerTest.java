@@ -1,19 +1,21 @@
 package ltj.message.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import ltj.message.constant.Constants;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.customer.CustomerDao;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.PrintUtil;
 import ltj.message.vo.CustomerVo;
+import ltj.message.vo.PagingCustVo;
 
 public class CustomerTest extends DaoTestBase {
 	@Resource
@@ -49,6 +51,26 @@ public class CustomerTest extends DaoTestBase {
 		}
 	}
 
+	@Test
+	public void testSearchWithPaging() {
+		PagingCustVo vo = new PagingCustVo();
+		List<CustomerVo> custList = customerDao.getCustomersWithPaging(vo);
+		assertFalse(custList.isEmpty());
+		
+		CustomerVo cust = custList.get(0);
+		vo.setClientId(Constants.DEFAULT_CLIENTID);
+		vo.setLastName(StringUtils.lowerCase(cust.getLastName()));
+		vo.setFirstName(StringUtils.upperCase(cust.getFirstName()));
+		vo.setEmailAddr(EmailAddrUtil.getEmailDomainName(cust.getEmailAddr()));
+		
+		custList = customerDao.getCustomersWithPaging(vo);
+		assertFalse(custList.isEmpty());
+		for (CustomerVo custvo : custList) {
+			System.out.println("Customer search result: " + PrintUtil.prettyPrint(custvo, 2));
+		}
+	}
+	
+	
 	private CustomerVo selectByCustId(CustomerVo vo) {
 		CustomerVo customer = customerDao.getByCustId(vo.getCustId());
 		if (customer!=null) {

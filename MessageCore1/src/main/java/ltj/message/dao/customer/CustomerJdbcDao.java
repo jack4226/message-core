@@ -19,7 +19,7 @@ import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.CustomerVo;
-import ltj.message.vo.PagingCustomerVo;
+import ltj.message.vo.PagingCustVo;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 
@@ -101,7 +101,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	}
 	
 	@Override
-	public int getCustomerCount(PagingCustomerVo vo) {
+	public int getCustomerCount(PagingCustVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
@@ -112,7 +112,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	}
 	
 	@Override
-	public List<CustomerVo> getCustomersWithPaging(PagingCustomerVo vo) {
+	public List<CustomerVo> getCustomersWithPaging(PagingCustVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
@@ -182,23 +182,23 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and ", " and ",
 		" and ", " and ", " and ", " and " };
 	
-	private String buildWhereClause(PagingCustomerVo vo, List<Object> parms) {
+	private String buildWhereClause(PagingCustVo vo, List<Object> parms) {
 		String whereSql = "";
 		if (!StringUtil.isEmpty(vo.getClientId())) {
-			whereSql += CRIT[parms.size()] + " a.ClientId = ? ";
-			parms.add(vo.getClientId());
+			whereSql += CRIT[parms.size()] + " lower(a.ClientId) = ? ";
+			parms.add(vo.getClientId().toLowerCase());
 		}
 		if (!StringUtil.isEmpty(vo.getSsnNumber())) {
 			whereSql += CRIT[parms.size()] + " a.SsnNumber = ? ";
 			parms.add(vo.getSsnNumber());
 		}
 		if (!StringUtil.isEmpty(vo.getLastName())) {
-			whereSql += CRIT[parms.size()] + " a.LastName = ? ";
-			parms.add(vo.getLastName());
+			whereSql += CRIT[parms.size()] + " lower(a.LastName) = ? ";
+			parms.add(vo.getLastName().toLowerCase());
 		}
 		if (!StringUtil.isEmpty(vo.getFirstName())) {
-			whereSql += CRIT[parms.size()] + " a.FirstName = ? ";
-			parms.add(vo.getFirstName());
+			whereSql += CRIT[parms.size()] + " lower(a.FirstName) = ? ";
+			parms.add(vo.getFirstName().toLowerCase());
 		}
 		if (!StringUtil.isEmpty(vo.getDayPhone())) {
 			whereSql += CRIT[parms.size()] + " a.DayPhone = ? ";
@@ -209,14 +209,17 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 			parms.add(vo.getStatusId());
 		}
 		// search by email address
-		if (!StringUtil.isEmpty(vo.getSearchString())) {
-			String addr = vo.getSearchString().trim();
+		if (!StringUtil.isEmpty(vo.getEmailAddr())) {
+			String addr = vo.getEmailAddr().trim();
 			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " a.EmailAddr LIKE '%" + addr + "%' ";
+				whereSql += CRIT[parms.size()] + " a.EmailAddr LIKE ? ";
+				parms.add("%" + addr + "%");
 			}
 			else {
-				String regex = StringUtil.replaceAll(addr, " ", ".+");
-				whereSql += CRIT[parms.size()] + " a.EmailAddr REGEXP '" + regex + "' ";
+				//String regex = StringUtil.replaceAll(addr, " ", ".+");
+				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
+				whereSql += CRIT[parms.size()] + " a.EmailAddr REGEXP ? ";
+				parms.add(regex);
 			}
 		}
 		return whereSql;

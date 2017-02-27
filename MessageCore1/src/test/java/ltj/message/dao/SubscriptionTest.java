@@ -11,6 +11,10 @@ import org.junit.Test;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.PrintUtil;
+import ltj.message.vo.PagingVo.PageAction;
+import ltj.message.vo.PagingSbsrVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
 
@@ -55,6 +59,41 @@ public class SubscriptionTest extends DaoTestBase {
 		}
 		catch (RuntimeException e) {
 			delete();
+		}
+	}
+	
+	@Test
+	public void testWithPaging() {
+		PagingSbsrVo vo = new PagingSbsrVo();
+		vo.setListId(listId);
+		
+		List<SubscriptionVo> listAll = subscriptionDao.getSubscribersWithPaging(vo);
+		assertFalse(listAll.isEmpty());
+		
+		vo.setSubscribed(true);
+		List<SubscriptionVo> listSubed = subscriptionDao.getSubscribersWithPaging(vo);
+		assertFalse(listSubed.isEmpty());
+		vo.setSubscribed(false);
+		List<SubscriptionVo> listUnsed = subscriptionDao.getSubscribersWithPaging(vo);
+		assertEquals(listSubed.size() + listUnsed.size(), listAll.size());
+		
+		String emailAddr1 = listSubed.get(0).getEmailAddr();
+		String emailAddr2 = listSubed.get(listSubed.size() - 1).getEmailAddr();
+		
+		vo.setSubscribed(true);
+		vo.setEmailAddr(EmailAddrUtil.getEmailDomainName(emailAddr1) + " " + EmailAddrUtil.getEmailUserName(emailAddr2));
+		List<SubscriptionVo> listSrched = subscriptionDao.getSubscribersWithPaging(vo);
+		assertFalse(listSrched.isEmpty());
+		for (SubscriptionVo sub : listSrched) {
+			System.out.println("Search result 1:" + PrintUtil.prettyPrint(sub, 2));
+		}
+		
+		vo.setPageAction(PageAction.LAST);
+		vo.setPageSize(6);
+		listSrched = subscriptionDao.getSubscribersWithPaging(vo);
+		assertFalse(listSrched.isEmpty());
+		for (SubscriptionVo sub : listSrched) {
+			System.out.println("Search result 2:" + PrintUtil.prettyPrint(sub, 2));
 		}
 	}
 

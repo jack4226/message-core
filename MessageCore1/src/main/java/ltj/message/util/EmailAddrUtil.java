@@ -190,16 +190,28 @@ public class EmailAddrUtil {
 		if (StringUtil.isEmpty(addr)) {
 			return null;
 		}
+		addr = removeDisplayName(addr);
 		int pos;
 		if ((pos = addr.lastIndexOf("@")) > 0) {
 			String domain = addr.substring(pos + 1).trim();
-			if (domain.endsWith(">")) {
-				domain = domain.substring(0, domain.length() - 1);
-			}
 			return (domain.length() == 0 ? null : domain);
 		}
 		return null;
 	}
+
+	public static String getEmailUserName(String addr) {
+		if (StringUtil.isEmpty(addr)) {
+			return null;
+		}
+		addr = removeDisplayName(addr);
+		int pos;
+		if ((pos = addr.lastIndexOf("@")) > 0) {
+			String user = addr.substring(0, pos).trim();
+			return user;
+		}
+		return addr;
+	}
+
 
 	/**
 	 * Add PRE tags for plain text message so the spaces and line breaks are
@@ -341,8 +353,12 @@ public class EmailAddrUtil {
 
 	public static void main(String[] args) {
 		String addr = "\"ORCPT jwang@nc.rr.com\" <jwang@nc.rr.com>";
+		System.out.println(addr+" --> user: "+EmailAddrUtil.getEmailUserName(addr));
+		System.out.println(addr+" --> domain: "+EmailAddrUtil.getEmailDomainName(addr));
 		addr = "DirectStarTV <fqusoogd.undlwfeteot@chaffingphotosensitive.com>";
 		System.out.println(addr+" --> "+EmailAddrUtil.removeDisplayName(addr));
+		System.out.println(addr+" --> user: "+EmailAddrUtil.getEmailUserName(addr));
+		System.out.println(addr+" --> domain: "+EmailAddrUtil.getEmailDomainName(addr));
 		
 		System.out.println("EmailAddr: " + EmailAddrUtil.isRemoteEmailAddress("A!#$%&'*+/=?.^_`{|}~-BC@localhost.us"));
 		System.out.println("EmailAddr: " + EmailAddrUtil.isRemoteOrLocalEmailAddress("A!#$%&'*+/=?.^_`{|}~-BC"));

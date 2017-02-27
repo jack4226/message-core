@@ -18,6 +18,7 @@ import ltj.message.constant.Constants;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.MailingListVo;
@@ -35,7 +36,7 @@ public class EmailAddrsListBean {
 	private boolean editMode = true;
 
 	private HtmlDataTable dataTable;
-	private final PagingVo pagingVo =  new PagingVo();
+	private final PagingAddrVo pagingAddrVo =  new PagingAddrVo();
 	private String searchString = null;
 	
 	private List<MailingListVo> mailingLists = null;
@@ -57,31 +58,31 @@ public class EmailAddrsListBean {
 			resetPagingVo();
 		}
 		// retrieve total number of rows
-		if (pagingVo.getRowCount() < 0) {
-			int rowCount = getEmailAddrDao().getEmailAddressCount(pagingVo);
-			pagingVo.setRowCount(rowCount);
+		if (pagingAddrVo.getRowCount() < 0) {
+			int rowCount = getEmailAddrDao().getEmailAddressCount(pagingAddrVo);
+			pagingAddrVo.setRowCount(rowCount);
 		}
-		if (emailAddrs == null || !pagingVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<EmailAddrVo> emailAddrList = getEmailAddrDao().getEmailAddrsWithPaging(pagingVo);
+		if (emailAddrs == null || !pagingAddrVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
+			List<EmailAddrVo> emailAddrList = getEmailAddrDao().getEmailAddrsWithPaging(pagingAddrVo);
 			/* set keys for paging */
 			if (!emailAddrList.isEmpty()) {
 				EmailAddrVo firstRow = (EmailAddrVo) emailAddrList.get(0);
 				EmailAddrVo lastRow = (EmailAddrVo) emailAddrList.get(emailAddrList.size() - 1);
-				//pagingVo.setIdFirst(firstRow.getEmailAddrId());
-				//pagingVo.setIdLast(lastRow.getEmailAddrId());
-				pagingVo.setStrIdFirst(firstRow.getEmailAddr());
-				pagingVo.setStrIdLast(lastRow.getEmailAddr());
+				//pagingAddrVo.setIdFirst(firstRow.getEmailAddrId());
+				//pagingAddrVo.setIdLast(lastRow.getEmailAddrId());
+				pagingAddrVo.setStrIdFirst(firstRow.getEmailAddr());
+				pagingAddrVo.setStrIdLast(lastRow.getEmailAddr());
 			}
 			else {
-				//pagingVo.setIdFirst(-1);
-				//pagingVo.setIdLast(-1);
-				pagingVo.setStrIdFirst(null);
-				pagingVo.setStrIdLast(null);
+				//pagingAddrVo.setIdFirst(-1);
+				//pagingAddrVo.setIdLast(-1);
+				pagingAddrVo.setStrIdFirst(null);
+				pagingAddrVo.setStrIdLast(null);
 			}
-			logger.info("PagingVo After: " + pagingVo);
-			pagingVo.setPageAction(PagingVo.PageAction.CURRENT);
+			logger.info("PagingAddrVo After: " + pagingAddrVo);
+			pagingAddrVo.setPageAction(PagingVo.PageAction.CURRENT);
 			//emailAddrs = new ListDataModel(emailAddrList);
-			emailAddrs = new PagedListDataModel(emailAddrList, pagingVo.getRowCount(), pagingVo.getPageSize());
+			emailAddrs = new PagedListDataModel(emailAddrList, pagingAddrVo.getRowCount(), pagingAddrVo.getPageSize());
 		}
 		return emailAddrs;
 	}
@@ -89,44 +90,44 @@ public class EmailAddrsListBean {
 	public String searchByAddress() {
 		boolean changed = false;
 		if (this.searchString == null) {
-			if (pagingVo.getSearchString() != null) {
+			if (pagingAddrVo.getEmailAddr() != null) {
 				changed = true;
 			}
 		}
 		else {
-			if (!this.searchString.equals(pagingVo.getSearchString())) {
+			if (!this.searchString.equals(pagingAddrVo.getEmailAddr())) {
 				changed = true;
 			}
 		}
 		if (changed) {
 			resetPagingVo();
-			pagingVo.setSearchString(searchString);
+			pagingAddrVo.setEmailAddr(searchString);
 		}
 		return TO_SELF;
 	}
 	
 	public String resetSearch() {
 		searchString = null;
-		pagingVo.setSearchString(null);
+		pagingAddrVo.setEmailAddr(null);
 		resetPagingVo();
 		return TO_SELF;
 	}
 	
 	public String pageFirst() {
 		dataTable.setFirst(0);
-		pagingVo.setPageAction(PagingVo.PageAction.FIRST);
+		pagingAddrVo.setPageAction(PagingVo.PageAction.FIRST);
 		return TO_PAGING;
 	}
 
 	public String pagePrevious() {
 		dataTable.setFirst(dataTable.getFirst() - dataTable.getRows());
-		pagingVo.setPageAction(PagingVo.PageAction.PREVIOUS);
+		pagingAddrVo.setPageAction(PagingVo.PageAction.PREVIOUS);
 		return TO_PAGING;
 	}
 
 	public String pageNext() {
 		dataTable.setFirst(dataTable.getFirst() + dataTable.getRows());
-		pagingVo.setPageAction(PagingVo.PageAction.NEXT);
+		pagingAddrVo.setPageAction(PagingVo.PageAction.NEXT);
 		return TO_PAGING;
 	}
 
@@ -134,7 +135,7 @@ public class EmailAddrsListBean {
 		int count = dataTable.getRowCount();
 		int rows = dataTable.getRows();
 		dataTable.setFirst(count - ((count % rows != 0) ? count % rows : rows));
-		pagingVo.setPageAction(PagingVo.PageAction.LAST);
+		pagingAddrVo.setPageAction(PagingVo.PageAction.LAST);
 		return TO_PAGING;
 	}
     
@@ -148,8 +149,8 @@ public class EmailAddrsListBean {
 		}
 	}
 	
-	public PagingVo getPagingVo() {
-		return pagingVo;
+	public PagingAddrVo getPagingVo() {
+		return pagingAddrVo;
 	}
 	
 	private void refresh() {
@@ -158,12 +159,12 @@ public class EmailAddrsListBean {
 
 	public String refreshPage() {
 		refresh();
-		pagingVo.setRowCount(-1);
+		pagingAddrVo.setRowCount(-1);
 		return TO_SELF;
 	}
 	
 	private void resetPagingVo() {
-		pagingVo.resetPageContext();
+		pagingAddrVo.resetPageContext();
 		if (dataTable != null) {
 			dataTable.setFirst(0);
 		}
@@ -237,7 +238,7 @@ public class EmailAddrsListBean {
 			int rowsInserted = getEmailAddrDao().insert(emailAddr);
 			if (rowsInserted > 0) {
 				addToList(emailAddr);
-				pagingVo.setRowCount(pagingVo.getRowCount() + rowsInserted);
+				pagingAddrVo.setRowCount(pagingAddrVo.getRowCount() + rowsInserted);
 				refresh();
 			}
 			logger.info("saveEmailAddr() - Rows Inserted: " + rowsInserted);
@@ -267,7 +268,7 @@ public class EmailAddrsListBean {
 				int rowsDeleted = getEmailAddrDao().deleteByAddrId(vo.getEmailAddrId());
 				if (rowsDeleted > 0) {
 					logger.info("deleteEmailAddrs() - EmailAddr deleted: " + vo.getEmailAddr());
-					pagingVo.setRowCount(pagingVo.getRowCount() - rowsDeleted);
+					pagingAddrVo.setRowCount(pagingAddrVo.getRowCount() - rowsDeleted);
 				}
 			}
 		}

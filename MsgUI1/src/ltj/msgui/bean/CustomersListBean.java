@@ -25,8 +25,9 @@ import ltj.message.util.PhoneNumberUtil;
 import ltj.message.util.SsnNumberUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.CustomerVo;
-import ltj.message.vo.PagingCustomerVo;
+import ltj.message.vo.PagingCustVo;
 import ltj.message.vo.PagingVo;
+import ltj.message.vo.PagingAddrVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
@@ -41,7 +42,7 @@ public class CustomersListBean {
 	private boolean editMode = true;
 
 	private HtmlDataTable dataTable;
-	private final PagingCustomerVo pagingVo =  new PagingCustomerVo();;
+	private final PagingCustVo pagingVo =  new PagingCustVo();;
 	private String searchString = null;
 	
 	private UIInput custIdInput = null;
@@ -90,7 +91,7 @@ public class CustomersListBean {
 				pagingVo.setStrIdFirst(null);
 				pagingVo.setStrIdLast(null);
 			}
-			logger.info("PagingVo After: " + pagingVo);
+			logger.info("PagingAddrVo After: " + pagingVo);
 			pagingVo.setPageAction(PagingVo.PageAction.CURRENT);
 			//customers = new ListDataModel(customerList);
 			customers = new PagedListDataModel(customerList, pagingVo.getRowCount(), pagingVo.getPageSize());
@@ -124,25 +125,25 @@ public class CustomersListBean {
 	public String searchByAddress() {
 		boolean changed = false;
 		if (this.searchString == null) {
-			if (pagingVo.getSearchString() != null) {
+			if (pagingVo.getEmailAddr() != null) {
 				changed = true;
 			}
 		}
 		else {
-			if (!this.searchString.equals(pagingVo.getSearchString())) {
+			if (!this.searchString.equals(pagingVo.getEmailAddr())) {
 				changed = true;
 			}
 		}
 		if (changed) {
 			resetPagingVo();
-			pagingVo.setSearchString(searchString);
+			pagingVo.setEmailAddr(searchString);
 		}
 		return TO_SELF;
 	}
 	
 	public String resetSearch() {
 		searchString = null;
-		pagingVo.setSearchString(null);
+		pagingVo.setEmailAddr(null);
 		resetPagingVo();
 		return TO_SELF;
 	}
@@ -183,7 +184,7 @@ public class CustomersListBean {
 		}
 	}
 	
-	public PagingVo getPagingVo() {
+	public PagingAddrVo getPagingVo() {
 		return pagingVo;
 	}
 	

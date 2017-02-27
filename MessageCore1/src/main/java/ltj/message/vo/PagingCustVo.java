@@ -3,46 +3,25 @@ package ltj.message.vo;
 import ltj.message.util.StringUtil;
 
 
-public final class PagingCustomerVo extends PagingVo implements java.io.Serializable, Cloneable {
+public final class PagingCustVo extends PagingAddrVo implements java.io.Serializable, Cloneable {
 	private static final long serialVersionUID = 2702501767172625606L;
 	private String clientId = null;
 	private String ssnNumber = null;
 	private String dayPhone = null;
 	private String firstName = null;
 	private String lastName = null;
-	private String emailAddr = null;
 	
 	public static void main(String[] args) {
-		PagingCustomerVo vo = new PagingCustomerVo();
-		vo.printMethodNames();
-		PagingCustomerVo vo2 = new PagingCustomerVo();
+		PagingCustVo vo1 = new PagingCustVo();
+		vo1.printMethodNames();
+		PagingCustVo vo2 = new PagingCustVo();
 		vo2.setClientId("System");
-		vo.setSsnNumber(" 123-45-6789 ");
+		vo1.setSsnNumber(" 123-45-6789 ");
 		vo2.setStatusId("A");
-		StringUtil.stripAll(vo);
-		System.out.println(vo.toString());
-		System.out.println(vo.equalsToSearch(vo2));
-		System.out.println(vo.listChanges());
-	}
-
-	public void resetPageContext() {
-		super.resetPageContext();
-		clientId = null;
-		ssnNumber = null;
-		dayPhone = null;
-		firstName = null;
-		lastName = null;
-		emailAddr = null;
-	}
-	
-	protected void setSearchableFields() {
-		super.setSearchableFields();
-		searchFields.add("clientId");
-		searchFields.add("ssnNumber");
-		searchFields.add("dayPhone");
-		searchFields.add("firstName");
-		searchFields.add("lastName");
-		searchFields.add("emailAddr");
+		StringUtil.stripAll(vo1);
+		System.out.println(vo1.toString());
+		System.out.println(vo1.equalsToSearch(vo2));
+		System.out.println(vo1.listChanges());
 	}
 
 	public String getClientId() {
@@ -74,11 +53,5 @@ public final class PagingCustomerVo extends PagingVo implements java.io.Serializ
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-	public String getEmailAddr() {
-		return emailAddr;
-	}
-	public void setEmailAddr(String emailAddr) {
-		this.emailAddr = emailAddr;
 	}
 }
