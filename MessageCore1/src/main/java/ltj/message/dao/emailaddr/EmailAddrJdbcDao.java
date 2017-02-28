@@ -100,7 +100,10 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	public int getEmailAddressCount(PagingAddrVo vo) {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
-		String sql = "select count(*) from EmailAddr a " + whereSql;
+		String sql = "select count(*) from EmailAddr a "
+				+ " LEFT OUTER JOIN Customers b on a.EmailAddrId=b.EmailAddrId "
+				+ " LEFT OUTER JOIN Subscription c on a.EmailAddrId=c.EmailAddrId "
+				+ whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
 	}
@@ -113,6 +116,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		 * paging logic, sort by Email Address
 		 */
 		String fetchOrder = "asc";
+		int pageSize = vo.getPageSize();
 		if (vo.getPageAction().equals(PagingVo.PageAction.FIRST)) {
 			// do nothing
 		} else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
@@ -127,18 +131,24 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 				fetchOrder = "desc";
 			}
 		} else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-			List<EmailAddrVo> lastList = new ArrayList<EmailAddrVo>();
-			vo.setPageAction(PagingVo.PageAction.NEXT);
-			while (true) {
-				List<EmailAddrVo> nextList = getEmailAddrsWithPaging(vo);
-				if (!nextList.isEmpty()) {
-					lastList = nextList;
-					vo.setStrIdLast(nextList.get(nextList.size() - 1).getEmailAddr());
-				} else {
-					break;
-				}
+			int rows = getEmailAddressCount(vo);
+			pageSize = rows % vo.getPageSize();
+			if (pageSize == 0) {
+				pageSize = Math.min(rows, vo.getPageSize());
 			}
-			return lastList;
+			fetchOrder = "desc";
+//			List<EmailAddrVo> lastList = new ArrayList<EmailAddrVo>();
+//			vo.setPageAction(PagingVo.PageAction.NEXT);
+//			while (true) {
+//				List<EmailAddrVo> nextList = getEmailAddrsWithPaging(vo);
+//				if (!nextList.isEmpty()) {
+//					lastList = nextList;
+//					vo.setStrIdLast(nextList.get(nextList.size() - 1).getEmailAddr());
+//				} else {
+//					break;
+//				}
+//			}
+//			return lastList;
 		} else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
 			if (vo.getStrIdFirst() != null) {
 				whereSql += CRIT[parms.size()] + " a.EmailAddr >= ? ";
@@ -164,7 +174,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 				+ " order by a.EmailAddr "
 				+ fetchOrder
 				+ " limit "
-				+ vo.getPageSize();
+				+ pageSize;
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(vo.getPageSize());
@@ -173,9 +183,13 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 				new BeanPropertyRowMapper<EmailAddrVo>(EmailAddrVo.class));
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
-		if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
+		if ("desc".equals(fetchOrder)) {
 			// reverse the list
 			Collections.reverse(list);
+		}
+		if (!list.isEmpty()) {
+			vo.setStrIdFirst(list.get(0).getEmailAddr());
+			vo.setStrIdLast(list.get(list.size() - 1).getEmailAddr());
 		}
 		return list;
 	}

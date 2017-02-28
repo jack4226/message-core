@@ -154,7 +154,8 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		String sql = 
 			"select count(*) " +
 			" from Subscription a " +
-				" join EmailAddr b on a.EmailAddrId=b.EmailAddrId " +
+				" join EmailAddr b on a.EmailAddrId=b.EmailAddrId "
+				+ " LEFT OUTER JOIN Customers c on a.EmailAddrId=c.EmailAddrId " +
 			whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -168,6 +169,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		 * paging logic
 		 */
 		String fetchOrder = "asc";
+		int pageSize = vo.getPageSize();
 		if (vo.getPageAction().equals(PagingVo.PageAction.FIRST)) {
 			// do nothing
 		}
@@ -185,19 +187,25 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-			List<SubscriptionVo> lastList = new ArrayList<SubscriptionVo>();
-			vo.setPageAction(PagingVo.PageAction.NEXT);
-			while (true) {
-				List<SubscriptionVo> nextList = getSubscribersWithPaging(vo);
-				if (!nextList.isEmpty()) {
-					lastList = nextList;
-					vo.setNbrIdLast(nextList.get(nextList.size() - 1).getEmailAddrId());
-				}
-				else {
-					break;
-				}
+			int rows = getSubscriberCount(vo);
+			pageSize = rows % vo.getPageSize();
+			if (pageSize == 0) {
+				pageSize = Math.min(rows, vo.getPageSize());
 			}
-			return lastList;
+			fetchOrder = "desc";
+//			List<SubscriptionVo> lastList = new ArrayList<SubscriptionVo>();
+//			vo.setPageAction(PagingVo.PageAction.NEXT);
+//			while (true) {
+//				List<SubscriptionVo> nextList = getSubscribersWithPaging(vo);
+//				if (!nextList.isEmpty()) {
+//					lastList = nextList;
+//					vo.setNbrIdLast(nextList.get(nextList.size() - 1).getEmailAddrId());
+//				}
+//				else {
+//					break;
+//				}
+//			}
+//			return lastList;
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
 			if (vo.getNbrIdFirst() > -1) {
@@ -226,7 +234,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" LEFT OUTER JOIN Customers c on a.EmailAddrId=c.EmailAddrId " +
 			whereSql +
 			" order by a.EmailAddrId " + fetchOrder +
-			" limit " + vo.getPageSize();
+			" limit " + pageSize;
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(vo.getPageSize());
@@ -235,9 +243,13 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
-		if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
+		if ("desc".equals(fetchOrder)) {
 			// reverse the list
 			Collections.reverse(list);
+		}
+		if (!list.isEmpty()) {
+			vo.setNbrIdFirst(list.get(0).getEmailAddrId());
+			vo.setNbrIdLast(list.get(list.size() - 1).getEmailAddrId());
 		}
 		return list;
 	}

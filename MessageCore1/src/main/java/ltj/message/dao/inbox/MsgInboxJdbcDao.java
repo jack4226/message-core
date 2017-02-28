@@ -263,6 +263,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		 * paging logic
 		 */
 		String fetchOrder = "desc";
+		int pageSize = vo.getPageSize();
 		if (vo.getPageAction().equals(PageAction.FIRST)) {
 			// do nothing
 		}
@@ -280,19 +281,25 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			}
 		}
 		else if (vo.getPageAction().equals(PageAction.LAST)) {
-			List<MsgInboxWebVo> lastList = new ArrayList<MsgInboxWebVo>();
-			vo.setPageAction(PageAction.NEXT);
-			while (true) {
-				List<MsgInboxWebVo> nextList = getListForWeb(vo);
-				if (!nextList.isEmpty()) {
-					lastList = nextList;
-					vo.setMsgIdLast(nextList.get(nextList.size() - 1).getMsgId());
-				}
-				else {
-					break;
-				}
+			int rows = getRowCountForWeb(vo);
+			pageSize = rows % vo.getPageSize();
+			if (pageSize == 0) {
+				pageSize = Math.min(rows, vo.getPageSize());
 			}
-			return lastList;
+			fetchOrder = "asc";
+//			List<MsgInboxWebVo> lastList = new ArrayList<MsgInboxWebVo>();
+//			vo.setPageAction(PageAction.NEXT);
+//			while (true) {
+//				List<MsgInboxWebVo> nextList = getListForWeb(vo);
+//				if (!nextList.isEmpty()) {
+//					lastList = nextList;
+//					vo.setMsgIdLast(nextList.get(nextList.size() - 1).getMsgId());
+//				}
+//				else {
+//					break;
+//				}
+//			}
+//			return lastList;
 		}
 		else if (vo.getPageAction().equals(PageAction.CURRENT)) {
 			if (vo.getMsgIdFirst() > -1) {
@@ -327,7 +334,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				" JOIN EmailAddr b ON a.FromAddrId=b.EmailAddrId " +
 				whereSql +
 			" order by MsgId " + fetchOrder +
-			" limit " + vo.getPageSize();
+			" limit " + pageSize;
 		// set result set size
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
@@ -337,7 +344,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				new BeanPropertyRowMapper<MsgInboxWebVo>(MsgInboxWebVo.class));
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
-		if (vo.getPageAction().equals(PageAction.PREVIOUS)) {
+		if ("asc".equals(fetchOrder)) {
 			// reverse the list
 			Collections.reverse(list);
 		}

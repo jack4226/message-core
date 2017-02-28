@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.util.EmailAddrUtil;
 import ltj.message.vo.PagingVo.PageAction;
 import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -47,35 +48,97 @@ public class EmailAddrTest extends DaoTestBase {
 	}
 
 	@Test
-	public void testWithPaging() {
+	public void testSearchByAddr() {
 		PagingAddrVo pagingAddrVo =  new PagingAddrVo();
 		pagingAddrVo.resetPageContext();
 		
-		List<EmailAddrVo> listAll = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
-		assertFalse(listAll.isEmpty());
-		int listSize1 = listAll.size();
-		for (EmailAddrVo vo : listAll) {
+		List<EmailAddrVo> list1 = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
+		assertFalse(list1.isEmpty());
+		int listSize1 = list1.size();
+		for (EmailAddrVo vo : list1) {
 			logger.info("Search result 1 - Original email address: " + vo.getOrigEmailAddr());
 		}
 
-		 
 		pagingAddrVo.setEmailAddr("Jane  Joe  Test"); // any word search
-		listAll = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
-		assertFalse(listAll.isEmpty());
-		assertTrue(listSize1 >= listAll.size());
-		for (EmailAddrVo vo : listAll) {
+		list1 = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
+		assertFalse(list1.isEmpty());
+		assertTrue(listSize1 >= list1.size());
+		for (EmailAddrVo vo : list1) {
 			assertTrue(StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Jane")
 					|| StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Joe")
 					|| StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), "Test"));
 		}
 		
-		pagingAddrVo.setEmailAddr(null);
-		pagingAddrVo.setPageAction(PageAction.LAST);
-		listAll = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
-		assertFalse(listAll.isEmpty());
-		for (EmailAddrVo vo : listAll) {
+		String addr1 = list1.get(0).getEmailAddr();
+		String addr2 = list1.get(list1.size() - 1).getEmailAddr();
+		pagingAddrVo.resetPageContext();
+		pagingAddrVo.setEmailAddr(EmailAddrUtil.getEmailDomainName(addr1) + " " + EmailAddrUtil.getEmailUserName(addr2));
+		List<EmailAddrVo> list2 = emailAddrDao.getEmailAddrsWithPaging(pagingAddrVo);
+		assertFalse(list2.isEmpty());
+		for (EmailAddrVo vo : list2) {
 			logger.info("Search result 2 - Original email address: " + vo.getOrigEmailAddr());
+			assertTrue(StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), EmailAddrUtil.getEmailDomainName(addr1))
+					|| StringUtils.containsIgnoreCase(vo.getOrigEmailAddr(), EmailAddrUtil.getEmailUserName(addr2)));
 		}
+	}
+	
+	@Test
+	public void testWithPaging() {
+		int testPageSize = 4;
+		PagingAddrVo vo =  new PagingAddrVo();
+		vo.setPageSize(testPageSize);
+		// fetch the first page
+		List<EmailAddrVo> list1 = emailAddrDao.getEmailAddrsWithPaging(vo);
+		assertFalse(list1.isEmpty());
+		// fetch it again
+		vo.setPageAction(PageAction.CURRENT);
+		List<EmailAddrVo> list2 = emailAddrDao.getEmailAddrsWithPaging(vo);
+		assertEquals(list1.size(), list2.size());
+		for (int i = 0; i < list1.size(); i++) {
+			assertEmailAddrVosAreSame(list1.get(i), list2.get(i));
+		}
+		// fetch the second page
+		vo.setPageAction(PageAction.NEXT);
+		List<EmailAddrVo> list3 = emailAddrDao.getEmailAddrsWithPaging(vo);
+		if (!list3.isEmpty()) {
+			assertTrue(list3.get(0).getEmailAddr().compareTo(list1.get(list1.size() - 1).getEmailAddr()) > 0);
+			// back to the first page
+			vo.setPageAction(PageAction.PREVIOUS);
+			List<EmailAddrVo> list4 = emailAddrDao.getEmailAddrsWithPaging(vo);
+			assertEquals(list1.size(), list4.size());
+			for (int i = 0; i < list1.size(); i++) {
+				assertEmailAddrVosAreSame(list1.get(i), list4.get(i));
+			}
+			// back to the second page
+			vo.setPageAction(PageAction.NEXT);
+			List<EmailAddrVo> list5 = emailAddrDao.getEmailAddrsWithPaging(vo);
+			assertEquals(list3.size(), list5.size());
+			for (int i = 0; i < list3.size(); i++) {
+				assertEmailAddrVosAreSame(list3.get(i), list5.get(i));
+			}
+		}
+		// fetch the last page
+		vo.setPageAction(PageAction.LAST);
+		List<EmailAddrVo> list6 = emailAddrDao.getEmailAddrsWithPaging(vo);
+		assertFalse(list6.isEmpty());
+		// fetch the first page again
+		vo.setPageAction(PageAction.FIRST);
+		List<EmailAddrVo> list7 = emailAddrDao.getEmailAddrsWithPaging(vo);
+		assertEquals(list1.size(), list7.size());
+		for (int i = 0; i < list1.size(); i++) {
+			assertEmailAddrVosAreSame(list1.get(i), list7.get(i));
+		}
+	}
+	
+	void assertEmailAddrVosAreSame(EmailAddrVo vo1, EmailAddrVo vo2) {
+		assertEquals(vo1.getAcceptHtml(), vo2.getAcceptHtml());
+		assertEquals(vo1.getBounceCount(), vo2.getBounceCount());
+		assertEquals(vo1.getEmailAddr(), vo2.getEmailAddr());
+		assertEquals(vo1.getEmailAddrId(), vo2.getEmailAddrId());
+		assertEquals(vo1.getStatusId(), vo2.getStatusId());
+		assertEquals(vo1.getLastBounceTime(), vo2.getLastBounceTime());
+		assertEquals(vo1.getLastSentTime(), vo2.getLastSentTime());
+		assertEquals(vo1.getLastRcptTime(), vo2.getLastRcptTime());
 	}
 	
 	private EmailAddrVo selectByAddress(String emailAddr) {

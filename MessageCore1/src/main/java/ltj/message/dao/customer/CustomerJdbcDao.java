@@ -105,8 +105,9 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		List<Object> parms = new ArrayList<Object>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
-			"select count(*) from Customers a " +
-			whereSql;
+			"select count(*) from Customers a " 
+			+ " LEFT OUTER JOIN EmailAddr b on a.EmailAddrId=b.EmailAddrId "
+			+ whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
 	}
@@ -119,6 +120,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		 * paging logic
 		 */
 		String fetchOrder = "asc";
+		int pageSize = vo.getPageSize();
 		if (vo.getPageAction().equals(PagingVo.PageAction.FIRST)) {
 			// do nothing
 		}
@@ -136,19 +138,25 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-			List<CustomerVo> lastList = new ArrayList<CustomerVo>();
-			vo.setPageAction(PagingVo.PageAction.NEXT);
-			while (true) {
-				List<CustomerVo> nextList = getCustomersWithPaging(vo);
-				if (!nextList.isEmpty()) {
-					lastList = nextList;
-					vo.setStrIdLast(nextList.get(nextList.size() - 1).getCustId());
-				}
-				else {
-					break;
-				}
+			int rows = getCustomerCount(vo);
+			pageSize = rows % vo.getPageSize();
+			if (pageSize == 0) {
+				pageSize = Math.min(rows, vo.getPageSize());
 			}
-			return lastList;
+			fetchOrder = "desc";
+//			List<CustomerVo> lastList = new ArrayList<CustomerVo>();
+//			vo.setPageAction(PagingVo.PageAction.NEXT);
+//			while (true) {
+//				List<CustomerVo> nextList = getCustomersWithPaging(vo);
+//				if (!nextList.isEmpty()) {
+//					lastList = nextList;
+//					vo.setStrIdLast(nextList.get(nextList.size() - 1).getCustId());
+//				}
+//				else {
+//					break;
+//				}
+//			}
+//			return lastList;
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
 			if (vo.getStrIdFirst() != null) {
@@ -163,7 +171,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 				" LEFT OUTER JOIN EmailAddr b on a.EmailAddrId=b.EmailAddrId " +
 			whereSql +
 			" order by a.CustId " + fetchOrder +
-			" limit " + vo.getPageSize();
+			" limit " + pageSize;
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(vo.getPageSize());
@@ -172,9 +180,13 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 				new BeanPropertyRowMapper<CustomerVo>(CustomerVo.class));
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
-		if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
+		if ("desc".equals(fetchOrder)) {
 			// reverse the list
 			Collections.reverse(list);
+		}
+		if (!list.isEmpty()) {
+			vo.setStrIdFirst(list.get(0).getCustId());
+			vo.setStrIdLast(list.get(list.size() - 1).getCustId());
 		}
 		return list;
 	}

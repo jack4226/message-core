@@ -299,7 +299,7 @@ public class MsgInboxTest extends DaoTestBase {
 	
 	private MsgInboxVo selectByMsgId(long msgId) {
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
-		logger.info("selectByPrimaryKey: " + LF + msgInboxVo);
+		logger.info("MsgInboxDao - selectByPrimaryKey: " + LF + msgInboxVo);
 		return msgInboxVo;
 	}
 	
@@ -307,7 +307,7 @@ public class MsgInboxTest extends DaoTestBase {
 		List<MsgInboxVo> actions = msgInboxDao.getByFromAddrId(msgId);
 		for (Iterator<MsgInboxVo> it = actions.iterator(); it.hasNext();) {
 			MsgInboxVo vo = it.next();
-			logger.info("selectByFromAddrId: " + vo.getMsgId() + " - " + vo.getFromAddress());
+			logger.info("MsgInboxDao - selectByFromAddrId: " + vo.getMsgId() + " - " + vo.getFromAddress());
 		}
 		return actions;
 	}
@@ -316,7 +316,7 @@ public class MsgInboxTest extends DaoTestBase {
 		List<MsgInboxVo> actions = msgInboxDao.getByToAddrId(msgId);
 		for (Iterator<MsgInboxVo> it = actions.iterator(); it.hasNext();) {
 			MsgInboxVo vo = it.next();
-			logger.info("selectByToAddrId: " + vo.getMsgId() + " - " + vo.getToAddress());
+			logger.info("MsgInboxDao - selectByToAddrId: " + vo.getMsgId() + " - " + vo.getToAddress());
 		}
 		return actions;
 	}
@@ -352,7 +352,7 @@ public class MsgInboxTest extends DaoTestBase {
 			msgInboxVo.setCarrierCode(CarrierCode.SMTPMAIL.value());
 			msgInboxVo.setPurgeDate(new java.sql.Date(System.currentTimeMillis()));
 			rows = msgInboxDao.update(msgInboxVo);
-			logger.info("update: rows updated:  " + rows);
+			logger.info("MsgInboxDao - update: rows updated:  " + rows);
 			logger.info("InboxUnreadCount: " + unreadCountDao.selectInboxUnreadCount());
 		}
 		return rows;
@@ -360,7 +360,7 @@ public class MsgInboxTest extends DaoTestBase {
 	
 	private int deleteByPrimaryKey(long msgId) {
 		int rowsDeleted = msgInboxDao.deleteByPrimaryKey(msgId);
-		logger.info("deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		logger.info("MsgInboxDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		logger.info("InboxUnreadCount: " + unreadCountDao.selectInboxUnreadCount());
 		return rowsDeleted;
 	}
@@ -372,7 +372,7 @@ public class MsgInboxTest extends DaoTestBase {
 			msgInboxVo.setMsgId(nextVal);
 			logger.info("InboxUnreadCount before: " + unreadCountDao.selectInboxUnreadCount());
 			msgInboxDao.insert(msgInboxVo);
-			logger.info("insert: " + LF + msgInboxVo);
+			logger.info("MsgInboxDao - insert: " + LF + msgInboxVo);
 			logger.info("InboxUnreadCount after: "+ unreadCountDao.selectInboxUnreadCount());
 			return msgInboxVo;
 		}
@@ -391,7 +391,7 @@ public class MsgInboxTest extends DaoTestBase {
 
 	private MsgClickCountsVo selectClickCounts(long msgId) {
 		MsgClickCountsVo vo = msgClickCountsDao.getByPrimaryKey(msgId);
-		logger.info("selectByPrimaryKey - " + LF + vo);
+		logger.info("MsgInboxDao - selectByPrimaryKey - " + LF + vo);
 		return vo;
 	}
 
@@ -410,7 +410,7 @@ public class MsgInboxTest extends DaoTestBase {
 	
 	private int deleteClickCounts(long msgId) {
 		int rowsDeleted = msgClickCountsDao.deleteByPrimaryKey(msgId);
-		logger.info("deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		logger.info("MsgInboxDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 	

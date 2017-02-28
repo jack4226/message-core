@@ -16,6 +16,7 @@ import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.PrintUtil;
 import ltj.message.vo.CustomerVo;
 import ltj.message.vo.PagingCustVo;
+import ltj.message.vo.PagingVo.PageAction;
 
 public class CustomerTest extends DaoTestBase {
 	@Resource
@@ -53,28 +54,85 @@ public class CustomerTest extends DaoTestBase {
 
 	@Test
 	public void testSearchWithPaging() {
+		int testPageSize = 2;
 		PagingCustVo vo = new PagingCustVo();
-		List<CustomerVo> custList = customerDao.getCustomersWithPaging(vo);
-		assertFalse(custList.isEmpty());
+		vo.setPageSize(testPageSize);
+		List<CustomerVo> list1 = customerDao.getCustomersWithPaging(vo);
+		assertFalse(list1.isEmpty());
 		
-		CustomerVo cust = custList.get(0);
+		vo.setPageAction(PageAction.CURRENT);
+		List<CustomerVo> list2 = customerDao.getCustomersWithPaging(vo);
+		assertEquals(list1.size(), list2.size());
+		for (int i = 0; i < list1.size(); i++) {
+			assertCustomerVosAreSame(list1.get(i), list2.get(i));
+		}
+		
+		vo.setPageAction(PageAction.NEXT);
+		List<CustomerVo> list3 = customerDao.getCustomersWithPaging(vo);
+		if (!list3.isEmpty()) {
+			logger.info("Next page found, page size = " + list3.size());
+			assertTrue(list3.get(0).getCustId().compareTo(list1.get(list1.size() - 1).getCustId()) > 0);
+			vo.setPageAction(PageAction.PREVIOUS);
+			List<CustomerVo> list4 = customerDao.getCustomersWithPaging(vo);
+			assertEquals(list1.size(), list4.size());
+			for (int i = 0; i < list1.size(); i++) {
+				assertCustomerVosAreSame(list1.get(i), list4.get(i));
+			}
+		}
+		
+		vo.setPageAction(PageAction.LAST);
+		List<CustomerVo> list5 = customerDao.getCustomersWithPaging(vo);
+		assertFalse(list5.isEmpty());
+		
+		vo.setPageAction(PageAction.FIRST);
+		List<CustomerVo> list6 = customerDao.getCustomersWithPaging(vo);
+		assertEquals(list1.size(), list6.size());
+		for (int i = 0; i < list1.size(); i++) {
+			assertCustomerVosAreSame(list1.get(i), list6.get(i));
+		}
+		
+		CustomerVo cust = list1.get(0);
+		vo.resetPageContext();
 		vo.setClientId(Constants.DEFAULT_CLIENTID);
 		vo.setLastName(StringUtils.lowerCase(cust.getLastName()));
 		vo.setFirstName(StringUtils.upperCase(cust.getFirstName()));
 		vo.setEmailAddr(EmailAddrUtil.getEmailDomainName(cust.getEmailAddr()));
 		
-		custList = customerDao.getCustomersWithPaging(vo);
-		assertFalse(custList.isEmpty());
-		for (CustomerVo custvo : custList) {
-			System.out.println("Customer search result: " + PrintUtil.prettyPrint(custvo, 2));
+		list1 = customerDao.getCustomersWithPaging(vo);
+		assertFalse(list1.isEmpty());
+		for (CustomerVo custvo : list1) {
+			logger.info("Customer search result: " + PrintUtil.prettyPrint(custvo, 2));
 		}
 	}
 	
+	void assertCustomerVosAreSame(CustomerVo vo1, CustomerVo vo2) {
+		assertEquals(vo1.getClientId(), vo2.getClientId());
+		assertEquals(vo1.getBirthDate(), vo2.getBirthDate());
+		assertEquals(vo1.getCityName(), vo2.getCityName());
+		assertEquals(vo1.getCustId(), vo2.getCustId());
+		assertEquals(vo1.getCountry(), vo2.getCountry());
+		assertEquals(vo1.getDayPhone(), vo2.getDayPhone());
+		assertEquals(vo1.getEmailAddr(), vo2.getEmailAddr());
+		assertEquals(vo1.getFirstName(), vo2.getFirstName());
+		assertEquals(vo1.getLastName(), vo2.getLastName());
+		assertEquals(vo1.getRowId(), vo2.getRowId());
+		assertEquals(vo1.getEveningPhone(), vo2.getEveningPhone());
+		assertEquals(vo1.getMiddleName(), vo2.getMiddleName());
+		assertEquals(vo1.getMobilePhone(), vo2.getMobilePhone());
+		assertEquals(vo1.getMsgDetail(), vo2.getMsgDetail());
+		assertEquals(vo1.getPostalCode(), vo2.getPostalCode());
+		assertEquals(vo1.getProfession(), vo2.getProfession());
+		assertEquals(vo1.getSsnNumber(), vo2.getSsnNumber());
+		assertEquals(vo1.getStateCode(), vo2.getStateCode());
+		assertEquals(vo1.getStatusId(), vo2.getStatusId());
+		assertEquals(vo1.getStreetAddress(), vo2.getStreetAddress());
+		assertEquals(vo1.getZipCode4(), vo2.getZipCode4());
+	}
 	
 	private CustomerVo selectByCustId(CustomerVo vo) {
 		CustomerVo customer = customerDao.getByCustId(vo.getCustId());
 		if (customer!=null) {
-			System.out.println("CustomerDao - selectByCustId: "+LF+customer);
+			logger.info("CustomerDao - selectByCustId: "+LF+customer);
 		}
 		return customer;
 	}
@@ -82,7 +140,7 @@ public class CustomerTest extends DaoTestBase {
 	private CustomerVo selectByEmailAddrId(long emailId) {
 		CustomerVo vo = customerDao.getByEmailAddrId(emailId);
 		if (vo != null) {
-			System.out.println("CustomerDao - selectEmailAddrId: "+LF+vo);
+			logger.info("CustomerDao - selectEmailAddrId: "+LF+vo);
 		}
 		return vo;
 	}
@@ -91,7 +149,7 @@ public class CustomerTest extends DaoTestBase {
 		List<CustomerVo> list = (List<CustomerVo>)customerDao.getByClientId(clientId);
 		for (int i=0; i<list.size(); i++) {
 			CustomerVo customer = list.get(i);
-			System.out.println("CustomerDao - selectClientId: "+LF+customer);
+			logger.info("CustomerDao - selectClientId: "+LF+customer);
 		}
 		return list;
 	}
@@ -102,7 +160,7 @@ public class CustomerTest extends DaoTestBase {
 		if (customer!=null) {
 			customer.setStatusId("A");
 			rows = customerDao.update(customer);
-			System.out.println("CustomerDao - update: rows updated: "+ rows);
+			logger.info("CustomerDao - update: rows updated: "+ rows);
 		}
 		return rows;
 	}
@@ -114,7 +172,7 @@ public class CustomerTest extends DaoTestBase {
 			customer.setEmailAddr("test."+customer.getEmailAddr());
 			customer.setBirthDate(new java.util.Date());
 			customerDao.insert(customer);
-			System.out.println("CustomerDao - insert: "+customer);
+			logger.info("CustomerDao - insert: "+customer);
 			return customer;
 		}
 		return null;
@@ -122,7 +180,7 @@ public class CustomerTest extends DaoTestBase {
 	
 	private int delete(CustomerVo customerVo) {
 		int rowsDeleted = customerDao.delete(customerVo.getCustId());
-		System.out.println("CustomerDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("CustomerDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 }

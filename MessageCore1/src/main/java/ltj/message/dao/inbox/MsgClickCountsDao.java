@@ -9,6 +9,7 @@ public interface MsgClickCountsDao {
 	public MsgClickCountsVo getRandomRecord();
 	public int getMsgCountForWeb();
 	public MsgClickCountsVo getByPrimaryKey(long msgId);
+	public int getBroadcastsCount(PagingCountVo vo);
 	public List<MsgClickCountsVo> getBroadcastsWithPaging(PagingCountVo vo);
 	public int update(MsgClickCountsVo msgClickCountsVo);
 	public int deleteByPrimaryKey(long msgId);
