@@ -121,12 +121,26 @@ public class EmailAddrTest extends DaoTestBase {
 		vo.setPageAction(PageAction.LAST);
 		List<EmailAddrVo> list6 = emailAddrDao.getEmailAddrsWithPaging(vo);
 		assertFalse(list6.isEmpty());
+		vo.setPageAction(PageAction.PREVIOUS);
+		emailAddrDao.getEmailAddrsWithPaging(vo);
+		// back to the last page
+		vo.setPageAction(PageAction.NEXT);
+		List<EmailAddrVo> list7 = emailAddrDao.getEmailAddrsWithPaging(vo);
+		if (emailAddrDao.getEmailAddressCount(vo) <= vo.getPageSize()) {
+			assertEquals(0, list7.size());
+		}
+		else {
+			assertEquals(list6.size(), list7.size());
+			for (int i = 0; i < list6.size(); i++) {
+				assertEmailAddrVosAreSame(list6.get(i), list7.get(i));
+			}
+		}
 		// fetch the first page again
 		vo.setPageAction(PageAction.FIRST);
-		List<EmailAddrVo> list7 = emailAddrDao.getEmailAddrsWithPaging(vo);
-		assertEquals(list1.size(), list7.size());
+		List<EmailAddrVo> list8 = emailAddrDao.getEmailAddrsWithPaging(vo);
+		assertEquals(list1.size(), list8.size());
 		for (int i = 0; i < list1.size(); i++) {
-			assertEmailAddrVosAreSame(list1.get(i), list7.get(i));
+			assertEmailAddrVosAreSame(list1.get(i), list8.get(i));
 		}
 	}
 	

@@ -263,9 +263,14 @@ public class MsgInboxTest extends DaoTestBase {
 		// get it again
 		vo.setPageAction(PageAction.NEXT);
 		List<MsgInboxWebVo> list6 = msgInboxDao.getListForWeb(vo);
-		assertEquals(list5.size(), list6.size());
-		for (int i = 0; i < list5.size(); i++) {
-			assertMsgInboxWebVosSame(list5.get(i), list6.get(i));
+		if (msgInboxDao.getRowCountForWeb(vo) <= vo.getPageSize()) {
+			assertEquals(0, list6.size());
+		}
+		else {
+			assertEquals(list5.size(), list6.size());
+			for (int i = 0; i < list5.size(); i++) {
+				assertMsgInboxWebVosSame(list5.get(i), list6.get(i));
+			}
 		}
 		// back to the first page
 		vo.setPageAction(PageAction.FIRST);

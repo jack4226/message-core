@@ -129,9 +129,14 @@ public class SubscriptionTest extends DaoTestBase {
 		// back to the last page
 		vo.setPageAction(PageAction.NEXT);
 		List<SubscriptionVo> list6 = subscriptionDao.getSubscribersWithPaging(vo);
-		assertEquals(list5.size(), list6.size());
-		for (int i = 0; i < list5.size(); i++) {
-			assertSbsrVosAreSame(list5.get(i), list6.get(i));
+		if (subscriptionDao.getSubscriberCount(vo) <= vo.getPageSize()) {
+			assertEquals(0, list6.size());
+		}
+		else {
+			assertEquals(list5.size(), list6.size());
+			for (int i = 0; i < list5.size(); i++) {
+				assertSbsrVosAreSame(list5.get(i), list6.get(i));
+			}
 		}
 		// back to the first page
 		vo.setPageAction(PageAction.FIRST);
