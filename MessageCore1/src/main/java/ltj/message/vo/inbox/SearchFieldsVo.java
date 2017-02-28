@@ -9,6 +9,7 @@ import ltj.message.vo.PagingVo;
 
 public final class SearchFieldsVo extends PagingVo implements Serializable {
 	private static final long serialVersionUID = 8888455019361283024L;
+	
 	public static enum MsgType {All, Received, Sent, Draft, Closed, Trash};
 	public static enum RuleName {All};
 	
@@ -27,27 +28,25 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 	
 	// define paging context
 	public static final int MSG_INBOX_PAGE_SIZE = 25;
-	private Timestamp receivedTimeFirst = null;
-	private Timestamp receivedTimeLast = null;
-	private long msgIdFirst = -1;
-	private long msgIdLast = -1;
+	protected Timestamp receivedTimeFirst = null;
+	protected Timestamp receivedTimeLast = null;
 	// end of paging
 	
 	public static void main(String[] args) {
-		SearchFieldsVo vo = new SearchFieldsVo();
-		vo.printMethodNames();
-		System.out.println(vo.toString());
+		SearchFieldsVo vo1 = new SearchFieldsVo();
+		vo1.printMethodNames();
+		System.out.println(vo1.toString());
 		SearchFieldsVo vo2 = new SearchFieldsVo();
 		vo2.setMsgType(MsgType.Closed);
-		vo.setSubject("auto-reply");
+		vo1.setSubject("auto-reply");
 		vo2.setRuleName(RuleNameEnum.HARD_BOUNCE.name());
-		vo.setBody("test message");
+		vo1.setBody("test message");
 		vo2.setFromAddrId(10L);
-		vo.setFromAddr("test@test.com");
+		vo1.setFromAddr("test@test.com");
 		vo2.setToAddr("to@to.com");
-		vo.setToAddrId(20L);
-		System.out.println(vo.equalsLevel1(vo2));
-		System.out.println(vo.listChanges());
+		vo1.setToAddrId(20L);
+		System.out.println(vo1.equalsLevel1(vo2));
+		System.out.println(vo1.listChanges());
 	}
 	
 	public SearchFieldsVo() {
@@ -166,7 +165,9 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 	}
 	
 	public void copyLevel1To(SearchFieldsVo vo) {
-		if (vo == null) return;
+		if (vo == null) {
+			return;
+		}
 		vo.setMsgType(this.msgType);
 		vo.setRuleName(this.ruleName);
 		vo.setToAddrId(this.toAddrId);
@@ -256,15 +257,15 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 		this.receivedTimeLast = receivedTimeLast;
 	}
 	public long getMsgIdFirst() {
-		return msgIdFirst;
+		return nbrIdFirst;
 	}
 	public void setMsgIdFirst(long msgIdFirst) {
-		this.msgIdFirst = msgIdFirst;
+		this.nbrIdFirst = msgIdFirst;
 	}
 	public long getMsgIdLast() {
-		return msgIdLast;
+		return nbrIdLast;
 	}
 	public void setMsgIdLast(long msgIdLast) {
-		this.msgIdLast = msgIdLast;
+		this.nbrIdLast = msgIdLast;
 	}
 }

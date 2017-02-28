@@ -27,7 +27,6 @@ import ltj.message.util.StringUtil;
 import ltj.message.vo.CustomerVo;
 import ltj.message.vo.PagingCustVo;
 import ltj.message.vo.PagingVo;
-import ltj.message.vo.PagingAddrVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
@@ -184,7 +183,7 @@ public class CustomersListBean {
 		}
 	}
 	
-	public PagingAddrVo getPagingVo() {
+	public PagingCustVo getPagingVo() {
 		return pagingVo;
 	}
 	

@@ -20,6 +20,7 @@ import ltj.message.constant.MsgDirection;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
+import ltj.message.vo.PagingVo.PageAction;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
@@ -262,25 +263,25 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		 * paging logic
 		 */
 		String fetchOrder = "desc";
-		if (vo.getPageAction().equals(SearchFieldsVo.PageAction.FIRST)) {
+		if (vo.getPageAction().equals(PageAction.FIRST)) {
 			// do nothing
 		}
-		else if (vo.getPageAction().equals(SearchFieldsVo.PageAction.NEXT)) {
+		else if (vo.getPageAction().equals(PageAction.NEXT)) {
 			if (vo.getMsgIdLast() > -1) {
 				whereSql += CRIT[parms.size()] + " a.MsgId < ? ";
 				parms.add(vo.getMsgIdLast());
 			}
 		}
-		else if (vo.getPageAction().equals(SearchFieldsVo.PageAction.PREVIOUS)) {
+		else if (vo.getPageAction().equals(PageAction.PREVIOUS)) {
 			if (vo.getMsgIdFirst() > -1) {
 				whereSql += CRIT[parms.size()] + " a.MsgId > ? ";
 				parms.add(vo.getMsgIdFirst());
 				fetchOrder = "asc";
 			}
 		}
-		else if (vo.getPageAction().equals(SearchFieldsVo.PageAction.LAST)) {
+		else if (vo.getPageAction().equals(PageAction.LAST)) {
 			List<MsgInboxWebVo> lastList = new ArrayList<MsgInboxWebVo>();
-			vo.setPageAction(SearchFieldsVo.PageAction.NEXT);
+			vo.setPageAction(PageAction.NEXT);
 			while (true) {
 				List<MsgInboxWebVo> nextList = getListForWeb(vo);
 				if (!nextList.isEmpty()) {
@@ -293,7 +294,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			}
 			return lastList;
 		}
-		else if (vo.getPageAction().equals(SearchFieldsVo.PageAction.CURRENT)) {
+		else if (vo.getPageAction().equals(PageAction.CURRENT)) {
 			if (vo.getMsgIdFirst() > -1) {
 				whereSql += CRIT[parms.size()] + " a.MsgId <= ? ";
 				parms.add(vo.getMsgIdFirst());
@@ -336,9 +337,13 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				new BeanPropertyRowMapper<MsgInboxWebVo>(MsgInboxWebVo.class));
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
-		if (vo.getPageAction().equals(SearchFieldsVo.PageAction.PREVIOUS)) {
+		if (vo.getPageAction().equals(PageAction.PREVIOUS)) {
 			// reverse the list
 			Collections.reverse(list);
+		}
+		if (!list.isEmpty()) { // && !vo.getPageAction().equals(PageAction.CURRENT)) {
+			vo.setMsgIdFirst(list.get(0).getMsgId());
+			vo.setMsgIdLast(list.get(list.size() - 1).getMsgId());
 		}
 		return list;
 	}
@@ -376,7 +381,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		// ruleName
 		if (StringUtils.isNotBlank(vo.getRuleName())) {
-			if (!SearchFieldsVo.RuleName.All.toString().equals(vo.getRuleName())) {
+			if (!SearchFieldsVo.RuleName.All.name().equals(vo.getRuleName())) {
 				whereSql += CRIT[parms.size()] + " a.RuleName = ? ";
 				parms.add(vo.getRuleName());
 			}
@@ -393,7 +398,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		// readCount
 		if (vo.getRead() != null) {
-			if (vo.getRead().booleanValue()) {
+			if (vo.getRead()) {
 				whereSql += CRIT[parms.size()] + " a.ReadCount > ? ";
 			}
 			else {
@@ -402,7 +407,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			parms.add(0);
 		}
 		// msgFlag
-		if (vo.getFlagged() != null && vo.getFlagged().booleanValue()) {
+		if (vo.getFlagged() != null && vo.getFlagged()) {
 			whereSql += CRIT[parms.size()] + " a.Flagged = ? ";
 			parms.add(Constants.Y);
 		}
@@ -410,35 +415,41 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		if (StringUtils.isNotBlank(vo.getSubject())) {
 			String subj = vo.getSubject().trim();
 			if (subj.indexOf(" ") < 0) { // a single word
-				whereSql += CRIT[parms.size()] + " a.MsgSubject LIKE '%" + subj + "%' ";
+				whereSql += CRIT[parms.size()] + " a.MsgSubject LIKE ? ";
+				parms.add("%" + subj + "%");
 			}
 			else {
-				String regex = (subj + "").replaceAll("[ ]+", "|");
-				whereSql += CRIT[parms.size()] + " a.MsgSubject REGEXP '" + regex + "' ";
+				String regex = (subj + "").replaceAll("[ ]+", "|"); // match any word
+				whereSql += CRIT[parms.size()] + " a.MsgSubject REGEXP ? ";
+				parms.add(regex);
 			}
 		}
 		// body
 		if (StringUtils.isNotBlank(vo.getBody())) {
 			String body = vo.getBody().trim();
 			if (body.indexOf(" ") < 0) { // a single word
-				whereSql += CRIT[parms.size()] + " a.MsgBody LIKE '%" + body + "%' ";
+				whereSql += CRIT[parms.size()] + " a.MsgBody LIKE ? ";
+				parms.add("%" + body + "%");
 			}
 			else {
 				// ".+" or "[[:space:]].*" or "([[:space:]]+|[[:space:]].+[[:space:]])"
 				String regex = (body + "").replaceAll("[ ]+", "[[:space:]].*");
-				whereSql += CRIT[parms.size()] + " a.MsgBody REGEXP '" + regex + "' ";
+				whereSql += CRIT[parms.size()] + " a.MsgBody REGEXP ? ";
+				parms.add(regex);
 			}
 		}
 		// from address
 		if (StringUtils.isNotBlank(vo.getFromAddr()) && vo.getFromAddrId() == null) {
 			String from = vo.getFromAddr().trim();
 			if (from.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE '%" + from + "%' ";
+				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE ? ";
+				parms.add("%" + from + "%");
 			}
 			else {
 				//String regex = (from + "").replaceAll("[ ]+", ".+");
 				String regex = (from + "").replaceAll("[ ]+", "|");
-				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP '" + regex + "' ";
+				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP ? ";
+				parms.add(regex);
 			}
 		}
 		

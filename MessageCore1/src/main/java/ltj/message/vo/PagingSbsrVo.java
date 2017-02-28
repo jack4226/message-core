@@ -2,10 +2,11 @@ package ltj.message.vo;
 
 import ltj.message.util.StringUtil;
 
-public final class PagingSbsrVo extends PagingAddrVo implements java.io.Serializable, Cloneable {
+public final class PagingSbsrVo extends PagingVo implements java.io.Serializable, Cloneable {
 	private static final long serialVersionUID = -525908919519049524L;
 	private String listId = null;
 	private Boolean subscribed = null;
+	private String emailAddr = null;
 	
 	public static void main(String[] args) {
 		PagingSbsrVo vo1 = new PagingSbsrVo();
@@ -30,6 +31,12 @@ public final class PagingSbsrVo extends PagingAddrVo implements java.io.Serializ
 	}
 	public void setSubscribed(Boolean subscribed) {
 		this.subscribed = subscribed;
+	}
+	public String getEmailAddr() {
+		return emailAddr;
+	}
+	public void setEmailAddr(String emailAddr) {
+		this.emailAddr = emailAddr;
 	}
 
 }

@@ -184,6 +184,10 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	
 	private String buildWhereClause(PagingCustVo vo, List<Object> parms) {
 		String whereSql = "";
+		if (!StringUtil.isEmpty(vo.getStatusId())) {
+			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
+			parms.add(vo.getStatusId());
+		}
 		if (!StringUtil.isEmpty(vo.getClientId())) {
 			whereSql += CRIT[parms.size()] + " lower(a.ClientId) = ? ";
 			parms.add(vo.getClientId().toLowerCase());
@@ -203,10 +207,6 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		if (!StringUtil.isEmpty(vo.getDayPhone())) {
 			whereSql += CRIT[parms.size()] + " a.DayPhone = ? ";
 			parms.add(vo.getDayPhone());
-		}
-		if (!StringUtil.isEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
-			parms.add(vo.getStatusId());
 		}
 		// search by email address
 		if (!StringUtil.isEmpty(vo.getEmailAddr())) {

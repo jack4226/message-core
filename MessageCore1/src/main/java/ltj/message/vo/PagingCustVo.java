@@ -3,13 +3,14 @@ package ltj.message.vo;
 import ltj.message.util.StringUtil;
 
 
-public final class PagingCustVo extends PagingAddrVo implements java.io.Serializable, Cloneable {
+public final class PagingCustVo extends PagingVo implements java.io.Serializable, Cloneable {
 	private static final long serialVersionUID = 2702501767172625606L;
 	private String clientId = null;
 	private String ssnNumber = null;
 	private String dayPhone = null;
 	private String firstName = null;
 	private String lastName = null;
+	private String emailAddr = null;
 	
 	public static void main(String[] args) {
 		PagingCustVo vo1 = new PagingCustVo();
@@ -53,5 +54,11 @@ public final class PagingCustVo extends PagingAddrVo implements java.io.Serializ
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public String getEmailAddr() {
+		return emailAddr;
+	}
+	public void setEmailAddr(String emailAddr) {
+		this.emailAddr = emailAddr;
 	}
 }

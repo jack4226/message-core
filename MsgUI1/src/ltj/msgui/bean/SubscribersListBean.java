@@ -20,7 +20,6 @@ import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingSbsrVo;
 import ltj.message.vo.PagingVo;
-import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
@@ -144,7 +143,7 @@ public class SubscribersListBean {
 		}
 	}
 	
-	public PagingAddrVo getPagingVo() {
+	public PagingSbsrVo getPagingVo() {
 		return pagingVo;
 	}
 	
