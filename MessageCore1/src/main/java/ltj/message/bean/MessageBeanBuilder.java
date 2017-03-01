@@ -579,12 +579,7 @@ public final class MessageBeanBuilder {
 			 * Using isMimeType to determine the content type to avoid fetching
 			 * the actual content data until it is needed.
 			 */
-			if (p.isMimeType("text/plain") || p.isMimeType("text/html")) {
-				logger.info("processAttc: level " + level + ", text message: " + contentType);
-				aNode.setValue((String) p.getContent());
-				msgBean.getComponentsSize().add(Integer.valueOf(aNode.getSize()));
-			}
-			else if (p.isMimeType("multipart/*")) {
+			if (p.isMimeType("multipart/*") || p.getContent() instanceof javax.mail.internet.MimeMultipart) {
 				// multipart attachment(s) detected
 				logger.info("processAttc: level " + level + ", Recursive Multipart: " + contentType);
 				Multipart mp = (Multipart) p.getContent();
@@ -610,6 +605,11 @@ public final class MessageBeanBuilder {
 					processAttachment(subNode, p1, msgBean, level+1);
 					aNode.put(subNode);
 				}
+			}
+			else if ((p.isMimeType("text/plain") || p.isMimeType("text/html")) && p.getContent() instanceof String) {
+				logger.info("processAttc: level " + level + ", text message: " + contentType);
+				aNode.setValue((String) p.getContent());
+				msgBean.getComponentsSize().add(Integer.valueOf(aNode.getSize()));
 			}
 			else {
 				/*
