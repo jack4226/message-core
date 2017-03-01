@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import ltj.message.bo.customer.CustomerSignupBo;
 import ltj.message.bo.test.BoTestBase;
+import ltj.message.constant.Constants;
 import ltj.message.dao.customer.CustomerDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.exception.DataValidationException;
@@ -30,7 +31,7 @@ public class CustomerSignupBoTest extends BoTestBase {
 	
 	@Test
 	public void testCustomerSignupBo() throws Exception {
-		String listId = "SMPLLST1";
+		String listId = Constants.DEMOLIST1_NAME;
 		try {
 			CustomerVo vo = customerDao.getByCustId("test");
 			vo.setCustId(vo.getCustId()+"_v2");

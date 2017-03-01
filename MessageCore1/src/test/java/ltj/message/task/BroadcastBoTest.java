@@ -47,7 +47,7 @@ public class BroadcastBoTest extends BoTestBase {
 				logger.debug("MessageBean created:" + LF + messageBean);
 			}
 			broadcastBo.getJmsProcessor().setQueueName("mailSenderInput");
-			broadcastBo.setTaskArguments("SMPLLST2");
+			broadcastBo.setTaskArguments(Constants.DEMOLIST2_NAME);
 			broadcastBo.process(messageBean);
 			String regEx = (String) mailingListRegExBo.process(messageBean);
 			logger.info("RegEx: " + regEx + ", " + "test-list@domain.com".matches(regEx));
@@ -76,7 +76,7 @@ public class BroadcastBoTest extends BoTestBase {
 	public void broadcastRuleEngine() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		messageBean.setRuleName(RuleNameEnum.BROADCAST.name());
-		messageBean.setMailingListId("SMPLLST1");
+		messageBean.setMailingListId(Constants.DEMOLIST1_NAME);
 		messageBean.setBody("Dear ${CustomerName}:\n" + messageBean.getBody());
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);

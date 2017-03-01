@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.message.constant.Constants;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.emailaddr.UnsubCommentsDao;
@@ -16,7 +17,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.UnsubCommentsVo;
 
 public class UnsubCommentsTest extends DaoTestBase {
-	final String listId = "SMPLLST1";
+	final String listId = Constants.DEMOLIST1_NAME;
 	final String emailAddr = "jsmith@test.com";
 	final int testRowId = 1;
 	@Resource

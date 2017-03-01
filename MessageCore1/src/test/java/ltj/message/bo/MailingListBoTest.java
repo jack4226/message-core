@@ -19,6 +19,7 @@ import org.springframework.test.annotation.Rollback;
 import ltj.message.bo.mailinglist.MailingListBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.CodeType;
+import ltj.message.constant.Constants;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
@@ -48,7 +49,7 @@ public class MailingListBoTest extends BoTestBase {
 	private static Map<String, Integer> countMap = new HashMap<>();
 	
 	private static String testEmailAddr = "test" + StringUtils.leftPad(new Random().nextInt(10000) + "", 4, '0') + "@test.com";
-	private static String mailingListId = "SMPLLST1";
+	private static String mailingListId = Constants.DEMOLIST1_NAME;
 	
 	@Before
 	@Rollback(value=false)

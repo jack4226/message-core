@@ -23,6 +23,7 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.rule.RuleLoader;
 import ltj.message.bo.rule.RuleMatcher;
 import ltj.message.bo.rule.RulesDataBo;
+import ltj.message.constant.Constants;
 import ltj.message.constant.XHeaderName;
 import ltj.message.vo.rule.RuleVo;
 
@@ -176,7 +177,7 @@ public class RuleMatch2Test extends BoTestBase {
 			
 			// test #11 - Subscribe
 			mBean.setRuleName(null);
-			mBean.setTo(InternetAddress.parse("demolist1@localhost"));
+			mBean.setTo(InternetAddress.parse(Constants.DEMOLIST1_ADDR));
 			mBean.setSubject("subscribe  ");
 			mBean.setValue(new Date()+ "Test body message.");
 			mBean.setAttachments(null);
@@ -185,7 +186,7 @@ public class RuleMatch2Test extends BoTestBase {
 			
 			// test #12 - UnSubscribe
 			mBean.setRuleName(null);
-			mBean.setTo(InternetAddress.parse("demolist1@localhost"));
+			mBean.setTo(InternetAddress.parse(Constants.DEMOLIST1_ADDR));
 			mBean.setSubject("unsubscribe");
 			mBean.setValue(new Date()+ "Test body message.");
 			mBean.setAttachments(null);

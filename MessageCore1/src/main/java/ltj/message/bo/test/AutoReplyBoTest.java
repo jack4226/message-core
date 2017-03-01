@@ -17,6 +17,7 @@ import org.springframework.test.annotation.Rollback;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
+import ltj.message.constant.Constants;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 
 /*** Please start MailEngine and MailSender before running this test ***/
@@ -41,7 +42,7 @@ public class AutoReplyBoTest extends BoTestBase {
 	public void test1() throws Exception { // autoReply
 		messageBean = buildMessageBeanFromMsgStream();
 		assertNotNull(messageBean);
-		messageBean.setMailingListId("SMPLLST1");
+		messageBean.setMailingListId(Constants.DEMOLIST1_NAME);
 		Address[] from = InternetAddress.parse(replyToAddress);
 		messageBean.setFrom(from); // redirect to MailReader
 		autoReplyBo.setTaskArguments("SubscribeByEmailReplyHtml");

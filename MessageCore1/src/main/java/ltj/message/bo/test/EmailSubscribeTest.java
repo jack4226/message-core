@@ -43,7 +43,7 @@ public class EmailSubscribeTest extends BoTestBase {
 	private MailingListDao mailingListDao;
 	
 	private static String testFromAddress;
-	private static String mailingListAddr = "demolist1@localhost";
+	private static String mailingListAddr = Constants.DEMOLIST1_ADDR;
 
 	@Test
 	public void test1() {

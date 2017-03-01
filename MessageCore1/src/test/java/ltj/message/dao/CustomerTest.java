@@ -3,6 +3,7 @@ package ltj.message.dao;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -21,14 +22,18 @@ import ltj.message.vo.PagingVo.PageAction;
 public class CustomerTest extends DaoTestBase {
 	@Resource
 	private CustomerDao customerDao;
-	final String defaultCustId = "test";
+	
+	final static String defaultCustId = "test";
+	static String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 
 	@Test
 	public void insertSelectDelete() {
 		try {
 			List<CustomerVo> list = selectByClientId(Constants.DEFAULT_CLIENTID);
-			assertTrue(list.size()>0);
-			CustomerVo vo0 = selectByEmailAddrId(1L);
+			assertTrue(list.size() > 0);
+			long emailAddrId = list.get(0).getEmailAddrId();
+			assertTrue(emailAddrId > 0L);
+			CustomerVo vo0 = selectByEmailAddrId(emailAddrId);
 			assertNotNull(vo0);
 			CustomerVo vo = insert();
 			assertNotNull(vo);
@@ -47,8 +52,10 @@ public class CustomerTest extends DaoTestBase {
 		}
 		catch (Exception e) {
 			CustomerVo vo = new CustomerVo();
-			vo.setCustId(defaultCustId+"_1");
+			vo.setCustId(defaultCustId + "_" + suffix);
 			delete(vo);
+			e.printStackTrace();
+			fail();
 		}
 	}
 
@@ -131,8 +138,8 @@ public class CustomerTest extends DaoTestBase {
 	
 	private CustomerVo selectByCustId(CustomerVo vo) {
 		CustomerVo customer = customerDao.getByCustId(vo.getCustId());
-		if (customer!=null) {
-			logger.info("CustomerDao - selectByCustId: "+LF+customer);
+		if (customer != null) {
+			logger.info("CustomerDao - selectByCustId: " + LF + customer);
 		}
 		return customer;
 	}
@@ -146,10 +153,10 @@ public class CustomerTest extends DaoTestBase {
 	}
 	
 	private List<CustomerVo> selectByClientId(String clientId) {
-		List<CustomerVo> list = (List<CustomerVo>)customerDao.getByClientId(clientId);
-		for (int i=0; i<list.size(); i++) {
+		List<CustomerVo> list = (List<CustomerVo>) customerDao.getByClientId(clientId);
+		for (int i = 0; i < list.size(); i++) {
 			CustomerVo customer = list.get(i);
-			logger.info("CustomerDao - selectClientId: "+LF+customer);
+			logger.info("CustomerDao - selectClientId: " + LF + customer);
 		}
 		return list;
 	}
@@ -157,22 +164,22 @@ public class CustomerTest extends DaoTestBase {
 	private int update(CustomerVo vo) {
 		CustomerVo customer = customerDao.getByCustId(vo.getCustId());
 		int rows = 0;
-		if (customer!=null) {
+		if (customer != null) {
 			customer.setStatusId("A");
 			rows = customerDao.update(customer);
-			logger.info("CustomerDao - update: rows updated: "+ rows);
+			logger.info("CustomerDao - update: rows updated: " + rows);
 		}
 		return rows;
 	}
 	
 	private CustomerVo insert() {
 		CustomerVo customer = customerDao.getByCustId(defaultCustId);
-		if (customer!=null) {
-			customer.setCustId(customer.getCustId()+"_1");
-			customer.setEmailAddr("test."+customer.getEmailAddr());
+		if (customer != null) {
+			customer.setCustId(customer.getCustId() + "_" + suffix);
+			customer.setEmailAddr("test." + suffix + "@" + EmailAddrUtil.getEmailDomainName(customer.getEmailAddr()));
 			customer.setBirthDate(new java.util.Date());
 			customerDao.insert(customer);
-			logger.info("CustomerDao - insert: "+customer);
+			logger.info("CustomerDao - insert: " + customer);
 			return customer;
 		}
 		return null;
@@ -180,7 +187,7 @@ public class CustomerTest extends DaoTestBase {
 	
 	private int delete(CustomerVo customerVo) {
 		int rowsDeleted = customerDao.delete(customerVo.getCustId());
-		logger.info("CustomerDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("CustomerDao - delete: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 }

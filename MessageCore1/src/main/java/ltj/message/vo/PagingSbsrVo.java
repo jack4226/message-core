@@ -1,5 +1,6 @@
 package ltj.message.vo;
 
+import ltj.message.constant.Constants;
 import ltj.message.util.StringUtil;
 
 public final class PagingSbsrVo extends PagingVo implements java.io.Serializable, Cloneable {
@@ -12,7 +13,7 @@ public final class PagingSbsrVo extends PagingVo implements java.io.Serializable
 		PagingSbsrVo vo1 = new PagingSbsrVo();
 		vo1.printMethodNames();
 		PagingSbsrVo vo2 = new PagingSbsrVo();
-		vo2.setListId("SMPLLST1");
+		vo2.setListId(Constants.DEMOLIST1_NAME);
 		vo2.setStatusId("A");
 		StringUtil.stripAll(vo1);
 		System.out.println(vo1.toString());

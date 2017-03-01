@@ -480,7 +480,7 @@ DELIMITER ;
 					ps.execute();
 				}
 			}
-//			ps.setString(1, "SMPLLST1");
+//			ps.setString(1, Constants.DEMOLIST1_NAME);
 //			ps.setString(2, "Sample List 1");
 //			ps.setString(3, "demolist1");
 //			ps.setString(4, "Sample mailing list 1");
@@ -490,7 +490,7 @@ DELIMITER ;
 //			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
 //			ps.execute();
 //			
-//			ps.setString(1, "SMPLLST2");
+//			ps.setString(1, Constants.DEMOLIST2_NAME);
 //			ps.setString(2, "Sample List 2");
 //			ps.setString(3, "demolist2");
 //			ps.setString(4, "Sample mailing list 2");
@@ -588,31 +588,31 @@ DELIMITER ;
 			}
 			
 //			ps.setLong(1, 1);
-//			ps.setString(2, "SMPLLST1");
+//			ps.setString(2, Constants.DEMOLIST1_NAME);
 //			ps.setString(3, Constants.Y);
 //			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 //			ps.execute();
 //			
 //			ps.setLong(1, 2);
-//			ps.setString(2, "SMPLLST1");
+//			ps.setString(2, Constants.DEMOLIST1_NAME);
 //			ps.setString(3, Constants.Y);
 //			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 //			ps.execute();
 //			
 //			ps.setLong(1, 3);
-//			ps.setString(2, "SMPLLST1");
+//			ps.setString(2, Constants.DEMOLIST1_NAME);
 //			ps.setString(3, Constants.Y);
 //			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 //			ps.execute();
 //			
 //			ps.setLong(1, 1);
-//			ps.setString(2, "SMPLLST2");
+//			ps.setString(2, Constants.DEMOLIST2_NAME);
 //			ps.setString(3, Constants.Y);
 //			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 //			ps.execute();
 //			
 //			ps.setLong(1, 2);
-//			ps.setString(2, "SMPLLST2");
+//			ps.setString(2, Constants.DEMOLIST2_NAME);
 //			ps.setString(3, Constants.Y);
 //			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
 //			ps.execute();
@@ -947,7 +947,7 @@ DELIMITER ;
 			}
 			
 //			ps.setString(1, "SampleNewsletter1");
-//			ps.setString(2, "SMPLLST1");
+//			ps.setString(2, Constants.DEMOLIST1_NAME);
 //			ps.setString(3, "Sample newsletter to ${SubscriberAddress} with Open/Click/Unsubscribe tracking");
 //			ps.setString(4,
 //					"Dear ${CustomerName},<p/>" + LF +
@@ -981,7 +981,7 @@ DELIMITER ;
 //			ps.execute();
 //			
 //			ps.setString(1, "SampleNewsletter2");
-//			ps.setString(2, "SMPLLST2");
+//			ps.setString(2, Constants.DEMOLIST2_NAME);
 //			ps.setString(3, "Sample HTML newsletter to ${SubscriberAddress}");
 //			ps.setString(4, "Dear ${SubscriberAddress},<p/>" + LF +
 //				"This is a sample HTML newsletter message for a traditional mailing list. " + LF +
@@ -1013,7 +1013,7 @@ DELIMITER ;
 //			ps.execute();
 //			
 //			ps.setString(1, "SampleNewsletter3");
-//			ps.setString(2, "SMPLLST2");
+//			ps.setString(2, Constants.DEMOLIST2_NAME);
 //			ps.setString(3, "Sample Plain text newsletter to ${SubscriberAddress}");
 //			ps.setString(4, "Dear ${SubscriberAddress}," + LF + LF + 
 //				"This is a sample text newsletter message for a traditional mailing list." + LF +

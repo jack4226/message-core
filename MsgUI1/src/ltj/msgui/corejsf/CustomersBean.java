@@ -29,7 +29,7 @@ public class CustomersBean {
 
 	public DataModel getAll() {
 		if (customers == null) {
-			List<CustomerVo> customerList = getCustomerDao().getAll();
+			List<CustomerVo> customerList = getCustomerDao().getFirst100();
 			customers = new ListDataModel(customerList);
 		}
 		return customers;

@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
@@ -26,7 +27,7 @@ public class DeliveryStatusTest extends DaoTestBase {
 	@Resource
 	private MsgInboxDao msgInboxDao;
 	private static long testMsgId = 3L;
-	private String testEmailAddr = "demolist1@localhost";
+	private String testEmailAddr = Constants.DEMOLIST1_ADDR;
 
 	@Test
 	@Rollback(value=true)
@@ -62,7 +63,7 @@ public class DeliveryStatusTest extends DaoTestBase {
 		List<DeliveryStatusVo> actions = deliveryStatusDao.getByMsgId(msgId);
 		for (Iterator<DeliveryStatusVo> it = actions.iterator(); it.hasNext();) {
 			DeliveryStatusVo deliveryStatusVo = it.next();
-			System.out.println("DeliveryStatusDao - selectByMsgId: " + LF + deliveryStatusVo);
+			logger.info("DeliveryStatusDao - selectByMsgId: " + LF + deliveryStatusVo);
 		}
 		return actions;
 	}
@@ -70,20 +71,20 @@ public class DeliveryStatusTest extends DaoTestBase {
 	private DeliveryStatusVo selectByPrimaryKey(long msgId, long finalRcptId) {
 		DeliveryStatusVo deliveryStatusVo = (DeliveryStatusVo) deliveryStatusDao.getByPrimaryKey(
 				msgId, finalRcptId);
-		System.out.println("AttachmentsDao - selectByPrimaryKey: " + LF + deliveryStatusVo);
+		logger.info("AttachmentsDao - selectByPrimaryKey: " + LF + deliveryStatusVo);
 		return deliveryStatusVo;
 	}
 
 	private int update(DeliveryStatusVo deliveryStatusVo) {
 		deliveryStatusVo.setDeliveryStatus("");
 		int rows = deliveryStatusDao.update(deliveryStatusVo);
-		System.out.println("AttachmentsDao - update: " + LF + deliveryStatusVo);
+		logger.info("AttachmentsDao - update: " + LF + deliveryStatusVo);
 		return rows;
 	}
 
 	private int deleteByPrimaryKey(long msgId, long finalRcptId) {
 		int rowsDeleted = deliveryStatusDao.deleteByPrimaryKey(msgId, finalRcptId);
-		System.out.println("DeliveryStatusDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		logger.info("DeliveryStatusDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 
@@ -93,7 +94,7 @@ public class DeliveryStatusTest extends DaoTestBase {
 			DeliveryStatusVo vo = list.get(list.size() - 1);
 			vo.setFinalRecipientId(vo.getFinalRecipientId() + 1);
 			int rows = deliveryStatusDao.insert(vo);
-			System.out.println("DeliveryStatusDao - insert: rows inserted " + rows + LF + vo);
+			logger.info("DeliveryStatusDao - insert: rows inserted " + rows + LF + vo);
 			return vo;
 		}
 		else {
@@ -108,14 +109,14 @@ public class DeliveryStatusTest extends DaoTestBase {
 			vo.setDsnRfc822("RFC822");
 			vo.setDsnText("DESn Text");
 			int rows = deliveryStatusDao.insert(vo);
-			System.out.println("DeliveryStatusDao - insert: rows inserted " + rows + LF + vo);
+			logger.info("DeliveryStatusDao - insert: rows inserted " + rows + LF + vo);
 			return vo;
 		}
 	}
 
 	private EmailAddrVo selectByAddress(String emailAddr) {
 		EmailAddrVo addrVo = emailAddrDao.findByAddress(emailAddr);
-		System.out.println("EmailAddrDao - selectByAddress: "+LF+addrVo);
+		logger.info("EmailAddrDao - selectByAddress: "+LF+addrVo);
 		return addrVo;
 	}
 }

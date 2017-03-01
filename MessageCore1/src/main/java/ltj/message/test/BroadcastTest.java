@@ -20,6 +20,7 @@ import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.CodeType;
+import ltj.message.constant.Constants;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SubscriptionDao;
 import ltj.message.vo.emailaddr.EmailAddrVo;
@@ -47,7 +48,7 @@ public class BroadcastTest extends BoTestBase {
 	private static int sizeBefore = 0;
 
 	private static String sbsrAddr = "sbsr" + StringUtils.leftPad(new Random().nextInt(1000)+"", 3, '0') + "@ltj.com";
-	private static String listAddr = "demolist2@localhost";
+	private static String listAddr = Constants.DEMOLIST2_ADDR;
 	
 	@Test
 	@Rollback(value=false)
@@ -67,7 +68,7 @@ public class BroadcastTest extends BoTestBase {
 			messageBean.setSubject("Test Broadcast message - " + suffix);
 			messageBean.setBody("Test Broadcast message body.");
 			messageBean.setRuleName(RuleNameEnum.BROADCAST.name());
-			messageBean.setMailingListId("SMPLLST1");
+			messageBean.setMailingListId(Constants.DEMOLIST1_NAME);
 			messageBean.setBody("Dear ${CustomerName}:" + LF + messageBean.getBody());
 			messageParser.parse(messageBean);
 			System.out.println("MessageBean:" + LF + messageBean);

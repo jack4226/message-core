@@ -21,6 +21,7 @@ import ltj.message.bean.MessageNode;
 import ltj.message.bean.MsgHeader;
 import ltj.message.bo.rule.RuleLoader;
 import ltj.message.bo.rule.RuleMatcher;
+import ltj.message.constant.Constants;
 import ltj.message.constant.XHeaderName;
 
 public class RuleMatchTest extends BoTestBase {
@@ -178,7 +179,7 @@ public class RuleMatchTest extends BoTestBase {
 		
 		// test #11 - Subscribe
 		mBean.setRuleName(null);
-		mBean.setTo(InternetAddress.parse("demolist1@localhost"));
+		mBean.setTo(InternetAddress.parse(Constants.DEMOLIST1_ADDR));
 		mBean.setSubject("subscribe  ");
 		mBean.setValue(new Date()+ "Test body message.");
 		mBean.setAttachments(null);
@@ -195,7 +196,7 @@ public class RuleMatchTest extends BoTestBase {
 		
 		// test #12 - UnSubscribe
 		mBean.setRuleName(null);
-		mBean.setTo(InternetAddress.parse("demolist1@localhost"));
+		mBean.setTo(InternetAddress.parse(Constants.DEMOLIST1_ADDR));
 		mBean.setSubject("unsubscribe");
 		mBean.setValue(new Date()+ "Test body message.");
 		mBean.setAttachments(null);
@@ -203,7 +204,7 @@ public class RuleMatchTest extends BoTestBase {
 		logger.info("##### RuleName: "+ruleName_u1+LF);
 
 		mBean.setRuleName(null);
-		mBean.setTo(InternetAddress.parse("demolist1@localhost"));
+		mBean.setTo(InternetAddress.parse(Constants.DEMOLIST1_ADDR));
 		mBean.setSubject("unsubscribe");
 		mBean.setValue(new Date()+ "Test body message.");
 		mBean.setAttachments(null);

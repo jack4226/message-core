@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
+import ltj.message.constant.Constants;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.vo.emailaddr.MailingListVo;
@@ -16,7 +17,7 @@ import ltj.message.vo.emailaddr.MailingListVo;
 public class MailingListTest extends DaoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
-	private String listId = "SMPLLST1";
+	private String listId = Constants.DEMOLIST1_NAME;
 
 	@Test
 	public void testInsertSelectDelete() {

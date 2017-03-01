@@ -133,7 +133,7 @@ public class LoadInboxTables {
 		in.setMsgSubject("Test Broadcast Subject");
 		in.setMsgPriority("2 (Normal)");
 		in.setReceivedTime(updtTime);
-		addrVo = emailAddrDao.findByAddress("demolist1@localhost");
+		addrVo = emailAddrDao.findByAddress(Constants.DEMOLIST1_ADDR);
 		in.setFromAddrId(addrVo.getEmailAddrId());
 		in.setReplyToAddrId(null);
 		in.setToAddrId(addrVo.getEmailAddrId());
@@ -155,7 +155,7 @@ public class LoadInboxTables {
 		MsgClickCountsVo in2 = new MsgClickCountsVo();
 		
 		in2.setMsgId(msgId);
-		in2.setListId("SMPLLST1");
+		in2.setListId(Constants.DEMOLIST1_NAME);
 		in2.setSentCount(1);
 		in2.setOpenCount(1);
 		in2.setClickCount(1);

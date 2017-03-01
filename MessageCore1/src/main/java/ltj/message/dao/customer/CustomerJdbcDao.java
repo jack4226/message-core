@@ -90,7 +90,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	}
 	
 	@Override
-	public List<CustomerVo> getAll() {
+	public List<CustomerVo> getFirst100() {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
 				"from Customers limit 100";

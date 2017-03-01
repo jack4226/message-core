@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.message.constant.Constants;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgUnsubCommentsDao;
@@ -49,7 +50,7 @@ public class MsgUnsubCommentsTest extends DaoTestBase {
 		vo.setComments("Test Comments");
 		vo.setMsgId(2L);
 		vo.setEmailAddrId(9L);
-		vo.setListId("SMPLLST1");
+		vo.setListId(Constants.DEMOLIST1_NAME);
 		vo.setAddTime(new java.sql.Timestamp(System.currentTimeMillis()));
 		msgUnsubCommentsDao.insert(vo);	
 	}
@@ -102,7 +103,7 @@ public class MsgUnsubCommentsTest extends DaoTestBase {
 		else {
 			MsgUnsubCommentsVo vo = new MsgUnsubCommentsVo();
 			vo.setComments("Test Comments.");
-			//String listId = "SMPLLST1";
+			//String listId = Constants.DEMOLIST1_NAME;
 			String emailAddr = "jsmith@test.com";
 			Long msgId = 2L;
 			EmailAddrVo addr = emailAddrDao.getByAddress(emailAddr);

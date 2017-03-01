@@ -46,6 +46,7 @@ public class AttachmentsTest extends DaoTestBase {
 		catch (Exception e) {
 			deleteLast(testMsgId);
 			e.printStackTrace();
+			fail();
 		}
 	}
 	

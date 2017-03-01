@@ -20,7 +20,7 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
 
 public class SubscriptionTest extends DaoTestBase {
-	final String listId = "SMPLLST1";
+	final String listId = Constants.DEMOLIST1_NAME;
 	final String testAddr = "subtest@test.com";
 	@Resource
 	private SubscriptionDao subscriptionDao;

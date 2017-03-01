@@ -39,7 +39,7 @@ public class TaskDispatcherTest extends BoTestBase {
 	private MailingListDao mailingListDao;
 
 	private static String testFromAddress;
-	private static String mailingListAddr = "demolist1@localhost";
+	private static String mailingListAddr = Constants.DEMOLIST1_ADDR;
 	private static MessageBean messageBean;
 	
 	@Test

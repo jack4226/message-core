@@ -1,5 +1,7 @@
 package ltj.message.constant;
 
+import ltj.data.preload.MailingListEnum;
+
 public final class Constants {
 	
 	public final static String DEFAULT_USER_ID = "MsgMaint";
@@ -34,6 +36,12 @@ public final class Constants {
 	// suspend email address after 5 times of consecutive bounces
 	public final static int BOUNCE_SUSPEND_THRESHOLD = 5;
 
+	// demo mailing list
+	public final static String DEMOLIST1_ADDR = MailingListEnum.SMPLLST1.getAcctName() + "@localhost";
+	public final static String DEMOLIST2_ADDR = MailingListEnum.SMPLLST2.getAcctName() + "@localhost";	
+	public final static String DEMOLIST1_NAME = MailingListEnum.SMPLLST1.name();
+	public final static String DEMOLIST2_NAME = MailingListEnum.SMPLLST2.name();
+	
 	//
 	// define VERP constants
 	//

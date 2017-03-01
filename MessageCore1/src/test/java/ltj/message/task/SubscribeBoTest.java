@@ -34,7 +34,7 @@ public class SubscribeBoTest extends BoTestBase {
 	private MailingListDao mailingListDao;
 	
 	private String testFromAddress = "test@test.com";
-	private String mailingListAddr = "demolist2@localhost";
+	private String mailingListAddr = Constants.DEMOLIST2_ADDR;
 	private enum Action {
 		Subscribe, Unsubscribe
 	}

@@ -10,7 +10,7 @@ public interface CustomerDao {
 	public List<CustomerVo> getByClientId(String clientId);
 	public CustomerVo getByEmailAddrId(long emailAddrId);
 	public CustomerVo getByEmailAddress(String emailAddr);
-	public List<CustomerVo> getAll();
+	public List<CustomerVo> getFirst100();
 	public int getCustomerCount(PagingCustVo vo);
 	public List<CustomerVo> getCustomersWithPaging(PagingCustVo vo);
 	public int update(CustomerVo customerVo);
