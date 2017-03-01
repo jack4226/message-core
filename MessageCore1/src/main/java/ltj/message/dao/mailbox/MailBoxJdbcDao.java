@@ -59,7 +59,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	
 	@Override
 	public List<MailBoxVo> getAll(boolean onlyActive) {
-		List<String> keys = new ArrayList<String>();
+		List<String> keys = new ArrayList<>();
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
 				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
 				"from MailBoxes ";
@@ -75,7 +75,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	
 	@Override
 	public List<MailBoxVo> getAllForTrial(boolean onlyActive) {
-		List<String> keys = new ArrayList<String>();
+		List<String> keys = new ArrayList<>();
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
 				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
 				"from MailBoxes ";

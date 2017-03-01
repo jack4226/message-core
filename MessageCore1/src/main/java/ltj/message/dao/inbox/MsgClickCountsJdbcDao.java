@@ -69,7 +69,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	
 	@Override
 	public int getBroadcastsCount(PagingCountVo vo) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
 				"select count(*) " +
@@ -84,7 +84,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	
 	@Override
 	public List<MsgClickCountsVo> getBroadcastsWithPaging(PagingCountVo vo) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic
@@ -209,7 +209,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	
 	@Override
 	public int updateSentCount(long msgId, int count) {
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		String sql =
 			"update MsgClickCounts set " +
@@ -223,7 +223,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	
 	@Override
 	public int updateOpenCount(long msgId, int count) {
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		String sql =
 			"update MsgClickCounts set " +
@@ -243,7 +243,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	@Override
 	public int updateClickCount(long msgId, int count) {
 		Timestamp currTime = new Timestamp(System.currentTimeMillis());
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(currTime);
 		fields.add(msgId);
 		String sql =
@@ -263,7 +263,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 
 	@Override
 	public int updateReferalCount(long msgId, int count) {
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		String sql =
 			"update MsgClickCounts set " +
@@ -282,7 +282,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	@Override
 	public int updateStartTime(long msgId) {
 		Timestamp currTime = new Timestamp(System.currentTimeMillis());
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(currTime);
 		fields.add(msgId);
 		String sql =
@@ -296,7 +296,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	
 	@Override
 	public int updateUnsubscribeCount(long msgId, int count) {
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		String sql =
 			"update MsgClickCounts set " +
@@ -309,7 +309,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	
 	@Override
 	public int updateComplaintCount(long msgId, int count) {
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		String sql =
 			"update MsgClickCounts set " +
@@ -325,7 +325,7 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		String sql = 
 			"delete from MsgClickCounts where msgid=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

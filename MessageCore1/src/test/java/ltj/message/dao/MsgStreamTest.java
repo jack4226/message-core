@@ -11,49 +11,53 @@ import javax.annotation.Resource;
 import javax.mail.MessagingException;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
+import ltj.message.bo.test.RuleEngineTest;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgStreamDao;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.vo.outbox.MsgStreamVo;
 
+@FixMethodOrder
 public class MsgStreamTest extends DaoTestBase {
 	@Resource
 	private MsgStreamDao msgStreamDao;
 	@Resource
 	private MsgInboxDao msgInboxDao;
 
+	private static MsgStreamVo lastRecord;
+	
 	@Before
 	@Rollback(value=false)
 	public void checkMsgStream() throws IOException {
-		if (msgStreamDao.getLastRecord()==null) {
-			MsgInboxVo msgInboxVo = msgInboxDao.getRandomRecord();
-			assertNotNull(msgInboxVo);
-			MsgStreamVo msgStreamVo = new MsgStreamVo();
-			msgStreamVo.setMsgId(msgInboxVo.getMsgId());
-			msgStreamVo.setFromAddrId(msgInboxVo.getFromAddrId());
-			msgStreamVo.setAddTime(msgInboxVo.getUpdtTime());
-			msgStreamVo.setMsgStream(getBouncedMail(1));
-			insert(msgStreamVo);
+		if (msgStreamDao.getLastRecord() == null) {
+			insertStream();
 		}
-		/*
-		 * This did not work, the MsgStream record was inserted, but the
-		 * testMsgStream.selectLastRecord() still returns a null.
-		 */
-//		if (msgStreamDao.getLastRecord()==null) {
-//			Result result = JUnitCore.runClasses(RuleEngineTest.class);
-//			for (Failure failure : result.getFailures()) {
-//				System.err.println(failure.toString());
-//			}
-//		}
+		lastRecord = msgStreamDao.getLastRecord();
 	}
 
-	byte[] getBouncedMail(int fileNbr) {
+	@Rollback(value=false)
+	private MsgStreamVo insertStream() {
+		MsgInboxVo msgInboxVo = msgInboxDao.getRandomRecord();
+		assertNotNull(msgInboxVo);
+		MsgStreamVo msgStreamVo = new MsgStreamVo();
+		msgStreamVo.setMsgId(msgInboxVo.getMsgId());
+		msgStreamVo.setFromAddrId(msgInboxVo.getFromAddrId());
+		msgStreamVo.setAddTime(msgInboxVo.getUpdtTime());
+		msgStreamVo.setMsgStream(getBouncedMail(1));
+		return insert(msgStreamVo);
+	}
+	
+	private byte[] getBouncedMail(int fileNbr) {
 		InputStream is = getClass().getResourceAsStream(
 				"/ltj/message/bo/inbox/bouncedmails/BouncedMail_" + fileNbr + ".txt");
 		BufferedInputStream bis = new BufferedInputStream(is);
@@ -74,10 +78,32 @@ public class MsgStreamTest extends DaoTestBase {
 		}
 		return null;
 	}
+	
+	static boolean runRuleEngineTest = false;
+
+	@Test
+	public void test1() {
+		assertNotNull(lastRecord);
+		/*
+		 * Received error from Spring framework:
+		 * java.lang.IllegalStateException: Cannot start a new transaction without ending the existing transaction.
+		 */
+		if (lastRecord != null && runRuleEngineTest) {
+			try {
+				Result result = JUnitCore.runClasses(RuleEngineTest.class);
+				for (Failure failure : result.getFailures()) {
+					System.err.println(failure.toString());
+				}
+			}
+			catch (Exception e) {
+				fail();
+			}
+		}
+	}
 
 	@Test
 	@Rollback(value=true)
-	public void testMsgStream() throws MessagingException {
+	public void test2() throws MessagingException {
 		MsgStreamVo msgStreamVo = selectLastRecord();
 		assertNotNull(msgStreamVo);
 		MsgStreamVo msgStreamVo2 = selectByPrimaryKey(msgStreamVo.getMsgId());

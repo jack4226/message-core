@@ -23,7 +23,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 			"from " +
 				"Attachments where msgid=? and attchmntDepth=? and attchmntSeq=? ";
 		
-		Object[] parms = new Object[] {msgId+"",attchmntDepth+"",attchmntSeq+""};
+		Object[] parms = new Object[] {msgId, attchmntDepth, attchmntSeq};
 		try {
 			AttachmentsVo vo = getJdbcTemplate().queryForObject(sql, parms, 
 					new BeanPropertyRowMapper<AttachmentsVo>(AttachmentsVo.class));
@@ -41,9 +41,25 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 			" from " +
 				" Attachments where msgId=? " +
 			" order by attchmntDepth, attchmntSeq";
-		Object[] parms = new Object[] {msgId+""};
+		Object[] parms = new Object[] {msgId};
 		List<AttachmentsVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<AttachmentsVo>(AttachmentsVo.class));
+		return list;
+	}
+	
+	@Override
+	public List<AttachmentsVo> getRandomRecord() {
+		String sql = 
+				"select * " +
+				" from " +
+					" Attachments where msgId >= (RAND() * (select max(msgId) from Attachments)) " +
+				" order by msgId limit 1 ";
+
+		List<AttachmentsVo> list = getJdbcTemplate().query(sql,
+				new BeanPropertyRowMapper<AttachmentsVo>(AttachmentsVo.class));
+		if (list.size() > 0) {
+			return getByMsgId(list.get(0).getMsgId());
+		}
 		return list;
 	}
 	
@@ -60,10 +76,10 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		String sql = 
 			"delete from Attachments where msgid=? and attchmntDepth=? and attchmntSeq=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(msgId+"");
-		fields.add(attchmntDepth+"");
-		fields.add(attchmntSeq+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgId);
+		fields.add(attchmntDepth);
+		fields.add(attchmntSeq);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
@@ -74,8 +90,8 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		String sql = 
 			"delete from Attachments where msgid=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(msgId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;

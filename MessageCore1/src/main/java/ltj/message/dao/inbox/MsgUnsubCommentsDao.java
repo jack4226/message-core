@@ -6,7 +6,7 @@ import ltj.message.vo.inbox.MsgUnsubCommentsVo;
 
 public interface MsgUnsubCommentsDao {
 	public MsgUnsubCommentsVo getByPrimaryKey(int rowId);
-	public List<MsgUnsubCommentsVo> getAll();
+	public List<MsgUnsubCommentsVo> getFirst100();
 	public List<MsgUnsubCommentsVo> getByMsgId(long msgId);
 	public List<MsgUnsubCommentsVo> getByEmailAddrId(long emailAddrId);
 	public List<MsgUnsubCommentsVo> getByListId(String listId);

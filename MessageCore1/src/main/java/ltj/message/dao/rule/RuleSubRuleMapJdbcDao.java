@@ -55,7 +55,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		String sql = 
 			"delete from RuleSubRuleMap where ruleName=? and subRuleName=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
+		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);
 		fields.add(subRuleName);
 		
@@ -69,7 +69,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		String sql = 
 			"delete from RuleSubRuleMap where ruleName=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
+		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

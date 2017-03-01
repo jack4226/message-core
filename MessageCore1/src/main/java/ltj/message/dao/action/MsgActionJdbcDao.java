@@ -63,7 +63,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 				" where a.ActionId = b.ActionId " +
 				" and RuleName=? and StartTime<=? and StatusId=? ";
 		
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(ruleName);
 		keys.add(startTime);
 		keys.add(StatusId.ACTIVE.value());
@@ -112,7 +112,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	
 	@Override
 	public MsgActionVo getByUniqueKey(String ruleName, int actionSeq, Timestamp startTime, String clientId) {
-		List<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(ruleName);
 		keys.add(actionSeq);
 		keys.add(startTime);
@@ -150,7 +150,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 				" where a.ActionId = b.ActionId " +
 				" and RuleName=? and ActionSeq=? and StartTime<=? and StatusId=? ";
 		
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(ruleName);
 		keys.add(actionSeq);
 		keys.add(startTime);
@@ -208,7 +208,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	
 	@Override
 	public synchronized int deleteByUniqueKey(String ruleName, int actionSeq, Timestamp startTime, String clientId) {
-		List<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(ruleName);
 		keys.add(actionSeq);
 		keys.add(startTime);

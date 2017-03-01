@@ -18,17 +18,23 @@ import ltj.message.vo.inbox.AttachmentsVo;
 public class AttachmentsTest extends DaoTestBase {
 	@Resource
 	private AttachmentsDao attachmentsDao;
-	long testMsgId = 2L;
+	
+	static long testMsgId = 2L;
 	
 	@Test
 	public void insertUpdateDelete() {
 		try {
+			assertTrue(attachmentsDao.getRandomRecord().size() > 0);
 			List<AttachmentsVo> list = selectByMsgId(testMsgId);
-			assertTrue(list.size()>0);
+			if (list.isEmpty()) {
+				list = attachmentsDao.getRandomRecord();
+				assertTrue(list.size() > 0);
+				testMsgId = list.get(0).getMsgId();
+			}
 			AttachmentsVo vo = insert(testMsgId);
 			assertNotNull(vo);
 			List<AttachmentsVo> list2 = selectByMsgId(testMsgId);
-			assertTrue(list2.size()==(list.size()+1));
+			assertTrue(list2.size() == (list.size() + 1));
 			AttachmentsVo vo2 = selectByPrimaryKey(vo);
 			assertNotNull(vo2);
 			assertTrue(vo.equalsTo(vo2));

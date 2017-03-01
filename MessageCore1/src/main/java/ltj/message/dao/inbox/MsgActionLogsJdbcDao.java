@@ -23,7 +23,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 			"select * " +
 			"from " +
 				"MsgActionLogs where msgId=? ";
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
 		if (msgRefId == null) {
 			sql += "and msgRefId is null ";
@@ -49,7 +49,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 			" from " +
 				" MsgActionLogs where msgId=? " +
 			" order by msgRefId ";
-		Object[] parms = new Object[] {msgId+""};
+		Object[] parms = new Object[] {msgId};
 		List<MsgActionLogsVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgActionLogsVo>(MsgActionLogsVo.class));
 		return list;
@@ -62,9 +62,24 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 			" from " +
 				" MsgActionLogs where leadMsgId=? " +
 			" order by addrTime";
-		Object[] parms = new Object[] {leadMsgId+""};
+		Object[] parms = new Object[] {leadMsgId};
 		List<MsgActionLogsVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgActionLogsVo>(MsgActionLogsVo.class));
+		return list;
+	}
+	
+	@Override
+	public List<MsgActionLogsVo> getRandomRecord() {
+		String sql = 
+				"select * " +
+				" from " +
+					" MsgActionLogs where msgId >= (RAND() * (select max(msgId) from MsgActionLogs)) " +
+				" order by msgId limit 1 ";
+		List<MsgActionLogsVo> list = getJdbcTemplate().query(sql,
+				new BeanPropertyRowMapper<MsgActionLogsVo>(MsgActionLogsVo.class));
+		if (list.size() > 0) {
+			return getByMsgId(list.get(0).getMsgId());
+		}
 		return list;
 	}
 	
@@ -76,7 +91,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 			sql += " and MsgRefId is null ";
 		}
 		else {
-			sql += " and MsgRefId=:msgRfcId ";
+			sql += " and MsgRefId=:msgRefId ";
 		}
 		
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
@@ -88,7 +103,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		String sql = 
 			"delete from MsgActionLogs where msgId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		if (msgRefId == null) {
 			sql += "and MsgRefId is null ";
@@ -107,7 +122,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		String sql = 
 			"delete from MsgActionLogs where msgId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -119,7 +134,7 @@ public class MsgActionLogsJdbcDao extends AbstractDao implements MsgActionLogsDa
 		String sql = 
 			"delete from MsgActionLogs where leadMsgId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(leadMsgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

@@ -21,7 +21,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 			"from " +
 				"MsgStream where msgid=? ";
 		
-		Object[] parms = new Object[] {msgId+""};
+		Object[] parms = new Object[] {msgId};
 		try {
 			MsgStreamVo vo = getJdbcTemplate().queryForObject(sql, parms, 
 					new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
@@ -39,7 +39,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 			"from " +
 				"MsgStream where fromAddrId=? ";
 		
-		Object[] parms = new Object[] {fromAddrId+""};
+		Object[] parms = new Object[] {fromAddrId};
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
 		return list;
@@ -111,13 +111,13 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		if (msgStreamVo.getAddTime()==null) {
 			msgStreamVo.setAddTime(new Timestamp(System.currentTimeMillis()));
 		}
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgStreamVo.getFromAddrId());
 		fields.add(msgStreamVo.getToAddrId());
 		fields.add(msgStreamVo.getMsgSubject());
 		fields.add(msgStreamVo.getAddTime());
 		fields.add(msgStreamVo.getMsgStream());
-		fields.add(msgStreamVo.getMsgId()+"");
+		fields.add(msgStreamVo.getMsgId());
 		
 		String sql =
 			"update MsgStream set " +
@@ -138,8 +138,8 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		String sql = 
 			"delete from MsgStream where msgid=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(msgId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
@@ -162,8 +162,8 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		if (msgStreamVo.getAddTime()==null) {
 			msgStreamVo.setAddTime(new Timestamp(System.currentTimeMillis()));
 		}
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(msgStreamVo.getMsgId()+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgStreamVo.getMsgId());
 		fields.add(msgStreamVo.getFromAddrId());
 		fields.add(msgStreamVo.getToAddrId());
 		fields.add(msgStreamVo.getMsgSubject());

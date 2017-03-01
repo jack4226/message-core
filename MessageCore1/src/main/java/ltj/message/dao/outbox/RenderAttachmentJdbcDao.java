@@ -60,9 +60,9 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		String sql = 
 			"delete from RenderAttachment where renderId=? and attchmntSeq=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(renderId+"");
-		fields.add(attchmntSeq+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(renderId);
+		fields.add(attchmntSeq);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
@@ -73,8 +73,8 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		String sql = 
 			"delete from RenderAttachment where renderId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(renderId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(renderId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;

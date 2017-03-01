@@ -7,6 +7,7 @@ import ltj.message.vo.inbox.AttachmentsVo;
 public interface AttachmentsDao {
 	public AttachmentsVo getByPrimaryKey(long msgId, int attchmntDepth, int attchmntSeq);
 	public List<AttachmentsVo> getByMsgId(long msgId);
+	public List<AttachmentsVo> getRandomRecord();
 	public int update(AttachmentsVo attachmentsVo);
 	public int deleteByPrimaryKey(long msgId, int attchmntDepth, int attchmntSeq);
 	public int deleteByMsgId(long msgId);

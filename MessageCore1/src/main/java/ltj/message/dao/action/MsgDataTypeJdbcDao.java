@@ -91,8 +91,8 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"delete from MsgDataType where RowId=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(rowId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(rowId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
@@ -103,7 +103,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"delete from MsgDataType where DataType=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
+		List<String> fields = new ArrayList<>();
 		fields.add(dataType);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

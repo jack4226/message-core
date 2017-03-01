@@ -102,7 +102,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 	
 	@Override
 	public List<MailingListVo> getAll(boolean onlyActive) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String sql = getSelectClause();
 		if (onlyActive) {
 			sql += " where a.StatusId = ? ";
@@ -117,7 +117,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 
 	@Override
 	public List<MailingListVo> getAllForTrial(boolean onlyActive) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String sql = getSelectClause();
 		if (onlyActive) {
 			sql += " where a.StatusId = ? ";

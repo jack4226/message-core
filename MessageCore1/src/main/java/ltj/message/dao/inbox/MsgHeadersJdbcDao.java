@@ -21,7 +21,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 			"from " +
 				"MsgHeaders where msgid=? and headerSeq=? ";
 		
-		Object[] parms = new Object[] {msgId+"",headerSeq+""};
+		Object[] parms = new Object[] {msgId, headerSeq};
 		try {
 			MsgHeadersVo vo = getJdbcTemplate().queryForObject(sql, parms, 
 					new BeanPropertyRowMapper<MsgHeadersVo>(MsgHeadersVo.class));
@@ -39,20 +39,35 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 			" from " +
 				" MsgHeaders where msgId=? " +
 			" order by headerSeq";
-		Object[] parms = new Object[] {msgId+""};
+		Object[] parms = new Object[] {msgId};
 		List<MsgHeadersVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgHeadersVo>(MsgHeadersVo.class));
 		return list;
 	}
 	
 	@Override
+	public List<MsgHeadersVo> getRandomRecord() {
+		String sql = 
+				"select * " +
+				" from " +
+					" MsgHeaders where msgId >= (RAND() * (select max(msgId) from MsgHeaders)) " +
+				" order by msgId limit 1 ";
+		List<MsgHeadersVo> list = getJdbcTemplate().query(sql,
+				new BeanPropertyRowMapper<MsgHeadersVo>(MsgHeadersVo.class));
+		if (list.size() > 0) {
+			return getByMsgId(list.get(0).getMsgId());
+		}
+		return list;
+	}
+	
+	@Override
 	public int update(MsgHeadersVo msgHeadersVo) {
 		
-		ArrayList<String> fields = new ArrayList<String>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
 		fields.add(msgHeadersVo.getHeaderValue());
-		fields.add(msgHeadersVo.getMsgId()+"");
-		fields.add(msgHeadersVo.getHeaderSeq()+"");
+		fields.add(msgHeadersVo.getMsgId());
+		fields.add(msgHeadersVo.getHeaderSeq());
 		
 		String sql =
 			"update MsgHeaders set " +
@@ -70,9 +85,9 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		String sql = 
 			"delete from MsgHeaders where msgid=? and headerSeq=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(msgId + "");
-		fields.add(headerSeq + "");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgId);
+		fields.add(headerSeq);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
@@ -83,8 +98,8 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		String sql = 
 			"delete from MsgHeaders where msgid=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(msgId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
@@ -102,9 +117,9 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 				" ?, ?, ?, ? " +
 				")";
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(msgHeadersVo.getMsgId()+"");
-		fields.add(msgHeadersVo.getHeaderSeq()+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgHeadersVo.getMsgId());
+		fields.add(msgHeadersVo.getHeaderSeq());
 		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
 		fields.add(msgHeadersVo.getHeaderValue());
 		

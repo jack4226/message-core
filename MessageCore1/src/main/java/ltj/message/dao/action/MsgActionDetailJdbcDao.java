@@ -97,7 +97,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		String sql = 
 			"delete from MsgActionDetail where actionId=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
+		List<String> fields = new ArrayList<>();
 		fields.add(actionId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -110,8 +110,8 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		String sql = 
 			"delete from MsgActionDetail where RowId=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(rowId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(rowId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();

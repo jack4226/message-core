@@ -146,7 +146,7 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		String sql = 
 			"delete from GlobalVariable where variableName=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
 		if (startTime!=null) {
 			sql += " and startTime=? ";
@@ -168,7 +168,7 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		String sql = 
 			"delete from GlobalVariable where variableName=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

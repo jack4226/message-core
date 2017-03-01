@@ -43,7 +43,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 			"Actions=?," +
 			"Templates=?," +
 			"Schedules=?";
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(vo.getClients());
 		fields.add(vo.getRules());
 		fields.add(vo.getActions());

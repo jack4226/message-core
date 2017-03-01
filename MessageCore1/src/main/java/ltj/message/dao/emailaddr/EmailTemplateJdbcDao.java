@@ -114,7 +114,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 
 	@Override
 	public synchronized int update(EmailTemplateVo emailTemplateVo) {
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(emailTemplateVo.getTemplateId());
 		keys.add(emailTemplateVo.getListId());
 		keys.add(emailTemplateVo.getSubject());

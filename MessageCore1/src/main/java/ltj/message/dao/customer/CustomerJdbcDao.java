@@ -102,7 +102,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	
 	@Override
 	public int getCustomerCount(PagingCustVo vo) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
 			"select count(*) from Customers a " 
@@ -114,7 +114,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	
 	@Override
 	public List<CustomerVo> getCustomersWithPaging(PagingCustVo vo) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic

@@ -53,7 +53,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	public EmailAddrVo getByAddrId(long addrId) {
 		String sql = "select *, EmailAddr as CurrEmailAddr, UpdtTime as OrigUpdtTime " +
 				"from EmailAddr where emailAddrId=?";
-		Object[] parms = new Object[] { addrId + "" };
+		Object[] parms = new Object[] { addrId };
 		try {
 			EmailAddrVo vo = getJdbcTemplate().queryForObject(sql, parms,
 					new BeanPropertyRowMapper<EmailAddrVo>(EmailAddrVo.class));
@@ -98,7 +98,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 
 	@Override
 	public int getEmailAddressCount(PagingAddrVo vo) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = "select count(*) from EmailAddr a "
 				+ " LEFT OUTER JOIN Customers b on a.EmailAddrId=b.EmailAddrId "
@@ -110,7 +110,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 
 	@Override
 	public List<EmailAddrVo> getEmailAddrsWithPaging(PagingAddrVo vo) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic, sort by Email Address
@@ -476,7 +476,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 
 	@Override
 	public int updateLastRcptTime(long addrId) {
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(new Timestamp(System.currentTimeMillis()));
 		keys.add(addrId);
 
@@ -489,7 +489,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 
 	@Override
 	public int updateLastSentTime(long addrId) {
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(new Timestamp(System.currentTimeMillis()));
 		keys.add(addrId);
 
@@ -502,7 +502,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 
 	@Override
 	public int updateAcceptHtml(long addrId, boolean acceptHtml) {
-		List<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(acceptHtml ? Constants.Y : Constants.N);
 		keys.add(addrId);
 
@@ -524,7 +524,7 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	@Override
 	public int updateBounceCount(EmailAddrVo emailAddrVo) {
 		emailAddrVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
-		List<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 
 		String sql = "update EmailAddr set BounceCount=?,";
 		emailAddrVo.setBounceCount(emailAddrVo.getBounceCount() + 1);

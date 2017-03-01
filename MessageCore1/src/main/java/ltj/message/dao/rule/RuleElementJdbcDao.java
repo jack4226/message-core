@@ -76,9 +76,9 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		String sql = 
 			"delete from RuleElement where ruleName=? and elementSeq=?";
 		
-		ArrayList<String> fields = new ArrayList<String>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(ruleName);
-		fields.add(elementSeq+"");
+		fields.add(elementSeq);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
@@ -90,7 +90,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		String sql = 
 			"delete from RuleElement where ruleName=?";
 		
-		ArrayList<String> fields = new ArrayList<String>();
+		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

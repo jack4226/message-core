@@ -149,7 +149,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	
 	@Override
 	public int getSubscriberCount(PagingSbsrVo vo) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
 			"select count(*) " +
@@ -163,7 +163,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	
 	@Override
 	public List<SubscriptionVo> getSubscribersWithPaging(PagingSbsrVo vo) {
-		List<Object> parms = new ArrayList<Object>();
+		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic
@@ -465,7 +465,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	
 	@Override
 	public int updateSentCount(long emailAddrId, String listId) {
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(new Timestamp(new java.util.Date().getTime()));
 		keys.add(emailAddrId);
 		keys.add(listId);
@@ -481,7 +481,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	
 	@Override
 	public int updateOpenCount(long emailAddrId, String listId) {
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(new Timestamp(new java.util.Date().getTime()));
 		keys.add(emailAddrId);
 		keys.add(listId);
@@ -497,7 +497,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 	
 	@Override
 	public int updateClickCount(long emailAddrId, String listId) {
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(new Timestamp(new java.util.Date().getTime()));
 		keys.add(emailAddrId);
 		keys.add(listId);

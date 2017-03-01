@@ -16,13 +16,20 @@ import ltj.message.vo.inbox.RfcFieldsVo;
 public class RfcFieldsTest extends DaoTestBase {
 	@Resource
 	private RfcFieldsDao rfcFieldsDao;
-	long testMsgId = 2L;
-	String testRfcType = "RFC822";
+	
+	static long testMsgId = 2L;
+	static String testRfcType = "RFC822";
 	
 	@Test
 	public void testRfcFields() {
 		List<RfcFieldsVo> list = selectByMsgId(testMsgId);
-		assertTrue(list.size()>0);
+		if (list.isEmpty()) {
+			list = rfcFieldsDao.getRandomRecord();
+			assertTrue(list.size() > 0);
+			testMsgId = list.get(0).getMsgId();
+			testRfcType = list.get(0).getRfcType();
+		}
+		assertTrue(rfcFieldsDao.getRandomRecord().size() > 0);
 		RfcFieldsVo vo = selectByPrimaryKey(testMsgId, testRfcType);
 		assertNotNull(vo);
 		RfcFieldsVo vo2 = insert(vo.getMsgId());
@@ -39,27 +46,27 @@ public class RfcFieldsTest extends DaoTestBase {
 		List<RfcFieldsVo> actions = rfcFieldsDao.getByMsgId(msgId);
 		for (Iterator<RfcFieldsVo> it=actions.iterator(); it.hasNext();) {
 			RfcFieldsVo rfcFieldsVo = it.next();
-			System.out.println("RfcFieldsDao - selectByMsgId: "+LF+rfcFieldsVo);
+			logger.info("RfcFieldsDao - selectByMsgId: "+LF+rfcFieldsVo);
 		}
 		return actions;
 	}
 	
 	private RfcFieldsVo selectByPrimaryKey(long msgId, String rfcType) {
 		RfcFieldsVo rfcFieldsVo = (RfcFieldsVo)rfcFieldsDao.getByPrimaryKey(msgId,"RFC822");
-		System.out.println("RfcFieldsDao - selectByPrimaryKey: "+LF+rfcFieldsVo);
+		logger.info("RfcFieldsDao - selectByPrimaryKey: "+LF+rfcFieldsVo);
 		return rfcFieldsVo;
 	}
 	
 	private int update(RfcFieldsVo rfcFieldsVo) {
 		rfcFieldsVo.setDlvrStatus(rfcFieldsVo.getDlvrStatus()+".");
 		int rows = rfcFieldsDao.update(rfcFieldsVo);
-		System.out.println("RfcFieldsDao - update: "+LF+rfcFieldsVo);
+		logger.info("RfcFieldsDao - update: "+LF+rfcFieldsVo);
 		return rows;
 	}
 	
 	private int deleteByPrimaryKey(long msgId, String rfcType) {
 		int rowsDeleted = rfcFieldsDao.deleteByPrimaryKey(msgId, rfcType);
-		System.out.println("RfcFieldsDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
+		logger.info("RfcFieldsDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
@@ -69,7 +76,7 @@ public class RfcFieldsTest extends DaoTestBase {
 			RfcFieldsVo rfcFieldsVo = list.get(list.size()-1);
 			rfcFieldsVo.setRfcType("DSNTEXT");
 			int rows = rfcFieldsDao.insert(rfcFieldsVo);
-			System.out.println("RfcFieldsDao - insert: rows inserted "+rows+LF+rfcFieldsVo);
+			logger.info("RfcFieldsDao - insert: rows inserted "+rows+LF+rfcFieldsVo);
 			return rfcFieldsVo;
 		}
 		return null;

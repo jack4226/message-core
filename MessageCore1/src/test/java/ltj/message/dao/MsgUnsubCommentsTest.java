@@ -24,13 +24,13 @@ public class MsgUnsubCommentsTest extends DaoTestBase {
 	@Test
 	@Rollback(value=true)
 	public void testUnsubComments() {
-		//insertToEmptyTable();
-		List<MsgUnsubCommentsVo> list = selectAll();
-		if (list.size()==0) {
+		// insertToEmptyTable();
+		List<MsgUnsubCommentsVo> list = selectFirst100();
+		if (list.size() == 0) {
 			insert();
-			list = selectAll();
+			list = selectFirst100();
 		}
-		assertTrue(list.size()>0);
+		assertTrue(list.size() > 0);
 		MsgUnsubCommentsVo vo = select(list.get(0).getRowId());
 		assertNotNull(vo);
 		MsgUnsubCommentsVo vo2 = insert(vo);
@@ -60,10 +60,10 @@ public class MsgUnsubCommentsTest extends DaoTestBase {
 		return msgUnsubComments;
 	}
 	
-	private List<MsgUnsubCommentsVo> selectAll() {
-		List<MsgUnsubCommentsVo> list = msgUnsubCommentsDao.getAll();
+	private List<MsgUnsubCommentsVo> selectFirst100() {
+		List<MsgUnsubCommentsVo> list = msgUnsubCommentsDao.getFirst100();
 		System.out.println("MsgUnsubCommentsDao - getAll() - size: " + list.size());
-		list = msgUnsubCommentsDao.getAll();
+		list = msgUnsubCommentsDao.getFirst100();
 		for (MsgUnsubCommentsVo vo : list) {
 			System.out.println("MsgUnsubCommentsDao - select All: "+vo);
 			break;
@@ -91,7 +91,7 @@ public class MsgUnsubCommentsTest extends DaoTestBase {
 		return vo;
 	}
 	private MsgUnsubCommentsVo insert() {
-		List<MsgUnsubCommentsVo> list = msgUnsubCommentsDao.getAll();
+		List<MsgUnsubCommentsVo> list = msgUnsubCommentsDao.getFirst100();
 		if (list.size() > 0) {
 			MsgUnsubCommentsVo vo = list.get(list.size()-1);
 			vo.setComments("Another test Comment.");

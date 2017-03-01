@@ -152,7 +152,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			" where BuiltInRule=? and IsSubRule!=? and RuleCategory=? " +
 			" order by RuleName ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
+		List<String> fields = new ArrayList<>();
 		fields.add(Constants.Y);
 		fields.add(Constants.Y);
 		fields.add(RuleBase.MAIN_RULE);
@@ -168,7 +168,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			" where BuiltInRule!=? and IsSubRule!=? and RuleCategory=? " +
 			" order by RuleName ";
 
-		ArrayList<String> fields = new ArrayList<String>();
+		List<String> fields = new ArrayList<>();
 		fields.add(Constants.Y);
 		fields.add(Constants.Y);
 		fields.add(RuleBase.MAIN_RULE);
@@ -192,7 +192,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = 
 			"delete from RuleLogic where RuleName=? and RuleSeq=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(ruleName);
 		fields.add(ruleSeq);
 		

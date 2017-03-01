@@ -52,7 +52,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 			"from " +
 				"SubjTemplate where templateId=? ";
 		
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		if (StringUtils.isBlank(clientId)) {
 			sql += " and clientId is null ";
@@ -117,7 +117,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		String sql = 
 			"delete from SubjTemplate where templateId=? and clientId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
 		fields.add(clientId);
 		if (startTime!=null) {
@@ -137,7 +137,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		String sql = 
 			"delete from SubjTemplate where templateId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -149,7 +149,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		String sql = 
 			"delete from SubjTemplate where clientId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

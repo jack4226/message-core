@@ -49,7 +49,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	
 	@Override
 	public List<SmtpConnVo> getAllForTrial(boolean onlyActive) {
-		List<String> keys = new ArrayList<String>();
+		List<String> keys = new ArrayList<>();
 		String sql = "select * from SmtpServers ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
@@ -69,7 +69,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	
 	@Override
 	public List<SmtpConnVo> getByServerType(String serverType, boolean onlyActive) {
-		List<String> keys = new ArrayList<String>();
+		List<String> keys = new ArrayList<>();
 		keys.add(serverType);
 		String sql = "select * from SmtpServers where ServerType=?";
 		if (onlyActive) {
@@ -85,7 +85,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<SmtpConnVo> getBySslFlag(boolean useSSL, boolean onlyActive) {
-		List<String> keys = new ArrayList<String>();
+		List<String> keys = new ArrayList<>();
 		keys.add(useSSL ? Constants.YES : Constants.NO);
 		String sql = "select * from SmtpServers where UseSsl=?";
 		if (onlyActive) {
@@ -101,7 +101,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<SmtpConnVo> getBySslFlagForTrial(boolean useSSL, boolean onlyActive) {
-		List<String> keys = new ArrayList<String>();
+		List<String> keys = new ArrayList<>();
 		keys.add(useSSL ? Constants.YES : Constants.NO);
 		String sql = "select * from SmtpServers where UseSsl=?";
 		if (onlyActive) {

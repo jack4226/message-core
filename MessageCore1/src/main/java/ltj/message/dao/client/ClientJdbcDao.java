@@ -117,7 +117,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 
 	@Override
 	public synchronized int updateSystemKey(String key) {
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(key);
 		String sql = "update Clients set " +
 			"SystemKey=? " +

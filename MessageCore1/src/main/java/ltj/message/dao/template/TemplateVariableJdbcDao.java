@@ -30,7 +30,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 			"from " +
 				"TemplateVariable where templateId=? and variableName=? ";
 		
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		keys.add(variableName);
 		if (clientId==null) {
@@ -67,7 +67,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 			"from " +
 				"TemplateVariable where templateId=? and variableName=? ";
 		
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		keys.add(variableName);
 		if (clientId==null) {
@@ -177,7 +177,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"delete from TemplateVariable where templateId=? and clientId=? and variableName=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
 		fields.add(clientId);
 		fields.add(variableName);
@@ -201,7 +201,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"delete from TemplateVariable where variableName=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -216,7 +216,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"delete from TemplateVariable where clientId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -231,7 +231,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"delete from TemplateVariable where templateId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

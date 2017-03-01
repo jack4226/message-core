@@ -32,15 +32,16 @@ public class DeliveryStatusTest extends DaoTestBase {
 	@Rollback(value=true)
 	public void testDeliveryStatus() {
 		try {
-			if (msgInboxDao.getByPrimaryKey(testMsgId)==null) {
+			if (msgInboxDao.getByPrimaryKey(testMsgId) == null) {
 				testMsgId = msgInboxDao.getLastRecord().getMsgId();
 			}
 			List<DeliveryStatusVo> list = selectByMsgId(testMsgId);
-			if (list.size()==0) {
+			if (list.size() == 0) {
 				insert(testMsgId);
 			}
+			assertTrue(deliveryStatusDao.getRandomRecord().size() > 0);
 			list = selectByMsgId(testMsgId);
-			assertTrue(list.size()>0);
+			assertTrue(list.size() > 0);
 			DeliveryStatusVo vo0 = list.get(0);
 			DeliveryStatusVo vo = selectByPrimaryKey(vo0.getMsgId(), vo0.getFinalRecipientId());
 			assertNotNull(vo);

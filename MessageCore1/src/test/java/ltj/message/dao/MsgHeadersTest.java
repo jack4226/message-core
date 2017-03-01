@@ -22,7 +22,11 @@ public class MsgHeadersTest extends DaoTestBase {
 	public void testMsgHeaders() {
 		try {
 			List<MsgHeadersVo> lst1 = selectByMsgId(testMsgId);
-			assertTrue(lst1.size()>0);
+			if (lst1.isEmpty()) {
+				lst1 = msgHeadersDao.getRandomRecord();
+			}
+			assertTrue(lst1.size() > 0);
+			assertTrue(msgHeadersDao.getRandomRecord().size() > 0);
 			MsgHeadersVo vo1 = lst1.get(0);
 			MsgHeadersVo vo0 = selectByPrimaryKey(vo1.getMsgId(), vo1.getHeaderSeq());
 			assertNotNull(vo0);

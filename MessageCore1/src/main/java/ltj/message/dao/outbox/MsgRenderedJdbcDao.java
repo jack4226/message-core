@@ -99,8 +99,8 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		String sql = 
 			"delete from MsgRendered where renderId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(renderId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(renderId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;

@@ -25,7 +25,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 			"from " +
 				"BodyTemplate where templateId=? ";
 		
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		if (StringUtils.isNotBlank(clientId)) {
 			sql += " and clientId=? ";
@@ -60,7 +60,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 			"from " +
 				"BodyTemplate where templateId=? ";
 		
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		if (StringUtils.isBlank(clientId)) {
 			sql += " and clientId is null ";
@@ -126,7 +126,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"delete from BodyTemplate where templateId=? and clientId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
 		fields.add(clientId);
 		if (startTime != null) {
@@ -146,7 +146,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"delete from BodyTemplate where templateId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -158,7 +158,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"delete from BodyTemplate where clientId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

@@ -8,6 +8,7 @@ public interface MsgAddrsDao {
 	public MsgAddrsVo getByPrimaryKey(long msgId, String addrType, int addrSeq);
 	public List<MsgAddrsVo> getByMsgId(long msgId);
 	public List<MsgAddrsVo> getByMsgIdAndType(long msgId, String addrType);
+	public List<MsgAddrsVo> getRandomRecord();
 	public int update(MsgAddrsVo msgAddrsVo);
 	public int deleteByPrimaryKey(long msgId, String addrType, int addrSeq);
 	public int deleteByMsgId(long msgId);

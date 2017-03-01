@@ -55,7 +55,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 			"from " +
 				"ClientVariable where clientId=? and variableName=? ";
 		
-		ArrayList<Object> keys = new ArrayList<Object>();
+		List<Object> keys = new ArrayList<>();
 		keys.add(clientId);
 		keys.add(variableName);
 		if (startTime!=null) {
@@ -130,7 +130,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"delete from ClientVariable where clientId=? and variableName=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
 		fields.add(variableName);
 		if (startTime!=null) {
@@ -153,7 +153,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"delete from ClientVariable where variableName=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -168,7 +168,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"delete from ClientVariable where clientId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

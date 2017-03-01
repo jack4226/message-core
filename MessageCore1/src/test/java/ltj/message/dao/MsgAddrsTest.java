@@ -19,20 +19,30 @@ import ltj.message.vo.inbox.MsgAddrsVo;
 public class MsgAddrsTest extends DaoTestBase {
 	@Resource
 	private MsgAddrsDao msgAddrsDao;
-	long testMsgId = 2L;
-	String testAddrType = AddressType.FROM_ADDR.value();
+	
+	static long testMsgId = 2L;
+	static String testAddrType = AddressType.FROM_ADDR.value();
 
 	@Test
 	public void insertUpdateDelete() {
 		try {
+			assertTrue(msgAddrsDao.getRandomRecord().size() > 0);
 			List<MsgAddrsVo> list = selectByMsgId(testMsgId);
-			assertTrue(list.size()>0);
+			if (list.isEmpty()) {
+				list = msgAddrsDao.getRandomRecord();
+				assertTrue(list.size() > 0);
+				testMsgId = list.get(0).getMsgId();
+				testAddrType = list.get(0).getAddrType();
+			}
+			else {
+				testAddrType = list.get(0).getAddrType();
+			}
 			List<MsgAddrsVo> list2 = selectByMsgIdAndType(testMsgId, testAddrType);
-			assertTrue(list2.size()>0);
+			assertTrue(list2.size() > 0);
 			MsgAddrsVo vo = insert(testMsgId, testAddrType);
 			assertNotNull(vo);
 			List<MsgAddrsVo> list3 = selectByMsgIdAndType(testMsgId, testAddrType);
-			assertTrue(list3.size()==(list2.size()+1));
+			assertTrue(list3.size() == (list2.size() + 1));
 			MsgAddrsVo vo2 = selectByPrimaryKey(vo);
 			assertNotNull(vo2);
 			assertTrue(vo.equalsTo(vo2));
@@ -51,15 +61,14 @@ public class MsgAddrsTest extends DaoTestBase {
 		List<MsgAddrsVo> actions = msgAddrsDao.getByMsgId(msgId);
 		for (Iterator<MsgAddrsVo> it=actions.iterator(); it.hasNext();) {
 			MsgAddrsVo msgAddrsVo = it.next();
-			System.out.println("MsgAddrsDao - selectByMsgId: "+LF+msgAddrsVo);
+			logger.info("MsgAddrsDao - selectByMsgId: "+LF+msgAddrsVo);
 		}
 		return actions;
 	}
 	
 	private MsgAddrsVo selectByPrimaryKey(MsgAddrsVo vo) {
-		MsgAddrsVo msgAddrsVo = (MsgAddrsVo) msgAddrsDao.getByPrimaryKey(vo.getMsgId(),
-				vo.getAddrType(), vo.getAddrSeq());
-		System.out.println("MsgAddrsDao - selectByPrimaryKey: "+LF+msgAddrsVo);
+		MsgAddrsVo msgAddrsVo = msgAddrsDao.getByPrimaryKey(vo.getMsgId(), vo.getAddrType(), vo.getAddrSeq());
+		logger.info("MsgAddrsDao - selectByPrimaryKey: "+LF+msgAddrsVo);
 		return vo;
 	}
 	
@@ -67,50 +76,48 @@ public class MsgAddrsTest extends DaoTestBase {
 		List<MsgAddrsVo> actions  = msgAddrsDao.getByMsgIdAndType(msgId, type);
 		for (Iterator<MsgAddrsVo> it=actions.iterator(); it.hasNext();) {
 			MsgAddrsVo msgAddrsVo = it.next();
-			System.out.println("MsgAddrsDao - selectByMsgIdAndType: "+LF+msgAddrsVo);
+			logger.info("MsgAddrsDao - selectByMsgIdAndType: "+LF+msgAddrsVo);
 		}
 		return actions;
 	}
 	
 	private int update(MsgAddrsVo vo) {
-		MsgAddrsVo msgAddrsVo = (MsgAddrsVo) msgAddrsDao.getByPrimaryKey(vo.getMsgId(),
-				vo.getAddrType(), vo.getAddrSeq());
+		MsgAddrsVo msgAddrsVo = msgAddrsDao.getByPrimaryKey(vo.getMsgId(), vo.getAddrType(), vo.getAddrSeq());
 		int rowsUpdated = 0;
 		if (msgAddrsVo!=null) {
 			msgAddrsVo.setAddrValue("more."+msgAddrsVo.getAddrValue());
 			msgAddrsVo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 			msgAddrsVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 			rowsUpdated = msgAddrsDao.update(msgAddrsVo);
-			System.out.println("MsgAddrsDao - update: "+LF+msgAddrsVo);
+			logger.info("MsgAddrsDao - update: "+LF+msgAddrsVo);
 		}
 		return rowsUpdated;
 	}
 	
 	private int deleteByPrimaryKey(MsgAddrsVo vo) {
-		int rowsDeleted = msgAddrsDao.deleteByPrimaryKey(vo.getMsgId(), vo.getAddrType(),
-				vo.getAddrSeq());
-		System.out.println("MsgAddrsDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
+		int rowsDeleted = msgAddrsDao.deleteByPrimaryKey(vo.getMsgId(), vo.getAddrType(), vo.getAddrSeq());
+		logger.info("MsgAddrsDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
 	private MsgAddrsVo insert(long msgId, String addrType) {
-		List<MsgAddrsVo> list = (List<MsgAddrsVo>)msgAddrsDao.getByMsgIdAndType(msgId, addrType);
+		List<MsgAddrsVo> list = msgAddrsDao.getByMsgIdAndType(msgId, addrType);
 		if (list.size()>0) {
 			MsgAddrsVo msgAddrsVo = list.get(list.size()-1);
 			msgAddrsVo.setAddrSeq(msgAddrsVo.getAddrSeq()+1);
 			msgAddrsDao.insert(msgAddrsVo);
-			System.out.println("MsgAddrsDao - insert: "+LF+msgAddrsVo);
+			logger.info("MsgAddrsDao - insert: "+LF+msgAddrsVo);
 			return msgAddrsVo;
 		}
 		return null;
 	}
 
 	private void deleteLast(long msgId, String addrType) {
-		List<MsgAddrsVo> list = (List<MsgAddrsVo>)msgAddrsDao.getByMsgIdAndType(msgId, addrType);
-		if (list.size()>1) {
+		List<MsgAddrsVo> list = msgAddrsDao.getByMsgIdAndType(msgId, addrType);
+		if (list.size() > 1) {
 			MsgAddrsVo vo = list.get(list.size()-1);
 			int rows = msgAddrsDao.deleteByPrimaryKey(vo.getMsgId(), vo.getAddrType(), vo.getAddrSeq());
-			System.out.println("MsgAddrsDao - deleteLast: "+rows);
+			logger.info("MsgAddrsDao - deleteLast: "+rows);
 		}
 	}
 }

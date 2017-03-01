@@ -23,7 +23,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 			"from " +
 				"RfcFields where msgid=? and rfcType=? ";
 		
-		Object[] parms = new Object[] {msgId+"",rfcType};
+		Object[] parms = new Object[] {msgId, rfcType};
 		try {
 			RfcFieldsVo vo = getJdbcTemplate().queryForObject(sql, parms, 
 					new BeanPropertyRowMapper<RfcFieldsVo>(RfcFieldsVo.class));
@@ -41,9 +41,24 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 			" from " +
 				" RfcFields where msgId=? " +
 			" order by rfcType";
-		Object[] parms = new Object[] {msgId+""};
+		Object[] parms = new Object[] {msgId};
 		List<RfcFieldsVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<RfcFieldsVo>(RfcFieldsVo.class));
+		return list;
+	}
+	
+	@Override
+	public List<RfcFieldsVo> getRandomRecord() {
+		String sql = 
+				"select * " +
+				" from " +
+					" RfcFields where msgId >= (RAND() * (select max(msgId) from RfcFields)) " +
+				" order by msgId limit 1 ";
+		List<RfcFieldsVo> list = getJdbcTemplate().query(sql,
+				new BeanPropertyRowMapper<RfcFieldsVo>(RfcFieldsVo.class));
+		if (list.size() > 0) {
+			return getByMsgId(list.get(0).getMsgId());
+		}
 		return list;
 	}
 	
@@ -60,8 +75,8 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		String sql = 
 			"delete from RfcFields where msgid=? and rfcType=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(msgId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgId);
 		fields.add(rfcType);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -73,8 +88,8 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		String sql = 
 			"delete from RfcFields where msgid=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
-		fields.add(msgId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;

@@ -49,6 +49,21 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 	}
 	
 	@Override
+	public List<DeliveryStatusVo> getRandomRecord() {
+		String sql = 
+				"select * " +
+				" from " +
+					" DeliveryStatus where msgId >= (RAND() * (select max(msgId) from DeliveryStatus)) " +
+				" order by msgId limit 1";
+		List<DeliveryStatusVo> list = getJdbcTemplate().query(sql,
+				new BeanPropertyRowMapper<DeliveryStatusVo>(DeliveryStatusVo.class));
+		if (list.size() > 0) {
+			return getByMsgId(list.get(0).getMsgId());
+		}
+		return list;
+	}
+	
+	@Override
 	public int update(DeliveryStatusVo deliveryStatusVo) {
 		if (deliveryStatusVo.getAddTime()==null) {
 			deliveryStatusVo.setAddTime(new Timestamp(System.currentTimeMillis()));
@@ -64,7 +79,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		String sql = 
 			"delete from DeliveryStatus where msgid=? and finalRecipientId=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		fields.add(finalRecipientId);
 		
@@ -77,7 +92,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		String sql = 
 			"delete from DeliveryStatus where msgid=? ";
 		
-		ArrayList<Object> fields = new ArrayList<Object>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());

@@ -23,9 +23,9 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 			"from " +
 				"MsgAddrs where msgid=? and addrType=? and addrSeq=? ";
 		
-		Object[] parms = new Object[] {msgId+"",addrType,addrSeq+""};
+		Object[] parms = new Object[] {msgId, addrType, addrSeq};
 		try {
-			MsgAddrsVo vo = getJdbcTemplate().queryForObject(sql, parms, 
+			MsgAddrsVo vo = getJdbcTemplate().queryForObject(sql, parms,
 					new BeanPropertyRowMapper<MsgAddrsVo>(MsgAddrsVo.class));
 			return vo;
 		}
@@ -41,7 +41,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 			" from " +
 				" MsgAddrs where msgId=? " +
 			" order by addrType, addrSeq";
-		Object[] parms = new Object[] {msgId+""};
+		Object[] parms = new Object[] {msgId};
 		List<MsgAddrsVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgAddrsVo>(MsgAddrsVo.class));
 		return list;
@@ -54,9 +54,24 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 			" from " +
 				" MsgAddrs where msgId=? and addrType=? " +
 			" order by addrSeq";
-		Object[] parms = new Object[] {msgId+"",addrType};
+		Object[] parms = new Object[] {msgId, addrType};
 		List<MsgAddrsVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgAddrsVo>(MsgAddrsVo.class));
+		return list;
+	}
+	
+	@Override
+	public List<MsgAddrsVo> getRandomRecord() {
+		String sql = 
+				"select * " +
+				" from " +
+					" MsgAddrs where msgId >= (RAND() * (select max(msgId) from MsgAddrs)) " +
+				" order by msgId limit 1 ";
+			
+		List<MsgAddrsVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgAddrsVo>(MsgAddrsVo.class));
+		if (list.size() > 0) {
+			return getByMsgId(list.get(0).getMsgId());
+		}
 		return list;
 	}
 	
@@ -73,10 +88,10 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		String sql = 
 			"delete from MsgAddrs where msgid=? and addrType=? and addrSeq=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(msgId+"");
+		List<Object> fields = new ArrayList<>();
+		fields.add(msgId);
 		fields.add(addrType);
-		fields.add(addrSeq+"");
+		fields.add(addrSeq);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
@@ -87,8 +102,8 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		String sql = 
 			"delete from MsgAddrs where msgid=? ";
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add(msgId+"");
+		List<Long> fields = new ArrayList<>();
+		fields.add(msgId);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsDeleted;
