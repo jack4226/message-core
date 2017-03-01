@@ -132,7 +132,7 @@ public class UserTable extends CreateTableBase {
 			ps.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 			ps.setString(6, StatusId.ACTIVE.value());
 			ps.setString(7, Constants.ADMIN_ROLE);
-			ps.setString(8, SearchFieldsVo.MsgType.Received.toString()); //"All");
+			ps.setString(8, SearchFieldsVo.MsgType.Received.name()); //"All");
 			ps.setString(9, Constants.DEFAULT_CLIENTID);
 			ps.execute();
 			
