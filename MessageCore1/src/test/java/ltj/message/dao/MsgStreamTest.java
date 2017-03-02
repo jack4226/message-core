@@ -87,8 +87,10 @@ public class MsgStreamTest extends DaoTestBase {
 		/*
 		 * Received error from Spring framework:
 		 * java.lang.IllegalStateException: Cannot start a new transaction without ending the existing transaction.
+		 * 
+		 * XXX moved to stand alone test class - RunClassesTest.java
 		 */
-		if (lastRecord != null && runRuleEngineTest) {
+		if (runRuleEngineTest) {
 			try {
 				Result result = JUnitCore.runClasses(RuleEngineTest.class);
 				for (Failure failure : result.getFailures()) {
