@@ -88,7 +88,7 @@ public class BounceBoImpl extends TaskBaseAdaptor {
 				}
 			}
 			if (isDebugEnabled) {
-				logger.debug("Address(es) to increase bounce count: " + addrs);
+				logger.debug("Address to increase bounce count: " + addrs);
 			}
 			for (int i=0; iAddrs!=null && i<iAddrs.length; i++) {
 				Address iAddr = iAddrs[i];

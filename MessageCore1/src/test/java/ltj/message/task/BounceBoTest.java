@@ -2,55 +2,124 @@ package ltj.message.task;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 import javax.annotation.Resource;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.AddressType;
+import ltj.message.constant.Constants;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 
+@FixMethodOrder
 public class BounceBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo bounceBo;
+	
 	@Resource
 	private EmailAddrDao emailAddrDao;
+	
+	private static String fromAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost";
+	private static MessageBean messageBean;
+	
+	private static Map<String, Integer> CountMap = new HashMap<>();
+	
 	@Test
-	public void bounce() throws Exception {
+	@Rollback(value=false)
+	public void test0() {
+		// insert the address if it does not exist
+		emailAddrDao.findByAddress(fromAddress);
+	}
+	
+	@Test
+	@Rollback(value=false)
+	public void test1() throws Exception {
+		messageBean = new MessageBean();
+		String toaddr = "testto@localhost";
+		try {
+			messageBean.setFrom(InternetAddress.parse(fromAddress, false));
+			messageBean.setTo(InternetAddress.parse(toaddr, false));
+		}
+		catch (AddressException e) {
+			logger.error("AddressException caught", e);
+		}
+		messageBean.setSubject("A Exception occured");
+		messageBean.setValue(new Date()+ " Test body message." + LF + LF + "System Email Id: 10.2127.0" + LF);
+		messageBean.setMailboxUser("testUser");
+		EmailIdParser parser = EmailIdParser.getDefaultParser();
+		String id = parser.parseMsg(messageBean.getBody());
+		if (StringUtils.isNumeric(id)) {
+			messageBean.setMsgRefId(Long.parseLong(id));
+		}
+		messageBean.setFinalRcpt("testbounce@test.com");
+		bounceBo.setTaskArguments(new String[] {"$"+AddressType.FINAL_RCPT_ADDR.value(), "$"+AddressType.FROM_ADDR.value()});
+		if (isDebugEnabled) {
+			logger.debug("MessageBean created:" + LF + messageBean);
+		}
+		// get before counts
+		EmailAddrVo fromVo = emailAddrDao.getByAddress(messageBean.getFromAsString());
+		assertNotNull(fromVo);
+		CountMap.put(messageBean.getFromAsString(), fromVo.getBounceCount());
+		EmailAddrVo finalRcptVo = emailAddrDao.getByAddress(messageBean.getFinalRcpt());
+		if (finalRcptVo != null) {
+			CountMap.put(messageBean.getFinalRcpt(), finalRcptVo.getBounceCount());
+		}
+		else {
+			CountMap.put(messageBean.getFinalRcpt(), -1);
+		}
+		// invoke task scheduler
+		Long rowsUpdated = (Long) bounceBo.process(messageBean);
+		assertNotNull(rowsUpdated);
+		assertTrue(rowsUpdated > 0);
+		
+		// verify results
+		verifyBounceCount(messageBean.getFromAsString());
+		verifyBounceCount(messageBean.getFinalRcpt());
+	}
+	
+	
+	@Test
+	public void test2() throws Exception {
 		MessageBean messageBean = buildMessageBeanFromMsgStream();
 		bounceBo.setTaskArguments(new String[] {"$"+AddressType.FINAL_RCPT_ADDR.value(), "$"+AddressType.FROM_ADDR.value()});
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
 		// get "before" bounce count for From address
-		EmailAddrVo addrVo = selectByAddress(messageBean.getFromAsString());
+		EmailAddrVo addrVo = emailAddrDao.findByAddress(messageBean.getFromAsString());
 		assertNotNull(addrVo);
-		int beforeFromCount = addrVo.getBounceCount();
+		CountMap.put(messageBean.getFromAsString(), addrVo.getBounceCount());
 		// end of "before" bounce count
 		Long addrsUpdated = (Long) bounceBo.process(messageBean);
-		assertTrue(addrsUpdated >= 0);
+		assertTrue(addrsUpdated > 0);
 		// now verify the database record
-		addrVo = selectByAddress(messageBean.getFromAsString());
-		assertNotNull(addrVo);
-		assertTrue(addrVo.getBounceCount()>beforeFromCount);
-//		if (StringUtils.isNotBlank(messageBean.getFinalRcpt())) {
-//			addrVo = selectByAddress(messageBean.getFinalRcpt());
-//			assertNotNull(addrVo);
-//			assertTrue(addrVo.getBounceCount()>0);
-//		}
-		if (StringUtils.isNotBlank(messageBean.getFromAsString())) {
-			addrVo = selectByAddress(messageBean.getFromAsString());
-			assertNotNull(addrVo);
-			assertTrue(addrVo.getBounceCount()>0);
-		}
+		verifyBounceCount(messageBean.getFromAsString());
 	}
-	private EmailAddrVo selectByAddress(String emailAddr) {
-		EmailAddrVo addrVo = emailAddrDao.findByAddress(emailAddr);
-		logger.info("EmailAddrDao - selectByAddress: "+LF+addrVo);
-		return addrVo;
+
+	private void verifyBounceCount(String address) {
+		EmailAddrVo addr = emailAddrDao.getByAddress(address);
+		if (addr != null) {
+			Integer before = CountMap.get(address);
+			assertNotNull(before);
+			assertTrue(before < addr.getBounceCount());
+			if (addr.getBounceCount() >= Constants.BOUNCE_SUSPEND_THRESHOLD) {
+				assertTrue(StatusId.SUSPENDED.value().equals(addr.getStatusId()));
+			}
+		}
 	}
 }
