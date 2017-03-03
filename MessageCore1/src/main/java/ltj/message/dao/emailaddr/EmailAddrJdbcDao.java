@@ -84,7 +84,8 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 		String sql = 
 				"select * " +
 				"from " +
-					"EmailAddr where EmailAddrId >= (RAND() * (select max(EmailAddrId) from EmailAddr)) order by EmailAddrId limit 1 ";
+					"EmailAddr where EmailAddrId >= (RAND() * (select max(EmailAddrId) from EmailAddr)) " +
+				" order by EmailAddrId limit 1 ";
 			
 		List<EmailAddrVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<EmailAddrVo>(EmailAddrVo.class));

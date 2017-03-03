@@ -1,10 +1,18 @@
 package ltj.message.dao.customer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import ltj.spring.util.SpringUtil;
 
 public class TestCustSeqThreads implements Runnable {
 	final static String LF = System.getProperty("line.separator", "\n");
 	static CustSequenceDao custSequenceDao = null;
+	
+	final static Map<String, List<Long>> threadMap = new HashMap<>();
 	
 	public static void main(String[] args) {
 		custSequenceDao = SpringUtil.getDaoAppContext().getBean(CustSequenceDao.class);
@@ -27,13 +35,33 @@ public class TestCustSeqThreads implements Runnable {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		for (Iterator<String> it=threadMap.keySet().iterator(); it.hasNext();) {
+			String thread = it.next();
+			System.out.println(thread + " - " + threadMap.get(thread));
+			assertAscending(threadMap.get(thread));
+		}
 		System.exit(0);
 	}
 
 	public void run() {
 		for (int i = 0; i < 20; i++) {
 			long nextVal = custSequenceDao.findNextValue();
-			System.out.println(Thread.currentThread().getName() + " - " + nextVal);
+			String thread = Thread.currentThread().getName();
+			System.out.println(thread + " - " + nextVal);
+			if (threadMap.containsKey(thread)) {
+				threadMap.get(thread).add(nextVal);
+			}
+			else {
+				List<Long> lst = new ArrayList<>();
+				lst.add(nextVal);
+				threadMap.put(thread, lst);
+			}
+		}
+	}
+	
+	static void assertAscending(List<Long> values) {
+		for (int i = 1; i < values.size(); i++) {
+			assert(values.get(i) > values.get(i - 1));
 		}
 	}
 }

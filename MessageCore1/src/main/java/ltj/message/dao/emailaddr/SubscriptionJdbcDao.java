@@ -395,7 +395,8 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		String sql = 
 				"select * " +
 				"from " +
-					"Subscription where EmailAddrId >= (RAND() * (select max(EmailAddrId) from Subscription)) order by EmailAddrId limit 1 ";
+					"Subscription where EmailAddrId >= (RAND() * (select max(EmailAddrId) from Subscription)) " +
+				" order by EmailAddrId limit 1 ";
 			
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));

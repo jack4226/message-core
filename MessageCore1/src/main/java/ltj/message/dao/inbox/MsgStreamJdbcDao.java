@@ -46,6 +46,50 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 	}
 	
 	@Override
+	public List<MsgStreamVo> getByToAddrId(long toAddrId) {
+		String sql = 
+			"select m.* " +
+			"from " +
+				"MsgStream m join MsgAddrs s on s.msgId=m.msgId " +
+				" join EmailAddr e on e.emailAddr=s.addrValue and s.addrType='To' " +
+			" where e.emailAddrId=? ";
+		
+		Object[] parms = new Object[] {toAddrId};
+		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 
+				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
+		return list;
+	}
+	
+	@Override
+	public List<MsgStreamVo> getByFromAddress(String address) {
+		String sql = 
+			"select m.* " +
+			"from " +
+				"MsgStream m join EmailAddr e on e.emailAddrId=m.fromAddrId " + 
+			" where e.emailAddr=? ";
+		
+		Object[] parms = new Object[] {address};
+		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 
+				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
+		return list;
+	}
+	
+	@Override
+	public List<MsgStreamVo> getByToAddress(String address) {
+		String sql = 
+			"select m.* " +
+			"from " +
+				"MsgStream m join MsgAddrs s on s.msgId=m.msgId " +
+				" join EmailAddr e on e.emailAddr=s.addrValue and s.addrType='To' " +
+			" where e.emailAddr=? ";
+		
+		Object[] parms = new Object[] {address};
+		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 
+				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
+		return list;
+	}
+
+	@Override
 	public MsgStreamVo getLastRecord() {
 		String sql = 
 			"select * " +

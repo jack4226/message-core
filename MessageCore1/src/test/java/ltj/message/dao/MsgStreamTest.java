@@ -6,6 +6,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
@@ -22,8 +23,10 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bo.test.RuleEngineTest;
 import ltj.message.dao.abstrct.DaoTestBase;
+import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgStreamDao;
+import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.vo.outbox.MsgStreamVo;
 
@@ -33,6 +36,8 @@ public class MsgStreamTest extends DaoTestBase {
 	private MsgStreamDao msgStreamDao;
 	@Resource
 	private MsgInboxDao msgInboxDao;
+	@Resource
+	private EmailAddrDao emailAddrDao;
 
 	private static MsgStreamVo lastRecord;
 	
@@ -120,14 +125,42 @@ public class MsgStreamTest extends DaoTestBase {
 		assertNotNull(msgStreamVo);
 	}
 	
+	@Test
+	public void test3() {
+		MsgStreamVo vo = msgStreamDao.getRandomRecord();
+		assertNotNull(vo);
+		List<MsgStreamVo> list1 = msgStreamDao.getByFromAddrId(vo.getFromAddrId());
+		assertFalse(list1.isEmpty());
+		assertEquals(vo.getFromAddrId(), list1.get(0).getFromAddrId());
+		
+		EmailAddrVo addrvo1 = emailAddrDao.getByAddrId(vo.getFromAddrId());
+		assertNotNull(addrvo1);
+		
+		List<MsgStreamVo> list2 = msgStreamDao.getByFromAddress(addrvo1.getEmailAddr());
+		assertEquals(list1.size(), list2.size());
+		
+		List<MsgStreamVo> list3 = msgStreamDao.getByToAddrId(vo.getToAddrId());
+		assertFalse(list3.isEmpty());
+
+		EmailAddrVo addrvo2 = emailAddrDao.getByAddrId(vo.getToAddrId());
+		assertNotNull(addrvo2);
+		
+		List<MsgStreamVo> list4 = msgStreamDao.getByToAddress(addrvo2.getEmailAddr());
+		assertEquals(list3.size(), list4.size());
+		for (int i = 0; i < list3.size(); i++) {
+			assertTrue(list3.get(i).equalsTo(list4.get(i)));
+		}
+	}
+	
+	
 	private MsgStreamVo selectByPrimaryKey(long msgId) {
-		MsgStreamVo msgStreamVo = (MsgStreamVo)msgStreamDao.getByPrimaryKey(msgId);
+		MsgStreamVo msgStreamVo = msgStreamDao.getByPrimaryKey(msgId);
 		System.out.println("MsgStreamDao - selectByPrimaryKey: "+LF+msgStreamVo);
 		return msgStreamVo;
 	}
 	
 	private MsgStreamVo selectLastRecord() {
-		MsgStreamVo msgStreamVo = (MsgStreamVo)msgStreamDao.getLastRecord();
+		MsgStreamVo msgStreamVo = msgStreamDao.getLastRecord();
 		System.out.println("MsgStreamDao - selectLastRecord: "+LF+msgStreamVo);
 		return msgStreamVo;
 	}
