@@ -17,6 +17,8 @@ public interface MsgInboxDao {
 	public List<MsgInboxWebVo> getByMsgRefId(long msgRefId);
 	public List<MsgInboxVo> getByFromAddrId(long addrId);
 	public List<MsgInboxVo> getByToAddrId(long addrId);
+	public List<MsgInboxVo> getByFromAddress(String address);
+	public List<MsgInboxVo> getByToAddress(String address);
 	public List<MsgInboxVo> getRecent(int days);
 	public List<MsgInboxVo> getRecent(Date date);
 	public int getInboxUnreadCount();

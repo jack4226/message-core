@@ -17,6 +17,7 @@ import org.springframework.test.annotation.Rollback;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.constant.CarrierCode;
 import ltj.message.dao.abstrct.DaoTestBase;
+import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgClickCountsDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgUnreadCountDao;
@@ -25,6 +26,7 @@ import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.PrintUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingVo.PageAction;
+import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgClickCountsVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
@@ -40,6 +42,8 @@ public class MsgInboxTest extends DaoTestBase {
 	private MsgClickCountsDao msgClickCountsDao;
 	@Resource
 	private MsgSequenceDao msgSequenceDao;
+	@Resource
+	private EmailAddrDao emailAddrDao;
 	
 	private static Long testMsgId = null; //2L;
 	private static Long testFromAddrId = null; //1L;
@@ -308,22 +312,36 @@ public class MsgInboxTest extends DaoTestBase {
 		return msgInboxVo;
 	}
 	
-	private List<MsgInboxVo> selectByFromAddrId(long msgId) {
-		List<MsgInboxVo> actions = msgInboxDao.getByFromAddrId(msgId);
-		for (Iterator<MsgInboxVo> it = actions.iterator(); it.hasNext();) {
+	private List<MsgInboxVo> selectByFromAddrId(long addrId) {
+		List<MsgInboxVo> list1 = msgInboxDao.getByFromAddrId(addrId);
+		for (Iterator<MsgInboxVo> it = list1.iterator(); it.hasNext();) {
 			MsgInboxVo vo = it.next();
 			logger.info("MsgInboxDao - selectByFromAddrId: " + vo.getMsgId() + " - " + vo.getFromAddress());
 		}
-		return actions;
+		EmailAddrVo addrvo = emailAddrDao.getByAddrId(addrId);
+		assertNotNull(addrvo);
+		List<MsgInboxVo> list2 = msgInboxDao.getByFromAddress(addrvo.getEmailAddr());
+		assertEquals(list1.size(), list2.size());
+		for (int i = 0; i < list1.size(); i++) {
+			assertTrue(list1.get(i).equalsTo(list2.get(i)));
+		}
+		return list1;
 	}
 
-	private List<MsgInboxVo> selectByToAddrId(long msgId) {
-		List<MsgInboxVo> actions = msgInboxDao.getByToAddrId(msgId);
-		for (Iterator<MsgInboxVo> it = actions.iterator(); it.hasNext();) {
+	private List<MsgInboxVo> selectByToAddrId(long addrId) {
+		List<MsgInboxVo> list1 = msgInboxDao.getByToAddrId(addrId);
+		for (Iterator<MsgInboxVo> it = list1.iterator(); it.hasNext();) {
 			MsgInboxVo vo = it.next();
 			logger.info("MsgInboxDao - selectByToAddrId: " + vo.getMsgId() + " - " + vo.getToAddress());
 		}
-		return actions;
+		EmailAddrVo addrvo = emailAddrDao.getByAddrId(addrId);
+		assertNotNull(addrvo);
+		List<MsgInboxVo> list2 = msgInboxDao.getByToAddress(addrvo.getEmailAddr());
+		assertEquals(list1.size(), list2.size());
+		for (int i = 0; i < list1.size(); i++) {
+			assertTrue(list1.get(i).equalsTo(list2.get(i)));
+		}
+		return list1;
 	}
 	
 	private MsgInboxWebVo selectBroadcastMsg() {

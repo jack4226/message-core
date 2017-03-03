@@ -26,7 +26,7 @@ public class AutoReplyBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo autoReplyBo;
 	
-	private static String replyToAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost"; //"testto@localhost";
+	private static String replyToAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost";
 	private static MessageBean messageBean;
 	
 	@Test

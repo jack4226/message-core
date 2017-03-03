@@ -7,8 +7,7 @@ import java.util.Random;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -16,49 +15,52 @@ import org.springframework.test.annotation.Rollback;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.TaskBaseBo;
-import ltj.message.constant.AddressType;
+import ltj.message.constant.TableColumnName;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
-/*** Please start MailEngine and MailSender before running this test ***/
 @FixMethodOrder
-public class ForwardBoTest extends BoTestBase {
-	protected static final Logger logger = Logger.getLogger(ForwardBoTest.class);
+public class ToSecurityBoTest extends BoTestBase {
 	@Resource
-	private TaskBaseBo forwardBo;
+	private TaskBaseBo toSecurityBo;
 	
-	private static String forwardAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost";
+	private static String nbr = StringUtils.leftPad(new Random().nextInt(100) + "", 2, '0');
+	private static String toStr = "user" + nbr + "@localhost";
+	private static String testSubject = "test from toSecurityBo - " + nbr;
 	private static MessageBean messageBean;
 	
 	@Test
 	@Rollback(value=false)
-	public void test1() throws Exception { // forward
+	public void toSecurity1() throws Exception {
 		messageBean = buildMessageBeanFromMsgStream();
-		forwardBo.setTaskArguments("$" + AddressType.FROM_ADDR.value());
-		forwardBo.setTaskArguments(forwardAddress);
+		messageBean.setSubject(testSubject);
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
-		forwardBo.getJmsProcessor().setQueueName("mailSenderInput");
+		toSecurityBo.setTaskArguments(new String[] {"$" + TableColumnName.SECURITY_DEPT_ADDR, toStr});
+		toSecurityBo.getJmsProcessor().setQueueName("mailSenderInput");
 		/*
 		 * this step will place a MessageBean in a queue for MailEngine to
 		 * pickup, the MailEngine will then send an Forward email to the
 		 * "forwardAddress", and add a record to MsgInbox table.
 		 */
-		forwardBo.process(messageBean);
+		Long rows = (Long) toSecurityBo.process(messageBean);
+		assertNotNull(rows);
+		assertTrue(rows > 0);
 	}
+	
 	@Test
-	public void test2() { // waitForMailEngine
+	public void toSecurity2() { // waitForMailEngine
 		// wait for the MailEngine to add a record to MsgInbox
 		try {
 			Thread.sleep(WaitTimeInMillis);
 		}
 		catch (InterruptedException e) {}
 	}
+
 	@Test
-	public void test3() { // verifyDatabaseRecord
-		// now verify the database record added
-		EmailAddrVo addrVo = selectEmailAddrByAddress(forwardAddress);
+	public void toSecurity3() { // verifyDatabaseRecord
+		EmailAddrVo addrVo = selectEmailAddrByAddress(toStr);
 		assertNotNull(addrVo);
 		List<MsgInboxVo> msgList = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		assertFalse(msgList.isEmpty());
@@ -73,4 +75,5 @@ public class ForwardBoTest extends BoTestBase {
 		}
 		assertEquals(true, found);
 	}
+
 }

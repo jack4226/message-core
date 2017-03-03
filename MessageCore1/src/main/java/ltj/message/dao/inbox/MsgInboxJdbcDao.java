@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
+import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
 import ltj.message.constant.StatusId;
@@ -139,28 +140,48 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	
 	@Override
 	public List<MsgInboxVo> getByFromAddrId(long addrId) {
-		String sql = 
-			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
-			" from " +
-				" MsgInbox " +
-			" where fromAddrId=? " +
-			" order by msgId";
-		Object[] parms = new Object[] {addrId};
-		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms,
-				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
-		return list;
+		return getByToAddrIdAndType(addrId, AddressType.FROM_ADDR);
 	}
 	
 	@Override
 	public List<MsgInboxVo> getByToAddrId(long addrId) {
-		String sql = 
-			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+		return getByToAddrIdAndType(addrId, AddressType.TO_ADDR);
+	}
+
+	private List<MsgInboxVo> getByToAddrIdAndType(long addrId, AddressType type) {
+			String sql = 
+			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
 			" from " +
-				" MsgInbox " +
-			" where toAddrId=? " +
-			" order by msgId";
-		Object[] parms = new Object[] {addrId};
+				" MsgInbox a join MsgAddrs s on s.msgId=a.msgId and s.addrType=? " +
+				" join EmailAddr e on e.emailAddr = s.addrValue " +
+			" where e.emailAddrId=? " +
+			" order by a.msgId";
+		Object[] parms = new Object[] {type.value(), addrId};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
+				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
+		return list;
+	}
+
+	@Override
+	public List<MsgInboxVo> getByFromAddress(String address) {
+		return getByAddressAndType(address, AddressType.FROM_ADDR);
+	}
+	
+	@Override
+	public List<MsgInboxVo> getByToAddress(String address) {
+		return getByAddressAndType(address, AddressType.TO_ADDR);
+	}
+	
+	private List<MsgInboxVo> getByAddressAndType(String address, AddressType type) {
+		String sql = 
+			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
+			" from " +
+				" MsgInbox a join MsgAddrs s on s.msgId=a.msgId and s.addrType=? " +
+				" join EmailAddr e on e.emailAddr = s.addrValue " +
+			" where e.emailAddr=? " +
+			" order by a.msgId";
+		Object[] parms = new Object[] {type.value(), address};
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		return list;
 	}
