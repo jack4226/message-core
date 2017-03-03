@@ -109,10 +109,13 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 	 * set the global rollback-only flag to true, causing the entire transaction
 	 * to fail.
 	 */
+	final static Object jvmLocker = new Object();
 	@Override
-	public synchronized int insertWithDelete(DeliveryStatusVo deliveryStatusVo) {
-		deleteByPrimaryKey(deliveryStatusVo.getMsgId(), deliveryStatusVo.getFinalRecipientId());
-		return insert(deliveryStatusVo);
+	public int insertWithDelete(DeliveryStatusVo deliveryStatusVo) {
+		synchronized (jvmLocker) {
+			deleteByPrimaryKey(deliveryStatusVo.getMsgId(), deliveryStatusVo.getFinalRecipientId());
+			return insert(deliveryStatusVo);
+		}
 	}
 	
 	@Override

@@ -77,15 +77,10 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 			return null;
 		}
 
-		RuleVo vo = null;
-		for (int i = 0; i < list.size(); i++) {
+		RuleVo vo = (RuleVo) list.get(0);
+		for (int i = 1; i < list.size(); i++) {
 			RuleVo ruleVo = (RuleVo) list.get(i);
-			if (vo == null) {
-				vo = ruleVo;
-			}
-			else {
-				vo.getRuleElementVos().addAll(ruleVo.getRuleElementVos());
-			}
+			vo.getRuleElementVos().addAll(ruleVo.getRuleElementVos());
 		}
 		List<RuleSubRuleMapVo> subRules = getRuleSubRuleMapDao().getByRuleName(vo.getRuleName());
 		vo.getRuleSubRuleVos().addAll(subRules);

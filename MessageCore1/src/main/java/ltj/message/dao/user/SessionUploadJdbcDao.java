@@ -132,11 +132,15 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		return rowsInserted;
 	}
 	
+	final static Object jvmLocker = new Object();
+	
 	@Override
 	public int insertLast(SessionUploadVo sessVo) {
-		String lastSeq = "select max(SessionSeq) from SessionUploads where SessionId = '" + sessVo.getSessionId() + "'";
-		int sessSeq = getJdbcTemplate().queryForObject(lastSeq, Integer.class) + 1;
-		sessVo.setSessionSeq(sessSeq);
-		return insert(sessVo);
+		synchronized (jvmLocker) {
+			String lastSeq = "select max(SessionSeq) from SessionUploads where SessionId = '" + sessVo.getSessionId() + "'";
+			int sessSeq = getJdbcTemplate().queryForObject(lastSeq, Integer.class) + 1;
+			sessVo.setSessionSeq(sessSeq);
+			return insert(sessVo);
+		}
 	}
 }

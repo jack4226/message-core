@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.vo.SocketServerVo;
@@ -35,7 +36,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 		
 		String sql = "select * from SocketServers ";
 		if (onlyActive) {
-			sql += " where StatusId='A'";
+			sql += " where StatusId='" + StatusId.ACTIVE.value() + "'";
 		}
 		List<SocketServerVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<SocketServerVo>(SocketServerVo.class));

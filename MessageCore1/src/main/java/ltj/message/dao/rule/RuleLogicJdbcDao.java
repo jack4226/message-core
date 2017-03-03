@@ -122,7 +122,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		}
 		sql += getGroupByClause();
 		sql += " order by r.ruleCategory asc, r.ruleSeq asc, r.ruleName asc ";
-		ArrayList<String> fields = new ArrayList<String>();
+		List<String> fields = new ArrayList<>();
 		fields.add(Constants.Y);
 		List<RuleLogicVo> list = getJdbcTemplate().query(sql, fields.toArray(), 
 				new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
@@ -134,12 +134,15 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = 
 			"select *, 0 as SubRuleCount " +
 			" from RuleLogic " +
-				" where IsSubRule='" + Constants.Y + "' ";
+				" where IsSubRule=? ";
+		List<String> fields = new ArrayList<>();
+		fields.add(Constants.Y);
 		if (excludeBuiltIn) {
-			sql += " and BuiltInRule!='" + Constants.Y + "' ";
+			sql += " and BuiltInRule!=? ";
+			fields.add(Constants.Y);
 		}
 		
-		List<RuleLogicVo> list = getJdbcTemplate().query(sql, 
+		List<RuleLogicVo> list = getJdbcTemplate().query(sql, fields.toArray(),
 				new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
 		return list;
 	}
