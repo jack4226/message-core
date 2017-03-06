@@ -21,7 +21,8 @@ public class IdTokensTest extends DaoTestBase {
 	private IdTokensDao idTokensDao;
 	@Resource
 	private ClientDao clientDao;
-	private String testClientId = "JBatchCorp";
+	
+	private static String testClientId = "JBatchCorp";
 	
 	@Test
 	public void insertUpdateDelete() {
@@ -48,7 +49,7 @@ public class IdTokensTest extends DaoTestBase {
 	private IdTokensVo selectByClientId(String clientId) {
 		IdTokensVo vo = idTokensDao.getByClientId(clientId);
 		if (vo != null) {
-			System.out.println("IdTokensDao: selectByClientId "+vo);
+			logger.info("IdTokensDao: selectByClientId "+vo);
 		}
 		return vo;
 	}
@@ -57,7 +58,7 @@ public class IdTokensTest extends DaoTestBase {
 		IdTokensVo vo = idTokensDao.getByClientId(idTokensVo.getClientId());
 		vo.setDescription("For Test SenderId");
 		int rows = idTokensDao.update(vo);
-		System.out.println("IdTokensDao: update "+rows+"\n"+vo);
+		logger.info("IdTokensDao: update "+rows+"\n"+vo);
 		return rows;
 	}
 	private IdTokensVo insert() {
@@ -72,14 +73,14 @@ public class IdTokensTest extends DaoTestBase {
 			}
 			vo.setClientId(testClientId);
 			idTokensDao.insert(vo);
-			System.out.println("IdTokensDao: insert "+vo);
+			logger.info("IdTokensDao: insert "+vo);
 			return vo;
 		}
 		return null;
 	}
 	private int delete(IdTokensVo idTokensVo) {
 		int rowsDeleted = idTokensDao.delete(idTokensVo.getClientId());
-		System.out.println("IdTokensDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("IdTokensDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 }

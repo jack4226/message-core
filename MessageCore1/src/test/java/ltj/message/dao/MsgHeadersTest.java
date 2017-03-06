@@ -16,7 +16,8 @@ import ltj.message.vo.inbox.MsgHeadersVo;
 public class MsgHeadersTest extends DaoTestBase {
 	@Resource
 	private MsgHeadersDao msgHeadersDao;
-	long testMsgId = 2L;
+	
+	static long testMsgId = 2L;
 
 	@Test
 	public void testMsgHeaders() {
@@ -24,8 +25,9 @@ public class MsgHeadersTest extends DaoTestBase {
 			List<MsgHeadersVo> lst1 = selectByMsgId(testMsgId);
 			if (lst1.isEmpty()) {
 				lst1 = msgHeadersDao.getRandomRecord();
+				assertTrue(lst1.size() > 0);
+				testMsgId = lst1.get(0).getMsgId();
 			}
-			assertTrue(lst1.size() > 0);
 			assertTrue(msgHeadersDao.getRandomRecord().size() > 0);
 			MsgHeadersVo vo1 = lst1.get(0);
 			MsgHeadersVo vo0 = selectByPrimaryKey(vo1.getMsgId(), vo1.getHeaderSeq());
@@ -50,27 +52,27 @@ public class MsgHeadersTest extends DaoTestBase {
 		List<MsgHeadersVo> actions = msgHeadersDao.getByMsgId(msgId);
 		for (Iterator<MsgHeadersVo> it=actions.iterator(); it.hasNext();) {
 			MsgHeadersVo msgHeadersVo = it.next();
-			System.out.println("MsgHeadersDao - selectByMsgId: "+LF+msgHeadersVo);
+			logger.info("MsgHeadersDao - selectByMsgId: "+LF+msgHeadersVo);
 		}
 		return actions;
 	}
 	
 	private MsgHeadersVo selectByPrimaryKey(long msgId, int seq) {
 		MsgHeadersVo msgHeadersVo = (MsgHeadersVo)msgHeadersDao.getByPrimaryKey(msgId,seq);
-		System.out.println("MsgHeadersDao - selectByPrimaryKey: "+LF+msgHeadersVo);
+		logger.info("MsgHeadersDao - selectByPrimaryKey: "+LF+msgHeadersVo);
 		return msgHeadersVo;
 	}
 	
 	private int update(MsgHeadersVo msgHeadersVo) {
 		msgHeadersVo.setHeaderValue(msgHeadersVo.getHeaderValue()+".");
 		int rows = msgHeadersDao.update(msgHeadersVo);
-		System.out.println("MsgHeadersDao - update: rows updated "+rows);
+		logger.info("MsgHeadersDao - update: rows updated "+rows);
 		return rows;
 	}
 	
 	private int deleteByPrimaryKey(MsgHeadersVo vo) {
 		int rowsDeleted = msgHeadersDao.deleteByPrimaryKey(vo.getMsgId(),vo.getHeaderSeq());
-		System.out.println("MsgHeadersDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
+		logger.info("MsgHeadersDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
@@ -80,7 +82,7 @@ public class MsgHeadersTest extends DaoTestBase {
 			MsgHeadersVo msgHeadersVo = list.get(list.size()-1);
 			msgHeadersVo.setHeaderSeq(msgHeadersVo.getHeaderSeq()+1);
 			int rows = msgHeadersDao.insert(msgHeadersVo);
-			System.out.println("MsgHeadersDao - insert: rows inserted "+rows);
+			logger.info("MsgHeadersDao - insert: rows inserted "+rows);
 			return selectByPrimaryKey(msgHeadersVo.getMsgId(), msgHeadersVo.getHeaderSeq());
 		}
 		return null;

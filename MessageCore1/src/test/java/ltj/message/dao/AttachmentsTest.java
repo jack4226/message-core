@@ -34,7 +34,7 @@ public class AttachmentsTest extends DaoTestBase {
 			AttachmentsVo vo = insert(testMsgId);
 			assertNotNull(vo);
 			List<AttachmentsVo> list2 = selectByMsgId(testMsgId);
-			assertTrue(list2.size() == (list.size() + 1));
+			assertEquals(list2.size(), (list.size() + 1));
 			AttachmentsVo vo2 = selectByPrimaryKey(vo);
 			assertNotNull(vo2);
 			assertTrue(vo.equalsTo(vo2));
@@ -54,20 +54,20 @@ public class AttachmentsTest extends DaoTestBase {
 		List<AttachmentsVo> list = attachmentsDao.getByMsgId(msgId);
 		for (Iterator<AttachmentsVo> it=list.iterator(); it.hasNext();) {
 			AttachmentsVo attachmentsVo = it.next();
-			System.out.println("AttachmentsDao - selectByMsgId: "+LF+attachmentsVo);
+			logger.info("AttachmentsDao - selectByMsgId: "+LF+attachmentsVo);
 		}
 		return list;
 	}
 	
 	private AttachmentsVo selectByPrimaryKey(AttachmentsVo vo) {
-		AttachmentsVo attachmentsVo = (AttachmentsVo) attachmentsDao.getByPrimaryKey(vo.getMsgId(),
+		AttachmentsVo attachmentsVo = attachmentsDao.getByPrimaryKey(vo.getMsgId(),
 				vo.getAttchmntDepth(), vo.getAttchmntSeq());
-		System.out.println("AttachmentsDao - selectByPrimaryKey: "+LF+attachmentsVo);
+		logger.info("AttachmentsDao - selectByPrimaryKey: "+LF+attachmentsVo);
 		return attachmentsVo;
 	}
 	
 	private int update(AttachmentsVo vo) {
-		AttachmentsVo attachmentsVo = (AttachmentsVo) attachmentsDao.getByPrimaryKey(vo.getMsgId(),
+		AttachmentsVo attachmentsVo = attachmentsDao.getByPrimaryKey(vo.getMsgId(),
 				vo.getAttchmntDepth(), vo.getAttchmntSeq());
 		int rowsUpdated = 0;
 		if (attachmentsVo!=null) {
@@ -75,7 +75,7 @@ public class AttachmentsTest extends DaoTestBase {
 			attachmentsVo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 			attachmentsVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 			rowsUpdated = attachmentsDao.update(attachmentsVo);
-			System.out.println("AttachmentsDao - update: "+LF+attachmentsVo);
+			logger.info("AttachmentsDao - update: "+LF+attachmentsVo);
 		}
 		return rowsUpdated;
 	}
@@ -83,28 +83,28 @@ public class AttachmentsTest extends DaoTestBase {
 	private int deleteByPrimaryKey(AttachmentsVo vo) {
 		int rowsDeleted = attachmentsDao.deleteByPrimaryKey(vo.getMsgId(), vo.getAttchmntDepth(),
 				vo.getAttchmntSeq());
-		System.out.println("AttachmentsDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
+		logger.info("AttachmentsDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
 	private AttachmentsVo insert(long msgId) {
-		List<AttachmentsVo> list = (List<AttachmentsVo>)attachmentsDao.getByMsgId(msgId);
+		List<AttachmentsVo> list = attachmentsDao.getByMsgId(msgId);
 		if (list.size()>0) {
 			AttachmentsVo attachmentsVo = list.get(list.size()-1);
 			attachmentsVo.setAttchmntSeq(attachmentsVo.getAttchmntSeq()+1);
 			attachmentsDao.insert(attachmentsVo);
-			System.out.println("AttachmentsDao - insert: "+LF+attachmentsVo);
+			logger.info("AttachmentsDao - insert: "+LF+attachmentsVo);
 			return attachmentsVo;
 		}
 		return null;
 	}
 
 	private void deleteLast(long msgId) {
-		List<AttachmentsVo> list = (List<AttachmentsVo>)attachmentsDao.getByMsgId(msgId);
+		List<AttachmentsVo> list = attachmentsDao.getByMsgId(msgId);
 		if (list.size()>1) {
 			AttachmentsVo attachmentsVo = list.get(list.size()-1);
 			int rows = deleteByPrimaryKey(attachmentsVo);
-			System.out.println("AttachmentsDao - deleteLast: "+rows);
+			logger.info("AttachmentsDao - deleteLast: "+rows);
 		}
 	}
 }

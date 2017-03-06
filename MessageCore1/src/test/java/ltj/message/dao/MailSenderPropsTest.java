@@ -46,14 +46,14 @@ public class MailSenderPropsTest extends DaoTestBase {
 		List<MailSenderVo> mailSenderPropses = mailSenderPropsDao.getAll();
 		for (Iterator<MailSenderVo> it=mailSenderPropses.iterator(); it.hasNext();) {
 			MailSenderVo mailSenderVo = it.next();
-			System.out.println("MailSenderPropsDao - selectAll: "+LF+mailSenderVo);
+			logger.info("MailSenderPropsDao - selectAll: "+LF+mailSenderVo);
 		}
 		return mailSenderPropses;
 	}
 	
 	public MailSenderVo selectByPrimaryKey(int rowId) {
 		MailSenderVo vo = mailSenderPropsDao.getByPrimaryKey(rowId);
-		System.out.println("MailSenderPropsDao - selectByPrimaryKey: "+LF+vo);
+		logger.info("MailSenderPropsDao - selectByPrimaryKey: "+LF+vo);
 		return vo;
 	}
 	
@@ -62,13 +62,13 @@ public class MailSenderPropsTest extends DaoTestBase {
 			mailSenderVo.setUseTestAddr("yes");
 		}
 		int rows = mailSenderPropsDao.update(mailSenderVo);
-		System.out.println("MailSenderPropsDao - update: rows updated "+rows);
+		logger.info("MailSenderPropsDao - update: rows updated "+rows);
 		return rows;
 	}
 	
 	private int deleteByPrimaryKey(int rowId) {
 		int rowsDeleted = mailSenderPropsDao.deleteByPrimaryKey(rowId);
-		System.out.println("MailSenderPropsDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
+		logger.info("MailSenderPropsDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	private MailSenderVo insert(int rowId) {
@@ -76,7 +76,7 @@ public class MailSenderPropsTest extends DaoTestBase {
 		if (vo != null) {
 			vo.setInternalLoopback(vo.getInternalLoopback() + "_test");
 			int rows = mailSenderPropsDao.insert(vo);
-			System.out.println("MailSenderPropsDao - insert: rows inserted "+rows);
+			logger.info("MailSenderPropsDao - insert: rows inserted "+rows);
 			return selectByPrimaryKey(vo.getRowId());
 		}
 		return null;

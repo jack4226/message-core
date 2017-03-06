@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
+import ltj.data.preload.RuleActionDetailEnum;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.action.MsgActionDetailDao;
 import ltj.message.vo.action.MsgActionDetailVo;
@@ -13,14 +14,15 @@ import ltj.message.vo.action.MsgActionDetailVo;
 public class MsgActionDetailTest extends DaoTestBase {
 	@Resource
 	private MsgActionDetailDao msgActionDetailDao;
-	final String testActionId = "CLOSE";
+	
+	final static String testActionId = RuleActionDetailEnum.CLOSE.name();
 	
 	@Test
 	public void testMsgActionDetail() {
 		try {
-			MsgActionDetailVo vo0 = selectByActionId("SUSPEND");
+			MsgActionDetailVo vo0 = selectByActionId(RuleActionDetailEnum.SUSPEND.name());
 			assertNotNull(vo0);
-			vo0 = selectByActionId("SAVE");
+			vo0 = selectByActionId(RuleActionDetailEnum.SAVE.name());
 			assertNotNull(vo0);
 			vo0 = selectByActionId(testActionId);
 			assertNotNull(vo0);
@@ -47,7 +49,7 @@ public class MsgActionDetailTest extends DaoTestBase {
 	private MsgActionDetailVo selectByPrimaryKey(int rowId) {
 		MsgActionDetailVo vo = msgActionDetailDao.getByPrimaryKey(rowId);
 		if (vo!=null) {
-			System.out.println("MsgActionDetailDao - selectByPrimaryKey: "+LF+vo);
+			logger.info("MsgActionDetailDao - selectByPrimaryKey: "+LF+vo);
 		}
 		return vo;
 	}
@@ -55,7 +57,7 @@ public class MsgActionDetailTest extends DaoTestBase {
 	private MsgActionDetailVo selectByActionId(String actionId) {
 		MsgActionDetailVo vo = msgActionDetailDao.getByActionId(actionId);
 		if (vo!=null) {
-			System.out.println("MsgActionDetailDao - selectByActionId: "+vo);
+			logger.info("MsgActionDetailDao - selectByActionId: "+vo);
 		}
 		return vo;
 	}
@@ -63,7 +65,7 @@ public class MsgActionDetailTest extends DaoTestBase {
 	private int update(MsgActionDetailVo msgActionDetailVo) {
 		msgActionDetailVo.setDescription("Close the Email");
 		int rows = msgActionDetailDao.update(msgActionDetailVo);
-		System.out.println("MsgActionDetailDao - update: "+rows);
+		logger.info("MsgActionDetailDao - update: "+rows);
 		return rows;
 	}
 	
@@ -72,7 +74,7 @@ public class MsgActionDetailTest extends DaoTestBase {
 		if (msgActionDetailVo!=null) {
 			msgActionDetailVo.setActionId(msgActionDetailVo.getActionId()+"_v2");
 			int rows = msgActionDetailDao.insert(msgActionDetailVo);
-			System.out.println("MsgActionDetailDao - insert: rows inserted "+rows);
+			logger.info("MsgActionDetailDao - insert: rows inserted "+rows);
 			return selectByActionId(msgActionDetailVo.getActionId());
 		}
 		return null;
@@ -80,7 +82,7 @@ public class MsgActionDetailTest extends DaoTestBase {
 	
 	private int deleteByActionId(MsgActionDetailVo vo) {
 		int rows = msgActionDetailDao.deleteByActionId(vo.getActionId());
-		System.out.println("MsgActionDetailDao - deleteByPrimaryKey: Rows Deleted: "+rows);
+		logger.info("MsgActionDetailDao - deleteByPrimaryKey: Rows Deleted: "+rows);
 		return rows;
 	}
 }

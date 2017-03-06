@@ -52,7 +52,7 @@ public class ClientTest extends DaoTestBase {
 	private ClientVo select(ClientVo vo) {
 		ClientVo vo2 = clientDao.getByClientId(vo.getClientId());
 		if (vo2 != null) {
-			System.out.println("ClientDao - select: "+vo2);
+			logger.info("ClientDao - select: "+vo2);
 		}
 		return vo2;
 	}
@@ -65,17 +65,17 @@ public class ClientTest extends DaoTestBase {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.DAY_OF_YEAR, -31);
 			String systemId = TimestampUtil.db2ToDecStr(TimestampUtil.getDb2Timestamp(cal.getTime()));
-			System.out.println("SystemId: " + systemId);
+			logger.info("SystemId: " + systemId);
 			clientVo.setSystemId(systemId);
 			rows = clientDao.update(clientVo);
-			System.out.println("ClientDao - update: rows updated: "+rows);
+			logger.info("ClientDao - update: rows updated: "+rows);
 		}
 		return rows;
 	}
 	
 	private int delete(ClientVo vo) {
 		int rowsDeleted = clientDao.delete(vo.getClientId());
-		System.out.println("ClientDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("ClientDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 
@@ -85,7 +85,7 @@ public class ClientTest extends DaoTestBase {
 			clientVo.setClientId(clientVo.getClientId()+"_v2");
 			clientVo.setDomainName(clientVo.getDomainName()+".v2");
 			clientDao.insert(clientVo);
-			System.out.println("ClientDao - insert: "+clientVo);
+			logger.info("ClientDao - insert: "+clientVo);
 			return clientVo;
 		}
 		return null;

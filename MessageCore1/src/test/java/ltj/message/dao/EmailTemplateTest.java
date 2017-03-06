@@ -36,9 +36,9 @@ public class EmailTemplateTest extends DaoTestBase {
 			vo1.setRowId(vo2.getRowId());
 			assertTrue(vo1.equalsTo(vo2));
 			int rowsUpdated = update(vo2);
-			assertTrue(rowsUpdated==2);
+			assertEquals(rowsUpdated, 2);
 			int rowsDeleted = deleteByTemplateId(vo2.getTemplateId());
-			assertTrue(rowsDeleted==1);
+			assertEquals(rowsDeleted, 1);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -50,11 +50,11 @@ public class EmailTemplateTest extends DaoTestBase {
 		List<EmailTemplateVo> list = null;
 		if (forTrial) {
 			list = emailTemplateDao.getAllForTrial();
-			System.out.println("EmailTemplateDao - getAllForTrial() - size: " + list.size());
+			logger.info("EmailTemplateDao - getAllForTrial() - size: " + list.size());
 		}
 		else {
 			list = emailTemplateDao.getAll();
-			System.out.println("EmailTemplateDao - getAll() - size: " + list.size());
+			logger.info("EmailTemplateDao - getAll() - size: " + list.size());
 		}
 		return list;
 	}
@@ -62,7 +62,7 @@ public class EmailTemplateTest extends DaoTestBase {
 	private EmailTemplateVo selectByTemplateId(String templateId) {
 		EmailTemplateVo vo = emailTemplateDao.getByTemplateId(templateId);
 		if (vo != null) {
-			System.out.println("EmailTemplateDao - selectByTemplateId: " + LF + vo);
+			logger.info("EmailTemplateDao - selectByTemplateId: " + LF + vo);
 		}
 		return vo;
 	}
@@ -70,7 +70,7 @@ public class EmailTemplateTest extends DaoTestBase {
 	private List<EmailTemplateVo> selectByListId(String listId) {
 		List<EmailTemplateVo> list = emailTemplateDao.getByListId(listId);
 		for (EmailTemplateVo vo : list) {
-			System.out.println("EmailTemplateDao - selectByListId: " + LF + vo);
+			logger.info("EmailTemplateDao - selectByListId: " + LF + vo);
 			break;
 		}
 		return list;
@@ -82,11 +82,11 @@ public class EmailTemplateTest extends DaoTestBase {
 			emailTemplate.setOrigUpdtTime(new Timestamp(new Date().getTime()));
 			emailTemplate.setSubject(emailTemplate.getSubject()+", test update");
 			int rows1 = emailTemplateDao.update(emailTemplate);
-			System.out.println("EmailTemplateDao - rows updated: "+rows1);
+			logger.info("EmailTemplateDao - rows updated: "+rows1);
 			rows += rows1;
 			emailTemplate.setBodyText(emailTemplate.getBodyText() + LF + "... test update.");
 			int rows2 = emailTemplateDao.update(emailTemplate);
-			System.out.println("EmailTemplateDao - rows updated: "+rows2);
+			logger.info("EmailTemplateDao - rows updated: "+rows2);
 			rows += rows2;
 		}
 		return rows;
@@ -94,7 +94,7 @@ public class EmailTemplateTest extends DaoTestBase {
 	
 	private int deleteByTemplateId(String templateId) {
 		int rowsDeleted = emailTemplateDao.deleteByTemplateId(templateId);
-		System.out.println("EmailTemplateDao - deleteByTemplateId: Rows Deleted: "+rowsDeleted);
+		logger.info("EmailTemplateDao - deleteByTemplateId: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
@@ -106,7 +106,7 @@ public class EmailTemplateTest extends DaoTestBase {
 		}
 		emailTemplateVo.setTemplateId(templateId + "_v2");
 		int rows = emailTemplateDao.insert(emailTemplateVo);
-		System.out.println("EmailTemplateDao - insert: rows inserted "+rows);
+		logger.info("EmailTemplateDao - insert: rows inserted "+rows);
 		return selectByTemplateId(emailTemplateVo.getTemplateId());
 	}
 }

@@ -19,10 +19,10 @@ import ltj.message.dao.action.MsgActionDao;
 import ltj.message.vo.action.MsgActionVo;
 
 public class MsgActionTest extends DaoTestBase {
-	// this instance will be dependency injected by name
 	@Resource
 	private MsgActionDao msgActionDao;
-	final String testRuleName = RuleNameEnum.HARD_BOUNCE.name();
+	
+	final static String testRuleName = RuleNameEnum.HARD_BOUNCE.name();
 	
 	@Test
 	public void testSelects() {
@@ -55,14 +55,14 @@ public class MsgActionTest extends DaoTestBase {
 		List<MsgActionVo> actions = msgActionDao.getByRuleName(ruleName);
 		for (Iterator<MsgActionVo> it=actions.iterator(); it.hasNext();) {
 			MsgActionVo msgActionVo = it.next();
-			System.out.println("MsgActionDao - selectByRuleName: "+LF+msgActionVo);
+			logger.info("MsgActionDao - selectByRuleName: "+LF+msgActionVo);
 		}
 		return actions;
 	}
 	
 	private MsgActionVo selectByUniqueKey(String ruleName, int actionSeq, String clientId) {
 		MsgActionVo msgActionVo = msgActionDao.getMostCurrent(ruleName, actionSeq, clientId);
-		System.out.println("MsgActionDao - selectByUniqueKey: "+LF+msgActionVo);
+		logger.info("MsgActionDao - selectByUniqueKey: "+LF+msgActionVo);
 		return msgActionVo;
 	}
 	
@@ -70,7 +70,7 @@ public class MsgActionTest extends DaoTestBase {
 		List<MsgActionVo> list = msgActionDao.getByBestMatch(RuleNameEnum.GENERIC.name(), null, "JBatchCorp");
 		for (int i=0; i<list.size(); i++) {
 			MsgActionVo msgActionVo = list.get(i);
-			System.out.println("MsgActionDao - selectByBestMatch: "+LF+msgActionVo);
+			logger.info("MsgActionDao - selectByBestMatch: "+LF+msgActionVo);
 		}
 		return list;
 	}
@@ -78,7 +78,7 @@ public class MsgActionTest extends DaoTestBase {
 	private MsgActionVo select(MsgActionVo msgActionVo) {
 		MsgActionVo msgActionVo2 = msgActionDao.getByUniqueKey(msgActionVo.getRuleName(),
 				msgActionVo.getActionSeq(), msgActionVo.getStartTime(), msgActionVo.getClientId());
-		System.out.println("MsgActionDao - select: "+msgActionVo2);
+		logger.info("MsgActionDao - select: "+msgActionVo2);
 		return msgActionVo2;
 	}
 	
@@ -89,21 +89,21 @@ public class MsgActionTest extends DaoTestBase {
 				msgActionVo.setStatusId(StatusId.ACTIVE.value());
 			}
 			rowsUpdated = msgActionDao.update(msgActionVo);
-			System.out.println("MsgActionDao - update: Rows updated: "+rowsUpdated);
+			logger.info("MsgActionDao - update: Rows updated: "+rowsUpdated);
 		}
 		return rowsUpdated;
 	}
 	
 	private int deleteByRuleName(String ruleName) {
 		int rowsDeleted = msgActionDao.deleteByRuleName(ruleName);
-		System.out.println("MsgActionDao - deleteByRuleName: Rows Deleted: "+rowsDeleted);
+		logger.info("MsgActionDao - deleteByRuleName: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
 	private int delete(MsgActionVo msgActionVo) {
 		int rowsDeleted = msgActionDao.deleteByUniqueKey(msgActionVo.getRuleName(),
 				msgActionVo.getActionSeq(), msgActionVo.getStartTime(), msgActionVo.getClientId());
-		System.out.println("MsgActionDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("MsgActionDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 
@@ -113,7 +113,7 @@ public class MsgActionTest extends DaoTestBase {
 			MsgActionVo msgActionVo = list.get(list.size()-1);
 			msgActionVo.setActionSeq((msgActionVo.getActionSeq()+1));
 			msgActionDao.insert(msgActionVo);
-			System.out.println("MsgActionDao - insert: "+msgActionVo);
+			logger.info("MsgActionDao - insert: "+msgActionVo);
 			return msgActionVo;
 		}
 		return null;

@@ -39,7 +39,7 @@ public class MsgRenderedTest extends DaoTestBase {
 	private MsgRenderedVo selectByPrimaryKey(long renderId) {
 		MsgRenderedVo renderedVo = renderedDao.getByPrimaryKey(renderId);
 		if (renderedVo!=null) {
-			System.out.println("MsgRenderedDao - selectByPrimaryKey: " + LF + renderedVo);
+			logger.info("MsgRenderedDao - selectByPrimaryKey: " + LF + renderedVo);
 		}
 		return renderedVo;
 	}
@@ -47,7 +47,7 @@ public class MsgRenderedTest extends DaoTestBase {
 	private int update(MsgRenderedVo renderedVo) {
 		renderedVo.setUpdtUserId("unitTest");
 		int rows = renderedDao.update(renderedVo);
-		System.out.println("MsgRenderedDao - update: rows updated " + rows);
+		logger.info("MsgRenderedDao - update: rows updated " + rows);
 		return rows;
 	}
 
@@ -56,7 +56,7 @@ public class MsgRenderedTest extends DaoTestBase {
 		if (vo!=null) {
 			vo.setUpdtUserId("unitTest");;
 			int rows = renderedDao.insert(vo);
-			System.out.println("MsgRenderedDao - insert: rows inserted " + rows);
+			logger.info("MsgRenderedDao - insert: rows inserted " + rows);
 			return selectByPrimaryKey(vo.getRenderId());
 		}
 		return null;
@@ -64,7 +64,7 @@ public class MsgRenderedTest extends DaoTestBase {
 
 	private int deleteByPrimaryKey(MsgRenderedVo vo) {
 		int rowsDeleted = renderedDao.deleteByPrimaryKey(vo.getRenderId());
-		System.out.println("MsgRenderedDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		logger.info("MsgRenderedDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 

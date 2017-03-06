@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.RuleActionDetailEnum;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgActionLogsDao;
 import ltj.message.dao.inbox.MsgInboxDao;
@@ -24,7 +25,7 @@ public class MsgActionLogsTest extends DaoTestBase {
 	@Resource
 	private MsgInboxDao msgInboxDao;
 	
-	final String testActionId = "CLOSE";
+	final static String testActionId = RuleActionDetailEnum.CLOSE.name();
 	
 	@Test
 	@Rollback(value=false)

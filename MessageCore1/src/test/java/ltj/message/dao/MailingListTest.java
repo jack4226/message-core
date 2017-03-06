@@ -17,7 +17,8 @@ import ltj.message.vo.emailaddr.MailingListVo;
 public class MailingListTest extends DaoTestBase {
 	@Resource
 	private MailingListDao mailingListDao;
-	private String listId = Constants.DEMOLIST1_NAME;
+	
+	private static String listId = Constants.DEMOLIST1_NAME;
 
 	@Test
 	public void testInsertSelectDelete() {
@@ -51,7 +52,7 @@ public class MailingListTest extends DaoTestBase {
 	private MailingListVo selectByListId(MailingListVo vo) {
 		MailingListVo mailingList = mailingListDao.getByListId(vo.getListId());
 		if (mailingList != null) {
-			System.out.println("MailingListDao - selectByListId: " + LF + mailingList);
+			logger.info("MailingListDao - selectByListId: " + LF + mailingList);
 		}
 		return mailingList;
 	}
@@ -59,7 +60,7 @@ public class MailingListTest extends DaoTestBase {
 	private List<MailingListVo> selectByAddr(String emailAddr) {
 		List<MailingListVo> list = mailingListDao.getByAddress(emailAddr);
 		for (MailingListVo vo : list) {
-			System.out.println("MailingListDao - selectByAddr: " + LF + vo);
+			logger.info("MailingListDao - selectByAddr: " + LF + vo);
 		}
 		mailingListDao.getSubscribedLists(1);
 		mailingListDao.getAll(false);
@@ -73,14 +74,14 @@ public class MailingListTest extends DaoTestBase {
 		if (mailingList!=null) {
 			mailingList.setStatusId("A");
 			rowsUpdated = mailingListDao.update(mailingList);
-			System.out.println("MailingListDao - update: rows updated: "+rowsUpdated);
+			logger.info("MailingListDao - update: rows updated: "+rowsUpdated);
 		}
 		return rowsUpdated;
 	}
 	
 	private int delete(MailingListVo mailingListVo) {
 		int rowsDeleted = mailingListDao.deleteByListId(mailingListVo.getListId());
-		System.out.println("MailingListDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("MailingListDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
@@ -88,7 +89,7 @@ public class MailingListTest extends DaoTestBase {
 		MailingListVo mailingListVo = mailingListDao.getByListId(listId);
 		mailingListVo.setListId(StringUtils.left(mailingListVo.getListId(),5)+"_v2");
 		mailingListDao.insert(mailingListVo);
-		System.out.println("MailingListDao - insert: "+mailingListVo);
+		logger.info("MailingListDao - insert: "+mailingListVo);
 		return mailingListVo;
 	}
 }

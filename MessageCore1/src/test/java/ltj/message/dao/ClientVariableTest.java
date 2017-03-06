@@ -49,28 +49,28 @@ public class ClientVariableTest extends DaoTestBase {
 		List<ClientVariableVo> variables = clientVariableDao.getByVariableName(varbleName);
 		for (Iterator<ClientVariableVo> it = variables.iterator(); it.hasNext();) {
 			ClientVariableVo vo = it.next();
-			System.out.println("ClientVariableDao - selectByVariableName: " + LF + vo);
+			logger.info("ClientVariableDao - selectByVariableName: " + LF + vo);
 		}
 		return variables;
 	}
 
 	private List<ClientVariableVo> selectByClientId(String clientId) {
 		List<ClientVariableVo> list = clientVariableDao.getCurrentByClientId(clientId);
-		System.out.println("ClientVariableDao - selectByClientId: rows returned: " + list.size());
+		logger.info("ClientVariableDao - selectByClientId: rows returned: " + list.size());
 		return list;
 	}
 
 	private ClientVariableVo selectByPromaryKey(ClientVariableVo vo) {
 		ClientVariableVo client = clientVariableDao.getByPrimaryKey(vo.getClientId(), vo.getVariableName(), vo.getStartTime());
 		if (client!=null) {
-			System.out.println("ClientVariableDao - selectByPromaryKey: " + LF + client);
+			logger.info("ClientVariableDao - selectByPromaryKey: " + LF + client);
 		}
 		return client;
 	}
 	private int update(ClientVariableVo clientVariableVo) {
 		clientVariableVo.setVariableValue(updtTime.toString());
 		int rows = clientVariableDao.update(clientVariableVo);
-		System.out.println("ClientVariableDao - update: rows updated " + rows);
+		logger.info("ClientVariableDao - update: rows updated " + rows);
 		return rows;
 	}
 
@@ -80,7 +80,7 @@ public class ClientVariableTest extends DaoTestBase {
 			ClientVariableVo vo = list.get(list.size() - 1);
 			vo.setStartTime(new Timestamp(new java.util.Date().getTime()));
 			int rows = clientVariableDao.insert(vo);
-			System.out.println("ClientVariableDao - insert: rows inserted " + rows);
+			logger.info("ClientVariableDao - insert: rows inserted " + rows);
 			return selectByPromaryKey(vo);
 		}
 		return null;
@@ -89,7 +89,7 @@ public class ClientVariableTest extends DaoTestBase {
 	private int deleteByPrimaryKey(ClientVariableVo vo) {
 		int rowsDeleted = clientVariableDao.deleteByPrimaryKey(vo.getClientId(),
 				vo.getVariableName(), vo.getStartTime());
-		System.out.println("ClientVariableDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		logger.info("ClientVariableDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 }

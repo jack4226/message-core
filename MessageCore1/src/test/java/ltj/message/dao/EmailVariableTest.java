@@ -45,19 +45,19 @@ public class EmailVariableTest extends DaoTestBase {
 
 	private List<EmailVariableVo> selectAll() {
 		List<EmailVariableVo> list = emailVariableDao.getAll();
-		System.out.println("EmailVariableDao - selectAll() - size:  "+list.size());
+		logger.info("EmailVariableDao - selectAll() - size:  "+list.size());
 		return list;
 	}
 	
 	private List<EmailVariableVo> selectAllForTrial() {
 		List<EmailVariableVo> list = emailVariableDao.getAllForTrial();
-		System.out.println("EmailVariableDao - getAllForTrial() - size: " + list.size());
+		logger.info("EmailVariableDao - getAllForTrial() - size: " + list.size());
 		return list;
 	}
 	
 	private EmailVariableVo selectByName(EmailVariableVo vo) {
 		EmailVariableVo emailVariable = emailVariableDao.getByName(vo.getVariableName());
-		System.out.println("EmailVariableDao - selectByName: "+LF+emailVariable);
+		logger.info("EmailVariableDao - selectByName: "+LF+emailVariable);
 		return emailVariable;
 	}
 	
@@ -66,14 +66,14 @@ public class EmailVariableTest extends DaoTestBase {
 		if (vo != null) {
 			vo.setTableName("Customers");
 			rowsUpdated = emailVariableDao.update(vo);
-			System.out.println("EmailVariableDao - rows updated: "+rowsUpdated);
+			logger.info("EmailVariableDao - rows updated: "+rowsUpdated);
 		}
 		return rowsUpdated;
 	}
 	
 	private int delete(EmailVariableVo vo) {
 		int rowsDeleted = emailVariableDao.deleteByName(vo.getVariableName());
-		System.out.println("EmailVariableDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("EmailVariableDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
@@ -82,7 +82,7 @@ public class EmailVariableTest extends DaoTestBase {
 		if (vo != null) {
 			vo.setVariableName(vo.getVariableName()+"_v2");
 			emailVariableDao.insert(vo);
-			System.out.println("EmailVariableDao - insert: "+LF+vo);
+			logger.info("EmailVariableDao - insert: "+LF+vo);
 			return vo;
 		}
 		else {

@@ -47,7 +47,7 @@ public class GlobalVariableTest extends DaoTestBase {
 		List<GlobalVariableVo> variables = globalVariableDao.getByVariableName(varbleName);
 		for (Iterator<GlobalVariableVo> it = variables.iterator(); it.hasNext();) {
 			GlobalVariableVo vo = it.next();
-			System.out.println("GlobalVariableDao - selectByVariableName: " + LF + vo);
+			logger.info("GlobalVariableDao - selectByVariableName: " + LF + vo);
 		}
 		return variables;
 	}
@@ -55,7 +55,7 @@ public class GlobalVariableTest extends DaoTestBase {
 	private GlobalVariableVo selectByPrimaryKey(GlobalVariableVo _vo) {
 		GlobalVariableVo vo = globalVariableDao.getByPrimaryKey(_vo.getVariableName(), _vo.getStartTime());
 		if (vo!=null) {
-			System.out.println("GlobalVariableDao - selectByPrimaryKey: " + LF + vo);
+			logger.info("GlobalVariableDao - selectByPrimaryKey: " + LF + vo);
 		}
 		return vo;
 	}
@@ -63,7 +63,7 @@ public class GlobalVariableTest extends DaoTestBase {
 	private int update(GlobalVariableVo globalVariableVo) {
 		globalVariableVo.setVariableValue(updtTime.toString());
 		int rows = globalVariableDao.update(globalVariableVo);
-		System.out.println("GlobalVariableDao - update: rows upadted " + rows);
+		logger.info("GlobalVariableDao - update: rows upadted " + rows);
 		return rows;
 	}
 
@@ -73,7 +73,7 @@ public class GlobalVariableTest extends DaoTestBase {
 			GlobalVariableVo vo = list.get(list.size() - 1);
 			vo.setStartTime(new Timestamp(new java.util.Date().getTime()));
 			int rows = globalVariableDao.insert(vo);
-			System.out.println("GlobalVariableDao - insert: rows inserted " + rows);
+			logger.info("GlobalVariableDao - insert: rows inserted " + rows);
 			return selectByPrimaryKey(vo);
 		}
 		return null;
@@ -82,7 +82,7 @@ public class GlobalVariableTest extends DaoTestBase {
 	private int deleteByPrimaryKey(GlobalVariableVo vo) {
 		int rowsDeleted = globalVariableDao.deleteByPrimaryKey(vo.getVariableName(),
 				vo.getStartTime());
-		System.out.println("GlobalVariableDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		logger.info("GlobalVariableDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 }

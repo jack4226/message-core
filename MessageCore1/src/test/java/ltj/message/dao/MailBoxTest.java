@@ -15,16 +15,16 @@ import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.vo.MailBoxVo;
 
 public class MailBoxTest extends DaoTestBase {
-	final boolean testOnlyActive = true;
-	final String testUserId = "TestUserId";
+	final static boolean OnlyActive = true;
+	final static String testUserId = "TestUserId";
 	@Resource
 	private MailBoxDao mailBoxDao;
 	
 	@Test
 	public void testMailbox() {
-		List<MailBoxVo> list = selectForTrial(testOnlyActive);
-		assertTrue(list.size()==1);
-		List<MailBoxVo> list2 = select(!testOnlyActive);
+		List<MailBoxVo> list = selectForTrial(OnlyActive);
+		assertEquals(list.size(), 1);
+		List<MailBoxVo> list2 = select(!OnlyActive);
 		assertTrue(list2.size()>1);
 		MailBoxVo vo0 = list2.get(0);
 		MailBoxVo vo = selectByPrimaryKey(vo0.getUserId(), vo0.getHostName());
@@ -37,7 +37,7 @@ public class MailBoxTest extends DaoTestBase {
 		vo.setUserId(vo2.getUserId());
 		assertTrue(vo.equalsTo(vo2));
 		int rowsUpdated = update(vo2);
-		assertEquals(1, rowsUpdated);
+		assertEquals(rowsUpdated, 1);
 		int rowsDeleted = delete(vo2);
 		assertEquals(rowsDeleted, 1);
 	}
@@ -46,7 +46,7 @@ public class MailBoxTest extends DaoTestBase {
 		List<MailBoxVo> mailBoxes = mailBoxDao.getAllForTrial(onlyActive);
 		for (Iterator<MailBoxVo> it=mailBoxes.iterator(); it.hasNext();) {
 			MailBoxVo mailBoxVo = it.next();
-			System.out.println("MailBoxDao - getAllForTrial(): "+mailBoxVo);
+			logger.info("MailBoxDao - getAllForTrial(): "+mailBoxVo);
 		}
 		return mailBoxes;
 	}
@@ -55,7 +55,7 @@ public class MailBoxTest extends DaoTestBase {
 		List<MailBoxVo> mailBoxes = mailBoxDao.getAll(!onlyActive);
 		for (Iterator<MailBoxVo> it=mailBoxes.iterator(); it.hasNext();) {
 			MailBoxVo mailBoxVo = it.next();
-			System.out.println("MailBoxDao - getAll(): "+mailBoxVo);
+			logger.info("MailBoxDao - getAll(): "+mailBoxVo);
 		}
 		return mailBoxes;
 	}
@@ -63,7 +63,7 @@ public class MailBoxTest extends DaoTestBase {
 	private MailBoxVo selectByPrimaryKey(String userId, String hostName) {
 		MailBoxVo mailBoxVo = mailBoxDao.getByPrimaryKey(userId, hostName);
 		if (mailBoxVo!=null) {
-			System.out.println("MailBoxDao - selectByPrimaryKey: "+LF+mailBoxVo);
+			logger.info("MailBoxDao - selectByPrimaryKey: "+LF+mailBoxVo);
 		}
 		return mailBoxVo;
 	}
@@ -75,20 +75,19 @@ public class MailBoxTest extends DaoTestBase {
 		mailBoxVo.setAllowExtraWorkers(false);
 		mailBoxVo.setPurgeDupsAfter(365);
 		int rows = mailBoxDao.update(mailBoxVo);
-		System.out.println("MailBoxDao - update: rows updated "+ rows);
+		logger.info("MailBoxDao - update: rows updated "+ rows);
 		return rows;
 	}
 	
 	private int delete(MailBoxVo mailBoxVo) {
-		int rowsDeleted = mailBoxDao.deleteByPrimaryKey(mailBoxVo.getUserId(),
-				mailBoxVo.getHostName());
-		System.out.println("MailBoxDao - delete: Rows Deleted: "+rowsDeleted);
+		int rowsDeleted = mailBoxDao.deleteByPrimaryKey(mailBoxVo.getUserId(), mailBoxVo.getHostName());
+		logger.info("MailBoxDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	private MailBoxVo insert(MailBoxVo mailBoxVo, String userId) {
 		mailBoxVo.setUserId(userId);
 		int rows = mailBoxDao.insert(mailBoxVo);
-		System.out.println("MailBoxDao - insert: rows inserted "+rows+LF+mailBoxVo);
+		logger.info("MailBoxDao - insert: rows inserted "+rows+LF+mailBoxVo);
 		return mailBoxVo;
 	}
 }
