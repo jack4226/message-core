@@ -1,4 +1,4 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import java.util.List;
 
@@ -19,11 +19,11 @@ import ltj.message.util.StringUtil;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 
-@Component("unsubscribeBo")
+@Component("subscribeBo")
 @Scope(value="prototype")
 @Lazy(value=true)
-public class UnsubscribeBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(UnsubscribeBoImpl.class);
+public class SubscribeBoImpl extends TaskBaseAdaptor {
+	static final Logger logger = Logger.getLogger(SubscribeBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
@@ -34,7 +34,7 @@ public class UnsubscribeBoImpl extends TaskBaseAdaptor {
 	private SubscriptionDao subscriptionDao;
 
 	/**
-	 * Remove the FROM address from the mailing list (TO).
+	 * Subscribe the FROM address to the mailing list (TO).
 	 * 
 	 * @return a Long value representing number of addresses that have been
 	 *         updated.
@@ -50,7 +50,7 @@ public class UnsubscribeBoImpl extends TaskBaseAdaptor {
 		long addrsUpdated = 0;
 		Address[] toAddrs = messageBean.getTo();
 		if (toAddrs == null || toAddrs.length == 0) { // just for safety
-			logger.error("unsubscription address (TO) is null.");
+			logger.error("subscription address (TO) is null.");
 			throw new DataValidationException("TO address is null");
 		}
 		for (int k = 0; k < toAddrs.length; k++) {
@@ -73,8 +73,8 @@ public class UnsubscribeBoImpl extends TaskBaseAdaptor {
 				int rowsAffected = 0;
 				for (MailingListVo item : mlist) {
 					messageBean.setMailingListId(item.getListId());
-					rowsAffected += subscriptionDao.unsubscribe(emailAddrVo.getEmailAddrId(), item.getListId());
-					logger.info(addr + " unsubscribed from: " + item.getListId());
+					rowsAffected += subscriptionDao.subscribe(emailAddrVo.getEmailAddrId(), item.getListId());
+					logger.info(addr + " subscribed to: " + item.getListId());
 				}
 				if (rowsAffected > 0) {
 					addrsUpdated++;

@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.constant.Constants;
 import ltj.message.dao.action.MsgActionDetailDao;
 import ltj.message.util.StringUtil;

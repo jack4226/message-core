@@ -1,4 +1,4 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class AssignRuleNameBoImpl extends TaskBaseAdaptor {
 	 * reset the rule name to the value from TaskArguments field and re-queue
 	 * the message to ruleEnginInput queue.
 	 * 
-	 * @see ltj.message.bo.TaskBaseBo#process(ltj.message.bean.MessageBean)
+	 * @see ltj.message.bo.task.TaskBaseBo#process(ltj.message.bean.MessageBean)
 	 * 
 	 * @return the JMS Message Id (a String) from the message that were sent to
 	 *         the ruleEngineInput queue.

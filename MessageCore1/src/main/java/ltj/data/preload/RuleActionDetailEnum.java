@@ -2,23 +2,23 @@ package ltj.data.preload;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ltj.message.bo.ActivateBoImpl;
-import ltj.message.bo.AssignRuleNameBoImpl;
-import ltj.message.bo.AutoReplyBoImpl;
-import ltj.message.bo.BounceBoImpl;
-import ltj.message.bo.BroadcastBoImpl;
-import ltj.message.bo.CloseBoImpl;
-import ltj.message.bo.CsrReplyBoImpl;
-import ltj.message.bo.DeliveryErrorBoImpl;
-import ltj.message.bo.DropBoImpl;
-import ltj.message.bo.ForwardBoImpl;
-import ltj.message.bo.OpenBoImpl;
-import ltj.message.bo.SaveBoImpl;
-import ltj.message.bo.SendMailBoImpl;
-import ltj.message.bo.SubscribeBoImpl;
-import ltj.message.bo.SuspendBoImpl;
-import ltj.message.bo.ToCsrBoImpl;
-import ltj.message.bo.UnsubscribeBoImpl;
+import ltj.message.bo.task.ActivateBoImpl;
+import ltj.message.bo.task.AssignRuleNameBoImpl;
+import ltj.message.bo.task.AutoReplyBoImpl;
+import ltj.message.bo.task.BounceBoImpl;
+import ltj.message.bo.task.BroadcastBoImpl;
+import ltj.message.bo.task.CloseBoImpl;
+import ltj.message.bo.task.CsrReplyBoImpl;
+import ltj.message.bo.task.DeliveryErrorBoImpl;
+import ltj.message.bo.task.DropBoImpl;
+import ltj.message.bo.task.ForwardBoImpl;
+import ltj.message.bo.task.OpenBoImpl;
+import ltj.message.bo.task.SaveBoImpl;
+import ltj.message.bo.task.SendMailBoImpl;
+import ltj.message.bo.task.SubscribeBoImpl;
+import ltj.message.bo.task.SuspendBoImpl;
+import ltj.message.bo.task.ToCsrBoImpl;
+import ltj.message.bo.task.UnsubscribeBoImpl;
 
 /*
  * define rule actions

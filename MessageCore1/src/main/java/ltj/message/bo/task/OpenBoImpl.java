@@ -1,4 +1,4 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +12,19 @@ import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.inbox.MsgInboxVo;
 
-@Component("closeBo")
+@Component("openBo")
 @Scope(value="prototype")
 @Lazy(value=true)
-public class CloseBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(CloseBoImpl.class);
+public class OpenBoImpl extends TaskBaseAdaptor {
+	static final Logger logger = Logger.getLogger(OpenBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
 	private MsgInboxDao msgInboxDao;
 
 	/**
-	 * Close the message by MsgId.
-	 * @return a Long representing the msgId closed.
+	 * Open the message by MsgId.
+	 * @return a Long representing the msgId opened.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException {
 		if (isDebugEnabled) {
@@ -35,19 +35,22 @@ public class CloseBoImpl extends TaskBaseAdaptor {
 		}
 		long msgId = -1L;
 		if (messageBean.getMsgId() == null) {
-			logger.warn("MessageBean.msgId is null, nothing to close");
+			logger.warn("MessageBean.msgId is null, nothing to open");
 			return Long.valueOf(msgId);
 		}
 		
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(messageBean.getMsgId());
 		if (msgInboxVo != null) {
 			msgId = msgInboxVo.getMsgId();
-			msgInboxVo.setStatusId(StatusId.CLOSED.value());
-			int rowsUpdated = msgInboxDao.updateStatusId(msgInboxVo);
+			int rowsUpdated = 0;
+			if (!StatusId.OPENED.value().equals(msgInboxVo.getStatusId())) {
+				msgInboxVo.setStatusId(StatusId.OPENED.value());
+				rowsUpdated = msgInboxDao.updateStatusId(msgInboxVo);
+			}
 			if (isDebugEnabled) {
-				logger.debug("Rows updated to Closed status: " + rowsUpdated);
+				logger.debug("Rows updated to Opened status: " + rowsUpdated);
 			}
 		}
 		return Long.valueOf(msgId);
-	}
+	}	
 }

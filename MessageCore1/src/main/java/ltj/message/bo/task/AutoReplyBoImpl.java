@@ -1,4 +1,4 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import java.security.DigestException;
 import java.util.HashMap;

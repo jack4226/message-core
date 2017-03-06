@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
 
 public class DropBoTest extends BoTestBase {

@@ -25,13 +25,13 @@ import ltj.message.util.StringUtil;
 public final class RfcCodeScan {
 	static final Logger logger = Logger.getLogger(RfcCodeScan.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
-	final int maxLenToScan = 8192*4; // scan up to 32k
+	final int maxLenToScan = 8192 * 4; // scan up to 32k
 	
-	private static final Map<String, String> RFC1893_STATUS_CODE = new HashMap<String, String>();
-	private static final Map<String, String> RFC1893_STATUS_DESC = new HashMap<String, String>();
-	private static final Map<String, String> RFC2821_STATUS_CODE = new HashMap<String, String>();
-	private static final Map<String, String> RFC2821_STATUS_DESC = new HashMap<String, String>();
-	private static final Map<String, String> RFC2821_STATUS_MATCHINGTEXT = new HashMap<String, String>();
+	private static final Map<String, String> RFC1893_STATUS_CODE = new HashMap<>();
+	private static final Map<String, String> RFC1893_STATUS_DESC = new HashMap<>();
+	private static final Map<String, String> RFC2821_STATUS_CODE = new HashMap<>();
+	private static final Map<String, String> RFC2821_STATUS_DESC = new HashMap<>();
+	private static final Map<String, String> RFC2821_STATUS_MATCHINGTEXT = new HashMap<>();
 	
 	private static RfcCodeScan rfcCodeScan = null;
 	
@@ -52,8 +52,8 @@ public final class RfcCodeScan {
 		loadRfc2821StatusCode();
 	}
 	
-	public static RfcCodeScan getInstance() throws IOException {
-		if (rfcCodeScan==null) {
+	public synchronized static RfcCodeScan getInstance() throws IOException {
+		if (rfcCodeScan == null) {
 			rfcCodeScan = new RfcCodeScan();
 		}
 		return rfcCodeScan;

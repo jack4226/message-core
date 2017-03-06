@@ -1,4 +1,4 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import javax.mail.Address;
 import javax.mail.internet.AddressException;

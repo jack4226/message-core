@@ -1,4 +1,4 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import java.sql.Timestamp;
 import java.util.StringTokenizer;

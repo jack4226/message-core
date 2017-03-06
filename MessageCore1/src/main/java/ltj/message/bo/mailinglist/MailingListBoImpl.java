@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;

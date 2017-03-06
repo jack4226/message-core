@@ -1,29 +1,22 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.exception.DataValidationException;
 
-@Component("saveBo")
+@Component("dropBo")
 @Scope(value="prototype")
 @Lazy(value=true)
-public class SaveBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(SaveBoImpl.class);
+public class DropBoImpl extends TaskBaseAdaptor {
+	static final Logger logger = Logger.getLogger(DropBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	@Autowired
-	private MsgInboxBo msgInboxBo;
-
 	/**
-	 * Save the message into the MsgInbox and its satellite tables.
-	 * 
-	 * @return a Long value representing the msgId inserted into MsgInbox.
+	 * Only to log the message.
 	 */
 	public Long process(MessageBean messageBean) throws DataValidationException {
 		if (isDebugEnabled) {
@@ -33,8 +26,8 @@ public class SaveBoImpl extends TaskBaseAdaptor {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		
-		long  msgId = msgInboxBo.saveMessage(messageBean);
-		
-		return Long.valueOf(msgId);
+		// log the message
+		logger.info("Message is droped:" + LF + messageBean);
+		return Long.valueOf(0);
 	}
 }

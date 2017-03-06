@@ -16,8 +16,8 @@ import org.springframework.test.annotation.Rollback;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
+import ltj.message.bo.task.TaskDispatcher;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;

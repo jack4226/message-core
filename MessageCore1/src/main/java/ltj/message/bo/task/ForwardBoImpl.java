@@ -1,4 +1,4 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

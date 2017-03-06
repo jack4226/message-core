@@ -13,9 +13,9 @@ import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
-import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
+import ltj.message.bo.task.TaskDispatcher;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.FileUtil;
 import ltj.message.vo.emailaddr.EmailAddrVo;

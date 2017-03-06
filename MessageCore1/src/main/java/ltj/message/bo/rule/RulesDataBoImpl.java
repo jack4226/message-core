@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.dao.rule.RuleDao;
 import ltj.message.external.RuleTargetProc;
 import ltj.message.util.PrintUtil;

@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskDispatcher;
 import ltj.message.bo.inbox.MessageParser;
+import ltj.message.bo.task.TaskDispatcher;
 import ltj.message.exception.DataValidationException;
 
 public class RuleEngineListener implements MessageListener {

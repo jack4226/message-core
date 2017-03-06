@@ -13,8 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskBaseBo;
 import ltj.message.bo.inbox.MessageParser;
+import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
 import ltj.message.dao.inbox.MsgInboxDao;

@@ -1,8 +1,7 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -10,19 +9,21 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.dao.client.ClientDao;
+import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.exception.DataValidationException;
-import ltj.message.vo.ClientVo;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.StringUtil;
+import ltj.message.vo.emailaddr.MailingListVo;
 
-@Component("excludingPostmastersBo")
-@Scope(value="singleton")
+@Component("mailingListRegExBo")
+@Scope(value="prototype")
 @Lazy(value=true)
-public class ExcludingPostmastersBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(ExcludingPostmastersBoImpl.class);
+public class MailingListRegExBoImpl extends TaskBaseAdaptor {
+	static final Logger logger = Logger.getLogger(MailingListRegExBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
-	private ClientDao clientDao;
+	private MailingListDao mailingListDao;
 
 	/**
 	 * retrieve all mailing list addresses, and construct a regular expression
@@ -35,24 +36,18 @@ public class ExcludingPostmastersBoImpl extends TaskBaseAdaptor {
 			logger.debug("Entering process() method...");
 		}
 		StringBuffer sb = new StringBuffer();
-		List<ClientVo> list = clientDao.getAll();
+		List<MailingListVo> list = mailingListDao.getAll(false);
 		for (int i = 0; i < list.size(); i++) {
-			ClientVo item = list.get(i);
-			if (StringUtils.isNotBlank(item.getDomainName())) {
-				String emailAddr = "postmaster@" + item.getDomainName().trim();
-				buildEmailList(emailAddr, i, sb);
-				if (StringUtils.isNotBlank(item.getContactEmail())) {
-					buildEmailList(item.getContactEmail(), i + 1, sb);
-				}
+			MailingListVo item = list.get(i);
+			// no display name allowed for list address, just for safety
+			String emailAddr = EmailAddrUtil.removeDisplayName(item.getEmailAddr(), true);
+			emailAddr = StringUtil.replaceAll(emailAddr, ".", "\\.");
+			emailAddr = StringUtil.replaceAll(emailAddr, "-", "\\-");
+			if (i > 0) {
+				sb.append("|");
 			}
+			sb.append("^" + emailAddr + "$");
 		}
 		return sb.toString();
-	}
-	
-	void buildEmailList(String emailAddr, int i, StringBuffer sb) {
-		if (i > 0) {
-			sb.append(",");
-		}
-		sb.append(emailAddr);
 	}
 }

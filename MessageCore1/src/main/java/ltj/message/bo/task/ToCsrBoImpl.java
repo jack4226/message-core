@@ -1,4 +1,4 @@
-package ltj.message.bo;
+package ltj.message.bo.task;
 
 import javax.jms.JMSException;
 
@@ -33,7 +33,7 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 	 * @return the JMS Message Id (a String) from the message that were sent to
 	 *         the output queue.
 	 * 
-	 * @see ltj.message.bo.TaskBaseBo#process(ltj.message.bean.MessageBean)
+	 * @see ltj.message.bo.task.TaskBaseBo#process(ltj.message.bean.MessageBean)
 	 */
 	public Object process(MessageBean messageBean) throws DataValidationException, JMSException {
 		if (isDebugEnabled) {

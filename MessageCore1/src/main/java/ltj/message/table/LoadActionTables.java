@@ -176,7 +176,7 @@ public class LoadActionTables {
 //		msgActionDetailDao.insert(act);
 //		act = new MsgActionDetailVo("MARK_DLVR_ERR","mark delivery error","deliveryErrorBo",null,null,updtTime,"testuser");
 //		msgActionDetailDao.insert(act);
-//		act = new MsgActionDetailVo("DROP","drop the message","dropBo","ltj.message.bo.DropBoImpl",null,updtTime,"testuser");
+//		act = new MsgActionDetailVo("DROP","drop the message","dropBo","ltj.message.bo.task.DropBoImpl",null,updtTime,"testuser");
 //		msgActionDetailDao.insert(act);
 //		act = new MsgActionDetailVo("FORWARD","forward the message","forwardBo",null,"EMAIL_ADDRESS",updtTime,"testuser");
 //		msgActionDetailDao.insert(act);

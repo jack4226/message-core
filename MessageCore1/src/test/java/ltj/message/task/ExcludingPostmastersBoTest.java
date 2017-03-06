@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.dao.client.ClientDao;

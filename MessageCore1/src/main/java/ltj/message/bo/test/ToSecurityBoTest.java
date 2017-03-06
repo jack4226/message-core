@@ -14,7 +14,7 @@ import org.springframework.test.annotation.Rollback;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.constant.TableColumnName;
 import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.inbox.MsgInboxVo;

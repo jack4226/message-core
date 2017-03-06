@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.bo.TaskBaseBo;
+import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.dao.outbox.DeliveryStatusDao;
 import ltj.message.vo.inbox.MsgInboxVo;
