@@ -17,7 +17,7 @@
 		<property name="scopes">
 		<map>
 			<entry key="thread">
-				<bean class="ltj.jbatch.common.SpringThreadScope"/>
+				<bean class="ltj.spring.util.SpringThreadScope"/>
 			</entry>
 		</map>
 		</property>
