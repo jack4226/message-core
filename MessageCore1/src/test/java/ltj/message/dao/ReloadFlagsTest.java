@@ -21,14 +21,14 @@ public class ReloadFlagsTest extends DaoTestBase {
 		ReloadFlagsVo vo = select();
 		assertNotNull(vo);
 		int rowsUpdated = update(vo);
-		assertEquals(rowsUpdated, 1);
+		assertEquals(1, rowsUpdated);
 		rowsUpdated = recordsChanged();
-		assertTrue(rowsUpdated>0);
+		assertTrue(rowsUpdated > 0);
 	}
 	
 	private ReloadFlagsVo select() {
 		ReloadFlagsVo flags = reloadDao.select();
-		System.out.println("ReloadFlagsDao - select: "+flags);
+		logger.info("ReloadFlagsDao - select: "+flags);
 		return flags;
 	}
 	
@@ -41,7 +41,7 @@ public class ReloadFlagsTest extends DaoTestBase {
 			vo.setTemplates(vo.getTemplates() + 1);
 			vo.setSchedules(vo.getSchedules() + 1);
 			rows = reloadDao.update(vo);
-			System.out.println("ReloadFlagsDao - update: rows updated "+rows);
+			logger.info("ReloadFlagsDao - update: rows updated "+rows);
 		}
 		return rows;
 	}

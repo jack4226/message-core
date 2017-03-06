@@ -16,28 +16,28 @@ public class MsgUnreadCountTest extends DaoTestBase {
 	@Test
 	public void testUpdate() {
 		int rows = resetUnreadCounts();
-		assertTrue(rows==15);
+		assertEquals(15, rows);
 		rows = updateInboxUnreadCount(1);
-		assertTrue(rows==1);
+		assertEquals(1, rows);
 		rows = updateInboxUnreadCount(-1);
-		assertTrue(rows==1);
+		assertEquals(1, rows);
 		rows = updateSentUnreadCount(1);
-		assertTrue(rows==1);
+		assertEquals(1, rows);
 		rows = updateSentUnreadCount(-1);
-		assertTrue(rows==1);
+		assertEquals(1, rows);
 	}
 
 	private int updateInboxUnreadCount(int delta) {
 		int rowsUpdated = msgUnreadCountDao.updateInboxUnreadCount(delta);
 		int count = msgUnreadCountDao.selectInboxUnreadCount();
-		System.out.println("updateInboxUnreadCount() " + rowsUpdated + ", count: " + count);
+		logger.info("updateInboxUnreadCount() " + rowsUpdated + ", count: " + count);
 		return rowsUpdated;
 	}
 	
 	private int updateSentUnreadCount(int delta) {
 		int rowsUpdated = msgUnreadCountDao.updateSentUnreadCount(delta);
 		int count = msgUnreadCountDao.selectSentUnreadCount();
-		System.out.println("updateSentUnreadCount() " + rowsUpdated + ", count: " + count);
+		logger.info("updateSentUnreadCount() " + rowsUpdated + ", count: " + count);
 		return rowsUpdated;
 	}
 	
@@ -45,7 +45,7 @@ public class MsgUnreadCountTest extends DaoTestBase {
 		msgUnreadCountDao.resetUnreadCounts(10, 5);
 		int inboxCount = msgUnreadCountDao.selectInboxUnreadCount();
 		int sentCount = msgUnreadCountDao.selectSentUnreadCount();
-		System.out.println("updateUnreadCounts() " + inboxCount + " : " + sentCount);
+		logger.info("updateUnreadCounts() " + inboxCount + " : " + sentCount);
 		return (inboxCount + sentCount);
 	}
 }

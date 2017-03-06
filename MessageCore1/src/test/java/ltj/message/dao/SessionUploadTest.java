@@ -17,13 +17,13 @@ public class SessionUploadTest extends DaoTestBase {
 	@Resource
 	private SessionUploadDao sessDao;
 	
-	final String testSessionId = "test_session_id";
+	final static String testSessionId = "test_session_id";
 	
 	@Test
 	public void testSessionUpload() {
 		try {
 			List<SessionUploadVo> list = selectBySessionId(testSessionId);
-			assertTrue(list.size()>0);
+			assertTrue(list.size() > 0);
 			SessionUploadVo vo = selectByPrimaryKey(list.get(list.size()-1));
 			assertNotNull(vo);
 			SessionUploadVo vo2 = insert(vo.getSessionId());
@@ -32,9 +32,9 @@ public class SessionUploadTest extends DaoTestBase {
 			vo.setSessionSeq(vo2.getSessionSeq());
 			assertTrue(vo.equalsTo(vo2));
 			int rows = update(vo2);
-			assertEquals(rows,1);
+			assertEquals(1, rows);
 			rows = delete(vo2);
-			assertEquals(rows,1);
+			assertEquals(1, rows);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -46,7 +46,7 @@ public class SessionUploadTest extends DaoTestBase {
 		List<SessionUploadVo> list = sessDao.getBySessionId(sessionId);
 		for (Iterator<SessionUploadVo> it=list.iterator(); it.hasNext();) {
 			SessionUploadVo sessVo = it.next();
-			System.out.println("SessionUploadDao - selectBySessionId: "+LF+sessVo);
+			logger.info("SessionUploadDao - selectBySessionId: "+LF+sessVo);
 		}
 		return list;
 	}
@@ -54,20 +54,20 @@ public class SessionUploadTest extends DaoTestBase {
 	private SessionUploadVo selectByPrimaryKey(SessionUploadVo vo) {
 		SessionUploadVo vo2 = sessDao.getByPrimaryKey(vo.getSessionId(), vo.getSessionSeq());
 		if (vo2 != null) {
-			System.out.println("SessionUploadDao - selectByPrimaryKey: "+LF+vo2);
+			logger.info("SessionUploadDao - selectByPrimaryKey: "+LF+vo2);
 		}
 		return vo2;
 	}
 	private int update(SessionUploadVo sessVo) {
 		sessVo.setUserId(sessVo.getUserId());
 		int rows = sessDao.update(sessVo);
-		System.out.println("SessionUploadDao - update: rows updated "+rows);
+		logger.info("SessionUploadDao - update: rows updated "+rows);
 		return rows;
 	}
 	
 	private int delete(SessionUploadVo sessVo) {
 		int rows = sessDao.deleteByPrimaryKey(sessVo.getSessionId(), sessVo.getSessionSeq());
-		System.out.println("SessionUploadDao - delete: Rows Deleted: " + rows);
+		logger.info("SessionUploadDao - delete: Rows Deleted: " + rows);
 		return rows;
 	}
 	private SessionUploadVo insert(String sessionId) {
@@ -76,7 +76,7 @@ public class SessionUploadTest extends DaoTestBase {
 			SessionUploadVo sessVo = list.get(list.size() - 1);
 			sessVo.setSessionSeq(sessVo.getSessionSeq() + 1);
 			int rows = sessDao.insert(sessVo);
-			System.out.println("SessionUploadDao - insert: rows inserted "+rows);
+			logger.info("SessionUploadDao - insert: rows inserted "+rows);
 			return selectByPrimaryKey(sessVo);
 		}
 		return null;

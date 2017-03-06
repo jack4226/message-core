@@ -155,39 +155,39 @@ public class MsgStreamTest extends DaoTestBase {
 	
 	private MsgStreamVo selectByPrimaryKey(long msgId) {
 		MsgStreamVo msgStreamVo = msgStreamDao.getByPrimaryKey(msgId);
-		System.out.println("MsgStreamDao - selectByPrimaryKey: "+LF+msgStreamVo);
+		logger.info("MsgStreamDao - selectByPrimaryKey: "+LF+msgStreamVo);
 		return msgStreamVo;
 	}
 	
 	private MsgStreamVo selectLastRecord() {
 		MsgStreamVo msgStreamVo = msgStreamDao.getLastRecord();
-		System.out.println("MsgStreamDao - selectLastRecord: "+LF+msgStreamVo);
+		logger.info("MsgStreamDao - selectLastRecord: "+LF+msgStreamVo);
 		return msgStreamVo;
 	}
 	
 	private int update(MsgStreamVo msgStreamVo) {
 		msgStreamVo.setMsgSubject("Test Subject");
 		int rows = msgStreamDao.update(msgStreamVo);
-		System.out.println("MsgStreamDao - update: rows updated: "+rows);
+		logger.info("MsgStreamDao - update: rows updated: "+rows);
 		return rows;
 	}
 	
 	private int deleteByPrimaryKey(MsgStreamVo msgStreamVo) {
 		int rowsDeleted = msgStreamDao.deleteByPrimaryKey(msgStreamVo.getMsgId());
-		System.out.println("MsgStreamDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
+		logger.info("MsgStreamDao - deleteByPrimaryKey: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
 	private MsgStreamVo insert(MsgStreamVo msgStreamVo) {
 		int rows=msgStreamDao.insert(msgStreamVo);
-		System.out.println("MsgStreamDao - insert: rows inserted " + rows + LF + msgStreamVo);
+		logger.info("MsgStreamDao - insert: rows inserted " + rows + LF + msgStreamVo);
 		return msgStreamVo;
 	}
 	
 	private MessageBean createMimeMessage(MsgStreamVo msgStreamVo) throws MessagingException {
 		MessageBean msgBean = MessageBeanUtil.createBeanFromStream(msgStreamVo.getMsgStream());
-		System.out.println("******************************");
-		System.out.println("MessageBean created: " + msgBean);
+		logger.info("******************************");
+		logger.info("MessageBean created: " + msgBean);
 		return msgBean;
 	}
 }

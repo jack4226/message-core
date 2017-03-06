@@ -37,9 +37,9 @@ public class RfcFieldsTest extends DaoTestBase {
 		vo.setRfcType(vo2.getRfcType());
 		assertTrue(vo.equalsTo(vo2));
 		int rowsUpdated = update(vo2);
-		assertEquals(rowsUpdated, 1);
+		assertEquals(1, rowsUpdated);
 		int rowsDeleted = deleteByPrimaryKey(vo2.getMsgId(), vo2.getRfcType());
-		assertEquals(rowsDeleted, 1);
+		assertEquals(1, rowsDeleted);
 	}
 	
 	private List<RfcFieldsVo> selectByMsgId(long msgId) {

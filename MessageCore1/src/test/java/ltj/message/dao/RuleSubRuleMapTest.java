@@ -17,23 +17,23 @@ public class RuleSubRuleMapTest extends DaoTestBase {
 	@Resource
 	private RuleSubRuleMapDao ruleSubRuleMapDao;
 	
-	final String testRuleName = RuleNameEnum.HARD_BOUNCE.name();
-	final String testSubRuleName = "MailboxFull_Body_Match";
+	final static String testRuleName = RuleNameEnum.HARD_BOUNCE.name();
+	final static String testSubRuleName = RuleNameEnum.MailboxFull_Body_Match.name();
 	
 	@Test
 	public void testSubRule() {
 		try {
 			List<RuleSubRuleMapVo> list = selectByRuleName(testRuleName);
-			assertTrue(list.size()>0);
+			assertTrue(list.size() > 0);
 			RuleSubRuleMapVo vo = insert(list, testSubRuleName);
 			assertNotNull(vo);
 			RuleSubRuleMapVo vo2 = selectByPrimaryKey(vo.getRuleName(), vo.getSubRuleName());
 			assertNotNull(vo2);
 			assertTrue(vo.equalsTo(vo2));
 			int rowsUpdated = update(vo2);
-			assertEquals(rowsUpdated, 1);
+			assertEquals(1, rowsUpdated);
 			int rowsDeleted = deleteByPrimaryKey(vo2);
-			assertEquals(rowsDeleted, 1);
+			assertEquals(1, rowsDeleted);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -43,20 +43,20 @@ public class RuleSubRuleMapTest extends DaoTestBase {
 
 	private List<RuleSubRuleMapVo> selectByRuleName(String ruleName) {
 		List<RuleSubRuleMapVo> list = ruleSubRuleMapDao.getByRuleName(ruleName);
-		System.out.println("RuleSubRuleMapDao - selectByRuleName: rules found " + list.size());
+		logger.info("RuleSubRuleMapDao - selectByRuleName: rules found " + list.size());
 		return list;
 	}
 
 	private RuleSubRuleMapVo selectByPrimaryKey(String ruleName, String subRuleName) {
 		RuleSubRuleMapVo vo = ruleSubRuleMapDao.getByPrimaryKey(ruleName, subRuleName);
-		System.out.println("RuleSubRuleMapDao - selectByPrimaryKey: " + LF + vo);
+		logger.info("RuleSubRuleMapDao - selectByPrimaryKey: " + LF + vo);
 		return vo;
 	}
 
 	private int update(RuleSubRuleMapVo ruleSubRuleMapVo) {
 		ruleSubRuleMapVo.setSubRuleSeq(ruleSubRuleMapVo.getSubRuleSeq());
 		int rows = ruleSubRuleMapDao.update(ruleSubRuleMapVo);
-		System.out.println("RuleSubRuleMapDao - update: rows updated " + rows);
+		logger.info("RuleSubRuleMapDao - update: rows updated " + rows);
 		return rows;
 	}
 
@@ -66,16 +66,15 @@ public class RuleSubRuleMapTest extends DaoTestBase {
 			ruleSubRuleMapVo.setSubRuleName(subRuleName);
 			ruleSubRuleMapVo.setSubRuleSeq(ruleSubRuleMapVo.getSubRuleSeq() + 1);
 			int rows = ruleSubRuleMapDao.insert(ruleSubRuleMapVo);
-			System.out.println("RuleSubRuleMapDao - insertSubRule: rows inserted " + rows + LF + ruleSubRuleMapVo);
+			logger.info("RuleSubRuleMapDao - insertSubRule: rows inserted " + rows + LF + ruleSubRuleMapVo);
 			return ruleSubRuleMapVo;
 		}
 		return null;
 	}
 
 	private int deleteByPrimaryKey(RuleSubRuleMapVo vo) {
-		int rowsDeleted = ruleSubRuleMapDao.deleteByPrimaryKey(vo.getRuleName(),
-				vo.getSubRuleName());
-		System.out.println("RuleSubRuleMapDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		int rowsDeleted = ruleSubRuleMapDao.deleteByPrimaryKey(vo.getRuleName(), vo.getSubRuleName());
+		logger.info("RuleSubRuleMapDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 }

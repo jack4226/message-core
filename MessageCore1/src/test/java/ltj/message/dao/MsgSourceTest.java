@@ -35,9 +35,9 @@ public class MsgSourceTest extends DaoTestBase {
 			vo.setOrigUpdtTime(vo2.getOrigUpdtTime());
 			assertTrue(vo.equalsTo(vo2));
 			int rowsUpdated = update(vo2);
-			assertEquals(rowsUpdated,1);
+			assertEquals(1, rowsUpdated);
 			int rowsDeleted = deleteByPrimaryKey(vo2);
-			assertEquals(rowsDeleted,1);
+			assertEquals(1, rowsDeleted);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -48,7 +48,7 @@ public class MsgSourceTest extends DaoTestBase {
 	private MsgSourceVo selectByPrimaryKey(String msgSourceId) {
 		MsgSourceVo msgSourceVo = msgSourceDao.getByPrimaryKey(msgSourceId);
 		if (msgSourceVo!=null) {
-			System.out.println("MsgSourceDao - selectByPrimaryKey: " + LF + msgSourceVo);
+			logger.info("MsgSourceDao - selectByPrimaryKey: " + LF + msgSourceVo);
 		}
 		return msgSourceVo;
 	}
@@ -56,7 +56,7 @@ public class MsgSourceTest extends DaoTestBase {
 	private List<MsgSourceVo> selectByFromAddrId(long addrId) {
 		List<MsgSourceVo> list = msgSourceDao.getByFromAddrId(addrId);
 		for (MsgSourceVo vo : list) {
-			System.out.println("MsgSourceDao - selectByFromAddrId: " + LF + vo);
+			logger.info("MsgSourceDao - selectByFromAddrId: " + LF + vo);
 		}
 		return list;
 	}
@@ -64,7 +64,7 @@ public class MsgSourceTest extends DaoTestBase {
 	private int update(MsgSourceVo msgSourceVo) {
 		msgSourceVo.setDescription("message source for WeekendDeals");
 		int rows = msgSourceDao.update(msgSourceVo);
-		System.out.println("MsgSourceDao - update: rows updated " + rows);
+		logger.info("MsgSourceDao - update: rows updated " + rows);
 		return rows;
 	}
 
@@ -73,7 +73,7 @@ public class MsgSourceTest extends DaoTestBase {
 		if (vo!=null) {
 			vo.setMsgSourceId(vo.getMsgSourceId()+"_v2");
 			int rows = msgSourceDao.insert(vo);
-			System.out.println("MsgSourceDao - insert: rows inserted " + rows);
+			logger.info("MsgSourceDao - insert: rows inserted " + rows);
 			return selectByPrimaryKey(vo.getMsgSourceId());
 		}
 		return null;
@@ -81,7 +81,7 @@ public class MsgSourceTest extends DaoTestBase {
 
 	private int deleteByPrimaryKey(MsgSourceVo vo) {
 		int rowsDeleted = msgSourceDao.deleteByPrimaryKey(vo.getMsgSourceId());
-		System.out.println("MsgSourceDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
+		logger.info("MsgSourceDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 }
