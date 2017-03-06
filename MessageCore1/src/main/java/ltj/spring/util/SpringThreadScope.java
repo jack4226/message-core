@@ -1,4 +1,4 @@
-package ltj.jbatch.common;
+package ltj.spring.util;
 
 import java.util.HashMap;
 import java.util.Map;
