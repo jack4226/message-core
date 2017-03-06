@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
+import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.socket.SocketServerDao;
 import ltj.message.vo.SocketServerVo;
@@ -27,10 +28,10 @@ public class SocketServerTest extends DaoTestBase {
 			SocketServerVo vo1 = socketServerDao.getByPrimaryKey(svrs.get(0).getServerName());
 			assertNotNull(vo1);
 			int rowsUpdated  = update(vo1);
-			assertTrue(rowsUpdated>0);
+			assertTrue(rowsUpdated > 0);
 			SocketServerVo vo2 = insert();
 			int rowsDeleted = delete(vo2);
-			assertTrue(rowsDeleted>0);
+			assertTrue(rowsDeleted > 0);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -39,17 +40,17 @@ public class SocketServerTest extends DaoTestBase {
 	}
 	
 	private int update(SocketServerVo vo) {
-		if (!"A".equals(vo.getStatusId())) {
-			vo.setStatusId("A");
+		if (!StatusId.ACTIVE.value().equals(vo.getStatusId())) {
+			vo.setStatusId(StatusId.ACTIVE.value());
 		}
 		int rows = socketServerDao.update(vo);
-		System.out.println("SocketServerDao - update: "+vo);
+		logger.info("SocketServerDao - update: "+vo);
 		return rows;
 	}
 	
 	private int delete(SocketServerVo socketServerVo) {
 		int rowsDeleted = socketServerDao.deleteByPrimaryKey(socketServerVo.getServerName());
-		System.out.println("SocketServerDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("SocketServerDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 
@@ -60,7 +61,7 @@ public class SocketServerTest extends DaoTestBase {
 			socketServerVo.setServerName(socketServerVo.getServerName()+"_v2");
 			socketServerVo.setSocketPort(socketServerVo.getSocketPort()+10);
 			socketServerDao.insert(socketServerVo);
-			System.out.println("SocketServerDao - insert: "+socketServerVo);
+			logger.info("SocketServerDao - insert: "+socketServerVo);
 			return socketServerVo;
 		}
 		throw new IllegalStateException("SocketServers table is empty.");

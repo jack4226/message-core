@@ -43,7 +43,7 @@ public class UserAccountsBean {
 			refresh();
 		}
 		if (users == null) {
-			List<UserVo> userList = getUserDao().getAll(false);
+			List<UserVo> userList = getUserDao().getFirst100(false);
 			users = new ListDataModel(userList);
 		}
 		return users;

@@ -18,15 +18,15 @@ public class TemplateVariableTest extends DaoTestBase {
 	@Resource
 	private TemplateVariableDao templateVariableDao;
 	
-	Timestamp updtTime = new Timestamp(System.currentTimeMillis());
-	final String testVariableName = "CurrentDate";
+	static Timestamp updtTime = new Timestamp(System.currentTimeMillis());
+	final static String testVariableName = "CurrentDate";
 	
 	@Test
 	public void testTemplateVariable() {
 		try {
 			List<TemplateVariableVo> list = selectByVariableName(testVariableName);
-			assertTrue(list.size()>0);
-			TemplateVariableVo vo = selectByPrimaryKey(list.get(list.size()-1));
+			assertTrue(list.size() > 0);
+			TemplateVariableVo vo = selectByPrimaryKey(list.get(list.size() - 1));
 			assertNotNull(vo);
 			TemplateVariableVo vo2 = insert(vo.getVariableName());
 			assertNotNull(vo2);
@@ -34,9 +34,9 @@ public class TemplateVariableTest extends DaoTestBase {
 			vo.setTemplateId(vo2.getTemplateId());
 			assertTrue(vo.equalsTo(vo2));
 			int rows = update(vo2);
-			assertEquals(rows, 1);
+			assertEquals(1, rows);
 			rows = deleteByPrimaryKey(vo2);
-			assertEquals(rows, 1);
+			assertEquals(1, rows);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -48,8 +48,7 @@ public class TemplateVariableTest extends DaoTestBase {
 		List<TemplateVariableVo> variables = templateVariableDao.getByVariableName(vname);
 		for (Iterator<TemplateVariableVo> it = variables.iterator(); it.hasNext();) {
 			TemplateVariableVo templateVariableVo = it.next();
-			System.out.println("TemplateVariableDao - selectByVariableName: " + LF
-					+ templateVariableVo);
+			logger.info("TemplateVariableDao - selectByVariableName: " + LF + templateVariableVo);
 		}
 		return variables;
 	}
@@ -58,7 +57,7 @@ public class TemplateVariableTest extends DaoTestBase {
 		TemplateVariableVo tmplt = templateVariableDao.getByPrimaryKey(vo.getTemplateId(),
 				vo.getClientId(), vo.getVariableName(), vo.getStartTime());
 		if (tmplt!=null) {
-			System.out.println("TemplateVariableDao - selectByPrimaryKey: " + LF + tmplt);
+			logger.info("TemplateVariableDao - selectByPrimaryKey: " + LF + tmplt);
 		}
 		return tmplt;
 	}
@@ -66,7 +65,7 @@ public class TemplateVariableTest extends DaoTestBase {
 	private int update(TemplateVariableVo vo) {
 		vo.setVariableValue(updtTime.toString());
 		int rows = templateVariableDao.update(vo);
-		System.out.println("TemplateVariableDao - update: rows updated " + rows);
+		logger.info("TemplateVariableDao - update: rows updated " + rows);
 		return rows;
 	}
 
@@ -74,9 +73,9 @@ public class TemplateVariableTest extends DaoTestBase {
 		List<TemplateVariableVo> list = templateVariableDao.getByVariableName(vname);
 		if (list.size() > 0) {
 			TemplateVariableVo templateVariableVo = list.get(list.size() - 1);
-			templateVariableVo.setTemplateId(templateVariableVo.getTemplateId()+"_v2");
+			templateVariableVo.setTemplateId(templateVariableVo.getTemplateId() + "_v2");
 			int rows = templateVariableDao.insert(templateVariableVo);
-			System.out.println("TemplateVariableDao - insert: rows inserted " + rows);
+			logger.info("TemplateVariableDao - insert: rows inserted " + rows);
 			return selectByPrimaryKey(templateVariableVo);
 		}
 		return null;
@@ -85,7 +84,7 @@ public class TemplateVariableTest extends DaoTestBase {
 	private int deleteByPrimaryKey(TemplateVariableVo vo) {
 		int rows = templateVariableDao.deleteByPrimaryKey(vo.getTemplateId(), vo.getClientId(),
 				vo.getVariableName(), vo.getStartTime());
-		System.out.println("TemplateVariableDao - deleteByPrimaryKey: Rows Deleted: " + rows);
+		logger.info("TemplateVariableDao - deleteByPrimaryKey: Rows Deleted: " + rows);
 		return rows;
 	}
 }

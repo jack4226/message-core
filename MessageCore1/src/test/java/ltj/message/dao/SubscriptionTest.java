@@ -20,8 +20,6 @@ import ltj.message.vo.emailaddr.EmailAddrVo;
 import ltj.message.vo.emailaddr.SubscriptionVo;
 
 public class SubscriptionTest extends DaoTestBase {
-	final String listId = Constants.DEMOLIST1_NAME;
-	final String testAddr = "subtest@test.com";
 	@Resource
 	private SubscriptionDao subscriptionDao;
 	@Resource
@@ -29,14 +27,17 @@ public class SubscriptionTest extends DaoTestBase {
 //	@Resource
 //	private UnsubCommentsDao unsubCommentsDao;
 
+	final static String listId = Constants.DEMOLIST1_NAME;
+	final static String testAddr = "subtest@test.com";
+	
 	@Test
 	public void testSelects() {
 		List<SubscriptionVo> list = selectByListId();
-		assertTrue(list.size()>0);
+		assertTrue(list.size() > 0);
 		list = selectByListId2();
-		assertTrue(list.size()>0);
+		assertTrue(list.size() > 0);
 		list = selectByListId3();
-		assertTrue(list.size()>0);
+		assertTrue(list.size() > 0);
 	}
 
 	@Test
@@ -46,14 +47,14 @@ public class SubscriptionTest extends DaoTestBase {
 			assertEquals(rowsInserted, 1);
 			SubscriptionVo vo = selectByAddrAndListId();
 			assertNotNull(vo);
-			assertEquals("Y", vo.getSubscribed());
-			assertEquals("Yes", vo.getSubscribedDesc());
+			assertEquals(Constants.Y, vo.getSubscribed());
+			assertEquals(Constants.YES, vo.getSubscribedDesc());
 			int rowsDeleted = unsubscribe();
 			SubscriptionVo vo1 = selectByAddrAndListId();
 			assertNotNull(vo1);
-			assertEquals("N", vo1.getSubscribed());
-			assertEquals("No", vo1.getSubscribedDesc());
-			assertEquals(rowsDeleted, 1);
+			assertEquals(Constants.N, vo1.getSubscribed());
+			assertEquals(Constants.NO, vo1.getSubscribedDesc());
+			assertEquals(1, rowsDeleted);
 			rowsDeleted = delete();
 			SubscriptionVo vo2 = selectByAddrAndListId();
 			assertNull(vo2);

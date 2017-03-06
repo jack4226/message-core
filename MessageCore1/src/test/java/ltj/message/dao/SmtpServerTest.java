@@ -22,9 +22,9 @@ public class SmtpServerTest extends DaoTestBase {
 	public void testSmtpServer() {
 		try {
 			List<SmtpConnVo> lst1 = selectAll(true);
-			assertTrue(lst1.size()>0);
+			assertTrue(lst1.size() > 0);
 			List<SmtpConnVo> lst2 = selectAll(false);
-			assertTrue(lst2.size()>0);
+			assertTrue(lst2.size() > 0);
 			SmtpConnVo vo = selectByPrimaryKey(lst2.get(0).getServerName());
 			assertNotNull(vo);
 			SmtpConnVo vo2 = insert(lst2.get(0).getServerName());
@@ -34,9 +34,9 @@ public class SmtpServerTest extends DaoTestBase {
 			vo.setOrigUpdtTime(vo2.getOrigUpdtTime());
 			vo.setServerName(vo2.getServerName());
 			assertTrue(vo.equalsTo(vo2));
-			assertEquals(rowsUpdated, 1);
+			assertEquals(1, rowsUpdated);
 			int rowsDeleted = delete(vo2.getServerName());
-			assertEquals(rowsDeleted, 1);
+			assertEquals(1, rowsDeleted);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -50,14 +50,14 @@ public class SmtpServerTest extends DaoTestBase {
 			smtpServeres = smtpServerDao.getAllForTrial(false);
 			for (Iterator<SmtpConnVo> it=smtpServeres.iterator(); it.hasNext();) {
 				SmtpConnVo smtpConnVo = it.next();
-				System.out.println("SmtpServerDao - getAllForTrial(): "+LF+smtpConnVo);
+				logger.info("SmtpServerDao - getAllForTrial(): "+LF+smtpConnVo);
 			}
 		}
 		else {
 			smtpServeres = smtpServerDao.getAll(false);
 			for (Iterator<SmtpConnVo> it=smtpServeres.iterator(); it.hasNext();) {
 				SmtpConnVo smtpConnVo = it.next();
-				System.out.println("SmtpServerDao - selectAll(): "+LF+smtpConnVo);
+				logger.info("SmtpServerDao - selectAll(): "+LF+smtpConnVo);
 			}
 		}
 		return smtpServeres;
@@ -65,7 +65,7 @@ public class SmtpServerTest extends DaoTestBase {
 	
 	public SmtpConnVo selectByPrimaryKey(String serverName) {
 		SmtpConnVo vo2 = smtpServerDao.getByPrimaryKey(serverName);
-		System.out.println("SmtpServerDao - selectByPrimaryKey: "+LF+vo2);
+		logger.info("SmtpServerDao - selectByPrimaryKey: "+LF+vo2);
 		return vo2;
 	}
 	
@@ -74,13 +74,13 @@ public class SmtpServerTest extends DaoTestBase {
 			smtpConnVo.setStatusId(StatusId.ACTIVE.value());
 		}
 		int rows = smtpServerDao.update(smtpConnVo);
-		System.out.println("SmtpServerDao - update: rows updated " + rows );
+		logger.info("SmtpServerDao - update: rows updated " + rows );
 		return rows;
 	}
 	
 	private int delete(String serverName) {
 		int rowsDeleted = smtpServerDao.deleteByPrimaryKey(serverName);
-		System.out.println("SmtpServerDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("SmtpServerDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	private SmtpConnVo insert(String serverName) {
@@ -88,7 +88,7 @@ public class SmtpServerTest extends DaoTestBase {
 		if (smtpConnVo != null) {
 			smtpConnVo.setServerName(smtpConnVo.getServerName()+"_test");
 			int rows = smtpServerDao.insert(smtpConnVo);
-			System.out.println("SmtpServerDao - insert: rows inserted "+rows);
+			logger.info("SmtpServerDao - insert: rows inserted "+rows);
 			return selectByPrimaryKey(smtpConnVo.getServerName());
 		}
 		return null;

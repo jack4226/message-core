@@ -34,9 +34,9 @@ public class UnsubCommentsJdbcDao extends AbstractDao implements UnsubCommentsDa
 	}
 	
 	@Override
-	public List<UnsubCommentsVo> getAll() {
+	public List<UnsubCommentsVo> getFirst100() {
 		String sql = "select * from UnsubComments " +
-		" order by RowId";
+		" order by RowId limit 100";
 		List<UnsubCommentsVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<UnsubCommentsVo>(UnsubCommentsVo.class));
 		return list;
