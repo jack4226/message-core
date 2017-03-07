@@ -72,6 +72,7 @@ public class MsgInboxBoTest extends BoTestBase {
 			MsgInboxVo vo = msgInboxBo.getAllDataByMsgId(msgId);
 			assertNotNull(vo);
 			assertEquals(ruleName, vo.getRuleName());
+			logger.info("MsgInboxVo.toString() - " + LF + vo);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

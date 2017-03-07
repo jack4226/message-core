@@ -16,6 +16,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.commons.lang.StringUtils;
+
 import ltj.message.constant.StatusId;
 import ltj.message.util.Printf;
 
@@ -176,10 +178,13 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 		if (vo == null) {
 			return ("-null");
 		}
-		Object[] params = {};
-		StringBuffer sb = new StringBuffer();
-		Map<String, Method> methodMap = new HashMap<String, Method>();
-		List<String> methodList = new ArrayList<String>();
+		if (level > 5) {
+			System.err.println("toString() has reached a deep level, a possible loop condition?");
+			return "...... (deep level)";
+		}
+		
+		Map<String, Method> methodMap = new HashMap<>();
+		List<String> methodList = new ArrayList<>();
 		Method methods[] = vo.getClass().getMethods();
 
 		// sort the attributes by name
@@ -188,51 +193,60 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 			methodList.add(methods[i].getName());
 		}
 		Collections.sort(methodList);
-
+		
+		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < methodList.size(); i++) {
-			String methodName = (String) methodList.get(i);
+			String methodName = methodList.get(i);
 			Method method = methodMap.get(methodName);
-			params = method.getParameterTypes();
-			String paramClassName = vo.getClass().getName();
-			paramClassName = paramClassName.substring(paramClassName.lastIndexOf(".") + 1);
+			Object[] params = method.getParameterTypes();
+			String paramClassName = vo.getClass().getSimpleName();
 
 			if (methodName.startsWith("get") && params.length == 0) {
 				try {
-					sb.append("     " + dots(level) + paramClassName + "." + methodName.substring(3, 4).toLowerCase()
-							+ methodName.substring(4));
+					sb.append("     " + dots(level) + paramClassName + "." + StringUtils.uncapitalize(methodName));
 					sb.append("=");
 					Class<?> returnType = method.getReturnType();
 					String returnTypeName = returnType.getName();
 					if (isValidReturnType(returnType)) {
-						if (method.invoke(vo, params) == null) {
+						Object rtnObj = method.invoke(vo, params);
+						if (rtnObj == null) {
 							sb.append("null");
 						}
 						else {
-							sb.append((method.invoke(vo, params)).toString().trim());
+							sb.append(StringUtils.trim(rtnObj.toString()));
 						}
 					}
 					else if (returnTypeName.endsWith("java.lang.Class")) {
 						sb.append(((Class<?>) method.invoke(vo, params)).getName());
 					}
 					else if (method.getName().indexOf("Vo") > 0) {
-						if (method.invoke(vo, params) == null) {
+						Object subVo = method.invoke(vo, params);
+						if (subVo == null) {
 							sb.append("null");
 						}
 						else {
-							sb.append(LF);
-							Object subVo = method.invoke(vo, params);
 							// the call to vo.toString lets objects override
 							// this default toString method....
-							if (subVo != null) {
-								if (subVo instanceof BaseVo) {
-									sb.append(((BaseVo) subVo).toString(level + 1));
-								}
-								else {
-									sb.append(subVo.toString());
-								}
+							if (subVo instanceof BaseVo) {
+								sb.append(LF + ((BaseVo) subVo).toString(level + 1));
 							}
 							else {
-								sb.append(toString(subVo));
+								sb.append(subVo.toString());
+							}
+						}
+					}
+					else if (returnType.equals(Class.forName("java.util.ArrayList"))
+							|| returnType.equals(Class.forName("java.util.List"))) {
+						sb.append("a List");
+						List<?> lst = (List<?>) method.invoke(vo, params);
+						for (int j = 0; lst != null && j < lst.size(); j++) {
+							Object item = lst.get(j);
+							if (item instanceof BaseVo) {
+								sb.append(LF + ((BaseVo) item).toString(level + 1));
+							}
+							else if (item != null) {
+								sb.append(LF + "     " + dots(level+1) + item.getClass().getCanonicalName());
+								sb.append("=" + item.toString());
 							}
 						}
 					}
@@ -241,9 +255,6 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 						if (subVo != null) {
 							if (!(subVo instanceof BaseVo)) {
 								sb.append(subVo.toString());
-							}
-							else if (subVo instanceof java.util.List<?>) {
-								sb.append(((java.util.List<?>)subVo).size());
 							}
 						}
 						else {
@@ -301,7 +312,6 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 	}
 	
 	public String listChanges() {
-		final String LF = System.getProperty("line.separator","\n");
 		StringBuffer sb = new StringBuffer();
 		for (ChangeLog item : getLogList()) {
 			sb.append(item.printf() + LF);
@@ -309,7 +319,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 		return sb.toString();
 	}
 	
-	private static class ChangeLog implements Serializable {
+	public static class ChangeLog implements Serializable {
 		private static final long serialVersionUID = -5732262969319705777L;
 		String fieldName;
 		Object leftValue;
@@ -335,6 +345,16 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 				str += Printf.sprintf("%-14s", rightValue);
 			}
 			return str;
+		}
+		
+		public String getFieldName() {
+			return fieldName;
+		}
+		public Object getLeftValue() {
+			return leftValue;
+		}
+		public Object getRightValue() {
+			return rightValue;
 		}
 	}
 	

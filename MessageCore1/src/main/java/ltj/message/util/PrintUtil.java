@@ -13,6 +13,8 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class PrintUtil {
 
 	public static String prettyPrint(Object obj) {
@@ -94,7 +96,7 @@ public class PrintUtil {
 			if ((methodName.length() > 3) && ((methodName.startsWith("get")))) {
 				try {
 					sb.append(StringUtil.LF + " ");
-					sb.append("     " + dots(level) + shortClassName + "." + methodName.substring(3, 4).toLowerCase() + methodName.substring(4));
+					sb.append("     " + dots(level) + shortClassName + "." + StringUtils.uncapitalize(methodName));
 					sb.append("=");
 					if ((method.getReturnType().equals(Class.forName("java.lang.String")))
 							|| (method.getReturnType().equals(Class.forName("java.lang.Integer")))

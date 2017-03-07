@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-public abstract class PagingVo extends BaseVo implements java.io.Serializable, Cloneable {
+public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable {
 	private static final long serialVersionUID = -1139494427014770362L;
 	
 	// define paging context
@@ -24,7 +24,7 @@ public abstract class PagingVo extends BaseVo implements java.io.Serializable, C
 	protected int rowCount = -1;
 	// end of paging
 	
-	protected final Set<String> searchFields = new LinkedHashSet<String>();
+	protected final Set<String> searchFields = new LinkedHashSet<>();
 	
 	public PagingVo() {
 		setSearchFields();
