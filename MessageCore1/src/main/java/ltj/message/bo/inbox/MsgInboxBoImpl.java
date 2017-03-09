@@ -122,8 +122,8 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			logger.warn("saveMessage() - carrierCode field is null, set to S (SMTP)");
 			msgBean.setCarrierCode(CarrierCode.SMTPMAIL.value());
 		}
-		msgVo.setCarrierCode(StringUtils.left(msgBean.getCarrierCode(),1));
-		msgVo.setMsgSubject(StringUtils.left(msgBean.getSubject(),255));
+		msgVo.setCarrierCode(StringUtils.left(msgBean.getCarrierCode(), 1));
+		msgVo.setMsgSubject(StringUtils.left(msgBean.getSubject(), 255));
 		msgVo.setMsgPriority(MessageBeanUtil.getMsgPriority(msgBean.getPriority()));
 		Timestamp ts = msgBean.getSendDate() == null ? updtTime : new Timestamp(msgBean.getSendDate().getTime());
 		msgVo.setReceivedTime(ts);
@@ -171,15 +171,15 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		}
 		// end LeadMsgId
 		
-		msgVo.setMsgContentType(StringUtils.left(msgBean.getContentType(),100));
+		msgVo.setMsgContentType(StringUtils.left(msgBean.getContentType(), 100));
 		String contentType = msgBean.getBodyContentType();
-		msgVo.setBodyContentType(StringUtils.left(contentType,50));
+		msgVo.setBodyContentType(StringUtils.left(contentType, 50));
 		
 		if (msgBean.getIsReceived()) {
 			/* from MailReader */
 			msgVo.setMsgDirection(MsgDirection.RECEIVED.value());
 			msgVo.setStatusId(StatusId.OPENED.value());
-			msgVo.setSmtpMessageId(StringUtils.left(msgBean.getSmtpMessageId(),255));
+			msgVo.setSmtpMessageId(StringUtils.left(msgBean.getSmtpMessageId(), 255));
 			String msgBody = msgBean.getBody();
 			msgVo.setMsgBody(msgBody);
 			msgVo.setMsgBodySize(msgBody == null ? 0 : msgBody.length());
@@ -207,7 +207,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 				String origContentType = msgBean.getOriginalMail().getBodyContentType();
 				if (contentType.indexOf("html") < 0 && origContentType.indexOf("html") >= 0) {
 					// reset content type to original's
-					msgVo.setBodyContentType(StringUtils.left(origContentType,50));
+					msgVo.setBodyContentType(StringUtils.left(origContentType, 50));
 				}
 			}
 			/* Rebuild the Message Body, generate Email_Id from MsgId */
@@ -236,12 +236,12 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			}
 		}
 		
-		msgVo.setClientId(StringUtils.left(msgBean.getClientId(),16));
-		msgVo.setCustId(StringUtils.left(msgBean.getCustId(),CustomerBo.CUSTOMER_ID_MAX_LEN));
-		msgVo.setRuleName(StringUtils.left(msgBean.getRuleName(),26));
+		msgVo.setClientId(StringUtils.left(msgBean.getClientId(), 16));
+		msgVo.setCustId(StringUtils.left(msgBean.getCustId(), CustomerBo.CUSTOMER_ID_MAX_LEN));
+		msgVo.setRuleName(StringUtils.left(msgBean.getRuleName(), 26));
 		
 		msgVo.setUpdtTime(updtTime);
-		msgVo.setUpdtUserId(StringUtils.left(Constants.DEFAULT_USER_ID,10));
+		msgVo.setUpdtUserId(StringUtils.left(Constants.DEFAULT_USER_ID, 10));
 		msgVo.setLockTime(null); // lock time
 		msgVo.setLockId(null); // lock id
 		
@@ -301,8 +301,8 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		}
 
 		// save attachments
-		if (aNodes!=null && aNodes.size()>0) {
-			for (int i=0; i<aNodes.size(); i++) {
+		if (aNodes != null && aNodes.size() > 0) {
+			for (int i = 0; i < aNodes.size(); i++) {
 				MessageNode mNode = aNodes.get(i);
 				BodypartBean aNode = mNode.getBodypartNode();
 				AttachmentsVo attchVo = new AttachmentsVo();
@@ -433,7 +433,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	 */
 	public MsgInboxVo getMessageByPK(long msgId) {
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
-		if (msgInboxVo!=null) {
+		if (msgInboxVo != null) {
 			List<MsgAddrsVo> msgAddrs = msgAddrsDao.getByMsgId(msgId);
 			msgInboxVo.setMsgAddrs(msgAddrs);
 			List<MsgHeadersVo> msgHeaders = msgHeadersDao.getByMsgId(msgId);
