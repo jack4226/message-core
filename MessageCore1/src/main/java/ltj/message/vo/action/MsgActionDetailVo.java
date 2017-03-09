@@ -6,8 +6,7 @@ import java.sql.Timestamp;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.BaseVoWithRowId;
 
-public class MsgActionDetailVo extends BaseVoWithRowId implements Serializable
-{
+public class MsgActionDetailVo extends BaseVoWithRowId implements Serializable {
 	private static final long serialVersionUID = -3441560088153348986L;
 	private String actionId = "";
 	private String description = null;

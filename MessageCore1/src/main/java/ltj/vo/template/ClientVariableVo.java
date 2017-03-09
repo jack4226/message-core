@@ -2,8 +2,7 @@ package ltj.vo.template;
 
 import java.io.Serializable;
 
-public class ClientVariableVo extends GlobalVariableVo implements Serializable
-{
+public class ClientVariableVo extends GlobalVariableVo implements Serializable {
 	private static final long serialVersionUID = 5123163629276526195L;
 	private String clientId = "";
 

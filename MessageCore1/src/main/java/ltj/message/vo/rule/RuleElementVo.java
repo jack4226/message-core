@@ -5,7 +5,6 @@ import java.io.Serializable;
 import ltj.message.constant.Constants;
 import ltj.message.vo.BaseVoWithRowId;
 
-
 public class RuleElementVo extends BaseVoWithRowId implements Serializable {
 	
 	private static final long serialVersionUID = -1717399300313450033L;
@@ -22,10 +21,10 @@ public class RuleElementVo extends BaseVoWithRowId implements Serializable {
 	private String delimiter = null;
 	
 	public boolean isTextCaseSensitive() {
-		return "Y".equalsIgnoreCase(getCaseSensitive());
+		return Constants.Y.equalsIgnoreCase(getCaseSensitive());
 	}
 	public void setTextCaseSensitive(boolean value) {
-		setCaseSensitive(value == true ? "Y" : "N");
+		setCaseSensitive(value == true ? Constants.Y : Constants.N);
 	}
 	
 	public String getCaseSensitive() {

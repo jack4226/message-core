@@ -5,12 +5,11 @@ import java.sql.Timestamp;
 
 import ltj.message.vo.BaseVoWithRowId;
 
-public class BodyTemplateVo extends BaseVoWithRowId implements Serializable
-{
+public class BodyTemplateVo extends BaseVoWithRowId implements Serializable {
 	private static final long serialVersionUID = -2565627868809110960L;
 	private String templateId = "";
 	private String clientId = null;
-	private Timestamp startTime = new Timestamp(new java.util.Date().getTime());
+	private Timestamp startTime = new Timestamp(System.currentTimeMillis());
 	private String description = null;
 	private String templateValue = null;
 	private String contentType = null;

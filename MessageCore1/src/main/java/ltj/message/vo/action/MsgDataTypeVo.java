@@ -4,8 +4,7 @@ import java.io.Serializable;
 
 import ltj.message.vo.BaseVo;
 
-public class MsgDataTypeVo extends BaseVo implements Serializable
-{
+public class MsgDataTypeVo extends BaseVo implements Serializable {
 	private static final long serialVersionUID = 1257470921464461217L;
 	private int rowId = -1;
 	private String dataType = "";

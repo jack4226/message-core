@@ -32,20 +32,26 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 		setIsSubRule(value == true ? Constants.Y : Constants.N);
 	}
 	public String getIsSubRuleDesc() {
-		if (Constants.Y.equalsIgnoreCase(getIsSubRule()))
+		if (Constants.Y.equalsIgnoreCase(getIsSubRule())) {
 			return "SubRule";
-		else if (subRuleCount > 0)
+		}
+		else if (subRuleCount > 0) {
 			return "Edit";
-		else
+		}
+		else {
 			return "Add";
+		}
 	}
 	public String getRuleCategoryDesc() {
-		if (RuleBase.PRE_RULE.equalsIgnoreCase(getRuleCategory()))
+		if (RuleBase.PRE_RULE.equalsIgnoreCase(getRuleCategory())) {
 			return "Pre Scan";
-		else if (RuleBase.POST_RULE.equalsIgnoreCase(getRuleCategory()))
+		}
+		else if (RuleBase.POST_RULE.equalsIgnoreCase(getRuleCategory())) {
 			return "Post Scan";
-		else
+		}
+		else {
 			return "Main";
+		}
 	}
 	public boolean isBuiltInRule() {
 		return Constants.Y.equalsIgnoreCase(builtInRule);
@@ -57,7 +63,7 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 	public java.util.Date getStartDate() {
 		if (startDate == null) {
 			if (getStartTime() == null) {
-				setStartTime(new Timestamp(new java.util.Date().getTime()));
+				setStartTime(new Timestamp(System.currentTimeMillis()));
 			}
 			startDate = new java.util.Date(getStartTime().getTime());
 		}

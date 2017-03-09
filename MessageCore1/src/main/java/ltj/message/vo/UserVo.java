@@ -2,7 +2,6 @@ package ltj.message.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -30,7 +29,7 @@ public class UserVo extends BaseVoWithRowId implements Serializable {
 	/** define UI components */
 	public void addHit() {
 		hits++;
-		lastVisitTime = new Timestamp(new Date().getTime());
+		lastVisitTime = new Timestamp(System.currentTimeMillis());
 	}
 	
 	public String getEmailAddrShort() {

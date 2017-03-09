@@ -160,10 +160,16 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	}
 	
 	public String getFromAddress() {
-		if (fromAddrId == null) return "";
+		if (fromAddrId == null) {
+			return "";
+		}
 		EmailAddrVo vo = getEmailAddrDao().getByAddrId(fromAddrId);
-		if (vo == null) return "";
-		else return vo.getEmailAddr();
+		if (vo == null) {
+			return "";
+		}
+		else {
+			return vo.getEmailAddr();
+		}
 	}
 	
 	public String getFromDisplayName() {
@@ -181,10 +187,16 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 			}
 		}
 		// if not found from header, get from toAddrId
-		if (toAddrId == null) return "";
+		if (toAddrId == null) {
+			return "";
+		}
 		EmailAddrVo vo = getEmailAddrDao().getByAddrId(toAddrId);
-		if (vo == null) return "";
-		else return vo.getEmailAddr();
+		if (vo == null) {
+			return "";
+		}
+		else { 
+			return vo.getEmailAddr();
+		}
 	}
 	
 	public String getComposeFromAddress() {
@@ -204,7 +216,9 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	}
 
 	public String getCcAddress() {
-		if (msgAddrs == null || msgAddrs.size() == 0) return "";
+		if (msgAddrs == null || msgAddrs.size() == 0) {
+			return "";
+		}
 		StringBuffer sb = new StringBuffer();
 		for (int i=0; i<msgAddrs.size(); i++) {
 			MsgAddrsVo vo = msgAddrs.get(i);
@@ -219,8 +233,12 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	}
 	
 	public java.util.Date getReceivedDate() {
-		if (receivedTime == null) return new java.util.Date();
-		else return new java.util.Date(receivedTime.getTime());
+		if (receivedTime == null) {
+			return new java.util.Date();
+		}
+		else {
+			return new java.util.Date(receivedTime.getTime());
+		}
 	}
 	
 	public String getSize() {
@@ -317,40 +335,45 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	 */
 	
 	public List<AttachmentsVo> getAttachments() {
-		if (attachments==null)
+		if (attachments==null) {
 			attachments = new ArrayList<AttachmentsVo>();
+		}
 		return attachments;
 	}
 	public void setAttachments(List<AttachmentsVo> attachments) {
 		this.attachments = attachments;
 	}
 	public List<MsgAddrsVo> getMsgAddrs() {
-		if (msgAddrs==null)
+		if (msgAddrs==null) {
 			msgAddrs = new ArrayList<MsgAddrsVo>();
+		}
 		return msgAddrs;
 	}
 	public void setMsgAddrs(List<MsgAddrsVo> msgAddrs) {
 		this.msgAddrs = msgAddrs;
 	}
 	public List<MsgHeadersVo> getMsgHeaders() {
-		if (msgHeaders==null)
+		if (msgHeaders==null) {
 			msgHeaders = new ArrayList<MsgHeadersVo>();
+		}
 		return msgHeaders;
 	}
 	public void setMsgHeaders(List<MsgHeadersVo> msgHeaders) {
 		this.msgHeaders = msgHeaders;
 	}
 	public List<RfcFieldsVo> getRfcFields() {
-		if (rfcFields==null)
+		if (rfcFields==null) {
 			rfcFields = new ArrayList<RfcFieldsVo>();
+		}
 		return rfcFields;
 	}
 	public void setRfcFields(List<RfcFieldsVo> rfcFields) {
 		this.rfcFields = rfcFields;
 	}
 	public List<DeliveryStatusVo> getDeliveryStatus() {
-		if (deliveryStatus==null)
+		if (deliveryStatus==null) {
 			deliveryStatus = new ArrayList<DeliveryStatusVo>();
+		}
 		return deliveryStatus;
 	}
 	public void setDeliveryStatus(List<DeliveryStatusVo> deliveryStatus) {

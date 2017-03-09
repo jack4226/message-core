@@ -29,7 +29,7 @@ public class MsgSourceVo extends BaseVoWithRowId implements Serializable {
 	private Integer purgeAfter = null; // in month
 	
 	public MsgSourceVo() {
-		updtTime = new Timestamp(new java.util.Date().getTime());
+		updtTime = new Timestamp(System.currentTimeMillis());
 	}
 	
 	public String getAllowOverride() {

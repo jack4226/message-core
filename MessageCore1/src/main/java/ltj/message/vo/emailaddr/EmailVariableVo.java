@@ -21,10 +21,12 @@ public class EmailVariableVo extends BaseVoWithRowId implements Serializable {
 	 * define components for UI
 	 */
 	public String getVariableQueryShort() {
-		if (variableQuery == null || variableQuery.length() <= 40)
+		if (variableQuery == null || variableQuery.length() <= 40) {
 			return variableQuery;
-		else
+		}
+		else {
 			return variableQuery.substring(0,40);
+		}
 	}
 	
 	public String getClassNameShort() {

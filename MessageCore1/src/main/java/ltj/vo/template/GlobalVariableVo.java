@@ -6,11 +6,10 @@ import java.sql.Timestamp;
 import ltj.message.constant.Constants;
 import ltj.message.vo.BaseVoWithRowId;
 
-public class GlobalVariableVo extends BaseVoWithRowId implements Serializable
-{
+public class GlobalVariableVo extends BaseVoWithRowId implements Serializable {
 	private static final long serialVersionUID = 8887386091033102579L;
 	private String variableName = "";
-	private Timestamp startTime = new Timestamp(new java.util.Date().getTime());
+	private Timestamp startTime = new Timestamp(System.currentTimeMillis());
 	private String variableValue = null;
 	private String variableFormat= null;
 	private String variableType = "";

@@ -134,8 +134,9 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	}
 
 	public SchedulesBlob getSchedulesBlob() {
-		if (schedulesBlob == null)
+		if (schedulesBlob == null) {
 			schedulesBlob = new SchedulesBlob();
+		}
 		return schedulesBlob;
 	}
 

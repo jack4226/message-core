@@ -78,8 +78,12 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 	
 	public boolean equalsLevel1_deprecated(SearchFieldsVo vo) {
 		getLogList().clear();
-		if (this == vo) return true;
-		if (vo == null) return false;
+		if (this == vo) {
+			return true;
+		}
+		if (vo == null) {
+			return false;
+		}
 		if (this.msgType == null) {
 			if (vo.msgType != null) {
 				addChangeLog("MsgType", this.msgType, vo.msgType);
@@ -160,8 +164,12 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 				addChangeLog("Body", this.body, vo.body);
 			}
 		}
-		if (getLogList().size() > 0) return false;
-		else return true;
+		if (getLogList().size() > 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 	
 	public void copyLevel1To(SearchFieldsVo vo) {
