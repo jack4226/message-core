@@ -21,8 +21,12 @@ public class RunClassesTest {
 				for (Failure failure : result.getFailures()) {
 					System.err.println(failure.toString());
 				}
+				if (result.getFailureCount() > 0) {
+					fail();
+				}
 			}
 			catch (Exception e) {
+				e.printStackTrace();
 				fail();
 			}
 		}

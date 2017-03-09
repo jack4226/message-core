@@ -65,6 +65,7 @@ public class MsgInboxTest extends DaoTestBase {
 		try {
 			MsgInboxVo msgInboxVo = selectByMsgId(testMsgId);
 			assertNotNull(msgInboxVo);
+			logger.info("Select MsgInbox by fromAddrId: " + testFromAddrId);
 			List<MsgInboxVo> list = selectByFromAddrId(testFromAddrId);
 			assertTrue(list.size() > 0);
 			List<MsgInboxVo> list2 = selectByToAddrId(msgInboxVo.getToAddrId());

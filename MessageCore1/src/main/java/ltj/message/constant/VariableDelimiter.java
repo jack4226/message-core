@@ -7,6 +7,6 @@ public class VariableDelimiter {
 	//
 	public final static String OPEN_DELIMITER = "${";
 	public final static String CLOSE_DELIMITER = "}";
-	public final static int VARIABLE_NAME_LENGTH = 26;
+	public final static int VARIABLE_NAME_LENGTH = 32;
 
 }

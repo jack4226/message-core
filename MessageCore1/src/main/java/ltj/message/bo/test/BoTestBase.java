@@ -1,6 +1,7 @@
 package ltj.message.bo.test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class BoTestBase {
 	protected static final Logger logger = Logger.getLogger(BoTestBase.class);
 	protected final static boolean isDebugEnabled = logger.isDebugEnabled();
 	protected final static String LF = System.getProperty("line.separator","\n");
-	protected final long renderId = 1L;
+	protected static final long renderId = 1L;
 
 	@Resource
 	protected MsgInboxBo msgInboxBo;
@@ -68,7 +69,9 @@ public class BoTestBase {
 	@Resource
 	protected EmailAddrDao emailAddrDao;
 	
-	protected static long WaitTimeInMillis = 2 * 1000L; // 5 * 1000L
+	protected static long WaitTimeInMillis = 2 * 1000L;
+	
+	protected static boolean enableJunitRunClasses = false;
 	
 	@BeforeClass
 	public static void prepare() {
@@ -76,10 +79,17 @@ public class BoTestBase {
 	
 	@Before
 	public void checkMsgrendered() throws AddressException, DataValidationException, ParseException {
-		if (msgOutboxBo.getMessageByPK(renderId)==null) {
+		if (msgOutboxBo.getMessageByPK(renderId) == null && enableJunitRunClasses) {
+			/* 
+			 * XXX this will fail with following errors from Spring Framework:
+			 * java.lang.IllegalStateException: Cannot start a new transaction without ending the existing transaction.
+			 */
 			Result result = JUnitCore.runClasses(MsgOutboxBoTest.class);
 			for (Failure failure : result.getFailures()) {
 				logger.error(failure.toString());
+			}
+			if (result.getFailureCount() > 0) {
+				fail("Test failed, number of failures = " + result.getFailureCount());
 			}
 		}
 	}
@@ -104,7 +114,7 @@ public class BoTestBase {
 		Message msg = createMimeMessage(msgStreamVo.getMsgStream());
 		MessageBean messageBean = createMessageBean(msg);
 		messageBean.setMsgId(msgStreamVo.getMsgId()); // to be converted as MsgRefId
-		if (messageBean.getMsgRefId() == null) { // TODO revisit with DeliveryErrorBoTest
+		if (messageBean.getMsgRefId() == null) {
 			messageBean.setMsgRefId(messageBean.getMsgId());
 		}
 		Address[] fromAddr = {new InternetAddress("botest.from@test.com")};

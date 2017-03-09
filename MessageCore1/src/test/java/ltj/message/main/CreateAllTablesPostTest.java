@@ -2,46 +2,51 @@ package ltj.message.main;
 
 import static org.junit.Assert.*;
 
-import javax.annotation.Resource;
-
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bo.test.MsgOutboxBoTest;
 import ltj.message.bo.test.RuleEngineTest;
-import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgStreamDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
+import ltj.spring.util.SpringUtil;
 
-public class CreateAllTablesPostTest extends DaoTestBase {
-	@Resource
-	private MsgStreamDao msgStreamDao;
-	@Resource
-	private MsgRenderedDao msgRenderedDao;
+public class CreateAllTablesPostTest {
+	protected static final Logger logger = Logger.getLogger(CreateAllTablesPostTest.class);
+
+	static boolean forceInsert = true;
+	
 	@Test
-	@Rollback(value=false)
 	public void insertMsgStream() {
-		if (msgStreamDao.getLastRecord()==null) {
+		MsgStreamDao msgStreamDao = SpringUtil.getDaoAppContext().getBean(MsgStreamDao.class);
+		if (msgStreamDao.getLastRecord() == null || forceInsert) {
 			Result result = JUnitCore.runClasses(RuleEngineTest.class);
 			for (Failure failure : result.getFailures()) {
 				System.err.println(failure.toString());
 			}
-			System.out.println("Rule Engine test completed.");
+			logger.info("Rule Engine test completed.");
+			if (result.getFailureCount() > 0) {
+				fail("Test failed, number of failures = " + result.getFailureCount());
+			}
 		}
 		assertNotNull(msgStreamDao.getLastRecord());
 	}
+	
 	@Test
-	@Rollback(value=false)
 	public void insertMsgRendered() {
-		if (msgRenderedDao.getLastRecord()==null) {
+		MsgRenderedDao msgRenderedDao = SpringUtil.getDaoAppContext().getBean(MsgRenderedDao.class);
+		if (msgRenderedDao.getLastRecord() == null || forceInsert) {
 			Result result = JUnitCore.runClasses(MsgOutboxBoTest.class);
 			for (Failure failure : result.getFailures()) {
 				System.err.println(failure.toString());
 			}
-			System.out.println("MsgOutbox BO test completed.");
+			logger.info("MsgOutbox BO test completed.");
+			if (result.getFailureCount() > 0) {
+				fail("Test failed, number of failures = " + result.getFailureCount());
+			}
 		}
 		assertNotNull(msgRenderedDao.getLastRecord());
 	}

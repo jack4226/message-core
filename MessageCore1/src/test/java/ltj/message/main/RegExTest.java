@@ -43,6 +43,10 @@ public class RegExTest {
 			String header = test.parseMessageHeader("Reporting-MTA: dns;MELMX.synnex.com.au");
 			assertNotNull(header);
 			assertEquals("Reporting-MTA:dns;MELMX.synnex.com.au", header);
+			
+			assertEquals(
+					"K&quot;&amp;nbsp;L Gates LLP,<br/>K&amp;L Gates &amp; Center &#245; &amp;\n &amp;copy; &amp; &quot; &amp;",
+					convertAmpersands("K&quot;&nbsp;L Gates LLP,<br/>K&L Gates & Center &#245; &\n &copy; &amp; &quot; &"));
 		}
 		catch (Exception e) {
 			fail();
@@ -98,6 +102,11 @@ public class RegExTest {
 		return (sb.toString());
 	}
 	
+	String convertAmpersands(String htmlData) {
+		String regex = "&((?!(?:quot|amp|apos|lt|gt|#\\d{3,6}|#x\\w{3,5});))";
+		return htmlData.replaceAll(regex, "&amp;$1");
+	}
+
 	boolean isHTML(String text) {
 		Pattern pattern0 = Pattern.compile("<([a-zA-Z]{1,10})(?:\\b.{1,1024}?)?>(.*?)</\\1>", Pattern.DOTALL);
 		Matcher m0 = pattern0.matcher(text);

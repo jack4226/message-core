@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
+import ltj.message.util.EmailAddrUtil;
 import ltj.message.vo.inbox.MsgAddrsVo;
 
 @Component("msgAddrsDao")
@@ -78,6 +79,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 	@Override
 	public int update(MsgAddrsVo msgAddrsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgAddrsVo);
+		msgAddrsVo.setAddrValue(EmailAddrUtil.removeDisplayName(msgAddrsVo.getAddrValue()));
 		String sql = MetaDataUtil.buildUpdateStatement("MsgAddrs", msgAddrsVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
@@ -112,6 +114,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 	@Override
 	public int insert(MsgAddrsVo msgAddrsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgAddrsVo);
+		msgAddrsVo.setAddrValue(EmailAddrUtil.removeDisplayName(msgAddrsVo.getAddrValue()));
 		String sql = MetaDataUtil.buildInsertStatement("MsgAddrs", msgAddrsVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsInserted;
