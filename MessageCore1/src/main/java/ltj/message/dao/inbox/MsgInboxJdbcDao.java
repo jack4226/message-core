@@ -151,10 +151,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	private List<MsgInboxVo> getByToAddrIdAndType(long addrId, AddressType type) {
 			String sql = 
 			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
-			" from " +
-				" MsgInbox a join MsgAddrs s on s.msgId=a.msgId and s.addrType=? " +
-				" join EmailAddr e on e.emailAddr = s.addrValue " +
-			" where e.emailAddrId=? " +
+			" from MsgInbox a " +
+				" join MsgAddrs s on s.msgId=a.msgId and s.addrType=? " +
+				" join EmailAddr e on e.emailAddr=s.addrValue and e.emailAddrId=? " +
 			" order by a.msgId";
 		Object[] parms = new Object[] {type.value(), addrId};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
@@ -175,10 +174,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	private List<MsgInboxVo> getByAddressAndType(String address, AddressType type) {
 		String sql = 
 			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
-			" from " +
-				" MsgInbox a join MsgAddrs s on s.msgId=a.msgId and s.addrType=? " +
-				" join EmailAddr e on e.emailAddr = s.addrValue " +
-			" where e.emailAddr=? " +
+			" from MsgInbox a " +
+				" join MsgAddrs s on s.msgId=a.msgId and s.addrType=? " +
+				" join EmailAddr e on e.emailAddr=s.addrValue and e.emailAddr=? " +
 			" order by a.msgId";
 		Object[] parms = new Object[] {type.value(), address};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms,

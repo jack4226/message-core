@@ -49,10 +49,9 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 	public List<MsgStreamVo> getByToAddrId(long toAddrId) {
 		String sql = 
 			"select m.* " +
-			"from " +
-				"MsgStream m join MsgAddrs s on s.msgId=m.msgId " +
-				" join EmailAddr e on e.emailAddr=s.addrValue and s.addrType='To' " +
-			" where e.emailAddrId=? ";
+			"from MsgStream m " +
+				" join MsgAddrs s on s.msgId=m.msgId and s.addrType='To' " +
+				" join EmailAddr e on e.emailAddr=s.addrValue and e.emailAddrId=? ";
 		
 		Object[] parms = new Object[] {toAddrId};
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 

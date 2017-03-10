@@ -8,6 +8,7 @@ import javax.mail.Part;
 import org.springframework.context.ApplicationContext;
 
 import ltj.data.preload.RuleNameEnum;
+import ltj.data.preload.SubscriberEnum;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
@@ -50,7 +51,9 @@ public class LoadInboxTables {
 	MsgSequenceDao msgSequenceDao;
 	EmailAddrDao emailAddrDao;
 	MsgClickCountsDao msgClickCountsDao;
+	MsgInboxDao msgInboxDao;
 	//static AbstractApplicationContext factory = null;
+	
 	public static void main(String[] args) {
 		
 		LoadInboxTables loadInboxTables = new LoadInboxTables();
@@ -74,7 +77,7 @@ public class LoadInboxTables {
 		msgSequenceDao = factory.getBean(MsgSequenceDao.class);
 		emailAddrDao = factory.getBean(EmailAddrDao.class);
 		msgClickCountsDao = factory.getBean(MsgClickCountsDao.class);
-		MsgInboxDao msgInboxDao = factory.getBean(MsgInboxDao.class);
+		msgInboxDao = factory.getBean(MsgInboxDao.class);
 		MsgAddrsDao msgAddrsDao = factory.getBean(MsgAddrsDao.class);
 		AttachmentsDao attachmentsDao = factory.getBean(AttachmentsDao.class);
 		MsgHeadersDao msgHeadersDao = factory.getBean(MsgHeadersDao.class);
@@ -93,9 +96,16 @@ public class LoadInboxTables {
 	
 	long load(MsgInboxDao msgInboxDao) {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
-		MsgInboxVo in = new MsgInboxVo();
+		
+		String fromAddr = SubscriberEnum.Subscriber.Subscriber1.getAddress();
+		EmailAddrVo fromAddrVo = emailAddrDao.findByAddress(fromAddr);
+		
+		ClientVo clientVo = ClientUtil.getDefaultClientVo();
+		String toAddr = clientVo.getReturnPathLeft() + "@" + clientVo.getDomainName();
+		EmailAddrVo toAddrVo = emailAddrDao.findByAddress(toAddr);
 		
 		long msgId = msgSequenceDao.findNextValue();
+		MsgInboxVo in = new MsgInboxVo();
 		in.setMsgId(msgId);
 		in.setMsgRefId(null);
 		in.setLeadMsgId(msgId);
@@ -104,12 +114,9 @@ public class LoadInboxTables {
 		in.setMsgSubject("Test Subject");
 		in.setMsgPriority("2 (Normal)");
 		in.setReceivedTime(updtTime);
-		in.setFromAddrId(Long.valueOf(1));
+		in.setFromAddrId(fromAddrVo.getEmailAddrId());
 		in.setReplyToAddrId(null);
-		ClientVo clientVo = ClientUtil.getDefaultClientVo();
-		String addr = clientVo.getReturnPathLeft() + "@" + clientVo.getDomainName();
-		EmailAddrVo addrVo = emailAddrDao.findByAddress(addr);
-		in.setToAddrId(addrVo.getEmailAddrId());
+		in.setToAddrId(toAddrVo.getEmailAddrId());
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setCustId(null);
 		in.setPurgeDate(null);
@@ -124,6 +131,8 @@ public class LoadInboxTables {
 
 		msgInboxDao.insert(in);
 		
+		toAddrVo = emailAddrDao.findByAddress(Constants.DEMOLIST1_ADDR);
+
 		msgId = msgSequenceDao.findNextValue();
 		in.setMsgId(msgId);
 		in.setMsgRefId(null);
@@ -133,10 +142,9 @@ public class LoadInboxTables {
 		in.setMsgSubject("Test Broadcast Subject");
 		in.setMsgPriority("2 (Normal)");
 		in.setReceivedTime(updtTime);
-		addrVo = emailAddrDao.findByAddress(Constants.DEMOLIST1_ADDR);
-		in.setFromAddrId(addrVo.getEmailAddrId());
+		in.setFromAddrId(toAddrVo.getEmailAddrId());
 		in.setReplyToAddrId(null);
-		in.setToAddrId(addrVo.getEmailAddrId());
+		in.setToAddrId(toAddrVo.getEmailAddrId());
 		in.setClientId(Constants.DEFAULT_CLIENTID);
 		in.setCustId(null);
 		in.setPurgeDate(null);
@@ -156,6 +164,7 @@ public class LoadInboxTables {
 		
 		in2.setMsgId(msgId);
 		in2.setListId(Constants.DEMOLIST1_NAME);
+		in2.setStartTime(updtTime);
 		in2.setSentCount(1);
 		in2.setOpenCount(1);
 		in2.setClickCount(1);
@@ -169,16 +178,31 @@ public class LoadInboxTables {
 	}
 	
 	void load(MsgAddrsDao msgAddrsDao) {
-		MsgAddrsVo in = new MsgAddrsVo();
+		List<MsgInboxVo> msgList = msgInboxDao.getRecent(100);
 		
-		in.setMsgId(msgId);
-		in.setAddrType(AddressType.FROM_ADDR.value());
-		in.setAddrSeq(1);
-		in.setAddrValue("test@test.com");
+		int rowsInserted = 0;
+		for (MsgInboxVo vo : msgList) {
+			MsgAddrsVo in = new MsgAddrsVo();
+			
+			in.setMsgId(vo.getMsgId());
+			in.setAddrType(AddressType.FROM_ADDR.value());
+			in.setAddrSeq(1);
+			EmailAddrVo addrvo = emailAddrDao.getByAddrId(vo.getFromAddrId());
+			in.setAddrValue(addrvo.getEmailAddr());
 
-		msgAddrsDao.insert(in);
+			msgAddrsDao.insert(in);
+			rowsInserted++;
+			
+			in.setAddrType(AddressType.TO_ADDR.value());
+			in.setAddrSeq(2);
+			addrvo = emailAddrDao.getByAddrId(vo.getToAddrId());
+			in.setAddrValue(addrvo.getEmailAddr());
 
-		System.out.println("load() completed.\n"+in);
+			msgAddrsDao.insert(in);
+			rowsInserted++;
+		}
+
+		System.out.println("load() completed, rows inserted = " + rowsInserted);
 	}
 	
 	void load(AttachmentsDao attachmentrsDao) {

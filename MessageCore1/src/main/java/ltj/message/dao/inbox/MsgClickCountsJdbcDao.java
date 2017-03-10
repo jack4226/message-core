@@ -26,8 +26,9 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 	public MsgClickCountsVo getRandomRecord() {
 		String sql = 
 			"select * " +
-			"from " +
-				"MsgClickCounts where MsgId >= (RAND() * (select max(MsgId) from MsgClickCounts)) order by MsgId limit 1 ";
+			"from MsgClickCounts " +
+				" where MsgId >= (RAND() * (select max(MsgId) from MsgClickCounts)) " +
+			" order by MsgId limit 1 ";
 		
 		List<MsgClickCountsVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgClickCountsVo>(MsgClickCountsVo.class));

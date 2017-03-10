@@ -42,6 +42,7 @@ public class MsgClickCountsTest extends DaoTestBase {
 	public void testSearchByAddr() {
 		PagingCountVo vo = new PagingCountVo();
 		
+		logger.info("MsgClickCounts Dao, search all: " + vo);
 		List<MsgClickCountsVo> listAll = msgClickCountsDao.getBroadcastsWithPaging(vo);
 		
 		assertFalse(listAll.isEmpty());
