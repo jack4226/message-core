@@ -90,7 +90,9 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	public String getByQuery(String query, long addrId) {
 		Object[] parms = new Object[] {addrId};
 		List<String> list = (List<String>)getJdbcTemplate().queryForList(query, parms, String.class);
-		if (list.size() == 0) return null;
+		if (list.size() == 0) {
+			return null;
+		}
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < list.size(); i++) {
 			String item = list.get(i);
