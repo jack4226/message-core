@@ -45,7 +45,7 @@ public class BaseVoTest extends DaoTestBase {
 		MsgInboxVo vo = msgInboxDao.getByPrimaryKey(testMsgInboxVo.getMsgId());
 		assertNotNull(vo);
 		String tostr = vo.toString();
-		//logger.info(LF + tostr);
+		logger.info(LF + tostr);
 		assertTrue(StringUtils.contains(tostr, "getMsgSubject=" + testMsgInboxVo.getMsgSubject()));
 		assertTrue(StringUtils.contains(tostr, "getMsgBody=" + testMsgInboxVo.getMsgBody()));
 		if (StringUtils.isNotBlank(testMsgInboxVo.getRuleName())) {
