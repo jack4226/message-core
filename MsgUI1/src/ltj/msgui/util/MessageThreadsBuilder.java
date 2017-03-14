@@ -120,12 +120,20 @@ public class MessageThreadsBuilder {
 	
 	public static void main(String[] args) {
 		try {
-			long threadId = 3L;
+			long threadId = 333L;
 			MsgInboxDao msgInboxDao = ltj.spring.util.SpringUtil.getDaoAppContext().getBean(MsgInboxDao.class);
 			List<MsgInboxWebVo> list = msgInboxDao.getByLeadMsgId(threadId);
 			if (list.isEmpty()) {
-				MsgInboxVo vo =msgInboxDao.getRandomRecord();
-				list = msgInboxDao.getByLeadMsgId(vo.getLeadMsgId());
+				long leadMsgId;
+				MsgInboxWebVo webvo = msgInboxDao.getByLeastLeadMsgId();
+				if (webvo == null) {
+					MsgInboxVo vo = msgInboxDao.getRandomRecord();
+					leadMsgId = vo.getLeadMsgId();
+				}
+				else {
+					leadMsgId = webvo.getLeadMsgId();
+				}
+				list = msgInboxDao.getByLeadMsgId(leadMsgId);
 			}
 			List<MsgInboxWebVo> threads = buildThreads(list);
 			for (int i = 0; i < threads.size(); i++) {

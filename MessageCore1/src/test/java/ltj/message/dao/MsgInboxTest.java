@@ -83,11 +83,13 @@ public class MsgInboxTest extends DaoTestBase {
 				assertTrue(unreadCountAfter == unreadCountBefore);
 			}
 			int rowsUpdated = update(msgvo.getMsgId());
-			assertEquals(rowsUpdated, 1);
+			assertEquals(1, rowsUpdated);
 			int rowsDeleted = deleteByPrimaryKey(msgvo.getMsgId());
-			assertEquals(rowsDeleted, 1);
+			assertEquals(1, rowsDeleted);
 			int unreadCountAfterDelete = unreadCountDao.selectInboxUnreadCount();
 			assertTrue(unreadCountAfterDelete >= unreadCountBefore);
+			
+			msgInboxDao.getByLeastLeadMsgId();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

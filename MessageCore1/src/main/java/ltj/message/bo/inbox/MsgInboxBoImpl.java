@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.mail.Address;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -382,7 +384,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		// save message raw stream if received by MailReader
 		if (msgBean.getHashMap().containsKey(MessageBeanBuilder.MSG_RAW_STREAM) && msgBean.getIsReceived()) {
 			// save raw stream for in-bound mails only
-			// out-bound raw stream is saved in MailSender
+			// out-bound raw stream is saved by MailSender class
 			MsgStreamVo msgStreamVo = new MsgStreamVo();
 			msgStreamVo.setMsgId(msgVo.getMsgId());
 			msgStreamVo.setFromAddrId(msgVo.getFromAddrId());
@@ -399,7 +401,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	}
 	
 	/**
-	 * not implemented yet
+	 * TODO not implemented yet
 	 * @param msgBean
 	 */
 	public void saveMessageFlowLogs(MessageBean msgBean) {
@@ -409,7 +411,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		// find lead message id
 		if (msgBean.getMsgRefId() != null) {
 			List<MsgActionLogsVo> list = msgActionLogsDao.getByMsgId(msgBean.getMsgRefId());
-			if (list == null || list.size() == 0) {
+			if (list == null || list.isEmpty()) {
 				logger.error("saveMessageFlowLogs() - record not found for MsgRefId: " + msgBean.getMsgRefId());
 			}
 			else {
@@ -420,7 +422,12 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (msgActionLogsVo.getLeadMsgId() < 0) {
 			msgActionLogsVo.setLeadMsgId(msgBean.getMsgId());
 		}
-		msgActionLogsVo.setActionBo(RuleNameEnum.SEND_MAIL.name());
+		if (StringUtils.isNotBlank(msgBean.getRuleName())) {
+			msgActionLogsVo.setActionBo(msgBean.getRuleName());
+		}
+		else {
+			msgActionLogsVo.setActionBo(RuleNameEnum.SEND_MAIL.name());
+		}
 		msgActionLogsDao.insert(msgActionLogsVo);
 	}
 	
@@ -480,7 +487,13 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 				addrVo.setMsgId(msgId);
 				addrVo.setAddrType(addrType.value());
 				addrVo.setAddrSeq(i + 1);
-				addrVo.setAddrValue(StringUtils.left(addr.toString(),255));
+				addrVo.setAddrValue(StringUtils.left(addr.toString(), 255));
+				try {
+					InternetAddress.parse(addrVo.getAddrValue());
+				} catch (AddressException e) {
+					logger.error("Skip invalid email address: " + addrVo.getAddrValue());
+					continue;
+				}
 				msgAddrsDao.insert(addrVo);
 			}
 		}

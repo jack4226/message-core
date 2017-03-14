@@ -417,11 +417,11 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	}
 
 	@Override
-	public EmailAddrVo getFromByMsgRefId(Long msgRefId) {
+	public EmailAddrVo getFromByMsgId(Long msgId) {
 		String sql = "select a.*, b.RuleName " + " from " + " EmailAddr a "
 				+ " inner join MsgInbox b on a.EmailAddrId = b.FromAddrId "
 				+ " where" + " b.MsgId = ?";
-		Object[] parms = new Object[] { msgRefId };
+		Object[] parms = new Object[] { msgId };
 		List<EmailAddrVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailAddrVo>(EmailAddrVo.class));
 		if (list.size() > 0) {
@@ -432,11 +432,11 @@ public class EmailAddrJdbcDao extends AbstractDao implements EmailAddrDao {
 	}
 
 	@Override
-	public EmailAddrVo getToByMsgRefId(Long msgRefId) {
+	public EmailAddrVo getToByMsgId(Long msgId) {
 		String sql = "select a.*, b.RuleName " + " from " + " EmailAddr a "
 				+ " inner join MsgInbox b on a.EmailAddrId = b.ToAddrId "
 				+ " where" + " b.MsgId = ?";
-		Object[] parms = new Object[] { msgRefId };
+		Object[] parms = new Object[] { msgId };
 		List<EmailAddrVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailAddrVo>(EmailAddrVo.class));
 		if (list.size() > 0) {

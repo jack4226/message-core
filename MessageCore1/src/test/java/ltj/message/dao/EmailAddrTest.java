@@ -11,14 +11,19 @@ import org.junit.Test;
 
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.vo.PagingVo.PageAction;
 import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.inbox.MsgInboxVo;
 
 public class EmailAddrTest extends DaoTestBase {
 	@Resource
 	private EmailAddrDao emailAddrDao;
+	@Resource
+	private MsgInboxDao msgInboxDao;
+	
 	final String insertEmailAddr = "jdoe2@test.com"; 
 
 	@Test
@@ -47,6 +52,22 @@ public class EmailAddrTest extends DaoTestBase {
 		}
 	}
 
+	@Test
+	public void testGetByMsgId() {
+		MsgInboxVo mivo = msgInboxDao.getRandomRecord();
+		assertNotNull(mivo);
+		//if (mivo.getFromAddrId() != null) {
+			EmailAddrVo fromvo = emailAddrDao.getFromByMsgId(mivo.getMsgId());
+			assertNotNull(fromvo);
+			assertEquals(mivo.getFromAddrId(), Long.valueOf(fromvo.getEmailAddrId()));
+		//}
+		//if (mivo.getToAddrId() != null) {
+			EmailAddrVo tovo = emailAddrDao.getToByMsgId(mivo.getMsgId());
+			assertNotNull(tovo);
+			assertEquals(mivo.getToAddrId(), Long.valueOf(tovo.getEmailAddrId()));
+		//}
+	}
+	
 	@Test
 	public void testSearchByAddr() {
 		PagingAddrVo pagingAddrVo =  new PagingAddrVo();

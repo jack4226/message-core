@@ -14,6 +14,7 @@ public interface MsgInboxDao {
 	public MsgInboxVo getLastReceivedRecord();
 	public MsgInboxVo getLastSentRecord();
 	public List<MsgInboxWebVo> getByLeadMsgId(long leadMsgId);
+	public MsgInboxWebVo getByLeastLeadMsgId();
 	public List<MsgInboxWebVo> getByMsgRefId(long msgRefId);
 	public List<MsgInboxVo> getByFromAddrId(long addrId);
 	public List<MsgInboxVo> getByToAddrId(long addrId);

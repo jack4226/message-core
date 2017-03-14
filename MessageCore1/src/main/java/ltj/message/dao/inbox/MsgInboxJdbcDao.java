@@ -125,6 +125,24 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	}
 	
 	@Override
+	public MsgInboxWebVo getByLeastLeadMsgId() {
+		String sql = 
+			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			" from " +
+				" MsgInbox " +
+			" where leadMsgId is not null and msgId != leadMsgId " +
+			" order by leadMsgId limit 1";
+		List<MsgInboxWebVo> list = getJdbcTemplate().query(sql, 
+				new BeanPropertyRowMapper<MsgInboxWebVo>(MsgInboxWebVo.class));
+		if (list.isEmpty()) {
+			return null;
+		}
+		else {
+			return list.get(0);
+		}
+	}
+	
+	@Override
 	public List<MsgInboxWebVo> getByMsgRefId(long msgRefId) {
 		String sql = 
 			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +

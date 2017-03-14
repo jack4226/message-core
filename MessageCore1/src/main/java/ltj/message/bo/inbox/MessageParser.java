@@ -354,7 +354,7 @@ public final class MessageParser {
 		// do we have the EmailId that links to original "sent" message?
 		if (msgBean.getMsgRefId() != null && msgBean.getIsReceived()) {
 			// yes, retrieve the final recipient from original "sent" message
-			EmailAddrVo addrVo = emailAddrDao.getToByMsgRefId(msgBean.getMsgRefId());
+			EmailAddrVo addrVo = emailAddrDao.getToByMsgId(msgBean.getMsgRefId());
 			if (addrVo != null) {
 				if (RuleNameEnum.SEND_MAIL.name().equals(addrVo.getRuleName())) {
 					// only if the original message is an "sent" message

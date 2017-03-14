@@ -14,6 +14,7 @@ import org.junit.Test;
 import ltj.message.constant.MsgDirection;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.util.StringUtil;
 import ltj.message.vo.BaseVo.ChangeLog;
 import ltj.message.vo.inbox.MsgInboxVo;
 
@@ -47,7 +48,7 @@ public class BaseVoTest extends DaoTestBase {
 		String tostr = vo.toString();
 		logger.info(LF + tostr);
 		assertTrue(StringUtils.contains(tostr, "getMsgSubject=" + testMsgInboxVo.getMsgSubject()));
-		assertTrue(StringUtils.contains(tostr, "getMsgBody=" + testMsgInboxVo.getMsgBody()));
+		assertTrue(StringUtils.contains(tostr, StringUtil.getRandomWord(testMsgInboxVo.getMsgBody())));
 		if (StringUtils.isNotBlank(testMsgInboxVo.getRuleName())) {
 			assertTrue(StringUtils.contains(tostr, "getRuleName=" + testMsgInboxVo.getRuleName()));
 		}

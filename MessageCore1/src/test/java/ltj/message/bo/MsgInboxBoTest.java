@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
@@ -19,6 +20,7 @@ import ltj.message.bo.outbox.MsgOutboxBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.dao.outbox.MsgRenderedDao;
+import ltj.message.vo.inbox.MsgHeadersVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.vo.outbox.MsgRenderedVo;
 
@@ -51,8 +53,16 @@ public class MsgInboxBoTest extends BoTestBase {
 			
 			// build MsgHeader
 			MsgHeader header = new MsgHeader();
-			header.setName(EmailIdParser.getDefaultParser().getEmailIdXHdrName());
-			header.setValue(EmailIdParser.getDefaultParser().wrapupEmailId4XHdr(msgId));
+			String hdrName = EmailIdParser.getDefaultParser().getEmailIdXHdrName();
+			String hdrValue = EmailIdParser.getDefaultParser().wrapupEmailId4XHdr(msgId);
+			if (StringUtils.isBlank(hdrName)) {
+				hdrName = "msg_inbox_bo_test";
+			}
+			if (StringUtils.isBlank(hdrValue)) {
+				hdrValue = "MsgInboxBoTest Test Value";
+			}
+			header.setName(hdrName);
+			header.setValue(hdrValue);
 			List<MsgHeader> headers = new ArrayList<MsgHeader>();
 			headers.add(header);
 			messageBean.setHeaders(headers);
@@ -69,10 +79,22 @@ public class MsgInboxBoTest extends BoTestBase {
 			}
 			msgId = msgInboxBo.saveMessage(messageBean);
 			logger.info("msgInboxBo.saveMessage - MsgId returned: " + msgId);
+			
+			// verify results
 			MsgInboxVo vo = msgInboxBo.getAllDataByMsgId(msgId);
 			assertNotNull(vo);
 			assertEquals(ruleName, vo.getRuleName());
+			
 			logger.info("MsgInboxVo.toString() - " + LF + vo);
+			List<MsgHeadersVo> hdrVoList = vo.getMsgHeaders();
+			boolean foundMatchingHeader = false;
+			for (MsgHeadersVo hdrVo : hdrVoList) {
+				if (StringUtils.equals(hdrName, hdrVo.getHeaderName())) {
+					assertEquals(hdrValue, hdrVo.getHeaderValue());
+					foundMatchingHeader = true;
+				}
+			}
+			assertEquals(true, foundMatchingHeader);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

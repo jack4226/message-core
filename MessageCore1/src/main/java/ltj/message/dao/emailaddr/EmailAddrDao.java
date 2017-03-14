@@ -9,8 +9,8 @@ public interface EmailAddrDao {
 	public EmailAddrVo getByAddrId(long addrId);
 	public EmailAddrVo getByAddress(String address);
 	public EmailAddrVo getRandomRecord();
-	public EmailAddrVo getFromByMsgRefId(Long msgRefId);
-	public EmailAddrVo getToByMsgRefId(Long msgRefId);
+	public EmailAddrVo getFromByMsgId(Long msgId);
+	public EmailAddrVo getToByMsgId(Long msgId);
 	public int getEmailAddressCount(PagingAddrVo vo);
 	public List<EmailAddrVo> getEmailAddrsWithPaging(PagingAddrVo vo);
 	public long getEmailAddrIdForPreview();

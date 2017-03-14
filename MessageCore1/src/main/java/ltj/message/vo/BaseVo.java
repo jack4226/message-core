@@ -380,6 +380,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 			String className = traces[i].getClassName();
 			String methodName = traces[i].getMethodName();
 			if (className.endsWith("Mapper") && methodName.equals("mapRow")) {
+				// called from DAO JdbcTemplate BeanPropertyRowMapper.mapRow()...
 				setOrigUpdtTime(updtTime);
 				break;
 			}
