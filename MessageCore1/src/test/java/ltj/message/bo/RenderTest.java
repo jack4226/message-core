@@ -143,8 +143,8 @@ public class RenderTest extends BoTestBase {
 					new InternetAddress("testto@localhost"),
 					null, 
 					VariableType.ADDRESS, 
-					"Y",
-					"N", 
+					Constants.Y,
+					Constants.N, 
 					null
 				);
 			map.put(toAddr.getVariableName(), toAddr);
@@ -158,8 +158,8 @@ public class RenderTest extends BoTestBase {
 				"Jack Wang", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req2 = new RenderVariable(
@@ -167,8 +167,8 @@ public class RenderTest extends BoTestBase {
 				"Rendered User2", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req3 = new RenderVariable(
@@ -176,8 +176,8 @@ public class RenderTest extends BoTestBase {
 				"Rendered User3", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req4 = new RenderVariable(
@@ -185,8 +185,8 @@ public class RenderTest extends BoTestBase {
 				"Recursive VariableType ${name1} End", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req5 = new RenderVariable(
@@ -194,8 +194,8 @@ public class RenderTest extends BoTestBase {
 				"Rendered User5", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		
@@ -204,8 +204,8 @@ public class RenderTest extends BoTestBase {
 				"Attachment Text ============================================", 
 				"text/plain", 
 				VariableType.LOB, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		
@@ -236,8 +236,8 @@ public class RenderTest extends BoTestBase {
 					buffer,
 					"text/plain",
 					VariableType.LOB, 
-					"Y",
-					"N", 
+					Constants.Y,
+					Constants.N, 
 					null
 				);
 			map.put("attachment2", req6_2);
@@ -252,8 +252,8 @@ public class RenderTest extends BoTestBase {
 				"Rendered User2 - Row 1", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req2_row2 = new RenderVariable(
@@ -261,8 +261,8 @@ public class RenderTest extends BoTestBase {
 				"Rendered User2 - Row 2", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		List<Map<String, RenderVariable>> collection = new ArrayList<Map<String, RenderVariable>>();
@@ -279,8 +279,8 @@ public class RenderTest extends BoTestBase {
 				collection, 
 				null, 
 				VariableType.COLLECTION, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		// end of Collection

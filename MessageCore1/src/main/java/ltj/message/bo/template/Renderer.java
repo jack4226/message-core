@@ -275,7 +275,7 @@ public final class Renderer implements java.io.Serializable {
 			value, 
 			null, 
 			VariableType.TEXT, 
-			"Y", 
+			Constants.Y, 
 			null, 
 			error
 			);
@@ -362,8 +362,8 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				"yyyy-MM-dd", 
 				VariableType.DATETIME, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		map.put(currentDate.getVariableName(), currentDate);
@@ -373,8 +373,8 @@ public final class Renderer implements java.io.Serializable {
 				"Jack Wang", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req2 = new RenderVariable(
@@ -382,8 +382,8 @@ public final class Renderer implements java.io.Serializable {
 				"Rendered User2", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req3 = new RenderVariable(
@@ -391,8 +391,8 @@ public final class Renderer implements java.io.Serializable {
 				"Rendered User3", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req4 = new RenderVariable(
@@ -400,8 +400,8 @@ public final class Renderer implements java.io.Serializable {
 				"Recursive VariableType ${name1} End", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req5 = new RenderVariable(
@@ -409,8 +409,8 @@ public final class Renderer implements java.io.Serializable {
 				"Rendered User5", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		
@@ -419,8 +419,8 @@ public final class Renderer implements java.io.Serializable {
 				"12345.678", 
 				null, 
 				VariableType.NUMERIC, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		
@@ -429,8 +429,8 @@ public final class Renderer implements java.io.Serializable {
 				"-12345.678",
 				"000,000,000.0#;(-000,000,000.0#)",
 				VariableType.NUMERIC, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N,
 				null
 			);
 		
@@ -439,8 +439,8 @@ public final class Renderer implements java.io.Serializable {
 				"2007-10-01 15:23:12",
 				null,  // default format
 				VariableType.DATETIME, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		
@@ -449,8 +449,8 @@ public final class Renderer implements java.io.Serializable {
 				"12/01/2007", 
 				"MM/dd/yyyy", // custom format
 				VariableType.DATETIME,
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		
@@ -459,8 +459,8 @@ public final class Renderer implements java.io.Serializable {
 				null, // use current time
 				"yyyy-MM-dd:hh.mm.ss a", // custom format
 				VariableType.DATETIME,
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		
@@ -469,8 +469,8 @@ public final class Renderer implements java.io.Serializable {
 				"str.address@legacytojava.com",
 				null,
 				VariableType.ADDRESS,
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		map.put("address1", req8_1);
@@ -481,8 +481,8 @@ public final class Renderer implements java.io.Serializable {
 					new InternetAddress("inet.address@legacytojava.com"),
 					null,
 					VariableType.ADDRESS,
-					"Y",
-					"N", 
+					Constants.Y,
+					Constants.N, 
 					null
 				);
 			map.put("address2", req8_2);
@@ -497,8 +497,8 @@ public final class Renderer implements java.io.Serializable {
 				"Rendered User2 - Row 1", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		RenderVariable req2_row2 = new RenderVariable(
@@ -506,8 +506,8 @@ public final class Renderer implements java.io.Serializable {
 				"Rendered User2 - Row 2", 
 				null, 
 				VariableType.TEXT, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		ArrayList<Map<String, RenderVariable>> collection = new ArrayList<Map<String, RenderVariable>>();
@@ -524,8 +524,8 @@ public final class Renderer implements java.io.Serializable {
 				collection, 
 				null, 
 				VariableType.COLLECTION, 
-				"Y",
-				"N", 
+				Constants.Y,
+				Constants.N, 
 				null
 			);
 		// end of Collection
