@@ -6,9 +6,12 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import ltj.message.dao.abstrct.AbstractDao;
+import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.vo.inbox.MsgHeadersVo;
 
 @Component("msgHeadersDao")
@@ -62,21 +65,24 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 	
 	@Override
 	public int update(MsgHeadersVo msgHeadersVo) {
-		
-		List<Object> fields = new ArrayList<>();
-		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
-		fields.add(msgHeadersVo.getHeaderValue());
-		fields.add(msgHeadersVo.getMsgId());
-		fields.add(msgHeadersVo.getHeaderSeq());
-		
-		String sql =
-			"update MsgHeaders set " +
-				"HeaderName=?, " +
-				"HeaderValue=? " +
-			" where " +
-				" msgid=? and headerSeq=?  ";
-		
-		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
+		msgHeadersVo.setHeaderName(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
+		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgHeadersVo);
+		String sql = MetaDataUtil.buildUpdateStatement("MsgHeaders", msgHeadersVo);
+		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
+//		List<Object> fields = new ArrayList<>();
+//		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
+//		fields.add(msgHeadersVo.getHeaderValue());
+//		fields.add(msgHeadersVo.getMsgId());
+//		fields.add(msgHeadersVo.getHeaderSeq());
+//		
+//		String sql =
+//			"update MsgHeaders set " +
+//				"HeaderName=?, " +
+//				"HeaderValue=? " +
+//			" where " +
+//				" msgid=? and headerSeq=?  ";
+//		
+//		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
@@ -107,23 +113,27 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 	
 	@Override
 	public int insert(MsgHeadersVo msgHeadersVo) {
-		String sql = 
-			"INSERT INTO MsgHeaders (" +
-			"MsgId, " +
-			"HeaderSeq, " +
-			"HeaderName, " +
-			"HeaderValue " +
-			") VALUES (" +
-				" ?, ?, ?, ? " +
-				")";
-		
-		List<Object> fields = new ArrayList<>();
-		fields.add(msgHeadersVo.getMsgId());
-		fields.add(msgHeadersVo.getHeaderSeq());
-		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
-		fields.add(msgHeadersVo.getHeaderValue());
-		
-		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
+		msgHeadersVo.setHeaderName(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
+		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgHeadersVo);
+		String sql = MetaDataUtil.buildInsertStatement("MsgHeaders", msgHeadersVo);
+		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
+//		String sql = 
+//			"INSERT INTO MsgHeaders (" +
+//			"MsgId, " +
+//			"HeaderSeq, " +
+//			"HeaderName, " +
+//			"HeaderValue " +
+//			") VALUES (" +
+//				" ?, ?, ?, ? " +
+//				")";
+//		
+//		List<Object> fields = new ArrayList<>();
+//		fields.add(msgHeadersVo.getMsgId());
+//		fields.add(msgHeadersVo.getHeaderSeq());
+//		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
+//		fields.add(msgHeadersVo.getHeaderValue());
+//		
+//		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
 	}
 }

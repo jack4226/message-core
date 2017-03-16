@@ -3,7 +3,7 @@ package ltj.message.dao.abstrct;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import ltj.message.constant.Constants;
 import ltj.message.util.PrintUtil;
 import ltj.message.vo.BaseVo;
 import ltj.message.vo.emailaddr.MailingListVo;
@@ -21,7 +22,7 @@ import ltj.spring.util.SpringUtil;
 public class MetaDataUtil {
 	static final Logger logger = Logger.getLogger(MetaDataUtil.class);
 
-	private static Map<String, Table> tableMetaData = new HashMap<>();
+	private static Map<String, Table> tableMetaData = new LinkedHashMap<>();
 
 	public static Table getTableMetaData(String tableName) {
 		if (tableMetaData.isEmpty()) {
@@ -115,7 +116,7 @@ public class MetaDataUtil {
 				Column column = table.getColumnMap().get(columnName);
 				String uncapName = StringUtils.uncapitalize(column.getColumnName());
 				if (table.getPrimaryKeyMap().containsKey(columnName)) {
-					if ("YES".equals(column.getIsAutoIncrement())) {
+					if (Constants.YES.equalsIgnoreCase(column.getIsAutoIncrement())) {
 						continue;
 					}
 				}
