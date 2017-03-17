@@ -13,9 +13,9 @@ import java.util.Hashtable;
  * Methods are provided to request and release connections from pool.
  */
 public class SimpleConnPool {
-	private Hashtable<Connection, Boolean> connections;
-	private int increment;
-	private String dbURL, user, password;
+	private final Hashtable<Connection, Boolean> connections;
+	private final int increment;
+	private final String dbURL, user, password;
 
 	/**
 	 * @param dbURL:
@@ -32,11 +32,7 @@ public class SimpleConnPool {
 	 *            number of connections to be created if no free connection is
 	 *            available
 	 */
-	public SimpleConnPool(String dbURL,
-			String user,
-			String password,
-			String driverClassName,
-			int initialConnections,
+	public SimpleConnPool(String dbURL, String user, String password, String driverClassName, int initialConnections,
 			int increment) throws SQLException, ClassNotFoundException {
 
 		// Load the specified driver class
@@ -62,31 +58,33 @@ public class SimpleConnPool {
 	 * @return a JDBC connection
 	 */
 	public synchronized Connection getConnection() throws SQLException {
-		Connection con = null;
+		Connection conn = null;
 
-		Enumeration<?> cons = connections.keys();
+		Enumeration<Connection> conns = connections.keys();
 
-		while (cons.hasMoreElements()) {
-			con = (Connection) cons.nextElement();
+		while (conns.hasMoreElements()) {
+			conn = conns.nextElement();
 
-			Boolean b = (Boolean) connections.get(con);
+			Boolean b = connections.get(conn);
 			if (Boolean.FALSE.equals(b)) {
 				// So we found an unused connection.
 				// Test its integrity with a quick setAutoCommit(true) call.
 				// For production use, more testing should be performed,
 				// such as executing a simple query.
 				try {
-					con.setAutoCommit(true);
+					boolean before = conn.getAutoCommit();
+					conn.setAutoCommit(!before);
+					conn.setAutoCommit(before);
 				}
 				catch (SQLException e) {
-					connections.remove(con); // remove the dead connection
+					connections.remove(conn); // remove the dead connection
 					// Problem with the connection, replace it.
-					con = DriverManager.getConnection(dbURL, user, password);
+					conn = DriverManager.getConnection(dbURL, user, password);
 				}
 				// Update the Hashtable to show this one's taken
-				connections.put(con, Boolean.TRUE);
+				connections.put(conn, Boolean.TRUE);
 				// Return the connection
-				return con;
+				return conn;
 			}
 		}
 
@@ -107,14 +105,21 @@ public class SimpleConnPool {
 	 *            connection to be returned to the connection pool
 	 */
 	public synchronized void returnConnection(Connection returned) {
-		Connection con;
-		Enumeration<?> cons = connections.keys();
-		while (cons.hasMoreElements()) {
-			con = (Connection) cons.nextElement();
-			if (con == returned) {
-				connections.put(con, Boolean.FALSE);
-				break;
-			}
+//		Connection con;
+//		Enumeration<?> cons = connections.keys();
+//		while (cons.hasMoreElements()) {
+//			con = (Connection) cons.nextElement();
+//			if (con == returned) {
+//				connections.put(con, Boolean.FALSE);
+//				break;
+//			}
+//		}
+		if (connections.containsKey(returned)) {
+			connections.put(returned, Boolean.FALSE);
 		}
+	}
+	
+	public int getPoolSize() {
+		return connections.size();
 	}
 }
