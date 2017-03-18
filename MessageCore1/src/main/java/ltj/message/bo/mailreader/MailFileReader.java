@@ -11,6 +11,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import ltj.data.preload.QueueNameEnum;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.BodypartUtil;
 import ltj.message.bean.MessageBean;
@@ -48,7 +49,7 @@ public class MailFileReader {
 	
 	MessageBean start(String filePath) throws MessagingException, JMSException {
 		JmsProcessor jmsProcessor = (JmsProcessor) SpringUtil.getAppContext().getBean("jmsProcessor");
-		jmsProcessor.setQueueName("mailReaderOutput");
+		jmsProcessor.setQueueName(QueueNameEnum.MAIL_READER_OUTPUT.getQueueName());
 
 		MessageBean msgBean = readMessageBean(filePath);
 		msgBean.setCarrierCode(CarrierCode.SMTPMAIL.value());
@@ -77,7 +78,7 @@ public class MailFileReader {
 		
 		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
 		definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		jmsProcessor.setQueueName("mailReaderOutput");
+		jmsProcessor.setQueueName(QueueNameEnum.MAIL_READER_OUTPUT.getQueueName());
 
 		MessageBean msgBean = readMessageBean(filePath);
 		msgBean.setCarrierCode(CarrierCode.SMTPMAIL.value());

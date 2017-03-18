@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.QueueNameEnum;
 import ltj.jbatch.queue.JmsProcessor;
 
 @Component("taskBaseBo")
@@ -35,16 +36,16 @@ public abstract class TaskBaseAdaptor implements TaskBaseBo {
 	
 	protected void setTargetToMailSender() {
 		// send MailSender queue
-		jmsProcessor.setQueueName("mailSenderInput");
+		jmsProcessor.setQueueName(QueueNameEnum.MAIL_SENDER_INPUT.getQueueName());
 	}
 	
 	protected void setTargetToRuleEngine() {
 		// send RuleEngine queue
-		jmsProcessor.setQueueName("mailReaderOutput");
+		jmsProcessor.setQueueName(QueueNameEnum.MAIL_READER_OUTPUT.getQueueName());
 	}
 	
 	protected void setTargetToCsrWorkQueue() {
-		jmsProcessor.setQueueName("customerCareInput");
+		jmsProcessor.setQueueName(QueueNameEnum.CUSTOMER_CARE_INPUT.getQueueName());
 	}
 	
 	protected void setTargetQueue(String queueName) {

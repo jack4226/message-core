@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.QueueNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MsgHeader;
 import ltj.message.constant.XHeaderName;
@@ -60,7 +61,7 @@ public class AssignRuleNameBoImpl extends TaskBaseAdaptor {
 			messageBean.setMsgRefId(messageBean.getMsgId());
 		}
 		// send the bean back to Rule Engine input queue
-		jmsProcessor.setQueueName("mailReaderOutput");
+		jmsProcessor.setQueueName(QueueNameEnum.MAIL_READER_OUTPUT.getQueueName());
 
 		
 		String correlid = "AssignRuleNameBo." + (messageBean.getMsgRefId() == null ? "-1" : messageBean.getMsgRefId());

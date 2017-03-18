@@ -9,6 +9,7 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 
+import ltj.data.preload.QueueNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.spring.util.SpringUtil;
 
@@ -32,7 +33,7 @@ public class JmsQueueReceiver {
 	private void receive(AbstractApplicationContext factory) throws JMSException {
 		JmsTemplate template = (JmsTemplate) factory.getBean("jmsTemplate");
 		if (template.getDefaultDestination() == null) {
-			template.setDefaultDestination(new ActiveMQQueue("rmaRequestInput"));
+			template.setDefaultDestination(new ActiveMQQueue(QueueNameEnum.RMA_REQUEST_INPUT.getQueueName()));
 		}
 
 		System.out.println("Will wait " + (template.getReceiveTimeout() / 1000) + " seconds...");

@@ -12,6 +12,7 @@ import javax.mail.internet.AddressException;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.QueueNameEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.task.TaskBaseBo;
@@ -82,7 +83,7 @@ public class BroadcastBoTest extends BoTestBase {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
 		// send the bean back to Rule Engine input queue
-		broadcastBo.getJmsProcessor().setQueueName("mailReaderOutput"); // TODO get from properties
+		broadcastBo.getJmsProcessor().setQueueName(QueueNameEnum.MAIL_READER_OUTPUT.getQueueName()); // TODO get from properties
 		String jmsMsgId = broadcastBo.getJmsProcessor().writeMsg(messageBean);
 		logger.info("Jms Message Id returned: " + jmsMsgId);
 		// TODO verify results

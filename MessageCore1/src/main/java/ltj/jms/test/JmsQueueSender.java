@@ -13,6 +13,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.jms.core.MessagePostProcessor;
 
+import ltj.data.preload.QueueNameEnum;
 import ltj.spring.util.SpringUtil;
 
 public class JmsQueueSender {
@@ -32,7 +33,7 @@ public class JmsQueueSender {
 	public void send(AbstractApplicationContext factory, final String text) {
 		JmsTemplate template = (JmsTemplate) factory.getBean("jmsTemplate");
 		if (template.getDefaultDestination() == null) {
-			template.setDefaultDestination(new ActiveMQQueue("rmaRequestInput"));
+			template.setDefaultDestination(new ActiveMQQueue(QueueNameEnum.RMA_REQUEST_INPUT.getQueueName()));
 		}
 
 		template.send(template.getDefaultDestination(), new MessageCreator() {
@@ -49,7 +50,7 @@ public class JmsQueueSender {
 	    map.put("Age", new Integer(47));
 	    JmsTemplate template = (JmsTemplate) factory.getBean("jmsTemplate");
 	    if (template.getDefaultDestination() == null) {
-	    	template.setDefaultDestination(new ActiveMQQueue("rmaRequestInput"));
+	    	template.setDefaultDestination(new ActiveMQQueue(QueueNameEnum.RMA_REQUEST_INPUT.getQueueName()));
 	    }
 	    template.convertAndSend(template.getDefaultDestination(), map, new MessagePostProcessor() {
 	        public Message postProcessMessage(Message message) throws JMSException {

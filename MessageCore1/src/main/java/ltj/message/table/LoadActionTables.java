@@ -134,9 +134,9 @@ public class LoadActionTables {
 //		msgDataTypeDao.insert(vo);
 //		vo = new MsgDataTypeVo("EMAIL_ADDRESS", "$" + TableColumnName.CHALLENGE_HANDLER_ADDR, "clientDao");
 //		msgDataTypeDao.insert(vo);
-//		vo = new MsgDataTypeVo("QUEUE_NAME", "$RMA_REQUEST_INPUT", "rmaRequestInput");
+//		vo = new MsgDataTypeVo("QUEUE_NAME", "$RMA_REQUEST_INPUT", QueueNameEnum.RMA_REQUEST_INPUT.getQueueName());
 //		msgDataTypeDao.insert(vo);
-//		vo = new MsgDataTypeVo("QUEUE_NAME", "$CUSTOMER_CARE_INPUT", "customerCareInput");
+//		vo = new MsgDataTypeVo("QUEUE_NAME", "$CUSTOMER_CARE_INPUT", QueueNameEnum.CUSTOMER_CARE_INPUT.getQueueName());
 //		msgDataTypeDao.insert(vo);
 //		vo = new MsgDataTypeVo(MsgDataType.TEMPLATE_ID, "SubscribeByEmailReply", jndiProperties);
 //		msgDataTypeDao.insert(vo);

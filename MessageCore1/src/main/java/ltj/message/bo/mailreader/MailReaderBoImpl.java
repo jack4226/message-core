@@ -22,6 +22,7 @@ import javax.mail.event.StoreListener;
 
 import org.apache.log4j.Logger;
 
+import ltj.data.preload.QueueNameEnum;
 import ltj.jbatch.app.RunnableProcessor;
 import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.constant.MailProtocol;
@@ -504,7 +505,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 			SpringUtil.beginTransaction();
 			
 			JmsProcessor jmsProcessor = SpringUtil.getAppContext().getBean(JmsProcessor.class);
-			jmsProcessor.setQueueName("mailReaderOutput"); // TODO get from properties
+			jmsProcessor.setQueueName(QueueNameEnum.MAIL_READER_OUTPUT.getQueueName()); // TODO get from properties
 			DuplicateCheckDao duplicateCheck = SpringUtil.getAppContext().getBean(DuplicateCheckDao.class);
 			MailProcessor processor = new MailProcessor(jmsProcessor, mailBoxVo, duplicateCheck);
 			processor.process(msgs);
