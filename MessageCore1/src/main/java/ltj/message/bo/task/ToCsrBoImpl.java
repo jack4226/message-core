@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.RuleDataTypeEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.dao.action.MsgDataTypeDao;
 import ltj.message.exception.DataValidationException;
@@ -53,14 +54,14 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 		if (getArgumentList(taskArguments).size() > 0) {
 			if (taskArguments[0].startsWith("$")) { // variable name
 				// retrieve the real queue name (Spring JMS template) from database:
-				MsgDataTypeVo vo = msgDataTypeDao.getByTypeValuePair("QUEUE_NAME", taskArguments[0]);
+				MsgDataTypeVo vo = msgDataTypeDao.getByTypeValuePair(RuleDataTypeEnum.QUEUE_NAME.name(), taskArguments[0]);
 				if (vo != null) {
 					if (!StringUtil.isEmpty(vo.getMiscProperties())) {
 						queueName = vo.getMiscProperties();
 					}
 				}
 				else {
-					throw new DataValidationException("Record not found by: QUEUE_NAME/" + taskArguments[0]);
+					throw new DataValidationException("Record not found by: " + RuleDataTypeEnum.QUEUE_NAME.name() + "/" + taskArguments[0]);
 				}
 			}
 			else { // should be a JMS template name

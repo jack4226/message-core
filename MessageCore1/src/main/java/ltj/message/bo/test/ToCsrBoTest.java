@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
+import ltj.data.preload.QueueNameEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.task.TaskBaseBo;
@@ -33,8 +34,8 @@ public class ToCsrBoTest extends BoTestBase {
 		if (isDebugEnabled) {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
-		toCsrBo.setTaskArguments("$CUSTOMER_CARE_INPUT");
-		String jmsMsgId = (String)toCsrBo.process(messageBean);
+		toCsrBo.setTaskArguments("$" + QueueNameEnum.CUSTOMER_CARE_INPUT.name());
+		String jmsMsgId = (String) toCsrBo.process(messageBean);
 		assertNotNull(jmsMsgId);
 		assertTrue(jmsMsgId.startsWith("ID:"));
 	}
@@ -47,7 +48,7 @@ public class ToCsrBoTest extends BoTestBase {
 		}
 		messageBean.setTo(InternetAddress.parse(toStr));
 		messageBean.setSubject(testSubject);
-		toCsrBo.setTaskArguments("mailSenderInput");
+		toCsrBo.setTaskArguments(QueueNameEnum.MAIL_SENDER_INPUT.getQueueName());
 		String jmsMsgId = (String) toCsrBo.process(messageBean);
 		assertNotNull(jmsMsgId);
 		assertTrue(jmsMsgId.startsWith("ID:"));

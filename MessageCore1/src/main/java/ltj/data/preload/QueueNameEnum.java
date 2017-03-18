@@ -2,7 +2,8 @@ package ltj.data.preload;
 
 public enum QueueNameEnum {
 	RMA_REQUEST_INPUT("rmaRequestInput"),
-	CUSTOMER_CARE_INPUT("customerCareInput");
+	CUSTOMER_CARE_INPUT("customerCareInput"),
+	MAIL_SENDER_INPUT("mailSenderInput");
 	
 	private String queueName;
 	private QueueNameEnum(String queueName) {
