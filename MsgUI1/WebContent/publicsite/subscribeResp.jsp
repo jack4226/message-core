@@ -94,7 +94,7 @@
 				logger.error("subscribeResp.jsp - " + e.toString());
 			}
  		}
-		EmailAddrVo addrVo = getEmailAddrDao(ctx).getByAddress(emailAddr);
+		EmailAddressVo addrVo = getEmailAddrDao(ctx).getByAddress(emailAddr);
 		if (chosens.length > 0 && addrVo != null) {
 			// update "AcceptHTML" flag if needed
 			String acceptHtml = Constants.Y;

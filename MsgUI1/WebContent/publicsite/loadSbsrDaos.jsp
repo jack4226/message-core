@@ -30,18 +30,18 @@
 		return mailingListBo;
 	}
 
-	EmailAddrDao emailAddrDao = null;
-	EmailAddrDao getEmailAddrDao(ServletContext ctx) {
+	EmailAddressDao emailAddrDao = null;
+	EmailAddressDao getEmailAddrDao(ServletContext ctx) {
 		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getWebAppContext(ctx).getBean("emailAddrDao");
+			emailAddrDao = (EmailAddressDao) SpringUtil.getWebAppContext(ctx).getBean("emailAddressDao");
 		}
 		return emailAddrDao;
 	}
 
-	SubscriptionDao subscriptionDao = null;
-	SubscriptionDao getSubscriptionDao(ServletContext ctx) {
+	EmailSubscrptDao subscriptionDao = null;
+	EmailSubscrptDao getSubscriptionDao(ServletContext ctx) {
 		if (subscriptionDao == null) {
-			subscriptionDao = (SubscriptionDao) SpringUtil.getWebAppContext(ctx).getBean("subscriptionDao");
+			subscriptionDao = (EmailSubscrptDao) SpringUtil.getWebAppContext(ctx).getBean("emailSubscrptDao");
 		}
 		return subscriptionDao;
 	}
@@ -54,10 +54,10 @@
 		return emailVariableDao;
 	}
 
-	MsgClickCountsDao msgClickCountsDao = null;
-	MsgClickCountsDao getMsgClickCountsDao(ServletContext ctx) {
+	MsgClickCountDao msgClickCountsDao = null;
+	MsgClickCountDao getMsgClickCountsDao(ServletContext ctx) {
 		if (msgClickCountsDao == null) {
-			msgClickCountsDao = (MsgClickCountsDao) SpringUtil.getWebAppContext(ctx).getBean("msgClickCountsDao");
+			msgClickCountsDao = (MsgClickCountDao) SpringUtil.getWebAppContext(ctx).getBean("msgClickCountDao");
 		}
 		return msgClickCountsDao;
 	}

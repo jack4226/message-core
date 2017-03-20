@@ -16,7 +16,7 @@
 	if (!StringUtil.isEmpty(sbsrId) && !StringUtil.isEmpty(listId)) {
 		// update subscriber click count
 		try {
-			EmailAddrVo addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrId));
+			EmailAddressVo addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrId));
 			if (addrVo != null) {
 				rowsUpdated += getSubscriptionDao(ctx).updateClickCount(addrVo.getEmailAddrId(), listId);
 			}
@@ -36,7 +36,7 @@
 	if (!StringUtil.isEmpty(msgId)) {
 		// update newsletter click count
 		try {
-			MsgClickCountsVo countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
+			MsgClickCountVo countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
 			if (countVo != null) {
 				rowsUpdated += getMsgClickCountsDao(ctx).updateUnsubscribeCount(countVo.getMsgId(), 1);
 			}

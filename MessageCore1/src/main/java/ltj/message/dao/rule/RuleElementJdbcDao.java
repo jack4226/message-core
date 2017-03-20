@@ -22,7 +22,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 	public RuleElementVo getByPrimaryKey(String ruleName, int elementSeq) {
 		String sql = 
 			"select * " +
-			"from RuleElement " +
+			"from rule_element " +
 				" where ruleName=? and elementSeq=?";
 		
 		Object[] parms = new Object[] {ruleName, elementSeq};
@@ -41,7 +41,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" RuleElement " +
+				" rule_element " +
 			" order by ruleName asc, elementSeq asc ";
 		List<RuleElementVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<RuleElementVo>(RuleElementVo.class));
@@ -53,7 +53,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" RuleElement " +
+				" rule_element " +
 				" where ruleName = ? " +
 			" order by elementSeq asc ";
 		Object[] parms = new Object[] { ruleName };
@@ -65,7 +65,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 	@Override
 	public synchronized int update(RuleElementVo ruleElementVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleElementVo);
-		String sql = MetaDataUtil.buildUpdateStatement("RuleElement", ruleElementVo);
+		String sql = MetaDataUtil.buildUpdateStatement("rule_element", ruleElementVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		updateReloadFlags();
 		return rowsUpadted;
@@ -74,7 +74,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 	@Override
 	public synchronized int deleteByPrimaryKey(String ruleName, int elementSeq) {
 		String sql = 
-			"delete from RuleElement where ruleName=? and elementSeq=?";
+			"delete from rule_element where ruleName=? and elementSeq=?";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(ruleName);
@@ -88,7 +88,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
-			"delete from RuleElement where ruleName=?";
+			"delete from rule_element where ruleName=?";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);
@@ -101,7 +101,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 	@Override
 	public synchronized int insert(RuleElementVo ruleElementVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleElementVo);
-		String sql = MetaDataUtil.buildInsertStatement("RuleElement", ruleElementVo);
+		String sql = MetaDataUtil.buildInsertStatement("rule_element", ruleElementVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		ruleElementVo.setRowId(retrieveRowId());
 		updateReloadFlags();

@@ -65,8 +65,8 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 		String sql = 
 			"select " +
 			"  logic.*, element.* " +
-			" from ruleLogic as logic " +
-			"  join ruleElement as element on logic.ruleName=element.ruleName "+
+			" from rule_logic as logic " +
+			"  join rule_element as element on logic.ruleName=element.ruleName "+
 			" where logic.ruleName=? " +
 			" order by element.elementSeq ";
 		

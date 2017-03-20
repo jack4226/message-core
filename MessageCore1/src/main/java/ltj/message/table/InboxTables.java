@@ -265,7 +265,7 @@ public class InboxTables extends CreateTableBase {
 			"LeadMsgId bigint NOT NULL, " +
 			"CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', " + // S - SmtpMail, W - WebMail
 			"MsgDirection char(1) NOT NULL, " + // R - Received, S - Sent
-			"RuleName varchar(26) NOT NULL, " + // link to RuleLogic.RuleName
+			"RuleName varchar(26) NOT NULL, " + // link to rule_logic.RuleName
 			"MsgSubject varchar(255), " +
 			"MsgPriority varchar(10), " + // 1 (High)/2 (Normal)/3 (Low)
 			"ReceivedTime datetime(3) NOT NULL, " +

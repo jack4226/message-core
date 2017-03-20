@@ -24,10 +24,10 @@
 <%@page import="ltj.message.dao.emailaddr.EmailUnsubCmntDao"%>
 <%@page import="ltj.message.vo.emailaddr.EmailUnsubCmntVo"%>
 <%!
-UnsubCommentsDao unsubCommentsDao = null;
-UnsubCommentsDao getUnsubCommentsDao(ServletContext ctx) {
+EmailUnsubCmntDao unsubCommentsDao = null;
+EmailUnsubCmntDao getUnsubCommentsDao(ServletContext ctx) {
 	if (unsubCommentsDao == null) {
-		unsubCommentsDao = (UnsubCommentsDao) SpringUtil.getWebAppContext(ctx).getBean("unsubCommentsDao");
+		unsubCommentsDao = (EmailUnsubCmntDao) SpringUtil.getWebAppContext(ctx).getBean("emailUnsubCmntDao");
 	}
 	return unsubCommentsDao;
 }
@@ -42,7 +42,7 @@ Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	Long sbsrIdLong = null;
 	List<String> unsubedList = new ArrayList<String>();
 	int unsubscribed = 0;
-	EmailAddrVo addrVo = null;
+	EmailAddressVo addrVo = null;
 	StringBuffer sbListNames = new StringBuffer();
 	try {
 		long sbsrId = MsgIdCipher.decode(encodedSbsrId);
@@ -73,7 +73,7 @@ Logger logger = Logger.getLogger("com.legacytojava.jsp");
 			// add user comments
 			if (unsubscribed > 0 && comments != null && comments.trim().length() > 0) {
 				try {
-					UnsubCommentsVo commVo = new UnsubCommentsVo();
+					EmailUnsubCmntVo commVo = new EmailUnsubCmntVo();
 					commVo.setEmailAddrId(sbsrId);
 					if (unsubedList.size() > 0) {
 						String unsubed = (String) unsubedList.get(0);

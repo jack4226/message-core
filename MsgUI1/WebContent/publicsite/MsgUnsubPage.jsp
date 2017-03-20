@@ -83,7 +83,7 @@ function checkLength(element, maxvalue) {
 	ServletContext ctx = application;
  	
 	String sbsrId = request.getParameter("sbsrid");
-	EmailAddrVo addrVo = null;
+	EmailAddressVo addrVo = null;
 	try {
 		addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrId));
 		if (addrVo == null) {
@@ -120,7 +120,7 @@ function checkLength(element, maxvalue) {
 	pageContext.setAttribute("listDesc", listDesc);
 
 	String msgId = request.getParameter("msgid");
-	MsgClickCountsVo countVo = null;
+	MsgClickCountVo countVo = null;
 	try {
 		countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
 		if (countVo == null) {

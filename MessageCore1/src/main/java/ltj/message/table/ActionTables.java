@@ -103,7 +103,7 @@ public class ActionTables extends CreateTableBase {
 			"ActionId varchar(16) NOT NULL, " +
 			"DataTypeValues text, " + // maximum size of 65,535, to accommodate template text
 			"PRIMARY KEY (RowId), " +
-			"FOREIGN KEY (RuleName) REFERENCES RuleLogic (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (RuleName) REFERENCES rule_logic (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX(RuleName), " +
 			"FOREIGN KEY (ActionId) REFERENCES msg_action_detail (ActionId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"UNIQUE INDEX (RuleName, ActionSeq, StartTime, ClientId) " +

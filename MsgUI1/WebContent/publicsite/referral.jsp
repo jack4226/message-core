@@ -79,7 +79,7 @@ function checkLength(element, maxvalue) {
 	String submitButtonText = "Send";
  	if (submitButtonText.equals(request.getParameter("submit"))) {
 		String rcptEmail = request.getParameter("rcptEmail");
-		EmailAddrVo addrVo = getEmailAddrDao(ctx).findByAddress(rcptEmail);
+		EmailAddressVo addrVo = getEmailAddrDao(ctx).findByAddress(rcptEmail);
 		// update accept HTML flag if changed
 		boolean acceptHtml = "html".equals(request.getParameter("emailtype"))?true:false;
 		if (acceptHtml != "Y".equals(addrVo.getAcceptHtml())) {

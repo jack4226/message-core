@@ -23,7 +23,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		String sql = 
 			"select * " +
 			"from " +
-				"RuleSubRuleMap where ruleName=? and subRuleName=? ";
+				"rule_subrule_map where ruleName=? and subRuleName=? ";
 		
 		Object[] parms = new Object[] {ruleName, subRuleName};
 		try {
@@ -41,7 +41,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		String sql = 
 			"select * " +
 			" from " +
-				" RuleSubRuleMap where ruleName=? " +
+				" rule_subrule_map where ruleName=? " +
 			" order by subRuleSeq asc ";
 		
 		Object[] parms = new Object[] {ruleName};
@@ -53,7 +53,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 	@Override
 	public synchronized int deleteByPrimaryKey(String ruleName, String subRuleName) {
 		String sql = 
-			"delete from RuleSubRuleMap where ruleName=? and subRuleName=? ";
+			"delete from rule_subrule_map where ruleName=? and subRuleName=? ";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);
@@ -67,7 +67,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
-			"delete from RuleSubRuleMap where ruleName=? ";
+			"delete from rule_subrule_map where ruleName=? ";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);
@@ -80,7 +80,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 	@Override
 	public synchronized int update(RuleSubRuleMapVo ruleSubRuleMapVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleSubRuleMapVo);
-		String sql = MetaDataUtil.buildUpdateStatement("RuleSubRuleMap", ruleSubRuleMapVo);
+		String sql = MetaDataUtil.buildUpdateStatement("rule_subrule_map", ruleSubRuleMapVo);
 		int rowsUpdated = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		updateReloadFlags();
 		return rowsUpdated;
@@ -89,7 +89,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 	@Override
 	public synchronized int insert(RuleSubRuleMapVo ruleSubRuleMapVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(ruleSubRuleMapVo);
-		String sql = MetaDataUtil.buildInsertStatement("RuleSubRuleMap", ruleSubRuleMapVo);
+		String sql = MetaDataUtil.buildInsertStatement("rule_subrule_map", ruleSubRuleMapVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		ruleSubRuleMapVo.setRowId(retrieveRowId());
 		updateReloadFlags();

@@ -45,7 +45,7 @@
 	Long sbsrIdLong = null;
 	List<String> subedList = new ArrayList<String>();
 	int confirmCount = 0;
-	EmailAddrVo addrVo = null;
+	EmailAddressVo addrVo = null;
 	StringBuffer sbListNames = new StringBuffer();
 	StringBuffer sbListIds = new StringBuffer();
 	try {

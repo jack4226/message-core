@@ -98,7 +98,7 @@ function checkLength(element, maxvalue) {
 	String encodedSbsrId = request.getParameter("sbsrid");
 	String listIds = request.getParameter("listids");
 	List<MailingListVo> subedList = new ArrayList<MailingListVo>();
-	EmailAddrVo addrVo = null;
+	EmailAddressVo addrVo = null;
 	StringBuffer sbListNames = new StringBuffer();
 	StringBuffer sbListIds = new StringBuffer();
 	int listCount = 0;

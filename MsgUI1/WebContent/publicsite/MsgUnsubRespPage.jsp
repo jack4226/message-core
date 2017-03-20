@@ -37,10 +37,10 @@
 <%@page import="ltj.message.dao.inbox.MsgUnsubCmntDao"%>
 <%@page import="ltj.message.vo.inbox.MsgUnsubCmntVo"%>
 <%!
-MsgUnsubCommentsDao unsubCommentsDao = null;
-MsgUnsubCommentsDao getMsgUnsubCommentsDao(ServletContext ctx) {
+MsgUnsubCmntDao unsubCommentsDao = null;
+MsgUnsubCmntDao getMsgUnsubCmntDao(ServletContext ctx) {
 	if (unsubCommentsDao == null) {
-		unsubCommentsDao = (MsgUnsubCommentsDao) SpringUtil.getWebAppContext(ctx).getBean("msgUnsubCommentsDao");
+		unsubCommentsDao = (MsgUnsubCmntDao) SpringUtil.getWebAppContext(ctx).getBean("msgUnsubCmntDao");
 	}
 	return unsubCommentsDao;
 }
@@ -55,7 +55,7 @@ MsgUnsubCommentsDao getMsgUnsubCommentsDao(ServletContext ctx) {
 	String listId = request.getParameter("listid");
 	String comments = request.getParameter("comments");
 	String submit = request.getParameter("submit");
-	EmailAddrVo addrVo = null;
+	EmailAddressVo addrVo = null;
 	MailingListVo listVo = null;
 	int unsubscribed = 0;
 	String unsubListName = listId;
@@ -78,12 +78,12 @@ MsgUnsubCommentsDao getMsgUnsubCommentsDao(ServletContext ctx) {
 			// add user comments
 			if (unsubscribed > 0 && comments != null && comments.trim().length() > 0) {
 				try {
-					MsgUnsubCommentsVo commVo = new MsgUnsubCommentsVo();
+					MsgUnsubCmntVo commVo = new MsgUnsubCmntVo();
 					commVo.setMsgId(Long.parseLong(msgId));
 					commVo.setEmailAddrId(addrVo.getEmailAddrId());
 					commVo.setListId(listId);
 					commVo.setComments(comments.trim());
-					int rowsInsrted = getMsgUnsubCommentsDao(ctx).insert(commVo);
+					int rowsInsrted = getMsgUnsubCmntDao(ctx).insert(commVo);
 					logger.info("MsgUnsubRespPage.jsp - unsubcription commonts added: " + rowsInsrted);
 				}
 			 	catch (Exception e) {
@@ -96,7 +96,7 @@ MsgUnsubCommentsDao getMsgUnsubCommentsDao(ServletContext ctx) {
 		logger.error("MsgUnsubRespPage.jsp", e);
 	}
 	
-	MsgClickCountsVo countVo = null;
+	MsgClickCountVo countVo = null;
 	try {
 		countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
 		if (countVo == null) {

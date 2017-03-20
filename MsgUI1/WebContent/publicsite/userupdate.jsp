@@ -56,7 +56,7 @@ if ("yes".equals(request.getParameter("remember"))) {
 
 	Long sbsrIdLong = (Long) loggedin;
 	long emailAddrId = sbsrIdLong.longValue();
-	EmailAddrVo sbsrAddrVo = getEmailAddrDao(ctx).getByAddrId(emailAddrId);
+	EmailAddressVo sbsrAddrVo = getEmailAddrDao(ctx).getByAddrId(emailAddrId);
 	if (sbsrAddrVo == null) {
 		logger.error("userupdate.jsp - Subscriber email address Id " + emailAddrId + " not found");
 		response.sendRedirect("userupdate.jsp?error=sbsrnotfound");
@@ -77,7 +77,7 @@ if ("yes".equals(request.getParameter("remember"))) {
  			errorMsg = "The email address you entered is already used by another user.";
  		}
  		else {
- 			EmailAddrVo addrVo = getEmailAddrDao(ctx).findByAddress(request.getParameter("emailAddr"));
+ 			EmailAddressVo addrVo = getEmailAddrDao(ctx).findByAddress(request.getParameter("emailAddr"));
  			// update accept HTML flag if changed
  			boolean acceptHtml = "html".equals(request.getParameter("emailtype"))?true:false;
  			if (acceptHtml != "Y".equals(addrVo.getAcceptHtml())) {

@@ -71,7 +71,7 @@ function validateListSelection(myform) {
 	ServletContext ctx = application;
  	
 	String emailAddr = "";
-	EmailAddrVo sbsrAddrVo = null;
+	EmailAddressVo sbsrAddrVo = null;
 	try {
  		long emailAddrId = Long.parseLong(subscribersBean.getSbsrid());
  		sbsrAddrVo = getEmailAddrDao(ctx).getByAddrId(emailAddrId);
