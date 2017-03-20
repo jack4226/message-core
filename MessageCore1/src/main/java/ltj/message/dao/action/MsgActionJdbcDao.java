@@ -24,7 +24,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	public List<MsgActionVo> getByRuleName(String ruleName) {
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
-			" from MsgAction a, MsgActionDetail b " +
+			" from msg_action a, msg_action_detail b " +
 			" where a.ActionId = b.ActionId and ruleName=? " +
 			" order by actionSeq, clientId, startTime";
 		
@@ -38,7 +38,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	public MsgActionVo getByPrimaryKey(int rowId) {
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
-			" from MsgAction a, MsgActionDetail b " +
+			" from msg_action a, msg_action_detail b " +
 			" where a.ActionId = b.ActionId and RowId=? ";
 		
 		Object[] parms = new Object[] {rowId};
@@ -59,7 +59,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		}
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
-			" from MsgAction a, MsgActionDetail b " +
+			" from msg_action a, msg_action_detail b " +
 				" where a.ActionId = b.ActionId " +
 				" and RuleName=? and StartTime<=? and StatusId=? ";
 		
@@ -101,7 +101,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	public List<MsgActionVo> getAll() {
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
-			" from MsgAction a, MsgActionDetail b " +
+			" from msg_action a, msg_action_detail b " +
 			" where a.ActionId = b.ActionId " +
 			" order by actionSeq";
 		
@@ -119,7 +119,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
-			" from MsgAction a, MsgActionDetail b " +
+			" from msg_action a, msg_action_detail b " +
 			" where a.ActionId = b.ActionId " +
 			" and ruleName=? and actionSeq=? and startTime=? ";
 		
@@ -146,7 +146,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		
 		String sql = 
 			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
-			" from MsgAction a, MsgActionDetail b " +
+			" from msg_action a, msg_action_detail b " +
 				" where a.ActionId = b.ActionId " +
 				" and RuleName=? and ActionSeq=? and StartTime<=? and StatusId=? ";
 		
@@ -178,7 +178,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public synchronized int update(MsgActionVo msgActionVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionVo);
-		String sql = MetaDataUtil.buildUpdateStatement("MsgAction", msgActionVo);
+		String sql = MetaDataUtil.buildUpdateStatement("msg_action", msgActionVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		updateReloadFlags();
 		return rowsUpadted;
@@ -187,7 +187,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
-			"delete from MsgAction where ruleName=?";
+			"delete from msg_action where ruleName=?";
 		
 		Object[] parms = new Object[] {ruleName};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
@@ -198,7 +198,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public synchronized int deleteByPrimaryKey(int rowId) {
 		String sql = 
-			"delete from MsgAction where rowId=?";
+			"delete from msg_action where rowId=?";
 		
 		Object[] parms = new Object[] {rowId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
@@ -214,7 +214,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		keys.add(startTime);
 		
 		String sql = 
-			"delete from MsgAction " +
+			"delete from msg_action " +
 			" where ruleName=? and actionSeq=? and startTime=? ";
 		
 		if (clientId == null) {
@@ -233,7 +233,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public synchronized int insert(MsgActionVo msgActionVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionVo);
-		String sql = MetaDataUtil.buildInsertStatement("MsgAction", msgActionVo);
+		String sql = MetaDataUtil.buildInsertStatement("msg_action", msgActionVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		msgActionVo.setRowId(retrieveRowId());
 		updateReloadFlags();

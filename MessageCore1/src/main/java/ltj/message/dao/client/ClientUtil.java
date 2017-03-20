@@ -97,7 +97,7 @@ public final class ClientUtil {
 				return vo;
 			}
 			else {
-				throw new RuntimeException(DEFAULT_CLIENTID + " missing in Clients table.");
+				throw new RuntimeException(DEFAULT_CLIENTID + " missing in client_tbl table.");
 			}
 		}
 	}

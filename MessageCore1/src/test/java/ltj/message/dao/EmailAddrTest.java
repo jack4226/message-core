@@ -66,6 +66,9 @@ public class EmailAddrTest extends DaoTestBase {
 			assertNotNull(tovo);
 			assertEquals(mivo.getToAddrId(), Long.valueOf(tovo.getEmailAddrId()));
 		//}
+			
+		long addrid = emailAddrDao.getEmailAddrIdForPreview();
+		assertTrue(addrid > 0);
 	}
 	
 	@Test

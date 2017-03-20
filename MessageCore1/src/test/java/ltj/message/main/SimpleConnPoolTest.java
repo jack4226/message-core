@@ -35,10 +35,10 @@ public class SimpleConnPoolTest {
 				connList.add(conn);
 				
 				Statement stmt = conn.createStatement();
-				ResultSet result = stmt.executeQuery("select count(*) from EmailAddr");
+				ResultSet result = stmt.executeQuery("select count(*) from email_address");
 				if (result.next()) {
 					long rows = result.getLong(1);
-					System.out.println("EmailAddr count: " + rows);
+					System.out.println("email_address count: " + rows);
 					assertTrue(rows > 0);
 				}
 				assertNotNull(result);

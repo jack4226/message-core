@@ -14,7 +14,7 @@ public class CustSequenceJdbcDao extends AbstractDao implements CustSequenceDao 
 	@Override
 	public long findNextValue() {
 		/* simulate a sequence table */
-		String sql1 = "update CustSequence set seqId = LAST_INSERT_ID(seqId + 1)";
+		String sql1 = "update cust_sequence set seqId = LAST_INSERT_ID(seqId + 1)";
 		String sql2 = "select LAST_INSERT_ID()";
 		try {
 			getJdbcTemplate().update(sql1);
@@ -33,11 +33,11 @@ public class CustSequenceJdbcDao extends AbstractDao implements CustSequenceDao 
 	private long repair() {
 		logger.info("repair() - perform delete and insert...");
 		String sql = 
-			"select max(SeqId) from CustSequence ";
+			"select max(SeqId) from cust_sequence ";
 		long currValue = getJdbcTemplate().queryForObject(sql, Long.class);
-		sql = "delete from CustSequence";
+		sql = "delete from cust_sequence";
 		getJdbcTemplate().update(sql);
-		sql = "insert into CustSequence (SeqId) values(" +(currValue + 1)+ ")";
+		sql = "insert into cust_sequence (SeqId) values(" +(currValue + 1)+ ")";
 		getJdbcTemplate().update(sql);
 		sql = "select LAST_INSERT_ID()";
 		long nextValue = getJdbcTemplate().queryForObject(sql, Long.class);

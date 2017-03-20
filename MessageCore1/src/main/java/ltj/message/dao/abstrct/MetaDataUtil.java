@@ -190,10 +190,10 @@ public class MetaDataUtil {
 	}
 
 	public static void main(String[] args) {
-		Table msg_inbox = MetaDataUtil.getTableMetaData("MsgInbox");
+		Table msg_inbox = MetaDataUtil.getTableMetaData("msg_inbox");
 		logger.info("Table Metadata:" + PrintUtil.prettyPrint(msg_inbox));
-		logger.info(buildUpdateStatement("MsgInbox", new MsgInboxVo()));
+		logger.info(buildUpdateStatement("msg_inbox", new MsgInboxVo()));
 		logger.info(buildInsertStatement("MailingList", new MailingListVo()));
-		logger.info(buildUpdateStatement("Attachments", new AttachmentsVo()));
+		logger.info(buildUpdateStatement("msg_attachment", new AttachmentsVo()));
 	}
 }

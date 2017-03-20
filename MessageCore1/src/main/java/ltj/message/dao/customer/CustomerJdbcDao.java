@@ -31,7 +31,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	public CustomerVo getByCustId(String custId) {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
-				"from Customers where custid=? ";
+				"from customer_tbl where custid=? ";
 		
 		Object[] parms = new Object[] {custId};
 		try {
@@ -48,7 +48,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	public List<CustomerVo> getByClientId(String clientId) {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
-				"from Customers where clientid=? ";
+				"from customer_tbl where clientid=? ";
 		Object[] parms = new Object[] {clientId};
 		List<CustomerVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<CustomerVo>(CustomerVo.class));
@@ -59,7 +59,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	public CustomerVo getByEmailAddrId(long emailAddrId) {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
-			" from customers where emailAddrId=? ";
+			" from customer_tbl where emailAddrId=? ";
 		Object[] parms = new Object[] {Long.valueOf(emailAddrId)};
 		List<CustomerVo> list =getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<CustomerVo>(CustomerVo.class));
@@ -75,7 +75,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	public CustomerVo getByEmailAddress(String emailAddr) {
 		String sql = 
 			"select a.*, a.CustId as OrigCustId, a.UpdtTime as OrigUpdtTime " +
-			" from Customers a, EmailAddr b " +
+			" from customer_tbl a, email_address b " +
 			" where a.EmailAddrId=b.EmailAddrId " +
 			" and a.EmailAddr=? ";
 		Object[] parms = new Object[] {EmailAddrUtil.removeDisplayName(emailAddr)};
@@ -93,7 +93,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	public List<CustomerVo> getFirst100() {
 		String sql = 
 			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
-				"from Customers limit 100";
+				"from customer_tbl limit 100";
 		
 		List<CustomerVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<CustomerVo>(CustomerVo.class));
@@ -105,8 +105,8 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
-			"select count(*) from Customers a " 
-			+ " LEFT OUTER JOIN EmailAddr b on a.EmailAddrId=b.EmailAddrId "
+			"select count(*) from customer_tbl a " 
+			+ " LEFT OUTER JOIN email_address b on a.EmailAddrId=b.EmailAddrId "
 			+ whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -167,8 +167,8 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		String sql = 
 			"select a.*, a.CustId as OrigCustId, a.UpdtTime as OrigUpdtTime, " +
 			"b.StatusId as EmailStatusId, b.BounceCount, b.AcceptHtml " +
-			" from Customers a " +
-				" LEFT OUTER JOIN EmailAddr b on a.EmailAddrId=b.EmailAddrId " +
+			" from customer_tbl a " +
+				" LEFT OUTER JOIN email_address b on a.EmailAddrId=b.EmailAddrId " +
 			whereSql +
 			" order by a.CustId " + fetchOrder +
 			" limit " + pageSize;
@@ -242,7 +242,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		customerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		syncupEmailFields(customerVo);
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(customerVo);
-		String sql = MetaDataUtil.buildUpdateStatement("Customers", customerVo);
+		String sql = MetaDataUtil.buildUpdateStatement("customer_tbl", customerVo);
 
 		if (customerVo.getOrigUpdtTime() != null) {
 			sql += " and UpdtTime=:origUpdtTime ";
@@ -256,7 +256,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	@Override
 	public int delete(String custId) {
 		String sql = 
-			"delete from Customers where custid=? ";
+			"delete from customer_tbl where custid=? ";
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, new Object[] {custId});
 		return rowsDeleted;
@@ -269,7 +269,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 			return 0;
 		}
 		String sql = 
-			"delete from Customers where EmailAddrId=? ";
+			"delete from customer_tbl where EmailAddrId=? ";
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, new Object[] {addrVo.getEmailAddrId()});
 		return rowsDeleted;
@@ -280,7 +280,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		customerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		syncupEmailFields(customerVo);
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(customerVo);
-		String sql = MetaDataUtil.buildInsertStatement("Customers", customerVo);
+		String sql = MetaDataUtil.buildInsertStatement("customer_tbl", customerVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		customerVo.setRowId(retrieveRowId());
 		customerVo.setOrigUpdtTime(customerVo.getUpdtTime());

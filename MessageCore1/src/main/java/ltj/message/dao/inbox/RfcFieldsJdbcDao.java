@@ -21,7 +21,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"RfcFields where msgid=? and rfcType=? ";
+				"msg_rfc_field where msgid=? and rfcType=? ";
 		
 		Object[] parms = new Object[] {msgId, rfcType};
 		try {
@@ -39,7 +39,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" RfcFields where msgId=? " +
+				" msg_rfc_field where msgId=? " +
 			" order by rfcType";
 		Object[] parms = new Object[] {msgId};
 		List<RfcFieldsVo> list = getJdbcTemplate().query(sql, parms, 
@@ -52,7 +52,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 		String sql = 
 				"select * " +
 				" from " +
-					" RfcFields where msgId >= (RAND() * (select max(msgId) from RfcFields)) " +
+					" msg_rfc_field where msgId >= (RAND() * (select max(msgId) from msg_rfc_field)) " +
 				" order by msgId limit 1 ";
 		List<RfcFieldsVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<RfcFieldsVo>(RfcFieldsVo.class));
@@ -65,7 +65,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 	@Override
 	public int update(RfcFieldsVo rfcFieldsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(rfcFieldsVo);
-		String sql = MetaDataUtil.buildUpdateStatement("RfcFields", rfcFieldsVo);
+		String sql = MetaDataUtil.buildUpdateStatement("msg_rfc_field", rfcFieldsVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
 	}
@@ -73,7 +73,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 	@Override
 	public int deleteByPrimaryKey(long msgId, String rfcType) {
 		String sql = 
-			"delete from RfcFields where msgid=? and rfcType=? ";
+			"delete from msg_rfc_field where msgid=? and rfcType=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -86,7 +86,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from RfcFields where msgid=? ";
+			"delete from msg_rfc_field where msgid=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -98,7 +98,7 @@ public class RfcFieldsJdbcDao extends AbstractDao implements RfcFieldsDao {
 	@Override
 	public int insert(RfcFieldsVo rfcFieldsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(rfcFieldsVo);
-		String sql = MetaDataUtil.buildInsertStatement("RfcFields", rfcFieldsVo);
+		String sql = MetaDataUtil.buildInsertStatement("msg_rfc_field", rfcFieldsVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsInserted;
 	}

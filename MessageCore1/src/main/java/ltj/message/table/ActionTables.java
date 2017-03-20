@@ -25,16 +25,16 @@ public class ActionTables extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE MsgAction");
-			System.out.println("Dropped MsgAction Table...");
+			stm.execute("DROP TABLE msg_action");
+			System.out.println("Dropped msg_action Table...");
 		} catch (SQLException e) {}
 		try {
-			stm.execute("DROP TABLE MsgActionDetail");
-			System.out.println("Dropped MsgActionDetail Table...");
+			stm.execute("DROP TABLE msg_action_detail");
+			System.out.println("Dropped msg_action_detail Table...");
 		} catch (SQLException e) {}
 		try {
-			stm.execute("DROP TABLE MsgDataType");
-			System.out.println("Dropped MsgDataType Table...");
+			stm.execute("DROP TABLE msg_data_type");
+			System.out.println("Dropped msg_data_type Table...");
 		} catch (SQLException e) {}
 		
 		ruleTables.dropTables();
@@ -53,7 +53,7 @@ public class ActionTables extends CreateTableBase {
 	
 	void createActionDataTypeTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MsgDataType ( " +
+			stm.execute("CREATE TABLE msg_data_type ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"DataType varchar(16) NOT NULL, " +
 			"DataTypeValue varchar(100) NOT NULL, " +
@@ -61,7 +61,7 @@ public class ActionTables extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (DataType, DataTypeValue) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MsgDataType Table...");
+			System.out.println("Created msg_data_type Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -70,7 +70,7 @@ public class ActionTables extends CreateTableBase {
 	
 	void createActionDetailTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MsgActionDetail ( " +
+			stm.execute("CREATE TABLE msg_action_detail ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ActionId varchar(16) NOT NULL, " +
 			"Description varchar(100), " +
@@ -80,11 +80,11 @@ public class ActionTables extends CreateTableBase {
 			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId varchar(10) NOT NULL, " +
 			"INDEX (DataType), " +
-			"FOREIGN KEY (DataType) REFERENCES MsgDataType (DataType) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (DataType) REFERENCES msg_data_type (DataType) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"UNIQUE INDEX (ActionId), " +
 			"PRIMARY KEY (RowId) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MsgActionDetail Table...");
+			System.out.println("Created msg_action_detail Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -93,7 +93,7 @@ public class ActionTables extends CreateTableBase {
 	
 	void createActionTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MsgAction ( " +
+			stm.execute("CREATE TABLE msg_action ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"RuleName varchar(26) NOT NULL, " +
 			"ActionSeq int NOT NULL, " +
@@ -105,10 +105,10 @@ public class ActionTables extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"FOREIGN KEY (RuleName) REFERENCES RuleLogic (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX(RuleName), " +
-			"FOREIGN KEY (ActionId) REFERENCES MsgActionDetail (ActionId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (ActionId) REFERENCES msg_action_detail (ActionId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"UNIQUE INDEX (RuleName, ActionSeq, StartTime, ClientId) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MsgAction Table...");
+			System.out.println("Created msg_action Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());

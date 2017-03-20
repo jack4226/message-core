@@ -22,7 +22,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgAddrs where msgid=? and addrType=? and addrSeq=? ";
+				"msg_address where msgid=? and addrType=? and addrSeq=? ";
 		
 		Object[] parms = new Object[] {msgId, addrType, addrSeq};
 		try {
@@ -40,7 +40,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" MsgAddrs where msgId=? " +
+				" msg_address where msgId=? " +
 			" order by addrType, addrSeq";
 		Object[] parms = new Object[] {msgId};
 		List<MsgAddrsVo> list = getJdbcTemplate().query(sql, parms, 
@@ -53,7 +53,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" MsgAddrs where msgId=? and addrType=? " +
+				" msg_address where msgId=? and addrType=? " +
 			" order by addrSeq";
 		Object[] parms = new Object[] {msgId, addrType};
 		List<MsgAddrsVo> list = getJdbcTemplate().query(sql, parms,
@@ -66,7 +66,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 		String sql = 
 				"select * " +
 				" from " +
-					" MsgAddrs where msgId >= (RAND() * (select max(msgId) from MsgAddrs)) " +
+					" msg_address where msgId >= (RAND() * (select max(msgId) from msg_address)) " +
 				" order by msgId limit 1 ";
 			
 		List<MsgAddrsVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgAddrsVo>(MsgAddrsVo.class));
@@ -80,7 +80,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 	public int update(MsgAddrsVo msgAddrsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgAddrsVo);
 		msgAddrsVo.setAddrValue(EmailAddrUtil.removeDisplayName(msgAddrsVo.getAddrValue()));
-		String sql = MetaDataUtil.buildUpdateStatement("MsgAddrs", msgAddrsVo);
+		String sql = MetaDataUtil.buildUpdateStatement("msg_address", msgAddrsVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
 	}
@@ -88,7 +88,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 	@Override
 	public int deleteByPrimaryKey(long msgId, String addrType, int addrSeq) {
 		String sql = 
-			"delete from MsgAddrs where msgid=? and addrType=? and addrSeq=? ";
+			"delete from msg_address where msgid=? and addrType=? and addrSeq=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -102,7 +102,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from MsgAddrs where msgid=? ";
+			"delete from msg_address where msgid=? ";
 		
 		List<Long> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -115,7 +115,7 @@ public class MsgAddrsJdbcDao extends AbstractDao implements MsgAddrsDao {
 	public int insert(MsgAddrsVo msgAddrsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgAddrsVo);
 		msgAddrsVo.setAddrValue(EmailAddrUtil.removeDisplayName(msgAddrsVo.getAddrValue()));
-		String sql = MetaDataUtil.buildInsertStatement("MsgAddrs", msgAddrsVo);
+		String sql = MetaDataUtil.buildInsertStatement("msg_address", msgAddrsVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsInserted;
 	}

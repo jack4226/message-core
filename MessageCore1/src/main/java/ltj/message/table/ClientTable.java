@@ -29,14 +29,14 @@ public class ClientTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE ReloadFlags");
-			System.out.println("Dropped ReloadFlags Table...");
+			stm.execute("DROP TABLE reload_flags");
+			System.out.println("Dropped reload_flags Table...");
 		}
 		catch (Exception e) {
 		}		
 		try {
-			stm.execute("DROP TABLE Clients");
-			System.out.println("Dropped Clients Table...");
+			stm.execute("DROP TABLE client_tbl");
+			System.out.println("Dropped client_tbl Table...");
 		}
 		catch (Exception e) {
 		}		
@@ -49,7 +49,7 @@ public class ClientTable extends CreateTableBase {
 	
 	void createClientTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE Clients ( "
+			stm.execute("CREATE TABLE client_tbl ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "ClientId varchar(16) NOT NULL, "
 					+ "ClientName varchar(40) NOT NULL, "
@@ -103,7 +103,7 @@ public class ClientTable extends CreateTableBase {
 					//+ "UNIQUE INDEX (DomainName), "
 					+ "UNIQUE INDEX (ClientId) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created Clients Table...");
+			System.out.println("Created client_tbl Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -113,7 +113,7 @@ public class ClientTable extends CreateTableBase {
 
 	void createReloadFlagsTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE ReloadFlags ( "
+			stm.execute("CREATE TABLE reload_flags ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "Clients int NOT NULL, "
 					+ "Rules int NOT NULL, "
@@ -122,8 +122,8 @@ public class ClientTable extends CreateTableBase {
 					+ "Schedules int NOT NULL, "
 					+ "PRIMARY KEY (RowId) "
 					+ ") ENGINE=MyISAM");
-			System.out.println("Created ReloadFlags Table...");
-			stm.execute("INSERT INTO ReloadFlags VALUES(1,0,0,0,0,0)");
+			System.out.println("Created reload_flags Table...");
+			stm.execute("INSERT INTO reload_flags VALUES(1,0,0,0,0,0)");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -132,7 +132,7 @@ public class ClientTable extends CreateTableBase {
 	}
 
 	private String insertSql = 
-		"INSERT INTO Clients "
+		"INSERT INTO client_tbl "
 			+ "(ClientId, "
 			+ "ClientName, "
 			+ "ClientType, "

@@ -60,7 +60,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	@Override
 	public EmailTemplateVo getByTemplateId(String templateId) {
 		String sql = "select a.*, b.ClientId " +
-				" from EmailTemplate a, MailingList b " +
+				" from EmailTemplate a, mailing_list b " +
 				" where a.ListId=b.ListId and a.TemplateId=?";
 		Object[] parms = new Object[] {templateId};
 		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms, new EmailTemplateMapper());
@@ -75,7 +75,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	@Override
 	public List<EmailTemplateVo> getByListId(String listId) {
 		String sql = "select a.*, b.ClientId " +
-				" from EmailTemplate a, MailingList b " +
+				" from EmailTemplate a, mailing_list b " +
 				" where a.ListId=b.ListId and a.ListId=?" +
 				" order by a.TemplateId";
 		Object[] parms = new Object[] {listId};
@@ -87,7 +87,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	@Override
 	public List<EmailTemplateVo> getAll() {
 		String sql = "select a.*, b.ClientId " +
-				" from EmailTemplate a, MailingList b " +
+				" from EmailTemplate a, mailing_list b " +
 				" where a.ListId=b.ListId" +
 				" order by a.RowId";
 		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql,
@@ -98,7 +98,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	@Override
 	public List<EmailTemplateVo> getAllForTrial() {
 		String sql = "select a.*, b.ClientId " +
-				" from EmailTemplate a, MailingList b " +
+				" from EmailTemplate a, mailing_list b " +
 				" where a.ListId=b.ListId" +
 				" order by a.RowId" +
 				" limit 20";

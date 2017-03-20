@@ -12,7 +12,7 @@ public class MailingListVo extends BaseVoWithRowId implements Serializable {
 	private String listId = "";
 	private String displayName = null;
 	private String acctUserName = "";
-	private String domainName = ""; // from Clients table
+	private String domainName = ""; // from client_tbl table
 	private String description = null;
 	private String clientId = "";
 	private String isBuiltIn = Constants.N;

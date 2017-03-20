@@ -23,7 +23,7 @@ public class SubscriptionVo extends BaseVo implements Serializable {
 	// used when joining EmailAddr table to get Email Address
 	private String acceptHtml = "";
 	private String emailAddr = null;
-	// used when joining Customers table to get customer name
+	// used when joining customer_tbl table to get customer name
 	private String firstName = null;
 	private String lastName = null;
 	private String middleName = null;

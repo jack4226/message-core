@@ -22,7 +22,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgHeaders where msgid=? and headerSeq=? ";
+				"msg_header where msgid=? and headerSeq=? ";
 		
 		Object[] parms = new Object[] {msgId, headerSeq};
 		try {
@@ -40,7 +40,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" MsgHeaders where msgId=? " +
+				" msg_header where msgId=? " +
 			" order by headerSeq";
 		Object[] parms = new Object[] {msgId};
 		List<MsgHeadersVo> list = getJdbcTemplate().query(sql, parms, 
@@ -53,7 +53,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 		String sql = 
 				"select * " +
 				" from " +
-					" MsgHeaders where msgId >= (RAND() * (select max(msgId) from MsgHeaders)) " +
+					" msg_header where msgId >= (RAND() * (select max(msgId) from msg_header)) " +
 				" order by msgId limit 1 ";
 		List<MsgHeadersVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgHeadersVo>(MsgHeadersVo.class));
@@ -67,7 +67,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 	public int update(MsgHeadersVo msgHeadersVo) {
 		msgHeadersVo.setHeaderName(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgHeadersVo);
-		String sql = MetaDataUtil.buildUpdateStatement("MsgHeaders", msgHeadersVo);
+		String sql = MetaDataUtil.buildUpdateStatement("msg_header", msgHeadersVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 //		List<Object> fields = new ArrayList<>();
 //		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
@@ -76,7 +76,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 //		fields.add(msgHeadersVo.getHeaderSeq());
 //		
 //		String sql =
-//			"update MsgHeaders set " +
+//			"update msg_header set " +
 //				"HeaderName=?, " +
 //				"HeaderValue=? " +
 //			" where " +
@@ -89,7 +89,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 	@Override
 	public int deleteByPrimaryKey(long msgId, int headerSeq) {
 		String sql = 
-			"delete from MsgHeaders where msgid=? and headerSeq=? ";
+			"delete from msg_header where msgid=? and headerSeq=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -102,7 +102,7 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from MsgHeaders where msgid=? ";
+			"delete from msg_header where msgid=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -115,10 +115,10 @@ public class MsgHeadersJdbcDao extends AbstractDao implements MsgHeadersDao {
 	public int insert(MsgHeadersVo msgHeadersVo) {
 		msgHeadersVo.setHeaderName(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgHeadersVo);
-		String sql = MetaDataUtil.buildInsertStatement("MsgHeaders", msgHeadersVo);
+		String sql = MetaDataUtil.buildInsertStatement("msg_header", msgHeadersVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 //		String sql = 
-//			"INSERT INTO MsgHeaders (" +
+//			"INSERT INTO msg_header (" +
 //			"MsgId, " +
 //			"HeaderSeq, " +
 //			"HeaderName, " +

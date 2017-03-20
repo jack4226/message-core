@@ -21,7 +21,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgDataType where DataType=? and DataTypeValue=? ";
+				"msg_data_type where DataType=? and DataTypeValue=? ";
 		
 		Object[] parms = new Object[] {type, value};
 		try {
@@ -39,7 +39,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgDataType where RowId=? ";
+				"msg_data_type where RowId=? ";
 		
 		Object[] parms = new Object[] {rowId};
 		try {
@@ -57,7 +57,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgDataType where DataType=? " +
+				"msg_data_type where DataType=? " +
 			" order by DataTypeValue asc ";
 		
 		Object[] parms = new Object[] {dataType};
@@ -71,7 +71,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"select distinct(DataType) " +
 			"from " +
-				"MsgDataType " +
+				"msg_data_type " +
 			" order by DataType asc ";
 		
 		List<String> list = (List<String>)getJdbcTemplate().queryForList(sql, String.class);
@@ -81,7 +81,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 	@Override
 	public int update(MsgDataTypeVo msgDataTypeVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgDataTypeVo);
-		String sql = MetaDataUtil.buildUpdateStatement("MsgDataType", msgDataTypeVo);
+		String sql = MetaDataUtil.buildUpdateStatement("msg_data_type", msgDataTypeVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
 	}
@@ -89,7 +89,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 	@Override
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = 
-			"delete from MsgDataType where RowId=? ";
+			"delete from msg_data_type where RowId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(rowId);
@@ -101,7 +101,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 	@Override
 	public int deleteByDataType(String dataType) {
 		String sql = 
-			"delete from MsgDataType where DataType=? ";
+			"delete from msg_data_type where DataType=? ";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(dataType);
@@ -113,7 +113,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 	@Override
 	public int insert(MsgDataTypeVo msgDataTypeVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgDataTypeVo);
-		String sql = MetaDataUtil.buildInsertStatement("MsgDataType", msgDataTypeVo);
+		String sql = MetaDataUtil.buildInsertStatement("msg_data_type", msgDataTypeVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		msgDataTypeVo.setRowId(retrieveRowId());
 		return rowsInserted;

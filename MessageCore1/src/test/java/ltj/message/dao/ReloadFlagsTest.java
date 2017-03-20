@@ -23,7 +23,7 @@ public class ReloadFlagsTest extends DaoTestBase {
 		int rowsUpdated = update(vo);
 		assertEquals(1, rowsUpdated);
 		rowsUpdated = recordsChanged();
-		assertTrue(rowsUpdated > 0);
+		assertTrue(rowsUpdated >= 5);
 	}
 	
 	private ReloadFlagsVo select() {

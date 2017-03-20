@@ -43,7 +43,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		}
 		if (!clientCache.containsKey(clientId)) {
 			String sql = "select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
-					"from Clients where clientid=?";
+					"from client_tbl where clientid=?";
 			Object[] parms = new Object[] { clientId };
 			try {
 				ClientVo vo = getJdbcTemplate().queryForObject(sql, parms,
@@ -61,7 +61,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	@Override
 	public ClientVo getByDomainName(String domainName) {
 		String sql = "select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
-				"from Clients where DomainName=?";
+				"from client_tbl where DomainName=?";
 		Object[] parms = new Object[] { domainName };
 		List<ClientVo> list = getJdbcTemplate().query(sql, parms, new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
 		if (list.size() > 0) {
@@ -76,7 +76,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	public List<ClientVo> getAll() {
 		String sql = 
 			"select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
-				"from Clients order by clientId";
+				"from client_tbl order by clientId";
 		
 		List<ClientVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
 		return list;
@@ -86,7 +86,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	public List<ClientVo> getAllForTrial() {
 		String sql = 
 			"select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
-				"from Clients " +
+				"from client_tbl " +
 			" order by RowId " +
 			" limit 1 ";
 		int fetchSize = getJdbcTemplate().getFetchSize();
@@ -103,7 +103,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	public String getSystemId() {
 		String sql = 
 			"select SystemId " +
-				"from Clients where ClientId='" + Constants.DEFAULT_CLIENTID + "'";
+				"from client_tbl where ClientId='" + Constants.DEFAULT_CLIENTID + "'";
 		return (String) getJdbcTemplate().queryForObject(sql, String.class);
 	}
 
@@ -111,7 +111,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	public String getSystemKey() {
 		String sql = 
 			"select SystemKey " +
-				"from Clients where ClientId='" + Constants.DEFAULT_CLIENTID + "'";
+				"from client_tbl where ClientId='" + Constants.DEFAULT_CLIENTID + "'";
 		return (String) getJdbcTemplate().queryForObject(sql, String.class);
 	}
 
@@ -119,7 +119,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	public synchronized int updateSystemKey(String key) {
 		List<Object> keys = new ArrayList<>();
 		keys.add(key);
-		String sql = "update Clients set " +
+		String sql = "update client_tbl set " +
 			"SystemKey=? " +
 			" where ClientId= '" + Constants.DEFAULT_CLIENTID + "'";
 		int rowsUpdated = getJdbcTemplate().update(sql, keys.toArray());
@@ -131,7 +131,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		clientVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		validateClientVo(clientVo);
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(clientVo);
-		String sql = MetaDataUtil.buildUpdateStatement("Clients", clientVo);
+		String sql = MetaDataUtil.buildUpdateStatement("client_tbl", clientVo);
 		if (clientVo.getOrigUpdtTime() != null) {
 			// optimistic locking
 			sql += " and UpdtTime=:origUpdtTime ";
@@ -152,7 +152,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		if (Constants.DEFAULT_CLIENTID.equals(clientId)) {
 			throw new IllegalArgumentException("Can't delete System Default Client.");
 		}
-		String sql = "delete from Clients where clientid=?";
+		String sql = "delete from client_tbl where clientid=?";
 		Object[] parms = new Object[] {clientId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		synchronized (clientCache) {
@@ -170,7 +170,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		String systemId = TimestampUtil.db2ToDecStr(TimestampUtil.getDb2Timestamp());
 		clientVo.setSystemId(systemId);
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(clientVo);
-		String sql = MetaDataUtil.buildInsertStatement("Clients", clientVo);
+		String sql = MetaDataUtil.buildInsertStatement("client_tbl", clientVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		clientVo.setRowId(retrieveRowId());
 		clientVo.setOrigUpdtTime(clientVo.getUpdtTime());

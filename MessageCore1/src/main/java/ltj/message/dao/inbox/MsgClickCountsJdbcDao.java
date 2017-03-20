@@ -75,8 +75,8 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		String sql = 
 				"select count(*) " +
 				" from MsgClickCounts a "
-				+ " join MsgInbox m on m.MsgId=a.MsgId "
-				+ " join EmailAddr e on e.EmailAddrId=m.FromAddrid " +
+				+ " join msg_inbox m on m.MsgId=a.MsgId "
+				+ " join email_address e on e.EmailAddrId=m.FromAddrid " +
 				whereSql +
 				" and a.StartTime is not null ";
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
@@ -139,8 +139,8 @@ public class MsgClickCountsJdbcDao extends AbstractDao implements MsgClickCounts
 		String sql = 
 			"select a.*, e.EmailAddrId, e.EmailAddr as fromAddr " +
 			" from MsgClickCounts a "
-			+ " join MsgInbox m on m.MsgId=a.MsgId "
-			+ " join EmailAddr e on e.EmailAddrId=m.FromAddrid " +
+			+ " join msg_inbox m on m.MsgId=a.MsgId "
+			+ " join email_address e on e.EmailAddrId=m.FromAddrid " +
 			whereSql +
 			" and a.StartTime is not null " +
 			" order by a.MsgId " + fetchOrder +

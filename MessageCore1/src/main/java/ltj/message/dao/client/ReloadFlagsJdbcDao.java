@@ -20,7 +20,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	}
 	
 	private ReloadFlagsVo selectWithRepair(int retry) {
-		String sql = "select * from ReloadFlags ";
+		String sql = "select * from reload_flags ";
 		List<ReloadFlagsVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<ReloadFlagsVo>(ReloadFlagsVo.class));
 		if (list.size()>0) {
@@ -37,7 +37,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	
 	@Override
 	public int update(ReloadFlagsVo vo) {
-		String sql = "update ReloadFlags set " +
+		String sql = "update reload_flags set " +
 			"Clients=?," +
 			"Rules=?," +
 			"Actions=?," +
@@ -56,7 +56,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	
 	@Override
 	public int updateClientReloadFlag() {
-		String sql = "update ReloadFlags set " +
+		String sql = "update reload_flags set " +
 			"Clients=Clients + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
@@ -64,7 +64,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 
 	@Override
 	public int updateRuleReloadFlag() {
-		String sql = "update ReloadFlags set " +
+		String sql = "update reload_flags set " +
 			"Rules=Rules + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
@@ -72,7 +72,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 
 	@Override
 	public int updateActionReloadFlag() {
-		String sql = "update ReloadFlags set " +
+		String sql = "update reload_flags set " +
 			"Actions=Actions + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
@@ -80,7 +80,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 
 	@Override
 	public int updateTemplateReloadFlag() {
-		String sql = "update ReloadFlags set " +
+		String sql = "update reload_flags set " +
 			"Templates=Templates + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
@@ -88,14 +88,14 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 
 	@Override
 	public int updateScheduleReloadFlag() {
-		String sql = "update ReloadFlags set " +
+		String sql = "update reload_flags set " +
 			"Schedules=Schedules + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
 
 	private int repair() {
-		String sql = "insert into ReloadFlags (" +
+		String sql = "insert into reload_flags (" +
 				"Clients," +
 				"Rules," +
 				"Actions," +

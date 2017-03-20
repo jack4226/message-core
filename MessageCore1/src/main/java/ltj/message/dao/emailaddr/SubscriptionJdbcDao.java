@@ -154,8 +154,8 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 		String sql = 
 			"select count(*) " +
 			" from Subscription a " +
-				" join EmailAddr b on a.EmailAddrId=b.EmailAddrId "
-				+ " LEFT OUTER JOIN Customers c on a.EmailAddrId=c.EmailAddrId " +
+				" join email_address b on a.EmailAddrId=b.EmailAddrId "
+				+ " LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.EmailAddrId " +
 			whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -230,8 +230,8 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" c.LastName, " +
 				" c.MiddleName " +
 			" from Subscription a" +
-				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
-				" LEFT OUTER JOIN Customers c on a.EmailAddrId=c.EmailAddrId " +
+				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
+				" LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.EmailAddrId " +
 			whereSql +
 			" order by a.EmailAddrId " + fetchOrder +
 			" limit " + pageSize;
@@ -303,8 +303,8 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" c.LastName, " +
 				" c.MiddleName " +
 			" from Subscription a" +
-				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
-				" LEFT OUTER JOIN Customers c on a.EmailAddrId=c.EmailAddrId " +
+				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
+				" LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.EmailAddrId " +
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
@@ -333,8 +333,8 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" c.LastName, " +
 				" c.MiddleName " +
 			" from Subscription a" +
-				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
-				" JOIN Customers c on a.EmailAddrId=c.EmailAddrId " +
+				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
+				" JOIN customer_tbl c on a.EmailAddrId=c.EmailAddrId " +
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
@@ -360,11 +360,11 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" a.Subscribed," +
 				" a.CreateTime " +
 			" from Subscription a " +
-				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
+				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? " +
-				" and not exists (select 1 from Customers where EmailAddrId=b.EmailAddrId) ";
+				" and not exists (select 1 from customer_tbl where EmailAddrId=b.EmailAddrId) ";
 		Object[] parms = new Object[] {listId, StatusId.ACTIVE.value(), Constants.Y};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SubscriptionVo>(SubscriptionVo.class));
@@ -377,7 +377,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" b.EmailAddr, " +
 				" b.AcceptHtml " +
 				" from Subscription a " +
-				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
+				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
 				" where a.EmailAddrId=? and a.ListId=?";
 		Object[] parms = new Object[] {addrId, listId};
 		try {
@@ -414,7 +414,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" b.EmailAddr, " +
 				" b.AcceptHtml " +
 				" from Subscription a " +
-				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
+				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
 				" and a.ListId=? and b.EmailAddr=?";
 		Object[] parms = new Object[] {listId, addr};
 		try {
@@ -434,7 +434,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" b.EmailAddr, " +
 				" b.AcceptHtml " +
 				" from Subscription a " +
-				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
+				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
 				" and a.EmailAddrId=?";
 		Object[] parms = new Object[] {addrId};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,
@@ -448,7 +448,7 @@ public class SubscriptionJdbcDao extends AbstractDao implements SubscriptionDao 
 				" b.EmailAddr, " +
 				" b.AcceptHtml " +
 				" from Subscription a " +
-				" JOIN EmailAddr b ON a.EmailAddrId=b.EmailAddrId " +
+				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
 				" and a.ListId=?";
 		Object[] parms = new Object[] {listId};
 		List<SubscriptionVo> list = getJdbcTemplate().query(sql, parms,

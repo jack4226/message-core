@@ -38,7 +38,7 @@ public class IdTokensTable extends CreateTableBase {
 			"MaxLength integer NOT NULL, " +
 			"UpdtTime datetime(3) NOT NULL, " +
 			"UpdtUserId char(10) NOT NULL, " +
-			"FOREIGN KEY (ClientId) REFERENCES Clients(ClientId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (ClientId) REFERENCES client_tbl(ClientId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (ClientId) " +
 			") ENGINE=InnoDB");

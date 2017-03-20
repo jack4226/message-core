@@ -37,7 +37,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			"from " +
-				"MsgInbox " +
+				"msg_inbox " +
 			" where msgId=? ";
 		Object[] parms = new Object[] {msgId};
 		try {
@@ -55,8 +55,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			"from " +
-				"MsgInbox " +
-			" where msgId = (select max(MsgId) from MsgInbox) ";
+				"msg_inbox " +
+			" where msgId = (select max(MsgId) from msg_inbox) ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		if (list.size() > 0) {
 			return list.get(0);
@@ -70,7 +70,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			"from " +
-				"MsgInbox where msgId >= (RAND() * (select max(msgId) from MsgInbox)) " +
+				"msg_inbox where msgId >= (RAND() * (select max(msgId) from msg_inbox)) " +
 			" order by msgId limit 1 ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		if (list.size() > 0) {
@@ -85,8 +85,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			"from " +
-				"MsgInbox " +
-			" where msgId = (select max(MsgId) from MsgInbox where MsgDirection = 'R') ";
+				"msg_inbox " +
+			" where msgId = (select max(MsgId) from msg_inbox where MsgDirection = 'R') ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		if (list.size() > 0) {
 			return list.get(0);
@@ -100,8 +100,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			"from " +
-				"MsgInbox " +
-			" where msgId = (select max(MsgId) from MsgInbox where MsgDirection = 'S') ";
+				"msg_inbox " +
+			" where msgId = (select max(MsgId) from msg_inbox where MsgDirection = 'S') ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		if (list.size() > 0) {
 			return list.get(0);
@@ -115,7 +115,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			" from " +
-				" MsgInbox " +
+				" msg_inbox " +
 			" where leadMsgId=? " +
 			" order by msgId";
 		Object[] parms = new Object[] {leadMsgId};
@@ -129,7 +129,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			" from " +
-				" MsgInbox " +
+				" msg_inbox " +
 			" where leadMsgId is not null and msgId != leadMsgId " +
 			" order by leadMsgId limit 1";
 		List<MsgInboxWebVo> list = getJdbcTemplate().query(sql, 
@@ -147,7 +147,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			" from " +
-				" MsgInbox " +
+				" msg_inbox " +
 			" where MsgRefId=? " +
 			" order by msgId";
 		Object[] parms = new Object[] {msgRefId};
@@ -169,9 +169,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	private List<MsgInboxVo> getByToAddrIdAndType(long addrId, AddressType type) {
 			String sql = 
 			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
-			" from MsgInbox a " +
-				" join MsgAddrs s on s.msgId=a.msgId and s.addrType=? " +
-				" join EmailAddr e on e.emailAddr=s.addrValue and e.emailAddrId=? " +
+			" from msg_inbox a " +
+				" join msg_address s on s.msgId=a.msgId and s.addrType=? " +
+				" join email_address e on e.emailAddr=s.addrValue and e.emailAddrId=? " +
 			" order by a.msgId";
 		Object[] parms = new Object[] {type.value(), addrId};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
@@ -192,9 +192,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	private List<MsgInboxVo> getByAddressAndType(String address, AddressType type) {
 		String sql = 
 			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
-			" from MsgInbox a " +
-				" join MsgAddrs s on s.msgId=a.msgId and s.addrType=? " +
-				" join EmailAddr e on e.emailAddr=s.addrValue and e.emailAddr=? " +
+			" from msg_inbox a " +
+				" join msg_address s on s.msgId=a.msgId and s.addrType=? " +
+				" join email_address e on e.emailAddr=s.addrValue and e.emailAddr=? " +
 			" order by a.msgId";
 		Object[] parms = new Object[] {type.value(), address};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms,
@@ -224,7 +224,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
 			" from " +
-				" MsgInbox " +
+				" msg_inbox " +
 			" where receivedTime>=? " +
 			" order by receivedTime desc limit 100";
 		Object[] parms = new Object[] {new Timestamp(date.getTime())};
@@ -253,7 +253,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select count(*) " +
 			" from " +
-				" MsgInbox " +
+				" msg_inbox " +
 			" where ReadCount=0 " +
 				" and MsgDirection=? " +
 				" and (StatusId is null OR StatusId!=?) ";
@@ -270,7 +270,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"select count(*) " +
 			" from " +
-				" MsgInbox " +
+				" msg_inbox " +
 			" where ReadCount=0 " +
 				" and MsgDirection=? " +
 				" and (StatusId is null OR StatusId!=?) ";
@@ -291,8 +291,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String whereSql = getWhereSqlForWeb(vo, parms);
 		String sql = 
 			"SELECT count(*) " +
-			" FROM MsgInbox a " + 
-			" JOIN EmailAddr b ON a.FromAddrId=b.EmailAddrId " +
+			" FROM msg_inbox a " + 
+			" JOIN email_address b ON a.FromAddrId=b.EmailAddrId " +
 			whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -373,8 +373,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				"ReadCount as OrigReadCount, " +
 				"a.StatusId as OrigStatusId " +
 			" FROM " +
-				"MsgInbox a " +
-				" JOIN EmailAddr b ON a.FromAddrId=b.EmailAddrId " +
+				"msg_inbox a " +
+				" JOIN email_address b ON a.FromAddrId=b.EmailAddrId " +
 				whereSql +
 			" order by MsgId " + fetchOrder +
 			" limit " + pageSize;
@@ -506,7 +506,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	public int update(MsgInboxWebVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgInboxVo);
-		String sql = MetaDataUtil.buildUpdateStatement("MsgInbox", msgInboxVo);
+		String sql = MetaDataUtil.buildUpdateStatement("msg_inbox", msgInboxVo);
 		
 		if (msgInboxVo.getOrigUpdtTime() != null) {
 			sql += " and UpdtTime=:origUpdtTime ";
@@ -538,7 +538,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		fields.add(msgInboxVo.getMsgId());
 		
 		String sql =
-			"update MsgInbox set " +
+			"update msg_inbox set " +
 				"UpdtTime=?, " +
 				"UpdtUserId=?, " +
 				"ReadCount=?, " +
@@ -634,7 +634,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		fields.add(msgInboxVo.getMsgId());
 		
 		String sql =
-			"update MsgInbox set " +
+			"update msg_inbox set " +
 				"UpdtTime=?, " +
 				"UpdtUserId=?, " +
 				"ReadCount=?, " +
@@ -670,7 +670,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		fields.add(msgInboxVo.getMsgId());
 		
 		String sql =
-			"update MsgInbox set " +
+			"update msg_inbox set " +
 				"UpdtTime=?, " +
 				"UpdtUserId=?, " +
 				"StatusId=? " +
@@ -703,7 +703,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		fields.add(msgInboxVo.getLeadMsgId());
 		
 		String sql =
-			"update MsgInbox set " +
+			"update msg_inbox set " +
 				"UpdtTime=?, " +
 				"UpdtUserId=?, " +
 				"StatusId=? " +
@@ -723,7 +723,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	public int update(MsgInboxVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgInboxVo);
-		String sql = MetaDataUtil.buildUpdateStatement("MsgInbox", msgInboxVo);
+		String sql = MetaDataUtil.buildUpdateStatement("msg_inbox", msgInboxVo);
 		if (msgInboxVo.getOrigUpdtTime() != null) {
 			sql += " and UpdtTime=:origUpdtTime ";
 		}
@@ -746,7 +746,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		
 		String sql = 
-			"delete from MsgInbox where msgId=? "; // TODO only refMsgId is null or orphaned
+			"delete from msg_inbox where msgId=? "; // TODO only refMsgId is null or orphaned
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -768,7 +768,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	public int insert(MsgInboxVo msgInboxVo) {
 		msgInboxVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgInboxVo);
-		String sql = MetaDataUtil.buildInsertStatement("MsgInbox", msgInboxVo);
+		String sql = MetaDataUtil.buildInsertStatement("msg_inbox", msgInboxVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		msgInboxVo.setOrigUpdtTime(msgInboxVo.getUpdtTime());
 		//msgInboxVo.setMsgId(getJdbcTemplate().queryForInt(getRowIdSql()));

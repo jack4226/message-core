@@ -43,7 +43,7 @@ public class MetaDataUtilTest  extends DaoTestBase {
 
 	@Test
 	public void testMetaData1() {
-		Table msg_inbox = MetaDataUtil.getTableMetaData("MsgInbox");
+		Table msg_inbox = MetaDataUtil.getTableMetaData("msg_inbox");
 		logger.info("Table Metadata1:" + PrintUtil.prettyPrint(msg_inbox, 2));
 		assertEquals("message", msg_inbox.getCatalog());
 		
@@ -74,7 +74,7 @@ public class MetaDataUtilTest  extends DaoTestBase {
 	
 	@Test
 	public void testMetaData2() {
-		Table msg_addrs = MetaDataUtil.getTableMetaData("MsgAddrs");
+		Table msg_addrs = MetaDataUtil.getTableMetaData("msg_address");
 		logger.info("Table Metadata2:" + PrintUtil.prettyPrint(msg_addrs, 2));
 		assertEquals("message", msg_addrs.getCatalog());
 		
@@ -100,9 +100,9 @@ public class MetaDataUtilTest  extends DaoTestBase {
 		String suffix = StringUtils.leftPad(new Random().nextInt(10000) + "", 4, ' ');
 		vo1.setUpdtUserId("Test_" + suffix);
 		
-		String updateSQL = MetaDataUtil.buildUpdateStatement("MsgInbox", vo1);
+		String updateSQL = MetaDataUtil.buildUpdateStatement("msg_inbox", vo1);
 		logger.info(updateSQL);
-		assertTrue(updateSQL.matches("Update MsgInbox set .* where MsgId\\=\\:msgId"));
+		assertTrue(updateSQL.matches("Update msg_inbox set .* where MsgId\\=\\:msgId"));
 		
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(vo1);
 		int rowsUpadted = new NamedParameterJdbcTemplate(mysqlDataSource).update(updateSQL, namedParameters);
@@ -119,11 +119,11 @@ public class MetaDataUtilTest  extends DaoTestBase {
 			return;
 		}
 		AttachmentsVo vo1 = list1.get(list1.size() - 1);
-		String updtSQL1 = MetaDataUtil.buildUpdateStatement("Attachments", vo1);
+		String updtSQL1 = MetaDataUtil.buildUpdateStatement("msg_attachment", vo1);
 		logger.info(updtSQL1);
-		assertTrue(updtSQL1.matches("Update Attachments set .* MsgId\\=\\:msgId.*"));
-		assertTrue(updtSQL1.matches("Update Attachments set .* AttchmntSeq\\=\\:attchmntSeq.*"));
-		assertTrue(updtSQL1.matches("Update Attachments set .* AttchmntDepth\\=\\:attchmntDepth.*"));
+		assertTrue(updtSQL1.matches("Update msg_attachment set .* MsgId\\=\\:msgId.*"));
+		assertTrue(updtSQL1.matches("Update msg_attachment set .* AttchmntSeq\\=\\:attchmntSeq.*"));
+		assertTrue(updtSQL1.matches("Update msg_attachment set .* AttchmntDepth\\=\\:attchmntDepth.*"));
 		
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(vo1);
 		String suffix = StringUtils.leftPad(new Random().nextInt(10000) + "", 4, ' ');
@@ -141,15 +141,15 @@ public class MetaDataUtilTest  extends DaoTestBase {
 
 	@Test
 	public void testInsert1() {
-		String insertSQL1 = MetaDataUtil.buildInsertStatement("MailingList", new MailingListVo());
+		String insertSQL1 = MetaDataUtil.buildInsertStatement("mailing_list", new MailingListVo());
 		logger.info(insertSQL1);
-		assertTrue(insertSQL1.matches("Insert INTO MailingList \\(.*\\) VALUES \\(.*\\)"));
+		assertTrue(insertSQL1.matches("Insert INTO mailing_list \\(.*\\) VALUES \\(.*\\)"));
 		
 		List<MsgHeadersVo> hdrList1 = msgHdrsDao.getRandomRecord();
 		assertFalse(hdrList1.isEmpty());
 		MsgHeadersVo vo1 = hdrList1.get(hdrList1.size() - 1);
-		String insertSQL2 = MetaDataUtil.buildInsertStatement("MsgHeaders", vo1);
-		logger.info("MsgHeaders Insert: " + insertSQL2);
+		String insertSQL2 = MetaDataUtil.buildInsertStatement("msg_header", vo1);
+		logger.info("msg_header Insert: " + insertSQL2);
 		
 		String suffix = StringUtils.leftPad(new Random().nextInt(10000) + "", 4, ' ');
 		String headerName = "Test_Header_" + suffix;
@@ -175,7 +175,7 @@ public class MetaDataUtilTest  extends DaoTestBase {
 			return;
 		}
 		AttachmentsVo vo1 = list1.get(list1.size() - 1);
-		String isrtSQL1 = MetaDataUtil.buildInsertStatement("Attachments", vo1);
+		String isrtSQL1 = MetaDataUtil.buildInsertStatement("msg_attachment", vo1);
 		
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(vo1);
 		int seqBefore = vo1.getAttchmntSeq();

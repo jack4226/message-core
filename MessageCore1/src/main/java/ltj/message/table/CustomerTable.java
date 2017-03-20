@@ -26,14 +26,14 @@ public class CustomerTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE Customers");
-			System.out.println("Dropped Customers Table...");
+			stm.execute("DROP TABLE customer_tbl");
+			System.out.println("Dropped customer_tbl Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE CustSequence");
-			System.out.println("Dropped CustSequence Table...");
+			stm.execute("DROP TABLE cust_sequence");
+			System.out.println("Dropped cust_sequence Table...");
 		}
 		catch (SQLException e) {
 		}
@@ -46,7 +46,7 @@ public class CustomerTable extends CreateTableBase {
 
 	void createCustomerTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE Customers ( "
+			stm.execute("CREATE TABLE customer_tbl ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "CustId varchar(16) NOT NULL, "	//1
 					+ "ClientId varchar(16) NOT NULL, "
@@ -94,10 +94,10 @@ public class CustomerTable extends CreateTableBase {
 					+ "INDEX (ClientId), "
 					+ "INDEX (SsnNumber),"
 					+ "UNIQUE INDEX (EmailAddrId), "
-					+ "FOREIGN KEY (ClientId) REFERENCES Clients(ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES EmailAddr(EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE "
+					+ "FOREIGN KEY (ClientId) REFERENCES client_tbl(ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (EmailAddrId) REFERENCES email_address(EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created Customers Table...");
+			System.out.println("Created customer_tbl Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -107,11 +107,11 @@ public class CustomerTable extends CreateTableBase {
 
 	void createCustSequenceTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE CustSequence ( " +
+			stm.execute("CREATE TABLE cust_sequence ( " +
 			"SeqId bigint NOT NULL " +
 			") ENGINE=MyISAM"); // table-level locking ?
-			System.out.println("Created CustSequence Table...");
-			stm.execute("INSERT INTO CustSequence (SeqId) VALUES(0)");
+			System.out.println("Created cust_sequence Table...");
+			stm.execute("INSERT INTO cust_sequence (SeqId) VALUES(0)");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -126,7 +126,7 @@ public class CustomerTable extends CreateTableBase {
 		// 41 fields
 		try {
 			PreparedStatement ps = con
-					.prepareStatement("INSERT INTO Customers (" 
+					.prepareStatement("INSERT INTO customer_tbl (" 
 							+ "CustId, "	//1
 							+ "ClientId, "
 							+ "SsnNumber, "

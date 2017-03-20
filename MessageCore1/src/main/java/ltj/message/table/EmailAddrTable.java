@@ -71,14 +71,14 @@ public class EmailAddrTable extends CreateTableBase {
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MailingList");
-			System.out.println("Dropped MailingList Table...");
+			stm.execute("DROP TABLE mailing_list");
+			System.out.println("Dropped mailing_list Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE EmailAddr");
-			System.out.println("Dropped EmailAddr Table...");
+			stm.execute("DROP TABLE email_address");
+			System.out.println("Dropped email_address Table...");
 		}
 		catch (SQLException e) {
 		}
@@ -86,7 +86,7 @@ public class EmailAddrTable extends CreateTableBase {
 	
 	void createEmailTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE EmailAddr ( "
+			stm.execute("CREATE TABLE email_address ( "
 					+ "EmailAddrId bigint AUTO_INCREMENT NOT NULL, "
 					+ "EmailAddr varchar(255) NOT NULL, "
 					+ "OrigEmailAddr varchar(255) NOT NULL, "
@@ -103,7 +103,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "PRIMARY KEY (EmailAddrId), "
 					+ "UNIQUE INDEX (EmailAddr) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created EmailAddr Table...");
+			System.out.println("Created email_address Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -113,12 +113,12 @@ public class EmailAddrTable extends CreateTableBase {
 
 	void createMailingListTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MailingList ( "
+			stm.execute("CREATE TABLE mailing_list ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "ListId varchar(8) NOT NULL, "
 					+ "DisplayName varchar(50), "
 					+ "AcctUserName varchar(100) NOT NULL, " 
-						// left part of email address, right part from Clients table's DomainName
+						// left part of email address, right part from client_tbl table's DomainName
 					+ "Description varchar(500), "
 					+ "ClientId varchar(16) NOT NULL, "
 					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " 
@@ -128,11 +128,11 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "CreateTime datetime(3) NOT NULL, "
 					+ "ListMasterEmailAddr varchar(255), "
 					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (ClientId) REFERENCES Clients (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (AcctUserName), "
 					+ "UNIQUE INDEX (ListId) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created MailingList Table...");
+			System.out.println("Created mailing_list Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -154,8 +154,8 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "LastOpenTime datetime(3), "
 					+ "ClickCount int NOT NULL DEFAULT 0, "
 					+ "LastClickTime datetime(3), "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (ListId) REFERENCES MailingList (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (EmailAddrId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (ListId) REFERENCES mailing_list (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "PRIMARY KEY (EmailAddrId,ListId) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created Subscription Table...");
@@ -211,7 +211,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 					+ "Schedules blob, " // store a java object
 					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (ListId) REFERENCES MailingList (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (ListId) REFERENCES mailing_list (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "UNIQUE INDEX (TemplateId) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created EmailTemplate Table...");
@@ -231,7 +231,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "Comments varchar(500) NOT NULL, "
 					+ "AddTime datetime(3) NOT NULL, "
 					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (EmailAddrId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (EmailAddrId) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created UnsubComments Table...");
@@ -274,10 +274,10 @@ BEGIN
     into oEmailAddrId, oEmailAddr, oOrigEmailAddr, oStatusId, oStatusChangeTime, oStatusChangeUserId,
           oBounceCount, oLastBounceTime, oLastSentTime, oLastRcptTime, oAcceptHtml,
           oUpdtTime, oUpdtUserId
-    from EmailAddr where EmailAddr=TRIM(iEmailAddr);
+    from email_address where EmailAddr=TRIM(iEmailAddr);
   select now() into currTime;
   if oEmailAddr is NULL then
-    insert into EmailAddr (EmailAddr, OrigEmailAddr, StatusChangeTime,
+    insert into email_address (EmailAddr, OrigEmailAddr, StatusChangeTime,
                           StatusChangeUserId, UpdtTime, UpdtUserId)
       values (iEmailAddr, iEmailAddr, currTime, 'StoredProc', currTime, 'StoredProc');
     select last_insert_id() into oEmailAddrId;
@@ -331,10 +331,10 @@ DELIMITER ;
 				"    into oEmailAddrId, oEmailAddr, oOrigEmailAddr, oStatusId, oStatusChangeTime, oStatusChangeUserId," + LF +
 				"          oBounceCount, oLastBounceTime, oLastSentTime, oLastRcptTime, oAcceptHtml," + LF +
 				"          oUpdtTime, oUpdtUserId" + LF +
-				"    from EmailAddr where EmailAddr=TRIM(iEmailAddr);" + LF +
+				"    from email_address where EmailAddr=TRIM(iEmailAddr);" + LF +
 				"  select now() into currTime;" + LF +
 				"  if oEmailAddr is NULL then" + LF +
-				"    insert into EmailAddr (EmailAddr, OrigEmailAddr, StatusChangeTime," + LF +
+				"    insert into email_address (EmailAddr, OrigEmailAddr, StatusChangeTime," + LF +
 				"                          StatusChangeUserId, UpdtTime, UpdtUserId)" + LF +
 				"      values (iEmailAddr, iOrigEmailAddr, currTime, 'StoredProc', currTime, 'StoredProc');" + LF +
 				"    select last_insert_id() into oEmailAddrId;" + LF +
@@ -377,7 +377,7 @@ DELIMITER ;
 	private void insertEmailAddrs() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO EmailAddr " +
+				"INSERT INTO email_address " +
 				"(EmailAddr," +
 				"OrigEmailAddr," +
 				"StatusId," +
@@ -405,46 +405,7 @@ DELIMITER ;
 				ps.setString(11, Constants.DEFAULT_USER_ID);
 				ps.execute();
 			}
-			
-//			ps.setString(1, "jsmith@test.com");
-//			ps.setString(2, "jsmith@test.com");
-//			ps.setString(3, "A");
-//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(5, "testuser 1");
-//			ps.setInt(6, 0);
-//			ps.setTimestamp(7, null);
-//			ps.setTimestamp(8, null);
-//			ps.setTimestamp(9, null);
-//			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(11, Constants.DEFAULT_USER_ID);
-//			ps.execute();
-//			
-//			ps.setString(1, "test@test.com");
-//			ps.setString(2, "test@test.com");
-//			ps.setString(3, "A");
-//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(5, "testuser 2");
-//			ps.setInt(6, 0);
-//			ps.setTimestamp(7, null);
-//			ps.setTimestamp(8, null);
-//			ps.setTimestamp(9, null);
-//			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(11, Constants.DEFAULT_USER_ID);
-//			ps.execute();
-//			
-//			ps.setString(1, "testuser@test.com");
-//			ps.setString(2, "testuser@test.com");
-//			ps.setString(3, "A");
-//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(5, "testuser 3");
-//			ps.setInt(6, 0);
-//			ps.setTimestamp(7, null);
-//			ps.setTimestamp(8, null);
-//			ps.setTimestamp(9, null);
-//			ps.setTimestamp(10, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(11, Constants.DEFAULT_USER_ID);
-//			ps.execute();
-			
+						
 			ps.close();
 			System.out.println("Inserted all rows...");
 		} catch (SQLException e) {
@@ -456,7 +417,7 @@ DELIMITER ;
 	private void insertMaillingList() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO MailingList " +
+				"INSERT INTO mailing_list " +
 				"(ListId," +
 				"DisplayName," +
 				"AcctUserName," +
@@ -480,35 +441,6 @@ DELIMITER ;
 					ps.execute();
 				}
 			}
-//			ps.setString(1, Constants.DEMOLIST1_NAME);
-//			ps.setString(2, "Sample List 1");
-//			ps.setString(3, "demolist1");
-//			ps.setString(4, "Sample mailing list 1");
-//			ps.setString(5, Constants.DEFAULT_CLIENTID);
-//			ps.setString(6, StatusId.ACTIVE.value());
-//			ps.setString(7, Constants.N);
-//			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
-//			
-//			ps.setString(1, Constants.DEMOLIST2_NAME);
-//			ps.setString(2, "Sample List 2");
-//			ps.setString(3, "demolist2");
-//			ps.setString(4, "Sample mailing list 2");
-//			ps.setString(5, Constants.DEFAULT_CLIENTID);
-//			ps.setString(6, StatusId.ACTIVE.value());
-//			ps.setString(7, Constants.N);
-//			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
-//			
-//			ps.setString(1, "SYSLIST1");
-//			ps.setString(2, "NOREPLY Empty List");
-//			ps.setString(3, "noreply");
-//			ps.setString(4, "Auto-Responder, used by Subscription and confirmation Templates");
-//			ps.setString(5, Constants.DEFAULT_CLIENTID);
-//			ps.setString(6, StatusId.INACTIVE.value());
-//			ps.setString(7, Constants.Y);
-//			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
@@ -521,7 +453,7 @@ DELIMITER ;
 	private void insertProdMaillingList() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO MailingList " +
+				"INSERT INTO mailing_list " +
 				"(ListId," +
 				"DisplayName," +
 				"AcctUserName," +
@@ -546,16 +478,6 @@ DELIMITER ;
 				}
 			}
 
-//			ps.setString(1, "ORDERLST");
-//			ps.setString(2, "Sales ORDER List");
-//			ps.setString(3, "support");
-//			ps.setString(4, "Auto-Responder, used by order processing");
-//			ps.setString(5, Constants.DEFAULT_CLIENTID);
-//			ps.setString(6, StatusId.INACTIVE.value());
-//			ps.setString(7, Constants.Y);
-//			ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
-			
 			ps.close();
 			System.out.println("Inserted all rows...");
 		} catch (SQLException e) {
@@ -586,36 +508,6 @@ DELIMITER ;
 					ps.execute();
 				}
 			}
-			
-//			ps.setLong(1, 1);
-//			ps.setString(2, Constants.DEMOLIST1_NAME);
-//			ps.setString(3, Constants.Y);
-//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
-//			
-//			ps.setLong(1, 2);
-//			ps.setString(2, Constants.DEMOLIST1_NAME);
-//			ps.setString(3, Constants.Y);
-//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
-//			
-//			ps.setLong(1, 3);
-//			ps.setString(2, Constants.DEMOLIST1_NAME);
-//			ps.setString(3, Constants.Y);
-//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
-//			
-//			ps.setLong(1, 1);
-//			ps.setString(2, Constants.DEMOLIST2_NAME);
-//			ps.setString(3, Constants.Y);
-//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
-//			
-//			ps.setLong(1, 2);
-//			ps.setString(2, Constants.DEMOLIST2_NAME);
-//			ps.setString(3, Constants.Y);
-//			ps.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-//			ps.execute();
 			
 			ps.close();
 			System.out.println("Inserted all rows...");
@@ -652,246 +544,7 @@ DELIMITER ;
 				ps.setString(9, var.getVariableProcName());
 				ps.execute();
 			}
-			
-//			ps.setString(1, "CustomerName");
-//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-//			ps.setString(3, "customers");
-//			ps.setString(4, "FirstName,LastName");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.N);
-//			ps.setString(7, "Valued Customer");
-//			ps.setString(8, "SELECT CONCAT(c.FirstName, ' ', c.LastName) as ResultStr " +
-//					"FROM customers c, emailaddr e " +
-//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-//			ps.setString(9, "ltj.message.external.CustomerNameResolver");
-//			ps.execute();
-//			
-//			ps.setString(1, "CustomerFirstName");
-//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-//			ps.setString(3, "customers");
-//			ps.setString(4, "FirstName");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.N);
-//			ps.setString(7, "Valued Customer");
-//			ps.setString(8, "SELECT c.FirstName as ResultStr " +
-//					"FROM customers c, emailaddr e " +
-//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-//			ps.setString(9, "ltj.message.external.CustomerNameResolver");
-//			ps.execute();
-//			
-//			ps.setString(1, "CustomerLastName");
-//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-//			ps.setString(3, "customers");
-//			ps.setString(4, "LastName");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.N);
-//			ps.setString(7, "Valued Customer");
-//			ps.setString(8, "SELECT c.LastName as ResultStr " +
-//					"FROM customers c, emailaddr e " +
-//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-//			ps.setString(9, "ltj.message.external.CustomerNameResolver");
-//			ps.execute();
-//			
-//			ps.setString(1, "CustomerAddress");
-//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-//			ps.setString(3, "customers");
-//			ps.setString(4, "StreetAddress");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.N);
-//			ps.setString(7, "");
-//			ps.setString(8, "SELECT CONCAT_WS(',',c.StreetAddress2,c.StreetAddress) as ResultStr " +
-//					"FROM customers c, emailaddr e " +
-//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "CustomerCityName");
-//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-//			ps.setString(3, "customers");
-//			ps.setString(4, "CityName");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.N);
-//			ps.setString(7, "");
-//			ps.setString(8, "SELECT c.CityName as ResultStr " +
-//					"FROM customers c, emailaddr e " +
-//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "CustomerStateCode");
-//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-//			ps.setString(3, "customers");
-//			ps.setString(4, "StateCode");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.N);
-//			ps.setString(7, "");
-//			ps.setString(8, "SELECT CONCAT_WS(',',c.StateCode,c.ProvinceName) as ResultStr " +
-//					"FROM customers c, emailaddr e " +
-//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "CustomerZipCode");
-//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-//			ps.setString(3, "customers");
-//			ps.setString(4, "ZipCode");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.N);
-//			ps.setString(7, "");
-//			ps.setString(8, "SELECT CONCAT_WS('-',c.ZipCode5,ZipCode4) as ResultStr " +
-//					"FROM customers c, emailaddr e " +
-//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "CustomerCountry");
-//			ps.setString(2, EmailVariableDao.CUSTOMER_VARIABLE);
-//			ps.setString(3, "customers");
-//			ps.setString(4, "Country");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.N);
-//			ps.setString(7, "");
-//			ps.setString(8, "SELECT c.Country as ResultStr " +
-//					"FROM customers c, emailaddr e " +
-//					"where e.emailaddrId=c.emailAddrId and e.emailAddrId=?;");
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "EmailOpenCountImgTag");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "<img src='${WebSiteUrl}/msgopen.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "EmailClickCountImgTag");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "<img src='${WebSiteUrl}/msgclick.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "EmailUnsubscribeImgTag");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "<img src=='${WebSiteUrl}/msgunsub.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}' alt='' height='1' width='1'>");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "EmailTrackingTokens");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "FooterWithUnsubLink");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, LF + "<p>To unsubscribe from this mailing list, " + LF +
-//					"<a target='_blank' href='${WebSiteUrl}/MsgUnsubPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}'>click here</a>.</p>"
-//					+ LF);
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "FooterWithUnsubAddr");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, LF + "To unsubscribe from this mailing list, send an e-mail to: ${MailingListAddress}" + LF +
-//					"with \"unsubscribe\" (no quotation marks) in the subject." + LF);
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "SubscribeURL");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "${WebSiteUrl}/subscribe.jsp?sbsrid=${SubscriberAddressId}");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "ConfirmationURL");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "${WebSiteUrl}/confirmsub.jsp?sbsrid=${_EncodedSubcriberId}&listids=${_SubscribedListIds}&sbsraddr=${SubscriberAddress}");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "UnsubscribeURL");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "${WebSiteUrl}/unsubscribe.jsp?sbsrid=${_EncodedSubcriberId}&listids=${_SubscribedListIds}&sbsraddr=${SubscriberAddress}");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "UserProfileURL");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "${WebSiteUrl}/userprofile.jsp?sbsrid=${SubscriberAddressId}");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "TellAFriendURL");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "${WebSiteUrl}/referral.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-//			
-//			ps.setString(1, "SiteLogoURL");
-//			ps.setString(2, EmailVariableDao.SYSTEM_VARIABLE);
-//			ps.setString(3, "");
-//			ps.setString(4, "");
-//			ps.setString(5, StatusId.ACTIVE.value());
-//			ps.setString(6, Constants.Y);
-//			ps.setString(7, "${WebSiteUrl}/images/logo.gif");
-//			ps.setString(8, null);
-//			ps.setString(9, null);
-//			ps.execute();
-			
+						
 			ps.close();
 			System.out.println("Inserted all rows...");
 		} catch (SQLException e) {
@@ -945,327 +598,7 @@ DELIMITER ;
 				}
 				ps.execute();
 			}
-			
-//			ps.setString(1, "SampleNewsletter1");
-//			ps.setString(2, Constants.DEMOLIST1_NAME);
-//			ps.setString(3, "Sample newsletter to ${SubscriberAddress} with Open/Click/Unsubscribe tracking");
-//			ps.setString(4,
-//					"Dear ${CustomerName},<p/>" + LF +
-//					"This is a sample newsletter message for a web-based mailing list. With a web-based " + LF +
-//					"mailing list, people who want to subscribe to the list must visit a web page and " + LF +
-//					"fill out a form with their email address. After submitting the form, they will " + LF +
-//					"receive a confirmation letter in their email and must activate the subscription " + LF +
-//					"by following the steps in the email (usually a simple click).<p/>" + LF +
-//					"Unsubscription information will be included in the newsletters they receive. People " + LF +
-//					"who want to unsubscribe can do so by simply following the steps in the newsletter.<p/>" + LF +
-//					"Date sent: ${CurrentDate} <p/>" + LF +
-//					"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}, SubscriberAddressId: ${SubscriberAddressId}<p/>" + LF +
-//					"Contact Email: ${ContactEmailAddress}<p>" + LF +
-//					"<a target='_blank' href='$%7BWebSiteUrl%7D/SamplePromoPage.jsp?msgid=$%7BBroadcastMsgId%7D&listid=$%7BMailingListId%7D&sbsrid=$%7BSubscriberAddressId%7D'>Click here</a> to see our promotions<p/>" + LF +
-//					"${FooterWithUnsubLink}<br/>" +
-//					"${EmailOpenCountImgTag}"
-//					);
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.PERSONALIZED.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.N);
-//			ps.setString(9, " "); // use system default
-//			SchedulesBlob blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "SampleNewsletter2");
-//			ps.setString(2, Constants.DEMOLIST2_NAME);
-//			ps.setString(3, "Sample HTML newsletter to ${SubscriberAddress}");
-//			ps.setString(4, "Dear ${SubscriberAddress},<p/>" + LF +
-//				"This is a sample HTML newsletter message for a traditional mailing list. " + LF +
-//				"With a traditional mailing list, people who want to subscribe to the list " + LF +
-//				"must send an email from their account to the mailing list address with " + LF +
-//				"\"subscribe\" in the email subject.<p/>" + LF +
-//				"Unsubscribing from a traditional mailing list is just as easy; simply send " + LF +
-//				"an email to the mailing list address with \"unsubscribe\" in subject.<p/>" + LF + 
-//				"The mailing list address for this newsletter is: ${MailingListAddress}.<p/>" + LF +
-//				"Date this newsletter is sent: ${CurrentDate}.<p/>" + LF +
-//				"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}<p/>" + LF +
-//				"Contact Email: ${ContactEmailAddress}<p/>" + LF +
-//				"<a target='_blank' href='$%7BWebSiteUrl%7D/SamplePromoPage.jsp?msgid=$%7BBroadcastMsgId%7D&listid=$%7BMailingListId%7D&sbsrid=$%7BSubscriberAddressId%7D'>Click here</a> to see our promotions<p/>" + LF +
-//				"${FooterWithUnsubAddr}<br/>" +
-//				"${EmailOpenCountImgTag}");
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.TRADITIONAL.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.N);
-//			ps.setString(9, " "); // use system default
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "SampleNewsletter3");
-//			ps.setString(2, Constants.DEMOLIST2_NAME);
-//			ps.setString(3, "Sample Plain text newsletter to ${SubscriberAddress}");
-//			ps.setString(4, "Dear ${SubscriberAddress}," + LF + LF + 
-//				"This is a sample text newsletter message for a traditional mailing list." + LF +
-//				"With a traditional mailing list, people who want to subscribe to the list " + LF +
-//				"must send an email from their account to the mailing list address with " + LF +
-//				"\"subscribe\" in the email subject." + LF + LF + 
-//				"Unsubscribing from a traditional mailing list is just as easy; simply send " + LF +
-//				"an email to the mailing list address with \"unsubscribe\" in subject." + LF + LF +
-//				"Date sent: ${CurrentDate}" + LF + LF +
-//				"BroadcastMsgId: ${BroadcastMsgId}, ListId: ${MailingListId}" + LF + LF +
-//				"Contact Email: ${ContactEmailAddress}" + LF + LF +
-//				"To see our promotions, copy and paste the following link in your browser:" + LF +
-//				"${WebSiteUrl}/SamplePromoPage.jsp?msgid=${BroadcastMsgId}&listid=${MailingListId}&sbsrid=${SubscriberAddressId}" + LF +
-//				"${FooterWithUnsubAddr}");
-//			ps.setString(5, Constants.N);
-//			ps.setString(6, MailingListType.TRADITIONAL.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.N);
-//			ps.setString(9, " "); // use system default
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "SubscriptionConfirmation");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "Request for subscription confirmation");
-//			ps.setString(4, 
-//					"Dear ${SubscriberAddress},<br/>" + LF +
-//					"This is an automatically generated message to confirm that you have " + LF +
-//					"submitted request to add your email address to the following mailing lists:<br/>" + LF +
-//					"<pre>${_RequestedMailingLists}</pre>" + LF +
-//					"If this is correct, please <a href='$%7BConfirmationURL%7D' target='_blank'>click here</a> " + LF +
-//					"to confirm your subscription.<br/>" + LF +
-//					"If this is incorrect, you do not need to do anything, simply delete this message.<p/>" + LF +
-//					"Thank you" + LF
-//					);
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.TRADITIONAL.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.Y);
-//			ps.setString(9, Constants.N);
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "SubscriptionWelcomeLetter");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "Your subscription has been confirmed");
-//			ps.setString(4, 
-//					"Dear ${SubscriberAddress},<br/>" + LF +
-//					"Welcome to our mailing lists. Your email address has been added to the" + LF +
-//					"following mailing lists:<br/>" + LF +
-//					"<pre>${_SubscribedMailingLists}</pre>" + LF +
-//					"Please keep this email for latter reference.<p/>" + LF +
-//					"To unsubscribe please <a href='$%7BUnsubscribeURL%7D' target='_blank'>click here</a> " + LF +
-//					"and follow the steps.<br/>" + LF + LF +
-//					"To update your profile please <a href='$%7BUserProfileURL%7D' target='_blank'>click here</a>.<p/>" + LF +
-//					"Thank you<br/>" + LF
-//					);
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.TRADITIONAL.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.Y);
-//			ps.setString(9, Constants.N);
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "UnsubscriptionLetter");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "You have unsubscribed from our Newsletter");
-//			ps.setString(4, 
-//					"Dear ${SubscriberAddress},<br/>" + LF +
-//					"Goodbye from our Newsletter, sorry to see you go.<br/>" + LF +
-//					"You have been unsubscribed from the following newsletters:<br/>" + LF +
-//					"<pre>${_UnsubscribedMailingLists}</pre>" + LF +
-//					"If this is an error, you can re-subscribe. Please " +
-//					"<a href='$%7BSubscribeURL%7D' target='_blank'>click here</a>" + LF +
-//					" and follow the steps.<p/>" + LF +
-//					"Thank you<br/>" + LF
-//					);
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.TRADITIONAL.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.Y);
-//			ps.setString(9, Constants.N);
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "UserProfileChangeLetter");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "[notify] Changes of user profile details");
-//			ps.setString(4, 
-//					"Dear ${CustomerName},<br/>" + LF +
-//					"This message is to inform you of a change of your user profile details" + LF +
-//					"on our newsletter database. You are currently subscribed to our following" + LF +
-//					"newsletters:<br/>" + LF +
-//					"<pre>${_SubscribedMailingLists}</pre>" + LF +
-//					"The information on our system for you is as follows:<br/>" + LF +
-//					"<pre>${_UserProfileData}</pre>" + LF +
-//					"If this is not correct, please update your information by " + LF +
-//					"<a href='$%7BUserProfileURL%7D' target='_blank'>visiting this web page</a>.<p/>" + LF +
-//					"Thank you<br/>" + LF
-//					);
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.PERSONALIZED.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.Y);
-//			ps.setString(9, " "); // use system default
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "EmailAddressChangeLetter");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "[notify] Change of your email address");
-//			ps.setString(4, 
-//					"Dear ${CustomerName},<br/>" + LF +
-//					"When updating your user profile details, your email address has changed.<br/>" + LF +
-//					"Please confirm your new email address by " +
-//					"<a href='$%7BConfirmationURL%7D' target='_blank'>visiting this web page</a>.<br/>" + LF +
-//					"If this is not correct, " + LF +
-//					"<a href='$%7BUserProfileURL%7D' target='_blank'>click here</a> to update your information.<p/>" + LF +
-//					"Thank you<br/>" + LF
-//					);
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.PERSONALIZED.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.Y);
-//			ps.setString(9, " "); // use system default
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "TellAFriendLetter");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "A web site recommendation from ${_ReferrerName}");
-//			ps.setString(4, 
-//					"Dear ${_FriendsEmailAddress},<p/>" + LF +
-//					"${_ReferrerName}, whose email address is ${_ReferrerEmailAddress} thought you " + LF +
-//					"may be interested in this web page.<p/>" + LF +
-//					"<a target='_blank' href='$%7BWebSiteUrl%7D'>${WebSiteUrl}</a><p/>" + LF +
-//					"${_ReferrerName} has used our Tell-a-Friend form to send you this note.<p/>" + LF +
-//					"${_ReferrerComments}" +
-//					"We look forward to your visit!<br/>" + LF
-//					);
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.PERSONALIZED.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.Y);
-//			ps.setString(9, Constants.N); // do not embed email id
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "SubscribeByEmailReply");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "You have subscribed to mailing list ${MailingListName}");
-//			ps.setString(4, 
-//				"Dear ${SubscriberAddress}," + LF + LF +
-//				"This is an automatically generated message to confirm that you have" + LF +
-//				"subscribed to our mailing list: ${MailingListName}" + LF + LF +
-//				"To ensure that you continue to receive e-mails from ${DomainName} in your " + LF +
-//				"inbox, you can add the sender of this e-mail to your address book or white list." + LF + LF +
-//				"If this in incorrect, you can un-subscribe from this mailing list." + LF +
-//				"Simply send an e-mail to: ${MailingListAddress}" + LF +
-//				"with \"unsubscribe\" (no quotation marks) in your email subject." + LF);
-//			ps.setString(5, Constants.N);
-//			ps.setString(6, MailingListType.TRADITIONAL.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.Y);
-//			ps.setString(9, " "); // use system default
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "SubscribeByEmailReplyHtml");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "You have subscribed to ${MailingListName} at ${DomainName}");
-//			ps.setString(4, 
-//				"Dear ${SubscriberAddress},<br>" + LF +
-//				"This is an automatically generated message to confirm that you have " + LF +
-//				"subscribed to our mailing list: <b>${MailingListName}</b>.<br>" + LF +
-//				"To ensure that you continue to receive e-mails from ${DomainName} in your " + LF +
-//				"inbox, you can add the sender of this e-mail to your address book or white list.<br>" + LF +
-//				"If you signed up for this subscription in error, you can un-subscribe." + LF +
-//				"Simply send an e-mail to <a href='mailto:$%7BMailingListAddress%7D' target='_blank'>${MailingListAddress}</a>" + LF +
-//				"with \"unsubscribe\" (no quotation marks) in your email subject.<br>" + LF);
-//			ps.setString(5, Constants.Y);
-//			ps.setString(6, MailingListType.TRADITIONAL.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.Y);
-//			ps.setString(9, " "); // use system default
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-			
+						
 			ps.close();
 			System.out.println("Inserted EmailTemplate...");
 		} catch (SQLException e) {
@@ -1343,109 +676,6 @@ DELIMITER ;
 				ps.execute();
 			}
 			
-//			ps.setString(1, "EmailsphereOrderReceipt");
-//			ps.setString(2, "ORDERLST");
-//			ps.setString(3, "Emailsphere Purchase Receipt");
-//			ps.setString(4,
-//					"Dear ${_BillingFirstName}," + LF + LF +
-//					"Thank you for your recent purchase from Emailsphere, your purchase, as described below, has been completed." + LF + LF +
-//					"Order number: ${_OrderNumber}" + LF +
-//					"Order Date: ${_OrderDate}" + LF + LF +
-//					"Billing Information:" + LF +
-//					"${_BillingName}" + LF +
-//					"${_BillingStreetAddress}" + LF +
-//					"${_BillingCityStateZip}" + LF + LF +
-//					"Item purchased: Emailsphere enterprise server." + LF + 
-//					"Price: ${_UnitPrice}" + LF +
-//					"Tax:   ${_Tax}" + LF +
-//					"Total Price: ${_TotalPrice}" + LF + LF +
-//					"Billed to ${_CardTypeName} ending in ${_CardNumberLast4}: ${_TotalPrice}" + LF + LF +
-//					"Please contact ${MailingListAddress} with any questions or concerns regarding this transaction." + LF + LF +
-//					"Your product key is: ${_ProductKey}" + LF +
-//					"Please login to your Emailsphere system management console, click \"Enter Product Key\", and copy this key to the input field and submit." + LF + LF +
-//					"If you have any technical questions, please visit our contact us page by point your browser to:" + LF +
-//					"${_ContactUsUrl}" + LF + LF +
-//					"Thank you for your purchase!" + LF + LF +
-//					"Emailsphere Team" + LF +
-//					"Legacy System Solutions, LLC" + LF
-//					);
-//			ps.setString(5, Constants.N);
-//			ps.setString(6, MailingListType.PERSONALIZED.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.N);
-//			ps.setString(9, " "); // use system default
-//			SchedulesBlob blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//			
-//			ps.setString(1, "EmailsphereOrderException");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "Important Notice: Your Emailsphere Order # ${_OrderNumber}");
-//			ps.setString(4,
-//					"Regarding Order ${_OrderNumber} you placed on ${_OrderDate} from Emailsphere.com" + LF +
-//					"1 Emailsphere Enterprise Server" + LF + LF +
-//					"Greetings from Emailsphere.com," + LF + LF +
-//					"Your credit card payment for the above transaction could not be completed." + LF +
-//					"An issuing bank will often decline an attempt to charge a credit card if" + LF +
-//					"the name, expiration date, or ZIP Code you entered at Emailsphere.com does" + LF +
-//					"not exactly match the bank's information." + LF + LF +
-//					"Valid payment information must be received within 3 days, otherwise your" + LF + 
-//					"order will be canceled." + LF + LF +
-//					"Once you have confirmed your account information with your issuing bank," + LF +
-//					"please follow the link below to resubmit your payment." + LF + LF +
-//					"http://www.emailsphere.com/es/edit.html/?orderID=${_OrderNumber}" + LF + LF +
-//					"We hope that you are able to resolve this issue promptly." + LF + LF +
-//					"Please note: This e-mail was sent from a notification-only address that" + LF +
-//					"cannot accept incoming e-mail. Please do not reply to this message." + LF + LF +
-//					"Thank you for shopping at Emailsphere.com." + LF + LF +
-//					"Emailsphere.com Customer Service" + LF +
-//					"http://www.emailsphere.com" + LF
-//					);
-//			ps.setString(5, Constants.N);
-//			ps.setString(6, MailingListType.PERSONALIZED.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.N);
-//			ps.setString(9, " "); // use system default
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//
-//			ps.setString(1, "EmailsphereInternalAlert");
-//			ps.setString(2, "SYSLIST1");
-//			ps.setString(3, "Notify: Alert from Emailsphere.com");
-//			ps.setString(4,
-//					"Internal error or exception caught from Emailsphere.com" + LF + LF +
-//					"Time: ${_DateTime}" + LF +
-//					"Module: ${_ModuleName}" + LF +
-//					"Error: ${_Error}" + LF
-//					);
-//			ps.setString(5, Constants.N);
-//			ps.setString(6, MailingListType.TRADITIONAL.value());
-//			ps.setString(7, MLDeliveryType.ALL_ON_LIST.value());
-//			ps.setString(8, Constants.N);
-//			ps.setString(9, " "); // use system default
-//			blob = new SchedulesBlob();
-//			try {
-//				byte[] baosarray = BlobUtil.objectToBytes(blob);
-//				ps.setBytes(10, baosarray);
-//			}
-//			catch (IOException e) {
-//				throw new SQLException("IOException caught - " + e.toString());
-//			}
-//			ps.execute();
-//
 			ps.close();
 			System.out.println("Inserted Product EmailTemplate...");
 		} catch (SQLException e) {
@@ -1485,16 +715,6 @@ DELIMITER ;
 			ct.dropTables();
 			ct.createTables();
 			ct.loadTestData();
-//			ct.createMailingListTable();
-//			ct.createSubscriptionTable();
-//			ct.createEmailTemplateTable();
-//			ct.insertMaillingList();
-//			ct.insertEmailTemplate();
-//			ct.selectEmailTemplate();
-//			ct.createFindByAddressSP();
-//			ct.insertSubscribers();
-//			ct.insertProdEmailTemplate();
-//			ct.insertProdMaillingList();
 			ct.wrapup();
 		}
 		catch (Exception e) {

@@ -21,7 +21,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"Attachments where msgid=? and attchmntDepth=? and attchmntSeq=? ";
+				"msg_attachment where msgid=? and attchmntDepth=? and attchmntSeq=? ";
 		
 		Object[] parms = new Object[] {msgId, attchmntDepth, attchmntSeq};
 		try {
@@ -39,7 +39,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" Attachments where msgId=? " +
+				" msg_attachment where msgId=? " +
 			" order by attchmntDepth, attchmntSeq";
 		Object[] parms = new Object[] {msgId};
 		List<AttachmentsVo> list = getJdbcTemplate().query(sql, parms,
@@ -52,7 +52,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 		String sql = 
 				"select * " +
 				" from " +
-					" Attachments where msgId >= (RAND() * (select max(msgId) from Attachments)) " +
+					" msg_attachment where msgId >= (RAND() * (select max(msgId) from msg_attachment)) " +
 				" order by msgId limit 1 ";
 
 		List<AttachmentsVo> list = getJdbcTemplate().query(sql,
@@ -66,7 +66,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 	@Override
 	public int update(AttachmentsVo attachmentsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(attachmentsVo);
-		String sql = MetaDataUtil.buildUpdateStatement("Attachments", attachmentsVo);
+		String sql = MetaDataUtil.buildUpdateStatement("msg_attachment", attachmentsVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
 	}
@@ -74,7 +74,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 	@Override
 	public int deleteByPrimaryKey(long msgId, int attchmntDepth, int attchmntSeq) {
 		String sql = 
-			"delete from Attachments where msgid=? and attchmntDepth=? and attchmntSeq=? ";
+			"delete from msg_attachment where msgid=? and attchmntDepth=? and attchmntSeq=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -88,7 +88,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from Attachments where msgid=? ";
+			"delete from msg_attachment where msgid=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -100,7 +100,7 @@ public class AttachmentsJdbcDao extends AbstractDao implements AttachmentsDao {
 	@Override
 	public int insert(AttachmentsVo attachmentsVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(attachmentsVo);
-		String sql = MetaDataUtil.buildInsertStatement("Attachments", attachmentsVo);
+		String sql = MetaDataUtil.buildInsertStatement("msg_attachment", attachmentsVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsInserted;
 	}
