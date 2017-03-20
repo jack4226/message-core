@@ -30,7 +30,7 @@ public class ActionTables extends CreateTableBase {
 		} catch (SQLException e) {}
 		try {
 			stm.execute("DROP TABLE MsgActionDetail");
-			System.out.println("Dropped MSGMsgActionDetail Table...");
+			System.out.println("Dropped MsgActionDetail Table...");
 		} catch (SQLException e) {}
 		try {
 			stm.execute("DROP TABLE MsgDataType");
