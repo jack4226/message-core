@@ -21,14 +21,14 @@ public class TimerTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE TIMERSERVERS");
-			System.out.println("Dropped TIMERSERVERS Table...");
+			stm.execute("DROP TABLE TimerServers");
+			System.out.println("Dropped TimerServers Table...");
 		} catch (SQLException e) {}
 	}
 	
 	public void createTables() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE TIMERSERVERS ( " +
+			stm.execute("CREATE TABLE TimerServers ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ServerName varchar(50) NOT NULL, " + 
 			"TimerInterval Integer NOT NULL, " +
@@ -43,7 +43,7 @@ public class TimerTable extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (ServerName) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created TIMERSERVERS Table...");
+			System.out.println("Created TimerServers Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -53,7 +53,7 @@ public class TimerTable extends CreateTableBase {
 	public void loadTestData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO TIMERSERVERS " +
+				"INSERT INTO TimerServers " +
 				"(ServerName," +
 				"TimerInterval," +
 				"TimerIntervalUnit," +

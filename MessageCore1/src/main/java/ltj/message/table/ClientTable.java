@@ -29,14 +29,14 @@ public class ClientTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE RELOADFLAGS");
-			System.out.println("Dropped RELOADFLAGS Table...");
+			stm.execute("DROP TABLE ReloadFlags");
+			System.out.println("Dropped ReloadFlags Table...");
 		}
 		catch (Exception e) {
 		}		
 		try {
-			stm.execute("DROP TABLE CLIENTS");
-			System.out.println("Dropped CLIENTS Table...");
+			stm.execute("DROP TABLE Clients");
+			System.out.println("Dropped Clients Table...");
 		}
 		catch (Exception e) {
 		}		
@@ -49,7 +49,7 @@ public class ClientTable extends CreateTableBase {
 	
 	void createClientTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE CLIENTS ( "
+			stm.execute("CREATE TABLE Clients ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "ClientId varchar(16) NOT NULL, "
 					+ "ClientName varchar(40) NOT NULL, "
@@ -60,7 +60,7 @@ public class ClientTable extends CreateTableBase {
 					+ "IrsTaxId varchar(10), " // IRS Tax Id
 					+ "WebSiteUrl varchar(100), "
 					+ "SaveRawMsg char(1) NOT NULL DEFAULT '" + Constants.Y + "', " 
-						// save SMTP message stream to MSGSTREAM? used by RuleEngine
+						// save SMTP message stream to MsgStream? used by RuleEngine
 					+ "ContactName varchar(60), "
 					+ "ContactPhone varchar(18), "
 					+ "ContactEmail varchar(255) NOT NULL, "
@@ -103,7 +103,7 @@ public class ClientTable extends CreateTableBase {
 					//+ "UNIQUE INDEX (DomainName), "
 					+ "UNIQUE INDEX (ClientId) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created CLIENTS Table...");
+			System.out.println("Created Clients Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -113,7 +113,7 @@ public class ClientTable extends CreateTableBase {
 
 	void createReloadFlagsTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE RELOADFLAGS ( "
+			stm.execute("CREATE TABLE ReloadFlags ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "Clients int NOT NULL, "
 					+ "Rules int NOT NULL, "
@@ -122,8 +122,8 @@ public class ClientTable extends CreateTableBase {
 					+ "Schedules int NOT NULL, "
 					+ "PRIMARY KEY (RowId) "
 					+ ") ENGINE=MyISAM");
-			System.out.println("Created RELOADFLAGS Table...");
-			stm.execute("INSERT INTO RELOADFLAGS VALUES(1,0,0,0,0,0)");
+			System.out.println("Created ReloadFlags Table...");
+			stm.execute("INSERT INTO ReloadFlags VALUES(1,0,0,0,0,0)");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -132,7 +132,7 @@ public class ClientTable extends CreateTableBase {
 	}
 
 	private String insertSql = 
-		"INSERT INTO CLIENTS "
+		"INSERT INTO Clients "
 			+ "(ClientId, "
 			+ "ClientName, "
 			+ "ClientType, "

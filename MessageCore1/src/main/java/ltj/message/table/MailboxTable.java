@@ -32,8 +32,8 @@ public class MailboxTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE MAILBOXES");
-			System.out.println("Dropped MAILBOXES Table...");
+			stm.execute("DROP TABLE MailBoxes");
+			System.out.println("Dropped MailBoxes Table...");
 		} catch (SQLException e) {}
 	}
 	
@@ -68,7 +68,7 @@ public class MailboxTable extends CreateTableBase {
 			- ProcessorName: Spring processor id / processor class name
 		*/
 		try {
-			stm.execute("CREATE TABLE MAILBOXES ( " +
+			stm.execute("CREATE TABLE MailBoxes ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"UserId varchar(30) NOT NULL, " + 
 			"UserPswd varchar(32) NOT NULL, " +
@@ -99,7 +99,7 @@ public class MailboxTable extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (UserId, HostName) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MAILBOXES Table...");
+			System.out.println("Created MailBoxes Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -107,7 +107,7 @@ public class MailboxTable extends CreateTableBase {
 	}
 	
 	private String insertSql = 
-		"INSERT INTO MAILBOXES " +
+		"INSERT INTO MailBoxes " +
 			"(UserId," +
 			"UserPswd," +
 			"HostName," +

@@ -23,12 +23,12 @@ public class SmtpTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE MAILSENDERPROPS");
-			System.out.println("Dropped MAILSENDERPROPS Table...");
+			stm.execute("DROP TABLE MailSenderProps");
+			System.out.println("Dropped MailSenderProps Table...");
 		} catch (SQLException e) {}
 		try {
-			stm.execute("DROP TABLE SMTPSERVERS");
-			System.out.println("Dropped SMTPSERVERS Table...");
+			stm.execute("DROP TABLE SmtpServers");
+			System.out.println("Dropped SmtpServers Table...");
 		} catch (SQLException e) {}
 	}
 	
@@ -51,7 +51,7 @@ public class SmtpTable extends CreateTableBase {
 		- messageCount: number of messages to send before stopping the process, 0=unlimited
 		*/
 		try {
-			stm.execute("CREATE TABLE SMTPSERVERS ( " +
+			stm.execute("CREATE TABLE SmtpServers ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ServerName varchar(50) NOT NULL, " +
 			"SmtpHost varchar(100) NOT NULL, " +
@@ -75,7 +75,7 @@ public class SmtpTable extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (ServerName) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created SMTPSERVERS Table...");
+			System.out.println("Created SmtpServers Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -88,7 +88,7 @@ public class SmtpTable extends CreateTableBase {
 		- TestToAddr: use it as the TO address when UseTestAddr is yes
 		*/
 		try {
-			stm.execute("CREATE TABLE MAILSENDERPROPS ( " +
+			stm.execute("CREATE TABLE MailSenderProps ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"InternalLoopback varchar(100) NOT NULL, " +
 			"ExternalLoopback varchar(100) NOT NULL, " +
@@ -101,7 +101,7 @@ public class SmtpTable extends CreateTableBase {
 			"UpdtUserId char(10) NOT NULL, " +
 			"PRIMARY KEY (RowId) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MAILSENDERPROPS Table...");
+			System.out.println("Created MailSenderProps Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -120,7 +120,7 @@ public class SmtpTable extends CreateTableBase {
 	}
 	
 	private String insertSql = 
-		"INSERT INTO SMTPSERVERS " +
+		"INSERT INTO SmtpServers " +
 			"(SmtpHost," +
 			"SmtpPort," +
 			"ServerName," +
@@ -293,7 +293,7 @@ public class SmtpTable extends CreateTableBase {
 	}
 
 	public void UpdateSmtpData4Prod() throws SQLException {
-		String sql = "update SMTPSERVERS set StatusId = ? where ServerName = ?";
+		String sql = "update SmtpServers set StatusId = ? where ServerName = ?";
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			
@@ -320,7 +320,7 @@ public class SmtpTable extends CreateTableBase {
 	void insertMailSenderData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO MAILSENDERPROPS " +
+				"INSERT INTO MailSenderProps " +
 				"(InternalLoopback," +
 				"ExternalLoopback," +
 				"UseTestAddr," +

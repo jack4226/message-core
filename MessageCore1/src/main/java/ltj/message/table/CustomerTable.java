@@ -26,14 +26,14 @@ public class CustomerTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE CUSTOMERS");
-			System.out.println("Dropped CUSTOMERS Table...");
+			stm.execute("DROP TABLE Customers");
+			System.out.println("Dropped Customers Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE CUSTSEQUENCE");
-			System.out.println("Dropped CUSTSEQUENCE Table...");
+			stm.execute("DROP TABLE CustSequence");
+			System.out.println("Dropped CustSequence Table...");
 		}
 		catch (SQLException e) {
 		}
@@ -46,7 +46,7 @@ public class CustomerTable extends CreateTableBase {
 
 	void createCustomerTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE CUSTOMERS ( "
+			stm.execute("CREATE TABLE Customers ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "CustId varchar(16) NOT NULL, "	//1
 					+ "ClientId varchar(16) NOT NULL, "
@@ -97,7 +97,7 @@ public class CustomerTable extends CreateTableBase {
 					+ "FOREIGN KEY (ClientId) REFERENCES Clients(ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "FOREIGN KEY (EmailAddrId) REFERENCES EmailAddr(EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created CUSTOMERS Table...");
+			System.out.println("Created Customers Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -107,11 +107,11 @@ public class CustomerTable extends CreateTableBase {
 
 	void createCustSequenceTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE CUSTSEQUENCE ( " +
+			stm.execute("CREATE TABLE CustSequence ( " +
 			"SeqId bigint NOT NULL " +
 			") ENGINE=MyISAM"); // table-level locking ?
-			System.out.println("Created CUSTSEQUENCE Table...");
-			stm.execute("INSERT INTO CUSTSEQUENCE (SeqId) VALUES(0)");
+			System.out.println("Created CustSequence Table...");
+			stm.execute("INSERT INTO CustSequence (SeqId) VALUES(0)");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -126,7 +126,7 @@ public class CustomerTable extends CreateTableBase {
 		// 41 fields
 		try {
 			PreparedStatement ps = con
-					.prepareStatement("INSERT INTO CUSTOMERS (" 
+					.prepareStatement("INSERT INTO Customers (" 
 							+ "CustId, "	//1
 							+ "ClientId, "
 							+ "SsnNumber, "

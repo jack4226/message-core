@@ -22,16 +22,16 @@ public class UserTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE SESSIONS");
-			System.out.println("Dropped SESSIONS Table...");
+			stm.execute("DROP TABLE Sessions");
+			System.out.println("Dropped Sessions Table...");
 		} catch (SQLException e) {}
 		try {
-			stm.execute("DROP TABLE SESSIONUPLOADS");
-			System.out.println("Dropped SESSIONUPLOADS Table...");
+			stm.execute("DROP TABLE SessionUploads");
+			System.out.println("Dropped SessionUploads Table...");
 		} catch (SQLException e) {}
 		try {
-			stm.execute("DROP TABLE USERS");
-			System.out.println("Dropped USERS Table...");
+			stm.execute("DROP TABLE Users");
+			System.out.println("Dropped Users Table...");
 		} catch (SQLException e) {}
 	}
 	
@@ -43,7 +43,7 @@ public class UserTable extends CreateTableBase {
 
 	void createUserTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE USERS ( " +
+			stm.execute("CREATE TABLE Users ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"UserId varchar(10) NOT NULL, " + 
 			"Password varchar(32) NOT NULL, " +
@@ -65,7 +65,7 @@ public class UserTable extends CreateTableBase {
 			"FOREIGN KEY (ClientId) REFERENCES Clients(ClientId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"Constraint UNIQUE INDEX (UserId) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created USERS Table...");
+			System.out.println("Created Users Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -74,7 +74,7 @@ public class UserTable extends CreateTableBase {
 
 	void createSessionTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE SESSIONS ( " +
+			stm.execute("CREATE TABLE Sessions ( " +
 			"SessionId varchar(50) NOT NULL, " + 
 			"SessionName varchar(50), " +
 			"SessionValue text, " +
@@ -83,7 +83,7 @@ public class UserTable extends CreateTableBase {
 			"INDEX (UserId), " +
 			"PRIMARY KEY (SessionId, SessionName) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created SESSIONS Table...");
+			System.out.println("Created Sessions Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -92,7 +92,7 @@ public class UserTable extends CreateTableBase {
 	
 	void createSessionUploadTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE SESSIONUPLOADS ( " +
+			stm.execute("CREATE TABLE SessionUploads ( " +
 			"SessionId varchar(50) NOT NULL, " + 
 			"SessionSeq int NOT NULL, " +
 			"FileName varchar(100) NOT NULL, " +
@@ -103,7 +103,7 @@ public class UserTable extends CreateTableBase {
 			"INDEX (UserId), " +
 			"PRIMARY KEY (SessionId, SessionSeq) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created SESSIONUPLOADS Table...");
+			System.out.println("Created SessionUploads Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -113,7 +113,7 @@ public class UserTable extends CreateTableBase {
 	public void loadTestData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO USERS " +
+				"INSERT INTO Users " +
 				"(UserId," +
 				"PassWord," +
 				"FirstName," +
@@ -156,7 +156,7 @@ public class UserTable extends CreateTableBase {
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO SESSIONUPLOADS " +
+				"INSERT INTO SessionUploads " +
 				"(SessionId," +
 				"SessionSeq," +
 				"FileName," +

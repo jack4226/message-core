@@ -28,20 +28,20 @@ public class RuleTables extends CreateTableBase {
 
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE RULESUBRULEMAP");
-			System.out.println("Dropped RULESUBRULEMAP Table...");
+			stm.execute("DROP TABLE RuleSubruleMap");
+			System.out.println("Dropped RuleSubruleMap Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE RULEELEMENT");
-			System.out.println("Dropped RULEELEMENT Table...");
+			stm.execute("DROP TABLE RuleElement");
+			System.out.println("Dropped RuleElement Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE RULELOGIC");
-			System.out.println("Dropped RULELOGIC Table...");
+			stm.execute("DROP TABLE RuleLogic");
+			System.out.println("Dropped RuleLogic Table...");
 		}
 		catch (SQLException e) {
 		}
@@ -61,7 +61,7 @@ public class RuleTables extends CreateTableBase {
 	
 	void createRuleLogicTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE RULELOGIC ( " +
+			stm.execute("CREATE TABLE RuleLogic ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"RuleName varchar(26) NOT NULL, " +
 			"RuleSeq int NOT NULL, " +
@@ -76,7 +76,7 @@ public class RuleTables extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (RuleName, RuleSeq) " + // use index to allow update to rule name
 			") ENGINE=InnoDB");
-			System.out.println("Created RULELOGIC Table...");
+			System.out.println("Created RuleLogic Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -86,7 +86,7 @@ public class RuleTables extends CreateTableBase {
 	
 	void createRuleElementTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE RULEELEMENT ( " +
+			stm.execute("CREATE TABLE RuleElement ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"RuleName varchar(26) NOT NULL, " +
 			"ElementSeq int NOT NULL, " +
@@ -100,11 +100,11 @@ public class RuleTables extends CreateTableBase {
 			"ExclListProc varchar(100), " + // valid bean id
 			"Delimiter char(5) DEFAULT ',', " +
 			"PRIMARY KEY (RowId), " +
-			"FOREIGN KEY (RuleName) REFERENCES RULELOGIC (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (RuleName) REFERENCES RuleLogic (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX(RuleName), " +
 			"UNIQUE INDEX (RuleName, ElementSeq) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created RULEELEMENT Table...");
+			System.out.println("Created RuleElement Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -114,17 +114,17 @@ public class RuleTables extends CreateTableBase {
 	
 	void createRuleSubRuleMapTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE RULESUBRULEMAP ( " +
+			stm.execute("CREATE TABLE RuleSubruleMap ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"RuleName varchar(26) NOT NULL, " +
 			"SubRuleName varchar(26) NOT NULL, " +
 			"SubRuleSeq int NOT NULL, " +
 			"PRIMARY KEY (RowId), " +
-			"FOREIGN KEY (RuleName) REFERENCES RULELOGIC (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"FOREIGN KEY (SubRuleName) REFERENCES RULELOGIC (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (RuleName) REFERENCES RuleLogic (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (SubRuleName) REFERENCES RuleLogic (RuleName) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"UNIQUE INDEX (RuleName, SubRuleName) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created RULESUBRULEMAP Table...");
+			System.out.println("Created RuleSubruleMap Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -135,7 +135,7 @@ public class RuleTables extends CreateTableBase {
 	void insertRuleLogicData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO RULELOGIC (" +
+				"INSERT INTO RuleLogic (" +
 					"RuleName, " +
 					"RuleSeq, " +
 					"RuleType, " + 
@@ -487,7 +487,7 @@ public class RuleTables extends CreateTableBase {
 	void insertRuleElementData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO RULEELEMENT (" +
+				"INSERT INTO RuleElement (" +
 					"RuleName, " +
 					"ElementSeq , " +
 					"DataName, " +
@@ -1199,7 +1199,7 @@ public class RuleTables extends CreateTableBase {
 	void insertRuleSubRuleMapData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO RULESUBRULEMAP (" +
+				"INSERT INTO RuleSubruleMap (" +
 					"RuleName, " +
 					"SubRuleName, " +
 					"SubRuleSeq) " +

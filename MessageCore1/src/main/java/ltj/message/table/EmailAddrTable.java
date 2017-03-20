@@ -65,20 +65,20 @@ public class EmailAddrTable extends CreateTableBase {
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE SUBSCRIPTION");
-			System.out.println("Dropped SUBSCRIPTION Table...");
+			stm.execute("DROP TABLE Subscription");
+			System.out.println("Dropped Subscription Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MAILINGLIST");
-			System.out.println("Dropped MAILINGLIST Table...");
+			stm.execute("DROP TABLE MailingList");
+			System.out.println("Dropped MailingList Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE EMAILADDR");
-			System.out.println("Dropped EMAILADDR Table...");
+			stm.execute("DROP TABLE EmailAddr");
+			System.out.println("Dropped EmailAddr Table...");
 		}
 		catch (SQLException e) {
 		}
@@ -86,7 +86,7 @@ public class EmailAddrTable extends CreateTableBase {
 	
 	void createEmailTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE EMAILADDR ( "
+			stm.execute("CREATE TABLE EmailAddr ( "
 					+ "EmailAddrId bigint AUTO_INCREMENT NOT NULL, "
 					+ "EmailAddr varchar(255) NOT NULL, "
 					+ "OrigEmailAddr varchar(255) NOT NULL, "
@@ -103,7 +103,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "PRIMARY KEY (EmailAddrId), "
 					+ "UNIQUE INDEX (EmailAddr) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created EMAILADDR Table...");
+			System.out.println("Created EmailAddr Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -113,7 +113,7 @@ public class EmailAddrTable extends CreateTableBase {
 
 	void createMailingListTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MAILINGLIST ( "
+			stm.execute("CREATE TABLE MailingList ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "ListId varchar(8) NOT NULL, "
 					+ "DisplayName varchar(50), "
@@ -128,11 +128,11 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "CreateTime datetime(3) NOT NULL, "
 					+ "ListMasterEmailAddr varchar(255), "
 					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (ClientId) REFERENCES CLIENTS (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (ClientId) REFERENCES Clients (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (AcctUserName), "
 					+ "UNIQUE INDEX (ListId) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created MAILINGLIST Table...");
+			System.out.println("Created MailingList Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -142,7 +142,7 @@ public class EmailAddrTable extends CreateTableBase {
 
 	void createSubscriptionTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE SUBSCRIPTION ( "
+			stm.execute("CREATE TABLE Subscription ( "
 					+ "EmailAddrId bigint NOT NULL, "
 					+ "ListId varchar(8) NOT NULL, "
 					+ "Subscribed char(1) NOT NULL, " 
@@ -154,11 +154,11 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "LastOpenTime datetime(3), "
 					+ "ClickCount int NOT NULL DEFAULT 0, "
 					+ "LastClickTime datetime(3), "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (ListId) REFERENCES MAILINGLIST (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (EmailAddrId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (ListId) REFERENCES MailingList (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "PRIMARY KEY (EmailAddrId,ListId) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created SUBSCRIPTION Table...");
+			System.out.println("Created Subscription Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -211,7 +211,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 					+ "Schedules blob, " // store a java object
 					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (ListId) REFERENCES MAILINGLIST (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (ListId) REFERENCES MailingList (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "UNIQUE INDEX (TemplateId) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created EmailTemplate Table...");
@@ -231,7 +231,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "Comments varchar(500) NOT NULL, "
 					+ "AddTime datetime(3) NOT NULL, "
 					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (EmailAddrId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (EmailAddrId) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created UnsubComments Table...");
@@ -377,7 +377,7 @@ DELIMITER ;
 	private void insertEmailAddrs() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO EMAILADDR " +
+				"INSERT INTO EmailAddr " +
 				"(EmailAddr," +
 				"OrigEmailAddr," +
 				"StatusId," +
@@ -456,7 +456,7 @@ DELIMITER ;
 	private void insertMaillingList() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO MAILINGLIST " +
+				"INSERT INTO MailingList " +
 				"(ListId," +
 				"DisplayName," +
 				"AcctUserName," +
@@ -521,7 +521,7 @@ DELIMITER ;
 	private void insertProdMaillingList() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO MAILINGLIST " +
+				"INSERT INTO MailingList " +
 				"(ListId," +
 				"DisplayName," +
 				"AcctUserName," +
@@ -567,7 +567,7 @@ DELIMITER ;
 	private void insertSubscribers() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO SUBSCRIPTION " +
+				"INSERT INTO Subscription " +
 				"(EmailAddrId," +
 				"ListId," +
 				"Subscribed," +

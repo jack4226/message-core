@@ -26,115 +26,115 @@ public class InboxTables extends CreateTableBase {
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGCLICKCOUNTS");
-			System.out.println("Dropped MSGCLICKCOUNTS Table...");
+			stm.execute("DROP TABLE MsgClickCounts");
+			System.out.println("Dropped MsgClickCounts Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGACTIONLOGS");
-			System.out.println("Dropped MSGACTIONLOGS Table...");
+			stm.execute("DROP TABLE MsgActionLogs");
+			System.out.println("Dropped MsgActionLogs Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE DELIVERYSTATUS");
-			System.out.println("Dropped DELIVERYSTATUS Table...");
+			stm.execute("DROP TABLE DeliveryStatus");
+			System.out.println("Dropped DeliveryStatus Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE ATTACHMENTS");
-			System.out.println("Dropped ATTACHMENTS Table...");
+			stm.execute("DROP TABLE Attachments");
+			System.out.println("Dropped Attachments Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGADDRS");
-			System.out.println("Dropped MSGADDRS Table...");
+			stm.execute("DROP TABLE MsgAddrs");
+			System.out.println("Dropped MsgAddrs Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGHEADERS");
-			System.out.println("Dropped MSGHEADERS Table...");
+			stm.execute("DROP TABLE MsgHeaders");
+			System.out.println("Dropped MsgHeaders Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE RFCFIELDS");
-			System.out.println("Dropped RFCFIELDS Table...");
+			stm.execute("DROP TABLE RfcFields");
+			System.out.println("Dropped RfcFields Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGSTREAM");
-			System.out.println("Dropped MSGSTREAM Table...");
+			stm.execute("DROP TABLE MsgStream");
+			System.out.println("Dropped MsgStream Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGINBOX");
-			System.out.println("Dropped MSGINBOX Table...");
+			stm.execute("DROP TABLE MsgInbox");
+			System.out.println("Dropped MsgInbox Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGUNREADCOUNT");
-			System.out.println("Dropped MSGUNREADCOUNT Table...");
+			stm.execute("DROP TABLE MsgUnreadCount");
+			System.out.println("Dropped MsgUnreadCount Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGSEQUENCE");
-			System.out.println("Dropped MSGSEQUENCE Table...");
+			stm.execute("DROP TABLE MsgSequence");
+			System.out.println("Dropped MsgSequence Table...");
 		}
 		catch (SQLException e) {
 		}
 		
 		try {
-			stm.execute("DROP TABLE RENDERATTACHMENT");
-			System.out.println("Dropped RENDERATTACHMENT Table...");
+			stm.execute("DROP TABLE RenderAttachment");
+			System.out.println("Dropped RenderAttachment Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE RENDERVARIABLE");
-			System.out.println("Dropped RENDERVARIABLE Table...");
+			stm.execute("DROP TABLE RenderVariable");
+			System.out.println("Dropped RenderVariable Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE RENDEROBJECT");
-			System.out.println("Dropped RENDEROBJECT Table...");
+			stm.execute("DROP TABLE RenderObject");
+			System.out.println("Dropped RenderObject Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE MSGRENDERED");
-			System.out.println("Dropped MSGRENDERED Table...");
+			stm.execute("DROP TABLE MsgRendered");
+			System.out.println("Dropped MsgRendered Table...");
 		}
 		catch (SQLException e) {
 		}
 	}
 
 	public void createTables() throws SQLException {
-		createMSGRENDEREDTable();
-		createRENDERATTACHMENTTable();
-		createRENDERVARIABLETable();
-		createRENDEROBJECTTable();
+		createMsgRenderedTable();
+		createRenderAttachmentTable();
+		createRenderVariableTable();
+		createRenderObjectTable();
 		
-		createMSGSEQUENCETable();
-		createMSGUNREADCOUNTTable();
-		createMSGINBOXTable();
-		createATTACHMENTSTable();
-		createMSGADDRSTable();
-		createMSGHEADERSTable();
-		createRFCFIELDSTable();
-		createMSGSTREAMTable();
-		createDELIVERYSTATUSTable();
-		createMSGACTIONLOGSTable();
-		createMSGCLICKCOUNTSTable();
+		createMsgSequenceTable();
+		createMsgUnreadCountTable();
+		createMsgInboxTable();
+		createAttachmentsTable();
+		createMsgAddrsTable();
+		createMsgHeadersTable();
+		createRfcFieldsTable();
+		createMsgStreamTable();
+		createDeliveryStatusTable();
+		createMsgActionLogsTable();
+		createMsgClickCountsTable();
 		createMsgUnsubCommentsTable();
 	}
 	
@@ -142,9 +142,9 @@ public class InboxTables extends CreateTableBase {
 		// dummy method to satisfy the super class
 	}
 	
-	void createMSGRENDEREDTable() throws SQLException {
+	void createMsgRenderedTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGRENDERED ( " +
+			stm.execute("CREATE TABLE MsgRendered ( " +
 			"RenderId bigint NOT NULL AUTO_INCREMENT, " +
 			"MsgSourceId varchar(16) NOT NULL, " +
 			"SubjTemplateId varchar(16) NOT NULL, " +
@@ -158,7 +158,7 @@ public class InboxTables extends CreateTableBase {
 			"PRIMARY KEY (RenderId), " +
 			"INDEX (MsgSourceId) " +
 			") ENGINE=InnoDB"); // row-level locking
-			System.out.println("Created MSGRENDERED Table...");
+			System.out.println("Created MsgRendered Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -166,19 +166,19 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createRENDERATTACHMENTTable() throws SQLException {
+	void createRenderAttachmentTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE RENDERATTACHMENT ( " +
+			stm.execute("CREATE TABLE RenderAttachment ( " +
 			"RenderId bigint NOT NULL, " +
 			"AttchmntSeq decimal(2) NOT NULL, " + // up to 100 attachments per message
 			"AttchmntName varchar(100), " +
 			"AttchmntType varchar(100), " +
 			"AttchmntDisp varchar(100), " +
 			"AttchmntValue mediumblob, " +
-			"FOREIGN KEY (RenderId) REFERENCES MSGRENDERED (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (RenderId) REFERENCES MsgRendered (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (RenderId), " +
 			"PRIMARY KEY (RenderId,AttchmntSeq)) ENGINE=InnoDB");
-			System.out.println("Created RENDERATTACHMENT Table...");
+			System.out.println("Created RenderAttachment Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -186,9 +186,9 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createRENDERVARIABLETable() throws SQLException {
+	void createRenderVariableTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE RENDERVARIABLE ( " +
+			stm.execute("CREATE TABLE RenderVariable ( " +
 			"RenderId bigint NOT NULL, " +
 			"VariableName varchar(26), " +
 			"VariableFormat varchar(50), " +
@@ -196,10 +196,10 @@ public class InboxTables extends CreateTableBase {
 			// T - text, N - numeric, D - DateField/time,
 			// A - address, X - X-Header, L - LOB(Attachment)
 			"VariableValue text, " +
-			"FOREIGN KEY (RenderId) REFERENCES MSGRENDERED (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (RenderId) REFERENCES MsgRendered (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (RenderId), " +
 			"PRIMARY KEY (RenderId,VariableName)) ENGINE=InnoDB");
-			System.out.println("Created RENDERVARIABLE Table...");
+			System.out.println("Created RenderVariable Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -207,9 +207,9 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createRENDEROBJECTTable() throws SQLException {
+	void createRenderObjectTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE RENDEROBJECT ( " +
+			stm.execute("CREATE TABLE RenderObject ( " +
 			"RenderId bigint NOT NULL, " +
 			"VariableName varchar(26), " +
 			"VariableFormat varchar(50), " +
@@ -217,10 +217,10 @@ public class InboxTables extends CreateTableBase {
 			// T - text, N - numeric, D - DateField/time,
 			// A - address, X - X-Header, L - LOB(Attachment), C - Collection
 			"VariableValue mediumblob, " +
-			"FOREIGN KEY (RenderId) REFERENCES MSGRENDERED (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (RenderId) REFERENCES MsgRendered (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (RenderId), " +
 			"PRIMARY KEY (RenderId,VariableName)) ENGINE=InnoDB");
-			System.out.println("Created RENDEROBJECT Table...");
+			System.out.println("Created RenderObject Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -228,13 +228,13 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createMSGSEQUENCETable() throws SQLException {
+	void createMsgSequenceTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGSEQUENCE ( " +
+			stm.execute("CREATE TABLE MsgSequence ( " +
 			"SeqId bigint NOT NULL " +
 			") ENGINE=MyISAM"); // table-level locking ?
-			System.out.println("Created MSGSEQUENCE Table...");
-			stm.execute("INSERT INTO MSGSEQUENCE (SeqId) VALUES(0)");
+			System.out.println("Created MsgSequence Table...");
+			stm.execute("INSERT INTO MsgSequence (SeqId) VALUES(0)");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -242,14 +242,14 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createMSGUNREADCOUNTTable() throws SQLException {
+	void createMsgUnreadCountTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGUNREADCOUNT ( " +
+			stm.execute("CREATE TABLE MsgUnreadCount ( " +
 			"InboxUnreadCount int NOT NULL, " +
 			"SentUnreadCount int NOT NULL" +
 			") ENGINE=MyISAM"); // table-level locking ?
-			System.out.println("Created MSGUNREADCOUNT Table...");
-			stm.execute("INSERT INTO MSGUNREADCOUNT (InboxUnreadCount,SentUnreadCount) VALUES(0,0)");
+			System.out.println("Created MsgUnreadCount Table...");
+			stm.execute("INSERT INTO MsgUnreadCount (InboxUnreadCount,SentUnreadCount) VALUES(0,0)");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -257,11 +257,11 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createMSGINBOXTable() throws SQLException {
+	void createMsgInboxTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGINBOX ( " +
+			stm.execute("CREATE TABLE MsgInbox ( " +
 			"MsgId bigint NOT NULL, " +
-			"MsgRefId bigint, " + // link to another MSGINBOX record (a reply or a bounce)
+			"MsgRefId bigint, " + // link to another MsgInbox record (a reply or a bounce)
 			"LeadMsgId bigint NOT NULL, " +
 			"CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', " + // S - SmtpMail, W - WebMail
 			"MsgDirection char(1) NOT NULL, " + // R - Received, S - Sent
@@ -296,14 +296,14 @@ public class InboxTables extends CreateTableBase {
 			"MsgBody mediumtext, " +
 			"PRIMARY KEY (MsgId), " +
 			"INDEX (LeadMsgId), " +
-			"FOREIGN KEY (RenderId) REFERENCES MSGRENDERED (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (RenderId) REFERENCES MsgRendered (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (RenderId), " +
-			"FOREIGN KEY (FromAddrId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (FromAddrId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (FromAddrId), " +
-			"FOREIGN KEY (ToAddrId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (ToAddrId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (ToAddrId)" +
 			") ENGINE=InnoDB");
-			System.out.println("Created MSGINBOX Table...");
+			System.out.println("Created MsgInbox Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -311,9 +311,9 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createATTACHMENTSTable() throws SQLException {
+	void createAttachmentsTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE ATTACHMENTS ( " +
+			stm.execute("CREATE TABLE Attachments ( " +
 			"MsgId bigint NOT NULL, " +
 			"AttchmntDepth decimal(2) NOT NULL, " +
 			"AttchmntSeq decimal(3) NOT NULL, " +
@@ -321,11 +321,11 @@ public class InboxTables extends CreateTableBase {
 			"AttchmntType varchar(100), " +
 			"AttchmntDisp varchar(100), " +
 			"AttchmntValue mediumblob, " +
-			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (MsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (MsgId), " +
 			"PRIMARY KEY (MsgId,AttchmntDepth,AttchmntSeq)" +
 			") ENGINE=InnoDB");
-			System.out.println("Created ATTACHMENTS Table...");
+			System.out.println("Created Attachments Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -333,18 +333,18 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createMSGADDRSTable() throws SQLException {
+	void createMsgAddrsTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGADDRS ( " +
+			stm.execute("CREATE TABLE MsgAddrs ( " +
 			"MsgId bigint NOT NULL, " +
 			"AddrType varchar(7) NOT NULL, " + // from, replyto, to, cc, bcc
 			"AddrSeq decimal(4) NOT NULL, " +
 			"AddrValue varchar(255), " +
-			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (MsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (MsgId), " +
 			"PRIMARY KEY (MsgId,AddrType,AddrSeq)" +
 			") ENGINE=InnoDB");
-			System.out.println("Created MSGADDRS Table...");
+			System.out.println("Created MsgAddrs Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -352,18 +352,18 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createMSGHEADERSTable() throws SQLException {
+	void createMsgHeadersTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGHEADERS ( " +
+			stm.execute("CREATE TABLE MsgHeaders ( " +
 			"MsgId bigint NOT NULL, " +
 			"HeaderSeq decimal(4) NOT NULL, " +
 			"HeaderName varchar(100), " +
 			"HeaderValue text, " +
-			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (MsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (MsgId), " +
 			"PRIMARY KEY (MsgId,HeaderSeq)" +
 			") ENGINE=InnoDB");
-			System.out.println("Created MSGHEADERS Table...");
+			System.out.println("Created MsgHeaders Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -371,9 +371,9 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createRFCFIELDSTable() throws SQLException {
+	void createRfcFieldsTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE RFCFIELDS ( " +
+			stm.execute("CREATE TABLE RfcFields ( " +
 			"MsgId bigint NOT NULL, " +
 			"RfcType varchar(30) NOT NULL, " +
 			"RfcStatus varchar(30), " +
@@ -386,13 +386,13 @@ public class InboxTables extends CreateTableBase {
 			"DsnText text, " +
 			"DsnRfc822 text, " +
 			"DlvrStatus text, " +
-			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (MsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (MsgId), " +
-			"FOREIGN KEY (FinalRcptId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (FinalRcptId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (FinalRcptId), " +
 			"PRIMARY KEY (MsgId,RfcType)" +
 			") ENGINE=InnoDB");
-			System.out.println("Created RFCFIELDS Table...");
+			System.out.println("Created RfcFields Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -400,9 +400,9 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createMSGSTREAMTable() throws SQLException {
+	void createMsgStreamTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGSTREAM ( " +
+			stm.execute("CREATE TABLE MsgStream ( " +
 			"MsgId bigint NOT NULL, " +
 			"FromAddrId bigint, " +
 			"ToAddrId bigint, " +
@@ -410,9 +410,9 @@ public class InboxTables extends CreateTableBase {
 			"AddTime datetime(3), " +
 			"MsgStream mediumblob, " +
 			"PRIMARY KEY (MsgId), " +
-			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE " +
+			"FOREIGN KEY (MsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MSGSTREAM Table...");
+			System.out.println("Created MsgStream Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -420,9 +420,9 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createDELIVERYSTATUSTable() throws SQLException {
+	void createDeliveryStatusTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE DELIVERYSTATUS ( " +
+			stm.execute("CREATE TABLE DeliveryStatus ( " +
 			"MsgId bigint NOT NULL, " +
 			"FinalRecipientId bigint NOT NULL, " +
 			"FinalRecipient varchar(255), " +
@@ -434,12 +434,12 @@ public class InboxTables extends CreateTableBase {
 			"DsnRfc822 text, " +
 			"DeliveryStatus text, " +
 			"AddTime datetime(3), " +
-			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (MsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (MsgId), " +
-			"FOREIGN KEY (FinalRecipientId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (FinalRecipientId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (FinalRecipientId), " +
 			"PRIMARY KEY (MsgId,FinalRecipientId)) ENGINE=InnoDB");
-			System.out.println("Created DELIVERYSTATUS Table...");
+			System.out.println("Created DeliveryStatus Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -447,23 +447,23 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 	
-	void createMSGACTIONLOGSTable() throws SQLException {
+	void createMsgActionLogsTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGACTIONLOGS ( " +
+			stm.execute("CREATE TABLE MsgActionLogs ( " +
 			"MsgId bigint NOT NULL, " +
 			"MsgRefId bigint, " + // link to previous message thread
 			"LeadMsgId bigint NOT NULL, " + // message that started this thread
 			"ActionBo varchar(50) NOT NULL, " +
 			"Parameters varchar(255), " +
 			"AddTime datetime(3), " +
-			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (MsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			/* disable following foreign keys for performance reason */ 
-			//"FOREIGN KEY (MsgRefId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			//"FOREIGN KEY (LeadMsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			//"FOREIGN KEY (MsgRefId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			//"FOREIGN KEY (LeadMsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (LeadMsgId), " +
 			"PRIMARY KEY (MsgId, MsgRefId) " + // use index to make MsgRefId nullable
 			") ENGINE=InnoDB");
-			System.out.println("Created MSGACTIONLOGS Table...");
+			System.out.println("Created MsgActionLogs Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -471,9 +471,9 @@ public class InboxTables extends CreateTableBase {
 		}
 	}
 
-	void createMSGCLICKCOUNTSTable() throws SQLException {
+	void createMsgClickCountsTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MSGCLICKCOUNTS ( " +
+			stm.execute("CREATE TABLE MsgClickCounts ( " +
 			"MsgId bigint NOT NULL, " +
 			"ListId varchar(8) NOT NULL, " +
 			"DeliveryOption varchar(4) NOT NULL DEFAULT '" + MLDeliveryType.ALL_ON_LIST.value() + "', " +
@@ -487,10 +487,10 @@ public class InboxTables extends CreateTableBase {
 			"UnsubscribeCount int NOT NULL DEFAULT 0, " +
 			"ComplaintCount int NOT NULL DEFAULT 0, " +
 			"ReferralCount int NOT NULL DEFAULT 0, " +
-			"FOREIGN KEY (MsgId) REFERENCES MSGINBOX (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (MsgId) REFERENCES MsgInbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"PRIMARY KEY (MsgId) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MSGCLICKCOUNTS Table...");
+			System.out.println("Created MsgClickCounts Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -508,8 +508,8 @@ public class InboxTables extends CreateTableBase {
 					+ "Comments varchar(500) NOT NULL, "
 					+ "AddTime datetime(3) NOT NULL, "
 					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (MsgId) REFERENCES MSGCLICKCOUNTS (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES EMAILADDR (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (MsgId) REFERENCES MsgClickCounts (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (EmailAddrId) REFERENCES EmailAddr (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (MsgId), "
 					+ "INDEX (EmailAddrId) "
 					+ ") ENGINE=InnoDB");
