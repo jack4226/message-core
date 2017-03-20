@@ -9,13 +9,13 @@ import javax.faces.model.DataModel;
 
 import org.apache.log4j.Logger;
 
-import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.dao.inbox.MsgClickCountsDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.inbox.MsgClickCountDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingCountVo;
 import ltj.message.vo.PagingVo;
-import ltj.message.vo.inbox.MsgClickCountsVo;
+import ltj.message.vo.inbox.MsgClickCountVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
@@ -24,11 +24,11 @@ public class BroadcastMsgListBean {
 	static final Logger logger = Logger.getLogger(BroadcastMsgListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private MsgClickCountsDao msgClickCountsDao = null;
-	private EmailAddrDao emailAddrDao = null;
+	private MsgClickCountDao msgClickCountDao = null;
+	private EmailAddressDao emailAddressDao = null;
 	private MsgInboxDao msgInboxDao = null;
 	private DataModel broadcasts = null;
-	private MsgClickCountsVo broadcast = null;
+	private MsgClickCountVo broadcast = null;
 	private boolean editMode = true;
 	private MsgInboxVo broadcastMsg = null;
 
@@ -56,12 +56,12 @@ public class BroadcastMsgListBean {
 			pagingAddrVo.setRowCount(rowCount);
 		}
 		if (broadcasts == null || !pagingAddrVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<MsgClickCountsVo> brdList = getMsgClickCountsDao().getBroadcastsWithPaging(pagingAddrVo);
+			List<MsgClickCountVo> brdList = getMsgClickCountsDao().getBroadcastsWithPaging(pagingAddrVo);
 			/* set keys for paging */
 			if (!brdList.isEmpty()) {
-				MsgClickCountsVo firstRow = (MsgClickCountsVo) brdList.get(0);
+				MsgClickCountVo firstRow = (MsgClickCountVo) brdList.get(0);
 				pagingAddrVo.setNbrIdFirst(firstRow.getMsgId());
-				MsgClickCountsVo lastRow = (MsgClickCountsVo) brdList.get(brdList.size() - 1);
+				MsgClickCountVo lastRow = (MsgClickCountVo) brdList.get(brdList.size() - 1);
 				pagingAddrVo.setNbrIdLast(lastRow.getMsgId());
 			}
 			else {
@@ -137,18 +137,18 @@ public class BroadcastMsgListBean {
 		refresh();
 	}
 
-	public MsgClickCountsDao getMsgClickCountsDao() {
-		if (msgClickCountsDao == null) {
-			msgClickCountsDao = (MsgClickCountsDao) SpringUtil.getWebAppContext().getBean("msgClickCountsDao");
+	public MsgClickCountDao getMsgClickCountsDao() {
+		if (msgClickCountDao == null) {
+			msgClickCountDao = (MsgClickCountDao) SpringUtil.getWebAppContext().getBean("msgClickCountDao");
 		}
-		return msgClickCountsDao;
+		return msgClickCountDao;
 	}
 
-	public EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getWebAppContext().getBean("emailAddrDao");
+	public EmailAddressDao getEmailAddrDao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = (EmailAddressDao) SpringUtil.getWebAppContext().getBean("emailAddressDao");
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 
 	public MsgInboxDao getMsgInboxDao() {
@@ -171,13 +171,13 @@ public class BroadcastMsgListBean {
 			return TO_FAILED;
 		}
 		reset();
-		this.broadcast = (MsgClickCountsVo) broadcasts.getRowData();
+		this.broadcast = (MsgClickCountVo) broadcasts.getRowData();
 		logger.info("viewBroadcastMsg() - Broadcast to be viewed: " + broadcast.getMsgId());
 		broadcast.setMarkedForEdition(true);
 		editMode = true;
 		broadcastMsg = getMsgInboxDao().getByPrimaryKey(broadcast.getMsgId());
 		if (isDebugEnabled) {
-			logger.debug("viewBroadcastMsg() - MsgClickCountsVo to be passed to jsp: " + broadcast);
+			logger.debug("viewBroadcastMsg() - MsgClickCountVo to be passed to jsp: " + broadcast);
 		}
 		return TO_VIEW;
 	}
@@ -191,9 +191,9 @@ public class BroadcastMsgListBean {
 			return TO_FAILED;
 		}
 		reset();
-		List<MsgClickCountsVo> subrList = getBroadcastList();
+		List<MsgClickCountVo> subrList = getBroadcastList();
 		for (int i=0; i<subrList.size(); i++) {
-			MsgClickCountsVo vo = subrList.get(i);
+			MsgClickCountVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
 				int rowsDeleted = getMsgClickCountsDao().deleteByPrimaryKey(vo.getMsgId());
 				if (rowsDeleted > 0) {
@@ -215,9 +215,9 @@ public class BroadcastMsgListBean {
 			return TO_FAILED;
 		}
 		reset();
-		List<MsgClickCountsVo> subrList = getBroadcastList();
+		List<MsgClickCountVo> subrList = getBroadcastList();
 		for (int i=0; i<subrList.size(); i++) {
-			MsgClickCountsVo vo = subrList.get(i);
+			MsgClickCountVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
 				if (!StringUtil.isEmpty(FacesUtil.getLoginUserId())) {
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
@@ -245,9 +245,9 @@ public class BroadcastMsgListBean {
 			logger.warn("getAnyBroadcastsMarkedForDeletion() - Broadcast List is null.");
 			return false;
 		}
-		List<MsgClickCountsVo> subrList = getBroadcastList();
-		for (Iterator<MsgClickCountsVo> it=subrList.iterator(); it.hasNext();) {
-			MsgClickCountsVo vo = it.next();
+		List<MsgClickCountVo> subrList = getBroadcastList();
+		for (Iterator<MsgClickCountVo> it=subrList.iterator(); it.hasNext();) {
+			MsgClickCountVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -261,20 +261,20 @@ public class BroadcastMsgListBean {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<MsgClickCountsVo> getBroadcastList() {
+	private List<MsgClickCountVo> getBroadcastList() {
 		if (broadcasts == null) {
-			return new ArrayList<MsgClickCountsVo>();
+			return new ArrayList<MsgClickCountVo>();
 		}
 		else {
-			return (List<MsgClickCountsVo>)broadcasts.getWrappedData();
+			return (List<MsgClickCountVo>)broadcasts.getWrappedData();
 		}
 	}
 
-	public MsgClickCountsVo getBroadcast() {
+	public MsgClickCountVo getBroadcast() {
 		return broadcast;
 	}
 
-	public void setBroadcast(MsgClickCountsVo subscriber) {
+	public void setBroadcast(MsgClickCountVo subscriber) {
 		this.broadcast = subscriber;
 	}
 

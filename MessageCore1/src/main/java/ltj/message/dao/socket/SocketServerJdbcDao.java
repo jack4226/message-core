@@ -19,7 +19,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 	
 	@Override
 	public SocketServerVo getByPrimaryKey(String serverName) {
-		String sql = "select * from SocketServers where ServerName=?";
+		String sql = "select * from socket_server where ServerName=?";
 		Object[] parms = new Object[] {serverName};
 		try {
 			SocketServerVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -34,7 +34,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 	@Override
 	public List<SocketServerVo> getAll(boolean onlyActive) {
 		
-		String sql = "select * from SocketServers ";
+		String sql = "select * from socket_server ";
 		if (onlyActive) {
 			sql += " where StatusId='" + StatusId.ACTIVE.value() + "'";
 		}
@@ -47,7 +47,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 	public int update(SocketServerVo socketServerVo) {
 		socketServerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(socketServerVo);
-		String sql = MetaDataUtil.buildUpdateStatement("SocketServers", socketServerVo);
+		String sql = MetaDataUtil.buildUpdateStatement("socket_server", socketServerVo);
 		if (socketServerVo.getOrigUpdtTime() != null) {
 			sql += " and UpdtTime=:origUpdtTime ";
 		}
@@ -58,7 +58,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 	
 	@Override
 	public int deleteByPrimaryKey(String serverName) {
-		String sql = "delete from SocketServers where ServerName=?";
+		String sql = "delete from socket_server where ServerName=?";
 		Object[] parms = new Object[] {serverName};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -68,7 +68,7 @@ public class SocketServerJdbcDao extends AbstractDao implements SocketServerDao 
 	public int insert(SocketServerVo socketServerVo) {
 		socketServerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(socketServerVo);
-		String sql = MetaDataUtil.buildInsertStatement("SocketServers", socketServerVo);
+		String sql = MetaDataUtil.buildInsertStatement("socket_server", socketServerVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		socketServerVo.setRowId(retrieveRowId());
 		socketServerVo.setOrigUpdtTime(socketServerVo.getUpdtTime());

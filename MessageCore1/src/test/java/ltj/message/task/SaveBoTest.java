@@ -16,10 +16,10 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.PrintUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 public class SaveBoTest extends BoTestBase {
@@ -31,7 +31,7 @@ public class SaveBoTest extends BoTestBase {
 	@Resource
 	private MessageParser parser;
 	@Resource
-	private EmailAddrDao emailDao;
+	private EmailAddressDao emailDao;
 	
 	@Test
 	public void saveMessage() throws Exception {
@@ -65,7 +65,7 @@ public class SaveBoTest extends BoTestBase {
 		assertNotNull(minbox);
 		logger.info("Message Inbox: " + PrintUtil.prettyPrint(minbox));
 		assertNotNull(minbox.getFromAddrId());
-		EmailAddrVo addrvo = emailDao.getByAddrId(minbox.getFromAddrId());
+		EmailAddressVo addrvo = emailDao.getByAddrId(minbox.getFromAddrId());
 		assertNotNull(addrvo);
 		assertEquals(fromaddr, addrvo.getEmailAddr());
 		assertEquals(mBean.getSubject(), minbox.getMsgSubject());

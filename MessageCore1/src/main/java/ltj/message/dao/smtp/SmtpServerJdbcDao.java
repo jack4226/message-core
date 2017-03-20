@@ -21,7 +21,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	
 	@Override
 	public SmtpConnVo getByPrimaryKey(String serverName) {
-		String sql = "select * from SmtpServers where ServerName=?";
+		String sql = "select * from smtp_server where ServerName=?";
 		Object[] parms = new Object[] {serverName};
 		try {
 			SmtpConnVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -36,7 +36,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	@Override
 	public List<SmtpConnVo> getAll(boolean onlyActive) {
 		List<String> keys = new ArrayList<String>();
-		String sql = "select * from SmtpServers ";
+		String sql = "select * from smtp_server ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
 			keys.add(StatusId.ACTIVE.value());
@@ -50,7 +50,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	@Override
 	public List<SmtpConnVo> getAllForTrial(boolean onlyActive) {
 		List<String> keys = new ArrayList<>();
-		String sql = "select * from SmtpServers ";
+		String sql = "select * from smtp_server ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
 			keys.add(StatusId.ACTIVE.value());
@@ -71,7 +71,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	public List<SmtpConnVo> getByServerType(String serverType, boolean onlyActive) {
 		List<String> keys = new ArrayList<>();
 		keys.add(serverType);
-		String sql = "select * from SmtpServers where ServerType=?";
+		String sql = "select * from smtp_server where ServerType=?";
 		if (onlyActive) {
 			sql += " and StatusId=? ";
 			keys.add(StatusId.ACTIVE.value());
@@ -87,7 +87,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	public List<SmtpConnVo> getBySslFlag(boolean useSSL, boolean onlyActive) {
 		List<String> keys = new ArrayList<>();
 		keys.add(useSSL ? Constants.YES : Constants.NO);
-		String sql = "select * from SmtpServers where UseSsl=?";
+		String sql = "select * from smtp_server where UseSsl=?";
 		if (onlyActive) {
 			sql += " and StatusId=? ";
 			keys.add(StatusId.ACTIVE.value());
@@ -103,7 +103,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	public List<SmtpConnVo> getBySslFlagForTrial(boolean useSSL, boolean onlyActive) {
 		List<String> keys = new ArrayList<>();
 		keys.add(useSSL ? Constants.YES : Constants.NO);
-		String sql = "select * from SmtpServers where UseSsl=?";
+		String sql = "select * from smtp_server where UseSsl=?";
 		if (onlyActive) {
 			sql += " and StatusId=? ";
 			keys.add(StatusId.ACTIVE.value());
@@ -118,7 +118,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	public int update(SmtpConnVo smtpConnVo) {
 		smtpConnVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(smtpConnVo);
-		String sql = MetaDataUtil.buildUpdateStatement("SmtpServers", smtpConnVo);
+		String sql = MetaDataUtil.buildUpdateStatement("smtp_server", smtpConnVo);
 		if (smtpConnVo.getOrigUpdtTime() != null) {
 			sql += " and UpdtTime=:origUpdtTime ";
 		}
@@ -129,7 +129,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	
 	@Override
 	public int deleteByPrimaryKey(String serverName) {
-		String sql = "delete from SmtpServers where ServerName=?";
+		String sql = "delete from smtp_server where ServerName=?";
 		Object[] parms = new Object[] {serverName};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -139,7 +139,7 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	public int insert(SmtpConnVo smtpConnVo) {
 		smtpConnVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(smtpConnVo);
-		String sql = MetaDataUtil.buildInsertStatement("SmtpServers", smtpConnVo);
+		String sql = MetaDataUtil.buildInsertStatement("smtp_server", smtpConnVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		smtpConnVo.setRowId(retrieveRowId());
 		smtpConnVo.setOrigUpdtTime(smtpConnVo.getUpdtTime());

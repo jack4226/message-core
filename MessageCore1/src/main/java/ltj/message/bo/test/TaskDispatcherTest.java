@@ -21,10 +21,10 @@ import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.task.TaskDispatcher;
 import ltj.message.constant.Constants;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.MailingListVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 
 @FixMethodOrder
@@ -34,7 +34,7 @@ public class TaskDispatcherTest extends BoTestBase {
 	@Resource
 	private MessageParser parser;
 	@Resource
-	private SubscriptionDao subscriptionDao;
+	private EmailSubscrptDao emailSubscrptDao;
 	@Resource
 	private MailingListDao mailingListDao;
 
@@ -47,7 +47,7 @@ public class TaskDispatcherTest extends BoTestBase {
 	public void test0() throws Exception {
 		String digits = StringUtils.leftPad("" + new Random().nextInt(100), 2, "0");
 		testFromAddress = "user" + digits + "@localhost";
-		emailAddrDao.findByAddress(testFromAddress);
+		emailAddressDao.findByAddress(testFromAddress);
 	}
 	
 	@Test
@@ -81,11 +81,11 @@ public class TaskDispatcherTest extends BoTestBase {
 	
 	@Test
 	public void test3() { // verifyDataRecord
-		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);
+		EmailAddressVo addrVo = selectEmailAddrByAddress(testFromAddress);
 		assertNotNull("test from address must have been added to database.", addrVo);
 		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);
 		assertTrue(list.size() > 0);
-		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
+		EmailSubscrptVo vo = emailSubscrptDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
 		assertNotNull("Subscription must have been added to database.", vo);
 		assertEquals(Constants.Y, vo.getSubscribed());
 		

@@ -15,12 +15,12 @@ import javax.faces.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import ltj.message.constant.Constants;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.PagingVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
@@ -29,10 +29,10 @@ public class EmailAddrsListBean {
 	static final Logger logger = Logger.getLogger(EmailAddrsListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private EmailAddrDao emailAddrDao = null;
+	private EmailAddressDao emailAddressDao = null;
 	private MailingListDao mailingListDao = null;
 	private DataModel emailAddrs = null;
-	private EmailAddrVo emailAddr = null;
+	private EmailAddressVo emailAddr = null;
 	private boolean editMode = true;
 
 	private HtmlDataTable dataTable;
@@ -63,11 +63,11 @@ public class EmailAddrsListBean {
 			pagingAddrVo.setRowCount(rowCount);
 		}
 		if (emailAddrs == null || !pagingAddrVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<EmailAddrVo> emailAddrList = getEmailAddrDao().getEmailAddrsWithPaging(pagingAddrVo);
+			List<EmailAddressVo> emailAddrList = getEmailAddrDao().getEmailAddrsWithPaging(pagingAddrVo);
 			/* set keys for paging */
 			if (!emailAddrList.isEmpty()) {
-				EmailAddrVo firstRow = (EmailAddrVo) emailAddrList.get(0);
-				EmailAddrVo lastRow = (EmailAddrVo) emailAddrList.get(emailAddrList.size() - 1);
+				EmailAddressVo firstRow = (EmailAddressVo) emailAddrList.get(0);
+				EmailAddressVo lastRow = (EmailAddressVo) emailAddrList.get(emailAddrList.size() - 1);
 				//pagingAddrVo.setIdFirst(firstRow.getEmailAddrId());
 				//pagingAddrVo.setIdLast(lastRow.getEmailAddrId());
 				pagingAddrVo.setStrIdFirst(firstRow.getEmailAddr());
@@ -171,15 +171,15 @@ public class EmailAddrsListBean {
 		refresh();
 	}
 	
-	public EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getWebAppContext().getBean("emailAddrDao");
+	public EmailAddressDao getEmailAddrDao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = (EmailAddressDao) SpringUtil.getWebAppContext().getBean("emailAddressDao");
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
+	public void setEmailAddrDao(EmailAddressDao emailAddressDao) {
+		this.emailAddressDao = emailAddressDao;
 	}
 
 	public MailingListDao getMailingListDao() {
@@ -206,13 +206,13 @@ public class EmailAddrsListBean {
 			return TO_FAILED;
 		}
 		reset();
-		this.emailAddr = (EmailAddrVo) emailAddrs.getRowData();
+		this.emailAddr = (EmailAddressVo) emailAddrs.getRowData();
 		logger.info("viewEmailAddr() - EmailAddr to be edited: " + emailAddr.getEmailAddr());
 		emailAddr.setMarkedForEdition(true);
 		editMode = true;
 		mailingLists = getMailingListDao().getSubscribedLists(emailAddr.getEmailAddrId());
 		if (isDebugEnabled) {
-			logger.debug("viewEmailAddr() - EmailAddrVo to be passed to jsp: " + emailAddr);
+			logger.debug("viewEmailAddr() - EmailAddressVo to be passed to jsp: " + emailAddr);
 		}
 		return TO_EDIT;
 	}
@@ -222,7 +222,7 @@ public class EmailAddrsListBean {
 			logger.debug("saveEmailAddr() - Entering...");
 		}
 		if (emailAddr == null) {
-			logger.warn("saveEmailAddr() - EmailAddrVo is null.");
+			logger.warn("saveEmailAddr() - EmailAddressVo is null.");
 			return TO_FAILED;
 		}
 		reset();
@@ -247,8 +247,8 @@ public class EmailAddrsListBean {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void addToList(EmailAddrVo vo) {
-		List<EmailAddrVo> list = (List<EmailAddrVo>) emailAddrs.getWrappedData();
+	private void addToList(EmailAddressVo vo) {
+		List<EmailAddressVo> list = (List<EmailAddressVo>) emailAddrs.getWrappedData();
 		list.add(vo);
 	}
 
@@ -261,9 +261,9 @@ public class EmailAddrsListBean {
 			return TO_FAILED;
 		}
 		reset();
-		List<EmailAddrVo> addrList = getEmailAddrList();
+		List<EmailAddressVo> addrList = getEmailAddrList();
 		for (int i=0; i<addrList.size(); i++) {
-			EmailAddrVo vo = addrList.get(i);
+			EmailAddressVo vo = addrList.get(i);
 			if (vo.isMarkedForDeletion()) {
 				int rowsDeleted = getEmailAddrDao().deleteByAddrId(vo.getEmailAddrId());
 				if (rowsDeleted > 0) {
@@ -285,15 +285,15 @@ public class EmailAddrsListBean {
 			return TO_FAILED;
 		}
 		reset();
-		List<EmailAddrVo> addrList = getEmailAddrList();
+		List<EmailAddressVo> addrList = getEmailAddrList();
 		for (int i=0; i<addrList.size(); i++) {
-			EmailAddrVo vo = addrList.get(i);
+			EmailAddressVo vo = addrList.get(i);
 			if (vo.isMarkedForDeletion()) {
 				if (!StringUtil.isEmpty(FacesUtil.getLoginUserId())) {
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
 				}
 				if (!vo.getEmailAddr().equals(vo.getCurrEmailAddr())) {
-					EmailAddrVo vo2 = getEmailAddrDao().getByAddress(vo.getEmailAddr());
+					EmailAddressVo vo2 = getEmailAddrDao().getByAddress(vo.getEmailAddr());
 					if (vo2 != null && vo2.getEmailAddrId() != vo.getEmailAddrId()) {
 						actionFailure = "Email address " + vo.getEmailAddr() + " already exists.";
 						return TO_SELF;
@@ -315,7 +315,7 @@ public class EmailAddrsListBean {
 			logger.debug("addEmailAddr() - Entering...");
 		}
 		reset();
-		this.emailAddr = new EmailAddrVo();
+		this.emailAddr = new EmailAddressVo();
 		emailAddr.setMarkedForEdition(true);
 		emailAddr.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		if (mailingLists != null) {
@@ -338,9 +338,9 @@ public class EmailAddrsListBean {
 			logger.warn("getAnyEmailAddrsMarkedForDeletion() - EmailAddr List is null.");
 			return false;
 		}
-		List<EmailAddrVo> addrList = getEmailAddrList();
-		for (Iterator<EmailAddrVo> it=addrList.iterator(); it.hasNext();) {
-			EmailAddrVo vo = it.next();
+		List<EmailAddressVo> addrList = getEmailAddrList();
+		for (Iterator<EmailAddressVo> it=addrList.iterator(); it.hasNext();) {
+			EmailAddressVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -359,7 +359,7 @@ public class EmailAddrsListBean {
 		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - address: " + address);
 		}
-		EmailAddrVo vo = getEmailAddrDao().getByAddress(address);
+		EmailAddressVo vo = getEmailAddrDao().getByAddress(address);
 		if (editMode == true && vo != null && emailAddr != null && vo.getEmailAddrId() != emailAddr.getEmailAddrId()) {
 			// emailAddr does not exist
 			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailAddrAlreadyExist",
@@ -383,20 +383,20 @@ public class EmailAddrsListBean {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	private List<EmailAddrVo> getEmailAddrList() {
+	private List<EmailAddressVo> getEmailAddrList() {
 		if (emailAddrs == null) {
-			return new ArrayList<EmailAddrVo>();
+			return new ArrayList<EmailAddressVo>();
 		}
 		else {
-			return (List<EmailAddrVo>)emailAddrs.getWrappedData();
+			return (List<EmailAddressVo>)emailAddrs.getWrappedData();
 		}
 	}
 
-	public EmailAddrVo getEmailAddr() {
+	public EmailAddressVo getEmailAddr() {
 		return emailAddr;
 	}
 
-	public void setEmailAddr(EmailAddrVo emailAddr) {
+	public void setEmailAddr(EmailAddressVo emailAddr) {
 		this.emailAddr = emailAddr;
 	}
 

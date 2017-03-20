@@ -23,10 +23,10 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bo.test.RuleEngineTest;
 import ltj.message.dao.abstrct.DaoTestBase;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgStreamDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.vo.outbox.MsgStreamVo;
 
@@ -37,7 +37,7 @@ public class MsgStreamTest extends DaoTestBase {
 	@Resource
 	private MsgInboxDao msgInboxDao;
 	@Resource
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 
 	private static MsgStreamVo lastRecord;
 	
@@ -133,7 +133,7 @@ public class MsgStreamTest extends DaoTestBase {
 		assertFalse(list1.isEmpty());
 		assertEquals(vo.getFromAddrId(), list1.get(0).getFromAddrId());
 		
-		EmailAddrVo addrvo1 = emailAddrDao.getByAddrId(vo.getFromAddrId());
+		EmailAddressVo addrvo1 = emailAddressDao.getByAddrId(vo.getFromAddrId());
 		assertNotNull(addrvo1);
 		
 		List<MsgStreamVo> list2 = msgStreamDao.getByFromAddress(addrvo1.getEmailAddr());
@@ -142,7 +142,7 @@ public class MsgStreamTest extends DaoTestBase {
 		List<MsgStreamVo> list3 = msgStreamDao.getByToAddrId(vo.getToAddrId());
 		assertFalse(list3.isEmpty());
 
-		EmailAddrVo addrvo2 = emailAddrDao.getByAddrId(vo.getToAddrId());
+		EmailAddressVo addrvo2 = emailAddressDao.getByAddrId(vo.getToAddrId());
 		assertNotNull(addrvo2);
 		
 		List<MsgStreamVo> list4 = msgStreamDao.getByToAddress(addrvo2.getEmailAddr());

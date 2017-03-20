@@ -17,14 +17,14 @@ import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.XHeaderName;
 import ltj.message.dao.client.ClientUtil;
-import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.dao.inbox.AttachmentsDao;
-import ltj.message.dao.inbox.MsgAddrsDao;
-import ltj.message.dao.inbox.MsgClickCountsDao;
-import ltj.message.dao.inbox.MsgHeadersDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.inbox.MsgAttachmentDao;
+import ltj.message.dao.inbox.MsgAddressDao;
+import ltj.message.dao.inbox.MsgClickCountDao;
+import ltj.message.dao.inbox.MsgHeaderDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgStreamDao;
-import ltj.message.dao.inbox.RfcFieldsDao;
+import ltj.message.dao.inbox.MsgRfcFieldDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
 import ltj.message.dao.outbox.MsgSequenceDao;
 import ltj.message.dao.template.BodyTemplateDao;
@@ -32,13 +32,13 @@ import ltj.message.dao.template.MsgSourceDao;
 import ltj.message.dao.template.SubjTemplateDao;
 import ltj.message.util.FileUtil;
 import ltj.message.vo.ClientVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
-import ltj.message.vo.inbox.AttachmentsVo;
-import ltj.message.vo.inbox.MsgAddrsVo;
-import ltj.message.vo.inbox.MsgClickCountsVo;
-import ltj.message.vo.inbox.MsgHeadersVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
+import ltj.message.vo.inbox.MsgAttachmentVo;
+import ltj.message.vo.inbox.MsgAddressVo;
+import ltj.message.vo.inbox.MsgClickCountVo;
+import ltj.message.vo.inbox.MsgHeaderVo;
 import ltj.message.vo.inbox.MsgInboxVo;
-import ltj.message.vo.inbox.RfcFieldsVo;
+import ltj.message.vo.inbox.MsgRfcFieldVo;
 import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.MsgRenderedVo;
 import ltj.vo.outbox.MsgStreamVo;
@@ -49,8 +49,8 @@ import ltj.vo.template.SubjTemplateVo;
 public class LoadInboxTables {
 	static long msgId = -1L;
 	MsgSequenceDao msgSequenceDao;
-	EmailAddrDao emailAddrDao;
-	MsgClickCountsDao msgClickCountsDao;
+	EmailAddressDao emailAddressDao;
+	MsgClickCountDao msgClickCountDao;
 	MsgInboxDao msgInboxDao;
 	//static AbstractApplicationContext factory = null;
 	
@@ -75,20 +75,20 @@ public class LoadInboxTables {
 			factory = SpringUtil.getDaoAppContext();
 		}
 		msgSequenceDao = factory.getBean(MsgSequenceDao.class);
-		emailAddrDao = factory.getBean(EmailAddrDao.class);
-		msgClickCountsDao = factory.getBean(MsgClickCountsDao.class);
+		emailAddressDao = factory.getBean(EmailAddressDao.class);
+		msgClickCountDao = factory.getBean(MsgClickCountDao.class);
 		msgInboxDao = factory.getBean(MsgInboxDao.class);
-		MsgAddrsDao msgAddrsDao = factory.getBean(MsgAddrsDao.class);
-		AttachmentsDao attachmentsDao = factory.getBean(AttachmentsDao.class);
-		MsgHeadersDao msgHeadersDao = factory.getBean(MsgHeadersDao.class);
-		RfcFieldsDao rfcFieldsDao = factory.getBean(RfcFieldsDao.class);
+		MsgAddressDao msgAddressDao = factory.getBean(MsgAddressDao.class);
+		MsgAttachmentDao msgAttachmentDao = factory.getBean(MsgAttachmentDao.class);
+		MsgHeaderDao msgHeaderDao = factory.getBean(MsgHeaderDao.class);
+		MsgRfcFieldDao msgRfcFieldDao = factory.getBean(MsgRfcFieldDao.class);
 		MsgStreamDao msgStreamDao = factory.getBean(MsgStreamDao.class);
 		
 		msgId = load(msgInboxDao);
-		load(msgAddrsDao);
-		load(attachmentsDao);
-		load(msgHeadersDao);
-		load(rfcFieldsDao);
+		load(msgAddressDao);
+		load(msgAttachmentDao);
+		load(msgHeaderDao);
+		load(msgRfcFieldDao);
 		MsgInboxVo inbox = msgInboxDao.getByPrimaryKey(msgId);
 		loadMessageStream(msgStreamDao, inbox);
 		loadRenderTables(factory);
@@ -98,11 +98,11 @@ public class LoadInboxTables {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 		
 		String fromAddr = SubscriberEnum.Subscriber.Subscriber1.getAddress();
-		EmailAddrVo fromAddrVo = emailAddrDao.findByAddress(fromAddr);
+		EmailAddressVo fromAddrVo = emailAddressDao.findByAddress(fromAddr);
 		
 		ClientVo clientVo = ClientUtil.getDefaultClientVo();
 		String toAddr = clientVo.getReturnPathLeft() + "@" + clientVo.getDomainName();
-		EmailAddrVo toAddrVo = emailAddrDao.findByAddress(toAddr);
+		EmailAddressVo toAddrVo = emailAddressDao.findByAddress(toAddr);
 		
 		long msgId = msgSequenceDao.findNextValue();
 		MsgInboxVo in = new MsgInboxVo();
@@ -131,7 +131,7 @@ public class LoadInboxTables {
 
 		msgInboxDao.insert(in);
 		
-		toAddrVo = emailAddrDao.findByAddress(Constants.DEMOLIST1_ADDR);
+		toAddrVo = emailAddressDao.findByAddress(Constants.DEMOLIST1_ADDR);
 
 		msgId = msgSequenceDao.findNextValue();
 		in.setMsgId(msgId);
@@ -160,7 +160,7 @@ public class LoadInboxTables {
 
 		msgInboxDao.insert(in);
 
-		MsgClickCountsVo in2 = new MsgClickCountsVo();
+		MsgClickCountVo in2 = new MsgClickCountVo();
 		
 		in2.setMsgId(msgId);
 		in2.setListId(Constants.DEMOLIST1_NAME);
@@ -171,42 +171,42 @@ public class LoadInboxTables {
 		in2.setLastOpenTime(updtTime);
 		in2.setLastClickTime(updtTime);
 
-		msgClickCountsDao.insert(in2);
+		msgClickCountDao.insert(in2);
 
 		System.out.println("load() completed.\n");
 		return in.getMsgId();
 	}
 	
-	void load(MsgAddrsDao msgAddrsDao) {
+	void load(MsgAddressDao msgAddressDao) {
 		List<MsgInboxVo> msgList = msgInboxDao.getRecent(100);
 		
 		int rowsInserted = 0;
 		for (MsgInboxVo vo : msgList) {
-			MsgAddrsVo in = new MsgAddrsVo();
+			MsgAddressVo in = new MsgAddressVo();
 			
 			in.setMsgId(vo.getMsgId());
 			in.setAddrType(AddressType.FROM_ADDR.value());
 			in.setAddrSeq(1);
-			EmailAddrVo addrvo = emailAddrDao.getByAddrId(vo.getFromAddrId());
+			EmailAddressVo addrvo = emailAddressDao.getByAddrId(vo.getFromAddrId());
 			in.setAddrValue(addrvo.getEmailAddr());
 
-			msgAddrsDao.insert(in);
+			msgAddressDao.insert(in);
 			rowsInserted++;
 			
 			in.setAddrType(AddressType.TO_ADDR.value());
 			in.setAddrSeq(2);
-			addrvo = emailAddrDao.getByAddrId(vo.getToAddrId());
+			addrvo = emailAddressDao.getByAddrId(vo.getToAddrId());
 			in.setAddrValue(addrvo.getEmailAddr());
 
-			msgAddrsDao.insert(in);
+			msgAddressDao.insert(in);
 			rowsInserted++;
 		}
 
 		System.out.println("load() completed, rows inserted = " + rowsInserted);
 	}
 	
-	void load(AttachmentsDao attachmentrsDao) {
-		AttachmentsVo in = new AttachmentsVo();
+	void load(MsgAttachmentDao attachmentrsDao) {
+		MsgAttachmentVo in = new MsgAttachmentVo();
 		
 		in.setMsgId(msgId);
 		in.setAttchmntDepth(1);
@@ -221,21 +221,21 @@ public class LoadInboxTables {
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(MsgHeadersDao msgHeadersDao) {
-		MsgHeadersVo in = new MsgHeadersVo();
+	void load(MsgHeaderDao msgHeaderDao) {
+		MsgHeaderVo in = new MsgHeaderVo();
 		
 		in.setMsgId(msgId);
 		in.setHeaderSeq(1);
 		in.setHeaderName(XHeaderName.MAILER.value());
 		in.setHeaderValue("MailSender");
 
-		msgHeadersDao.insert(in);
+		msgHeaderDao.insert(in);
 
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	void load(RfcFieldsDao rfcFieldsDao) {
-		RfcFieldsVo in = new RfcFieldsVo();
+	void load(MsgRfcFieldDao msgRfcFieldDao) {
+		MsgRfcFieldVo in = new MsgRfcFieldVo();
 		
 		in.setMsgId(msgId);
 		in.setRfcType(VariableName.RFC822.value());
@@ -250,7 +250,7 @@ public class LoadInboxTables {
 		in.setDsnRfc822("dsn Rfc822");
 		in.setDlvrStatus(null);
 
-		rfcFieldsDao.insert(in);
+		msgRfcFieldDao.insert(in);
 
 		System.out.println("load() completed.\n"+in);
 	}

@@ -40,7 +40,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 				" sum(b.SentCount) as SentCount, sum(b.OpenCount) as OpenCount," +
 				" sum(b.ClickCount) as ClickCount " +
 				"from mailing_list a " +
-				" LEFT OUTER JOIN Subscription b on a.ListId = b.ListId " +
+				" LEFT OUTER JOIN email_subscrpt b on a.ListId = b.ListId " +
 				" JOIN client_tbl c on a.ClientId = c.ClientId ";
 		return select;
 	}
@@ -145,7 +145,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 			" s.SentCount, " +
 			" s.OpenCount, " +
 			" s.ClickCount " +
-			" FROM mailing_list m, Subscription s, client_tbl c " +
+			" FROM mailing_list m, email_subscrpt s, client_tbl c " +
 			" where m.ListId=s.ListId " +
 			" and m.ClientId=c.ClientId " +
 			" and s.EmailAddrId=? ";

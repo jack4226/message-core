@@ -22,10 +22,10 @@ import ltj.message.bean.SimpleEmailSender;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.MailingListVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringAppConfig;
 import ltj.spring.util.SpringJmsConfig;
@@ -38,7 +38,7 @@ public class EmailSubscribeTest extends BoTestBase {
 	@Resource
 	private SimpleEmailSender mSend;
 	@Resource
-	private SubscriptionDao subscriptionDao;
+	private EmailSubscrptDao emailSubscrptDao;
 	@Resource
 	private MailingListDao mailingListDao;
 	
@@ -71,11 +71,11 @@ public class EmailSubscribeTest extends BoTestBase {
 	
 	@Test
 	public void test3() { // verifyDataRecord
-		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);
+		EmailAddressVo addrVo = selectEmailAddrByAddress(testFromAddress);
 		assertNotNull(addrVo);
 		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);
 		assertTrue(list.size()>0);
-		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
+		EmailSubscrptVo vo = emailSubscrptDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
 		assertNotNull(vo);
 		assertEquals(Constants.Y, vo.getSubscribed());
 		

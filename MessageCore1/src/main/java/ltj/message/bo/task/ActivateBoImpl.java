@@ -17,9 +17,9 @@ import ltj.message.bean.MessageBean;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.exception.DataValidationException;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @Component("activateBo")
 @Scope(value="prototype")
@@ -29,7 +29,7 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	
 	/**
 	 * Activate email addresses. The column "DataTypeValues" from MsgAction
@@ -99,20 +99,20 @@ public class ActivateBoImpl extends TaskBaseAdaptor {
 				if (isDebugEnabled) {
 					logger.debug("Address to actiavte: " + addr);
 				}
-				EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(addr);
-				if (!StatusId.ACTIVE.value().equals(emailAddrVo.getStatusId())) {
+				EmailAddressVo emailAddressVo = emailAddressDao.findByAddress(addr);
+				if (!StatusId.ACTIVE.value().equals(emailAddressVo.getStatusId())) {
 					if (isDebugEnabled) {
 						logger.debug("Activating EmailAddr: " + addr);
 					}
-					emailAddrVo.setStatusId(StatusId.ACTIVE.value());
-					emailAddrVo.setBounceCount(0); // reset bounce count
-					emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
-					emailAddrVo.setStatusChangeTime(updtTime);
-					emailAddrDao.update(emailAddrVo);
+					emailAddressVo.setStatusId(StatusId.ACTIVE.value());
+					emailAddressVo.setBounceCount(0); // reset bounce count
+					emailAddressVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
+					emailAddressVo.setStatusChangeTime(updtTime);
+					emailAddressDao.update(emailAddressVo);
 				}
-				else if (emailAddrVo.getBounceCount() > 0) {
+				else if (emailAddressVo.getBounceCount() > 0) {
 					// email address already active, reset bounce count
-					emailAddrDao.updateBounceCount(emailAddrVo.getEmailAddrId(), 0);
+					emailAddressDao.updateBounceCount(emailAddressVo.getEmailAddrId(), 0);
 				}
 				addrsActiveted++;
 			}

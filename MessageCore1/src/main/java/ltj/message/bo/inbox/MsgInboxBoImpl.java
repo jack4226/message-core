@@ -30,29 +30,29 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MsgDirection;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.dao.inbox.AttachmentsDao;
-import ltj.message.dao.inbox.MsgActionLogsDao;
-import ltj.message.dao.inbox.MsgAddrsDao;
-import ltj.message.dao.inbox.MsgClickCountsDao;
-import ltj.message.dao.inbox.MsgHeadersDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.inbox.MsgAttachmentDao;
+import ltj.message.dao.inbox.MsgActionLogDao;
+import ltj.message.dao.inbox.MsgAddressDao;
+import ltj.message.dao.inbox.MsgClickCountDao;
+import ltj.message.dao.inbox.MsgHeaderDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgStreamDao;
-import ltj.message.dao.inbox.RfcFieldsDao;
+import ltj.message.dao.inbox.MsgRfcFieldDao;
 import ltj.message.dao.outbox.DeliveryStatusDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
 import ltj.message.dao.outbox.MsgSequenceDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.PrintUtil;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
-import ltj.message.vo.inbox.AttachmentsVo;
-import ltj.message.vo.inbox.MsgActionLogsVo;
-import ltj.message.vo.inbox.MsgAddrsVo;
-import ltj.message.vo.inbox.MsgClickCountsVo;
-import ltj.message.vo.inbox.MsgHeadersVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
+import ltj.message.vo.inbox.MsgAttachmentVo;
+import ltj.message.vo.inbox.MsgActionLogVo;
+import ltj.message.vo.inbox.MsgAddressVo;
+import ltj.message.vo.inbox.MsgClickCountVo;
+import ltj.message.vo.inbox.MsgHeaderVo;
 import ltj.message.vo.inbox.MsgInboxVo;
-import ltj.message.vo.inbox.RfcFieldsVo;
+import ltj.message.vo.inbox.MsgRfcFieldVo;
 import ltj.vo.outbox.DeliveryStatusVo;
 import ltj.vo.outbox.MsgRenderedVo;
 import ltj.vo.outbox.MsgStreamVo;
@@ -70,15 +70,15 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	@Autowired
 	private MsgInboxDao msgInboxDao;
 	@Autowired
-	private AttachmentsDao attachmentsDao;
+	private MsgAttachmentDao msgAttachmentDao;
 	@Autowired
-	private MsgAddrsDao msgAddrsDao;
+	private MsgAddressDao msgAddressDao;
 	@Autowired
-	private MsgHeadersDao msgHeadersDao;
+	private MsgHeaderDao msgHeaderDao;
 	@Autowired
-	private RfcFieldsDao rfcFieldsDao;
+	private MsgRfcFieldDao msgRfcFieldDao;
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	@Autowired
 	private MsgStreamDao msgStreamDao;
 	@Autowired
@@ -86,9 +86,9 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	@Autowired
 	private MsgRenderedDao msgRenderedDao;
 	@Autowired
-	private MsgActionLogsDao msgActionLogsDao;
+	private MsgActionLogDao msgActionLogDao;
 	@Autowired
-	private MsgClickCountsDao msgClickCountsDao;
+	private MsgClickCountDao msgClickCountDao;
 
 	static final String LF = System.getProperty("line.separator", "\n");
 
@@ -131,15 +131,15 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		msgVo.setReceivedTime(ts);
 		
 		/* insert email addresses */
-		EmailAddrVo fromAddrVo = getEmailAddrVo(msgBean.getFrom());
+		EmailAddressVo fromAddrVo = getEmailAddrVo(msgBean.getFrom());
 		if (fromAddrVo != null) { // should always be true
 			msgVo.setFromAddrId(fromAddrVo.getEmailAddrId());
 		}
-		EmailAddrVo toAddrVo = getEmailAddrVo(msgBean.getTo());
+		EmailAddressVo toAddrVo = getEmailAddrVo(msgBean.getTo());
 		if (toAddrVo != null) { // should always be true
 			msgVo.setToAddrId(toAddrVo.getEmailAddrId());
 		}
-		EmailAddrVo replaToVo = getEmailAddrVo(msgBean.getReplyto());
+		EmailAddressVo replaToVo = getEmailAddrVo(msgBean.getReplyto());
 		Long replyToAddrId = replaToVo == null ? null : replaToVo.getEmailAddrId();
 		msgVo.setReplyToAddrId(replyToAddrId);
 		/* end of email addresses */
@@ -190,7 +190,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 				long minutesInMillis = 10 * 60 * 1000; // 10 minutes
 				if (fromAddrVo.getLastRcptTime() == null
 						|| fromAddrVo.getLastRcptTime().getTime() < (updtTime.getTime() - minutesInMillis)) {
-					emailAddrDao.updateLastRcptTime(msgVo.getFromAddrId());
+					emailAddressDao.updateLastRcptTime(msgVo.getFromAddrId());
 				}
 			}
 		}
@@ -233,7 +233,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 				long minutesInMillis = 10 * 60 * 1000; // 10 minutes
 				if (toAddrVo.getLastSentTime() == null
 						|| toAddrVo.getLastSentTime().getTime() < (updtTime.getTime() - minutesInMillis)) {
-					emailAddrDao.updateLastSentTime(msgVo.getToAddrId());
+					emailAddressDao.updateLastSentTime(msgVo.getToAddrId());
 				}
 			}
 		}
@@ -269,23 +269,23 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		
 		// insert click count record for Broadcasting e-mail
 		if (RuleNameEnum.BROADCAST.name().equals(msgBean.getRuleName())) {
-			MsgClickCountsVo msgClickCountsVo = new MsgClickCountsVo();
-			msgClickCountsVo.setMsgId(msgId);
+			MsgClickCountVo msgClickCountVo = new MsgClickCountVo();
+			msgClickCountVo.setMsgId(msgId);
 			// msgBean.getMailingListId() should always returns a value. just for safety.
 			String listId = msgBean.getMailingListId() == null ? "" : msgBean.getMailingListId();
-			msgClickCountsVo.setListId(listId);
+			msgClickCountVo.setListId(listId);
 			if (msgBean.getToCustomersOnly()) {
-				msgClickCountsVo.setDeliveryOption(MLDeliveryType.CUSTOMERS_ONLY.value());
+				msgClickCountVo.setDeliveryOption(MLDeliveryType.CUSTOMERS_ONLY.value());
 			}
 			else if (msgBean.getToProspectsOnly()) {
-				msgClickCountsVo.setDeliveryOption(MLDeliveryType.PROSPECTS_ONLY.value());
+				msgClickCountVo.setDeliveryOption(MLDeliveryType.PROSPECTS_ONLY.value());
 			}
 			else {
-				msgClickCountsVo.setDeliveryOption(MLDeliveryType.ALL_ON_LIST.value());
+				msgClickCountVo.setDeliveryOption(MLDeliveryType.ALL_ON_LIST.value());
 			}
-			msgClickCountsVo.setSentCount(0);
-			msgClickCountsVo.setClickCount(0);
-			msgClickCountsDao.insert(msgClickCountsVo);
+			msgClickCountVo.setSentCount(0);
+			msgClickCountVo.setClickCount(0);
+			msgClickCountDao.insert(msgClickCountVo);
 		}
 		
 		// save message headers
@@ -293,12 +293,12 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (headers != null) {
 			for (int i = 0; i < headers.size(); i++) {
 				MsgHeader header = headers.get(i);
-				MsgHeadersVo msgHeadersVo= new MsgHeadersVo();
-				msgHeadersVo.setMsgId(msgVo.getMsgId());
-				msgHeadersVo.setHeaderName(StringUtils.left(header.getName(),100));
-				msgHeadersVo.setHeaderValue(header.getValue());
-				msgHeadersVo.setHeaderSeq(i+1);
-				msgHeadersDao.insert(msgHeadersVo);
+				MsgHeaderVo msgHeaderVo= new MsgHeaderVo();
+				msgHeaderVo.setMsgId(msgVo.getMsgId());
+				msgHeaderVo.setHeaderName(StringUtils.left(header.getName(),100));
+				msgHeaderVo.setHeaderValue(header.getValue());
+				msgHeaderVo.setHeaderSeq(i+1);
+				msgHeaderDao.insert(msgHeaderVo);
 			}
 		}
 
@@ -307,7 +307,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 			for (int i = 0; i < aNodes.size(); i++) {
 				MessageNode mNode = aNodes.get(i);
 				BodypartBean aNode = mNode.getBodypartNode();
-				AttachmentsVo attchVo = new AttachmentsVo();
+				MsgAttachmentVo attchVo = new MsgAttachmentVo();
 				attchVo.setMsgId(msgVo.getMsgId());
 				attchVo.setAttchmntDepth(mNode.getLevel());
 				attchVo.setAttchmntSeq(i+1);
@@ -315,7 +315,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 				attchVo.setAttchmntType(StringUtils.left(aNode.getContentType(),100));
 				attchVo.setAttchmntDisp(StringUtils.left(aNode.getDisposition(),100));
 				attchVo.setAttchmntValue(aNode.getValue());
-				attachmentsDao.insert(attchVo);
+				msgAttachmentDao.insert(attchVo);
 			}
 		}
 		
@@ -323,54 +323,54 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		if (msgBean.getReport() != null) {
 			MessageNode mNode = msgBean.getReport();
 			BodypartBean aNode = mNode.getBodypartNode();
-			RfcFieldsVo rfcFieldsVo = new RfcFieldsVo();
-			rfcFieldsVo.setMsgId(msgVo.getMsgId());
-			rfcFieldsVo.setRfcType(StringUtils.left(aNode.getContentType(),30));
+			MsgRfcFieldVo msgRfcFieldVo = new MsgRfcFieldVo();
+			msgRfcFieldVo.setMsgId(msgVo.getMsgId());
+			msgRfcFieldVo.setRfcType(StringUtils.left(aNode.getContentType(),30));
 			
-			rfcFieldsVo.setRfcStatus(StringUtils.left(msgBean.getDsnStatus(),30));
-			rfcFieldsVo.setRfcAction(StringUtils.left(msgBean.getDsnAction(),30));
-			rfcFieldsVo.setFinalRcpt(StringUtils.left(msgBean.getFinalRcpt(),255));
-			rfcFieldsVo.setFinalRcptId(getEmailAddrId(msgBean.getFinalRcpt()));
-			rfcFieldsVo.setOrigRcpt(StringUtils.left(msgBean.getOrigRcpt(),255));
+			msgRfcFieldVo.setRfcStatus(StringUtils.left(msgBean.getDsnStatus(),30));
+			msgRfcFieldVo.setRfcAction(StringUtils.left(msgBean.getDsnAction(),30));
+			msgRfcFieldVo.setFinalRcpt(StringUtils.left(msgBean.getFinalRcpt(),255));
+			msgRfcFieldVo.setFinalRcptId(getEmailAddrId(msgBean.getFinalRcpt()));
+			msgRfcFieldVo.setOrigRcpt(StringUtils.left(msgBean.getOrigRcpt(),255));
 			//rfcFieldsVo.setOrigMsgSubject(StringUtil.cut(msgBean.getOrigSubject(),255));
 			//rfcFieldsVo.setMessageId(StringUtil.cut(msgBean.getMessageId(),255));
-			rfcFieldsVo.setDsnText(msgBean.getDsnText());
-			rfcFieldsVo.setDsnRfc822(msgBean.getDiagnosticCode()); // TODO: revisit
-			rfcFieldsVo.setDlvrStatus(msgBean.getDsnDlvrStat());
-			rfcFieldsDao.insert(rfcFieldsVo);
+			msgRfcFieldVo.setDsnText(msgBean.getDsnText());
+			msgRfcFieldVo.setDsnRfc822(msgBean.getDiagnosticCode()); // TODO: revisit
+			msgRfcFieldVo.setDlvrStatus(msgBean.getDsnDlvrStat());
+			msgRfcFieldDao.insert(msgRfcFieldVo);
 		}
 		
 		if (msgBean.getRfc822() != null) {
 			MessageNode mNode = msgBean.getRfc822();
 			BodypartBean aNode = mNode.getBodypartNode();
-			RfcFieldsVo rfcFieldsVo = new RfcFieldsVo();
-			rfcFieldsVo.setMsgId(msgVo.getMsgId());
-			rfcFieldsVo.setRfcType(StringUtils.left(aNode.getContentType(),30));
+			MsgRfcFieldVo msgRfcFieldVo = new MsgRfcFieldVo();
+			msgRfcFieldVo.setMsgId(msgVo.getMsgId());
+			msgRfcFieldVo.setRfcType(StringUtils.left(aNode.getContentType(),30));
 			
 			//rfcFieldsVo.setRfcStatus(StringUtil.cut(msgBean.getDsnStatus(),30));
 			//rfcFieldsVo.setRfcAction(StringUtil.cut(msgBean.getDsnAction(),30));
-			rfcFieldsVo.setFinalRcpt(StringUtils.left(msgBean.getFinalRcpt(),255));
-			rfcFieldsVo.setFinalRcptId(getEmailAddrId(msgBean.getFinalRcpt()));
+			msgRfcFieldVo.setFinalRcpt(StringUtils.left(msgBean.getFinalRcpt(),255));
+			msgRfcFieldVo.setFinalRcptId(getEmailAddrId(msgBean.getFinalRcpt()));
 			//rfcFieldsVo.setOrigRcpt(StringUtil.cut(msgBean.getOrigRcpt(),255));
-			rfcFieldsVo.setOrigMsgSubject(StringUtils.left(msgBean.getOrigSubject(),255));
-			rfcFieldsVo.setMessageId(StringUtils.left(msgBean.getSmtpMessageId(),255));
-			rfcFieldsVo.setDsnText(msgBean.getDsnText());
-			rfcFieldsVo.setDsnRfc822(msgBean.getDsnRfc822());
+			msgRfcFieldVo.setOrigMsgSubject(StringUtils.left(msgBean.getOrigSubject(),255));
+			msgRfcFieldVo.setMessageId(StringUtils.left(msgBean.getSmtpMessageId(),255));
+			msgRfcFieldVo.setDsnText(msgBean.getDsnText());
+			msgRfcFieldVo.setDsnRfc822(msgBean.getDsnRfc822());
 			//rfcFieldsVo.setDlvrStatus(msgBean.getDsnDlvrStat());
-			rfcFieldsDao.insert(rfcFieldsVo);
+			msgRfcFieldDao.insert(msgRfcFieldVo);
 		}
 		
 		// we could have found a final recipient without delivery reports
 		if (msgBean.getReport() == null && msgBean.getRfc822() == null) {
 			if (!StringUtil.isEmpty(msgBean.getFinalRcpt()) || !StringUtil.isEmpty(msgBean.getOrigRcpt())) {
-				RfcFieldsVo rfcFieldsVo = new RfcFieldsVo();
-				rfcFieldsVo.setMsgId(msgVo.getMsgId());
-				rfcFieldsVo.setRfcType(StringUtils.left(msgBean.getContentType(),30));
+				MsgRfcFieldVo msgRfcFieldVo = new MsgRfcFieldVo();
+				msgRfcFieldVo.setMsgId(msgVo.getMsgId());
+				msgRfcFieldVo.setRfcType(StringUtils.left(msgBean.getContentType(),30));
 					// we don't have content type, so just stick one here.
-				rfcFieldsVo.setFinalRcpt(StringUtils.left(msgBean.getFinalRcpt(),255));
-				rfcFieldsVo.setFinalRcptId(getEmailAddrId(msgBean.getFinalRcpt()));
-				rfcFieldsVo.setOrigRcpt(StringUtils.left(msgBean.getOrigRcpt(),255));
-				rfcFieldsDao.insert(rfcFieldsVo);
+				msgRfcFieldVo.setFinalRcpt(StringUtils.left(msgBean.getFinalRcpt(),255));
+				msgRfcFieldVo.setFinalRcptId(getEmailAddrId(msgBean.getFinalRcpt()));
+				msgRfcFieldVo.setOrigRcpt(StringUtils.left(msgBean.getOrigRcpt(),255));
+				msgRfcFieldDao.insert(msgRfcFieldVo);
 			}
 		}
 		
@@ -405,30 +405,30 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	 * @param msgBean
 	 */
 	public void saveMessageFlowLogs(MessageBean msgBean) {
-		MsgActionLogsVo msgActionLogsVo = new MsgActionLogsVo();
-		msgActionLogsVo.setMsgId(msgBean.getMsgId());
-		msgActionLogsVo.setMsgRefId(msgBean.getMsgRefId());
+		MsgActionLogVo msgActionLogVo = new MsgActionLogVo();
+		msgActionLogVo.setMsgId(msgBean.getMsgId());
+		msgActionLogVo.setMsgRefId(msgBean.getMsgRefId());
 		// find lead message id
 		if (msgBean.getMsgRefId() != null) {
-			List<MsgActionLogsVo> list = msgActionLogsDao.getByMsgId(msgBean.getMsgRefId());
+			List<MsgActionLogVo> list = msgActionLogDao.getByMsgId(msgBean.getMsgRefId());
 			if (list == null || list.isEmpty()) {
 				logger.error("saveMessageFlowLogs() - record not found for MsgRefId: " + msgBean.getMsgRefId());
 			}
 			else {
-				MsgActionLogsVo vo = list.get(0);
-				msgActionLogsVo.setLeadMsgId(vo.getLeadMsgId());
+				MsgActionLogVo vo = list.get(0);
+				msgActionLogVo.setLeadMsgId(vo.getLeadMsgId());
 			}
 		}
-		if (msgActionLogsVo.getLeadMsgId() < 0) {
-			msgActionLogsVo.setLeadMsgId(msgBean.getMsgId());
+		if (msgActionLogVo.getLeadMsgId() < 0) {
+			msgActionLogVo.setLeadMsgId(msgBean.getMsgId());
 		}
 		if (StringUtils.isNotBlank(msgBean.getRuleName())) {
-			msgActionLogsVo.setActionBo(msgBean.getRuleName());
+			msgActionLogVo.setActionBo(msgBean.getRuleName());
 		}
 		else {
-			msgActionLogsVo.setActionBo(RuleNameEnum.SEND_MAIL.name());
+			msgActionLogVo.setActionBo(RuleNameEnum.SEND_MAIL.name());
 		}
-		msgActionLogsDao.insert(msgActionLogsVo);
+		msgActionLogDao.insert(msgActionLogVo);
 	}
 	
 	/**
@@ -441,13 +441,13 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	public MsgInboxVo getMessageByPK(long msgId) {
 		MsgInboxVo msgInboxVo = msgInboxDao.getByPrimaryKey(msgId);
 		if (msgInboxVo != null) {
-			List<MsgAddrsVo> msgAddrs = msgAddrsDao.getByMsgId(msgId);
+			List<MsgAddressVo> msgAddrs = msgAddressDao.getByMsgId(msgId);
 			msgInboxVo.setMsgAddrs(msgAddrs);
-			List<MsgHeadersVo> msgHeaders = msgHeadersDao.getByMsgId(msgId);
+			List<MsgHeaderVo> msgHeaders = msgHeaderDao.getByMsgId(msgId);
 			msgInboxVo.setMsgHeaders(msgHeaders);
-			List<AttachmentsVo> attachments = attachmentsDao.getByMsgId(msgId);
+			List<MsgAttachmentVo> attachments = msgAttachmentDao.getByMsgId(msgId);
 			msgInboxVo.setAttachments(attachments);
-			List<RfcFieldsVo> rfcFields = rfcFieldsDao.getByMsgId(msgId);
+			List<MsgRfcFieldVo> rfcFields = msgRfcFieldDao.getByMsgId(msgId);
 			msgInboxVo.setRfcFields(rfcFields);
 		}
 		return msgInboxVo;
@@ -483,7 +483,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		for (int i = 0; i < addrs.length; i++) {
 			Address addr = addrs[i];
 			if (addr != null) {
-				MsgAddrsVo addrVo = new MsgAddrsVo();
+				MsgAddressVo addrVo = new MsgAddressVo();
 				addrVo.setMsgId(msgId);
 				addrVo.setAddrType(addrType.value());
 				addrVo.setAddrSeq(i + 1);
@@ -494,36 +494,36 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 					logger.error("Skip invalid email address: " + addrVo.getAddrValue());
 					continue;
 				}
-				msgAddrsDao.insert(addrVo);
+				msgAddressDao.insert(addrVo);
 			}
 		}
 	}
 	
 	// get the first email address from the list and return its EmailAddrId
-	private EmailAddrVo getEmailAddrVo(Address[] addrs) {
-		EmailAddrVo emailAddrVo = null;
+	private EmailAddressVo getEmailAddrVo(Address[] addrs) {
+		EmailAddressVo emailAddressVo = null;
 		for (int i = 0; addrs != null && i < addrs.length; i++) {
 			Address addr = addrs[i];
 			if (addr != null) {
-				emailAddrVo = getEmailAddrVo(addr.toString());
-				if (emailAddrVo != null) {
+				emailAddressVo = getEmailAddrVo(addr.toString());
+				if (emailAddressVo != null) {
 					break;
 				}
 			}
 		}
-		return emailAddrVo;
+		return emailAddressVo;
 	}
 	
-	private EmailAddrVo getEmailAddrVo(String addr) {
-		EmailAddrVo emailAddrVo = null;
+	private EmailAddressVo getEmailAddrVo(String addr) {
+		EmailAddressVo emailAddressVo = null;
 		if (StringUtils.isNotBlank(addr)) {
-			emailAddrVo = emailAddrDao.findByAddress(addr.trim());
+			emailAddressVo = emailAddressDao.findByAddress(addr.trim());
 		}
-		return emailAddrVo;
+		return emailAddressVo;
 	}
 
 	private Long getEmailAddrId(String addr) {
-		EmailAddrVo vo = getEmailAddrVo(addr);
+		EmailAddressVo vo = getEmailAddrVo(addr);
 		if (vo != null) {
 			return vo.getEmailAddrId();
 		}

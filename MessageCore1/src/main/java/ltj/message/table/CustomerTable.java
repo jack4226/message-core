@@ -8,9 +8,9 @@ import java.util.GregorianCalendar;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MobileCarrier;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.main.CreateTableBase;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.spring.util.SpringUtil;
 
 public class CustomerTable extends CreateTableBase {
@@ -120,9 +120,9 @@ public class CustomerTable extends CreateTableBase {
 	}
 	
 	public void loadTestData() throws SQLException {
-		EmailAddrDao dao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+		EmailAddressDao dao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		String emailAddr = "jsmith@test.com";
-		EmailAddrVo vo = dao.findByAddress(emailAddr);
+		EmailAddressVo vo = dao.findByAddress(emailAddr);
 		// 41 fields
 		try {
 			PreparedStatement ps = con

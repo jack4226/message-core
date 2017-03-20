@@ -15,13 +15,13 @@ import org.springframework.stereotype.Repository;
 
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.CustomerVo;
 import ltj.message.vo.PagingCustVo;
 import ltj.message.vo.PagingVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @Repository
 @Component("customerDao")
@@ -264,7 +264,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 
 	@Override
 	public int deleteByEmailAddr(String emailAddr) {
-		EmailAddrVo addrVo = getEmailAddrDao().getByAddress(emailAddr);
+		EmailAddressVo addrVo = getEmailAddrDao().getByAddress(emailAddr);
 		if (addrVo == null) {
 			return 0;
 		}
@@ -290,11 +290,11 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	
 	private void syncupEmailFields(CustomerVo vo) {
 		if (!StringUtil.isEmpty(vo.getEmailAddr())) {
-			EmailAddrVo addrVo = getEmailAddrDao().findByAddress(vo.getEmailAddr());
+			EmailAddressVo addrVo = getEmailAddrDao().findByAddress(vo.getEmailAddr());
 			vo.setEmailAddrId(addrVo.getEmailAddrId());
 		}
 		else {
-			EmailAddrVo addrVo = getEmailAddrDao().getByAddrId(vo.getEmailAddrId());
+			EmailAddressVo addrVo = getEmailAddrDao().getByAddrId(vo.getEmailAddrId());
 			if (addrVo != null) {
 				vo.setEmailAddr(addrVo.getEmailAddr());
 			}
@@ -302,8 +302,8 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	}
 	
 	@Autowired
-	private EmailAddrDao emailAddrDao;
-	private EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
+	private EmailAddressDao emailAddressDao;
+	private EmailAddressDao getEmailAddrDao() {
+		return emailAddressDao;
 	}
 }

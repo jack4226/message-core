@@ -21,7 +21,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		String sql = 
 			"select * " +
 			"from " +
-				"RenderAttachment where renderId=? and attchmntSeq=? ";
+				"rander_attachment where renderId=? and attchmntSeq=? ";
 		
 		Object[] parms = new Object[] {renderId, attchmntSeq};
 		try {
@@ -39,7 +39,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		String sql = 
 			"select * " +
 			" from " +
-				" RenderAttachment where renderId=? " +
+				" rander_attachment where renderId=? " +
 			" order by attchmntSeq";
 		Object[] parms = new Object[] {renderId};
 		List<RenderAttachmentVo> list = getJdbcTemplate().query(sql, parms, 
@@ -50,7 +50,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 	@Override
 	public int update(RenderAttachmentVo renderAttachmentVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(renderAttachmentVo);
-		String sql = MetaDataUtil.buildUpdateStatement("RenderAttachment", renderAttachmentVo);
+		String sql = MetaDataUtil.buildUpdateStatement("rander_attachment", renderAttachmentVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
 	}
@@ -58,7 +58,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 	@Override
 	public int deleteByPrimaryKey(long renderId, int attchmntSeq) {
 		String sql = 
-			"delete from RenderAttachment where renderId=? and attchmntSeq=? ";
+			"delete from rander_attachment where renderId=? and attchmntSeq=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(renderId);
@@ -71,7 +71,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 	@Override
 	public int deleteByRenderId(long renderId) {
 		String sql = 
-			"delete from RenderAttachment where renderId=? ";
+			"delete from rander_attachment where renderId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(renderId);
@@ -83,7 +83,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 	@Override
 	public int insert(RenderAttachmentVo renderAttachmentVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(renderAttachmentVo);
-		String sql = MetaDataUtil.buildInsertStatement("RenderAttachment", renderAttachmentVo);
+		String sql = MetaDataUtil.buildInsertStatement("rander_attachment", renderAttachmentVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsInserted;
 	}

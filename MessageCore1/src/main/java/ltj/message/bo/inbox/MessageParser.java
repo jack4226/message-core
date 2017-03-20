@@ -30,13 +30,13 @@ import ltj.message.bo.rule.RuleBase;
 import ltj.message.bo.rule.RuleLoader;
 import ltj.message.bo.rule.RuleMatcher;
 import ltj.message.constant.Constants;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.MsgRenderedVo;
@@ -61,7 +61,7 @@ public final class MessageParser {
 	@Autowired
 	private RuleLoader ruleLoader;
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	@Autowired
 	private MsgInboxDao msgInboxDao;
 	@Autowired
@@ -354,7 +354,7 @@ public final class MessageParser {
 		// do we have the EmailId that links to original "sent" message?
 		if (msgBean.getMsgRefId() != null && msgBean.getIsReceived()) {
 			// yes, retrieve the final recipient from original "sent" message
-			EmailAddrVo addrVo = emailAddrDao.getToByMsgId(msgBean.getMsgRefId());
+			EmailAddressVo addrVo = emailAddressDao.getToByMsgId(msgBean.getMsgRefId());
 			if (addrVo != null) {
 				if (RuleNameEnum.SEND_MAIL.name().equals(addrVo.getRuleName())) {
 					// only if the original message is an "sent" message

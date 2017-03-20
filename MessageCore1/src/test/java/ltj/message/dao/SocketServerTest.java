@@ -64,6 +64,6 @@ public class SocketServerTest extends DaoTestBase {
 			logger.info("SocketServerDao - insert: "+socketServerVo);
 			return socketServerVo;
 		}
-		throw new IllegalStateException("SocketServers table is empty.");
+		throw new IllegalStateException("socket_server table is empty.");
 	}
 }

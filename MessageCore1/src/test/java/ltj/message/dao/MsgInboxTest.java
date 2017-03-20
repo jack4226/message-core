@@ -17,8 +17,8 @@ import org.springframework.test.annotation.Rollback;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.constant.CarrierCode;
 import ltj.message.dao.abstrct.DaoTestBase;
-import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.dao.inbox.MsgClickCountsDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.inbox.MsgClickCountDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgUnreadCountDao;
 import ltj.message.dao.outbox.MsgSequenceDao;
@@ -26,8 +26,8 @@ import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.PrintUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingVo.PageAction;
-import ltj.message.vo.emailaddr.EmailAddrVo;
-import ltj.message.vo.inbox.MsgClickCountsVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
+import ltj.message.vo.inbox.MsgClickCountVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
@@ -39,11 +39,11 @@ public class MsgInboxTest extends DaoTestBase {
 	@Resource
 	private MsgInboxDao msgInboxDao;
 	@Resource
-	private MsgClickCountsDao msgClickCountsDao;
+	private MsgClickCountDao msgClickCountDao;
 	@Resource
 	private MsgSequenceDao msgSequenceDao;
 	@Resource
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	
 	private static Long testMsgId = null; //2L;
 	private static Long testFromAddrId = null; //1L;
@@ -109,9 +109,9 @@ public class MsgInboxTest extends DaoTestBase {
 			//assertEquals(unreadCountAfter, unreadCountBefore);
 			assertTrue(unreadCountAfter >= unreadCountBefore);
 			assertNotNull(msgvo);
-			MsgClickCountsVo ccvo = insertClickCount(msgvo);
+			MsgClickCountVo ccvo = insertClickCount(msgvo);
 			assertNotNull(ccvo);
-			MsgClickCountsVo ccvo2 = selectClickCounts(ccvo.getMsgId());
+			MsgClickCountVo ccvo2 = selectClickCounts(ccvo.getMsgId());
 			assertNotNull(ccvo2);
 			ccvo2.setComplaintCount(ccvo.getComplaintCount());
 			ccvo2.setUnsubscribeCount(ccvo.getUnsubscribeCount());
@@ -321,7 +321,7 @@ public class MsgInboxTest extends DaoTestBase {
 			MsgInboxVo vo = it.next();
 			logger.info("MsgInboxDao - selectByFromAddrId: " + vo.getMsgId() + " - " + vo.getFromAddress());
 		}
-		EmailAddrVo addrvo = emailAddrDao.getByAddrId(addrId);
+		EmailAddressVo addrvo = emailAddressDao.getByAddrId(addrId);
 		assertNotNull(addrvo);
 		List<MsgInboxVo> list2 = msgInboxDao.getByFromAddress(addrvo.getEmailAddr());
 		assertEquals(list1.size(), list2.size());
@@ -337,7 +337,7 @@ public class MsgInboxTest extends DaoTestBase {
 			MsgInboxVo vo = it.next();
 			logger.info("MsgInboxDao - selectByToAddrId: " + vo.getMsgId() + " - " + vo.getToAddress());
 		}
-		EmailAddrVo addrvo = emailAddrDao.getByAddrId(addrId);
+		EmailAddressVo addrvo = emailAddressDao.getByAddrId(addrId);
 		assertNotNull(addrvo);
 		List<MsgInboxVo> list2 = msgInboxDao.getByToAddress(addrvo.getEmailAddr());
 		assertEquals(list1.size(), list2.size());
@@ -405,37 +405,37 @@ public class MsgInboxTest extends DaoTestBase {
 		return null;
 	}
 
-	private MsgClickCountsVo insertClickCount(MsgInboxVo msgvo) {
-		MsgClickCountsVo vo = msgClickCountsDao.getRandomRecord();
+	private MsgClickCountVo insertClickCount(MsgInboxVo msgvo) {
+		MsgClickCountVo vo = msgClickCountDao.getRandomRecord();
 		if (vo != null) {
 			vo.setMsgId(msgvo.getMsgId());
-			msgClickCountsDao.insert(vo);
+			msgClickCountDao.insert(vo);
 			logger.info("insertClickCount: " + LF + vo);
 		}
 		return vo;
 	}
 
-	private MsgClickCountsVo selectClickCounts(long msgId) {
-		MsgClickCountsVo vo = msgClickCountsDao.getByPrimaryKey(msgId);
+	private MsgClickCountVo selectClickCounts(long msgId) {
+		MsgClickCountVo vo = msgClickCountDao.getByPrimaryKey(msgId);
 		logger.info("MsgInboxDao - selectByPrimaryKey - " + LF + vo);
 		return vo;
 	}
 
-	private int updateClickCounts(MsgClickCountsVo msgClickCountsVo) {
+	private int updateClickCounts(MsgClickCountVo msgClickCountVo) {
 		int rows = 0;
-		msgClickCountsVo.setSentCount(msgClickCountsVo.getSentCount() + 1);
-		rows += msgClickCountsDao.update(msgClickCountsVo);
-		rows += msgClickCountsDao.updateOpenCount(msgClickCountsVo.getMsgId());
-		rows += msgClickCountsDao.updateClickCount(msgClickCountsVo.getMsgId());
-		rows += msgClickCountsDao.updateUnsubscribeCount(msgClickCountsVo.getMsgId(), 1);
-		rows += msgClickCountsDao.updateComplaintCount(msgClickCountsVo.getMsgId(), 1);
-		rows += msgClickCountsDao.updateClickCount(msgClickCountsVo.getMsgId());
-		logger.info("updateClickCounts: rows updated: " + rows + LF + msgClickCountsVo);
+		msgClickCountVo.setSentCount(msgClickCountVo.getSentCount() + 1);
+		rows += msgClickCountDao.update(msgClickCountVo);
+		rows += msgClickCountDao.updateOpenCount(msgClickCountVo.getMsgId());
+		rows += msgClickCountDao.updateClickCount(msgClickCountVo.getMsgId());
+		rows += msgClickCountDao.updateUnsubscribeCount(msgClickCountVo.getMsgId(), 1);
+		rows += msgClickCountDao.updateComplaintCount(msgClickCountVo.getMsgId(), 1);
+		rows += msgClickCountDao.updateClickCount(msgClickCountVo.getMsgId());
+		logger.info("updateClickCounts: rows updated: " + rows + LF + msgClickCountVo);
 		return rows;
 	}
 	
 	private int deleteClickCounts(long msgId) {
-		int rowsDeleted = msgClickCountsDao.deleteByPrimaryKey(msgId);
+		int rowsDeleted = msgClickCountDao.deleteByPrimaryKey(msgId);
 		logger.info("MsgInboxDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}

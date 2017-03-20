@@ -37,7 +37,7 @@ if ("yes".equals(request.getParameter("remember"))) {
 <form action="userupdate.jsp" method="post" onsubmit="return validateInputs(this);">
 <input type="hidden" name="frompage" value="<c:out value="${param.frompage}"/>">
 
-<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddressVo"%>
 <%@page import="javax.faces.model.SelectItem"%>
 <%@page import="ltj.message.vo.CustomerVo"%>
 <%@page import="ltj.message.util.StringUtil"%>

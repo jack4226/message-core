@@ -15,7 +15,7 @@ import ltj.message.constant.Constants;
 import ltj.message.util.PrintUtil;
 import ltj.message.vo.BaseVo;
 import ltj.message.vo.emailaddr.MailingListVo;
-import ltj.message.vo.inbox.AttachmentsVo;
+import ltj.message.vo.inbox.MsgAttachmentVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringUtil;
 
@@ -194,6 +194,6 @@ public class MetaDataUtil {
 		logger.info("Table Metadata:" + PrintUtil.prettyPrint(msg_inbox));
 		logger.info(buildUpdateStatement("msg_inbox", new MsgInboxVo()));
 		logger.info(buildInsertStatement("MailingList", new MailingListVo()));
-		logger.info(buildUpdateStatement("msg_attachment", new AttachmentsVo()));
+		logger.info(buildUpdateStatement("msg_attachment", new MsgAttachmentVo()));
 	}
 }

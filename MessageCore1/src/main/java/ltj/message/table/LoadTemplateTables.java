@@ -14,14 +14,14 @@ import ltj.message.constant.CarrierCode;
 import ltj.message.constant.StatusId;
 import ltj.message.constant.VariableType;
 import ltj.message.constant.VariableName;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.template.BodyTemplateDao;
 import ltj.message.dao.template.ClientVariableDao;
 import ltj.message.dao.template.GlobalVariableDao;
 import ltj.message.dao.template.MsgSourceDao;
 import ltj.message.dao.template.SubjTemplateDao;
 import ltj.message.dao.template.TemplateVariableDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.spring.util.SpringUtil;
 import ltj.vo.template.BodyTemplateVo;
 import ltj.vo.template.ClientVariableVo;
@@ -31,7 +31,7 @@ import ltj.vo.template.SubjTemplateVo;
 import ltj.vo.template.TemplateVariableVo;
 
 public class LoadTemplateTables {
-	//AbstractApplicationContext factory = null;
+
 	public static void main(String[] args) {
 		LoadTemplateTables loadInboxTables = new LoadTemplateTables();
 		try {
@@ -93,62 +93,6 @@ public class LoadTemplateTables {
 			globalVariableDao.insert(in);
 		}
 		
-//		GlobalVariableVo in = new GlobalVariableVo();
-//
-//		in.setVariableName("CurrentDateTime");
-//		in.setStartTime(updtTime);
-//		in.setVariableValue(null);
-//		in.setVariableFormat("yyyy-MM-dd HH:mm:ss");
-//		in.setVariableType(VariableType.DATETIME.value());
-//		in.setStatusId(StatusId.ACTIVE.value());
-//		in.setAllowOverride(Constants.Y);
-//		in.setRequired(Constants.N);
-//		globalVariableDao.insert(in);
-//
-//		in.setVariableName("CurrentDate");
-//		in.setStartTime(updtTime);
-//		in.setVariableValue(null);
-//		in.setVariableFormat("yyyy-MM-dd");
-//		in.setVariableType(VariableType.DATETIME.value());
-//		in.setStatusId(StatusId.ACTIVE.value());
-//		in.setAllowOverride(Constants.Y);
-//		in.setRequired(Constants.N);
-//		globalVariableDao.insert(in);
-//
-//		in.setVariableName("CurrentTime");
-//		in.setStartTime(updtTime);
-//		in.setVariableValue(null);
-//		in.setVariableFormat("hh:mm:ss a");
-//		in.setVariableType(VariableType.DATETIME.value());
-//		in.setStatusId(StatusId.ACTIVE.value());
-//		in.setAllowOverride(Constants.Y);
-//		in.setRequired(Constants.N);
-//		globalVariableDao.insert(in);
-//
-//		// load default client id
-//		in = new GlobalVariableVo();
-//		
-//		in.setVariableName(XHeaderName.CLIENT_ID.value());
-//		in.setStartTime(updtTime);
-//		in.setVariableValue(Constants.DEFAULT_CLIENTID);
-//		in.setVariableFormat(null);
-//		in.setVariableType(VariableType.X_HEADER.value());
-//		in.setStatusId(StatusId.ACTIVE.value());
-//		in.setAllowOverride(Constants.Y);
-//		in.setRequired(Constants.N);
-//		globalVariableDao.insert(in);
-//		
-//		in = new GlobalVariableVo();
-//		in.setVariableName("PoweredBySignature");
-//		in.setStartTime(updtTime);
-//		in.setVariableValue(Constants.POWERED_BY_HTML_TAG);
-//		in.setVariableFormat(null);
-//		in.setVariableType(VariableType.TEXT.value());
-//		in.setStatusId(StatusId.ACTIVE.value());
-//		in.setAllowOverride(Constants.N);
-//		in.setRequired(Constants.N);
-//		globalVariableDao.insert(in);
-		
 		System.out.println("load() completed.");
 	}
 	
@@ -171,44 +115,6 @@ public class LoadTemplateTables {
 			clientVariableDao.insert(in);
 		}
 		
-//		ClientVariableVo in = new ClientVariableVo();
-//		
-//		in.setClientId(Constants.DEFAULT_CLIENTID);
-//		in.setVariableName("CurrentDateTime");
-//		in.setStartTime(updtTime);
-//		in.setVariableValue(null);
-//		in.setVariableFormat(null);
-//		in.setVariableType(VariableType.DATETIME.value());
-//		in.setStatusId(StatusId.ACTIVE.value());
-//		in.setAllowOverride(Constants.Y);
-//		in.setRequired(Constants.N);
-//
-//		clientVariableDao.insert(in);
-//
-//		in.setClientId(Constants.DEFAULT_CLIENTID);
-//		in.setVariableName("CurrentDate");
-//		in.setStartTime(updtTime);
-//		in.setVariableValue(null);
-//		in.setVariableFormat("yyyy-MM-dd");
-//		in.setVariableType(VariableType.DATETIME.value());
-//		in.setStatusId(StatusId.ACTIVE.value());
-//		in.setAllowOverride(Constants.Y);
-//		in.setRequired(Constants.N);
-//
-//		clientVariableDao.insert(in);
-//
-//		in.setClientId(Constants.DEFAULT_CLIENTID);
-//		in.setVariableName("CurrentTime");
-//		in.setStartTime(updtTime);
-//		in.setVariableValue(null);
-//		in.setVariableFormat("hh:mm:ss a");
-//		in.setVariableType(VariableType.DATETIME.value());
-//		in.setStatusId(StatusId.ACTIVE.value());
-//		in.setAllowOverride(Constants.Y);
-//		in.setRequired(Constants.N);
-//
-//		clientVariableDao.insert(in);
-
 		System.out.println("load() completed.");
 	}
 	
@@ -286,7 +192,7 @@ public class LoadTemplateTables {
 	
 	void load(MsgSourceDao msgSourceDao) {
 
-		EmailAddrVo emailVo = getEmailAddrdao().findByAddress("jsmith@test.com");
+		EmailAddressVo emailVo = getEmailAddrdao().findByAddress("jsmith@test.com");
 		
 		MsgSourceVo in = new MsgSourceVo();
 		
@@ -344,7 +250,7 @@ public class LoadTemplateTables {
 	
 	void load2(MsgSourceDao msgSourceDao) {
 
-		EmailAddrVo emailVo = getEmailAddrdao().findByAddress("jsmith@test.com");
+		EmailAddressVo emailVo = getEmailAddrdao().findByAddress("jsmith@test.com");
 		
 		MsgSourceVo in = new MsgSourceVo();
 		
@@ -426,11 +332,11 @@ public class LoadTemplateTables {
 		System.out.println("load() completed.\n"+in);
 	}
 	
-	private EmailAddrDao emailAddrDao = null;
-	private EmailAddrDao getEmailAddrdao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+	private EmailAddressDao emailAddressDao = null;
+	private EmailAddressDao getEmailAddrdao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 }

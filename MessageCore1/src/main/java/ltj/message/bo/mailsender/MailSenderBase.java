@@ -40,7 +40,7 @@ import ltj.message.constant.EmailIdToken;
 import ltj.message.constant.StatusId;
 import ltj.message.constant.XHeaderName;
 import ltj.message.dao.client.ClientUtil;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.idtokens.MsgIdCipher;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgStreamDao;
@@ -50,7 +50,7 @@ import ltj.message.exception.DataValidationException;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.ClientVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.MsgStreamVo;
@@ -76,7 +76,7 @@ public abstract class MailSenderBase {
 	@Autowired
 	protected DeliveryStatusDao deliveryStatusDao;
 	@Autowired
-	protected EmailAddrDao emailAddrDao;
+	protected EmailAddressDao emailAddressDao;
 	@Autowired
 	protected MsgStreamDao msgStreamDao;
 	@Autowired
@@ -215,7 +215,7 @@ public abstract class MailSenderBase {
 		for (int i = 0; addrs != null && i < addrs.length; i++) {
 			Address addr = addrs[i];
 			if (addr != null && StringUtils.isNotBlank(addr.toString())) {
-				emailAddrDao.findByAddress(addr.toString().trim());
+				emailAddressDao.findByAddress(addr.toString().trim());
 			}
 		}
 	}
@@ -444,13 +444,13 @@ public abstract class MailSenderBase {
 		msgStreamVo.setMsgId(msgId);
 		Address[] fromAddrs = msg.getFrom();
 		if (fromAddrs != null && fromAddrs.length > 0) {
-			EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(fromAddrs[0].toString());
-			msgStreamVo.setFromAddrId(Long.valueOf(emailAddrVo.getEmailAddrId()));
+			EmailAddressVo emailAddressVo = emailAddressDao.findByAddress(fromAddrs[0].toString());
+			msgStreamVo.setFromAddrId(Long.valueOf(emailAddressVo.getEmailAddrId()));
 		}
 		Address[] toAddrs = msg.getRecipients(RecipientType.TO);
 		if (toAddrs != null && toAddrs.length > 0) {
-			EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(toAddrs[0].toString());
-			msgStreamVo.setToAddrId(Long.valueOf(emailAddrVo.getEmailAddrId()));
+			EmailAddressVo emailAddressVo = emailAddressDao.findByAddress(toAddrs[0].toString());
+			msgStreamVo.setToAddrId(Long.valueOf(emailAddressVo.getEmailAddrId()));
 		}
 		msgStreamVo.setMsgSubject(msg.getSubject());
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

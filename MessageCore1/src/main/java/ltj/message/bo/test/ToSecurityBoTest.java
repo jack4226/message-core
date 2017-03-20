@@ -16,7 +16,7 @@ import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.constant.TableColumnName;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
@@ -60,7 +60,7 @@ public class ToSecurityBoTest extends BoTestBase {
 
 	@Test
 	public void toSecurity3() { // verifyDatabaseRecord
-		EmailAddrVo addrVo = selectEmailAddrByAddress(toStr);
+		EmailAddressVo addrVo = selectEmailAddrByAddress(toStr);
 		assertNotNull(addrVo);
 		List<MsgInboxVo> msgList = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		assertFalse(msgList.isEmpty());

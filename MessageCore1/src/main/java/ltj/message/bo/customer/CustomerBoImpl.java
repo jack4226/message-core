@@ -9,12 +9,12 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.customer.CustSequenceDao;
 import ltj.message.dao.customer.CustomerDao;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.CustomerVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @Service
 @Component("customerBo")
@@ -25,7 +25,7 @@ public class CustomerBoImpl implements CustomerBo {
 	@Autowired
 	private CustomerDao customerDao;
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	@Autowired
 	private CustSequenceDao custSequenceDao;
 
@@ -125,21 +125,21 @@ public class CustomerBoImpl implements CustomerBo {
 		if (StringUtil.isEmpty(emailAddr)) {
 			throw new DataValidationException("Input Email Address is not valued.");
 		}
-		EmailAddrVo emailAddrVo = emailAddrDao.getByAddress(emailAddr);
-		if (emailAddrVo == null) {
+		EmailAddressVo emailAddressVo = emailAddressDao.getByAddress(emailAddr);
+		if (emailAddressVo == null) {
 			logger.warn("getByEmailAddr() - email address not found: " + emailAddr);
 			return null;
 		}
-		CustomerVo vo = customerDao.getByEmailAddrId(emailAddrVo.getEmailAddrId());
+		CustomerVo vo = customerDao.getByEmailAddrId(emailAddressVo.getEmailAddrId());
 		return vo;
 	}
 	
 	private int insertCustomer(CustomerVo vo) throws DataValidationException {
 		// check if the email address is already used by someone else
-		EmailAddrVo emailAddrVo = emailAddrDao.getByAddress(vo.getEmailAddr());
-		if (emailAddrVo != null) { // email address found in EmailAddr table
+		EmailAddressVo emailAddressVo = emailAddressDao.getByAddress(vo.getEmailAddr());
+		if (emailAddressVo != null) { // email address found in EmailAddr table
 			// is it used by any customers?
-			CustomerVo cust_vo = customerDao.getByEmailAddrId(emailAddrVo.getEmailAddrId());
+			CustomerVo cust_vo = customerDao.getByEmailAddrId(emailAddressVo.getEmailAddrId());
 			if (cust_vo != null) { // yes, used by a customer
 				throw new DataValidationException(
 						"Email Address: " + vo.getEmailAddr() + " is used by another customer: " + cust_vo.getCustId());
@@ -147,10 +147,10 @@ public class CustomerBoImpl implements CustomerBo {
 		}
 		else { // email address not found from EmailAddr table
 			// add the email address to EmailAddr table
-			emailAddrVo = emailAddrDao.findByAddress(vo.getEmailAddr());
+			emailAddressVo = emailAddressDao.findByAddress(vo.getEmailAddr());
 		}
 		// ready for insert
-		vo.setEmailAddrId(emailAddrVo.getEmailAddrId());
+		vo.setEmailAddrId(emailAddressVo.getEmailAddrId());
 		vo.setStatusId(StatusId.ACTIVE.value());
 		if (vo.getStartDate() == null) {
 			vo.setStartDate(new java.sql.Date(new java.util.Date().getTime()));
@@ -162,10 +162,10 @@ public class CustomerBoImpl implements CustomerBo {
 	private int updateCustomer(CustomerVo vo) throws DataValidationException {
 		// if it's a new email address, one will be inserted to EmailAddr table
 		// if it's an existing address, one will be retrieved from EmailAddr table
-		EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(vo.getEmailAddr());
-		vo.setEmailAddrId(emailAddrVo.getEmailAddrId());
+		EmailAddressVo emailAddressVo = emailAddressDao.findByAddress(vo.getEmailAddr());
+		vo.setEmailAddrId(emailAddressVo.getEmailAddrId());
 		// check the uniqueness of the new email address
-		CustomerVo custVo = customerDao.getByEmailAddrId(emailAddrVo.getEmailAddrId());
+		CustomerVo custVo = customerDao.getByEmailAddrId(emailAddressVo.getEmailAddrId());
 		if (custVo != null && !(vo.getCustId().equals(custVo.getCustId()))) {
 			throw new DataValidationException(
 					"Email Address: " + vo.getEmailAddr() + " is used by another customer: " + custVo.getCustId());

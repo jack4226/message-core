@@ -19,14 +19,14 @@ public class IdTokensTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE IdTokens");
-			System.out.println("Dropped IdTokens Table...");
+			stm.execute("DROP TABLE id_tokens");
+			System.out.println("Dropped id_tokens Table...");
 		} catch (SQLException e) {}
 	}
 	
 	public void createTables() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE IdTokens ( " +
+			stm.execute("CREATE TABLE id_tokens ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ClientId varchar(16) NOT NULL, " + 
 			"Description varchar(100), " +
@@ -42,7 +42,7 @@ public class IdTokensTable extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (ClientId) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created IdTokens Table...");
+			System.out.println("Created id_tokens Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -52,7 +52,7 @@ public class IdTokensTable extends CreateTableBase {
 	public void loadTestData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO IdTokens " +
+				"INSERT INTO id_tokens " +
 				"(ClientId," +
 				"Description," +
 				"BodyBeginToken," +

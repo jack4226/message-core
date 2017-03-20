@@ -21,8 +21,8 @@ public class SocketServerTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE SocketServers");
-			System.out.println("Dropped SocketServers Table...");
+			stm.execute("DROP TABLE socket_server");
+			System.out.println("Dropped socket_server Table...");
 		} catch (SQLException e) {}
 	}
 	
@@ -40,7 +40,7 @@ public class SocketServerTable extends CreateTableBase {
 		- ProcessorName: processor class name
 		*/
 		try {
-			stm.execute("CREATE TABLE SocketServers ( " +
+			stm.execute("CREATE TABLE socket_server ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ServerName varchar(30) NOT NULL, " + 
 			"SocketPort Integer NOT NULL, " +
@@ -59,7 +59,7 @@ public class SocketServerTable extends CreateTableBase {
 			"Constraint UNIQUE INDEX (ServerName), " +
 			"Constraint UNIQUE INDEX (SocketPort) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created SocketServers Table...");
+			System.out.println("Created socket_server Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -69,7 +69,7 @@ public class SocketServerTable extends CreateTableBase {
 	public void loadTestData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO SocketServers " +
+				"INSERT INTO socket_server " +
 				"(ServerName," +
 				"SocketPort," +
 				"Interactive," +

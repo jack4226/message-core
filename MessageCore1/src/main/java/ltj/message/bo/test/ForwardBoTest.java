@@ -17,7 +17,7 @@ import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.constant.AddressType;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 /*** Please start MailEngine and MailSender before running this test ***/
@@ -58,7 +58,7 @@ public class ForwardBoTest extends BoTestBase {
 	@Test
 	public void test3() { // verifyDatabaseRecord
 		// now verify the database record added
-		EmailAddrVo addrVo = selectEmailAddrByAddress(forwardAddress);
+		EmailAddressVo addrVo = selectEmailAddrByAddress(forwardAddress);
 		assertNotNull(addrVo);
 		List<MsgInboxVo> msgList = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		assertFalse(msgList.isEmpty());

@@ -22,7 +22,7 @@ import ltj.jbatch.smtp.SmtpException;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.mailsender.MailSenderBoImpl;
 import ltj.message.exception.DataValidationException;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
@@ -85,7 +85,7 @@ public class MailSenderTest extends BoTestBase {
 		// now verify the database record added
 		for (int i = 0; i < users.size(); i++) {
 			String user = users.get(i);
-			EmailAddrVo addrVo = emailAddrDao.getByAddress(user);
+			EmailAddressVo addrVo = emailAddressDao.getByAddress(user);
 			assertNotNull("Address " + user + " must have been added.", addrVo);
 			List<MsgInboxVo> list = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 			assertTrue(list.size() > 0);

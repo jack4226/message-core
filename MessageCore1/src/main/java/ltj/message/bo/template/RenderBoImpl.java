@@ -29,7 +29,7 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
 import ltj.message.constant.XHeaderName;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.template.BodyTemplateDao;
 import ltj.message.dao.template.ClientVariableDao;
 import ltj.message.dao.template.GlobalVariableDao;
@@ -66,7 +66,7 @@ public class RenderBoImpl implements RenderBo {
 	@Autowired
 	private TemplateVariableDao templateVariableDao;
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	
 	public RenderResponse getRenderedEmail(RenderRequest req)
 			throws DataValidationException, ParseException, AddressException {
@@ -462,7 +462,7 @@ public class RenderBoImpl implements RenderBo {
 		
 		vreq = new RenderVariable(
 			AddressType.FROM_ADDR.value(),
-			emailAddrDao.getByAddrId(msgSourceVo.getFromAddrId().longValue()).getEmailAddr(),
+			emailAddressDao.getByAddrId(msgSourceVo.getFromAddrId().longValue()).getEmailAddr(),
 			null,
 			VariableType.ADDRESS, 
 			Constants.Y,
@@ -473,7 +473,7 @@ public class RenderBoImpl implements RenderBo {
 		if (msgSourceVo.getReplyToAddrId()!=null) {
 			vreq = new RenderVariable(
 				AddressType.REPLYTO_ADDR.value(),
-				emailAddrDao.getByAddrId(msgSourceVo.getReplyToAddrId().longValue()).getEmailAddr(),
+				emailAddressDao.getByAddrId(msgSourceVo.getReplyToAddrId().longValue()).getEmailAddr(),
 				null,
 				VariableType.ADDRESS, 
 				Constants.Y,

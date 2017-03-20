@@ -63,7 +63,7 @@
 	
 	<aop:config>
 		<aop:pointcut id="emailAddrOperation"
-			expression="execution(* ltj.message.dao.emailaddr.EmailAddrDao.*(..))"/>
+			expression="execution(* ltj.message.dao.emailaddr.EmailAddressDao.*(..))"/>
 		<aop:advisor advice-ref="dsTxAdviceEmailAddr" pointcut-ref="emailAddrOperation"/>
 	</aop:config>
 	

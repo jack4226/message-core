@@ -30,7 +30,7 @@
 <form action="usersignup.jsp" method="post" onsubmit="return validateInputs(this);">
 <input type="hidden" name="frompage" value="<c:out value="${param.frompage}"/>">
 
-<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddressVo"%>
 <%@page import="ltj.message.vo.CustomerVo"%>
 <%@page import="javax.faces.model.SelectItem"%>
 <%

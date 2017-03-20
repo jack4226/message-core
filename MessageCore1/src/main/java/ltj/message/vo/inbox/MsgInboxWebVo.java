@@ -5,9 +5,9 @@ import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.vo.BaseVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.spring.util.SpringUtil;
 
 public class MsgInboxWebVo extends BaseVo implements Serializable {
@@ -35,7 +35,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	/** 
 	 * define properties for UI components 
 	 */
-	private transient EmailAddrDao emailAddrDao = null;
+	private transient EmailAddressDao emailAddressDao = null;
 	private int threadLevel = -1; // don't change
 
 	public MsgInboxWebVo() {
@@ -76,7 +76,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 		if (fromAddrId == null) {
 			return "";
 		}
-		EmailAddrVo vo = getEmailAddrDao().getByAddrId(fromAddrId);
+		EmailAddressVo vo = getEmailAddrDao().getByAddrId(fromAddrId);
 		if (vo == null) {
 			return "";
 		}
@@ -93,7 +93,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 		if (toAddrId == null) {
 			return "";
 		}
-		EmailAddrVo vo = getEmailAddrDao().getByAddrId(toAddrId);
+		EmailAddressVo vo = getEmailAddrDao().getByAddrId(toAddrId);
 		if (vo == null) {
 			return "";
 		}
@@ -121,11 +121,11 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 		}
 	}
 	
-	private EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+	private EmailAddressDao getEmailAddrDao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 	
 	private String getDisplayName(String addr) {

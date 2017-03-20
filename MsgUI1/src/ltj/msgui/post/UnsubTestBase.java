@@ -16,11 +16,11 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.idtokens.MsgIdCipher;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.PrintUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringUtil;
 
@@ -32,7 +32,7 @@ public class UnsubTestBase {
 	void subscribe(final long sbsrId, final String listId) {
 		String url = "http://localhost:8080/MsgUI1/publicsite/subscribeResp.jsp";
 
-		EmailAddrVo emailVo = getEmailAddrDao().getByAddrId(sbsrId);
+		EmailAddressVo emailVo = getEmailAddrDao().getByAddrId(sbsrId);
 		assertNotNull(emailVo);
 		
 		try {
@@ -96,7 +96,7 @@ public class UnsubTestBase {
 	void confirm(final long sbsrId, final String listId) {
 		String url = "http://localhost:8080/MsgUI1/publicsite/confirmsub.jsp";
 		
-		EmailAddrVo emailVo = getEmailAddrDao().getByAddrId(sbsrId);
+		EmailAddressVo emailVo = getEmailAddrDao().getByAddrId(sbsrId);
 		assertNotNull(emailVo);
 		
 		try {
@@ -145,8 +145,8 @@ public class UnsubTestBase {
 		}
 	}
 	
-	private EmailAddrDao getEmailAddrDao() {
-		return SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+	private EmailAddressDao getEmailAddrDao() {
+		return SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 	}
 
 	private MsgInboxDao getMsgInboxDao() {

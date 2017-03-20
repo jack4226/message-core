@@ -41,6 +41,7 @@ public class TemplateTables extends CreateTableBase {
 			stm.execute("DROP TABLE GlobalVariable");
 			System.out.println("Dropped GlobalVariable Table...");
 		}
+		
 		catch (SQLException e) {
 		}
 		try {
@@ -224,7 +225,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override templates, addrs to be supplied at runtime
 				+ "SaveMsgStream char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
-				// Y - save rendered smtp message stream to MsgStream
+				// Y - save rendered smtp message stream to msg_stream
 				+ "ArchiveInd char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// Y - archive the rendered messages
 				+ "PurgeAfter int, " // in month

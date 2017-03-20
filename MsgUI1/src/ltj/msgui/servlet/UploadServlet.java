@@ -20,7 +20,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
-import ltj.message.dao.emailaddr.SubscriptionDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.user.SessionUploadDao;
 import ltj.message.util.EmailAddrUtil;
@@ -28,7 +28,7 @@ import ltj.message.util.HtmlTags;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.SessionUploadVo;
 import ltj.message.vo.UserVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.msgui.bean.FileUploadForm;
 import ltj.msgui.bean.MailingListComposeBean;
 import ltj.msgui.bean.MsgInboxBean;
@@ -42,13 +42,13 @@ public class UploadServlet extends HttpServlet {
 	static final Logger logger = Logger.getLogger(UploadServlet.class);
 	
 	private SessionUploadDao sessionUploadDao = null;
-	private SubscriptionDao subscriptionDao = null;
+	private EmailSubscrptDao emailSubscrptDao = null;
 	
 	public void init() throws ServletException {
 		ServletContext ctx = getServletContext();
 		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Name: " + ctx.getServletContextName());
 		sessionUploadDao = SpringUtil.getWebAppContext(ctx).getBean(SessionUploadDao.class);
-		subscriptionDao = SpringUtil.getWebAppContext(ctx).getBean(SubscriptionDao.class);
+		emailSubscrptDao = SpringUtil.getWebAppContext(ctx).getBean(EmailSubscrptDao.class);
 		// initialize unread counts
 		MsgInboxDao msgInboxDao = SpringUtil.getWebAppContext(ctx).getBean(MsgInboxDao.class);
 		int initInboxCount = msgInboxDao.resetInboxUnreadCount();
@@ -240,7 +240,7 @@ public class UploadServlet extends HttpServlet {
 		String addr = null;
 		while ((addr = br.readLine()) != null) {
 			if (EmailAddrUtil.isRemoteEmailAddress(addr)) {
-				rowsAdded += subscriptionDao.subscribe(addr, listId);
+				rowsAdded += emailSubscrptDao.subscribe(addr, listId);
 			}
 			else {
 				rowsInvalid ++;
@@ -278,10 +278,10 @@ public class UploadServlet extends HttpServlet {
 			return;
 		}
 		int rowsSubed = 0;
-		List<SubscriptionVo> fromList = subscriptionDao.getByListId(fromListId);
+		List<EmailSubscrptVo> fromList = emailSubscrptDao.getByListId(fromListId);
 		for (int i = 0; i < fromList.size(); i++) {
-			SubscriptionVo subed = fromList.get(i);
-			rowsSubed += subscriptionDao.subscribe(subed.getEmailAddrId(), listId);
+			EmailSubscrptVo subed = fromList.get(i);
+			rowsSubed += emailSubscrptDao.subscribe(subed.getEmailAddrId(), listId);
 		}
 		uploadForm.setMessage("Number of email addresses imported", "" + rowsSubed);
 		logger.info("importEmailsFromList() - number of addresses imported from " + fromListId

@@ -12,7 +12,7 @@ import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.StatusId;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 
 public class ActivateBoTest extends BoTestBase {
 	@Resource
@@ -30,7 +30,7 @@ public class ActivateBoTest extends BoTestBase {
 		Long addrsActivated = (Long) activateBo.process(messageBean);
 		assertTrue(addrsActivated > 0);
 		// now verify the database record
-		EmailAddrVo addrVo = selectEmailAddrByAddress(messageBean.getFromAsString());
+		EmailAddressVo addrVo = selectEmailAddrByAddress(messageBean.getFromAsString());
 		assertNotNull(addrVo);
 		assertTrue(StatusId.ACTIVE.value().equals(addrVo.getStatusId()));
 		if (StringUtils.isNotBlank(messageBean.getFinalRcpt())) {
@@ -44,10 +44,10 @@ public class ActivateBoTest extends BoTestBase {
 		if (address==null) {
 			return 0;
 		}
-		EmailAddrVo vo = emailAddrDao.findByAddress(address);
+		EmailAddressVo vo = emailAddressDao.findByAddress(address);
 		vo.setStatusId(StatusId.INACTIVE.value());
-		int rows = emailAddrDao.update(vo);
-		EmailAddrVo vo2 = selectEmailAddrByAddress(address);
+		int rows = emailAddressDao.update(vo);
+		EmailAddressVo vo2 = selectEmailAddrByAddress(address);
 		assertTrue(StatusId.INACTIVE.value().equals(vo2.getStatusId()));
 		return rows;
 	}

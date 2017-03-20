@@ -14,12 +14,12 @@ import ltj.data.preload.SubscriberEnum;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.SchedulesBlob;
 import ltj.message.main.CreateTableBase;
 import ltj.message.util.BlobUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 import ltj.spring.util.SpringUtil;
 
@@ -38,35 +38,35 @@ public class EmailAddrTable extends CreateTableBase {
 	public void createTables() throws SQLException {
 		createEmailTable();
 		createMailingListTable();
-		createSubscriptionTable();
+		createEmailSubscrptTable();
 		createEmailVariableTable();
 		createEmailTemplateTable();
 		createFindByAddressSP();
-		createUnsubCommentsTable();
+		createEmailUnsubCommentTable();
 	}
 
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE UnsubComments");
-			System.out.println("Dropped UnsubComments Table...");
+			stm.execute("DROP TABLE email_unsub_cmnt");
+			System.out.println("Dropped email_unsub_cmnt Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE EmailTemplate");
-			System.out.println("Dropped EmailTemplate Table...");
+			stm.execute("DROP TABLE email_template");
+			System.out.println("Dropped email_template Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE EmailVariable");
-			System.out.println("Dropped EmailVariable Table...");
+			stm.execute("DROP TABLE email_variable");
+			System.out.println("Dropped email_variable Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE Subscription");
-			System.out.println("Dropped Subscription Table...");
+			stm.execute("DROP TABLE email_subscrpt");
+			System.out.println("Dropped email_subscrpt Table...");
 		}
 		catch (SQLException e) {
 		}
@@ -140,9 +140,9 @@ public class EmailAddrTable extends CreateTableBase {
 		}
 	}
 
-	void createSubscriptionTable() throws SQLException {
+	void createEmailSubscrptTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE Subscription ( "
+			stm.execute("CREATE TABLE email_subscrpt ( "
 					+ "EmailAddrId bigint NOT NULL, "
 					+ "ListId varchar(8) NOT NULL, "
 					+ "Subscribed char(1) NOT NULL, " 
@@ -158,7 +158,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "FOREIGN KEY (ListId) REFERENCES mailing_list (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "PRIMARY KEY (EmailAddrId,ListId) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created Subscription Table...");
+			System.out.println("Created email_subscrpt Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -168,7 +168,7 @@ public class EmailAddrTable extends CreateTableBase {
 
 	void createEmailVariableTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE EmailVariable ( "
+			stm.execute("CREATE TABLE email_variable ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "VariableName varchar(26) NOT NULL, "
 					+ "VariableType char(1) NOT NULL, " 
@@ -185,7 +185,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "PRIMARY KEY (RowId), "
 					+ "UNIQUE INDEX (VariableName) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created EmailVariable Table...");
+			System.out.println("Created email_variable Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -195,7 +195,7 @@ public class EmailAddrTable extends CreateTableBase {
 	
 	void createEmailTemplateTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE EmailTemplate ( "
+			stm.execute("CREATE TABLE email_template ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "TemplateId varchar(26) NOT NULL, "
 					+ "ListId varchar(8) NOT NULL, "
@@ -214,7 +214,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "FOREIGN KEY (ListId) REFERENCES mailing_list (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "UNIQUE INDEX (TemplateId) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created EmailTemplate Table...");
+			System.out.println("Created email_template Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -222,9 +222,9 @@ public class EmailAddrTable extends CreateTableBase {
 		}
 	}
 
-	void createUnsubCommentsTable() throws SQLException {
+	void createEmailUnsubCommentTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE UnsubComments ( "
+			stm.execute("CREATE TABLE email_unsub_cmnt ( "
 					+ "RowId int AUTO_INCREMENT not null, "
 					+ "EmailAddrId bigint NOT NULL, "
 					+ "ListId varchar(8), "
@@ -234,7 +234,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "FOREIGN KEY (EmailAddrId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (EmailAddrId) "
 					+ ") ENGINE=InnoDB");
-			System.out.println("Created UnsubComments Table...");
+			System.out.println("Created email_unsub_cmnt Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -489,18 +489,18 @@ DELIMITER ;
 	private void insertSubscribers() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO Subscription " +
+				"INSERT INTO email_subscrpt " +
 				"(EmailAddrId," +
 				"ListId," +
 				"Subscribed," +
 				"CreateTime)" +
 				"VALUES (?, ?, ?, ?)");
 			
-			EmailAddrDao emailDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+			EmailAddressDao emailDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 			
 			for (SubscriberEnum sublst : SubscriberEnum.values()) {
 				for (SubscriberEnum.Subscriber sbsr : SubscriberEnum.Subscriber.values()) {
-					EmailAddrVo emailVo = emailDao.findByAddress(sbsr.getAddress());
+					EmailAddressVo emailVo = emailDao.findByAddress(sbsr.getAddress());
 					ps.setLong(1, emailVo.getEmailAddrId());
 					ps.setString(2, sublst.getMailingList().name());
 					ps.setString(3, Constants.Y);
@@ -520,7 +520,7 @@ DELIMITER ;
 	private void insertEmailVariable() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO EmailVariable " +
+				"INSERT INTO email_variable " +
 				"(VariableName," +
 				"VariableType," +
 				"TableName," +
@@ -556,7 +556,7 @@ DELIMITER ;
 	private void insertEmailTemplate() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO EmailTemplate " +
+				"INSERT INTO email_template " +
 				"(TemplateId," +
 				"ListId," +
 				"Subject," +
@@ -600,7 +600,7 @@ DELIMITER ;
 			}
 						
 			ps.close();
-			System.out.println("Inserted EmailTemplate...");
+			System.out.println("Inserted email_template...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -610,7 +610,7 @@ DELIMITER ;
 	void selectEmailTemplate() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"select * from EmailTemplate where TemplateId = 'test template'");
+				"select * from email_template where TemplateId = 'test template'");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				String id = rs.getString("ListId");
@@ -633,7 +633,7 @@ DELIMITER ;
 	private void insertProdEmailTemplate() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO EmailTemplate " +
+				"INSERT INTO email_template " +
 				"(TemplateId," +
 				"ListId," +
 				"Subject," +
@@ -677,7 +677,7 @@ DELIMITER ;
 			}
 			
 			ps.close();
-			System.out.println("Inserted Product EmailTemplate...");
+			System.out.println("Inserted Product email_template...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -694,7 +694,7 @@ DELIMITER ;
 			tmpltVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 			rowsUpdated += getEmailTemplateDao().update(tmpltVo);
 		}
-		System.out.println("Updated EmailTemplate records: " + rowsUpdated);
+		System.out.println("Updated email_template records: " + rowsUpdated);
 	}
 
 	private EmailTemplateDao emailTemplateDao = null;

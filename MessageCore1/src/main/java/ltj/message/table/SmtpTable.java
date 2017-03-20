@@ -23,12 +23,12 @@ public class SmtpTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE MailSenderProps");
-			System.out.println("Dropped MailSenderProps Table...");
+			stm.execute("DROP TABLE mail_sender_props");
+			System.out.println("Dropped mail_sender_props Table...");
 		} catch (SQLException e) {}
 		try {
-			stm.execute("DROP TABLE SmtpServers");
-			System.out.println("Dropped SmtpServers Table...");
+			stm.execute("DROP TABLE smtp_server");
+			System.out.println("Dropped smtp_server Table...");
 		} catch (SQLException e) {}
 	}
 	
@@ -51,7 +51,7 @@ public class SmtpTable extends CreateTableBase {
 		- messageCount: number of messages to send before stopping the process, 0=unlimited
 		*/
 		try {
-			stm.execute("CREATE TABLE SmtpServers ( " +
+			stm.execute("CREATE TABLE smtp_server ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"ServerName varchar(50) NOT NULL, " +
 			"SmtpHost varchar(100) NOT NULL, " +
@@ -75,7 +75,7 @@ public class SmtpTable extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (ServerName) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created SmtpServers Table...");
+			System.out.println("Created smtp_server Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -88,7 +88,7 @@ public class SmtpTable extends CreateTableBase {
 		- TestToAddr: use it as the TO address when UseTestAddr is yes
 		*/
 		try {
-			stm.execute("CREATE TABLE MailSenderProps ( " +
+			stm.execute("CREATE TABLE mail_sender_props ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"InternalLoopback varchar(100) NOT NULL, " +
 			"ExternalLoopback varchar(100) NOT NULL, " +
@@ -101,7 +101,7 @@ public class SmtpTable extends CreateTableBase {
 			"UpdtUserId char(10) NOT NULL, " +
 			"PRIMARY KEY (RowId) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MailSenderProps Table...");
+			System.out.println("Created mail_sender_props Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -120,7 +120,7 @@ public class SmtpTable extends CreateTableBase {
 	}
 	
 	private String insertSql = 
-		"INSERT INTO SmtpServers " +
+		"INSERT INTO smtp_server " +
 			"(SmtpHost," +
 			"SmtpPort," +
 			"ServerName," +
@@ -171,26 +171,6 @@ public class SmtpTable extends CreateTableBase {
 				ps.execute();
 			}
 
-//			ps.setString(1, "localhost"); // smtpHost
-//			ps.setString(2, "-1"); // smtpPort
-//			ps.setString(3, "smtpServer"); // server name
-//			ps.setString(4, "smtp server on localhost"); // description
-//			ps.setString(5, Constants.NO); // use ssl
-//			ps.setString(6, "support"); // user id
-//			ps.setString(7, "support"); // user password
-//			ps.setString(8, Constants.NO); // persistence
-//			ps.setString(9, StatusId.ACTIVE.value()); // status id
-//			ps.setString(10, MailServerType.SMTP.value()); // server type
-//			ps.setInt(11, 4); // Threads
-//			ps.setInt(12, 10); // retries
-//			ps.setInt(13, 6); // retry freq
-//			ps.setInt(14, 5); // alertAfter
-//			ps.setString(15, "error"); // alert level
-//			ps.setInt(16, 0); // message count
-//			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(18, Constants.DEFAULT_USER_ID);
-//			ps.execute();
-
 			ps.close();
 			System.out.println("Inserted all rows...");
 		} catch (SQLException e) {
@@ -228,62 +208,6 @@ public class SmtpTable extends CreateTableBase {
 			}
 
 
-//			ps.setString(1, "outbound.mailhop.org"); // smtpHost
-//			ps.setString(2, "465"); // smtpPort
-//			ps.setString(3, "DyndnsMailRelay"); // server name
-//			ps.setString(4, "smtp server on dyndns"); // description
-//			ps.setString(5, Constants.YES); // use ssl
-//			ps.setString(6, "jackwng"); // user id
-//			ps.setString(7, "jackwng01"); // user password
-//			ps.setString(8, Constants.NO); // persistence
-//			ps.setString(9, StatusId.INACTIVE.value()); // status id
-//			ps.setString(10, MailServerType.SMTP.value()); // server type
-//			ps.setInt(11, 1); // Threads
-//			ps.setInt(12, 10); // retries
-//			ps.setInt(13, 5); // retry freq
-//			ps.setInt(14, 5); // alertAfter
-//			ps.setString(15, "error"); // alert level
-//			ps.setInt(16, 0); // message count
-//			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(18, Constants.DEFAULT_USER_ID);
-//			ps.execute();
-//			
-//			ps.setString(1, "smtp.gmail.com"); // smtpHost
-//			ps.setString(2, "-1"); // smtpPort
-//			ps.setString(3, "gmailServer"); // server name
-//			ps.setString(4, "smtp server on gmail.com"); // description
-//			ps.setString(5, Constants.YES); // use ssl
-//			ps.setString(6, "jackwng"); // user id
-//			ps.setString(7, "jackwng01"); // user password
-//			ps.setString(8, Constants.NO); // persistence
-//			ps.setString(9, StatusId.INACTIVE.value()); // status id
-//			ps.setString(10, MailServerType.SMTP.value()); // server type
-//			ps.setInt(11, 2); // Threads
-//			ps.setInt(12, 10); // retries
-//			ps.setInt(13, 5); // retry freq
-//			ps.setInt(14, 5); // alertAfter
-//			ps.setString(15, "error"); // alert level
-//			ps.setInt(16, 0); // message count
-//			ps.setTimestamp(17, new Timestamp(new java.util.Date().getTime()));
-//			ps.setString(18, Constants.DEFAULT_USER_ID);
-//			ps.execute();
-//			
-//			ps.setString(1, "localhost"); // smtpHost
-//			ps.setString(2, "25"); // smtpPort
-//			ps.setString(3, "exchServer"); // server name
-//			ps.setString(4, "exch server on localhost"); // description
-//			ps.setString(5, Constants.NO); // use ssl
-//			ps.setString(6, "uid"); // user id
-//			ps.setString(7, "pwd"); // user password
-//			ps.setString(8, Constants.NO); // persistence
-//			ps.setString(9, StatusId.ACTIVE.value()); // status id
-//			ps.setString(10, MailServerType.EXCH.value()); // server type
-//			ps.setInt(11, 1); // Threads
-//			ps.setInt(12, 4); // retries
-//			ps.setInt(13, 1); // retry freq
-//			ps.setInt(14, 15); // alertAfter
-//			ps.execute();
-			
 			ps.close();
 			System.out.println("Inserted all rows...");
 		} catch (SQLException e) {
@@ -293,7 +217,7 @@ public class SmtpTable extends CreateTableBase {
 	}
 
 	public void UpdateSmtpData4Prod() throws SQLException {
-		String sql = "update SmtpServers set StatusId = ? where ServerName = ?";
+		String sql = "update smtp_server set StatusId = ? where ServerName = ?";
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			
@@ -320,7 +244,7 @@ public class SmtpTable extends CreateTableBase {
 	void insertMailSenderData() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO MailSenderProps " +
+				"INSERT INTO mail_sender_props " +
 				"(InternalLoopback," +
 				"ExternalLoopback," +
 				"UseTestAddr," +

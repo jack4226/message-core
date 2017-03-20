@@ -22,7 +22,7 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.VariableDelimiter;
 import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.dao.emailaddr.MailingListDao;
@@ -35,7 +35,7 @@ import ltj.message.exception.TemplateNotFoundException;
 import ltj.message.external.VariableResolver;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 import ltj.message.vo.emailaddr.EmailVariableVo;
 import ltj.message.vo.emailaddr.MailingListVo;
@@ -57,7 +57,7 @@ public final class RenderUtil {
 	private static BodyTemplateDao bodyTemplateDao = null;
 	private static EmailTemplateDao emailTemplateDao = null;
 	private static MailingListDao mailingListDao = null;
-	private static EmailAddrDao emailAddrDao = null;
+	private static EmailAddressDao emailAddressDao = null;
 
 	private RenderUtil() {
 		// static methods only
@@ -105,11 +105,11 @@ public final class RenderUtil {
 		return mailingListDao;
 	}
 
-	static EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+	static EmailAddressDao getEmailAddrDao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 
 	/**
@@ -636,7 +636,7 @@ public final class RenderUtil {
 			}
 		}
 		// TODO fix deadlock issue when running from JUnit test
-		EmailAddrVo addrVo = getEmailAddrDao().findByAddress(toAddr);
+		EmailAddressVo addrVo = getEmailAddrDao().findByAddress(toAddr);
 		// render email variables using TO emailAddrId
 		Map<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames, addrVo.getEmailAddrId());
 		// include render variables from input data
@@ -785,7 +785,7 @@ public final class RenderUtil {
 		else { // use variable names from input
 			varNames = variableNames;
 		}
-		EmailAddrVo addrVo = getEmailAddrDao().findByAddress(toAddr);
+		EmailAddressVo addrVo = getEmailAddrDao().findByAddress(toAddr);
 		// retrieve variable values by variable name and email address id
 		Map<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames, addrVo.getEmailAddrId());
 		// include render variables from input data

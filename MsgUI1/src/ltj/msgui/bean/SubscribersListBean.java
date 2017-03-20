@@ -15,12 +15,12 @@ import org.apache.log4j.Logger;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingSbsrVo;
 import ltj.message.vo.PagingVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
@@ -28,10 +28,10 @@ public class SubscribersListBean {
 	static final Logger logger = Logger.getLogger(SubscribersListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private SubscriptionDao subscriberDao = null;
-	private EmailAddrDao emailAddrDao = null;
+	private EmailSubscrptDao subscriberDao = null;
+	private EmailAddressDao emailAddressDao = null;
 	private DataModel subscribers = null;
-	private SubscriptionVo subscriber = null;
+	private EmailSubscrptVo subscriber = null;
 	private boolean editMode = true;
 	private String listId = null;
 
@@ -61,12 +61,12 @@ public class SubscribersListBean {
 			pagingVo.setRowCount(rowCount);
 		}
 		if (subscribers == null || !pagingVo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<SubscriptionVo> subscriberList = getSubscriptionDao().getSubscribersWithPaging(pagingVo);
+			List<EmailSubscrptVo> subscriberList = getSubscriptionDao().getSubscribersWithPaging(pagingVo);
 			/* set keys for paging */
 			if (!subscriberList.isEmpty()) {
-				SubscriptionVo firstRow = subscriberList.get(0);
+				EmailSubscrptVo firstRow = subscriberList.get(0);
 				pagingVo.setNbrIdFirst(firstRow.getEmailAddrId());
-				SubscriptionVo lastRow = subscriberList.get(subscriberList.size() - 1);
+				EmailSubscrptVo lastRow = subscriberList.get(subscriberList.size() - 1);
 				pagingVo.setNbrIdLast(lastRow.getEmailAddrId());
 			}
 			else {
@@ -163,26 +163,26 @@ public class SubscribersListBean {
 		refresh();
 	}
 	
-	public SubscriptionDao getSubscriptionDao() {
+	public EmailSubscrptDao getSubscriptionDao() {
 		if (subscriberDao == null) {
-			subscriberDao = (SubscriptionDao) SpringUtil.getWebAppContext().getBean("subscriptionDao");
+			subscriberDao = (EmailSubscrptDao) SpringUtil.getWebAppContext().getBean("subscriptionDao");
 		}
 		return subscriberDao;
 	}
 
-	public void setSubscriptionDao(SubscriptionDao subscriberDao) {
+	public void setSubscriptionDao(EmailSubscrptDao subscriberDao) {
 		this.subscriberDao = subscriberDao;
 	}
 
-	public EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getWebAppContext().getBean("emailAddrDao");
+	public EmailAddressDao getEmailAddrDao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = (EmailAddressDao) SpringUtil.getWebAppContext().getBean("emailAddressDao");
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
+	public void setEmailAddrDao(EmailAddressDao emailAddressDao) {
+		this.emailAddressDao = emailAddressDao;
 	}
 
 	public String deleteSubscribers() {
@@ -198,9 +198,9 @@ public class SubscribersListBean {
 			return TO_FAILED;
 		}
 		reset();
-		List<SubscriptionVo> subrList = getSubscriberList();
+		List<EmailSubscrptVo> subrList = getSubscriberList();
 		for (int i=0; i<subrList.size(); i++) {
-			SubscriptionVo vo = subrList.get(i);
+			EmailSubscrptVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
 				int rowsDeleted = getSubscriptionDao().deleteByPrimaryKey(vo.getEmailAddrId(), listId);
 				if (rowsDeleted > 0) {
@@ -222,9 +222,9 @@ public class SubscribersListBean {
 			return TO_FAILED;
 		}
 		reset();
-		List<SubscriptionVo> subrList = getSubscriberList();
+		List<EmailSubscrptVo> subrList = getSubscriberList();
 		for (int i=0; i<subrList.size(); i++) {
-			SubscriptionVo vo = subrList.get(i);
+			EmailSubscrptVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
 				if (!StringUtil.isEmpty(FacesUtil.getLoginUserId())) {
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
@@ -246,7 +246,7 @@ public class SubscribersListBean {
 			logger.debug("addSubscriber() - Entering...");
 		}
 		reset();
-		this.subscriber = new SubscriptionVo();
+		this.subscriber = new EmailSubscrptVo();
 		subscriber.setListId(listId);
 		subscriber.setSubscribed(StatusId.PENDING.value());
 		subscriber.setMarkedForEdition(true);
@@ -267,9 +267,9 @@ public class SubscribersListBean {
 			logger.warn("getAnySubscribersMarkedForDeletion() - Subscriber List is null.");
 			return false;
 		}
-		List<SubscriptionVo> subrList = getSubscriberList();
-		for (Iterator<SubscriptionVo> it=subrList.iterator(); it.hasNext();) {
-			SubscriptionVo vo = it.next();
+		List<EmailSubscrptVo> subrList = getSubscriberList();
+		for (Iterator<EmailSubscrptVo> it=subrList.iterator(); it.hasNext();) {
+			EmailSubscrptVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -288,7 +288,7 @@ public class SubscribersListBean {
 		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - subscriberId: " + subId);
 		}
-		SubscriptionVo vo = getSubscriptionDao().getByAddrAndListId(subId, listId);
+		EmailSubscrptVo vo = getSubscriptionDao().getByAddrAndListId(subId, listId);
 		if (editMode == true && vo == null) {
 			// subscriber does not exist
 			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "subscriberDoesNotExist",
@@ -311,20 +311,20 @@ public class SubscribersListBean {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	private List<SubscriptionVo> getSubscriberList() {
+	private List<EmailSubscrptVo> getSubscriberList() {
 		if (subscribers == null) {
-			return new ArrayList<SubscriptionVo>();
+			return new ArrayList<EmailSubscrptVo>();
 		}
 		else {
-			return (List<SubscriptionVo>)subscribers.getWrappedData();
+			return (List<EmailSubscrptVo>)subscribers.getWrappedData();
 		}
 	}
 
-	public SubscriptionVo getSubscription() {
+	public EmailSubscrptVo getSubscription() {
 		return subscriber;
 	}
 
-	public void setSubscription(SubscriptionVo subscriber) {
+	public void setSubscription(EmailSubscrptVo subscriber) {
 		this.subscriber = subscriber;
 	}
 

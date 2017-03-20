@@ -34,12 +34,12 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.inbox.MessageParser;
 import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.outbox.MsgOutboxBo;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgStreamDao;
 import ltj.message.exception.DataValidationException;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.spring.util.SpringAppConfig;
@@ -67,7 +67,7 @@ public class BoTestBase {
 	@Resource
 	protected MsgInboxDao msgInboxDao;
 	@Resource
-	protected EmailAddrDao emailAddrDao;
+	protected EmailAddressDao emailAddressDao;
 	
 	protected static long WaitTimeInMillis = 2 * 1000L;
 	
@@ -141,9 +141,9 @@ public class BoTestBase {
 		return list;
 	}
 
-	protected EmailAddrVo selectEmailAddrByAddress(String emailAddr) {
-		EmailAddrVo addrVo = emailAddrDao.findByAddress(emailAddr);
-		logger.info("EmailAddrDao - selectEmailAddrByAddress: "+LF+addrVo);
+	protected EmailAddressVo selectEmailAddrByAddress(String emailAddr) {
+		EmailAddressVo addrVo = emailAddressDao.findByAddress(emailAddr);
+		logger.info("EmailAddressDao - selectEmailAddrByAddress: "+LF+addrVo);
 		return addrVo;
 	}
 

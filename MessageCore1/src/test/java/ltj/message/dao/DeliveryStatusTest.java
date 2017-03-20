@@ -13,17 +13,17 @@ import org.springframework.test.annotation.Rollback;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.dao.abstrct.DaoTestBase;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.outbox.DeliveryStatusDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.vo.outbox.DeliveryStatusVo;
 
 public class DeliveryStatusTest extends DaoTestBase {
 	@Resource
 	private DeliveryStatusDao deliveryStatusDao;
 	@Resource
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	@Resource
 	private MsgInboxDao msgInboxDao;
 	private static long testMsgId = 3L;
@@ -71,14 +71,14 @@ public class DeliveryStatusTest extends DaoTestBase {
 	private DeliveryStatusVo selectByPrimaryKey(long msgId, long finalRcptId) {
 		DeliveryStatusVo deliveryStatusVo = (DeliveryStatusVo) deliveryStatusDao.getByPrimaryKey(
 				msgId, finalRcptId);
-		logger.info("AttachmentsDao - selectByPrimaryKey: " + LF + deliveryStatusVo);
+		logger.info("MsgAttachmentDao - selectByPrimaryKey: " + LF + deliveryStatusVo);
 		return deliveryStatusVo;
 	}
 
 	private int update(DeliveryStatusVo deliveryStatusVo) {
 		deliveryStatusVo.setDeliveryStatus("");
 		int rows = deliveryStatusDao.update(deliveryStatusVo);
-		logger.info("AttachmentsDao - update: " + LF + deliveryStatusVo);
+		logger.info("MsgAttachmentDao - update: " + LF + deliveryStatusVo);
 		return rows;
 	}
 
@@ -100,7 +100,7 @@ public class DeliveryStatusTest extends DaoTestBase {
 		else {
 			DeliveryStatusVo vo = new DeliveryStatusVo();
 			vo.setDeliveryStatus(MLDeliveryType.ALL_ON_LIST.value());
-			EmailAddrVo addrVo = selectByAddress(testEmailAddr);
+			EmailAddressVo addrVo = selectByAddress(testEmailAddr);
 			assertNotNull(addrVo);
 			vo.setMsgId(msgId);
 			vo.setFinalRecipientId(addrVo.getEmailAddrId());
@@ -114,9 +114,9 @@ public class DeliveryStatusTest extends DaoTestBase {
 		}
 	}
 
-	private EmailAddrVo selectByAddress(String emailAddr) {
-		EmailAddrVo addrVo = emailAddrDao.findByAddress(emailAddr);
-		logger.info("EmailAddrDao - selectByAddress: "+LF+addrVo);
+	private EmailAddressVo selectByAddress(String emailAddr) {
+		EmailAddressVo addrVo = emailAddressDao.findByAddress(emailAddr);
+		logger.info("EmailAddressDao - selectByAddress: "+LF+addrVo);
 		return addrVo;
 	}
 }

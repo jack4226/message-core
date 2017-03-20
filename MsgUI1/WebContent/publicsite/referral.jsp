@@ -66,7 +66,7 @@ function checkLength(element, maxvalue) {
 <input type="hidden" name="sbsrid" value="<%= request.getParameter("sbsrid") %>"/>
 <input type="hidden" name="listid" value="<%= request.getParameter("listid") %>"/>
 
-<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddressVo"%>
 <%@page import="ltj.message.util.StringUtil"%>
 <%@page import="ltj.message.constant.Constants"%>
 <%@page import="ltj.message.constant.AddressType"%>

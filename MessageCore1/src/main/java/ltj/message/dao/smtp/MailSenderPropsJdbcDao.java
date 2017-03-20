@@ -19,7 +19,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 	@Override
 	public MailSenderVo getByPrimaryKey(int rowId) {
 		String sql = 
-			"select * from MailSenderProps where rowId=?";
+			"select * from mail_sender_props where rowId=?";
 		Object[] parms = new Object[] {rowId};
 		try {
 			MailSenderVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -34,7 +34,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 	@Override
 	public List<MailSenderVo> getAll() {
 		
-		String sql = "select * from MailSenderProps ";
+		String sql = "select * from mail_sender_props ";
 		List<MailSenderVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MailSenderVo>(MailSenderVo.class));
 		return list;
@@ -44,7 +44,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 	public int update(MailSenderVo mailSenderVo) {
 		mailSenderVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailSenderVo);
-		String sql = MetaDataUtil.buildUpdateStatement("MailSenderProps", mailSenderVo);
+		String sql = MetaDataUtil.buildUpdateStatement("mail_sender_props", mailSenderVo);
 		if (mailSenderVo.getOrigUpdtTime() != null) {
 			sql += " and UpdtTime=:origUpdtTime ";
 		}
@@ -56,7 +56,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 	@Override
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = 
-			"delete from MailSenderProps where RowId=?";
+			"delete from mail_sender_props where RowId=?";
 		Object[] parms = new Object[] {rowId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -66,7 +66,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 	public int insert(MailSenderVo mailSenderVo) {
 		mailSenderVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailSenderVo);
-		String sql = MetaDataUtil.buildInsertStatement("MailSenderProps", mailSenderVo);
+		String sql = MetaDataUtil.buildInsertStatement("mail_sender_props", mailSenderVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		mailSenderVo.setRowId(retrieveRowId());
 		mailSenderVo.setOrigUpdtTime(mailSenderVo.getUpdtTime());

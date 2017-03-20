@@ -19,7 +19,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgStream where msgid=? ";
+				"msg_stream where msgid=? ";
 		
 		Object[] parms = new Object[] {msgId};
 		try {
@@ -37,7 +37,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgStream where fromAddrId=? ";
+				"msg_stream where fromAddrId=? ";
 		
 		Object[] parms = new Object[] {fromAddrId};
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 
@@ -49,7 +49,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 	public List<MsgStreamVo> getByToAddrId(long toAddrId) {
 		String sql = 
 			"select m.* " +
-			"from MsgStream m " +
+			"from msg_stream m " +
 				" join msg_address s on s.msgId=m.msgId and s.addrType='To' " +
 				" join email_address e on e.emailAddr=s.addrValue and e.emailAddrId=? ";
 		
@@ -64,7 +64,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		String sql = 
 			"select m.* " +
 			"from " +
-				"MsgStream m join email_address e on e.emailAddrId=m.fromAddrId " + 
+				"msg_stream m join email_address e on e.emailAddrId=m.fromAddrId " + 
 			" where e.emailAddr=? ";
 		
 		Object[] parms = new Object[] {address};
@@ -78,7 +78,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		String sql = 
 			"select m.* " +
 			"from " +
-				"MsgStream m join msg_address s on s.msgId=m.msgId " +
+				"msg_stream m join msg_address s on s.msgId=m.msgId " +
 				" join email_address e on e.emailAddr=s.addrValue and s.addrType='To' " +
 			" where e.emailAddr=? ";
 		
@@ -93,7 +93,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgStream where msgid = (select max(MsgId) from MsgStream) ";
+				"msg_stream where msgid = (select max(MsgId) from msg_stream) ";
 		
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
@@ -137,7 +137,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"MsgStream order by RAND() limit 1 ";
+				"msg_stream order by RAND() limit 1 ";
 		
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgStreamVo>(MsgStreamVo.class));
@@ -163,7 +163,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		fields.add(msgStreamVo.getMsgId());
 		
 		String sql =
-			"update MsgStream set " +
+			"update msg_stream set " +
 				"FromAddrId=?, " +
 				"ToAddrId=?, " +
 				"MsgSubject=?, " +
@@ -179,7 +179,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 	@Override
 	public int deleteByPrimaryKey(long msgId) {
 		String sql = 
-			"delete from MsgStream where msgid=? ";
+			"delete from msg_stream where msgid=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -191,7 +191,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 	@Override
 	public int insert(MsgStreamVo msgStreamVo) {
 		String sql = 
-			"INSERT INTO MsgStream (" +
+			"INSERT INTO msg_stream (" +
 				"MsgId, " +
 				"FromAddrId, " +
 				"ToAddrId, " +

@@ -15,7 +15,7 @@ public class CustomerNameResolver implements VariableResolver {
 			logger.debug("Entering process() method...");
 		}
 		String query = "SELECT CONCAT(c.firstName,' ',c.lastName) as ResultStr " +
-				" FROM customers c, emailaddr e " +
+				" FROM customer_tbl c, email_address e " +
 				" where e.emailaddrId=c.emailAddrId and e.emailAddrId=?";
 		
 		EmailVariableDao dao = SpringUtil.getDaoAppContext().getBean(EmailVariableDao.class);

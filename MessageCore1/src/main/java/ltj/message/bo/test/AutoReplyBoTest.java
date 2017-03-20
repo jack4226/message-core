@@ -34,7 +34,7 @@ public class AutoReplyBoTest extends BoTestBase {
 	public void test0() {
 		// work around the deadlock on inserting email address in RenderUtil
 		// TODO fix the deadlock issue in AutoReplyBo/RenderUtil
-		emailAddrDao.findByAddress(replyToAddress);
+		emailAddressDao.findByAddress(replyToAddress);
 	}
 	
 	@Test

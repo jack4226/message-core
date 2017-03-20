@@ -13,7 +13,7 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.MailProtocol;
 import ltj.message.constant.MailServerType;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.MailBoxVo;
@@ -32,8 +32,8 @@ public class MailboxTable extends CreateTableBase {
 	
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE MailBoxes");
-			System.out.println("Dropped MailBoxes Table...");
+			stm.execute("DROP TABLE mail_box");
+			System.out.println("Dropped mail_box Table...");
 		} catch (SQLException e) {}
 	}
 	
@@ -68,7 +68,7 @@ public class MailboxTable extends CreateTableBase {
 			- ProcessorName: Spring processor id / processor class name
 		*/
 		try {
-			stm.execute("CREATE TABLE MailBoxes ( " +
+			stm.execute("CREATE TABLE mail_box ( " +
 			"RowId int AUTO_INCREMENT not null, " +
 			"UserId varchar(30) NOT NULL, " + 
 			"UserPswd varchar(32) NOT NULL, " +
@@ -99,7 +99,7 @@ public class MailboxTable extends CreateTableBase {
 			"PRIMARY KEY (RowId), " +
 			"UNIQUE INDEX (UserId, HostName) " +
 			") ENGINE=InnoDB");
-			System.out.println("Created MailBoxes Table...");
+			System.out.println("Created mail_box Table...");
 		} catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
@@ -107,7 +107,7 @@ public class MailboxTable extends CreateTableBase {
 	}
 	
 	private String insertSql = 
-		"INSERT INTO MailBoxes " +
+		"INSERT INTO mail_box " +
 			"(UserId," +
 			"UserPswd," +
 			"HostName," +
@@ -568,12 +568,12 @@ public class MailboxTable extends CreateTableBase {
 		return mailBoxDao;
 	}
 	
-	private EmailAddrDao emailAddrDao = null;
-	private EmailAddrDao getEmailAddrdao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+	private EmailAddressDao emailAddressDao = null;
+	private EmailAddressDao getEmailAddrdao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 	
 	/**

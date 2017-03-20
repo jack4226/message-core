@@ -21,13 +21,13 @@ import ltj.message.dao.abstrct.Column;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.abstrct.Table;
-import ltj.message.dao.inbox.AttachmentsDao;
-import ltj.message.dao.inbox.MsgHeadersDao;
+import ltj.message.dao.inbox.MsgAttachmentDao;
+import ltj.message.dao.inbox.MsgHeaderDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.PrintUtil;
 import ltj.message.vo.emailaddr.MailingListVo;
-import ltj.message.vo.inbox.AttachmentsVo;
-import ltj.message.vo.inbox.MsgHeadersVo;
+import ltj.message.vo.inbox.MsgAttachmentVo;
+import ltj.message.vo.inbox.MsgHeaderVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 public class MetaDataUtilTest  extends DaoTestBase {
@@ -37,9 +37,9 @@ public class MetaDataUtilTest  extends DaoTestBase {
 	@Resource
 	private MsgInboxDao msgInboxDao;
 	@Resource
-	private MsgHeadersDao msgHdrsDao;
+	private MsgHeaderDao msgHdrsDao;
 	@Resource
-	private AttachmentsDao attachDao;
+	private MsgAttachmentDao attachDao;
 
 	@Test
 	public void testMetaData1() {
@@ -114,11 +114,11 @@ public class MetaDataUtilTest  extends DaoTestBase {
 	
 	@Test
 	public void testUpdate2() {
-		List<AttachmentsVo> list1 = attachDao.getRandomRecord();
+		List<MsgAttachmentVo> list1 = attachDao.getRandomRecord();
 		if (list1.isEmpty()) {
 			return;
 		}
-		AttachmentsVo vo1 = list1.get(list1.size() - 1);
+		MsgAttachmentVo vo1 = list1.get(list1.size() - 1);
 		String updtSQL1 = MetaDataUtil.buildUpdateStatement("msg_attachment", vo1);
 		logger.info(updtSQL1);
 		assertTrue(updtSQL1.matches("Update msg_attachment set .* MsgId\\=\\:msgId.*"));
@@ -133,9 +133,9 @@ public class MetaDataUtilTest  extends DaoTestBase {
 		int rowsUpadted = new NamedParameterJdbcTemplate(mysqlDataSource).update(updtSQL1, namedParameters);
 		assertEquals(1, rowsUpadted);
 		
-		List<AttachmentsVo> list2 = attachDao.getByMsgId(vo1.getMsgId());
+		List<MsgAttachmentVo> list2 = attachDao.getByMsgId(vo1.getMsgId());
 		assertEquals(list1.size(), list2.size());
-		AttachmentsVo vo2 = list2.get(list2.size() - 1);
+		MsgAttachmentVo vo2 = list2.get(list2.size() - 1);
 		assertEquals(value, new String(vo2.getAttchmntValue()));
 	}
 
@@ -145,9 +145,9 @@ public class MetaDataUtilTest  extends DaoTestBase {
 		logger.info(insertSQL1);
 		assertTrue(insertSQL1.matches("Insert INTO mailing_list \\(.*\\) VALUES \\(.*\\)"));
 		
-		List<MsgHeadersVo> hdrList1 = msgHdrsDao.getRandomRecord();
+		List<MsgHeaderVo> hdrList1 = msgHdrsDao.getRandomRecord();
 		assertFalse(hdrList1.isEmpty());
-		MsgHeadersVo vo1 = hdrList1.get(hdrList1.size() - 1);
+		MsgHeaderVo vo1 = hdrList1.get(hdrList1.size() - 1);
 		String insertSQL2 = MetaDataUtil.buildInsertStatement("msg_header", vo1);
 		logger.info("msg_header Insert: " + insertSQL2);
 		
@@ -161,20 +161,20 @@ public class MetaDataUtilTest  extends DaoTestBase {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(vo1);
 		int rowsInserted = new NamedParameterJdbcTemplate(mysqlDataSource).update(insertSQL2, namedParameters);
 		assertEquals(1, rowsInserted);
-		List<MsgHeadersVo> hdrList2 = msgHdrsDao.getByMsgId(vo1.getMsgId());
+		List<MsgHeaderVo> hdrList2 = msgHdrsDao.getByMsgId(vo1.getMsgId());
 		assertEquals(hdrList1.size() + 1, hdrList2.size());
-		MsgHeadersVo vo2 = hdrList2.get(hdrList2.size() - 1);
+		MsgHeaderVo vo2 = hdrList2.get(hdrList2.size() - 1);
 		assertEquals(headerName, vo2.getHeaderName());
 		assertEquals(hdrSeqBefore + 1, vo2.getHeaderSeq());
 	}
 	
 	@Test
 	public void testInsert2() {
-		List<AttachmentsVo> list1 = attachDao.getRandomRecord();
+		List<MsgAttachmentVo> list1 = attachDao.getRandomRecord();
 		if (list1.isEmpty()) {
 			return;
 		}
-		AttachmentsVo vo1 = list1.get(list1.size() - 1);
+		MsgAttachmentVo vo1 = list1.get(list1.size() - 1);
 		String isrtSQL1 = MetaDataUtil.buildInsertStatement("msg_attachment", vo1);
 		
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(vo1);
@@ -187,9 +187,9 @@ public class MetaDataUtilTest  extends DaoTestBase {
 		int rowsInserted = new NamedParameterJdbcTemplate(mysqlDataSource).update(isrtSQL1, namedParameters);
 		assertEquals(1, rowsInserted);
 		
-		List<AttachmentsVo> list2 = attachDao.getByMsgId(vo1.getMsgId());
+		List<MsgAttachmentVo> list2 = attachDao.getByMsgId(vo1.getMsgId());
 		assertEquals(list1.size() + 1, list2.size());
-		AttachmentsVo vo2 = list2.get(list2.size() - 1);
+		MsgAttachmentVo vo2 = list2.get(list2.size() - 1);
 		assertEquals(seqBefore + 1, vo2.getAttchmntSeq());
 		assertEquals(value, new String(vo2.getAttchmntValue()));
 	}

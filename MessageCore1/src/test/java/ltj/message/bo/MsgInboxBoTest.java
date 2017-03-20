@@ -20,7 +20,7 @@ import ltj.message.bo.outbox.MsgOutboxBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.dao.outbox.MsgRenderedDao;
-import ltj.message.vo.inbox.MsgHeadersVo;
+import ltj.message.vo.inbox.MsgHeaderVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.vo.outbox.MsgRenderedVo;
 
@@ -86,9 +86,9 @@ public class MsgInboxBoTest extends BoTestBase {
 			assertEquals(ruleName, vo.getRuleName());
 			
 			logger.info("MsgInboxVo.toString() - " + LF + vo);
-			List<MsgHeadersVo> hdrVoList = vo.getMsgHeaders();
+			List<MsgHeaderVo> hdrVoList = vo.getMsgHeaders();
 			boolean foundMatchingHeader = false;
-			for (MsgHeadersVo hdrVo : hdrVoList) {
+			for (MsgHeaderVo hdrVo : hdrVoList) {
 				if (StringUtils.equals(hdrName, hdrVo.getHeaderName())) {
 					assertEquals(hdrValue, hdrVo.getHeaderValue());
 					foundMatchingHeader = true;

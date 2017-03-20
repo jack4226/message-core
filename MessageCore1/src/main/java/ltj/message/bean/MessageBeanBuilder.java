@@ -38,9 +38,9 @@ import ltj.message.constant.XHeaderName;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.inbox.AttachmentsVo;
-import ltj.message.vo.inbox.MsgAddrsVo;
-import ltj.message.vo.inbox.MsgHeadersVo;
+import ltj.message.vo.inbox.MsgAttachmentVo;
+import ltj.message.vo.inbox.MsgAddressVo;
+import ltj.message.vo.inbox.MsgHeaderVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 public final class MessageBeanBuilder {
@@ -217,7 +217,7 @@ public final class MessageBeanBuilder {
 				}
 			}
 			if (tmp_to != null && toAddrDomain != null && toAddrDomain.indexOf(getDomain(real_to)) < 0) {
-				// domain matching string is present in MailBoxes record, scan
+				// domain matching string is present in mail_box record, scan
 				// Received headers for address with a matching domain.
 				for (int j = i - 1; j >= 0; j--) {
 					if ((tmp_to = analyzeReceived(received[j])) != null) {
@@ -1076,7 +1076,7 @@ public final class MessageBeanBuilder {
 		// set message body and attachments
 		String msgBody = msgVo.getMsgBody();
 		msgBean.setContentType(msgVo.getMsgContentType());
-		List<AttachmentsVo> attchs = msgVo.getAttachments();
+		List<MsgAttachmentVo> attchs = msgVo.getAttachments();
 		if (attchs != null && !attchs.isEmpty()) {
 			// construct a multipart (/mixed)
 			// message body part
@@ -1087,7 +1087,7 @@ public final class MessageBeanBuilder {
 			msgBean.put(aNode);
 			// attachments
 			for (int i = 0; i < attchs.size(); i++) {
-				AttachmentsVo vo = attchs.get(i);
+				MsgAttachmentVo vo = attchs.get(i);
 				BodypartBean subNode = new BodypartBean();
 				subNode.setContentType(vo.getAttchmntType());
 				subNode.setDisposition(vo.getAttchmntDisp());
@@ -1115,21 +1115,21 @@ public final class MessageBeanBuilder {
 		}
 		
 		// set message headers
-		List<MsgHeadersVo> headersVo = msgVo.getMsgHeaders();
+		List<MsgHeaderVo> headersVo = msgVo.getMsgHeaders();
 		if (headersVo != null) {
 			List<MsgHeader> headers = new ArrayList<MsgHeader>(); 
 			for (int i = 0; i < headersVo.size(); i++) {
-				MsgHeadersVo msgHeadersVo = headersVo.get(i);
+				MsgHeaderVo msgHeaderVo = headersVo.get(i);
 				MsgHeader header = new MsgHeader();
-				header.setName(msgHeadersVo.getHeaderName());
-				header.setValue(msgHeadersVo.getHeaderValue());
+				header.setName(msgHeaderVo.getHeaderName());
+				header.setValue(msgHeaderVo.getHeaderValue());
 				headers.add(header);
 			}
 			msgBean.setHeaders(headers);
 		}
 
 		// set addresses
-		List<MsgAddrsVo> addrsVo = msgVo.getMsgAddrs();
+		List<MsgAddressVo> addrsVo = msgVo.getMsgAddrs();
 		if (addrsVo != null) {
 			String fromAddr = null;
 			String toAddr = null;
@@ -1137,7 +1137,7 @@ public final class MessageBeanBuilder {
 			String ccAddr = null;
 			String bccAddr = null;
 			for (int i = 0; i < addrsVo.size(); i++) {
-				MsgAddrsVo addrVo = addrsVo.get(i);
+				MsgAddressVo addrVo = addrsVo.get(i);
 				if (AddressType.FROM_ADDR.value().equalsIgnoreCase(addrVo.getAddrType())) {
 					if (fromAddr == null) {
 						fromAddr = addrVo.getAddrValue();

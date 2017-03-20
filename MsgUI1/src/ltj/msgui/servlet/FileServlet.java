@@ -16,8 +16,8 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
-import ltj.message.dao.inbox.AttachmentsDao;
-import ltj.message.vo.inbox.AttachmentsVo;
+import ltj.message.dao.inbox.MsgAttachmentDao;
+import ltj.message.vo.inbox.MsgAttachmentVo;
 import ltj.msgui.util.SpringUtil;
 import ltj.tomee.util.TomeeCtxUtil;
 
@@ -29,12 +29,12 @@ public class FileServlet extends HttpServlet {
 	static final Logger logger = Logger.getLogger(FileServlet.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	private AttachmentsDao attachmentsDao = null;
+	private MsgAttachmentDao msgAttachmentDao = null;
 	
 	public void init() throws ServletException {
 		ServletContext ctx = getServletContext();
 		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Path: " + ctx.getContextPath());
-		attachmentsDao = SpringUtil.getWebAppContext(ctx).getBean(AttachmentsDao.class);
+		msgAttachmentDao = SpringUtil.getWebAppContext(ctx).getBean(MsgAttachmentDao.class);
 		getInitialContext();
 	}
 	
@@ -96,7 +96,7 @@ public class FileServlet extends HttpServlet {
             return;
         }
 
-        // Lookup AttachmentsVo by id/depth/seq in database.
+        // Lookup MsgAttachmentVo by id/depth/seq in database.
         long msgId = 0;
         int attchmntDepth = 0;
         int attchmntSeq = 0;
@@ -110,10 +110,10 @@ public class FileServlet extends HttpServlet {
             response.sendRedirect("/FileNotFoundError.jsp");
             return;
         }
-		AttachmentsVo fileData = null;
+		MsgAttachmentVo fileData = null;
         try {
         	// returns null if no result is found.
-			fileData = attachmentsDao.getByPrimaryKey(msgId, attchmntDepth, attchmntSeq);
+			fileData = msgAttachmentDao.getByPrimaryKey(msgId, attchmntDepth, attchmntSeq);
         }
         catch (Throwable e) {
             logger.error("Throwable caught", e);

@@ -13,12 +13,12 @@ import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgStreamDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.BaseVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.DeliveryStatusVo;
 import ltj.vo.outbox.MsgRenderedVo;
@@ -63,10 +63,10 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	private int origReadCount = -1;
 	private String origStatusId = null;
 	
-	private List<MsgAddrsVo> msgAddrs;
-	private List<MsgHeadersVo> msgHeaders;
-	private List<AttachmentsVo> attachments;
-	private List<RfcFieldsVo> rfcFields;
+	private List<MsgAddressVo> msgAddrs;
+	private List<MsgHeaderVo> msgHeaders;
+	private List<MsgAttachmentVo> attachments;
+	private List<MsgRfcFieldVo> rfcFields;
 	
 	private MsgStreamVo msgStreamVo = null;
 	private List<DeliveryStatusVo> deliveryStatus = null;
@@ -77,7 +77,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	/** 
 	 * define properties for UI components 
 	 */
-	private transient EmailAddrDao emailAddrDao = null;
+	private transient EmailAddressDao emailAddressDao = null;
 	private transient MsgStreamDao msgStreamDao = null;
 	private boolean showAllHeaders = false;
 	private boolean showRawMessage = false;
@@ -163,7 +163,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		if (fromAddrId == null) {
 			return "";
 		}
-		EmailAddrVo vo = getEmailAddrDao().getByAddrId(fromAddrId);
+		EmailAddressVo vo = getEmailAddrDao().getByAddrId(fromAddrId);
 		if (vo == null) {
 			return "";
 		}
@@ -178,8 +178,8 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	
 	public String getToAddress() {
 		// first locate To from header
-		List<MsgHeadersVo> headers = getMsgHeaders();
-		for (MsgHeadersVo header : headers) {
+		List<MsgHeaderVo> headers = getMsgHeaders();
+		for (MsgHeaderVo header : headers) {
 			if (AddressType.TO_ADDR.value().equalsIgnoreCase(header.getHeaderName())) {
 				if (StringUtils.isNotBlank(header.getHeaderValue())) {
 					return header.getHeaderValue();
@@ -190,7 +190,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		if (toAddrId == null) {
 			return "";
 		}
-		EmailAddrVo vo = getEmailAddrDao().getByAddrId(toAddrId);
+		EmailAddressVo vo = getEmailAddrDao().getByAddrId(toAddrId);
 		if (vo == null) {
 			return "";
 		}
@@ -221,7 +221,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		}
 		StringBuffer sb = new StringBuffer();
 		for (int i=0; i<msgAddrs.size(); i++) {
-			MsgAddrsVo vo = msgAddrs.get(i);
+			MsgAddressVo vo = msgAddrs.get(i);
 			if (AddressType.CC_ADDR.value().equals(vo.getAddrType())) {
 				if (sb.length() > 0) {
 					sb.append(",");
@@ -305,11 +305,11 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		}
 	}
 	
-	private EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+	private EmailAddressDao getEmailAddrDao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 	
 	private MsgStreamDao getMsgStreamDao() {
@@ -334,40 +334,40 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	 * end of UI components 
 	 */
 	
-	public List<AttachmentsVo> getAttachments() {
+	public List<MsgAttachmentVo> getAttachments() {
 		if (attachments==null) {
-			attachments = new ArrayList<AttachmentsVo>();
+			attachments = new ArrayList<MsgAttachmentVo>();
 		}
 		return attachments;
 	}
-	public void setAttachments(List<AttachmentsVo> attachments) {
+	public void setAttachments(List<MsgAttachmentVo> attachments) {
 		this.attachments = attachments;
 	}
-	public List<MsgAddrsVo> getMsgAddrs() {
+	public List<MsgAddressVo> getMsgAddrs() {
 		if (msgAddrs==null) {
-			msgAddrs = new ArrayList<MsgAddrsVo>();
+			msgAddrs = new ArrayList<MsgAddressVo>();
 		}
 		return msgAddrs;
 	}
-	public void setMsgAddrs(List<MsgAddrsVo> msgAddrs) {
+	public void setMsgAddrs(List<MsgAddressVo> msgAddrs) {
 		this.msgAddrs = msgAddrs;
 	}
-	public List<MsgHeadersVo> getMsgHeaders() {
+	public List<MsgHeaderVo> getMsgHeaders() {
 		if (msgHeaders==null) {
-			msgHeaders = new ArrayList<MsgHeadersVo>();
+			msgHeaders = new ArrayList<MsgHeaderVo>();
 		}
 		return msgHeaders;
 	}
-	public void setMsgHeaders(List<MsgHeadersVo> msgHeaders) {
+	public void setMsgHeaders(List<MsgHeaderVo> msgHeaders) {
 		this.msgHeaders = msgHeaders;
 	}
-	public List<RfcFieldsVo> getRfcFields() {
+	public List<MsgRfcFieldVo> getRfcFields() {
 		if (rfcFields==null) {
-			rfcFields = new ArrayList<RfcFieldsVo>();
+			rfcFields = new ArrayList<MsgRfcFieldVo>();
 		}
 		return rfcFields;
 	}
-	public void setRfcFields(List<RfcFieldsVo> rfcFields) {
+	public void setRfcFields(List<MsgRfcFieldVo> rfcFields) {
 		this.rfcFields = rfcFields;
 	}
 	public List<DeliveryStatusVo> getDeliveryStatus() {

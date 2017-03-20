@@ -18,10 +18,10 @@ import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.MailingListVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 
 public class SubscribeBoTest extends BoTestBase {
 	@Resource
@@ -29,7 +29,7 @@ public class SubscribeBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo unsubscribeBo;
 	@Resource
-	private SubscriptionDao subscriptionDao;
+	private EmailSubscrptDao emailSubscrptDao;
 	@Resource
 	private MailingListDao mailingListDao;
 	
@@ -70,23 +70,23 @@ public class SubscribeBoTest extends BoTestBase {
 		verifyDataRecord(Constants.Y);
 	}
 	private void prepare(Action action) {
-		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);
+		EmailAddressVo addrVo = selectEmailAddrByAddress(testFromAddress);
 		assertNotNull(addrVo);
 		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);
 		assertTrue(list.size()>0);
 		if (action.equals(Action.Subscribe)) {
-			subscriptionDao.subscribe(addrVo.getEmailAddrId(), list.get(0).getListId());
+			emailSubscrptDao.subscribe(addrVo.getEmailAddrId(), list.get(0).getListId());
 		}
 		else {
-			subscriptionDao.unsubscribe(addrVo.getEmailAddrId(), list.get(0).getListId());
+			emailSubscrptDao.unsubscribe(addrVo.getEmailAddrId(), list.get(0).getListId());
 		}
 	}
 	private void verifyDataRecord(String subscribed) {
-		EmailAddrVo addrVo = selectEmailAddrByAddress(testFromAddress);
+		EmailAddressVo addrVo = selectEmailAddrByAddress(testFromAddress);
 		assertNotNull(addrVo);
 		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);
 		assertTrue(list.size()>0);
-		SubscriptionVo vo = subscriptionDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
+		EmailSubscrptVo vo = emailSubscrptDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
 		assertNotNull(vo);
 		assertEquals(subscribed, vo.getSubscribed());
 	}

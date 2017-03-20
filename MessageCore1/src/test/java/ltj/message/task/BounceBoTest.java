@@ -22,9 +22,9 @@ import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.idtokens.EmailIdParser;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @FixMethodOrder
 public class BounceBoTest extends BoTestBase {
@@ -32,7 +32,7 @@ public class BounceBoTest extends BoTestBase {
 	private TaskBaseBo bounceBo;
 	
 	@Resource
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	
 	private static String fromAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost";
 	private static MessageBean messageBean;
@@ -43,7 +43,7 @@ public class BounceBoTest extends BoTestBase {
 	@Rollback(value=false)
 	public void test0() {
 		// insert the address if it does not exist
-		emailAddrDao.findByAddress(fromAddress);
+		emailAddressDao.findByAddress(fromAddress);
 	}
 	
 	@Test
@@ -72,10 +72,10 @@ public class BounceBoTest extends BoTestBase {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
 		// get before counts
-		EmailAddrVo fromVo = emailAddrDao.getByAddress(messageBean.getFromAsString());
+		EmailAddressVo fromVo = emailAddressDao.getByAddress(messageBean.getFromAsString());
 		assertNotNull(fromVo);
 		CountMap.put(messageBean.getFromAsString(), fromVo.getBounceCount());
-		EmailAddrVo finalRcptVo = emailAddrDao.getByAddress(messageBean.getFinalRcpt());
+		EmailAddressVo finalRcptVo = emailAddressDao.getByAddress(messageBean.getFinalRcpt());
 		if (finalRcptVo != null) {
 			CountMap.put(messageBean.getFinalRcpt(), finalRcptVo.getBounceCount());
 		}
@@ -101,7 +101,7 @@ public class BounceBoTest extends BoTestBase {
 			logger.debug("MessageBean created:" + LF + messageBean);
 		}
 		// get "before" bounce count for From address
-		EmailAddrVo addrVo = emailAddrDao.findByAddress(messageBean.getFromAsString());
+		EmailAddressVo addrVo = emailAddressDao.findByAddress(messageBean.getFromAsString());
 		assertNotNull(addrVo);
 		CountMap.put(messageBean.getFromAsString(), addrVo.getBounceCount());
 		// end of "before" bounce count
@@ -112,7 +112,7 @@ public class BounceBoTest extends BoTestBase {
 	}
 
 	private void verifyBounceCount(String address) {
-		EmailAddrVo addr = emailAddrDao.getByAddress(address);
+		EmailAddressVo addr = emailAddressDao.getByAddress(address);
 		if (addr != null) {
 			Integer before = CountMap.get(address);
 			assertNotNull(before);

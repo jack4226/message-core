@@ -19,7 +19,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 	
 	@Override
 	public TimerServerVo getByPrimaryKey(String serverName) {
-		String sql = "select * from TimerServers where ServerName=?";
+		String sql = "select * from timer_server where ServerName=?";
 		Object[] parms = new Object[] {serverName};
 		try {
 			TimerServerVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -34,7 +34,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 	@Override
 	public List<TimerServerVo> getAll(boolean onlyActive) {
 		
-		String sql = "select * from TimerServers ";
+		String sql = "select * from timer_server ";
 		if (onlyActive) {
 			sql += " where StatusId='" + StatusId.ACTIVE.value() + "'";
 		}
@@ -49,7 +49,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 			timerServerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		}
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(timerServerVo);
-		String sql = MetaDataUtil.buildUpdateStatement("TimerServers", timerServerVo);
+		String sql = MetaDataUtil.buildUpdateStatement("timer_server", timerServerVo);
 		
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
@@ -57,7 +57,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 	
 	@Override
 	public int deleteByPrimaryKey(String serverName) {
-		String sql = "delete from TimerServers where ServerName=?";
+		String sql = "delete from timer_server where ServerName=?";
 		Object[] parms = new Object[] {serverName};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -69,7 +69,7 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 			timerServerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		}
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(timerServerVo);
-		String sql = MetaDataUtil.buildInsertStatement("TimerServers", timerServerVo);
+		String sql = MetaDataUtil.buildInsertStatement("timer_server", timerServerVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		timerServerVo.setRowId(retrieveRowId());
 		return rowsInserted;

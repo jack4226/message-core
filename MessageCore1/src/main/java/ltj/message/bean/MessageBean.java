@@ -66,7 +66,7 @@ public final class MessageBean extends BodypartBean implements java.io.Serializa
 	// e-mails
 	private Long msgId;
 	
-	// RenderId of MsgRendered record, set by renderer engine.
+	// RenderId of msg_rendered record, set by renderer engine.
 	private Long renderId;
 
 	// Embed email IdToken into out-going email message, set by MailSender. Not

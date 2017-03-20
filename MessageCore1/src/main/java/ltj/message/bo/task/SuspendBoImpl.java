@@ -17,11 +17,11 @@ import ltj.message.bean.MessageBean;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 @Component("suspendBo")
@@ -32,7 +32,7 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	@Autowired
 	private MsgInboxDao msgInboxDao;
 
@@ -107,15 +107,15 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 			StringTokenizer st2 = new StringTokenizer(addrs, ",");
 			while (st2.hasMoreTokens()) {
 				String addr = st2.nextToken();
-				EmailAddrVo emailAddrVo = emailAddrDao.getByAddress(addr);
-				if (emailAddrVo != null && !StatusId.SUSPENDED.value().equals(emailAddrVo.getStatusId())) {
+				EmailAddressVo emailAddressVo = emailAddressDao.getByAddress(addr);
+				if (emailAddressVo != null && !StatusId.SUSPENDED.value().equals(emailAddressVo.getStatusId())) {
 					if (isDebugEnabled) {
 						logger.debug("Suspending EmailAddr: " + addr);
 					}
-					emailAddrVo.setStatusId(StatusId.SUSPENDED.value());
-					emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
-					emailAddrVo.setStatusChangeTime(updtTime);
-					emailAddrDao.update(emailAddrVo);
+					emailAddressVo.setStatusId(StatusId.SUSPENDED.value());
+					emailAddressVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
+					emailAddressVo.setStatusChangeTime(updtTime);
+					emailAddressDao.update(emailAddressVo);
 					addrsSuspended++;
 				}
 			}
@@ -144,15 +144,15 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 		}
 		else if (msgInboxVo.getToAddrId() != null) { // should always valued
 			long toAddr = msgInboxVo.getToAddrId().longValue();
-			EmailAddrVo emailAddrVo = emailAddrDao.getByAddrId(toAddr);
-			if (!StatusId.SUSPENDED.value().equals(emailAddrVo.getStatusId())) {
+			EmailAddressVo emailAddressVo = emailAddressDao.getByAddrId(toAddr);
+			if (!StatusId.SUSPENDED.value().equals(emailAddressVo.getStatusId())) {
 				if (isDebugEnabled) {
-					logger.debug("Suspending EmailAddr: " + emailAddrVo.getEmailAddr());
+					logger.debug("Suspending EmailAddr: " + emailAddressVo.getEmailAddr());
 				}
-				emailAddrVo.setStatusId(StatusId.SUSPENDED.value());
-				emailAddrVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
-				emailAddrVo.setStatusChangeTime(updtTime);
-				emailAddrDao.update(emailAddrVo);
+				emailAddressVo.setStatusId(StatusId.SUSPENDED.value());
+				emailAddressVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
+				emailAddressVo.setStatusChangeTime(updtTime);
+				emailAddressDao.update(emailAddressVo);
 				addrsSuspended++;
 			}
 		}

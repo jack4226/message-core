@@ -22,14 +22,14 @@ import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.exception.OutOfServiceException;
 import ltj.message.exception.TemplateNotFoundException;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 import ltj.message.vo.emailaddr.MailingListVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
@@ -39,7 +39,7 @@ public class MailingListBoTest extends BoTestBase {
 	@Resource
 	private MailingListBo mlServiceBo;
 	@Resource
-	private SubscriptionDao subsDao;
+	private EmailSubscrptDao subsDao;
 	@Resource
 	private EmailTemplateDao emailTemplateDao;
 	@Resource
@@ -60,10 +60,10 @@ public class MailingListBoTest extends BoTestBase {
 		// gather existing message counts
 		EmailTemplateVo tmpltVo = emailTemplateDao.getByTemplateId(templateId);
 		assertNotNull(tmpltVo);
-		List<SubscriptionVo> subsList = subsDao.getByListId(tmpltVo.getListId());
+		List<EmailSubscrptVo> subsList = subsDao.getByListId(tmpltVo.getListId());
 		assertFalse(subsList.isEmpty());
-		for (SubscriptionVo subsVo : subsList) {
-			EmailAddrVo addrVo = emailAddrDao.getByAddress(subsVo.getEmailAddr());
+		for (EmailSubscrptVo subsVo : subsList) {
+			EmailAddressVo addrVo = emailAddressDao.getByAddress(subsVo.getEmailAddr());
 			assertNotNull(addrVo);
 			
 			List<MsgInboxVo> milist = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
@@ -105,17 +105,17 @@ public class MailingListBoTest extends BoTestBase {
 		EmailTemplateVo tmpltVo = emailTemplateDao.getByTemplateId(templateId);
 		assertNotNull(tmpltVo);
 		
-		List<SubscriptionVo> subsList = subsDao.getByListId(tmpltVo.getListId());
+		List<EmailSubscrptVo> subsList = subsDao.getByListId(tmpltVo.getListId());
 		assertFalse(subsList.isEmpty());
 		
 		MailingListVo mlvo = mlDao.getByListId(tmpltVo.getListId());
 		assertNotNull(mlvo);
 		
-		for (SubscriptionVo subsVo : subsList) {
+		for (EmailSubscrptVo subsVo : subsList) {
 			if (CodeType.N.value().equals(subsVo.getSubscribed())) {
 				continue;
 			}
-			EmailAddrVo addrVo = emailAddrDao.getByAddress(subsVo.getEmailAddr());
+			EmailAddressVo addrVo = emailAddressDao.getByAddress(subsVo.getEmailAddr());
 			assertNotNull(addrVo);
 			
 			List<MsgInboxVo> milist = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
@@ -129,9 +129,9 @@ public class MailingListBoTest extends BoTestBase {
 		}
 		
 		// verify subscribe
-		EmailAddrVo addrVo = emailAddrDao.getByAddress(testEmailAddr);
+		EmailAddressVo addrVo = emailAddressDao.getByAddress(testEmailAddr);
 		assertNotNull("Email address (" + testEmailAddr + ") must be present in database.", addrVo);
-		SubscriptionVo subsVo =  subsDao.getByAddrAndListId(testEmailAddr, mailingListId);
+		EmailSubscrptVo subsVo =  subsDao.getByAddrAndListId(testEmailAddr, mailingListId);
 		assertNotNull("Subscription must be present in database.", subsVo);
 	}
 	

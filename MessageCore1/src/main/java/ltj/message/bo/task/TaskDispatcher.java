@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.dao.action.MsgActionDao;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.action.MsgActionVo;
 import ltj.spring.util.SpringUtil;
@@ -45,7 +45,7 @@ public class TaskDispatcher {
 	@Autowired
 	private MsgActionDao msgActionDao;
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	
 	private static Hashtable<String, String> mailSenderJndi = null;
 	
@@ -165,7 +165,7 @@ public class TaskDispatcher {
 		for (int i = 0; addrs != null && i < addrs.length; i++) {
 			Address addr = addrs[i];
 			if (addr != null && StringUtils.isNotBlank(addr.toString())) {
-				emailAddrDao.findByAddress(addr.toString().trim());
+				emailAddressDao.findByAddress(addr.toString().trim());
 			}
 		}
 	}

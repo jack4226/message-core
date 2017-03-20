@@ -22,10 +22,10 @@ import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.MailingListVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
@@ -39,7 +39,7 @@ public class BroadcastTest extends BoTestBase {
 	@Resource
 	private TaskDispatcher taskDispatcher;
 	@Resource
-	private SubscriptionDao subscriptionDao;
+	private EmailSubscrptDao emailSubscrptDao;
 	@Resource
 	private MailingListDao mailingListDao;
 	
@@ -53,7 +53,7 @@ public class BroadcastTest extends BoTestBase {
 	@Test
 	@Rollback(value=false)
 	public void test1() { // broadcast
-		EmailAddrVo addrVo = emailAddrDao.findByAddress(bcstAddr);
+		EmailAddressVo addrVo = emailAddressDao.findByAddress(bcstAddr);
 		List<MsgInboxVo> milist1 = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		sizeBefore = milist1.size();
 		
@@ -83,7 +83,7 @@ public class BroadcastTest extends BoTestBase {
 	@Test
 	public void test2() {
 		// verify results
-		EmailAddrVo addrVo = emailAddrDao.getByAddress(bcstAddr);
+		EmailAddressVo addrVo = emailAddressDao.getByAddress(bcstAddr);
 		assertNotNull(addrVo);
 		List<MsgInboxVo> milist2 = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		assertEquals(sizeBefore + 1, milist2.size());
@@ -119,7 +119,7 @@ public class BroadcastTest extends BoTestBase {
 		// verify result
 		List<MailingListVo> mllist = mailingListDao.getByAddress(listAddr);
 		assertFalse(mllist.isEmpty());
-		SubscriptionVo subsVo = subscriptionDao.getByAddrAndListId(sbsrAddr, mllist.get(0).getListId());
+		EmailSubscrptVo subsVo = emailSubscrptDao.getByAddrAndListId(sbsrAddr, mllist.get(0).getListId());
 		assertNotNull(subsVo);
 		assertEquals(CodeType.Y.name(), subsVo.getSubscribed());
 	}
@@ -151,7 +151,7 @@ public class BroadcastTest extends BoTestBase {
 		// verify result
 		List<MailingListVo> mllist = mailingListDao.getByAddress(listAddr);
 		assertFalse(mllist.isEmpty());
-		SubscriptionVo subsVo = subscriptionDao.getByAddrAndListId(sbsrAddr, mllist.get(0).getListId());
+		EmailSubscrptVo subsVo = emailSubscrptDao.getByAddrAndListId(sbsrAddr, mllist.get(0).getListId());
 		assertNotNull(subsVo);
 		assertEquals(CodeType.N.name(), subsVo.getSubscribed());
 	}

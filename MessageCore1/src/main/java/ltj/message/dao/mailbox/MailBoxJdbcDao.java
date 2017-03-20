@@ -15,7 +15,7 @@ import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.client.ClientDao;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.vo.ClientVo;
 import ltj.message.vo.MailBoxVo;
 
@@ -45,7 +45,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	public MailBoxVo getByPrimaryKey(String userId, String hostName) {
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
 				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
-				"from MailBoxes where UserId=? and HostName=?";
+				"from mail_box where UserId=? and HostName=?";
 		Object[] parms = new Object[] {userId, hostName};
 		try {
 			MailBoxVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -62,7 +62,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		List<String> keys = new ArrayList<>();
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
 				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
-				"from MailBoxes ";
+				"from mail_box ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
 			keys.add(StatusId.ACTIVE.value());
@@ -78,7 +78,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		List<String> keys = new ArrayList<>();
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
 				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
-				"from MailBoxes ";
+				"from mail_box ";
 		if (onlyActive) {
 			sql += " where StatusId=? ";
 			keys.add(StatusId.ACTIVE.value());
@@ -99,7 +99,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	public int update(MailBoxVo mailBoxVo) {
 		mailBoxVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailBoxVo);
-		String sql = MetaDataUtil.buildUpdateStatement("MailBoxes", mailBoxVo);
+		String sql = MetaDataUtil.buildUpdateStatement("mail_box", mailBoxVo);
 		if (mailBoxVo.getOrigUpdtTime() != null) {
 			sql += " and UpdtTime=:origUpdtTime ";
 		}
@@ -112,7 +112,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	
 	@Override
 	public int deleteByPrimaryKey(String userId, String hostName) {
-		String sql = "delete from MailBoxes where UserId=? and HostName=?";
+		String sql = "delete from mail_box where UserId=? and HostName=?";
 		Object[] parms = new Object[] {userId, hostName};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -122,7 +122,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	public int insert(MailBoxVo mailBoxVo) {
 		mailBoxVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailBoxVo);
-		String sql = MetaDataUtil.buildInsertStatement("MailBoxes", mailBoxVo);
+		String sql = MetaDataUtil.buildInsertStatement("mail_box", mailBoxVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		mailBoxVo.setRowId(retrieveRowId());
 		mailBoxVo.setOrigUpdtTime(mailBoxVo.getUpdtTime());
@@ -132,8 +132,8 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	}
 	
 	@Autowired
-	private EmailAddrDao emailAddrDao = null;
-	private EmailAddrDao getEmailAddrDao() {
-		return emailAddrDao;
+	private EmailAddressDao emailAddressDao = null;
+	private EmailAddressDao getEmailAddrDao() {
+		return emailAddressDao;
 	}
 }

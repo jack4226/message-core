@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.constant.AddressType;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.exception.DataValidationException;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @Component("bounceBo")
 @Scope(value="prototype")
@@ -25,7 +25,7 @@ public class BounceBoImpl extends TaskBaseAdaptor {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 
 	/**
 	 * Increase the bounce count to the email addresses involved. The column
@@ -93,12 +93,12 @@ public class BounceBoImpl extends TaskBaseAdaptor {
 			for (int i=0; iAddrs!=null && i<iAddrs.length; i++) {
 				Address iAddr = iAddrs[i];
 				String addr = iAddr.toString();
-				EmailAddrVo emailAddrVo = emailAddrDao.getByAddress(addr);
-				if (emailAddrVo != null) {
+				EmailAddressVo emailAddressVo = emailAddressDao.getByAddress(addr);
+				if (emailAddressVo != null) {
 					if (isDebugEnabled) {
 						logger.debug("Increasing bounce count to EmailAddr: " + addr);
 					}
-					emailAddrDao.updateBounceCount(emailAddrVo);
+					emailAddressDao.updateBounceCount(emailAddressVo);
 					addrsUpdated++;
 				}
 				else {

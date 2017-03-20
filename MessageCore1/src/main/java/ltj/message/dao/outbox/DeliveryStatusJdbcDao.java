@@ -22,7 +22,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		String sql = 
 			"select * " +
 			"from " +
-				"DeliveryStatus where msgid=? and finalRecipientId=? ";
+				"delivery_status where msgid=? and finalRecipientId=? ";
 		
 		Object[] parms = new Object[] {msgId, finalRecipientId};
 		try {
@@ -40,7 +40,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		String sql = 
 			"select * " +
 			" from " +
-				" DeliveryStatus where msgId=? " +
+				" delivery_status where msgId=? " +
 			" order by finalRecipient";
 		Object[] parms = new Object[] {msgId};
 		List<DeliveryStatusVo> list = getJdbcTemplate().query(sql, parms, 
@@ -53,7 +53,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		String sql = 
 				"select * " +
 				" from " +
-					" DeliveryStatus where msgId >= (RAND() * (select max(msgId) from DeliveryStatus)) " +
+					" delivery_status where msgId >= (RAND() * (select max(msgId) from delivery_status)) " +
 				" order by msgId limit 1";
 		List<DeliveryStatusVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<DeliveryStatusVo>(DeliveryStatusVo.class));
@@ -69,7 +69,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 			deliveryStatusVo.setAddTime(new Timestamp(System.currentTimeMillis()));
 		}
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(deliveryStatusVo);
-		String sql = MetaDataUtil.buildUpdateStatement("DeliveryStatus", deliveryStatusVo);
+		String sql = MetaDataUtil.buildUpdateStatement("delivery_status", deliveryStatusVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
 	}
@@ -77,7 +77,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 	@Override
 	public int deleteByPrimaryKey(long msgId, long finalRecipientId) {
 		String sql = 
-			"delete from DeliveryStatus where msgid=? and finalRecipientId=? ";
+			"delete from delivery_status where msgid=? and finalRecipientId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -90,7 +90,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from DeliveryStatus where msgid=? ";
+			"delete from delivery_status where msgid=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -124,7 +124,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 			deliveryStatusVo.setAddTime(new Timestamp(System.currentTimeMillis()));
 		}
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(deliveryStatusVo);
-		String sql = MetaDataUtil.buildInsertStatement("DeliveryStatus", deliveryStatusVo);
+		String sql = MetaDataUtil.buildInsertStatement("delivery_status", deliveryStatusVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsInserted;
 	}

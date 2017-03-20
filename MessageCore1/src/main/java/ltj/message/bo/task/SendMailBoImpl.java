@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.exception.DataValidationException;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @Component("sendMailBo")
 @Scope(value="prototype")
@@ -25,7 +25,7 @@ public class SendMailBoImpl extends TaskBaseAdaptor {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 
 	/**
 	 * Send the email off by writing the MessageBean object to MailSender input
@@ -59,7 +59,7 @@ public class SendMailBoImpl extends TaskBaseAdaptor {
 			if (addr == null) {
 				continue;
 			}
-			EmailAddrVo vo = emailAddrDao.findByAddress(addr.toString());
+			EmailAddressVo vo = emailAddressDao.findByAddress(addr.toString());
 			if (StatusId.ACTIVE.value().equalsIgnoreCase(vo.getStatusId())) {
 				String jmsMsgId = jmsProcessor.writeMsg(messageBean);
 				mailsSent++;

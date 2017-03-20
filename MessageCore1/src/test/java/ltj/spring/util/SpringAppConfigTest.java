@@ -22,7 +22,7 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 
 import ltj.jbatch.app.MailReaderTaskExr;
 import ltj.message.bean.SimpleEmailSender;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 
 public class SpringAppConfigTest {
 	protected final static Logger logger = Logger.getLogger(SpringAppConfigTest.class);
@@ -36,7 +36,7 @@ public class SpringAppConfigTest {
 	
 	@Test
 	public void testSpingConfigBare() {
-		EmailAddrDao dao1 = context.getBean(EmailAddrDao.class);
+		EmailAddressDao dao1 = context.getBean(EmailAddressDao.class);
 		assertNotNull(dao1);
 		
 		SimpleEmailSender emailsender = context.getBean(SimpleEmailSender.class);

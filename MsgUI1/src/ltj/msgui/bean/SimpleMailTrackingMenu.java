@@ -8,11 +8,11 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.UserVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
 import ltj.message.vo.inbox.SearchFieldsVo.RuleName;
 import ltj.msgui.util.FacesUtil;
@@ -43,7 +43,7 @@ public class SimpleMailTrackingMenu {
 	private String defaultRuleName = RuleName.All.toString();
 	private String defaultToAddr = null;
 	
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	private MsgInboxDao msgInboxDao;
 	private static String TO_SELF = "message.search";
 	
@@ -160,7 +160,7 @@ public class SimpleMailTrackingMenu {
 			return;
 		}
 		
-		EmailAddrVo vo = getEmailAddrDao().getByAddress(addr);
+		EmailAddressVo vo = getEmailAddrDao().getByAddress(addr);
 		if (vo == null) {
 			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailAddressNotFound",
 					null);
@@ -194,14 +194,14 @@ public class SimpleMailTrackingMenu {
 		vo.setRuleName(ruleName);
 		vo.setFromAddr(fromAddress);
 		if (fromAddress != null && fromAddress.trim().length() > 0) {
-			EmailAddrVo vo2 = getEmailAddrDao().getByAddress(fromAddress);
+			EmailAddressVo vo2 = getEmailAddrDao().getByAddress(fromAddress);
 			if (vo2 != null) {
 				vo.setFromAddrId(vo2.getEmailAddrId());
 			}
 		}
 		vo.setToAddr(toAddress);
 		if (toAddress != null && toAddress.trim().length() > 0) {
-			EmailAddrVo vo3 = getEmailAddrDao().getByAddress(toAddress);
+			EmailAddressVo vo3 = getEmailAddrDao().getByAddress(toAddress);
 			if (vo3 != null) {
 				vo.setToAddrId(vo3.getEmailAddrId());
 			}
@@ -281,15 +281,15 @@ public class SimpleMailTrackingMenu {
 		this.body = body;
 	}
 
-	public EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getWebAppContext().getBean("emailAddrDao");
+	public EmailAddressDao getEmailAddrDao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = (EmailAddressDao) SpringUtil.getWebAppContext().getBean("emailAddressDao");
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 
-	public void setEmailAddrDao(EmailAddrDao emailAddrDao) {
-		this.emailAddrDao = emailAddrDao;
+	public void setEmailAddrDao(EmailAddressDao emailAddressDao) {
+		this.emailAddressDao = emailAddressDao;
 	}
 
 	public MsgInboxDao getMsgInboxDao() {

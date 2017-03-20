@@ -21,8 +21,8 @@ import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @FixMethodOrder
 public class SuspendBoTest extends BoTestBase {
@@ -30,7 +30,7 @@ public class SuspendBoTest extends BoTestBase {
 	@Resource
 	private TaskBaseBo suspendBo;
 	@Resource
-	private EmailAddrDao emailDao;
+	private EmailAddressDao emailDao;
 	
 	private static String fromAddress = "user" + StringUtils.leftPad(new Random().nextInt(100)+"", 2, '0') + "@localhost";
 	private static List<String> addrList = new ArrayList<>();
@@ -38,7 +38,7 @@ public class SuspendBoTest extends BoTestBase {
 	@Test
 	@Rollback(value=false)
 	public void test0() {
-		emailAddrDao.findByAddress(fromAddress);
+		emailAddressDao.findByAddress(fromAddress);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class SuspendBoTest extends BoTestBase {
 		
 		// verify results
 		for (String addr : addrList) {
-			EmailAddrVo addrvo = emailDao.getByAddress(addr);
+			EmailAddressVo addrvo = emailDao.getByAddress(addr);
 			if (addrvo != null) {
 				assertEquals(StatusId.SUSPENDED.value(), addrvo.getStatusId());
 			}

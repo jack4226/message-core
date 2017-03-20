@@ -14,14 +14,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
-import ltj.message.dao.inbox.MsgClickCountsDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.dao.inbox.MsgClickCountDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.PrintUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
-import ltj.message.vo.inbox.MsgClickCountsVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
+import ltj.message.vo.inbox.MsgClickCountVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringUtil;
 
@@ -34,18 +34,18 @@ public class ReferralSubmitTest {
 	public void testReferralSubmit() { // POST
 		String url = "http://localhost:8080/MsgUI1/publicsite/referral.jsp";
 		
-		SubscriptionVo subsVo = getSubscriptionDao().getRandomRecord();
+		EmailSubscrptVo subsVo = getSubscriptionDao().getRandomRecord();
 		assertNotNull(subsVo);
 		long sbsrId = subsVo.getEmailAddrId();
 		String listId = subsVo.getListId();
 
-		EmailAddrVo emailVo = getEmailAddrDao().getByAddrId(sbsrId);
+		EmailAddressVo emailVo = getEmailAddrDao().getByAddrId(sbsrId);
 		assertNotNull(emailVo);
 		
-		EmailAddrVo referrer = getEmailAddrDao().getRandomRecord();
+		EmailAddressVo referrer = getEmailAddrDao().getRandomRecord();
 		assertNotNull(referrer);
 		
-		MsgClickCountsVo countVo = getMsgClickCountsDao().getRandomRecord();
+		MsgClickCountVo countVo = getMsgClickCountsDao().getRandomRecord();
 		assertNotNull(countVo);
 		long msgId = countVo.getMsgId();
 
@@ -113,16 +113,16 @@ public class ReferralSubmitTest {
 		}
 	}
 
-	private EmailAddrDao getEmailAddrDao() {
-		return SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+	private EmailAddressDao getEmailAddrDao() {
+		return SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 	}
 	
-	private SubscriptionDao getSubscriptionDao() {
-		return SpringUtil.getDaoAppContext().getBean(SubscriptionDao.class);
+	private EmailSubscrptDao getSubscriptionDao() {
+		return SpringUtil.getDaoAppContext().getBean(EmailSubscrptDao.class);
 	}
 	
-	private MsgClickCountsDao getMsgClickCountsDao() {
-		return SpringUtil.getDaoAppContext().getBean(MsgClickCountsDao.class);
+	private MsgClickCountDao getMsgClickCountsDao() {
+		return SpringUtil.getDaoAppContext().getBean(MsgClickCountDao.class);
 	}
 	
 	private MsgInboxDao getMsgInboxDao() {

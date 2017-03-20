@@ -20,17 +20,17 @@ import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
-import ltj.message.dao.inbox.MsgClickCountsDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.dao.inbox.MsgClickCountDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.exception.OutOfServiceException;
 import ltj.message.exception.TemplateNotFoundException;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.TemplateRenderVo;
@@ -47,11 +47,11 @@ public class MailingListBoImpl implements MailingListBo {
 	@Autowired
 	private MailingListDao mailingListDao;
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	@Autowired
-	private SubscriptionDao subscriptionDao;
+	private EmailSubscrptDao emailSubscrptDao;
 	@Autowired
-	private MsgClickCountsDao msgClickCountsDao;
+	private MsgClickCountDao msgClickCountDao;
 	@Autowired
 	private TaskBaseBo assignRuleNameBo;
 	@Autowired
@@ -273,7 +273,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (isDebugEnabled) {
 			logger.debug("optInConfirm() -  emailAddrId: " + emailAddrId + ", listAddr: " + listId);
 		}
-		EmailAddrVo addrVo = emailAddrDao.getByAddrId(emailAddrId);
+		EmailAddressVo addrVo = emailAddressDao.getByAddrId(emailAddrId);
 		int emailsAdded = 0;
 		if (addrVo != null) {
 			emailsAdded = optInOrConfirm(addrVo.getEmailAddr(), listId, true);
@@ -288,7 +288,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
-		int recsUpdated = subscriptionDao.updateSentCount(emailAddrId, listId);
+		int recsUpdated = emailSubscrptDao.updateSentCount(emailAddrId, listId);
 		return recsUpdated;
 	}
 
@@ -299,7 +299,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
-		int recsUpdated = subscriptionDao.updateOpenCount(emailAddrId, listId);
+		int recsUpdated = emailSubscrptDao.updateOpenCount(emailAddrId, listId);
 		return recsUpdated;
 	}
 
@@ -310,7 +310,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (StringUtil.isEmpty(listId)) {
 			throw new DataValidationException("Mailing List Id is not valued.");
 		}
-		int recsUpdated = subscriptionDao.updateClickCount(emailAddrId, listId);
+		int recsUpdated = emailSubscrptDao.updateClickCount(emailAddrId, listId);
 		return recsUpdated;
 	}
 
@@ -318,7 +318,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (isDebugEnabled) {
 			logger.debug("updateSentCount() - MsgId: " + msgId);
 		}
-		int recsUpdated = msgClickCountsDao.updateSentCount(msgId, count);
+		int recsUpdated = msgClickCountDao.updateSentCount(msgId, count);
 		return recsUpdated;
 	}
 
@@ -326,7 +326,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (isDebugEnabled) {
 			logger.debug("updateOpenCount() - MsgId: " + msgId);
 		}
-		int recsUpdated = msgClickCountsDao.updateOpenCount(msgId, count);
+		int recsUpdated = msgClickCountDao.updateOpenCount(msgId, count);
 		return recsUpdated;
 	}
 
@@ -334,7 +334,7 @@ public class MailingListBoImpl implements MailingListBo {
 		if (isDebugEnabled) {
 			logger.debug("updateClickCount() - MsgId: " + msgId);
 		}
-		int recsUpdated = msgClickCountsDao.updateClickCount(msgId, count);
+		int recsUpdated = msgClickCountDao.updateClickCount(msgId, count);
 		return recsUpdated;
 	}
 
@@ -344,11 +344,11 @@ public class MailingListBoImpl implements MailingListBo {
 		// retrieve/insert email address from/into EmailAddr table
 		int rowsAffected = 0;
 		if (addToList) {
-			rowsAffected = subscriptionDao.subscribe(emailAddr, listId);
+			rowsAffected = emailSubscrptDao.subscribe(emailAddr, listId);
 			logger.info(emailAddr + " added to list: " + listId);
 		}
 		else {
-			rowsAffected = subscriptionDao.unsubscribe(emailAddr, listId);
+			rowsAffected = emailSubscrptDao.unsubscribe(emailAddr, listId);
 			logger.info(emailAddr + " removed from list: " + listId);
 		}
 		return rowsAffected;
@@ -360,11 +360,11 @@ public class MailingListBoImpl implements MailingListBo {
 		// opt-in or confirm subscription
 		int rowsAffected = 0;
 		if (confirm) {
-			rowsAffected = subscriptionDao.optInConfirm(emailAddr, listId);
+			rowsAffected = emailSubscrptDao.optInConfirm(emailAddr, listId);
 			logger.info(emailAddr + " confirmed to list: " + listId);
 		}
 		else {
-			rowsAffected = subscriptionDao.optInRequest(emailAddr, listId);
+			rowsAffected = emailSubscrptDao.optInRequest(emailAddr, listId);
 			logger.info(emailAddr + " opt-in'ed to list: " + listId);
 		}
 		return rowsAffected;

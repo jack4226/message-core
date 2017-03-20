@@ -22,11 +22,11 @@ import ltj.message.bean.HtmlConverter;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.Constants;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.exception.TemplateNotFoundException;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.TemplateRenderVo;
 
 @Component("autoReplyBo")
@@ -37,7 +37,7 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	/**
 	 * construct the reply text from the TaskArguments, render the text and send
 	 * the reply message to MailSender input queue.
@@ -86,7 +86,7 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 				continue;
 			}
 			// select the address from database (or insert if it does not exist)
-			EmailAddrVo vo = emailAddrDao.findByAddress(_from.toString());
+			EmailAddressVo vo = emailAddressDao.findByAddress(_from.toString());
 			Map<String, String> variables = null;
 			/* 
 			 * add product key to reply message for "Free Premium Upgrade" promotion. 

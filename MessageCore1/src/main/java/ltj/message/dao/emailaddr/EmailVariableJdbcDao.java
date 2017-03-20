@@ -24,7 +24,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	
 	@Override
 	public EmailVariableVo getByName(String variableName) {
-		String sql = "select * from EmailVariable where VariableName=:variableName";
+		String sql = "select * from email_variable where VariableName=:variableName";
 		SqlParameterSource namedParameters = new MapSqlParameterSource("variableName", variableName);
 		try {
 			EmailVariableVo vo = getNamedParameterJdbcTemplate().queryForObject(sql, namedParameters, 
@@ -38,7 +38,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	
 	@Override
 	public List<EmailVariableVo> getAll() {
-		String sql = "select * from EmailVariable " +
+		String sql = "select * from email_variable " +
 		" order by RowId";
 		List<EmailVariableVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<EmailVariableVo>(EmailVariableVo.class));
@@ -47,7 +47,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	
 	@Override
 	public List<EmailVariableVo> getAllForTrial() {
-		String sql = "select * from EmailVariable " +
+		String sql = "select * from email_variable " +
 		" order by RowId" +
 		" limit 50";
 		int fetchSize = getJdbcTemplate().getFetchSize();
@@ -63,7 +63,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	
 	@Override
 	public List<EmailVariableVo> getAllCustomVariables() {
-		String sql = "select * from EmailVariable " +
+		String sql = "select * from email_variable " +
 			" where IsBuiltIn!=? " +
 			" order by RowId";
 		Object[] parms = new Object[] {Constants.Y};
@@ -74,7 +74,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	
 	@Override
 	public List<EmailVariableVo> getAllBuiltinVariables() {
-		String sql = "select * from EmailVariable " +
+		String sql = "select * from email_variable " +
 			" where IsBuiltIn=? " +
 			" order by RowId";
 		Object[] parms = new Object[] {Constants.Y};
@@ -107,7 +107,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	@Override
 	public int update(EmailVariableVo emailVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(emailVariableVo);
-		String sql = MetaDataUtil.buildUpdateStatement("EmailVariable", emailVariableVo);
+		String sql = MetaDataUtil.buildUpdateStatement("email_variable", emailVariableVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		
 		return rowsUpadted;
@@ -115,7 +115,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	
 	@Override
 	public int deleteByName(String variableName) {
-		String sql = "delete from EmailVariable where VariableName=:variableName";
+		String sql = "delete from email_variable where VariableName=:variableName";
 		Map<String,?> namedParameters = Collections.singletonMap("variableName", variableName);
 		int rowsDeleted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsDeleted;
@@ -124,7 +124,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	@Override
 	public int insert(EmailVariableVo emailVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(emailVariableVo);
-		String sql = MetaDataUtil.buildInsertStatement("EmailVariable", emailVariableVo);
+		String sql = MetaDataUtil.buildInsertStatement("email_variable", emailVariableVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		emailVariableVo.setRowId(retrieveRowId());
 		return rowsInserted;

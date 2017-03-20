@@ -60,7 +60,7 @@ public class ClientTable extends CreateTableBase {
 					+ "IrsTaxId varchar(10), " // IRS Tax Id
 					+ "WebSiteUrl varchar(100), "
 					+ "SaveRawMsg char(1) NOT NULL DEFAULT '" + Constants.Y + "', " 
-						// save SMTP message stream to MsgStream? used by RuleEngine
+						// save SMTP message stream to msg_stream? used by RuleEngine
 					+ "ContactName varchar(60), "
 					+ "ContactPhone varchar(18), "
 					+ "ContactEmail varchar(255) NOT NULL, "

@@ -11,15 +11,19 @@ import org.junit.Test;
 
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.dao.abstrct.DaoTestBase;
+import ltj.message.dao.customer.CustomerDao;
 import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.external.VariableResolver;
+import ltj.message.vo.CustomerVo;
 import ltj.message.vo.emailaddr.EmailVariableVo;
 
 public class EmailVariableDataTest extends DaoTestBase {
 
 	@Resource
 	private EmailVariableDao emailVariableDao;
+	@Resource
+	private CustomerDao custDao;
 	
 	@Test
 	public void testQueries() {
@@ -51,6 +55,14 @@ public class EmailVariableDataTest extends DaoTestBase {
 						Object obj = proc.newInstance();
 						if (!(obj instanceof VariableResolver)) {
 							fail("VariableType class is not a VariableResolver");
+						}
+						else {
+							VariableResolver job = (VariableResolver) obj;
+							List<CustomerVo> custList = custDao.getFirst100();
+							assertFalse(custList.isEmpty());
+							String result = job.process(custList.get(0).getEmailAddrId());
+							assertNotNull(result);
+							assertNull(job.process(999999L));
 						}
 					}
 					catch (Exception e) {

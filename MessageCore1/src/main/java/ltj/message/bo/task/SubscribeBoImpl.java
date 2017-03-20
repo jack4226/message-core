@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bean.MessageBean;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 
 @Component("subscribeBo")
@@ -27,11 +27,11 @@ public class SubscribeBoImpl extends TaskBaseAdaptor {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	@Autowired
 	private MailingListDao mailingListDao;
 	@Autowired
-	private SubscriptionDao subscriptionDao;
+	private EmailSubscrptDao emailSubscrptDao;
 
 	/**
 	 * Subscribe the FROM address to the mailing list (TO).
@@ -69,11 +69,11 @@ public class SubscribeBoImpl extends TaskBaseAdaptor {
 				if (addr == null || StringUtil.isEmpty(addr.toString())) {
 					continue; // just for safety
 				}
-				EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(addr.toString());
+				EmailAddressVo emailAddressVo = emailAddressDao.findByAddress(addr.toString());
 				int rowsAffected = 0;
 				for (MailingListVo item : mlist) {
 					messageBean.setMailingListId(item.getListId());
-					rowsAffected += subscriptionDao.subscribe(emailAddrVo.getEmailAddrId(), item.getListId());
+					rowsAffected += emailSubscrptDao.subscribe(emailAddressVo.getEmailAddrId(), item.getListId());
 					logger.info(addr + " subscribed to: " + item.getListId());
 				}
 				if (rowsAffected > 0) {

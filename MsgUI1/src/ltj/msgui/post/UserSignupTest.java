@@ -15,8 +15,8 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.dao.customer.CustomerDao;
-import ltj.message.dao.emailaddr.EmailAddrDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.spring.util.SpringUtil;
 
 public class UserSignupTest {
@@ -30,7 +30,7 @@ public class UserSignupTest {
 
 		String prefix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 		
-		EmailAddrVo emailVo = getEmailAddrDao().getRandomRecord();
+		EmailAddressVo emailVo = getEmailAddrDao().getRandomRecord();
 		String emailAddr = prefix + "." + emailVo.getEmailAddr();
 		
 		try {
@@ -100,8 +100,8 @@ public class UserSignupTest {
 		}
 	}
 	
-	private EmailAddrDao getEmailAddrDao() {
-		return SpringUtil.getDaoAppContext().getBean(EmailAddrDao.class);
+	private EmailAddressDao getEmailAddrDao() {
+		return SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 	}
 	
 	private CustomerDao getCustomerDao() {

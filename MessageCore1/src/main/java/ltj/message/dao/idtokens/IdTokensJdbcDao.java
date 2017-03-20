@@ -27,7 +27,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 		 * performance impact at the minimal by sacrificing thread safety.
 		 */
 		if (!cache.containsKey(clientId)) {
-			String sql = "select * from IdTokens where clientId=?";
+			String sql = "select * from id_tokens where clientId=?";
 			Object[] parms = new Object[] {clientId};
 			try {
 			IdTokensVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -43,7 +43,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 	
 	@Override
 	public List<IdTokensVo> getAll() {
-		String sql = "select * from IdTokens order by clientId";
+		String sql = "select * from id_tokens order by clientId";
 		List<IdTokensVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<IdTokensVo>(IdTokensVo.class));
 		return list;
@@ -54,7 +54,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 		idTokensVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		idTokensVo.setOrigUpdtTime(idTokensVo.getUpdtTime());
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(idTokensVo);
-		String sql = MetaDataUtil.buildUpdateStatement("IdTokens", idTokensVo);
+		String sql = MetaDataUtil.buildUpdateStatement("id_tokens", idTokensVo);
 		synchronized (cache) {
 			int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 			removeFromCache(idTokensVo.getClientId());
@@ -64,7 +64,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 	
 	@Override
 	public int delete(String clientId) {
-		String sql = "delete from IdTokens where clientId=?";
+		String sql = "delete from id_tokens where clientId=?";
 		Object[] parms = new Object[] {clientId};
 		synchronized (cache) {
 			int rowsDeleted = getJdbcTemplate().update(sql, parms);
@@ -78,7 +78,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 		idTokensVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		idTokensVo.setOrigUpdtTime(idTokensVo.getUpdtTime());
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(idTokensVo);
-		String sql = MetaDataUtil.buildInsertStatement("IdTokens", idTokensVo);
+		String sql = MetaDataUtil.buildInsertStatement("id_tokens", idTokensVo);
 		synchronized (cache) {
 			int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 			idTokensVo.setRowId(retrieveRowId());

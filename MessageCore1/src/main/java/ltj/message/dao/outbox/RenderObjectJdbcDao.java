@@ -21,7 +21,7 @@ public class RenderObjectJdbcDao extends AbstractDao implements RenderObjectDao 
 		String sql = 
 			"select * " +
 			"from " +
-				"RenderObject where RenderId=? and variableName=? ";
+				"render_object where RenderId=? and variableName=? ";
 		
 		Object[] parms = new Object[] {renderId, variableName};
 		try {
@@ -39,7 +39,7 @@ public class RenderObjectJdbcDao extends AbstractDao implements RenderObjectDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" RenderObject where RenderId=? " +
+				" render_object where RenderId=? " +
 			" order by variableName";
 		Object[] parms = new Object[] {renderId};
 		List<RenderObjectVo> list = getJdbcTemplate().query(sql, parms, 
@@ -50,7 +50,7 @@ public class RenderObjectJdbcDao extends AbstractDao implements RenderObjectDao 
 	@Override
 	public int update(RenderObjectVo renderVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(renderVariableVo);
-		String sql = MetaDataUtil.buildUpdateStatement("RenderObject", renderVariableVo);
+		String sql = MetaDataUtil.buildUpdateStatement("render_object", renderVariableVo);
 
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
@@ -59,7 +59,7 @@ public class RenderObjectJdbcDao extends AbstractDao implements RenderObjectDao 
 	@Override
 	public int deleteByPrimaryKey(long msgId, String variableName) {
 		String sql = 
-			"delete from RenderObject where renderId=? and variableName=? ";
+			"delete from render_object where renderId=? and variableName=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -72,7 +72,7 @@ public class RenderObjectJdbcDao extends AbstractDao implements RenderObjectDao 
 	@Override
 	public int deleteByRenderId(long msgId) {
 		String sql = 
-			"delete from RenderObject where renderId=? ";
+			"delete from render_object where renderId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -84,7 +84,7 @@ public class RenderObjectJdbcDao extends AbstractDao implements RenderObjectDao 
 	@Override
 	public int insert(RenderObjectVo renderVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(renderVariableVo);
-		String sql = MetaDataUtil.buildInsertStatement("RenderObject", renderVariableVo);
+		String sql = MetaDataUtil.buildInsertStatement("render_object", renderVariableVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsInserted;
 	}

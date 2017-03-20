@@ -27,7 +27,7 @@ import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.user.SessionUploadDao;
@@ -35,7 +35,7 @@ import ltj.message.exception.DataValidationException;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.HtmlTags;
 import ltj.message.vo.SessionUploadVo;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.TemplateRenderVo;
@@ -63,7 +63,7 @@ public class MailingListComposeBean {
 	private SessionUploadDao sessionUploadDao = null;
 	private EmailTemplateDao emailTemplateDao = null;
 	private String deliveryOption = null;
-	private EmailAddrDao emailAddrDao = null;
+	private EmailAddressDao emailAddressDao = null;
 	private List<SessionUploadVo> uploads = null;
 	
 	private String actionFailure = null;
@@ -99,11 +99,11 @@ public class MailingListComposeBean {
 		return emailTemplateDao;
 	}
 
-	public EmailAddrDao getEmailAddrDao() {
-		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddrDao) SpringUtil.getWebAppContext().getBean("emailAddrDao");
+	public EmailAddressDao getEmailAddrDao() {
+		if (emailAddressDao == null) {
+			emailAddressDao = (EmailAddressDao) SpringUtil.getWebAppContext().getBean("emailAddressDao");
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 
 	private void reset() {
@@ -314,7 +314,7 @@ public class MailingListComposeBean {
 			// build variable values using the first email address found in EmailAddr table.
 			long previewAddrId = getEmailAddrDao().getEmailAddrIdForPreview();
 			// include mailing list variables
-			EmailAddrVo addrVo = getEmailAddrDao().getByAddrId(previewAddrId);
+			EmailAddressVo addrVo = getEmailAddrDao().getByAddrId(previewAddrId);
 			String previewAddr = "1";
 			if (addrVo != null) {
 				previewAddr = addrVo.getEmailAddr();

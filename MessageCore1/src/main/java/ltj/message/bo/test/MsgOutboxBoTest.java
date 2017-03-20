@@ -33,7 +33,7 @@ import ltj.message.constant.VariableName;
 import ltj.message.constant.VariableType;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.util.PrintUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
@@ -128,8 +128,8 @@ public class MsgOutboxBoTest extends BoTestBase {
 	@Test
 	public void test3() { // verify results
 		
-		EmailAddrVo fromVo = selectEmailAddrByAddress(msgBean.getFromAsString());
-		EmailAddrVo toVo = selectEmailAddrByAddress(msgBean.getToAsString());
+		EmailAddressVo fromVo = selectEmailAddrByAddress(msgBean.getFromAsString());
+		EmailAddressVo toVo = selectEmailAddrByAddress(msgBean.getToAsString());
 		
 		assertNotNull(fromVo);
 		assertNotNull(toVo);

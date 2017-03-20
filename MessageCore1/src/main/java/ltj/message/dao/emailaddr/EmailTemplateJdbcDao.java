@@ -60,7 +60,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	@Override
 	public EmailTemplateVo getByTemplateId(String templateId) {
 		String sql = "select a.*, b.ClientId " +
-				" from EmailTemplate a, mailing_list b " +
+				" from email_template a, mailing_list b " +
 				" where a.ListId=b.ListId and a.TemplateId=?";
 		Object[] parms = new Object[] {templateId};
 		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms, new EmailTemplateMapper());
@@ -75,7 +75,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	@Override
 	public List<EmailTemplateVo> getByListId(String listId) {
 		String sql = "select a.*, b.ClientId " +
-				" from EmailTemplate a, mailing_list b " +
+				" from email_template a, mailing_list b " +
 				" where a.ListId=b.ListId and a.ListId=?" +
 				" order by a.TemplateId";
 		Object[] parms = new Object[] {listId};
@@ -87,7 +87,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	@Override
 	public List<EmailTemplateVo> getAll() {
 		String sql = "select a.*, b.ClientId " +
-				" from EmailTemplate a, mailing_list b " +
+				" from email_template a, mailing_list b " +
 				" where a.ListId=b.ListId" +
 				" order by a.RowId";
 		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql,
@@ -98,7 +98,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	@Override
 	public List<EmailTemplateVo> getAllForTrial() {
 		String sql = "select a.*, b.ClientId " +
-				" from EmailTemplate a, mailing_list b " +
+				" from email_template a, mailing_list b " +
 				" where a.ListId=b.ListId" +
 				" order by a.RowId" +
 				" limit 20";
@@ -135,7 +135,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		}
 		keys.add(emailTemplateVo.getRowId());
 		
-		String sql = "update EmailTemplate set " +
+		String sql = "update email_template set " +
 			"TemplateId=?," +
 			"ListId=?," +
 			"Subject=?," +
@@ -159,7 +159,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 
 	@Override
 	public synchronized int deleteByTemplateId(String templateId) {
-		String sql = "delete from EmailTemplate where TemplateId=?";
+		String sql = "delete from email_template where TemplateId=?";
 		Object[] parms = new Object[] {templateId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		deleteMsgDataType(templateId);
@@ -192,7 +192,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 				bytes
 			};
 		
-		String sql = "INSERT INTO EmailTemplate (" +
+		String sql = "INSERT INTO email_template (" +
 			"TemplateId," +
 			"ListId," +
 			"Subject," +

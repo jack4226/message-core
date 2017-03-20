@@ -22,9 +22,9 @@ import org.springframework.test.context.ContextConfiguration;
 import ltj.jbatch.app.MailReaderTaskExr;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
 import ltj.spring.util.SpringAppConfig;
@@ -40,7 +40,7 @@ public class MailReaderTest extends BoTestBase {
 	@Resource
 	private MsgInboxDao inboxDao;
 	@Resource
-	private EmailAddrDao addrDao;
+	private EmailAddressDao addrDao;
 	
 	private static String testFromAddr = "testfrom@localhost";
 	
@@ -77,7 +77,7 @@ public class MailReaderTest extends BoTestBase {
 	public void test2() { // gather existing counts
 		for (Iterator<String> it=msgCountMap.keySet().iterator(); it.hasNext();) {
 			String toAddr = it.next();
-			EmailAddrVo toAddrVo = addrDao.getByAddress(toAddr);
+			EmailAddressVo toAddrVo = addrDao.getByAddress(toAddr);
 			if (toAddrVo != null) {
 				SearchFieldsVo vo = new SearchFieldsVo();
 				vo.setFromAddr(testFromAddr);
@@ -107,7 +107,7 @@ public class MailReaderTest extends BoTestBase {
 		for (Iterator<String> it=msgCountMap.keySet().iterator(); it.hasNext();) {
 			String toAddr = it.next();
 			Integer count = msgCountMap.get(toAddr);
-			EmailAddrVo toAddrVo = addrDao.getByAddress(toAddr);
+			EmailAddressVo toAddrVo = addrDao.getByAddress(toAddr);
 			assertNotNull("Email address (" + toAddr + ") must be present in database.", toAddrVo);
 			SearchFieldsVo vo = new SearchFieldsVo();
 			vo.setFromAddr(testFromAddr);

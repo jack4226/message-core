@@ -18,7 +18,7 @@ import ltj.message.bo.inbox.MsgInboxBo;
 import ltj.message.bo.task.TaskDispatcher;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.FileUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
@@ -53,8 +53,8 @@ public class RuleEngineTest extends BoTestBase {
 			toAddr[i] = messageBean[i].getToAsString();
 			assertNotNull(fromAddr[i]);
 			assertNotNull(toAddr[i]);
-			emailAddrDao.findByAddress(fromAddr[i]);
-			emailAddrDao.findByAddress(toAddr[i]);
+			emailAddressDao.findByAddress(fromAddr[i]);
+			emailAddressDao.findByAddress(toAddr[i]);
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class RuleEngineTest extends BoTestBase {
 			assertEquals(EmailAddrUtil.removeDisplayName(fromAddr[i]), vo.getFromAddress());
 			assertEquals(EmailAddrUtil.removeDisplayName(toAddr[i]),vo.getToAddress());
 			
-			EmailAddrVo addrVo = selectEmailAddrByAddress(fromAddr[i]);
+			EmailAddressVo addrVo = selectEmailAddrByAddress(fromAddr[i]);
 			assertNotNull(addrVo);
 			
 			List<MsgInboxVo> miList = msgInboxDao.getByFromAddrId(addrVo.getEmailAddrId());

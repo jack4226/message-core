@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 import ltj.message.bean.MessageBean;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.outbox.DeliveryStatusDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.vo.outbox.DeliveryStatusVo;
 
@@ -32,7 +32,7 @@ public class DeliveryErrorBoImpl extends TaskBaseAdaptor {
 	@Autowired
 	private DeliveryStatusDao deliveryStatusDao;
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	@Autowired
 	private MsgInboxDao msgInboxDao;
 
@@ -67,8 +67,8 @@ public class DeliveryErrorBoImpl extends TaskBaseAdaptor {
 			logger.warn("MsgInbox record not found for MsgId: " + msgId);
 			return Long.valueOf(-1);
 		}
-		EmailAddrVo emailAddrVo = emailAddrDao.findByAddress(messageBean.getFinalRcpt());
-		if (msgInboxVo.getToAddrId().longValue() != emailAddrVo.getEmailAddrId()) {
+		EmailAddressVo emailAddressVo = emailAddressDao.findByAddress(messageBean.getFinalRcpt());
+		if (msgInboxVo.getToAddrId().longValue() != emailAddressVo.getEmailAddrId()) {
 			logger.warn("Final Recipient <" + messageBean.getFinalRcpt()
 					+ "> is different from original email's TO address <" + msgInboxVo.getToAddress() + ">");
 		}
@@ -85,10 +85,10 @@ public class DeliveryErrorBoImpl extends TaskBaseAdaptor {
 		deliveryStatusVo.setDsnText(messageBean.getDsnText());
 		
 		deliveryStatusVo.setFinalRecipient(StringUtils.left(messageBean.getFinalRcpt(),255));
-		deliveryStatusVo.setFinalRecipientId(emailAddrVo.getEmailAddrId());
+		deliveryStatusVo.setFinalRecipientId(emailAddressVo.getEmailAddrId());
 		
 		if (messageBean.getOrigRcpt() != null) {
-			EmailAddrVo vo = emailAddrDao.findByAddress(messageBean.getOrigRcpt());
+			EmailAddressVo vo = emailAddressDao.findByAddress(messageBean.getOrigRcpt());
 			deliveryStatusVo.setOriginalRecipientId(vo.getEmailAddrId());
 		}
 		

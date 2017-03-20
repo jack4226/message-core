@@ -11,10 +11,10 @@ import ltj.message.bo.customer.CustomerSignupBo;
 import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.dao.customer.CustomerDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.vo.CustomerVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 
 public class CustomerSignupBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(CustomerSignupBoTest.class);
@@ -27,7 +27,7 @@ public class CustomerSignupBoTest extends BoTestBase {
 	@Resource
 	private CustomerDao customerDao;
 	@Resource
-	private SubscriptionDao subscrDao;
+	private EmailSubscrptDao subscrDao;
 	
 	@Test
 	public void testCustomerSignupBo() throws Exception {
@@ -47,7 +47,7 @@ public class CustomerSignupBoTest extends BoTestBase {
 			rows = addToList(vo.getEmailAddr(), listId);
 			assertEquals(rows, 1);
 			
-			SubscriptionVo subVo = subscrDao.getByAddrAndListId(vo.getEmailAddr(), listId);
+			EmailSubscrptVo subVo = subscrDao.getByAddrAndListId(vo.getEmailAddr(), listId);
 			assertNotNull(subVo);
 		}
 		catch (Exception e) {

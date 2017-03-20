@@ -44,10 +44,10 @@ import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingVo.PageAction;
 import ltj.message.vo.SessionUploadVo;
-import ltj.message.vo.inbox.AttachmentsVo;
+import ltj.message.vo.inbox.MsgAttachmentVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
-import ltj.message.vo.inbox.RfcFieldsVo;
+import ltj.message.vo.inbox.MsgRfcFieldVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.MessageThreadsBuilder;
@@ -76,7 +76,7 @@ public class MsgInboxBean {
 	private UIInput fromAddrInput = null;
 	private UIInput toAddrInput = null;
 
-	private RfcFieldsVo rfcFields = null;
+	private MsgRfcFieldVo rfcFields = null;
 	
 	private final SearchFieldsVo searchVo = new SearchFieldsVo();
 	private boolean pagingButtonPushed = false;
@@ -332,7 +332,7 @@ public class MsgInboxBean {
 		if (message.getAttachments() != null) {
 			// empty attachment bodies to reduce HTTP session size
 			for (int i = 0; i < message.getAttachments().size(); i++) {
-				AttachmentsVo vo = message.getAttachments().get(i);
+				MsgAttachmentVo vo = message.getAttachments().get(i);
 				if (vo.getAttchmntValue() != null) {
 					vo.setAttachmentSize(vo.getAttchmntValue().length);
 					vo.setAttchmntValue(null);
@@ -1063,11 +1063,11 @@ public class MsgInboxBean {
 		this.toAddrInput = toAddrInput;
 	}
 
-	public RfcFieldsVo getRfcFields() {
+	public MsgRfcFieldVo getRfcFields() {
 		return rfcFields;
 	}
 
-	public void setRfcFields(RfcFieldsVo rfcFields) {
+	public void setRfcFields(MsgRfcFieldVo rfcFields) {
 		this.rfcFields = rfcFields;
 	}
 }

@@ -32,10 +32,10 @@
 
 <%@ include file="./loadSbsrDaos.jsp" %>
 
-<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="ltj.message.vo.inbox.MsgClickCountsVo"%>
-<%@page import="ltj.message.dao.inbox.MsgUnsubCommentsDao"%>
-<%@page import="ltj.message.vo.inbox.MsgUnsubCommentsVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddressVo"%>
+<%@page import="ltj.message.vo.inbox.MsgClickCountVo"%>
+<%@page import="ltj.message.dao.inbox.MsgUnsubCmntDao"%>
+<%@page import="ltj.message.vo.inbox.MsgUnsubCmntVo"%>
 <%!
 MsgUnsubCommentsDao unsubCommentsDao = null;
 MsgUnsubCommentsDao getMsgUnsubCommentsDao(ServletContext ctx) {

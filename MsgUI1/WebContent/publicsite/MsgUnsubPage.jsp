@@ -76,8 +76,8 @@ function checkLength(element, maxvalue) {
 		</table>
 		</td>
 	</tr>
-<%@page import="ltj.message.vo.emailaddr.EmailAddrVo"%>
-<%@page import="ltj.message.vo.inbox.MsgClickCountsVo"%>
+<%@page import="ltj.message.vo.emailaddr.EmailAddressVo"%>
+<%@page import="ltj.message.vo.inbox.MsgClickCountVo"%>
 <%
 	Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;

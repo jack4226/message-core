@@ -26,13 +26,13 @@ import ltj.message.constant.MobileCarrier;
 import ltj.message.constant.VariableName;
 import ltj.message.dao.customer.CustomerDao;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.emailaddr.SubscriptionDao;
-import ltj.message.dao.inbox.MsgClickCountsDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.dao.inbox.MsgClickCountDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.PhoneNumberUtil;
 import ltj.message.vo.CustomerVo;
 import ltj.message.vo.emailaddr.MailingListVo;
-import ltj.message.vo.emailaddr.SubscriptionVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.message.vo.emailaddr.TemplateRenderVo;
 
 @Component("broadcastBo")
@@ -45,9 +45,9 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 	@Autowired
 	private MailingListDao mailingListDao;
 	@Autowired
-	private SubscriptionDao subscriptionDao;
+	private EmailSubscrptDao emailSubscrptDao;
 	@Autowired
-	private MsgClickCountsDao msgClickCountsDao;
+	private MsgClickCountDao msgClickCountDao;
 	@Autowired
 	private CustomerDao customerDao;
 
@@ -110,7 +110,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		if (bodyText == null) {
 			throw new DataValidationException("Message body is empty.");
 		}
-		msgClickCountsDao.updateStartTime(msgBean.getMsgId());
+		msgClickCountDao.updateStartTime(msgBean.getMsgId());
 		// extract variables from message body
 		List<String> varNames = RenderUtil.retrieveVariableNames(bodyText);
 		if (isDebugEnabled) {
@@ -126,19 +126,19 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 			}
 		}
 		// get subscribers
-		List<SubscriptionVo> subs = null;
+		List<EmailSubscrptVo> subs = null;
 		if (msgBean.getToCustomersOnly()) {
-			subs = subscriptionDao.getSubscribersWithCustomerRecord(listId);
+			subs = emailSubscrptDao.getSubscribersWithCustomerRecord(listId);
 		}
 		else if (msgBean.getToProspectsOnly()) {
-			subs = subscriptionDao.getSubscribersWithoutCustomerRecord(listId);
+			subs = emailSubscrptDao.getSubscribersWithoutCustomerRecord(listId);
 		}
 		else {
-			subs = subscriptionDao.getSubscribers(listId);
+			subs = emailSubscrptDao.getSubscribers(listId);
 		}
 		// sending email to each subscriber
 		setTargetToMailSender();
-		for (SubscriptionVo sub : subs) {
+		for (EmailSubscrptVo sub : subs) {
 			mailsSent += constructAndSendMessage(msgBean, sub, listVo, bodyText, subjVarNames, saveEmbedEmailId, false);
 			if (Constants.Y.equalsIgnoreCase(listVo.getIsSendText())) {
 				mailsSent += constructAndSendMessage(msgBean, sub, listVo, bodyText, subjVarNames, saveEmbedEmailId, true);
@@ -146,12 +146,12 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		}
 		if (mailsSent > 0 && msgBean.getMsgId() != null) {
 			// update sent count to the Broadcasted message
-			msgClickCountsDao.updateSentCount(msgBean.getMsgId(), (int) mailsSent);
+			msgClickCountDao.updateSentCount(msgBean.getMsgId(), (int) mailsSent);
 		}
 		return Long.valueOf(mailsSent);
 	}
 	
-	private int constructAndSendMessage(MessageBean msgBean, SubscriptionVo sub, MailingListVo listVo, String bodyText,
+	private int constructAndSendMessage(MessageBean msgBean, EmailSubscrptVo sub, MailingListVo listVo, String bodyText,
 			List<String> varNames, Boolean saveEmbedEmailId, boolean isText)
 			throws JMSException, DataValidationException {
 		String listId = msgBean.getMailingListId();
@@ -227,7 +227,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		}
 		else {
 			msgBean.setEmBedEmailId(saveEmbedEmailId);
-			subscriptionDao.updateSentCount(sub.getEmailAddrId(), listId);
+			emailSubscrptDao.updateSentCount(sub.getEmailAddrId(), listId);
 		}
 		// write to mail sender queue
 		String jmsMsgId = jmsProcessor.writeMsg(msgBean);

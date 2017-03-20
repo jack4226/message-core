@@ -31,13 +31,13 @@ import ltj.message.bo.template.RenderResponse;
 import ltj.message.bo.template.RenderVariable;
 import ltj.message.constant.Constants;
 import ltj.message.constant.VariableType;
-import ltj.message.dao.emailaddr.EmailAddrDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.outbox.MsgRenderedDao;
 import ltj.message.dao.outbox.RenderAttachmentDao;
 import ltj.message.dao.outbox.RenderObjectDao;
 import ltj.message.dao.outbox.RenderVariableDao;
 import ltj.message.exception.DataValidationException;
-import ltj.message.vo.emailaddr.EmailAddrVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.spring.util.SpringUtil;
 import ltj.vo.outbox.MsgRenderedVo;
 import ltj.vo.outbox.RenderAttachmentVo;
@@ -62,7 +62,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 	@Autowired
 	private RenderObjectDao renderObjectDao;
 	@Autowired
-	private EmailAddrDao emailAddrDao;
+	private EmailAddressDao emailAddressDao;
 	
 	public MsgOutboxBoImpl() {
 	}
@@ -125,7 +125,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			msgBean.setCarrierCode(rsp.getMsgSourceVo().getCarrierCode());
 		}
 		if (msgBean.getFrom() == null && rsp.getMsgSourceVo().getFromAddrId() != null) {
-			EmailAddrVo addrVo = emailAddrDao.getByAddrId(rsp.getMsgSourceVo().getFromAddrId());
+			EmailAddressVo addrVo = emailAddressDao.getByAddrId(rsp.getMsgSourceVo().getFromAddrId());
 			if (addrVo !=null) {
 				try {
 					Address[] from = InternetAddress.parse(addrVo.getEmailAddr());
@@ -137,7 +137,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			}
 		}
 		if (msgBean.getReplyto() == null && rsp.getMsgSourceVo().getReplyToAddrId() != null) {
-			EmailAddrVo addrVo = emailAddrDao.getByAddrId(rsp.getMsgSourceVo().getReplyToAddrId());
+			EmailAddressVo addrVo = emailAddressDao.getByAddrId(rsp.getMsgSourceVo().getReplyToAddrId());
 			if (addrVo != null) {
 				try {
 					Address[] replyto = InternetAddress.parse(addrVo.getEmailAddr());

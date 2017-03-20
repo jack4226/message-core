@@ -15,7 +15,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 	@Override
 	public int updateInboxUnreadCount(int delta) {
 		String sql = 
-			"update MsgUnreadCount set InboxUnreadCount = (InboxUnreadCount + " + delta + ")";
+			"update msg_unread_count set InboxUnreadCount = (InboxUnreadCount + " + delta + ")";
 		int rowsUpdated = getJdbcTemplate().update(sql);
 		return rowsUpdated;
 	}
@@ -23,7 +23,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 	@Override
 	public int updateSentUnreadCount(int delta) {
 		String sql = 
-			"update MsgUnreadCount set SentUnreadCount = (SentUnreadCount + " + delta + ")";
+			"update msg_unread_count set SentUnreadCount = (SentUnreadCount + " + delta + ")";
 		int rowsUpdated = getJdbcTemplate().update(sql);
 		return rowsUpdated;
 	}
@@ -33,7 +33,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 		List<Object> fields = new ArrayList<>();
 		fields.add(inboxUnreadCount);
 
-		String sql = "update MsgUnreadCount set " +
+		String sql = "update msg_unread_count set " +
 				"InboxUnreadCount=?";
 		
 		int rowsUpdated = getJdbcTemplate().update(sql, fields.toArray());
@@ -45,7 +45,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 		List<Object> fields = new ArrayList<>();
 		fields.add(sentUnreadCount);
 
-		String sql = "update MsgUnreadCount set " +
+		String sql = "update msg_unread_count set " +
 				"SentUnreadCount=?";
 		
 		int rowsUpdated = getJdbcTemplate().update(sql, fields.toArray());
@@ -58,7 +58,7 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 		fields.add(inboxUnreadCount);
 		fields.add(sentUnreadCount);
 
-		String sql = "update MsgUnreadCount set " +
+		String sql = "update msg_unread_count set " +
 				"InboxUnreadCount=?," +
 				"SentUnreadCount=?";
 		
@@ -68,14 +68,14 @@ public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCount
 
 	@Override
 	public int selectInboxUnreadCount() {
-		String sql = "select InboxUnreadCount from MsgUnreadCount";
+		String sql = "select InboxUnreadCount from msg_unread_count";
 		int unreadCount = getJdbcTemplate().queryForObject(sql, Integer.class);
 		return unreadCount;
 	}
 
 	@Override
 	public int selectSentUnreadCount() {
-		String sql = "select SentUnreadCount from MsgUnreadCount";
+		String sql = "select SentUnreadCount from msg_unread_count";
 		int unreadCount = getJdbcTemplate().queryForObject(sql, Integer.class);
 		return unreadCount;
 	}
