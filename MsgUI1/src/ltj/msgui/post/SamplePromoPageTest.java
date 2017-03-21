@@ -29,12 +29,12 @@ public class SamplePromoPageTest {
 	public void testSbsrIdClickCount() { // POST
 		String url = "http://localhost:8080/MsgUI1/publicsite/SamplePromoPage.jsp";
 		
-		EmailSubscrptVo subsVo = getSubscriptionDao().getRandomRecord();
+		EmailSubscrptVo subsVo = getEmailSubscrptDao().getRandomRecord();
 		assertNotNull(subsVo);
 		long sbsrId = subsVo.getEmailAddrId();
 		String listId = subsVo.getListId();
 
-		EmailAddressVo emailVo = getEmailAddrDao().getByAddrId(sbsrId);
+		EmailAddressVo emailVo = getEmailAddrresDao().getByAddrId(sbsrId);
 		assertNotNull(emailVo);
 
 		try {
@@ -82,7 +82,7 @@ public class SamplePromoPageTest {
 	
 	@Test
 	public void testMsgIdClickCount() { // GET
-		MsgClickCountVo countVo = getMsgClickCountsDao().getRandomRecord();
+		MsgClickCountVo countVo = getMsgClickCountDao().getRandomRecord();
 		assertNotNull(countVo);
 		long msgId = countVo.getMsgId();
 		
@@ -122,15 +122,15 @@ public class SamplePromoPageTest {
 		}
 	}
 	
-	private EmailAddressDao getEmailAddrDao() {
+	private EmailAddressDao getEmailAddrresDao() {
 		return SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 	}
 	
-	private EmailSubscrptDao getSubscriptionDao() {
+	private EmailSubscrptDao getEmailSubscrptDao() {
 		return SpringUtil.getDaoAppContext().getBean(EmailSubscrptDao.class);
 	}
 	
-	private MsgClickCountDao getMsgClickCountsDao() {
+	private MsgClickCountDao getMsgClickCountDao() {
 		return SpringUtil.getDaoAppContext().getBean(MsgClickCountDao.class);
 	}
 	
