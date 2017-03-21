@@ -104,7 +104,7 @@ function checkLength(element, maxvalue) {
 	int listCount = 0;
 	try {
 		long sbsrId = MsgIdCipher.decode(encodedSbsrId);
-		addrVo = getEmailAddrDao(ctx).getByAddrId(sbsrId);
+		addrVo = getEmailAddressDao(ctx).getByAddrId(sbsrId);
 		if (listIds != null && listIds.length() > 0 && addrVo != null) {
 			StringTokenizer st = new StringTokenizer(listIds, ",");
 			listCount = st.countTokens();

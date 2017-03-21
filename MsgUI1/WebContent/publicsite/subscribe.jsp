@@ -74,7 +74,7 @@ function validateListSelection(myform) {
 	EmailAddressVo sbsrAddrVo = null;
 	try {
  		long emailAddrId = Long.parseLong(subscribersBean.getSbsrid());
- 		sbsrAddrVo = getEmailAddrDao(ctx).getByAddrId(emailAddrId);
+ 		sbsrAddrVo = getEmailAddressDao(ctx).getByAddrId(emailAddrId);
  		if (sbsrAddrVo != null) {
  			emailAddr = sbsrAddrVo.getEmailAddr();
  			pageContext.setAttribute("sbsrAddr", sbsrAddrVo.getEmailAddr());

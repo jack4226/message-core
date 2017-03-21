@@ -76,7 +76,7 @@
 						sbListIds.append(",");
 					}
 					sbListIds.append(listId);
-					getSubscriptionDao(ctx).optInRequest(emailAddr, listId);
+					getEmailSubscrptDao(ctx).optInRequest(emailAddr, listId);
 					MailingListVo vo = getMailingListDao(ctx).getByListId(listId);
 					if (vo != null) {
 						subedList.add(listId + " - " + vo.getDisplayName());
@@ -94,7 +94,7 @@
 				logger.error("subscribeResp.jsp - " + e.toString());
 			}
  		}
-		EmailAddressVo addrVo = getEmailAddrDao(ctx).getByAddress(emailAddr);
+		EmailAddressVo addrVo = getEmailAddressDao(ctx).getByAddress(emailAddr);
 		if (chosens.length > 0 && addrVo != null) {
 			// update "AcceptHTML" flag if needed
 			String acceptHtml = Constants.Y;
@@ -103,7 +103,7 @@
 			}
 			if (!acceptHtml.equals(addrVo.getAcceptHtml())) {
 				addrVo.setAcceptHtml(acceptHtml);
-				getEmailAddrDao(ctx).update(addrVo);
+				getEmailAddressDao(ctx).update(addrVo);
 			}
 			// send confirmation email
 			Map<String, String> listMap = new HashMap<String, String>();

@@ -45,7 +45,7 @@
  			errorMsg = "The email address you entered is already used by another user.";
  		}
  		else {
- 			EmailAddressVo addrVo = getEmailAddrDao(ctx).findByAddress(request.getParameter("emailAddr"));
+ 			EmailAddressVo addrVo = getEmailAddressDao(ctx).findByAddress(request.getParameter("emailAddr"));
  			customerBean.setFirstName(request.getParameter("firstName"));
  			customerBean.setLastName(request.getParameter("lastName"));
  			customerBean.setEmailAddr(request.getParameter("emailAddr"));

@@ -16,9 +16,9 @@
 	if (!StringUtil.isEmpty(sbsrId) && !StringUtil.isEmpty(listId)) {
 		// update subscriber open count
 		try {
-			EmailAddressVo addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrId));
+			EmailAddressVo addrVo = getEmailAddressDao(ctx).getByAddrId(Long.parseLong(sbsrId));
 			if (addrVo != null) {
-				rowsUpdated += getSubscriptionDao(ctx).updateOpenCount(
+				rowsUpdated += getEmailSubscrptDao(ctx).updateOpenCount(
 						addrVo.getEmailAddrId(), listId);
 			}
 		}
@@ -37,9 +37,9 @@
 	if (!StringUtil.isEmpty(msgId)) {
 		// update newsletter open count
 		try {
-			MsgClickCountVo countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
+			MsgClickCountVo countVo = getMsgClickCountDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
 			if (countVo != null) {
-				rowsUpdated += getMsgClickCountsDao(ctx).updateOpenCount(
+				rowsUpdated += getMsgClickCountDao(ctx).updateOpenCount(
 						countVo.getMsgId(), 1);
 			}
 		}

@@ -61,10 +61,10 @@ MsgUnsubCmntDao getMsgUnsubCmntDao(ServletContext ctx) {
 	String unsubListName = listId;
 	try {
 		sbsrIdLong = Long.valueOf(sbsrId);
-		addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrId));
+		addrVo = getEmailAddressDao(ctx).getByAddrId(Long.parseLong(sbsrId));
 		listVo = getMailingListDao(ctx).getByListId(listId);
 		if (submit != null && submit.length() > 0 && addrVo != null && listVo != null) {
-			unsubscribed = getSubscriptionDao(ctx).unsubscribe(addrVo.getEmailAddrId(), listId);
+			unsubscribed = getEmailSubscrptDao(ctx).unsubscribe(addrVo.getEmailAddrId(), listId);
 			if (unsubscribed > 0) {
 				MailingListVo vo = getMailingListDao(ctx).getByListId(listId);
 				if (vo != null) {
@@ -98,12 +98,12 @@ MsgUnsubCmntDao getMsgUnsubCmntDao(ServletContext ctx) {
 	
 	MsgClickCountVo countVo = null;
 	try {
-		countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
+		countVo = getMsgClickCountDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
 		if (countVo == null) {
 			logger.error("MsgUnsubRespPage.jsp - Newsletter MsgId " + msgId + " not found");
 		}
 		else {
-			int rows = getMsgClickCountsDao(ctx).updateUnsubscribeCount(countVo.getMsgId(), 1);
+			int rows = getMsgClickCountDao(ctx).updateUnsubscribeCount(countVo.getMsgId(), 1);
 			logger.info("MsgUnsubRespPage.jsp - un-subscribe count updated: " + rows);
 		}
 	}

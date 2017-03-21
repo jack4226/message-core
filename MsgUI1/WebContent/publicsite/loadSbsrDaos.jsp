@@ -30,20 +30,20 @@
 		return mailingListBo;
 	}
 
-	EmailAddressDao emailAddrDao = null;
-	EmailAddressDao getEmailAddrDao(ServletContext ctx) {
-		if (emailAddrDao == null) {
-			emailAddrDao = (EmailAddressDao) SpringUtil.getWebAppContext(ctx).getBean("emailAddressDao");
+	EmailAddressDao emailAddressDao = null;
+	EmailAddressDao getEmailAddressDao(ServletContext ctx) {
+		if (emailAddressDao == null) {
+			emailAddressDao = (EmailAddressDao) SpringUtil.getWebAppContext(ctx).getBean("emailAddressDao");
 		}
-		return emailAddrDao;
+		return emailAddressDao;
 	}
 
-	EmailSubscrptDao subscriptionDao = null;
-	EmailSubscrptDao getSubscriptionDao(ServletContext ctx) {
-		if (subscriptionDao == null) {
-			subscriptionDao = (EmailSubscrptDao) SpringUtil.getWebAppContext(ctx).getBean("emailSubscrptDao");
+	EmailSubscrptDao emailSubscrptDao = null;
+	EmailSubscrptDao getEmailSubscrptDao(ServletContext ctx) {
+		if (emailSubscrptDao == null) {
+			emailSubscrptDao = (EmailSubscrptDao) SpringUtil.getWebAppContext(ctx).getBean("emailSubscrptDao");
 		}
-		return subscriptionDao;
+		return emailSubscrptDao;
 	}
 
 	EmailVariableDao emailVariableDao = null;
@@ -54,12 +54,12 @@
 		return emailVariableDao;
 	}
 
-	MsgClickCountDao msgClickCountsDao = null;
-	MsgClickCountDao getMsgClickCountsDao(ServletContext ctx) {
-		if (msgClickCountsDao == null) {
-			msgClickCountsDao = (MsgClickCountDao) SpringUtil.getWebAppContext(ctx).getBean("msgClickCountDao");
+	MsgClickCountDao msgClickCountDao = null;
+	MsgClickCountDao getMsgClickCountDao(ServletContext ctx) {
+		if (msgClickCountDao == null) {
+			msgClickCountDao = (MsgClickCountDao) SpringUtil.getWebAppContext(ctx).getBean("msgClickCountDao");
 		}
-		return msgClickCountsDao;
+		return msgClickCountDao;
 	}
 
 	private CustomerBo customerBo = null;
@@ -99,7 +99,7 @@
 		Logger logger = Logger.getLogger("com.legacytojava.jsp");
 		String renderedValue = "";
 		EmailVariableVo vo = getEmailVariableDao(ctx).getByName(emailVariableName);
-		HashMap<String, RenderVariable> vars = new HashMap<String, RenderVariable>();
+		Map<String, RenderVariable> vars = new HashMap<String, RenderVariable>();
 		if (sbsrId != null) {
 			RenderVariable var = new RenderVariable(
 					"SubscriberAddressId",

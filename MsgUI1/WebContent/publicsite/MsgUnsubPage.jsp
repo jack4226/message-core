@@ -85,7 +85,7 @@ function checkLength(element, maxvalue) {
 	String sbsrId = request.getParameter("sbsrid");
 	EmailAddressVo addrVo = null;
 	try {
-		addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrId));
+		addrVo = getEmailAddressDao(ctx).getByAddrId(Long.parseLong(sbsrId));
 		if (addrVo == null) {
  			logger.error("MsgUnsubPage.jsp - Subscriber Id " + sbsrId + " not found");
  		}
@@ -122,7 +122,7 @@ function checkLength(element, maxvalue) {
 	String msgId = request.getParameter("msgid");
 	MsgClickCountVo countVo = null;
 	try {
-		countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
+		countVo = getMsgClickCountDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
 		if (countVo == null) {
 			logger.error("MsgUnsubPage.jsp - Newsletter MsgId " + msgId + " not found");
 		}

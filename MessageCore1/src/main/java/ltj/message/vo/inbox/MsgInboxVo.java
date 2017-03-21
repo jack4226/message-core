@@ -163,7 +163,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		if (fromAddrId == null) {
 			return "";
 		}
-		EmailAddressVo vo = getEmailAddrDao().getByAddrId(fromAddrId);
+		EmailAddressVo vo = getEmailAddressDao().getByAddrId(fromAddrId);
 		if (vo == null) {
 			return "";
 		}
@@ -190,7 +190,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		if (toAddrId == null) {
 			return "";
 		}
-		EmailAddressVo vo = getEmailAddrDao().getByAddrId(toAddrId);
+		EmailAddressVo vo = getEmailAddressDao().getByAddrId(toAddrId);
 		if (vo == null) {
 			return "";
 		}
@@ -305,7 +305,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 		}
 	}
 	
-	private EmailAddressDao getEmailAddrDao() {
+	private EmailAddressDao getEmailAddressDao() {
 		if (emailAddressDao == null) {
 			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}

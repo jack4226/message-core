@@ -93,7 +93,7 @@ String getSbsrAddrIdFromCookie(HttpServletRequest request) {
 		if (!StringUtil.isEmpty(sbsrAddrid)) {
 			logger.info("userprofile.jsp - got sbsraddrid from cookie: " + sbsrAddrid);
 			try {
-				EmailAddressVo addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrAddrid));
+				EmailAddressVo addrVo = getEmailAddressDao(ctx).getByAddrId(Long.parseLong(sbsrAddrid));
 				if (addrVo != null) {
 					emailAddr = EmailAddrUtil.removeDisplayName(addrVo.getEmailAddr());
 				}
@@ -113,7 +113,7 @@ String getSbsrAddrIdFromCookie(HttpServletRequest request) {
 			String pswd = vo.getUserPassword();
 			if (isEmpty(pswd) && isEmpty(userPswd) || !isEmpty(pswd) && pswd.equals(userPswd)) {
 				// login successful, set seesion attribute
-				EmailAddressVo addrVo = getEmailAddrDao(ctx).findByAddress(emailAddr);
+				EmailAddressVo addrVo = getEmailAddressDao(ctx).findByAddress(emailAddr);
 				request.getSession().setAttribute("sbsrId", Long.valueOf(addrVo.getEmailAddrId()));
 			}
 			else {

@@ -51,7 +51,7 @@
 	try {
 		long sbsrId = MsgIdCipher.decode(encodedSbsrId);
 		sbsrIdLong = Long.valueOf(sbsrId);
-		addrVo = getEmailAddrDao(ctx).getByAddrId(sbsrId);
+		addrVo = getEmailAddressDao(ctx).getByAddrId(sbsrId);
 		if (listIds != null && listIds.length() > 0 && addrVo != null) {
 			String decodedSbsdAddr = EmailAddrUtil.removeDisplayName(addrVo.getEmailAddr());
 			StringTokenizer st = new StringTokenizer(listIds, ",");
@@ -60,7 +60,7 @@
 				String listId = st.nextToken();
 				try {
 					if (listId != null && decodedSbsdAddr.equalsIgnoreCase(sbsrAddr)) {
-						confirmCount += getSubscriptionDao(ctx).optInConfirm(sbsrId, listId);
+						confirmCount += getEmailSubscrptDao(ctx).optInConfirm(sbsrId, listId);
 						if (count > 0) {
 							sbListIds.append(",");
 						}

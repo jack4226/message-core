@@ -79,11 +79,11 @@ function checkLength(element, maxvalue) {
 	String submitButtonText = "Send";
  	if (submitButtonText.equals(request.getParameter("submit"))) {
 		String rcptEmail = request.getParameter("rcptEmail");
-		EmailAddressVo addrVo = getEmailAddrDao(ctx).findByAddress(rcptEmail);
+		EmailAddressVo addrVo = getEmailAddressDao(ctx).findByAddress(rcptEmail);
 		// update accept HTML flag if changed
 		boolean acceptHtml = "html".equals(request.getParameter("emailtype"))?true:false;
 		if (acceptHtml != "Y".equals(addrVo.getAcceptHtml())) {
-			getEmailAddrDao(ctx).updateAcceptHtml(addrVo.getEmailAddrId(), acceptHtml);
+			getEmailAddressDao(ctx).updateAcceptHtml(addrVo.getEmailAddrId(), acceptHtml);
 			logger.info("referral.jsp - Accept HTML flag changed to: " + acceptHtml);
 		}
 		String yourName = request.getParameter("yourName");
@@ -112,7 +112,7 @@ function checkLength(element, maxvalue) {
 		if (!StringUtil.isEmpty(msgId)) {
 			try {
 				long msgIdLong = Long.parseLong(msgId);
-				int rowsUpdated = getMsgClickCountsDao(ctx).updateReferalCount(msgIdLong);
+				int rowsUpdated = getMsgClickCountDao(ctx).updateReferalCount(msgIdLong);
 				logger.info("referralResp.jsp - updated MsgClickCounts: " + rowsUpdated);
 			}
 			catch (Exception e) {

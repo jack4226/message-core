@@ -165,7 +165,7 @@ public class SubscribersListBean {
 	
 	public EmailSubscrptDao getSubscriptionDao() {
 		if (subscriberDao == null) {
-			subscriberDao = (EmailSubscrptDao) SpringUtil.getWebAppContext().getBean("subscriptionDao");
+			subscriberDao = (EmailSubscrptDao) SpringUtil.getWebAppContext().getBean("emailSubscrptDao");
 		}
 		return subscriberDao;
 	}

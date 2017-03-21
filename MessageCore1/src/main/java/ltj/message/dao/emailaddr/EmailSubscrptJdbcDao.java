@@ -58,7 +58,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	
 	@Override
 	public int subscribe(String addr, String listId) {
-		EmailAddressVo addrVo = getEmailAddrDao().findByAddress(addr);
+		EmailAddressVo addrVo = getEmailAddressDao().findByAddress(addr);
 		return subscribe(addrVo.getEmailAddrId(), listId);
 	}
 	
@@ -81,7 +81,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 
 	@Override
 	public int unsubscribe(String addr, String listId) {
-		EmailAddressVo addrVo = getEmailAddrDao().getByAddress(addr);
+		EmailAddressVo addrVo = getEmailAddressDao().getByAddress(addr);
 		if (addrVo != null) {
 			return unsubscribe(addrVo.getEmailAddrId(), listId);
 		}
@@ -117,7 +117,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	
 	@Override
 	public int optInRequest(String addr, String listId) {
-		EmailAddressVo addrVo = getEmailAddrDao().findByAddress(addr);
+		EmailAddressVo addrVo = getEmailAddressDao().findByAddress(addr);
 		return optInRequest(addrVo.getEmailAddrId(), listId);
 	}
 	
@@ -140,7 +140,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	
 	@Override
 	public int optInConfirm(String addr, String listId) {
-		EmailAddressVo addrVo = getEmailAddrDao().findByAddress(addr);
+		EmailAddressVo addrVo = getEmailAddressDao().findByAddress(addr);
 		return optInConfirm(addrVo.getEmailAddrId(), listId);
 	}
 	
@@ -547,7 +547,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 		return rowsInserted;
 	}
 	
-	private EmailAddressDao getEmailAddrDao() {
+	private EmailAddressDao getEmailAddressDao() {
 		return emailAddressDao;
 	}
 }

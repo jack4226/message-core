@@ -56,7 +56,7 @@ if ("yes".equals(request.getParameter("remember"))) {
 
 	Long sbsrIdLong = (Long) loggedin;
 	long emailAddrId = sbsrIdLong.longValue();
-	EmailAddressVo sbsrAddrVo = getEmailAddrDao(ctx).getByAddrId(emailAddrId);
+	EmailAddressVo sbsrAddrVo = getEmailAddressDao(ctx).getByAddrId(emailAddrId);
 	if (sbsrAddrVo == null) {
 		logger.error("userupdate.jsp - Subscriber email address Id " + emailAddrId + " not found");
 		response.sendRedirect("userupdate.jsp?error=sbsrnotfound");
@@ -77,11 +77,11 @@ if ("yes".equals(request.getParameter("remember"))) {
  			errorMsg = "The email address you entered is already used by another user.";
  		}
  		else {
- 			EmailAddressVo addrVo = getEmailAddrDao(ctx).findByAddress(request.getParameter("emailAddr"));
+ 			EmailAddressVo addrVo = getEmailAddressDao(ctx).findByAddress(request.getParameter("emailAddr"));
  			// update accept HTML flag if changed
  			boolean acceptHtml = "html".equals(request.getParameter("emailtype"))?true:false;
  			if (acceptHtml != "Y".equals(addrVo.getAcceptHtml())) {
- 				getEmailAddrDao(ctx).updateAcceptHtml(addrVo.getEmailAddrId(), acceptHtml);
+ 				getEmailAddressDao(ctx).updateAcceptHtml(addrVo.getEmailAddrId(), acceptHtml);
  				logger.info("userupdate.jsp - Accept HTML flag changed to: " + acceptHtml);
  			}
  			customerBean.setFirstName(request.getParameter("firstName"));
@@ -143,11 +143,11 @@ if ("yes".equals(request.getParameter("remember"))) {
 					String listId = request.getParameter("chosen_" + i);
 					if (listId.startsWith("1_")) {
 						if (emailAddrChanged) {
-							subscribed += getSubscriptionDao(ctx).optInRequest(addrVo.getEmailAddrId(), listId.substring(2));
+							subscribed += getEmailSubscrptDao(ctx).optInRequest(addrVo.getEmailAddrId(), listId.substring(2));
 							logger.info("userupdate.jsp - opt-in'ed to: " + listId.substring(2));
 						}
 						else {
-							subscribed += getSubscriptionDao(ctx).subscribe(addrVo.getEmailAddrId(), listId.substring(2));
+							subscribed += getEmailSubscrptDao(ctx).subscribe(addrVo.getEmailAddrId(), listId.substring(2));
 							logger.info("userupdate.jsp - subscribed to: " + listId.substring(2));
 						}
 						MailingListVo vo = getMailingListDao(ctx).getByListId(listId.substring(2));
@@ -162,7 +162,7 @@ if ("yes".equals(request.getParameter("remember"))) {
 						}
 					}
 					else if (listId.startsWith("2_")) {
-						unsubscribed += getSubscriptionDao(ctx).unsubscribe(addrVo.getEmailAddrId(), listId.substring(2));
+						unsubscribed += getEmailSubscrptDao(ctx).unsubscribe(addrVo.getEmailAddrId(), listId.substring(2));
 						logger.info("userupdate.jsp - unsubscribed from: " + listId.substring(2));
 					}
 				}

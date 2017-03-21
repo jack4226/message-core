@@ -105,7 +105,7 @@ public final class RenderUtil {
 		return mailingListDao;
 	}
 
-	static EmailAddressDao getEmailAddrDao() {
+	static EmailAddressDao getEmailAddressDao() {
 		if (emailAddressDao == null) {
 			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}
@@ -636,7 +636,7 @@ public final class RenderUtil {
 			}
 		}
 		// TODO fix deadlock issue when running from JUnit test
-		EmailAddressVo addrVo = getEmailAddrDao().findByAddress(toAddr);
+		EmailAddressVo addrVo = getEmailAddressDao().findByAddress(toAddr);
 		// render email variables using TO emailAddrId
 		Map<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames, addrVo.getEmailAddrId());
 		// include render variables from input data
@@ -785,7 +785,7 @@ public final class RenderUtil {
 		else { // use variable names from input
 			varNames = variableNames;
 		}
-		EmailAddressVo addrVo = getEmailAddrDao().findByAddress(toAddr);
+		EmailAddressVo addrVo = getEmailAddressDao().findByAddress(toAddr);
 		// retrieve variable values by variable name and email address id
 		Map<String, RenderVariable> vars = RenderUtil.renderEmailVariables(varNames, addrVo.getEmailAddrId());
 		// include render variables from input data

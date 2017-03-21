@@ -16,9 +16,9 @@
 	if (!StringUtil.isEmpty(sbsrId) && !StringUtil.isEmpty(listId)) {
 		// update subscriber click count
 		try {
-			EmailAddressVo addrVo = getEmailAddrDao(ctx).getByAddrId(Long.parseLong(sbsrId));
+			EmailAddressVo addrVo = getEmailAddressDao(ctx).getByAddrId(Long.parseLong(sbsrId));
 			if (addrVo != null) {
-				rowsUpdated += getSubscriptionDao(ctx).updateClickCount(addrVo.getEmailAddrId(), listId);
+				rowsUpdated += getEmailSubscrptDao(ctx).updateClickCount(addrVo.getEmailAddrId(), listId);
 			}
 		}
 		catch (NumberFormatException e) {
@@ -36,9 +36,9 @@
 	if (!StringUtil.isEmpty(msgId)) {
 		// update newsletter click count
 		try {
-			MsgClickCountVo countVo = getMsgClickCountsDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
+			MsgClickCountVo countVo = getMsgClickCountDao(ctx).getByPrimaryKey(Long.parseLong(msgId));
 			if (countVo != null) {
-				rowsUpdated += getMsgClickCountsDao(ctx).updateUnsubscribeCount(countVo.getMsgId(), 1);
+				rowsUpdated += getMsgClickCountDao(ctx).updateUnsubscribeCount(countVo.getMsgId(), 1);
 			}
 		}
 		catch (NumberFormatException e) {

@@ -264,7 +264,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 
 	@Override
 	public int deleteByEmailAddr(String emailAddr) {
-		EmailAddressVo addrVo = getEmailAddrDao().getByAddress(emailAddr);
+		EmailAddressVo addrVo = getEmailAddressDao().getByAddress(emailAddr);
 		if (addrVo == null) {
 			return 0;
 		}
@@ -290,11 +290,11 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	
 	private void syncupEmailFields(CustomerVo vo) {
 		if (!StringUtil.isEmpty(vo.getEmailAddr())) {
-			EmailAddressVo addrVo = getEmailAddrDao().findByAddress(vo.getEmailAddr());
+			EmailAddressVo addrVo = getEmailAddressDao().findByAddress(vo.getEmailAddr());
 			vo.setEmailAddrId(addrVo.getEmailAddrId());
 		}
 		else {
-			EmailAddressVo addrVo = getEmailAddrDao().getByAddrId(vo.getEmailAddrId());
+			EmailAddressVo addrVo = getEmailAddressDao().getByAddrId(vo.getEmailAddrId());
 			if (addrVo != null) {
 				vo.setEmailAddr(addrVo.getEmailAddr());
 			}
@@ -303,7 +303,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	
 	@Autowired
 	private EmailAddressDao emailAddressDao;
-	private EmailAddressDao getEmailAddrDao() {
+	private EmailAddressDao getEmailAddressDao() {
 		return emailAddressDao;
 	}
 }

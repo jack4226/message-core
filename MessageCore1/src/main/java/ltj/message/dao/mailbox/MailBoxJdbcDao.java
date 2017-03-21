@@ -106,7 +106,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		mailBoxVo.setOrigUpdtTime(mailBoxVo.getUpdtTime());
 		// insert/update EmailAddr record
-		getEmailAddrDao().findByAddress(mailBoxVo.getUserId() + "@" + mailBoxVo.getHostName());
+		getEmailAddressDao().findByAddress(mailBoxVo.getUserId() + "@" + mailBoxVo.getHostName());
 		return rowsUpadted;
 	}
 	
@@ -127,13 +127,13 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		mailBoxVo.setRowId(retrieveRowId());
 		mailBoxVo.setOrigUpdtTime(mailBoxVo.getUpdtTime());
 		// insert mailbox address to EmailAddr table
-		getEmailAddrDao().findByAddress(mailBoxVo.getUserId() + "@" + mailBoxVo.getHostName());
+		getEmailAddressDao().findByAddress(mailBoxVo.getUserId() + "@" + mailBoxVo.getHostName());
 		return rowsInserted;
 	}
 	
 	@Autowired
 	private EmailAddressDao emailAddressDao = null;
-	private EmailAddressDao getEmailAddrDao() {
+	private EmailAddressDao getEmailAddressDao() {
 		return emailAddressDao;
 	}
 }

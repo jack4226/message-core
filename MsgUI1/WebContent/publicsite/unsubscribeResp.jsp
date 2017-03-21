@@ -47,13 +47,13 @@ Logger logger = Logger.getLogger("com.legacytojava.jsp");
 	try {
 		long sbsrId = MsgIdCipher.decode(encodedSbsrId);
 		sbsrIdLong = Long.valueOf(sbsrId);
-		addrVo = getEmailAddrDao(ctx).getByAddrId(sbsrId);
+		addrVo = getEmailAddressDao(ctx).getByAddrId(sbsrId);
 		String submit = request.getParameter("submit");
 		if (submit != null && submit.length() > 0 && addrVo != null) {
 			String[] chosens = request.getParameterValues("chosen");
 			for (int i=0; i<chosens.length; i++) {
 				String listId = chosens[i];
-				int rowsUnsubed = getSubscriptionDao(ctx).unsubscribe(sbsrId, listId);
+				int rowsUnsubed = getEmailSubscrptDao(ctx).unsubscribe(sbsrId, listId);
 				if (rowsUnsubed > 0) {
 					MailingListVo vo = getMailingListDao(ctx).getByListId(listId);
 					if (vo != null) {
