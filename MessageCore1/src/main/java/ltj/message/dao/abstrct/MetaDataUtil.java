@@ -5,6 +5,8 @@ import java.lang.reflect.Modifier;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
@@ -70,6 +72,7 @@ public class MetaDataUtil {
 			if (table.getColumnMap().containsKey(columnName)) {
 				Column column = table.getColumnMap().get(columnName);
 				String uncapName = StringUtils.uncapitalize(column.getColumnName());
+				uncapName = convertToCamelCase(uncapName);
 				if (table.getPrimaryKeyMap().containsKey(columnName)) {
 					if (whereClause.indexOf("where") >= 0) {
 						whereClause += " and " + column.getColumnName() + "=:" + uncapName;
@@ -127,10 +130,21 @@ public class MetaDataUtil {
 				if (valueList.length() > 0) {
 					valueList.append(", ");
 				}
-				valueList.append(":" + uncapName);
+				valueList.append(":" + convertToCamelCase(uncapName));
 			}
 		}
 		return (insertClause + columnList.toString() + valuesClause + valueList.toString() + ")");
+	}
+	
+	static String convertToCamelCase(String str) {
+		Pattern p = Pattern.compile("_(.)");
+		Matcher m = p.matcher(str);
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			m.appendReplacement(sb, m.group(1).toUpperCase());
+		}
+		m.appendTail(sb);
+		return sb.toString();
 	}
 	
 	/**
@@ -163,7 +177,7 @@ public class MetaDataUtil {
 					pkey.setColumnName(column);
 					pkey.setKeySeq(seq);
 					pkey.setPkName(pkName);
-					table.getPrimaryKeyMap().put(pkey.getColumnName().toLowerCase(), pkey);
+					table.getPrimaryKeyMap().put(pkey.getColumnName().toLowerCase().replaceAll("_", ""), pkey);
 				}
 				java.sql.ResultSet column_rs = md.getColumns(catalog, schema, tableName, "%");
 				while (column_rs.next()) {
@@ -178,7 +192,7 @@ public class MetaDataUtil {
 					column.setIsNullable(column_rs.getString("IS_NULLABLE"));
 					column.setNullable(column_rs.getInt("NULLABLE"));
 					column.setTypeName(column_rs.getString("TYPE_NAME"));
-					table.getColumnMap().put(column.getColumnName().toLowerCase(), column);
+					table.getColumnMap().put(column.getColumnName().toLowerCase().replaceAll("_", ""), column);
 				}
 				//logger.info(StringUtil.prettyPrint(table));
 				tableMetaData.put(tableName.toLowerCase(), table);
@@ -193,7 +207,7 @@ public class MetaDataUtil {
 		Table msg_inbox = MetaDataUtil.getTableMetaData("msg_inbox");
 		logger.info("Table Metadata:" + PrintUtil.prettyPrint(msg_inbox));
 		logger.info(buildUpdateStatement("msg_inbox", new MsgInboxVo()));
-		logger.info(buildInsertStatement("MailingList", new MailingListVo()));
+		logger.info(buildInsertStatement("mailing_list", new MailingListVo()));
 		logger.info(buildUpdateStatement("msg_attachment", new MsgAttachmentVo()));
 	}
 }

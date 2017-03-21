@@ -148,7 +148,7 @@ public class SmtpServersBean {
 		for (int i=0; i<smtpList.size(); i++) {
 			SmtpConnVo vo = smtpList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getSmtpServerDao().deleteByPrimaryKey(vo.getServerName());
+				int rowsDeleted = getSmtpServerDao().deleteByServerName(vo.getServerName());
 				if (rowsDeleted > 0) {
 					logger.info("SmtpServer deleted: " + vo.getServerName());
 				}
@@ -304,7 +304,7 @@ public class SmtpServersBean {
 		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - serverName: " + serverName);
 		}
-		SmtpConnVo vo = getSmtpServerDao().getByPrimaryKey(serverName);
+		SmtpConnVo vo = getSmtpServerDao().getByServerName(serverName);
 		if (editMode == true && vo == null) {
 			// smtpServer does not exist
 			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "smtpServerDoesNotExist",

@@ -19,11 +19,11 @@ public class TimerServerTest extends DaoTestBase {
 	private TimerServerDao timerServerDao;
 	
 	@Test
-	public void testTimerServer() {
+	public void testTimerServer1() {
 		try {
 			List<TimerServerVo> list = selectAll();
 			assertTrue(list.size() > 0);
-			TimerServerVo vo = selectByPrimaryKey(list.get(0).getServerName());
+			TimerServerVo vo = selectByServerName(list.get(0).getServerName());
 			assertNotNull(vo);
 			TimerServerVo vo2 = insert(vo.getServerName());
 			assertNotNull(vo2);
@@ -41,6 +41,29 @@ public class TimerServerTest extends DaoTestBase {
 		}
 	}
 	
+	@Test
+	public void testTimerServer2() {
+		try {
+			List<TimerServerVo> list = selectAll();
+			assertTrue(list.size() > 0);
+			TimerServerVo vo = timerServerDao.getByPrimaryKey(list.get(0).getRowId());
+			assertNotNull(vo);
+			TimerServerVo vo2 = insert(vo.getServerName());
+			assertNotNull(vo2);
+			vo.setRowId(vo2.getRowId());
+			vo.setServerName(vo2.getServerName());
+			assertTrue(vo.equalsTo(vo2));
+			int rows = update(vo2);
+			assertEquals(1, rows);
+			rows = timerServerDao.deleteByPrimaryKey(vo2.getRowId());
+			assertEquals(1, rows);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
 	private List<TimerServerVo> selectAll() {
 		List<TimerServerVo> timerServeres = timerServerDao.getAll(false);
 		for (Iterator<TimerServerVo> it=timerServeres.iterator(); it.hasNext();) {
@@ -50,8 +73,8 @@ public class TimerServerTest extends DaoTestBase {
 		return timerServeres;
 	}
 	
-	private TimerServerVo selectByPrimaryKey(String serverName) {
-		TimerServerVo vo2 = timerServerDao.getByPrimaryKey(serverName);
+	private TimerServerVo selectByServerName(String serverName) {
+		TimerServerVo vo2 = timerServerDao.getByServerName(serverName);
 		if (vo2 != null) {
 			logger.info("TimerServerDao - selectByPrimaryKey: " + LF + vo2);
 		}
@@ -68,17 +91,17 @@ public class TimerServerTest extends DaoTestBase {
 	}
 	
 	private int delete(TimerServerVo timerServerVo) {
-		int rowsDeleted = timerServerDao.deleteByPrimaryKey(timerServerVo.getServerName());
+		int rowsDeleted = timerServerDao.deleteByServerName(timerServerVo.getServerName());
 		logger.info("TimerServerDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	private TimerServerVo insert(String serverName) {
-		TimerServerVo vo = timerServerDao.getByPrimaryKey(serverName);
+		TimerServerVo vo = timerServerDao.getByServerName(serverName);
 		if (vo != null) {
 			vo.setServerName(vo.getServerName() + "_v2");
 			int rows = timerServerDao.insert(vo);
 			logger.info("TimerServerDao - insert: rows inserted " + rows);
-			return selectByPrimaryKey(vo.getServerName());
+			return selectByServerName(vo.getServerName());
 		}
 		return null;
 	}

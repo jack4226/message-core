@@ -1,12 +1,14 @@
 package ltj.message.table;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
+import ltj.message.dao.socket.SocketServerDao;
 import ltj.message.main.CreateTableBase;
+import ltj.message.vo.SocketServerVo;
+import ltj.spring.util.SpringUtil;
 
 public class SocketServerTable extends CreateTableBase {
 	/**
@@ -41,23 +43,23 @@ public class SocketServerTable extends CreateTableBase {
 		*/
 		try {
 			stm.execute("CREATE TABLE socket_server ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"ServerName varchar(30) NOT NULL, " + 
-			"SocketPort Integer NOT NULL, " +
-			"Interactive varchar(3) NOT NULL, " +
-			"ServerTimeout integer NOT NULL, " +
-			"SocketTimeout integer NOT NULL, " +
-			"TimeoutUnit varchar(6) NOT NULL, " +
-			"Connections Integer NOT NULL, " +
-			"Priority varchar(10), " +
-			"StatusId char(1) NOT NULL, " +
-			"ProcessorName varchar(100) NOT NULL, " +
-			"MessageCount integer NOT NULL, " +
-			"UpdtTime datetime(3) NOT NULL, " +
-			"UpdtUserId char(10) NOT NULL, " +
-			"PRIMARY KEY (RowId), " +
-			"Constraint UNIQUE INDEX (ServerName), " +
-			"Constraint UNIQUE INDEX (SocketPort) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"server_name varchar(30) NOT NULL, " + 
+			"socket_port Integer NOT NULL, " +
+			"interactive varchar(3) NOT NULL, " +
+			"server_timeout integer NOT NULL, " +
+			"socket_timeout integer NOT NULL, " +
+			"timeout_unit varchar(6) NOT NULL, " +
+			"connections Integer NOT NULL, " +
+			"priority varchar(10), " +
+			"status_id char(1) NOT NULL, " +
+			"processor_name varchar(100) NOT NULL, " +
+			"message_count integer NOT NULL, " +
+			"updt_time datetime(3) NOT NULL, " +
+			"updt_user_id char(10) NOT NULL, " +
+			"PRIMARY KEY (row_id), " +
+			"Constraint UNIQUE INDEX (server_name), " +
+			"Constraint UNIQUE INDEX (socket_port) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created socket_server Table...");
 		} catch (SQLException e) {
@@ -67,43 +69,27 @@ public class SocketServerTable extends CreateTableBase {
 	}
 	
 	public void loadTestData() throws SQLException {
+		SocketServerDao dao = SpringUtil.getDaoAppContext().getBean(SocketServerDao.class);
+		
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO socket_server " +
-				"(ServerName," +
-				"SocketPort," +
-				"Interactive," +
-				"ServerTimeout," +
-				"SocketTimeout," +
-				"TimeoutUnit," +
-				"Connections," +
-				"Priority," +
-				"StatusId," +
-				"ProcessorName," +
-				"MessageCount," +
-				"UpdtTime," +
-				"UpdtUserId) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
-					", ?, ?, ?)");
-			
-			ps.setString(1, "SocketServer1");
-			ps.setInt(2, 5444);
-			ps.setString(3, Constants.YES);
-			ps.setInt(4, 20);
-			ps.setInt(5, 10);
-			ps.setString(6, "minute");
-			ps.setInt(7, 10);
-			ps.setString(8, "high");
-			ps.setString(9, StatusId.ACTIVE.value());
-			ps.setString(10, "socketProcessor");
-			ps.setInt(11, 0);
-			ps.setTimestamp(12, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(13, Constants.DEFAULT_USER_ID);
-			ps.execute();
-			
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			SocketServerVo vo = new SocketServerVo();
+			vo.setServerName("Socket Server 1");
+			vo.setSocketPort(5444);
+			vo.setInteractive(Constants.YES);
+			vo.setServerTimeout(20);
+			vo.setSocketTimeout(10);
+			vo.setTimeoutUnit("minute");
+			vo.setConnections(10);
+			vo.setPriority("high");
+			vo.setStatusId(StatusId.ACTIVE.value());
+			vo.setProcessorName("socketProcessor");
+			vo.setMessageCount(0);
+			vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+			vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+
+			int rows = dao.insert(vo);
+			System.out.println("Number of rows inserted to socket_server: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}

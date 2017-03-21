@@ -18,8 +18,8 @@ import ltj.message.vo.TimerServerVo;
 public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 	
 	@Override
-	public TimerServerVo getByPrimaryKey(String serverName) {
-		String sql = "select * from timer_server where ServerName=?";
+	public TimerServerVo getByServerName(String serverName) {
+		String sql = "select * from timer_server where server_name=?";
 		Object[] parms = new Object[] {serverName};
 		try {
 			TimerServerVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -30,13 +30,27 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 			return null;
 		}
 	}
-	
+
+	@Override
+	public TimerServerVo getByPrimaryKey(long rowId) {
+		String sql = "select * from timer_server where row_id=?";
+		Object[] parms = new Object[] {rowId};
+		try {
+			TimerServerVo vo = getJdbcTemplate().queryForObject(sql, parms, 
+					new BeanPropertyRowMapper<TimerServerVo>(TimerServerVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
 	@Override
 	public List<TimerServerVo> getAll(boolean onlyActive) {
 		
 		String sql = "select * from timer_server ";
 		if (onlyActive) {
-			sql += " where StatusId='" + StatusId.ACTIVE.value() + "'";
+			sql += " where status_id='" + StatusId.ACTIVE.value() + "'";
 		}
 		List<TimerServerVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<TimerServerVo>(TimerServerVo.class));
@@ -56,9 +70,17 @@ public class TimerServerJdbcDao extends AbstractDao implements TimerServerDao {
 	}
 	
 	@Override
-	public int deleteByPrimaryKey(String serverName) {
-		String sql = "delete from timer_server where ServerName=?";
+	public int deleteByServerName(String serverName) {
+		String sql = "delete from timer_server where server_name=?";
 		Object[] parms = new Object[] {serverName};
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
+		return rowsDeleted;
+	}
+
+	@Override
+	public int deleteByPrimaryKey(long rowId) {
+		String sql = "delete from timer_server where row_id=?";
+		Object[] parms = new Object[] {rowId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}

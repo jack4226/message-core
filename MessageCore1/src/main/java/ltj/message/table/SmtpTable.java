@@ -8,7 +8,12 @@ import ltj.data.preload.SmtpServerEnum;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailServerType;
 import ltj.message.constant.StatusId;
+import ltj.message.dao.smtp.MailSenderPropsDao;
+import ltj.message.dao.smtp.SmtpServerDao;
 import ltj.message.main.CreateTableBase;
+import ltj.message.vo.MailSenderVo;
+import ltj.message.vo.SmtpConnVo;
+import ltj.spring.util.SpringUtil;
 
 public class SmtpTable extends CreateTableBase {
 	/**
@@ -52,28 +57,28 @@ public class SmtpTable extends CreateTableBase {
 		*/
 		try {
 			stm.execute("CREATE TABLE smtp_server ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"ServerName varchar(50) NOT NULL, " +
-			"SmtpHost varchar(100) NOT NULL, " +
-			"SmtpPort integer NOT NULL, " +
-			"Description varchar(100), " +
-			"UseSsl varchar(3) NOT NULL, " +
-			"UseAuth varchar(3), " +
-			"UserId varchar(30) NOT NULL, " + 
-			"UserPswd varchar(30) NOT NULL, " +
-			"Persistence varchar(3) NOT NULL, " +
-			"StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
-			"ServerType varchar(5) DEFAULT '" + MailServerType.SMTP.value() + "', " +
-			"Threads integer NOT NULL, " +
-			"Retries integer NOT NULL, " +
-			"RetryFreq integer NOT NULL, " +
-			"AlertAfter integer, " +
-			"AlertLevel varchar(5), " +
-			"MessageCount integer NOT NULL, " +
-			"UpdtTime datetime(3) NOT NULL, " +
-			"UpdtUserId char(10) NOT NULL, " +
-			"PRIMARY KEY (RowId), " +
-			"UNIQUE INDEX (ServerName) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"server_name varchar(50) NOT NULL, " +
+			"smtp_host varchar(100) NOT NULL, " +
+			"smtp_port integer NOT NULL, " +
+			"description varchar(100), " +
+			"use_ssl varchar(3) NOT NULL, " +
+			"use_auth varchar(3), " +
+			"user_id varchar(30) NOT NULL, " + 
+			"user_pswd varchar(30) NOT NULL, " +
+			"persistence varchar(3) NOT NULL, " +
+			"status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
+			"server_type varchar(5) DEFAULT '" + MailServerType.SMTP.value() + "', " +
+			"threads integer NOT NULL, " +
+			"retries integer NOT NULL, " +
+			"retry_freq integer NOT NULL, " +
+			"alert_after integer, " +
+			"alert_level varchar(5), " +
+			"message_count integer NOT NULL, " +
+			"updt_time datetime(3) NOT NULL, " +
+			"updt_user_id char(10) NOT NULL, " +
+			"PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX (server_name) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created smtp_server Table...");
 		} catch (SQLException e) {
@@ -89,17 +94,17 @@ public class SmtpTable extends CreateTableBase {
 		*/
 		try {
 			stm.execute("CREATE TABLE mail_sender_props ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"InternalLoopback varchar(100) NOT NULL, " +
-			"ExternalLoopback varchar(100) NOT NULL, " +
-			"UseTestAddr varchar(3) NOT NULL, " +
-			"TestFromAddr varchar(255), " +
-			"TestToAddr varchar(255) NOT NULL, " +
-			"TestReplytoAddr varchar(255), " + 
-			"IsVerpEnabled varchar(3) NOT NULL, " +
-			"UpdtTime datetime(3) NOT NULL, " +
-			"UpdtUserId char(10) NOT NULL, " +
-			"PRIMARY KEY (RowId) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"internal_loopback varchar(100) NOT NULL, " +
+			"external_loopback varchar(100) NOT NULL, " +
+			"use_test_addr varchar(3) NOT NULL, " +
+			"test_from_addr varchar(255), " +
+			"test_to_addr varchar(255) NOT NULL, " +
+			"test_replyto_addr varchar(255), " + 
+			"is_verp_enabled varchar(3) NOT NULL, " +
+			"updt_time datetime(3) NOT NULL, " +
+			"updt_user_id char(10) NOT NULL, " +
+			"PRIMARY KEY (row_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created mail_sender_props Table...");
 		} catch (SQLException e) {
@@ -119,101 +124,140 @@ public class SmtpTable extends CreateTableBase {
 		insertMailSenderData();
 	}
 	
-	private String insertSql = 
-		"INSERT INTO smtp_server " +
-			"(SmtpHost," +
-			"SmtpPort," +
-			"ServerName," +
-			"Description, " +
-			"UseSsl," +
-			"UserId," +
-			"UserPswd," +
-			"Persistence," +
-			"StatusId," +
-			"ServerType," +
-			"Threads," +
-			"Retries," +
-			"RetryFreq," +
-			"AlertAfter," +
-			"AlertLevel," +
-			"MessageCount," +
-			"UpdtTime," +
-			"UpdtUserId) " +
-			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
-				", ?, ?, ?, ?, ?, ?, ?, ?)";
+//	private String insertSql = 
+//		"INSERT INTO smtp_server " +
+//			"(SmtpHost," +
+//			"SmtpPort," +
+//			"ServerName," +
+//			"Description, " +
+//			"UseSsl," +
+//			"UserId," +
+//			"UserPswd," +
+//			"Persistence," +
+//			"StatusId," +
+//			"ServerType," +
+//			"Threads," +
+//			"Retries," +
+//			"RetryFreq," +
+//			"AlertAfter," +
+//			"AlertLevel," +
+//			"MessageCount," +
+//			"UpdtTime," +
+//			"UpdtUserId) " +
+//			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
+//				", ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	void insertReleaseSmtpData() throws SQLException {
-		try {
-			PreparedStatement ps = con.prepareStatement(insertSql);
-			
-			for (SmtpServerEnum ss : SmtpServerEnum.values()) {
-				if (ss.isTestOnly()) {
-					continue;
-				}
-				ps.setString(1, ss.getSmtpHost()); // smtpHost
-				ps.setInt(2, ss.getSmtpPort()); // smtpPort
-				ps.setString(3, ss.getServerName()); // server name
-				ps.setString(4, ss.getDescription()); // description
-				ps.setString(5, ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
-				ps.setString(6, ss.getUserId()); // user id
-				ps.setString(7, ss.getUserPswd()); // user password
-				ps.setString(8, ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
-				ps.setString(9, ss.getStatus().value()); // status id
-				ps.setString(10, ss.getServerType().value()); // server type
-				ps.setInt(11, ss.getNumberOfThreads()); // Threads
-				ps.setInt(12, ss.getMaximumRetries()); // retries
-				ps.setInt(13, ss.getRetryFreq()); // retry freq
-				ps.setInt(14, ss.getAlertAfter()); // alertAfter
-				ps.setString(15, ss.getAlertLevel()); // alert level
-				ps.setInt(16, ss.getMessageCount()); // message count
-				ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
-				ps.setString(18, Constants.DEFAULT_USER_ID);
-				ps.execute();
+//		try {
+//			PreparedStatement ps = con.prepareStatement(insertSql);
+//			
+//			for (SmtpServerEnum ss : SmtpServerEnum.values()) {
+//				if (ss.isTestOnly()) {
+//					continue;
+//				}
+//				ps.setString(1, ss.getSmtpHost()); // smtpHost
+//				ps.setInt(2, ss.getSmtpPort()); // smtpPort
+//				ps.setString(3, ss.getServerName()); // server name
+//				ps.setString(4, ss.getDescription()); // description
+//				ps.setString(5, ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
+//				ps.setString(6, ss.getUserId()); // user id
+//				ps.setString(7, ss.getUserPswd()); // user password
+//				ps.setString(8, ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
+//				ps.setString(9, ss.getStatus().value()); // status id
+//				ps.setString(10, ss.getServerType().value()); // server type
+//				ps.setInt(11, ss.getNumberOfThreads()); // Threads
+//				ps.setInt(12, ss.getMaximumRetries()); // retries
+//				ps.setInt(13, ss.getRetryFreq()); // retry freq
+//				ps.setInt(14, ss.getAlertAfter()); // alertAfter
+//				ps.setString(15, ss.getAlertLevel()); // alert level
+//				ps.setInt(16, ss.getMessageCount()); // message count
+//				ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
+//				ps.setString(18, Constants.DEFAULT_USER_ID);
+//				ps.execute();
+//			}
+//
+//			ps.close();
+//			System.out.println("Inserted all rows...");
+//		} catch (SQLException e) {
+//			System.err.println("SQL Error: " + e.getMessage());
+//			throw e;
+//		}
+		
+		SmtpServerDao dao = SpringUtil.getDaoAppContext().getBean(SmtpServerDao.class);
+		
+		int rows = 0;
+		for (SmtpServerEnum ss : SmtpServerEnum.values()) {
+			if (ss.isTestOnly()) {
+				continue;
 			}
-
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
-			System.err.println("SQL Error: " + e.getMessage());
-			throw e;
+			try {
+				SmtpConnVo vo = new SmtpConnVo();
+				vo.setSmtpHost(ss.getSmtpHost());
+				vo.setSmtpPort(ss.getSmtpPort());
+				vo.setServerName(ss.getServerName());
+				vo.setDescription(ss.getDescription());
+				vo.setUseSsl(ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
+				vo.setUserId(ss.getUserId());
+				vo.setUserPswd(ss.getUserPswd());
+				vo.setPersistence(ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
+				vo.setStatusId(ss.getStatus().value()); // status id
+				vo.setServerType(ss.getServerType().value()); // server type
+				vo.setThreads(ss.getNumberOfThreads()); // Threads
+				vo.setRetries(ss.getMaximumRetries()); // retries
+				vo.setRetryFreq(ss.getRetryFreq()); // retry frequency
+				vo.setAlertAfter(ss.getAlertAfter());
+				vo.setAlertLevel(ss.getAlertLevel());
+				vo.setMessageCount(ss.getMessageCount());
+				vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+				vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+				
+				rows += dao.insert(vo);
+				
+			} catch (Exception e) {
+				System.err.println("SQL Error: " + e.getMessage());
+				throw e;
+			}
 		}
+		System.out.println("Number of rows inserted to smtp_server: " + rows);
 	}
 
 	void insertTestSmtpData() throws SQLException {
-		try {
-			PreparedStatement ps = con.prepareStatement(insertSql);
-			
-			for (SmtpServerEnum ss : SmtpServerEnum.values()) {
-				if (ss.isTestOnly()) {
-					ps.setString(1, ss.getSmtpHost()); // smtpHost
-					ps.setInt(2, ss.getSmtpPort()); // smtpPort
-					ps.setString(3, ss.getServerName()); // server name
-					ps.setString(4, ss.getDescription()); // description
-					ps.setString(5, ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
-					ps.setString(6, ss.getUserId()); // user id
-					ps.setString(7, ss.getUserPswd()); // user password
-					ps.setString(8, ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
-					ps.setString(9, ss.getStatus().value()); // status id
-					ps.setString(10, ss.getServerType().value()); // server type
-					ps.setInt(11, ss.getNumberOfThreads()); // Threads
-					ps.setInt(12, ss.getMaximumRetries()); // retries
-					ps.setInt(13, ss.getRetryFreq()); // retry freq
-					ps.setInt(14, ss.getAlertAfter()); // alertAfter
-					ps.setString(15, ss.getAlertLevel()); // alert level
-					ps.setInt(16, ss.getMessageCount()); // message count
-					ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
-					ps.setString(18, Constants.DEFAULT_USER_ID);
-					ps.execute();
+		SmtpServerDao dao = SpringUtil.getDaoAppContext().getBean(SmtpServerDao.class);
+		
+		int rows = 0;
+		for (SmtpServerEnum ss : SmtpServerEnum.values()) {
+			if (ss.isTestOnly()) {
+				try {
+					SmtpConnVo vo = new SmtpConnVo();
+					vo.setSmtpHost(ss.getSmtpHost());
+					vo.setSmtpPort(ss.getSmtpPort());
+					vo.setServerName(ss.getServerName());
+					vo.setDescription(ss.getDescription());
+					vo.setUseSsl(ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
+					vo.setUserId(ss.getUserId());
+					vo.setUserPswd(ss.getUserPswd());
+					vo.setPersistence(ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
+					vo.setStatusId(ss.getStatus().value()); // status id
+					vo.setServerType(ss.getServerType().value()); // server type
+					vo.setThreads(ss.getNumberOfThreads()); // Threads
+					vo.setRetries(ss.getMaximumRetries()); // retries
+					vo.setRetryFreq(ss.getRetryFreq()); // retry frequency
+					vo.setAlertAfter(ss.getAlertAfter());
+					vo.setAlertLevel(ss.getAlertLevel());
+					vo.setMessageCount(ss.getMessageCount());
+					vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+					vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+					
+					rows += dao.insert(vo);
+					
+				} catch (Exception e) {
+					System.err.println("SQL Error: " + e.getMessage());
+					throw e;
 				}
 			}
-
-
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
-			System.err.println("SQL Error: " + e.getMessage());
-			throw e;
 		}
+		System.out.println("Number of rows inserted to smtp_server: " + rows);
+
 	}
 
 	public void UpdateSmtpData4Prod() throws SQLException {
@@ -242,34 +286,23 @@ public class SmtpTable extends CreateTableBase {
 	}
 	
 	void insertMailSenderData() throws SQLException {
+		MailSenderPropsDao dao = SpringUtil.getDaoAppContext().getBean(MailSenderPropsDao.class);
+		
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO mail_sender_props " +
-				"(InternalLoopback," +
-				"ExternalLoopback," +
-				"UseTestAddr," +
-				"TestFromAddr, " +
-				"TestToAddr," +
-				"TestReplytoAddr," +
-				"IsVerpEnabled," +
-				"UpdtTime," +
-				"UpdtUserId) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-			ps.setString(1, "testto@localhost");
-			ps.setString(2, "inbox@lagacytojava.com");
-			ps.setString(3, Constants.YES);
-			ps.setString(4, "testfrom@localhost");
-			ps.setString(5, "testto@localhost");
-			ps.setString(6, "testreplyto@localhost");
-			ps.setString(7, Constants.NO);
-			ps.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
-			ps.setString(9, "SysAdmin");
-			ps.execute();
+			MailSenderVo vo = new MailSenderVo();
+			vo.setInternalLoopback("testto@localhost");
+			vo.setExternalLoopback("inbox@lagacytojava.com");
+			vo.setUseTestAddr(Constants.YES);
+			vo.setTestFromAddr("testfrom@localhost");
+			vo.setTestToAddr("testto@localhost");
+			vo.setTestReplytoAddr("testreplyto@localhost");
+			vo.setIsVerpEnabled(Constants.NO);
+			vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+			vo.setUpdtUserId("SysAdmin");
 			
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			int rows = dao.insert(vo);
+			System.out.println("Number of rows inserted to mail_sender_props: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}

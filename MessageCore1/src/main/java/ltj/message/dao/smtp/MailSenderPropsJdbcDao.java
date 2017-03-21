@@ -19,7 +19,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 	@Override
 	public MailSenderVo getByPrimaryKey(int rowId) {
 		String sql = 
-			"select * from mail_sender_props where rowId=?";
+			"select * from mail_sender_props where row_id=?";
 		Object[] parms = new Object[] {rowId};
 		try {
 			MailSenderVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -46,7 +46,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailSenderVo);
 		String sql = MetaDataUtil.buildUpdateStatement("mail_sender_props", mailSenderVo);
 		if (mailSenderVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		mailSenderVo.setOrigUpdtTime(mailSenderVo.getUpdtTime());
@@ -56,7 +56,7 @@ public class MailSenderPropsJdbcDao extends AbstractDao implements MailSenderPro
 	@Override
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = 
-			"delete from mail_sender_props where RowId=?";
+			"delete from mail_sender_props where row_id=?";
 		Object[] parms = new Object[] {rowId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;

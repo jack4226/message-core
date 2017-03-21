@@ -47,11 +47,16 @@ public class RegExTest {
 			assertEquals(
 					"K&quot;&amp;nbsp;L Gates LLP,<br/>K&amp;L Gates &amp; Center &#245; &amp;\n &amp;copy; &amp; &quot; &amp;",
 					convertAmpersands("K&quot;&nbsp;L Gates LLP,<br/>K&L Gates & Center &#245; &\n &copy; &amp; &quot; &"));
+			
+			logger.info("my_last_name -> " + convertCamelCase("my_last_name"));
+			logger.info("myLastName -> " + convertCamelCase("myLastName"));
 		}
 		catch (Exception e) {
 			fail();
 		}
 	}
+	
+	
 
 	String parseMessageHeader(String line) {
 		Pattern ptn = Pattern.compile("^([\\w-]{1,50}): (.{1,100})$");
@@ -105,6 +110,17 @@ public class RegExTest {
 	String convertAmpersands(String htmlData) {
 		String regex = "&((?!(?:quot|amp|apos|lt|gt|#\\d{3,6}|#x\\w{3,5});))";
 		return htmlData.replaceAll(regex, "&amp;$1");
+	}
+	
+	String convertCamelCase(String str) {
+		Pattern p = Pattern.compile("_(.)");
+		Matcher m = p.matcher(str);
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			m.appendReplacement(sb, m.group(1).toUpperCase());
+		}
+		m.appendTail(sb);
+		return sb.toString();
 	}
 
 	boolean isHTML(String text) {

@@ -21,16 +21,35 @@ public class SocketServerTest extends DaoTestBase {
 	private SocketServerDao socketServerDao;
 	
 	@Test
-	public void testSocketServer() {
+	public void testSocketServer1() {
 		try {
 			List<SocketServerVo> svrs = socketServerDao.getAll(true);
 			assertFalse(svrs.isEmpty());
-			SocketServerVo vo1 = socketServerDao.getByPrimaryKey(svrs.get(0).getServerName());
+			SocketServerVo vo1 = socketServerDao.getByServerName(svrs.get(0).getServerName());
 			assertNotNull(vo1);
 			int rowsUpdated  = update(vo1);
 			assertTrue(rowsUpdated > 0);
 			SocketServerVo vo2 = insert();
 			int rowsDeleted = delete(vo2);
+			assertTrue(rowsDeleted > 0);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	@Test
+	public void testSocketServer2() {
+		try {
+			List<SocketServerVo> svrs = socketServerDao.getAll(true);
+			assertFalse(svrs.isEmpty());
+			SocketServerVo vo1 = socketServerDao.getByPrimaryKey(svrs.get(0).getRowId());
+			assertNotNull(vo1);
+			int rowsUpdated  = update(vo1);
+			assertTrue(rowsUpdated > 0);
+			SocketServerVo vo2 = insert();
+			int rowsDeleted = socketServerDao.deleteByPrimaryKey(vo2.getRowId());
 			assertTrue(rowsDeleted > 0);
 		}
 		catch (Exception e) {
@@ -49,7 +68,7 @@ public class SocketServerTest extends DaoTestBase {
 	}
 	
 	private int delete(SocketServerVo socketServerVo) {
-		int rowsDeleted = socketServerDao.deleteByPrimaryKey(socketServerVo.getServerName());
+		int rowsDeleted = socketServerDao.deleteByServerName(socketServerVo.getServerName());
 		logger.info("SocketServerDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}

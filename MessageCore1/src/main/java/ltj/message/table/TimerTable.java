@@ -1,12 +1,14 @@
 package ltj.message.table;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
+import ltj.message.dao.timer.TimerServerDao;
 import ltj.message.main.CreateTableBase;
+import ltj.message.vo.TimerServerVo;
+import ltj.spring.util.SpringUtil;
 
 public class TimerTable extends CreateTableBase {
 	/**
@@ -29,19 +31,19 @@ public class TimerTable extends CreateTableBase {
 	public void createTables() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE timer_server ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"ServerName varchar(50) NOT NULL, " + 
-			"TimerInterval Integer NOT NULL, " +
-			"TimerIntervalUnit varchar(6) NOT NULL, " +
-			"InitialDelay Integer NOT NULL, " +
-			"StartTime datetime(3), " +
-			"Threads Integer NOT NULL, " +
-			"StatusId char(1) NOT NULL, " +
-			"ProcessorName varchar(100) NOT NULL, " +
-			"UpdtTime datetime(3) NOT NULL, " +
-			"UpdtUserId char(10) NOT NULL, " +
-			"PRIMARY KEY (RowId), " +
-			"UNIQUE INDEX (ServerName) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"server_name varchar(50) NOT NULL, " + 
+			"timer_interval Integer NOT NULL, " +
+			"timer_interval_unit varchar(6) NOT NULL, " +
+			"initial_delay Integer NOT NULL, " +
+			"start_time datetime(3), " +
+			"threads Integer NOT NULL, " +
+			"status_id char(1) NOT NULL, " +
+			"processor_name varchar(100) NOT NULL, " +
+			"updt_time datetime(3) NOT NULL, " +
+			"updt_user_id char(10) NOT NULL, " +
+			"PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX (server_name) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created timer_server Table...");
 		} catch (SQLException e) {
@@ -51,36 +53,25 @@ public class TimerTable extends CreateTableBase {
 	}
 	
 	public void loadTestData() throws SQLException {
+		TimerServerDao dao = SpringUtil.getDaoAppContext().getBean(TimerServerDao.class);
+		
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO timer_server " +
-				"(ServerName," +
-				"TimerInterval," +
-				"TimerIntervalUnit," +
-				"InitialDelay," +
-				"StartTime," +
-				"Threads," +
-				"StatusId," +
-				"ProcessorName," +
-				"UpdtTime," +
-				"UpdtUserId) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
+			TimerServerVo vo = new TimerServerVo();
+			vo.setServerName("PurgeServer");
+			vo.setTimerInterval(60);
+			vo.setTimerIntervalUnit("minute");
+			vo.setInitialDelay(5000);
+			vo.setStartTime(null);
+			vo.setThreads(1);
+			vo.setStatusId(StatusId.ACTIVE.value());
+			vo.setProcessorName("timerProcessor");
+			vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+			vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 			
-			ps.setString(1, "PurgeTimer");
-			ps.setInt(2, 60);
-			ps.setString(3, "minute");
-			ps.setInt(4, 5000);
-			ps.setTimestamp(5, null);
-			ps.setInt(6, 1);
-			ps.setString(7, StatusId.ACTIVE.value());
-			ps.setString(8, "timerProcessor");
-			ps.setTimestamp(9, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(10, Constants.DEFAULT_USER_ID);
-			ps.execute();
-			
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			int rows = dao.insert(vo);
+			System.out.println("Number of timer_server rows inserted: " + rows);
+		}
+		catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
