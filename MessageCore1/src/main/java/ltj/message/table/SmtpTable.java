@@ -124,65 +124,7 @@ public class SmtpTable extends CreateTableBase {
 		insertMailSenderData();
 	}
 	
-//	private String insertSql = 
-//		"INSERT INTO smtp_server " +
-//			"(SmtpHost," +
-//			"SmtpPort," +
-//			"ServerName," +
-//			"Description, " +
-//			"UseSsl," +
-//			"UserId," +
-//			"UserPswd," +
-//			"Persistence," +
-//			"StatusId," +
-//			"ServerType," +
-//			"Threads," +
-//			"Retries," +
-//			"RetryFreq," +
-//			"AlertAfter," +
-//			"AlertLevel," +
-//			"MessageCount," +
-//			"UpdtTime," +
-//			"UpdtUserId) " +
-//			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
-//				", ?, ?, ?, ?, ?, ?, ?, ?)";
-
 	void insertReleaseSmtpData() throws SQLException {
-//		try {
-//			PreparedStatement ps = con.prepareStatement(insertSql);
-//			
-//			for (SmtpServerEnum ss : SmtpServerEnum.values()) {
-//				if (ss.isTestOnly()) {
-//					continue;
-//				}
-//				ps.setString(1, ss.getSmtpHost()); // smtpHost
-//				ps.setInt(2, ss.getSmtpPort()); // smtpPort
-//				ps.setString(3, ss.getServerName()); // server name
-//				ps.setString(4, ss.getDescription()); // description
-//				ps.setString(5, ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
-//				ps.setString(6, ss.getUserId()); // user id
-//				ps.setString(7, ss.getUserPswd()); // user password
-//				ps.setString(8, ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
-//				ps.setString(9, ss.getStatus().value()); // status id
-//				ps.setString(10, ss.getServerType().value()); // server type
-//				ps.setInt(11, ss.getNumberOfThreads()); // Threads
-//				ps.setInt(12, ss.getMaximumRetries()); // retries
-//				ps.setInt(13, ss.getRetryFreq()); // retry freq
-//				ps.setInt(14, ss.getAlertAfter()); // alertAfter
-//				ps.setString(15, ss.getAlertLevel()); // alert level
-//				ps.setInt(16, ss.getMessageCount()); // message count
-//				ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
-//				ps.setString(18, Constants.DEFAULT_USER_ID);
-//				ps.execute();
-//			}
-//
-//			ps.close();
-//			System.out.println("Inserted all rows...");
-//		} catch (SQLException e) {
-//			System.err.println("SQL Error: " + e.getMessage());
-//			throw e;
-//		}
-		
 		SmtpServerDao dao = SpringUtil.getDaoAppContext().getBean(SmtpServerDao.class);
 		
 		int rows = 0;

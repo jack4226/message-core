@@ -191,150 +191,42 @@ public class MailboxTable extends CreateTableBase {
 				ps.execute();
 			}
 		}
-		
-		
-//		ps.setString(1, "support");
-//		ps.setString(2, "support");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(6, "INBOX");
-//		ps.setString(7, "Default Site Return Path");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 5); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 4); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 10); // MinimumWait
-//		ps.setInt(16, -1);
-//		ps.setString(17, Constants.NO);
-//		ps.setString(18, "localhost");
-//		ps.setString(19, Constants.YES);
-//		ps.setString(20, Constants.YES);
-//		ps.setString(21, Constants.YES);
-//		ps.setInt(22, 24);
-//		ps.setString(23, "mailProcessor");
-//		ps.setTimestamp(24, new Timestamp(new java.util.Date().getTime()));
-//		ps.setString(25, Constants.DEFAULT_USER_ID);
-//		ps.execute();
-//
-//		ps.setString(1, "sitemaster");
-//		ps.setString(2, "sitemaster");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "Default site owner's mailbox");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "bounce");
-//		ps.setString(2, "bounce");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "Default VERP Bounce");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "noreply");
-//		ps.setString(2, "noreply");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "For all NOREPLY messages");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "demolist1");
-//		ps.setString(2, "demolist1");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "Default Test List 1");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "demolist2");
-//		ps.setString(2, "demolist2");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "Default Test List 2");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "testto");
-//		ps.setString(2, "testto");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(6, "INBOX");
-//		ps.setString(7, "Default Test TO Address");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 5); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 4); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 10); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "testfrom");
-//		ps.setString(2, "testfrom");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(6, "INBOX");
-//		ps.setString(7, "Default Test FROM Address");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 5); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 4); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 10); // MinimumWait
-//		ps.execute();
-		
 		ps.close();
+		
+		int rows = 0;
+		for (MailInboxEnum in : MailInboxEnum.values()) {
+			if (StringUtils.isAllUpperCase(in.name())) {
+				MailBoxVo vo = new MailBoxVo();
+				vo.setUserId(in.getUserId());
+				vo.setUserPswd(in.getUserPswd());
+				vo.setHostName(in.getHostName());
+				vo.setPortNumber(in.getPort());
+				vo.setProtocol(in.getProtocol().value());
+				vo.setFolderName("INBOX");
+				vo.setDescription(in.getDescription());
+				vo.setStatusId(in.getStatus().value());
+				vo.setCarrierCode(CarrierCode.SMTPMAIL.value());
+				vo.setInternalOnly(in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
+				vo.setReadPerPass(in.getReadPerPass());
+				vo.setUseSsl(in.isUseSsl() ? Constants.YES : Constants.NO);
+				vo.setThreads(in.getNumberOfThreads());
+				vo.setRetryMax(in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
+				vo.setMinimumWait(in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
+				vo.setMessageCount(in.getMessageCount());
+				vo.setToPlainText(in.getIsToPlainText() == null ? null : in.getIsToPlainText() ? Constants.YES : Constants.NO);
+				vo.setToAddrDomain(in.getToAddressDomain());
+				vo.setCheckDuplicate(in.getIsCheckDuplicate() == null ? null : in.getIsCheckDuplicate() ? Constants.YES : Constants.NO);
+				vo.setAlertDuplicate(in.getIsAlertDuplicate() == null ? null : in.getIsAlertDuplicate() ? Constants.YES : Constants.NO);
+				vo.setLogDuplicate(in.getIsLogDuplicate() == null ? null : in.getIsLogDuplicate() ? Constants.YES : Constants.NO);
+				vo.setPurgeDupsAfter(in.getPurgeDupsAfter());
+				vo.setProcessorName("mailProcessor");
+				vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+				vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+				
+				rows += getMailBoxDao().insert(vo);
+			}
+		}
+		System.out.println("Number of rows inserted to mail_box: " + rows);
 	}
 
 	void insertTestMailboxes() throws SQLException {
@@ -371,139 +263,6 @@ public class MailboxTable extends CreateTableBase {
 			}
 		}
 
-//		ps.setString(1, "jwang");
-//		ps.setString(2, "jwang");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(6, "INBOX");
-//		ps.setString(7, "local pop3 Server");
-//		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.setInt(16, -1);
-//		ps.setString(17, Constants.NO);
-//		ps.setString(18, "legacytojava.com,jbatch.com");
-//		ps.setString(19, Constants.YES);
-//		ps.setString(20, Constants.YES);
-//		ps.setString(21, Constants.YES);
-//		ps.setInt(22, 24);
-//		ps.setString(23, "mailProcessor");
-//		ps.setTimestamp(24, new Timestamp(new java.util.Date().getTime()));
-//		ps.setString(25, Constants.DEFAULT_USER_ID);
-//		ps.execute();
-//		
-//		ps.setString(1, "twang");
-//		ps.setString(2, "twang");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "local pop3 Server");
-//		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.YES);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "jackwng");
-//		ps.setString(2, "jackwng");
-//		ps.setString(3, "pop.gmail.com");
-//		ps.setInt(4, 995);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "GMail Secure Server");
-//		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.YES);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.setInt(16, -1);
-//		ps.setString(17, Constants.NO);
-//		ps.setString(18, "legacytojava.com,emailsphere.com");
-//		ps.setString(19, Constants.YES);
-//		ps.setString(20, Constants.YES);
-//		ps.setString(21, Constants.YES);
-//		ps.setInt(22, 24);
-//		ps.setString(23, "mailProcessor");
-//		ps.setTimestamp(24, new Timestamp(new java.util.Date().getTime()));
-//		ps.setString(25, Constants.DEFAULT_USER_ID);
-//		ps.execute();
-//		
-//		ps.setString(1, "jwang");
-//		ps.setString(2, "jwang");
-//		ps.setString(3, "pop-server.nc.rr.com");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "Road Runner Server");
-//		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 6); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "df153");
-//		ps.setString(2, "df153");
-//		ps.setString(3, "imap.aim.com");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.IMAP.value());
-//		ps.setString(7, "AIM Mail Server");
-//		ps.setString(8, StatusId.INACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 10); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 10); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "postmaster");
-//		ps.setString(2, "postmaster");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "James Server postmaster's mailbox");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.execute();
-//		
-//		ps.setString(1, "webmaster");
-//		ps.setString(2, "webmaster");
-//		ps.setString(3, "localhost");
-//		ps.setInt(4, -1);
-//		ps.setString(5, MailProtocol.POP3.value());
-//		ps.setString(7, "Emailsphere demo webmaster's mailbox");
-//		ps.setString(8, StatusId.ACTIVE.value());
-//		ps.setString(9, CarrierCode.SMTPMAIL.value());
-//		ps.setString(10, Constants.NO);
-//		ps.setInt(11, 4); // ReadPerPass
-//		ps.setString(12, Constants.NO);
-//		ps.setInt(13, 2); // Threads
-//		ps.setInt(14, 5); // RetryMax
-//		ps.setInt(15, 8); // MinimumWait
-//		ps.execute();
-		
 		ps.close();
 	}
 
