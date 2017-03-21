@@ -159,39 +159,39 @@ public class MailboxTable extends CreateTableBase {
 	}
 
 	void insertReleaseMailbox() throws SQLException {
-		PreparedStatement ps = con.prepareStatement(insertSql);
-		
-		for (MailInboxEnum in : MailInboxEnum.values()) {
-			if (StringUtils.isAllUpperCase(in.name())) {
-				ps.setString(1, in.getUserId());
-				ps.setString(2, in.getUserPswd());
-				ps.setString(3, in.getHostName());
-				ps.setInt(4, in.getPort());
-				ps.setString(5, in.getProtocol().value());
-				ps.setString(6, "INBOX");
-				ps.setString(7, in.getDescription());
-				ps.setString(8, in.getStatus().value());
-				ps.setString(9, CarrierCode.SMTPMAIL.value());
-				ps.setString(10, in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
-				ps.setInt(11, in.getReadPerPass()); // ReadPerPass
-				ps.setString(12, in.isUseSsl() ? Constants.YES : Constants.NO);
-				ps.setInt(13, in.getNumberOfThreads()); // Threads
-				ps.setInt(14, in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
-				ps.setInt(15, in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
-				ps.setInt(16, in.getMessageCount());
-				ps.setString(17, in.getIsToPlainText() == null ? null : in.getIsToPlainText() ? Constants.YES : Constants.NO);
-				ps.setString(18, in.getToAddressDomain());
-				ps.setString(19, in.getIsCheckDuplicate() == null ? null : in.getIsCheckDuplicate() ? Constants.YES : Constants.NO);
-				ps.setString(20, in.getIsAlertDuplicate() == null ? null : in.getIsAlertDuplicate() ? Constants.YES : Constants.NO);
-				ps.setString(21, in.getIsLogDuplicate() == null ? null : in.getIsLogDuplicate() ? Constants.YES : Constants.NO);
-				ps.setInt(22, in.getPurgeDupsAfter());
-				ps.setString(23, "mailProcessor");
-				ps.setTimestamp(24, new Timestamp(System.currentTimeMillis()));
-				ps.setString(25, Constants.DEFAULT_USER_ID);
-				ps.execute();
-			}
-		}
-		ps.close();
+//		PreparedStatement ps = con.prepareStatement(insertSql);
+//		
+//		for (MailInboxEnum in : MailInboxEnum.values()) {
+//			if (StringUtils.isAllUpperCase(in.name())) {
+//				ps.setString(1, in.getUserId());
+//				ps.setString(2, in.getUserPswd());
+//				ps.setString(3, in.getHostName());
+//				ps.setInt(4, in.getPort());
+//				ps.setString(5, in.getProtocol().value());
+//				ps.setString(6, "INBOX");
+//				ps.setString(7, in.getDescription());
+//				ps.setString(8, in.getStatus().value());
+//				ps.setString(9, CarrierCode.SMTPMAIL.value());
+//				ps.setString(10, in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
+//				ps.setInt(11, in.getReadPerPass()); // ReadPerPass
+//				ps.setString(12, in.isUseSsl() ? Constants.YES : Constants.NO);
+//				ps.setInt(13, in.getNumberOfThreads()); // Threads
+//				ps.setInt(14, in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
+//				ps.setInt(15, in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
+//				ps.setInt(16, in.getMessageCount());
+//				ps.setString(17, in.getIsToPlainText() == null ? null : in.getIsToPlainText() ? Constants.YES : Constants.NO);
+//				ps.setString(18, in.getToAddressDomain());
+//				ps.setString(19, in.getIsCheckDuplicate() == null ? null : in.getIsCheckDuplicate() ? Constants.YES : Constants.NO);
+//				ps.setString(20, in.getIsAlertDuplicate() == null ? null : in.getIsAlertDuplicate() ? Constants.YES : Constants.NO);
+//				ps.setString(21, in.getIsLogDuplicate() == null ? null : in.getIsLogDuplicate() ? Constants.YES : Constants.NO);
+//				ps.setInt(22, in.getPurgeDupsAfter());
+//				ps.setString(23, "mailProcessor");
+//				ps.setTimestamp(24, new Timestamp(System.currentTimeMillis()));
+//				ps.setString(25, Constants.DEFAULT_USER_ID);
+//				ps.execute();
+//			}
+//		}
+//		ps.close();
 		
 		int rows = 0;
 		for (MailInboxEnum in : MailInboxEnum.values()) {
