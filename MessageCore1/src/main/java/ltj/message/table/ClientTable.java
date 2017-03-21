@@ -1,6 +1,5 @@
 package ltj.message.table;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -131,42 +130,6 @@ public class ClientTable extends CreateTableBase {
 		}
 	}
 
-	private String insertSql = 
-		"INSERT INTO client_tbl "
-			+ "(ClientId, "
-			+ "ClientName, "
-			+ "ClientType, "
-			+ "DomainName, "
-			+ "StatusId, " 
-			+ "IrsTaxId, "
-			+ "WebSiteUrl, "
-			+ "SaveRawMsg, "
-			+ "ContactEmail,"
-			+ "SecurityEmail,"
-			+ "custcareEmail,"
-			+ "RmaDeptEmail,"
-			+ "SpamCntrlEmail,"
-			+ "ChaRspHndlrEmail,"
-			+ "EmbedEmailId,"
-			+ "ReturnPathLeft,"
-			+ "UseTestAddr,"
-			+ "TestFromAddr, "
-			+ "TestToAddr,"
-			+ "TestReplytoAddr,"
-			+ "IsVerpEnabled,"
-			+ "VerpSubDomain,"
-			+ "VerpInboxName,"
-			+ "VerpRemoveInbox,"
-			+ "SystemId,"
-			+ "SystemKey,"
-			+ "UpdtTime, "
-			+ "UpdtUserId) "
-			+ " VALUES("
-			+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-			+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-			+ " ?, ?, ?, ?, ?, ?, ?, ? "
-			+ " )";
-
 	public void loadTestData() throws SQLException {
 		try {
 			insertSystemDefault(true);
@@ -191,87 +154,95 @@ public class ClientTable extends CreateTableBase {
 	}
 
 	void insertSystemDefault(boolean loadTestData) throws SQLException {
-		PreparedStatement ps = con.prepareStatement(insertSql);
-		ps.setString(1, Constants.DEFAULT_CLIENTID);
-		ps.setString(2, "Emailsphere Demo");
-		ps.setString(3, null);
-		if (loadTestData)
-			ps.setString(4, "localhost"); // domain name
-		else
-			ps.setString(4, "espheredemo.com"); // domain name
-		ps.setString(5, StatusId.ACTIVE.value());
-		ps.setString(6, "0000000000");
-		ps.setString(7, "http://localhost:8080/MsgUI/publicsite");
-		ps.setString(8, Constants.Y); // save raw stream
+		ClientDao dao = SpringUtil.getDaoAppContext().getBean(ClientDao.class);
+		
+		ClientVo vo = new ClientVo();
+		vo.setClientId(Constants.DEFAULT_CLIENTID);
+		vo.setClientName("Emailsphere Demo");
+		vo.setClientType(null);
 		if (loadTestData) {
-			ps.setString(9, "sitemaster@emailsphere.com");
-			ps.setString(10, "security@localhost");
-			ps.setString(11, "custcare@localhost");
-			ps.setString(12, "rma_dept@localhost");
-			ps.setString(13, "spam_ctrl@localhost");
-			ps.setString(14, "challenge@localhost");
+			vo.setDomainName("localhost");
+		}
+		else {
+			vo.setDomainName("espheredemo.com");
+		}
+		vo.setStatusId(StatusId.ACTIVE.value());
+		vo.setIrsTaxId("0000000000");
+		vo.setWebSiteUrl("http://localhost:8080/MsgUI/publicsite");
+		vo.setSaveRawMsg(Constants.Y); // save raw stream
+		if (loadTestData) {
+			vo.setContactEmail("sitemaster@emailsphere.com");
+			vo.setSecurityEmail("security@localhost");
+			vo.setCustcareEmail("custcare@localhost");
+			vo.setRmaDeptEmail("rma_dept@localhost");
+			vo.setSpamCntrlEmail("spam_ctrl@localhost");
+			vo.setChaRspHndlrEmail("challenge@localhost");
 		}
 		else { // release data
-			ps.setString(9, "sitemaster@localhost");
-			ps.setString(10, "security@localhost");
-			ps.setString(11, "custcare@localhost");
-			ps.setString(12, "rma_dept@localhost");
-			ps.setString(13, "spam_ctrl@localhost");
-			ps.setString(14, "challenge@localhost");
+			vo.setContactEmail("sitemaster@localhost");
+			vo.setSecurityEmail("security@localhost");
+			vo.setCustcareEmail("custcare@localhost");
+			vo.setRmaDeptEmail("rma_dept@localhost");
+			vo.setSpamCntrlEmail("spam_ctrl@localhost");
+			vo.setChaRspHndlrEmail("challenge@localhost");
 		}
-		ps.setString(15, Constants.YES); // Embed EmailId 
-		ps.setString(16, "support"); // return-path left
-		ps.setString(17, Constants.YES); // use testing address
-		ps.setString(18, "testfrom@localhost");
-		ps.setString(19, "testto@localhost");
-		ps.setString(20, null);
-		ps.setString(21, Constants.YES); // is VERP enabled
-		ps.setString(22, null); // VERP sub domain
-		ps.setString(23, "bounce"); // VERP bounce mailbox
-		ps.setString(24, "remove"); // VERP un-subscribe mailbox
+		vo.setEmbedEmailId(Constants.YES); // Embed EmailId
+		vo.setReturnPathLeft("support"); // return-path left
+		vo.setUseTestAddr(Constants.YES); // use testing address
+		vo.setTestFromAddr("testfrom@localhost");
+		vo.setTestToAddr("testto@localhost");
+		vo.setTestReplytoAddr(null);
+		vo.setIsVerpEnabled(Constants.YES); // is VERP enabled
+		vo.setVerpSubDomain(null); // VERP sub domain
+		vo.setVerpInboxName("bounce"); // VERP bounce mailbox
+		vo.setVerpRemoveInbox("remove"); // VERP un-subscribe mailbox
 		Calendar cal = Calendar.getInstance();
 		//cal.add(Calendar.DAY_OF_YEAR, -31);
 		String systemId = TimestampUtil.db2ToDecStr(TimestampUtil.getDb2Timestamp(cal.getTime()));
-		ps.setString(25, systemId);
-		ps.setString(26, ProductUtil.getProductKeyFromFile());
-		ps.setTimestamp(27, new Timestamp(new java.util.Date().getTime()));
-		ps.setString(28, Constants.DEFAULT_USER_ID);
-		ps.execute();
-		ps.close();
+		vo.setSystemId(systemId);
+		vo.setSystemKey(ProductUtil.getProductKeyFromFile());
+		vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+		vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+		
+		int rows = dao.insert(vo, true);
+		System.out.println("client_tbl: default client inserted: " + rows);
 	}
 
 	void insertJBatch() throws SQLException {
-		PreparedStatement ps = con.prepareStatement(insertSql);
-		ps.setString(1, "JBatchCorp");
-		ps.setString(2, "JBatch Corp. Site");
-		ps.setString(3, null);
-		ps.setString(4, "jbatch.com"); // domain name
-		ps.setString(5, StatusId.ACTIVE.value());
-		ps.setString(6, "0000000000");
-		ps.setString(7, "http://www.jbatch.com");
-		ps.setString(8, Constants.Y); // save raw stream
-		ps.setString(9, "sitemaster@jbatch.com");
-		ps.setString(10, "security@jbatch.com");
-		ps.setString(11, "custcare@jbatch.com");
-		ps.setString(12, "rma_dept@jbatch.com");
-		ps.setString(13, "spam.control@jbatch.com");
-		ps.setString(14, "challenge@jbatch.com");
-		ps.setString(15, Constants.YES);
-		ps.setString(16, "support"); // return-path left
-		ps.setString(17, Constants.NO); // use testing address
-		ps.setString(18, "testfrom@jbatch.com");
-		ps.setString(19, "testto@jbatch.com");
-		ps.setString(20, null);
-		ps.setString(21, Constants.NO); // is VERP enabled
-		ps.setString(22, null); // VERP sub domain
-		ps.setString(23, "bounce"); // VERP bounce mailbox
-		ps.setString(24, "remove"); // VERP un-subscribe mailbox
-		ps.setString(25, "");
-		ps.setString(26, null);
-		ps.setTimestamp(27, new Timestamp(new java.util.Date().getTime()));
-		ps.setString(28, Constants.DEFAULT_USER_ID);
-		ps.execute();
-		ps.close();
+		ClientDao dao = SpringUtil.getDaoAppContext().getBean(ClientDao.class);
+		
+		ClientVo vo = new ClientVo();
+		vo.setClientId("JBatchCorp");
+		vo.setClientName("JBatch Corp. Site");
+		vo.setClientType(null);
+		vo.setDomainName("jbatch.com"); // domain name
+		vo.setStatusId(StatusId.ACTIVE.value());
+		vo.setIrsTaxId("0000000000");
+		vo.setWebSiteUrl("http://www.jbatch.com");
+		vo.setSaveRawMsg(Constants.Y); // save raw stream
+		vo.setContactEmail("sitemaster@jbatch.com");
+		vo.setSecurityEmail("security@jbatch.com");
+		vo.setCustcareEmail("custcare@jbatch.com");
+		vo.setRmaDeptEmail("rma_dept@jbatch.com");
+		vo.setSpamCntrlEmail("spam_ctrl@jbatch.com");
+		vo.setChaRspHndlrEmail("challenge@jbatch.com");
+		vo.setEmbedEmailId(Constants.YES); // Embed EmailId
+		vo.setReturnPathLeft("support"); // return-path left
+		vo.setUseTestAddr(Constants.NO); // use testing address
+		vo.setTestFromAddr("testfrom@jbatch.com");
+		vo.setTestToAddr("testto@jbatch.com");
+		vo.setTestReplytoAddr(null);
+		vo.setIsVerpEnabled(Constants.NO); // is VERP enabled
+		vo.setVerpSubDomain(null); // VERP sub domain
+		vo.setVerpInboxName("bounce"); // VERP bounce mailbox
+		vo.setVerpRemoveInbox("remove"); // VERP un-subscribe mailbox
+		vo.setSystemId("");
+		vo.setSystemKey(null);
+		vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+		vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+		
+		int rows = dao.insert(vo, true);
+		System.out.println("client_tbl: jbatch.com inserted: " + rows);
 	}
 
 	public int updateClient4Prod() {
@@ -301,7 +272,7 @@ public class ClientTable extends CreateTableBase {
 		vo.setVerpRemoveInbox("remove"); // VERP un-subscribe mailbox
 		//String systemId = TimestampUtil.db2ToDecStr(TimestampUtil.getDb2Timestamp());
 		//vo.setSystemId(systemId);
-		vo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
+		vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		int rowsInserted = dao.update(vo);
 		if (ProductKey.validateKey(ProductUtil.getProductKeyFromFile())) {

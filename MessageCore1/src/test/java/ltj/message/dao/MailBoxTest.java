@@ -15,57 +15,46 @@ import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.vo.MailBoxVo;
 
 public class MailBoxTest extends DaoTestBase {
-	final static boolean OnlyActive = true;
-	final static String testUserId = "TestUserId";
 	@Resource
 	private MailBoxDao mailBoxDao;
 	
+	final static boolean OnlyActive = true;
+	final static String testUserId = "TestUserId";
+	
 	@Test
 	public void testMailbox() {
-		List<MailBoxVo> list = selectForTrial(OnlyActive);
-		assertEquals(list.size(), 1);
-		List<MailBoxVo> list2 = select(!OnlyActive);
-		assertTrue(list2.size()>1);
-		MailBoxVo vo0 = list2.get(0);
-		MailBoxVo vo = selectByPrimaryKey(vo0.getUserId(), vo0.getHostName());
-		assertNotNull(vo);
-		MailBoxVo vo2 = insert(vo, testUserId);
+		List<MailBoxVo> list1 = mailBoxDao.getAllForTrial(OnlyActive);
+		assertEquals(1, list1.size());
+		for (Iterator<MailBoxVo> it = list1.iterator(); it.hasNext();) {
+			MailBoxVo mailBoxVo = it.next();
+			logger.info("MailBoxDao - getAllForTrial(): " + mailBoxVo);
+		}
+		
+		List<MailBoxVo> list2 = mailBoxDao.getAll(!OnlyActive);
+		assertTrue(list2.size() > 1);
+		for (Iterator<MailBoxVo> it = list2.iterator(); it.hasNext();) {
+			MailBoxVo mailBoxVo = it.next();
+			logger.info("MailBoxDao - getAll(): " + mailBoxVo);
+		}
+		
+		MailBoxVo vo1 = list2.get(0);
+		MailBoxVo vo2 = mailBoxDao.getByPrimaryKey(vo1.getUserId(), vo1.getHostName());
 		assertNotNull(vo2);
-		vo.setOrigUpdtTime(vo2.getOrigUpdtTime());
-		vo.setUpdtTime(vo2.getUpdtTime());
-		vo.setRowId(vo2.getRowId());
-		vo.setUserId(vo2.getUserId());
-		assertTrue(vo.equalsTo(vo2));
-		int rowsUpdated = update(vo2);
-		assertEquals(rowsUpdated, 1);
-		int rowsDeleted = delete(vo2);
-		assertEquals(rowsDeleted, 1);
-	}
-	
-	private List<MailBoxVo> selectForTrial(boolean onlyActive) {
-		List<MailBoxVo> mailBoxes = mailBoxDao.getAllForTrial(onlyActive);
-		for (Iterator<MailBoxVo> it=mailBoxes.iterator(); it.hasNext();) {
-			MailBoxVo mailBoxVo = it.next();
-			logger.info("MailBoxDao - getAllForTrial(): "+mailBoxVo);
-		}
-		return mailBoxes;
-	}
-	
-	private List<MailBoxVo> select(boolean onlyActive) {
-		List<MailBoxVo> mailBoxes = mailBoxDao.getAll(!onlyActive);
-		for (Iterator<MailBoxVo> it=mailBoxes.iterator(); it.hasNext();) {
-			MailBoxVo mailBoxVo = it.next();
-			logger.info("MailBoxDao - getAll(): "+mailBoxVo);
-		}
-		return mailBoxes;
-	}
-	
-	private MailBoxVo selectByPrimaryKey(String userId, String hostName) {
-		MailBoxVo mailBoxVo = mailBoxDao.getByPrimaryKey(userId, hostName);
-		if (mailBoxVo!=null) {
-			logger.info("MailBoxDao - selectByPrimaryKey: "+LF+mailBoxVo);
-		}
-		return mailBoxVo;
+		logger.info("MailBoxDao - getByPrimaryKey: " + LF + vo2);
+		
+		MailBoxVo vo3 = insert(vo2, testUserId);
+		assertNotNull(vo3);
+		vo2.setOrigUpdtTime(vo3.getOrigUpdtTime());
+		vo2.setUpdtTime(vo3.getUpdtTime());
+		vo2.setRowId(vo3.getRowId());
+		vo2.setUserId(vo3.getUserId());
+		assertTrue(vo2.equalsTo(vo3));
+		
+		int rowsUpdated = update(vo3);
+		assertEquals(1, rowsUpdated);
+		
+		int rowsDeleted = mailBoxDao.deleteByPrimaryKey(vo3.getUserId(), vo3.getHostName());
+		assertEquals(1, rowsDeleted);
 	}
 	
 	private int update(MailBoxVo mailBoxVo) {
@@ -75,19 +64,14 @@ public class MailBoxTest extends DaoTestBase {
 		mailBoxVo.setAllowExtraWorkers(false);
 		mailBoxVo.setPurgeDupsAfter(365);
 		int rows = mailBoxDao.update(mailBoxVo);
-		logger.info("MailBoxDao - update: rows updated "+ rows);
+		logger.info("MailBoxDao - update: rows updated " + rows);
 		return rows;
 	}
 	
-	private int delete(MailBoxVo mailBoxVo) {
-		int rowsDeleted = mailBoxDao.deleteByPrimaryKey(mailBoxVo.getUserId(), mailBoxVo.getHostName());
-		logger.info("MailBoxDao - delete: Rows Deleted: "+rowsDeleted);
-		return rowsDeleted;
-	}
 	private MailBoxVo insert(MailBoxVo mailBoxVo, String userId) {
 		mailBoxVo.setUserId(userId);
 		int rows = mailBoxDao.insert(mailBoxVo);
-		logger.info("MailBoxDao - insert: rows inserted "+rows+LF+mailBoxVo);
+		logger.info("MailBoxDao - insert: rows inserted " + rows + LF + mailBoxVo);
 		return mailBoxVo;
 	}
 }

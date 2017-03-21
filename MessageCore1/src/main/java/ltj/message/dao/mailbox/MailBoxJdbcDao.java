@@ -44,8 +44,8 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	@Override
 	public MailBoxVo getByPrimaryKey(String userId, String hostName) {
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
-				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
-				"from mail_box where UserId=? and HostName=?";
+				"CONCAT(host_name, '.', user_id) as ServerName, updt_time as OrigUpdtTime " +
+				"from mail_box where user_id=? and host_name=?";
 		Object[] parms = new Object[] {userId, hostName};
 		try {
 			MailBoxVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -61,13 +61,13 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	public List<MailBoxVo> getAll(boolean onlyActive) {
 		List<String> keys = new ArrayList<>();
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
-				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
+				"CONCAT(host_name, '.', user_id) as ServerName, updt_time as OrigUpdtTime " +
 				"from mail_box ";
 		if (onlyActive) {
-			sql += " where StatusId=? ";
+			sql += " where status_id=? ";
 			keys.add(StatusId.ACTIVE.value());
 		}
-		sql += " order by HostName, UserId ";
+		sql += " order by host_name, user_id ";
 		List<MailBoxVo> list = getJdbcTemplate().query(sql, keys.toArray(),
 				new BeanPropertyRowMapper<MailBoxVo>(MailBoxVo.class));
 		return list;
@@ -77,13 +77,13 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	public List<MailBoxVo> getAllForTrial(boolean onlyActive) {
 		List<String> keys = new ArrayList<>();
 		String sql = "select *, '" + getClientDomains() + "' as ToAddrDomain, " +
-				"CONCAT(HostName, '.', UserId) as ServerName, UpdtTime as OrigUpdtTime " +
+				"CONCAT(host_name, '.', user_id) as ServerName, updt_time as OrigUpdtTime " +
 				"from mail_box ";
 		if (onlyActive) {
-			sql += " where StatusId=? ";
+			sql += " where status_id=? ";
 			keys.add(StatusId.ACTIVE.value());
 		}
-		sql += " order by RowId limit 1";
+		sql += " order by row_id limit 1";
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(1);
@@ -101,7 +101,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(mailBoxVo);
 		String sql = MetaDataUtil.buildUpdateStatement("mail_box", mailBoxVo);
 		if (mailBoxVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		mailBoxVo.setOrigUpdtTime(mailBoxVo.getUpdtTime());
@@ -112,7 +112,7 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 	
 	@Override
 	public int deleteByPrimaryKey(String userId, String hostName) {
-		String sql = "delete from mail_box where UserId=? and HostName=?";
+		String sql = "delete from mail_box where user_id=? and host_name=?";
 		Object[] parms = new Object[] {userId, hostName};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;

@@ -32,6 +32,7 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	private String verpInboxName = null;
 	private String verpRemoveInbox = null;
 	private String systemId = "";
+	private String systemKey = "";
 	private String origClientId = null;
 	
 	/** define components for UI */
@@ -147,6 +148,12 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	}
 	public void setSystemId(String systemId) {
 		this.systemId = systemId;
+	}
+	String getSystemKey() {
+		return systemKey;
+	}
+	public void setSystemKey(String systemKey) {
+		this.systemKey = systemKey;
 	}
 	public String getEmbedEmailId() {
 		return embedEmailId;

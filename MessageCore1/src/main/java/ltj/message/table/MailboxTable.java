@@ -1,6 +1,5 @@
 package ltj.message.table;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -69,35 +68,35 @@ public class MailboxTable extends CreateTableBase {
 		*/
 		try {
 			stm.execute("CREATE TABLE mail_box ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"UserId varchar(30) NOT NULL, " + 
-			"UserPswd varchar(32) NOT NULL, " +
-			"HostName varchar(100) NOT NULL, " +
-			"PortNumber integer NOT NULL, " +
-			"Protocol char(4) NOT NULL, " +
-			"ServerType varchar(5) DEFAULT '" + MailServerType.SMTP.value() + "', " +
-			"FolderName varchar(30), " +
-			"MailBoxDesc varchar(50), " +
-			"StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
-			"CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', " +
-			"InternalOnly varchar(3), " +
-			"ReadPerPass integer NOT NULL, " +
-			"UseSsl varchar(3) NOT NULL, " +
-			"Threads integer NOT NULL, " +
-			"RetryMax integer, " +
-			"MinimumWait integer, " +
-			"MessageCount integer NOT NULL, " +
-			"ToPlainText varchar(3), " +
-			"ToAddrDomain varchar(500), " +
-			"CheckDuplicate varchar(3), " +
-			"AlertDuplicate varchar(3), " +
-			"LogDuplicate varchar(3), " +
-			"PurgeDupsAfter integer, " +
-			"ProcessorName varchar(100) NOT NULL, " +
-			"UpdtTime datetime(3) NOT NULL, " +
-			"UpdtUserId char(10) NOT NULL, " +
-			"PRIMARY KEY (RowId), " +
-			"UNIQUE INDEX (UserId, HostName) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"user_id varchar(30) NOT NULL, " + 
+			"user_pswd varchar(32) NOT NULL, " +
+			"host_name varchar(100) NOT NULL, " +
+			"port_number integer NOT NULL, " +
+			"protocol char(4) NOT NULL, " +
+			"server_type varchar(5) DEFAULT '" + MailServerType.SMTP.value() + "', " +
+			"folder_name varchar(30), " +
+			"mail_box_desc varchar(50), " +
+			"status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
+			"carrier_code char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', " +
+			"internal_only varchar(3), " +
+			"read_per_pass integer NOT NULL, " +
+			"use_ssl varchar(3) NOT NULL, " +
+			"threads integer NOT NULL, " +
+			"retry_max integer, " +
+			"minimum_wait integer, " +
+			"message_count integer NOT NULL, " +
+			"to_plain_text varchar(3), " +
+			"to_addr_domain varchar(500), " +
+			"check_duplicate varchar(3), " +
+			"alert_duplicate varchar(3), " +
+			"log_duplicate varchar(3), " +
+			"purge_dups_after integer, " +
+			"processor_name varchar(100) NOT NULL, " +
+			"updt_time datetime(3) NOT NULL, " +
+			"updt_user_id char(10) NOT NULL, " +
+			"PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX (user_id, host_name) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created mail_box Table...");
 		} catch (SQLException e) {
@@ -106,37 +105,6 @@ public class MailboxTable extends CreateTableBase {
 		}
 	}
 	
-	private String insertSql = 
-		"INSERT INTO mail_box " +
-			"(UserId," +
-			"UserPswd," +
-			"HostName," +
-			"PortNumber," +
-			"Protocol," +
-			"FolderName," +
-			"MailBoxDesc," +
-			"StatusId," +
-			"CarrierCode," +
-			"InternalOnly," +
-			"ReadPerPass," +
-			"UseSsl," +
-			"Threads," +
-			"RetryMax," +
-			"MinimumWait," +
-			"MessageCount," +
-			"ToPlainText," +
-			"ToAddrDomain," +
-			"CheckDuplicate," +
-			"AlertDuplicate," +
-			"LogDuplicate," +
-			"PurgeDupsAfter," +
-			"ProcessorName," +
-			"UpdtTime," +
-			"UpdtUserId) " +
-			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
-				", ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
-				", ?, ?, ?, ?, ?)";
-
 	public void loadTestData() throws SQLException {
 		try {
 			insertReleaseMailbox();
@@ -159,40 +127,6 @@ public class MailboxTable extends CreateTableBase {
 	}
 
 	void insertReleaseMailbox() throws SQLException {
-//		PreparedStatement ps = con.prepareStatement(insertSql);
-//		
-//		for (MailInboxEnum in : MailInboxEnum.values()) {
-//			if (StringUtils.isAllUpperCase(in.name())) {
-//				ps.setString(1, in.getUserId());
-//				ps.setString(2, in.getUserPswd());
-//				ps.setString(3, in.getHostName());
-//				ps.setInt(4, in.getPort());
-//				ps.setString(5, in.getProtocol().value());
-//				ps.setString(6, "INBOX");
-//				ps.setString(7, in.getDescription());
-//				ps.setString(8, in.getStatus().value());
-//				ps.setString(9, CarrierCode.SMTPMAIL.value());
-//				ps.setString(10, in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
-//				ps.setInt(11, in.getReadPerPass()); // ReadPerPass
-//				ps.setString(12, in.isUseSsl() ? Constants.YES : Constants.NO);
-//				ps.setInt(13, in.getNumberOfThreads()); // Threads
-//				ps.setInt(14, in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
-//				ps.setInt(15, in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
-//				ps.setInt(16, in.getMessageCount());
-//				ps.setString(17, in.getIsToPlainText() == null ? null : in.getIsToPlainText() ? Constants.YES : Constants.NO);
-//				ps.setString(18, in.getToAddressDomain());
-//				ps.setString(19, in.getIsCheckDuplicate() == null ? null : in.getIsCheckDuplicate() ? Constants.YES : Constants.NO);
-//				ps.setString(20, in.getIsAlertDuplicate() == null ? null : in.getIsAlertDuplicate() ? Constants.YES : Constants.NO);
-//				ps.setString(21, in.getIsLogDuplicate() == null ? null : in.getIsLogDuplicate() ? Constants.YES : Constants.NO);
-//				ps.setInt(22, in.getPurgeDupsAfter());
-//				ps.setString(23, "mailProcessor");
-//				ps.setTimestamp(24, new Timestamp(System.currentTimeMillis()));
-//				ps.setString(25, Constants.DEFAULT_USER_ID);
-//				ps.execute();
-//			}
-//		}
-//		ps.close();
-		
 		int rows = 0;
 		for (MailInboxEnum in : MailInboxEnum.values()) {
 			if (StringUtils.isAllUpperCase(in.name())) {
@@ -207,9 +141,9 @@ public class MailboxTable extends CreateTableBase {
 				vo.setStatusId(in.getStatus().value());
 				vo.setCarrierCode(CarrierCode.SMTPMAIL.value());
 				vo.setInternalOnly(in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
-				vo.setReadPerPass(in.getReadPerPass());
+				vo.setReadPerPass(in.getReadPerPass()); // ReadPerPass
 				vo.setUseSsl(in.isUseSsl() ? Constants.YES : Constants.NO);
-				vo.setThreads(in.getNumberOfThreads());
+				vo.setThreads(in.getNumberOfThreads()); // Threads
 				vo.setRetryMax(in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
 				vo.setMinimumWait(in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
 				vo.setMessageCount(in.getMessageCount());
@@ -230,40 +164,40 @@ public class MailboxTable extends CreateTableBase {
 	}
 
 	void insertTestMailboxes() throws SQLException {
-		PreparedStatement ps = con.prepareStatement(insertSql);
-
+		int rows = 0;
 		for (MailInboxEnum in : MailInboxEnum.values()) {
 			if (StringUtils.isAllLowerCase(in.name())) {
-				ps.setString(1, in.getUserId());
-				ps.setString(2, in.getUserPswd());
-				ps.setString(3, in.getHostName());
-				ps.setInt(4, in.getPort());
-				ps.setString(5, in.getProtocol().value());
-				ps.setString(6, "INBOX");
-				ps.setString(7, in.getDescription());
-				ps.setString(8, in.getStatus().value());
-				ps.setString(9, CarrierCode.SMTPMAIL.value());
-				ps.setString(10, in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
-				ps.setInt(11, in.getReadPerPass()); // ReadPerPass
-				ps.setString(12, in.isUseSsl() ? Constants.YES : Constants.NO);
-				ps.setInt(13, in.getNumberOfThreads()); // Threads
-				ps.setInt(14, in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
-				ps.setInt(15, in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
-				ps.setInt(16, in.getMessageCount());
-				ps.setString(17, in.getIsToPlainText() == null ? null : in.getIsToPlainText() ? Constants.YES : Constants.NO);
-				ps.setString(18, in.getToAddressDomain());
-				ps.setString(19, in.getIsCheckDuplicate() == null ? null : in.getIsCheckDuplicate() ? Constants.YES : Constants.NO);
-				ps.setString(20, in.getIsAlertDuplicate() == null ? null : in.getIsAlertDuplicate() ? Constants.YES : Constants.NO);
-				ps.setString(21, in.getIsLogDuplicate() == null ? null : in.getIsLogDuplicate() ? Constants.YES : Constants.NO);
-				ps.setInt(22, in.getPurgeDupsAfter());
-				ps.setString(23, "mailProcessor");
-				ps.setTimestamp(24, new Timestamp(System.currentTimeMillis()));
-				ps.setString(25, Constants.DEFAULT_USER_ID);
-				ps.execute();
+				MailBoxVo vo = new MailBoxVo();
+				vo.setUserId(in.getUserId());
+				vo.setUserPswd(in.getUserPswd());
+				vo.setHostName(in.getHostName());
+				vo.setPortNumber(in.getPort());
+				vo.setProtocol(in.getProtocol().value());
+				vo.setFolderName("INBOX");
+				vo.setDescription(in.getDescription());
+				vo.setStatusId(in.getStatus().value());
+				vo.setCarrierCode(CarrierCode.SMTPMAIL.value());
+				vo.setInternalOnly(in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
+				vo.setReadPerPass(in.getReadPerPass()); // ReadPerPass
+				vo.setUseSsl(in.isUseSsl() ? Constants.YES : Constants.NO);
+				vo.setThreads(in.getNumberOfThreads()); // Threads
+				vo.setRetryMax(in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
+				vo.setMinimumWait(in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
+				vo.setMessageCount(in.getMessageCount());
+				vo.setToPlainText(in.getIsToPlainText() == null ? null : in.getIsToPlainText() ? Constants.YES : Constants.NO);
+				vo.setToAddrDomain(in.getToAddressDomain());
+				vo.setCheckDuplicate(in.getIsCheckDuplicate() == null ? null : in.getIsCheckDuplicate() ? Constants.YES : Constants.NO);
+				vo.setAlertDuplicate(in.getIsAlertDuplicate() == null ? null : in.getIsAlertDuplicate() ? Constants.YES : Constants.NO);
+				vo.setLogDuplicate(in.getIsLogDuplicate() == null ? null : in.getIsLogDuplicate() ? Constants.YES : Constants.NO);
+				vo.setPurgeDupsAfter(in.getPurgeDupsAfter());
+				vo.setProcessorName("mailProcessor");
+				vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+				vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+				
+				rows += getMailBoxDao().insert(vo);
 			}
 		}
-
-		ps.close();
+		System.out.println("Number of rows inserted to mail_box: " + rows);
 	}
 
 	void insertTestUsers() {
@@ -290,33 +224,33 @@ public class MailboxTable extends CreateTableBase {
 		vo.setProcessorName("mailProcessor");
 		vo.setPurgeDupsAfter(Integer.valueOf(6));
 		vo.setUpdtUserId("SysAdmin");
-		int rowsInserted = 0;
+		int rows = 0;
 		for (int i = 0; i < 100; i++) {
 			String user = "user" + StringUtils.leftPad(i + "", 2, "0");
 			vo.setUserId(user);
 			vo.setUserPswd(user);
-			rowsInserted += getMailBoxDao().insert(vo);
+			rows += getMailBoxDao().insert(vo);
 		}
-		System.out.println("Users inserted: " + rowsInserted);
+		System.out.println("Number of test users inserted to mail_box: " + rows);
 	}
 	
 	void deleteTestUsers() {
-		int rowsDeleted = 0;
+		int rows = 0;
 		for (int i = 0; i < 100; i++) {
 			String user = "user" + StringUtils.leftPad(i + "", 2, "0");
-			rowsDeleted += getMailBoxDao().deleteByPrimaryKey(user, "localhost");
+			rows += getMailBoxDao().deleteByPrimaryKey(user, "localhost");
 		}
-		System.out.println("Users deleted: " + rowsDeleted);
+		System.out.println("Number of test users deleted: " + rows);
 	}
 	
 	public void updateEmailAddrTable() {
 		List<MailBoxVo> mailBoxes = getMailBoxDao().getAll(false);
 		int count = 0;
 		for (MailBoxVo mailbox : mailBoxes) {
-			getEmailAddrdao().findByAddress(mailbox.getUserId() + "@" + mailbox.getHostName());
+			getEmailAddressdao().findByAddress(mailbox.getUserId() + "@" + mailbox.getHostName());
 			count ++;
 		}
-		System.out.println("Inserted/Upadted EmailAddr records: " + count);
+		System.out.println("Inserted/Upadted email_address records: " + count);
 	}
 	
 	private MailBoxDao mailBoxDao = null;
@@ -328,7 +262,7 @@ public class MailboxTable extends CreateTableBase {
 	}
 	
 	private EmailAddressDao emailAddressDao = null;
-	private EmailAddressDao getEmailAddrdao() {
+	private EmailAddressDao getEmailAddressdao() {
 		if (emailAddressDao == null) {
 			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}
