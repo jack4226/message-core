@@ -28,7 +28,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			"from " +
-				"TemplateVariable where templateId=? and variableName=? ";
+				"template_variable where templateId=? and variableName=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
@@ -65,7 +65,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			"from " +
-				"TemplateVariable where templateId=? and variableName=? ";
+				"template_variable where templateId=? and variableName=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
@@ -99,7 +99,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			" from " +
-				" TemplateVariable where variableName=? " +
+				" template_variable where variableName=? " +
 			" order by templateId, clientId, startTime asc ";
 		Object[] parms = new Object[] {variableName};
 		List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
@@ -112,7 +112,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			" from " +
-				" TemplateVariable where clientId=? " +
+				" template_variable where clientId=? " +
 			" order by templateId, variableName, startTime ";
 		Object[] parms = new Object[] { clientId };
 		List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
@@ -125,10 +125,10 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		if (!currentVariablesCache.containsKey(templateId+"."+clientId)) {
 			String sql = 
 				"select * " +
-				" from TemplateVariable as a " +
+				" from template_variable as a " +
 				" inner join ( " +
 				"  select b.templateid, b.clientid, b.variablename, max(b.starttime) as maxtime " +
-				"   from TemplateVariable b " +
+				"   from template_variable b " +
 				"   where b.statusid=? and b.starttime<=? " +
 				"    and b.templateid=? and b.clientid=? " +
 				"   group by b.templateid, b.clientid, b.variablename " +
@@ -152,7 +152,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			" from " +
-				" TemplateVariable where templateId=? " +
+				" template_variable where templateId=? " +
 			" order by clientId, variableName, startTime asc ";
 		Object[] parms = new Object[] {templateId};
 		List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
@@ -163,7 +163,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int update(TemplateVariableVo templateVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(templateVariableVo);
-		String sql = MetaDataUtil.buildUpdateStatement("TemplateVariable", templateVariableVo);
+		String sql = MetaDataUtil.buildUpdateStatement("template_variable", templateVariableVo);
 		
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		if (rowsUpadted>0) {
@@ -175,7 +175,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int deleteByPrimaryKey(String templateId, String clientId, String variableName, Timestamp startTime) {
 		String sql = 
-			"delete from TemplateVariable where templateId=? and clientId=? and variableName=? ";
+			"delete from template_variable where templateId=? and clientId=? and variableName=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
@@ -199,7 +199,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int deleteByVariableName(String variableName) {
 		String sql = 
-			"delete from TemplateVariable where variableName=? ";
+			"delete from template_variable where variableName=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
@@ -214,7 +214,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int deleteByClientId(String clientId) {
 		String sql = 
-			"delete from TemplateVariable where clientId=? ";
+			"delete from template_variable where clientId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
@@ -229,7 +229,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int deleteByTemplateId(String templateId) {
 		String sql = 
-			"delete from TemplateVariable where templateId=? ";
+			"delete from template_variable where templateId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
@@ -244,7 +244,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int insert(TemplateVariableVo templateVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(templateVariableVo);
-		String sql = MetaDataUtil.buildInsertStatement("TemplateVariable", templateVariableVo);
+		String sql = MetaDataUtil.buildInsertStatement("template_variable", templateVariableVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		templateVariableVo.setRowId(retrieveRowId());
 		if (rowsInserted>0) {

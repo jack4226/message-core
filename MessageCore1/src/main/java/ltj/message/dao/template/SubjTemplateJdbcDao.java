@@ -23,7 +23,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		String sql = 
 			"select * " +
 			"from " +
-				"SubjTemplate where templateId=? and clientId=? ";
+				"subj_template where templateId=? and clientId=? ";
 		
 		Object[] parms;
 		if (startTime != null) {
@@ -50,7 +50,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		String sql = 
 			"select * " +
 			"from " +
-				"SubjTemplate where templateId=? ";
+				"subj_template where templateId=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
@@ -83,7 +83,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" SubjTemplate where templateId=? " +
+				" subj_template where templateId=? " +
 			" order by clientId, startTime asc ";
 		Object[] parms = new Object[] {templateId};
 		List<SubjTemplateVo> list = getJdbcTemplate().query(sql, parms, 
@@ -96,7 +96,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" SubjTemplate where clientId=? " +
+				" subj_template where clientId=? " +
 			" order by templateId, startTime asc ";
 		Object[] parms = new Object[] {clientId};
 		List<SubjTemplateVo> list = getJdbcTemplate().query(sql, parms, 
@@ -107,7 +107,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 	@Override
 	public int update(SubjTemplateVo subjTemplateVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(subjTemplateVo);
-		String sql = MetaDataUtil.buildUpdateStatement("SubjTemplate", subjTemplateVo);
+		String sql = MetaDataUtil.buildUpdateStatement("subj_template", subjTemplateVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
 	}
@@ -115,7 +115,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 	@Override
 	public int deleteByPrimaryKey(String templateId, String clientId, Timestamp startTime) {
 		String sql = 
-			"delete from SubjTemplate where templateId=? and clientId=? ";
+			"delete from subj_template where templateId=? and clientId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
@@ -135,7 +135,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 	@Override
 	public int deleteByTemplateId(String templateId) {
 		String sql = 
-			"delete from SubjTemplate where templateId=? ";
+			"delete from subj_template where templateId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
@@ -147,7 +147,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 	@Override
 	public int deleteByClientId(String clientId) {
 		String sql = 
-			"delete from SubjTemplate where clientId=? ";
+			"delete from subj_template where clientId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
@@ -159,7 +159,7 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 	@Override
 	public int insert(SubjTemplateVo subjTemplateVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(subjTemplateVo);
-		String sql = MetaDataUtil.buildInsertStatement("SubjTemplate", subjTemplateVo);
+		String sql = MetaDataUtil.buildInsertStatement("subj_template", subjTemplateVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		subjTemplateVo.setRowId(retrieveRowId());
 		return rowsInserted;

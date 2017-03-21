@@ -27,7 +27,7 @@ public class ChangePasswordBean {
 			message = "User is not logged in!";
 			return "changepswd.failed";
 		}
-		UserVo vo2 = getUserDao().getByPrimaryKey(vo.getUserId());
+		UserVo vo2 = getUserDao().getByUserId(vo.getUserId());
 		if (vo2 == null) {
 			message = "Internal error, contact programming!";
 			return "changepswd.failed";

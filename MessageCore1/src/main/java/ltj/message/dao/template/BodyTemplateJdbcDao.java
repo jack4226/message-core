@@ -23,7 +23,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"select * " +
 			"from " +
-				"BodyTemplate where templateId=? ";
+				"body_template where templateId=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
@@ -58,7 +58,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"select * " +
 			"from " +
-				"BodyTemplate where templateId=? ";
+				"body_template where templateId=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
@@ -92,7 +92,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" BodyTemplate where templateId=? " +
+				" body_template where templateId=? " +
 			" order by clientId, startTime asc ";
 		Object[] parms = new Object[] {templateId};
 		List<BodyTemplateVo> list = getJdbcTemplate().query(sql, parms, 
@@ -105,7 +105,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" BodyTemplate where clientId=? " +
+				" body_template where clientId=? " +
 			" order by templateId, startTime asc ";
 		Object[] parms = new Object[] {clientId};
 		List<BodyTemplateVo> list = getJdbcTemplate().query(sql, parms, 
@@ -116,7 +116,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	@Override
 	public int update(BodyTemplateVo bodyTemplateVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(bodyTemplateVo);
-		String sql = MetaDataUtil.buildUpdateStatement("BodyTemplate", bodyTemplateVo);
+		String sql = MetaDataUtil.buildUpdateStatement("body_template", bodyTemplateVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
 	}
@@ -124,7 +124,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	@Override
 	public int deleteByPrimaryKey(String templateId, String clientId, Timestamp startTime) {
 		String sql = 
-			"delete from BodyTemplate where templateId=? and clientId=? ";
+			"delete from body_template where templateId=? and clientId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
@@ -144,7 +144,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	@Override
 	public int deleteByTemplateId(String templateId) {
 		String sql = 
-			"delete from BodyTemplate where templateId=? ";
+			"delete from body_template where templateId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
@@ -156,7 +156,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	@Override
 	public int deleteByClientId(String clientId) {
 		String sql = 
-			"delete from BodyTemplate where clientId=? ";
+			"delete from body_template where clientId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
@@ -168,7 +168,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	@Override
 	public int insert(BodyTemplateVo bodyTemplateVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(bodyTemplateVo);
-		String sql = MetaDataUtil.buildInsertStatement("BodyTemplate", bodyTemplateVo);
+		String sql = MetaDataUtil.buildInsertStatement("body_template", bodyTemplateVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		bodyTemplateVo.setRowId(retrieveRowId());
 		return rowsInserted;

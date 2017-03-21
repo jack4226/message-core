@@ -74,7 +74,7 @@ public class SessionTimeoutRestoreFilter implements Filter {
 			if (sessionId != null) {
 				// SessionId found in cookie. Lookup UserVo by SessionId in
 				// database.
-				userVo = getUserDao(httpSession).getByPrimaryKey(sessionId);
+				userVo = getUserDao(httpSession).getByUserId(sessionId);
 			}
 			if (userVo == null) {
 				// No SessionId found in cookie, or no UserVo found in database.

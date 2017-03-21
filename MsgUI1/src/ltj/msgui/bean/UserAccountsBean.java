@@ -140,7 +140,7 @@ public class UserAccountsBean {
 		for (int i=0; i<smtpList.size(); i++) {
 			UserVo vo = smtpList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getUserDao().deleteByPrimaryKey(vo.getUserId());
+				int rowsDeleted = getUserDao().deleteByUserId(vo.getUserId());
 				if (rowsDeleted > 0) {
 					logger.info("deleteUsers() - User deleted: " + vo.getUserId());
 				}
@@ -226,7 +226,7 @@ public class UserAccountsBean {
 		if (isDebugEnabled) {
 			logger.debug("validatePrimaryKey() - userId: " + userId);
 		}
-		UserVo vo = getUserDao().getByPrimaryKey(userId);
+		UserVo vo = getUserDao().getByUserId(userId);
 		if (editMode == true && vo == null) {
 			// user does not exist
 			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "userDoesNotExist", null);

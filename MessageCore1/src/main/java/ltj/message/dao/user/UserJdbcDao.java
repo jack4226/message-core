@@ -18,8 +18,8 @@ import ltj.message.vo.UserVo;
 public class UserJdbcDao extends AbstractDao implements UserDao {
 	
 	@Override
-	public UserVo getByPrimaryKey(String userId) {
-		String sql = "select * from Users where UserId=?";
+	public UserVo getByUserId(String userId) {
+		String sql = "select * from user_tbl where UserId=?";
 		Object[] parms = new Object[] {userId};
 		try {
 			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, new BeanPropertyRowMapper<UserVo>(UserVo.class));
@@ -31,8 +31,21 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 	}
 	
 	@Override
+	public UserVo getByPrimaryKey(long rowId) {
+		String sql = "select * from user_tbl where RowId=?";
+		Object[] parms = new Object[] {rowId};
+		try {
+			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, new BeanPropertyRowMapper<UserVo>(UserVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+	
+	@Override
 	public UserVo getForLogin(String userId, String password) {
-		String sql = "select * from Users where UserId=? and Password=?";
+		String sql = "select * from user_tbl where UserId=? and Password=?";
 		Object[] parms = new Object[] {userId, password};
 		try {
 			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, new BeanPropertyRowMapper<UserVo>(UserVo.class));
@@ -46,7 +59,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 	@Override
 	public List<UserVo> getFirst100(boolean onlyActive) {
 		
-		String sql = "select * from Users ";
+		String sql = "select * from user_tbl ";
 		if (onlyActive) {
 			sql += " where StatusId='" + StatusId.ACTIVE.value() + "'";
 		}
@@ -61,7 +74,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 			userVo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		}
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(userVo);
-		String sql = MetaDataUtil.buildUpdateStatement("Users", userVo);
+		String sql = MetaDataUtil.buildUpdateStatement("user_tbl", userVo);
 		
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsUpadted;
@@ -76,7 +89,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 				userVo.getRowId()
 				};
 		
-		String sql = "update Users set " +
+		String sql = "update user_tbl set " +
 			"SessionId=?," +
 			"LastVisitTime=?," +
 			"Hits=?" +
@@ -87,9 +100,17 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 	}
 	
 	@Override
-	public int deleteByPrimaryKey(String userId) {
-		String sql = "delete from Users where UserId=?";
+	public int deleteByUserId(String userId) {
+		String sql = "delete from user_tbl where UserId=?";
 		Object[] parms = new Object[] {userId};
+		int rowsDeleted = getJdbcTemplate().update(sql, parms);
+		return rowsDeleted;
+	}
+	
+	@Override
+	public int deleteByPrimaryKey(long rowId) {
+		String sql = "delete from user_tbl where RowId=?";
+		Object[] parms = new Object[] {rowId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
 	}
@@ -101,7 +122,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		}
 		
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(userVo);
-		String sql = MetaDataUtil.buildInsertStatement("Users", userVo);
+		String sql = MetaDataUtil.buildInsertStatement("user_tbl", userVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		userVo.setRowId(retrieveRowId());
 		return rowsInserted;

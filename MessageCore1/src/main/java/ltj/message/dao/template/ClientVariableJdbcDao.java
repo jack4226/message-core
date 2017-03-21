@@ -27,7 +27,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"select * " +
 			"from " +
-				"ClientVariable where clientId=? and variableName=? ";
+				"client_variable where clientId=? and variableName=? ";
 		
 		Object[] parms;
 		if (startTime!=null) {
@@ -53,7 +53,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"select * " +
 			"from " +
-				"ClientVariable where clientId=? and variableName=? ";
+				"client_variable where clientId=? and variableName=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(clientId);
@@ -80,7 +80,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"select * " +
 			" from " +
-				" ClientVariable where variableName=? " +
+				" client_variable where variableName=? " +
 			" order by clientId, startTime asc ";
 		Object[] parms = new Object[] {variableName};
 		List<ClientVariableVo> list = getJdbcTemplate().query(sql, parms, 
@@ -93,10 +93,10 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		if (!currentVariablesCache.containsKey(clientId)) {
 			String sql = 
 				"select * " +
-					" from ClientVariable a " +
+					" from client_variable a " +
 					" inner join ( " +
 					"  select b.clientid, b.variablename, max(b.starttime) as maxtime " +
-					"   from ClientVariable b " +
+					"   from client_variable b " +
 					"   where b.statusid=? and b.starttime<=? " +
 					"    and b.clientid=? " +
 					"   group by b.variablename " +
@@ -117,7 +117,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	@Override
 	public int update(ClientVariableVo clientVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(clientVariableVo);
-		String sql = MetaDataUtil.buildUpdateStatement("ClientVariable", clientVariableVo);
+		String sql = MetaDataUtil.buildUpdateStatement("client_variable", clientVariableVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		if (rowsUpadted > 0) {
 			currentVariablesCache.remove(clientVariableVo.getClientId());
@@ -128,7 +128,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	@Override
 	public int deleteByPrimaryKey(String clientId, String variableName, Timestamp startTime) {
 		String sql = 
-			"delete from ClientVariable where clientId=? and variableName=? ";
+			"delete from client_variable where clientId=? and variableName=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
@@ -151,7 +151,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	@Override
 	public int deleteByVariableName(String variableName) {
 		String sql = 
-			"delete from ClientVariable where variableName=? ";
+			"delete from client_variable where variableName=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
@@ -166,7 +166,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	@Override
 	public int deleteByClientId(String clientId) {
 		String sql = 
-			"delete from ClientVariable where clientId=? ";
+			"delete from client_variable where clientId=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
@@ -181,7 +181,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	@Override
 	public int insert(ClientVariableVo clientVariableVo) {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(clientVariableVo);
-		String sql = MetaDataUtil.buildInsertStatement("ClientVariable", clientVariableVo);
+		String sql = MetaDataUtil.buildInsertStatement("client_variable", clientVariableVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		clientVariableVo.setRowId(retrieveRowId());
 		if (rowsInserted > 0) {

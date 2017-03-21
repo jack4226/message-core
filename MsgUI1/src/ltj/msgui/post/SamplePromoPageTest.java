@@ -77,6 +77,7 @@ public class SamplePromoPageTest {
 			assertTrue(StringUtils.contains(rsp, "msgid=${BroadcastMsgId}"));
 		} catch (IOException e) {
 			logger.error("IOException caught", e);
+			fail();
 		}
 	}
 	
@@ -119,6 +120,7 @@ public class SamplePromoPageTest {
 			assertTrue(StringUtils.contains(rsp, "listid=${MailingListId}&sbsrid=${SubscriberAddressId}"));
 		} catch (IOException e) {
 			logger.error("IOException caught", e);
+			fail();
 		}
 	}
 	

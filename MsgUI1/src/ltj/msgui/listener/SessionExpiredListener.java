@@ -73,10 +73,10 @@ public class SessionExpiredListener implements HttpSessionListener {
 		// clean up user session tables
 		if (sessionId != null) {
 			int rowsDeleted = getSessionUploadDao(httpSession).deleteBySessionId(sessionId);
-			logger.info("sessionExpired() - rows deleted from SessionUploads: " + rowsDeleted);
+			logger.info("sessionExpired() - rows deleted from session_upload: " + rowsDeleted);
 		}
 		else {
-			logger.warn("sessionExpired() - SessionId is null, SessionUploads not cleaned.");
+			logger.warn("sessionExpired() - SessionId is null, session_upload not cleaned.");
 		}
 	}
 

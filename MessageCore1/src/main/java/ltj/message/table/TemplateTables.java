@@ -20,39 +20,39 @@ public class TemplateTables extends CreateTableBase {
 
 	public void dropTables() {
 		try {
-			stm.execute("DROP TABLE MsgSource");
-			System.out.println("Dropped MsgSource Table...");
+			stm.execute("DROP TABLE msg_source");
+			System.out.println("Dropped msg_source Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE TemplateVariable");
-			System.out.println("Dropped TemplateVariable Table...");
+			stm.execute("DROP TABLE template_variable");
+			System.out.println("Dropped template_variable Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE ClientVariable");
-			System.out.println("Dropped ClientVariable Table...");
+			stm.execute("DROP TABLE client_variable");
+			System.out.println("Dropped client_variable Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE GlobalVariable");
-			System.out.println("Dropped GlobalVariable Table...");
+			stm.execute("DROP TABLE global_variable");
+			System.out.println("Dropped global_variable Table...");
 		}
 		
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE SubjTemplate");
-			System.out.println("Dropped SubjTemplate Table...");
+			stm.execute("DROP TABLE subj_template");
+			System.out.println("Dropped subj_template Table...");
 		}
 		catch (SQLException e) {
 		}
 		try {
-			stm.execute("DROP TABLE BodyTemplate");
-			System.out.println("Dropped BodyTemplate Table...");
+			stm.execute("DROP TABLE body_template");
+			System.out.println("Dropped body_template Table...");
 		}
 		catch (SQLException e) {
 		}
@@ -73,7 +73,7 @@ public class TemplateTables extends CreateTableBase {
 	
 	void createSubjTemplateTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE SubjTemplate ( "
+			stm.execute("CREATE TABLE subj_template ( "
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "TemplateId varchar(16) NOT NULL, "
 				+ "ClientId varchar(16), "
@@ -85,7 +85,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (ClientId), "
 				+ "UNIQUE INDEX (TemplateId,ClientId,StartTime)) ENGINE=InnoDB");
-			System.out.println("Created SubjTemplate Table...");
+			System.out.println("Created subj_template Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -95,7 +95,7 @@ public class TemplateTables extends CreateTableBase {
 
 	void createBodyTemplateTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE BodyTemplate ( "
+			stm.execute("CREATE TABLE body_template ( "
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "TemplateId varchar(16) NOT NULL, "
 				+ "ClientId varchar(16), "
@@ -108,7 +108,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (ClientId), "
 				+ "UNIQUE INDEX (TemplateId,ClientId,StartTime)) ENGINE=InnoDB");
-			System.out.println("Created BodyTemplate Table...");
+			System.out.println("Created body_template Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -118,7 +118,7 @@ public class TemplateTables extends CreateTableBase {
 
 	void createGlobalVariableTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE GlobalVariable ( "
+			stm.execute("CREATE TABLE global_variable ( "
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "VariableName varchar(26) NOT NULL, "
 				+ "StartTime timestamp(3) NOT NULL, "
@@ -136,7 +136,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "PRIMARY KEY (RowId), "
 				+ "INDEX (VariableName), "
 				+ "UNIQUE INDEX (VariableName,StartTime)) ENGINE=InnoDB");
-			System.out.println("Created GlobalVariable Table...");
+			System.out.println("Created global_variable Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -146,7 +146,7 @@ public class TemplateTables extends CreateTableBase {
 
 	void createClientVariableTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE ClientVariable ( "
+			stm.execute("CREATE TABLE client_variable ( "
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "ClientId varchar(16) NOT NULL, "
 				+ "VariableName varchar(26) NOT NULL, "
@@ -166,7 +166,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "INDEX (ClientId), "
 				+ "INDEX (VariableName), "
 				+ "UNIQUE INDEX (ClientId,VariableName,StartTime)) ENGINE=InnoDB");
-			System.out.println("Created ClientVariable Table...");
+			System.out.println("Created client_variable Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -176,7 +176,7 @@ public class TemplateTables extends CreateTableBase {
 
 	void createTemplateVariableTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE TemplateVariable ( "
+			stm.execute("CREATE TABLE template_variable ( "
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "TemplateId varchar(16) NOT NULL, "
 				+ "ClientId varchar(16), "
@@ -198,7 +198,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "INDEX (ClientId), "
 				+ "UNIQUE INDEX (TemplateId,ClientId,VariableName,StartTime)"
 				+ ") ENGINE=InnoDB");
-			System.out.println("Created TemplateVariable Table...");
+			System.out.println("Created template_variable Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -208,7 +208,7 @@ public class TemplateTables extends CreateTableBase {
 
 	void createMsgSourceTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE MsgSource ( "
+			stm.execute("CREATE TABLE msg_source ( "
 				+ "RowId int AUTO_INCREMENT not null, "
 				+ "MsgSourceId varchar(16) NOT NULL, "
 				+ "Description varchar(100), "
@@ -237,14 +237,14 @@ public class TemplateTables extends CreateTableBase {
 				+ "INDEX (FromAddrId), "
 				+ "FOREIGN KEY (ReplyToAddrId) REFERENCES email_address (EmailAddrId) ON DELETE SET NULL ON UPDATE CASCADE, "
 				+ "INDEX (ReplyToAddrId), "
-				+ "FOREIGN KEY (TemplateVariableId) REFERENCES TemplateVariable (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "FOREIGN KEY (TemplateVariableId) REFERENCES template_variable (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
 				+ "INDEX (TemplateVariableId), "
-				+ "FOREIGN KEY (SubjTemplateId) REFERENCES SubjTemplate (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "FOREIGN KEY (SubjTemplateId) REFERENCES subj_template (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
 				+ "INDEX (SubjTemplateId), "
-				+ "FOREIGN KEY (BodyTemplateId) REFERENCES BodyTemplate (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "FOREIGN KEY (BodyTemplateId) REFERENCES body_template (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
 				+ "INDEX (BodyTemplateId) "
 				+ ") ENGINE=InnoDB");
-			System.out.println("Created MsgSource Table...");
+			System.out.println("Created msg_source Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());

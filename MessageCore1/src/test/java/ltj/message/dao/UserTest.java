@@ -50,7 +50,7 @@ public class UserTest extends DaoTestBase {
 	}
 
 	private UserVo selectByPrimaryKey(String userId) {
-		UserVo vo2 = userDao.getByPrimaryKey(userId);
+		UserVo vo2 = userDao.getByUserId(userId);
 		if (vo2 != null) {
 			logger.info("UserDao - selectByPrimaryKey: " + LF + vo2);
 		}
@@ -67,13 +67,13 @@ public class UserTest extends DaoTestBase {
 	}
 
 	private int delete(UserVo userVo) {
-		int rowsDeleted = userDao.deleteByPrimaryKey(userVo.getUserId());
+		int rowsDeleted = userDao.deleteByUserId(userVo.getUserId());
 		logger.info("UserDao - delete: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}
 
 	private UserVo insert(String userId) {
-		UserVo userVo = userDao.getByPrimaryKey(userId);
+		UserVo userVo = userDao.getByUserId(userId);
 		if (userVo != null) {
 			userVo.setUserId(userVo.getUserId() + "_v2");
 			int rows = userDao.insert(userVo);
