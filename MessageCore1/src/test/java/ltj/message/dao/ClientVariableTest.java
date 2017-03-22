@@ -29,7 +29,8 @@ public class ClientVariableTest extends DaoTestBase {
 			assertTrue(lst2.size()>0);
 			ClientVariableVo vo1 = selectByPromaryKey(lst2.get(lst2.size()-1));
 			assertNotNull(vo1);
-			ClientVariableVo vo2 = clientVariableDao.getByBestMatch(vo1.getClientId(), vo1.getVariableName(), vo1.getStartTime());
+			ClientVariableVo vo2 = clientVariableDao.getByBestMatch(vo1.getClientId(), vo1.getVariableName(),
+					vo1.getStartTime());
 			assertNotNull(vo2);
 			ClientVariableVo vo3 = insert(lst2.get(lst2.size()-1).getClientId());
 			assertNotNull(vo3);

@@ -54,12 +54,12 @@ public class ActionTables extends CreateTableBase {
 	void createActionDataTypeTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE msg_data_type ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"DataType varchar(16) NOT NULL, " +
-			"DataTypeValue varchar(100) NOT NULL, " +
-			"MiscProperties varchar(255), " +
-			"PRIMARY KEY (RowId), " +
-			"UNIQUE INDEX (DataType, DataTypeValue) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"data_type varchar(16) NOT NULL, " +
+			"data_type_value varchar(100) NOT NULL, " +
+			"misc_properties varchar(255), " +
+			"PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX (data_type, data_type_value) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_data_type Table...");
 		} catch (SQLException e) {
@@ -71,18 +71,18 @@ public class ActionTables extends CreateTableBase {
 	void createActionDetailTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE msg_action_detail ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"ActionId varchar(16) NOT NULL, " +
-			"Description varchar(100), " +
-			"ProcessBeanId varchar(50) NOT NULL, " +
-			"ProcessClassName varchar(100), " +
-			"DataType varchar(16), " +
-			"UpdtTime datetime(3) NOT NULL, " +
-			"UpdtUserId varchar(10) NOT NULL, " +
-			"INDEX (DataType), " +
-			"FOREIGN KEY (DataType) REFERENCES msg_data_type (DataType) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"UNIQUE INDEX (ActionId), " +
-			"PRIMARY KEY (RowId) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"action_id varchar(16) NOT NULL, " +
+			"description varchar(100), " +
+			"process_bean_id varchar(50) NOT NULL, " +
+			"process_class_name varchar(100), " +
+			"data_type varchar(16), " +
+			"updt_time datetime(3) NOT NULL, " +
+			"updt_user_id varchar(10) NOT NULL, " +
+			"INDEX (data_type), " +
+			"FOREIGN KEY (data_type) REFERENCES msg_data_type (data_type) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"UNIQUE INDEX (action_id), " +
+			"PRIMARY KEY (row_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_action_detail Table...");
 		} catch (SQLException e) {
@@ -94,19 +94,19 @@ public class ActionTables extends CreateTableBase {
 	void createActionTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE msg_action ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"RuleName varchar(26) NOT NULL, " +
-			"ActionSeq int NOT NULL, " +
-			"StartTime datetime(3) NOT NULL, " +
-			"ClientId varchar(16), " + 
-			"StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
-			"ActionId varchar(16) NOT NULL, " +
-			"DataTypeValues text, " + // maximum size of 65,535, to accommodate template text
-			"PRIMARY KEY (RowId), " +
-			"FOREIGN KEY (RuleName) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX(RuleName), " +
-			"FOREIGN KEY (ActionId) REFERENCES msg_action_detail (ActionId) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"UNIQUE INDEX (RuleName, ActionSeq, StartTime, ClientId) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"rule_name varchar(26) NOT NULL, " +
+			"action_seq int NOT NULL, " +
+			"start_time datetime(3) NOT NULL, " +
+			"client_id varchar(16), " + 
+			"status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
+			"action_id varchar(16) NOT NULL, " +
+			"data_type_values text, " + // maximum size of 65,535, to accommodate template text
+			"PRIMARY KEY (row_id), " +
+			"FOREIGN KEY (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX(rule_name), " +
+			"FOREIGN KEY (action_id) REFERENCES msg_action_detail (action_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"UNIQUE INDEX (rule_name, action_seq, start_time, client_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_action Table...");
 		}

@@ -21,7 +21,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_data_type where DataType=? and DataTypeValue=? ";
+				"msg_data_type where data_type=? and data_type_value=? ";
 		
 		Object[] parms = new Object[] {type, value};
 		try {
@@ -39,7 +39,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_data_type where RowId=? ";
+				"msg_data_type where row_id=? ";
 		
 		Object[] parms = new Object[] {rowId};
 		try {
@@ -57,8 +57,8 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_data_type where DataType=? " +
-			" order by DataTypeValue asc ";
+				"msg_data_type where data_type=? " +
+			" order by data_type_value asc ";
 		
 		Object[] parms = new Object[] {dataType};
 		List<MsgDataTypeVo> list = getJdbcTemplate().query(sql, parms, 
@@ -69,10 +69,10 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 	@Override
 	public List<String> getDataTypes() {
 		String sql = 
-			"select distinct(DataType) " +
+			"select distinct(data_type) " +
 			"from " +
 				"msg_data_type " +
-			" order by DataType asc ";
+			" order by data_type asc ";
 		
 		List<String> list = (List<String>)getJdbcTemplate().queryForList(sql, String.class);
 		return list;
@@ -89,7 +89,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 	@Override
 	public int deleteByPrimaryKey(int rowId) {
 		String sql = 
-			"delete from msg_data_type where RowId=? ";
+			"delete from msg_data_type where row_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(rowId);
@@ -101,7 +101,7 @@ public class MsgDataTypeJdbcDao extends AbstractDao implements MsgDataTypeDao {
 	@Override
 	public int deleteByDataType(String dataType) {
 		String sql = 
-			"delete from msg_data_type where DataType=? ";
+			"delete from msg_data_type where data_type=? ";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(dataType);

@@ -23,10 +23,10 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public List<MsgActionVo> getByRuleName(String ruleName) {
 		String sql = 
-			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
+			"select a.*, b.process_bean_id, b.process_class_name, b.data_type " +
 			" from msg_action a, msg_action_detail b " +
-			" where a.ActionId = b.ActionId and ruleName=? " +
-			" order by actionSeq, clientId, startTime";
+			" where a.action_id = b.action_id and rule_name=? " +
+			" order by action_seq, client_id, start_time";
 		
 		Object[] parms = new Object[] {ruleName};
 		List<MsgActionVo> list = getJdbcTemplate().query(sql, parms, 
@@ -37,9 +37,9 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public MsgActionVo getByPrimaryKey(int rowId) {
 		String sql = 
-			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
+			"select a.*, b.process_bean_id, b.process_class_name, b.data_type " +
 			" from msg_action a, msg_action_detail b " +
-			" where a.ActionId = b.ActionId and RowId=? ";
+			" where a.action_id = b.action_id and row_id=? ";
 		
 		Object[] parms = new Object[] {rowId};
 		try {
@@ -58,23 +58,23 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 			startTime = new Timestamp(System.currentTimeMillis());
 		}
 		String sql = 
-			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
+			"select a.*, b.process_bean_id, b.process_class_name, b.data_type " +
 			" from msg_action a, msg_action_detail b " +
-				" where a.ActionId = b.ActionId " +
-				" and RuleName=? and StartTime<=? and StatusId=? ";
+				" where a.action_id = b.action_id " +
+				" and rule_name=? and start_time<=? and status_id=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(ruleName);
 		keys.add(startTime);
 		keys.add(StatusId.ACTIVE.value());
 		if (clientId == null) {
-			sql += " and clientId is null ";
+			sql += " and client_id is null ";
 		}
 		else {
-			sql += " and (clientId=? or clientId is null) ";
+			sql += " and (client_id=? or client_id is null) ";
 			keys.add(clientId);
 		}
-		sql += " order by actionSeq, clientId desc, startTime desc ";
+		sql += " order by action_seq, client_id desc, start_time desc ";
 		
 		Object[] parms = keys.toArray();
 		List<MsgActionVo> list = getJdbcTemplate().query(sql, parms, 
@@ -100,10 +100,10 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public List<MsgActionVo> getAll() {
 		String sql = 
-			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
+			"select a.*, b.process_bean_id, b.process_class_name, b.data_type " +
 			" from msg_action a, msg_action_detail b " +
-			" where a.ActionId = b.ActionId " +
-			" order by actionSeq";
+			" where a.action_id = b.action_id " +
+			" order by action_seq";
 		
 		List<MsgActionVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgActionVo>(MsgActionVo.class));
@@ -118,16 +118,16 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		keys.add(startTime);
 		
 		String sql = 
-			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
+			"select a.*, b.process_bean_id, b.process_class_name, b.data_type " +
 			" from msg_action a, msg_action_detail b " +
-			" where a.ActionId = b.ActionId " +
-			" and ruleName=? and actionSeq=? and startTime=? ";
+			" where a.action_id = b.action_id " +
+			" and rule_name=? and action_seq=? and start_time=? ";
 		
 		if (clientId == null) {
-			sql += " and clientId is null ";
+			sql += " and client_id is null ";
 		}
 		else {
-			sql += " and clientId=? ";
+			sql += " and client_id=? ";
 			keys.add(clientId);
 		}
 		try {
@@ -145,10 +145,10 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		Timestamp startTime = new Timestamp(System.currentTimeMillis());
 		
 		String sql = 
-			"select a.*, b.ProcessBeanId, b.ProcessClassName, b.DataType " +
+			"select a.*, b.process_bean_id, b.process_class_name, b.data_type " +
 			" from msg_action a, msg_action_detail b " +
-				" where a.ActionId = b.ActionId " +
-				" and RuleName=? and ActionSeq=? and StartTime<=? and StatusId=? ";
+				" where a.action_id = b.action_id " +
+				" and rule_name=? and action_seq=? and start_time<=? and status_id=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(ruleName);
@@ -156,13 +156,13 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		keys.add(startTime);
 		keys.add(StatusId.ACTIVE.value());
 		if (clientId == null) {
-			sql += " and clientId is null ";
+			sql += " and client_id is null ";
 		}
 		else {
-			sql += " and (clientId=? or clientId is null) ";
+			sql += " and (client_id=? or client_id is null) ";
 			keys.add(clientId);
 		}
-		sql += " order by clientId desc, startTime desc ";
+		sql += " order by client_id desc, start_time desc ";
 		
 		Object[] parms = keys.toArray();
 		List<MsgActionVo> list = getJdbcTemplate().query(sql, parms, 
@@ -187,7 +187,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
-			"delete from msg_action where ruleName=?";
+			"delete from msg_action where rule_name=?";
 		
 		Object[] parms = new Object[] {ruleName};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
@@ -198,7 +198,7 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	@Override
 	public synchronized int deleteByPrimaryKey(int rowId) {
 		String sql = 
-			"delete from msg_action where rowId=?";
+			"delete from msg_action where row_id=?";
 		
 		Object[] parms = new Object[] {rowId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
@@ -215,13 +215,13 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 		
 		String sql = 
 			"delete from msg_action " +
-			" where ruleName=? and actionSeq=? and startTime=? ";
+			" where rule_name=? and action_seq=? and start_time=? ";
 		
 		if (clientId == null) {
-			sql += " and clientId is null ";
+			sql += " and client_id is null ";
 		}
 		else {
-			sql += " and clientId=? ";
+			sql += " and client_id=? ";
 			keys.add(clientId);
 		}
 		

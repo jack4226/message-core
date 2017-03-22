@@ -28,7 +28,8 @@ public class SubjTemplateTest extends DaoTestBase {
 			assertTrue(list.size() > 0);
 			SubjTemplateVo vo1 = selectByPrimaryKey(list.get(list.size()-1));
 			assertNotNull(vo1);
-			SubjTemplateVo vo2 = subjTemplateDao.getByBestMatch(vo1.getTemplateId(), vo1.getClientId(), vo1.getStartTime());
+			SubjTemplateVo vo2 = subjTemplateDao.getByBestMatch(vo1.getTemplateId(), vo1.getClientId(),
+					vo1.getStartTime());
 			assertNotNull(vo2);
 			SubjTemplateVo vo3 = insert(testTemplateId);
 			assertNotNull(vo3);

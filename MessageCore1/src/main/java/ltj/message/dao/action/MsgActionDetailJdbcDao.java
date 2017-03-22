@@ -22,9 +22,9 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 	@Override
 	public MsgActionDetailVo getByActionId(String actionId) {
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime " +
+			"select *, updt_time as OrigUpdtTime " +
 			"from " +
-				"msg_action_detail where actionId=? ";
+				"msg_action_detail where action_id=? ";
 		
 		Object[] parms = new Object[] {actionId};
 		try {
@@ -40,9 +40,9 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 	@Override
 	public MsgActionDetailVo getByPrimaryKey(int rowId) {
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime " +
+			"select *, updt_time as OrigUpdtTime " +
 			"from " +
-				"msg_action_detail where RowId=? ";
+				"msg_action_detail where row_id=? ";
 		
 		Object[] parms = new Object[] {rowId};
 		
@@ -59,10 +59,10 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 	@Override
 	public List<MsgActionDetailVo> getAll() {
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime " +
+			"select *, updt_time as OrigUpdtTime " +
 			" from " +
 				" msg_action_detail " +
-			" order by actionId asc ";
+			" order by action_id asc ";
 		List<MsgActionDetailVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgActionDetailVo>(MsgActionDetailVo.class));
 		return list;
@@ -71,8 +71,8 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 	@Override
 	public List<String> getActionIds() {
 		String sql = 
-			"select distinct(ActionId) from msg_action_detail " +
-			" order by ActionId";
+			"select distinct(action_id) from msg_action_detail " +
+			" order by action_id";
 		
 		List<String> list = (List<String>)getJdbcTemplate().queryForList(sql, String.class);
 		return list;
@@ -84,7 +84,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionDetailVo);
 		String sql = MetaDataUtil.buildUpdateStatement("msg_action_detail", msgActionDetailVo);
 		if (msgActionDetailVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		msgActionDetailVo.setOrigUpdtTime(msgActionDetailVo.getUpdtTime());
@@ -95,7 +95,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 	@Override
 	public synchronized int deleteByActionId(String actionId) {
 		String sql = 
-			"delete from msg_action_detail where actionId=? ";
+			"delete from msg_action_detail where action_id=? ";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(actionId);
@@ -108,7 +108,7 @@ public class MsgActionDetailJdbcDao extends AbstractDao implements MsgActionDeta
 	@Override
 	public synchronized int deleteByPrimaryKey(int rowId) {
 		String sql = 
-			"delete from msg_action_detail where RowId=? ";
+			"delete from msg_action_detail where row_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(rowId);

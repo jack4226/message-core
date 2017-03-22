@@ -27,7 +27,8 @@ public class BodyTemplateTest extends DaoTestBase {
 			assertTrue(list.size()>0);
 			BodyTemplateVo vo1 = selectByPrimaryKey(list.get(list.size()-1));
 			assertNotNull(vo1);
-			BodyTemplateVo vo2 = bodyTemplateDao.getByBestMatch(vo1.getTemplateId(), vo1.getClientId(), vo1.getStartTime());
+			BodyTemplateVo vo2 = bodyTemplateDao.getByBestMatch(vo1.getTemplateId(), vo1.getClientId(),
+					vo1.getStartTime());
 			assertNotNull(vo2);
 			BodyTemplateVo vo3 = insert(testTemplateId);
 			assertNotNull(vo3);
