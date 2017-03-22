@@ -192,7 +192,7 @@ public class LoadTemplateTables {
 	
 	void load(MsgSourceDao msgSourceDao) {
 
-		EmailAddressVo emailVo = getEmailAddrdao().findByAddress("jsmith@test.com");
+		EmailAddressVo emailVo = getEmailAddressdao().findByAddress("jsmith@test.com");
 		
 		MsgSourceVo in = new MsgSourceVo();
 		
@@ -250,7 +250,7 @@ public class LoadTemplateTables {
 	
 	void load2(MsgSourceDao msgSourceDao) {
 
-		EmailAddressVo emailVo = getEmailAddrdao().findByAddress("jsmith@test.com");
+		EmailAddressVo emailVo = getEmailAddressdao().findByAddress("jsmith@test.com");
 		
 		MsgSourceVo in = new MsgSourceVo();
 		
@@ -333,7 +333,7 @@ public class LoadTemplateTables {
 	}
 	
 	private EmailAddressDao emailAddressDao = null;
-	private EmailAddressDao getEmailAddrdao() {
+	private EmailAddressDao getEmailAddressdao() {
 		if (emailAddressDao == null) {
 			emailAddressDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		}

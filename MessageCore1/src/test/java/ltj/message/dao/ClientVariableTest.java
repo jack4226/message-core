@@ -27,16 +27,18 @@ public class ClientVariableTest extends DaoTestBase {
 			assertTrue(lst1.size()>0);
 			List<ClientVariableVo> lst2 = selectByClientId(lst1.get(0).getClientId());
 			assertTrue(lst2.size()>0);
-			ClientVariableVo vo = selectByPromaryKey(lst2.get(lst2.size()-1));
-			assertNotNull(vo);
-			ClientVariableVo vo2 = insert(lst2.get(lst2.size()-1).getClientId());
+			ClientVariableVo vo1 = selectByPromaryKey(lst2.get(lst2.size()-1));
+			assertNotNull(vo1);
+			ClientVariableVo vo2 = clientVariableDao.getByBestMatch(vo1.getClientId(), vo1.getVariableName(), vo1.getStartTime());
 			assertNotNull(vo2);
-			vo.setRowId(vo2.getRowId());
-			vo.setStartTime(vo2.getStartTime());
-			assertTrue(vo.equalsTo(vo2));
-			int rowsUpdated = update(vo2);
+			ClientVariableVo vo3 = insert(lst2.get(lst2.size()-1).getClientId());
+			assertNotNull(vo3);
+			vo1.setRowId(vo3.getRowId());
+			vo1.setStartTime(vo3.getStartTime());
+			assertTrue(vo1.equalsTo(vo3));
+			int rowsUpdated = update(vo3);
 			assertEquals(rowsUpdated, 1);
-			int rowsDeleted = deleteByPrimaryKey(vo2);
+			int rowsDeleted = deleteByPrimaryKey(vo3);
 			assertEquals(rowsDeleted, 1);
 		}
 		catch (Exception e) {

@@ -22,7 +22,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_source where msgSourceId=? ";
+				"msg_source where msg_source_id=? ";
 		
 		Object[] parms = new Object[] {msgSourceId};
 		try {
@@ -40,7 +40,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" msg_source where fromAddrId=? ";
+				" msg_source where from_addr_id=? ";
 		Object[] parms = new Object[] {Long.valueOf(fromAddrId)};
 		List<MsgSourceVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgSourceVo>(MsgSourceVo.class));
@@ -66,7 +66,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 		String sql = MetaDataUtil.buildUpdateStatement("msg_source", msgSourceVo);
 
 		if (msgSourceVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		msgSourceVo.setOrigUpdtTime(msgSourceVo.getUpdtTime());
@@ -76,7 +76,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 	@Override
 	public int deleteByPrimaryKey(String msgSourceId) {
 		String sql = 
-			"delete from msg_source where msgSourceId=? ";
+			"delete from msg_source where msg_source_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgSourceId);
@@ -88,7 +88,7 @@ public class MsgSourceJdbcDao extends AbstractDao implements MsgSourceDao {
 	@Override
 	public int deleteByFromAddrId(long fromAddrId) {
 		String sql = 
-			"delete from msg_source where fromAddrId=? ";
+			"delete from msg_source where from_addr_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(Long.valueOf(fromAddrId));

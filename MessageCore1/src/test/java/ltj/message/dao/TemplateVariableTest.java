@@ -26,16 +26,19 @@ public class TemplateVariableTest extends DaoTestBase {
 		try {
 			List<TemplateVariableVo> list = selectByVariableName(testVariableName);
 			assertTrue(list.size() > 0);
-			TemplateVariableVo vo = selectByPrimaryKey(list.get(list.size() - 1));
-			assertNotNull(vo);
-			TemplateVariableVo vo2 = insert(vo.getVariableName());
+			TemplateVariableVo vo1 = selectByPrimaryKey(list.get(list.size() - 1));
+			assertNotNull(vo1);
+			TemplateVariableVo vo2 = templateVariableDao.getByBestMatch(vo1.getTemplateId(), vo1.getClientId(),
+					vo1.getVariableName(), vo1.getStartTime());
 			assertNotNull(vo2);
-			vo.setRowId(vo2.getRowId());
-			vo.setTemplateId(vo2.getTemplateId());
-			assertTrue(vo.equalsTo(vo2));
-			int rows = update(vo2);
+			TemplateVariableVo vo3 = insert(vo1.getVariableName());
+			assertNotNull(vo3);
+			vo1.setRowId(vo3.getRowId());
+			vo1.setTemplateId(vo3.getTemplateId());
+			assertTrue(vo1.equalsTo(vo3));
+			int rows = update(vo3);
 			assertEquals(1, rows);
-			rows = deleteByPrimaryKey(vo2);
+			rows = deleteByPrimaryKey(vo3);
 			assertEquals(1, rows);
 		}
 		catch (Exception e) {

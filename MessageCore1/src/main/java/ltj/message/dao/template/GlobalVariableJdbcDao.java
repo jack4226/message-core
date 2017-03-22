@@ -26,15 +26,15 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		String sql = 
 			"select * " +
 			"from " +
-				"global_variable where variableName=? ";
+				"global_variable where variable_name=? ";
 		
 		Object[] parms;
 		if (startTime!=null) {
-			sql += " and startTime=? ";
+			sql += " and start_time=? ";
 			parms = new Object[] {variableName, startTime};
 		}
 		else {
-			sql += " and startTime is null ";
+			sql += " and start_time is null ";
 			parms = new Object[] {variableName};
 		}
 		try {
@@ -52,14 +52,14 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		String sql = 
 			"select * " +
 			"from " +
-				"global_variable where variableName=? ";
+				"global_variable where variable_name=? ";
 		
 		Object[] parms;
 		if (startTime!=null) {
-			startTime = new Timestamp(new java.util.Date().getTime());
+			startTime = new Timestamp(System.currentTimeMillis());
 		}
-		sql += " and (startTime<=? or startTime is null) ";
-		sql += " order by startTime desc ";
+		sql += " and (start_time<=? or start_time is null) ";
+		sql += " order by start_time desc ";
 		
 		parms = new Object[] {variableName, startTime};
 		List<GlobalVariableVo> list = getJdbcTemplate().query(sql, parms, 
@@ -76,8 +76,8 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		String sql = 
 			"select * " +
 			" from " +
-				" global_variable where variableName=? " +
-			" order by startTime asc ";
+				" global_variable where variable_name=? " +
+			" order by start_time asc ";
 		Object[] parms = new Object[] {variableName};
 		List<GlobalVariableVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<GlobalVariableVo>(GlobalVariableVo.class));
@@ -91,13 +91,13 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 				"select * " +
 					" from global_variable a " +
 					" inner join ( " +
-					"  select b.variablename, max(b.starttime) as maxtime " +
+					"  select b.variable_name, max(b.start_time) as MaxTime " +
 					"   from global_variable b " +
-					"   where b.statusid = ? and b.starttime<=? " +
-					"   group by b.variablename " +
+					"   where b.status_id = ? and b.start_time<=? " +
+					"   group by b.variable_name " +
 					" ) as c " +
-					"  on a.variablename=c.variablename and a.starttime=c.maxtime " +
-					" order by a.variableName asc ";
+					"  on a.variable_name=c.variable_name and a.start_time=c.MaxTime " +
+					" order by a.variable_name asc ";
 			Object[] parms = new Object[] { StatusId.ACTIVE.value(), new Timestamp(new java.util.Date().getTime()) };
 			List<GlobalVariableVo> list = getJdbcTemplate().query(sql, parms, 
 					new BeanPropertyRowMapper<GlobalVariableVo>(GlobalVariableVo.class));
@@ -113,8 +113,8 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 		String sql = 
 			"select * " +
 				" from global_variable " +
-				" where statusid = ? and starttime<=?" +
-				" order by variableName asc, starttime desc ";
+				" where status_id = ? and start_time<=?" +
+				" order by variable_name asc, start_time desc ";
 		Object[] parms = new Object[] { statusId, new Timestamp(new java.util.Date().getTime()) };
 		List<GlobalVariableVo> list =  getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<GlobalVariableVo>(GlobalVariableVo.class));
@@ -144,16 +144,16 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 	@Override
 	public int deleteByPrimaryKey(String variableName, Timestamp startTime) {
 		String sql = 
-			"delete from global_variable where variableName=? ";
+			"delete from global_variable where variable_name=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
 		if (startTime!=null) {
-			sql += " and startTime=? ";
+			sql += " and start_time=? ";
 			fields.add(startTime);
 		}
 		else {
-			sql += " and startTime is null ";
+			sql += " and start_time is null ";
 		}
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -166,7 +166,7 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 	@Override
 	public int deleteByVariableName(String variableName) {
 		String sql = 
-			"delete from global_variable where variableName=? ";
+			"delete from global_variable where variable_name=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);

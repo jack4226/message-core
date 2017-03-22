@@ -28,23 +28,23 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			"from " +
-				"template_variable where templateId=? and variableName=? ";
+				"template_variable where template_id=? and variable_name=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		keys.add(variableName);
 		if (clientId==null) {
-			sql += " and clientId is null ";
+			sql += " and client_id is null ";
 		}
 		else {
-			sql += " and clientId=? ";
+			sql += " and client_id=? ";
 			keys.add(clientId);
 		}
 		if (startTime==null) {
-			sql += " and startTime is null ";
+			sql += " and start_time is null ";
 		}
 		else {
-			sql += " and startTime=? ";
+			sql += " and start_time=? ";
 			keys.add(startTime);
 		}
 		
@@ -65,24 +65,24 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			"from " +
-				"template_variable where templateId=? and variableName=? ";
+				"template_variable where template_id=? and variable_name=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		keys.add(variableName);
 		if (clientId==null) {
-			sql += " and clientId is null ";
+			sql += " and client_id is null ";
 		}
 		else {
-			sql += " and (clientId=? or clientId is null) ";
+			sql += " and (client_id=? or client_id is null) ";
 			keys.add(clientId);
 		}
 		if (startTime!=null) {
 			startTime = new Timestamp(new java.util.Date().getTime());
 		}
-		sql += " and (startTime<=? or startTime is null) ";
+		sql += " and (start_time<=? or start_time is null) ";
 		keys.add(startTime);
-		sql += " order by clientId desc, startTime desc ";
+		sql += " order by client_id desc, start_time desc ";
 		
 		Object[] parms = keys.toArray();
 		List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
@@ -99,8 +99,8 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			" from " +
-				" template_variable where variableName=? " +
-			" order by templateId, clientId, startTime asc ";
+				" template_variable where variable_name=? " +
+			" order by template_id, client_id, start_time asc ";
 		Object[] parms = new Object[] {variableName};
 		List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<TemplateVariableVo>(TemplateVariableVo.class));
@@ -112,8 +112,8 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			" from " +
-				" template_variable where clientId=? " +
-			" order by templateId, variableName, startTime ";
+				" template_variable where client_id=? " +
+			" order by template_id, variable_name, start_time ";
 		Object[] parms = new Object[] { clientId };
 		List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<TemplateVariableVo>(TemplateVariableVo.class));
@@ -127,15 +127,15 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 				"select * " +
 				" from template_variable as a " +
 				" inner join ( " +
-				"  select b.templateid, b.clientid, b.variablename, max(b.starttime) as maxtime " +
+				"  select b.template_id, b.client_id, b.variable_name, max(b.start_time) as MaxTime " +
 				"   from template_variable b " +
-				"   where b.statusid=? and b.starttime<=? " +
-				"    and b.templateid=? and b.clientid=? " +
-				"   group by b.templateid, b.clientid, b.variablename " +
+				"   where b.status_id=? and b.start_time<=? " +
+				"    and b.template_id=? and b.client_id=? " +
+				"   group by b.template_id, b.client_id, b.variable_name " +
 				" ) as c " +
-				"  on a.variablename=c.variablename and a.starttime=c.maxtime " +
-				"    and a.templateid=c.templateid and a.clientid=c.clientid " +
-				" order by a.variableName asc ";
+				"  on a.variable_name=c.variable_name and a.start_time=c.MaxTime " +
+				"    and a.template_id=c.template_id and a.client_id=c.client_id " +
+				" order by a.variable_name asc ";
 			Object[] parms = new Object[] { StatusId.ACTIVE.value(),
 					new Timestamp(new java.util.Date().getTime()), templateId, clientId };
 			List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
@@ -152,8 +152,8 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 		String sql = 
 			"select * " +
 			" from " +
-				" template_variable where templateId=? " +
-			" order by clientId, variableName, startTime asc ";
+				" template_variable where template_id=? " +
+			" order by client_id, variable_name, start_time asc ";
 		Object[] parms = new Object[] {templateId};
 		List<TemplateVariableVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<TemplateVariableVo>(TemplateVariableVo.class));
@@ -175,18 +175,18 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int deleteByPrimaryKey(String templateId, String clientId, String variableName, Timestamp startTime) {
 		String sql = 
-			"delete from template_variable where templateId=? and clientId=? and variableName=? ";
+			"delete from template_variable where template_id=? and client_id=? and variable_name=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
 		fields.add(clientId);
 		fields.add(variableName);
 		if (startTime!=null) {
-			sql += " and startTime=? ";
+			sql += " and start_time=? ";
 			fields.add(startTime);
 		}
 		else {
-			sql += " and startTime is null ";
+			sql += " and start_time is null ";
 		}
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -199,7 +199,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int deleteByVariableName(String variableName) {
 		String sql = 
-			"delete from template_variable where variableName=? ";
+			"delete from template_variable where variable_name=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
@@ -214,7 +214,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int deleteByClientId(String clientId) {
 		String sql = 
-			"delete from template_variable where clientId=? ";
+			"delete from template_variable where client_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
@@ -229,7 +229,7 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	@Override
 	public int deleteByTemplateId(String templateId) {
 		String sql = 
-			"delete from template_variable where templateId=? ";
+			"delete from template_variable where template_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);

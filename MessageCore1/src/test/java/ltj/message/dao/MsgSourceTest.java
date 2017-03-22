@@ -22,18 +22,18 @@ public class MsgSourceTest extends DaoTestBase {
 	@Test
 	public void testMsgCource() {
 		try {
-			MsgSourceVo vo = selectByPrimaryKey(testMsgSourceId);
-			assertNotNull(vo);
-			List<MsgSourceVo> list = selectByFromAddrId(vo.getFromAddrId());
+			MsgSourceVo vo1 = selectByPrimaryKey(testMsgSourceId);
+			assertNotNull(vo1);
+			List<MsgSourceVo> list = selectByFromAddrId(vo1.getFromAddrId());
 			assertTrue(list.size()>0);
-			vo = selectByPrimaryKey(testMsgSourceId);
+			vo1 = selectByPrimaryKey(testMsgSourceId);
 			MsgSourceVo vo2 = insert(testMsgSourceId);
 			assertNotNull(vo2);
-			vo.setRowId(vo2.getRowId());
-			vo.setMsgSourceId(vo2.getMsgSourceId());
-			vo.setUpdtTime(vo2.getUpdtTime());
-			vo.setOrigUpdtTime(vo2.getOrigUpdtTime());
-			assertTrue(vo.equalsTo(vo2));
+			vo1.setRowId(vo2.getRowId());
+			vo1.setMsgSourceId(vo2.getMsgSourceId());
+			vo1.setUpdtTime(vo2.getUpdtTime());
+			vo1.setOrigUpdtTime(vo2.getOrigUpdtTime());
+			assertTrue(vo1.equalsTo(vo2));
 			int rowsUpdated = update(vo2);
 			assertEquals(1, rowsUpdated);
 			int rowsDeleted = deleteByPrimaryKey(vo2);

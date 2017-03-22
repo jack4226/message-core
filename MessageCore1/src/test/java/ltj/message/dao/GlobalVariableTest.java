@@ -25,16 +25,18 @@ public class GlobalVariableTest extends DaoTestBase {
 		try {
 			List<GlobalVariableVo> list = selectByVariableName(testVariableName);
 			assertTrue(list.size()>0);
-			GlobalVariableVo vo = selectByPrimaryKey(list.get(list.size()-1));
-			assertNotNull(vo);
-			GlobalVariableVo vo2 = insert(vo.getVariableName());
+			GlobalVariableVo vo1 = selectByPrimaryKey(list.get(list.size()-1));
+			assertNotNull(vo1);
+			GlobalVariableVo vo2 = globalVariableDao.getByBestMatch(vo1.getVariableName(), vo1.getStartTime());
 			assertNotNull(vo2);
-			vo.setRowId(vo2.getRowId());
-			vo.setStartTime(vo2.getStartTime());
-			assertTrue(vo.equalsTo(vo2));
-			int rowsUpdated = update(vo2);
+			GlobalVariableVo vo3 = insert(vo1.getVariableName());
+			assertNotNull(vo3);
+			vo1.setRowId(vo3.getRowId());
+			vo1.setStartTime(vo3.getStartTime());
+			assertTrue(vo1.equalsTo(vo3));
+			int rowsUpdated = update(vo3);
 			assertEquals(rowsUpdated, 1);
-			int rowsDeleted = deleteByPrimaryKey(vo2);
+			int rowsDeleted = deleteByPrimaryKey(vo3);
 			assertEquals(rowsDeleted, 1);
 		}
 		catch (Exception e) {

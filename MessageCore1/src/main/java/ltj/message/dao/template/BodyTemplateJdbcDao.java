@@ -23,23 +23,23 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"select * " +
 			"from " +
-				"body_template where templateId=? ";
+				"body_template where template_id=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		if (StringUtils.isNotBlank(clientId)) {
-			sql += " and clientId=? ";
+			sql += " and client_id=? ";
 			keys.add(clientId);
 		}
 		else {
-			sql += " and clientId is null ";
+			sql += " and client_id is null ";
 		}
 		if (startTime != null) {
-			sql += " and startTime=? ";
+			sql += " and start_time=? ";
 			keys.add(startTime);
 		}
 		else {
-			sql += " startTime is null ";
+			sql += " start_time is null ";
 		}
 		
 		Object[] parms = keys.toArray();
@@ -58,24 +58,24 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"select * " +
 			"from " +
-				"body_template where templateId=? ";
+				"body_template where template_id=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(templateId);
 		if (StringUtils.isBlank(clientId)) {
-			sql += " and clientId is null ";
+			sql += " and client_id is null ";
 		}
 		else {
-			sql += " and (clientId=? or clientId is null) ";
+			sql += " and (client_id=? or client_id is null) ";
 			keys.add(clientId);
 		}
 		if (startTime == null) {
 			startTime = new Timestamp(System.currentTimeMillis());
 		}
-		sql += " and (startTime<=? or startTime is null) ";
+		sql += " and (start_time<=? or start_time is null) ";
 		keys.add(startTime);
 		
-		sql += " order by clientId desc, startTime desc ";
+		sql += " order by client_id desc, start_time desc ";
 		
 		Object[] parms = keys.toArray();
 		List<BodyTemplateVo> list = getJdbcTemplate().query(sql, parms, 
@@ -92,8 +92,8 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" body_template where templateId=? " +
-			" order by clientId, startTime asc ";
+				" body_template where template_id=? " +
+			" order by client_id, start_time asc ";
 		Object[] parms = new Object[] {templateId};
 		List<BodyTemplateVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<BodyTemplateVo>(BodyTemplateVo.class));
@@ -105,8 +105,8 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" body_template where clientId=? " +
-			" order by templateId, startTime asc ";
+				" body_template where client_id=? " +
+			" order by template_id, start_time asc ";
 		Object[] parms = new Object[] {clientId};
 		List<BodyTemplateVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<BodyTemplateVo>(BodyTemplateVo.class));
@@ -124,17 +124,17 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	@Override
 	public int deleteByPrimaryKey(String templateId, String clientId, Timestamp startTime) {
 		String sql = 
-			"delete from body_template where templateId=? and clientId=? ";
+			"delete from body_template where template_id=? and client_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
 		fields.add(clientId);
 		if (startTime != null) {
-			sql += " and startTime=? ";
+			sql += " and start_time=? ";
 			fields.add(startTime);
 		}
 		else {
-			sql += " and startTime is null ";
+			sql += " and start_time is null ";
 		}
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -144,7 +144,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	@Override
 	public int deleteByTemplateId(String templateId) {
 		String sql = 
-			"delete from body_template where templateId=? ";
+			"delete from body_template where template_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(templateId);
@@ -156,7 +156,7 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	@Override
 	public int deleteByClientId(String clientId) {
 		String sql = 
-			"delete from body_template where clientId=? ";
+			"delete from body_template where client_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);

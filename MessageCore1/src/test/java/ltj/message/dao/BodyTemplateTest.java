@@ -25,16 +25,18 @@ public class BodyTemplateTest extends DaoTestBase {
 		try {
 			List<BodyTemplateVo> list = selectByTemplateId(testTemplateId);
 			assertTrue(list.size()>0);
-			BodyTemplateVo vo = selectByPrimaryKey(list.get(list.size()-1));
-			assertNotNull(vo);
-			BodyTemplateVo vo2 = insert(testTemplateId);
+			BodyTemplateVo vo1 = selectByPrimaryKey(list.get(list.size()-1));
+			assertNotNull(vo1);
+			BodyTemplateVo vo2 = bodyTemplateDao.getByBestMatch(vo1.getTemplateId(), vo1.getClientId(), vo1.getStartTime());
 			assertNotNull(vo2);
-			vo.setRowId(vo2.getRowId());
-			vo.setTemplateId(vo2.getTemplateId());
-			assertTrue(vo.equalsTo(vo2));
-			int rowsUpdated = update(vo2);
+			BodyTemplateVo vo3 = insert(testTemplateId);
+			assertNotNull(vo3);
+			vo1.setRowId(vo3.getRowId());
+			vo1.setTemplateId(vo3.getTemplateId());
+			assertTrue(vo1.equalsTo(vo3));
+			int rowsUpdated = update(vo3);
 			assertEquals(rowsUpdated, 1);
-			int rowsDeleted = deleteByPrimaryKey(vo2);
+			int rowsDeleted = deleteByPrimaryKey(vo3);
 			assertEquals(rowsDeleted, 1);
 		}
 		catch (Exception e) {

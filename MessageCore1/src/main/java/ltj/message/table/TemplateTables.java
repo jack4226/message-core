@@ -74,17 +74,17 @@ public class TemplateTables extends CreateTableBase {
 	void createSubjTemplateTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE subj_template ( "
-				+ "RowId int AUTO_INCREMENT not null, "
-				+ "TemplateId varchar(16) NOT NULL, "
-				+ "ClientId varchar(16), "
-				+ "StartTime timestamp NOT NULL, "
-				+ "Description varchar(100), "
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // A - active, V - verification, I - inactive
-				+ "TemplateValue varchar(255), "
-				+ "PRIMARY KEY (RowId), "
-				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-				+ "INDEX (ClientId), "
-				+ "UNIQUE INDEX (TemplateId,ClientId,StartTime)) ENGINE=InnoDB");
+				+ "row_id int AUTO_INCREMENT not null, "
+				+ "template_id varchar(16) NOT NULL, "
+				+ "client_id varchar(16), "
+				+ "start_time timestamp NOT NULL, "
+				+ "description varchar(100), "
+				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // A - active, V - verification, I - inactive
+				+ "template_value varchar(255), "
+				+ "PRIMARY KEY (row_id), "
+				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "INDEX (client_id), "
+				+ "UNIQUE INDEX (template_id,client_id,start_time)) ENGINE=InnoDB");
 			System.out.println("Created subj_template Table...");
 		}
 		catch (SQLException e) {
@@ -96,18 +96,18 @@ public class TemplateTables extends CreateTableBase {
 	void createBodyTemplateTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE body_template ( "
-				+ "RowId int AUTO_INCREMENT not null, "
-				+ "TemplateId varchar(16) NOT NULL, "
-				+ "ClientId varchar(16), "
-				+ "StartTime timestamp NOT NULL, "
-				+ "Description varchar(100), "
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
-				+ "ContentType varchar(100) NOT NULL, " // content mime type
-				+ "TemplateValue text, "
-				+ "PRIMARY KEY (RowId), "
-				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-				+ "INDEX (ClientId), "
-				+ "UNIQUE INDEX (TemplateId,ClientId,StartTime)) ENGINE=InnoDB");
+				+ "row_id int AUTO_INCREMENT not null, "
+				+ "template_id varchar(16) NOT NULL, "
+				+ "client_id varchar(16), "
+				+ "start_time timestamp NOT NULL, "
+				+ "description varchar(100), "
+				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
+				+ "content_type varchar(100) NOT NULL, " // content mime type
+				+ "template_value text, "
+				+ "PRIMARY KEY (row_id), "
+				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "INDEX (client_id), "
+				+ "UNIQUE INDEX (template_id,client_id,start_time)) ENGINE=InnoDB");
 			System.out.println("Created body_template Table...");
 		}
 		catch (SQLException e) {
@@ -119,23 +119,23 @@ public class TemplateTables extends CreateTableBase {
 	void createGlobalVariableTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE global_variable ( "
-				+ "RowId int AUTO_INCREMENT not null, "
-				+ "VariableName varchar(26) NOT NULL, "
-				+ "StartTime timestamp(3) NOT NULL, "
-				+ "VariableFormat varchar(50), " 
-				+ "VariableType char(1) NOT NULL, "
+				+ "row_id int AUTO_INCREMENT not null, "
+				+ "variable_name varchar(26) NOT NULL, "
+				+ "start_time timestamp(3) NOT NULL, "
+				+ "variable_format varchar(50), " 
+				+ "variable_type char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
 				// A - address, X - Xheader, L - LOB(Attachment)
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
+				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				// A - Active, I - Inactive
-				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
+				+ "allow_override char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime, Y/N/M, M=Mandatory
-				+ "Required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to be present in body template
-				+ "VariableValue varchar(255), "
-				+ "PRIMARY KEY (RowId), "
-				+ "INDEX (VariableName), "
-				+ "UNIQUE INDEX (VariableName,StartTime)) ENGINE=InnoDB");
+				+ "variable_value varchar(255), "
+				+ "PRIMARY KEY (row_id), "
+				+ "INDEX (variable_name), "
+				+ "UNIQUE INDEX (variable_name,start_time)) ENGINE=InnoDB");
 			System.out.println("Created global_variable Table...");
 		}
 		catch (SQLException e) {
@@ -147,25 +147,25 @@ public class TemplateTables extends CreateTableBase {
 	void createClientVariableTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE client_variable ( "
-				+ "RowId int AUTO_INCREMENT not null, "
-				+ "ClientId varchar(16) NOT NULL, "
-				+ "VariableName varchar(26) NOT NULL, "
-				+ "StartTime timestamp(3) NOT NULL, "
-				+ "VariableFormat varchar(50), "
-				+ "VariableType char(1) NOT NULL, "
+				+ "row_id int AUTO_INCREMENT not null, "
+				+ "client_id varchar(16) NOT NULL, "
+				+ "variable_name varchar(26) NOT NULL, "
+				+ "start_time timestamp(3) NOT NULL, "
+				+ "variable_format varchar(50), "
+				+ "variable_type char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
 				// A - address, X - Xheader, L - LOB(Attachment)
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
-				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
+				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
+				+ "allow_override char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime
-				+ "Required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to present in body template
-				+ "VariableValue text, "
-				+ "PRIMARY KEY (RowId), "
-				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-				+ "INDEX (ClientId), "
-				+ "INDEX (VariableName), "
-				+ "UNIQUE INDEX (ClientId,VariableName,StartTime)) ENGINE=InnoDB");
+				+ "variable_value text, "
+				+ "PRIMARY KEY (row_id), "
+				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "INDEX (client_id), "
+				+ "INDEX (variable_name), "
+				+ "UNIQUE INDEX (client_id,variable_name,start_time)) ENGINE=InnoDB");
 			System.out.println("Created client_variable Table...");
 		}
 		catch (SQLException e) {
@@ -177,26 +177,26 @@ public class TemplateTables extends CreateTableBase {
 	void createTemplateVariableTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE template_variable ( "
-				+ "RowId int AUTO_INCREMENT not null, "
-				+ "TemplateId varchar(16) NOT NULL, "
-				+ "ClientId varchar(16), "
-				+ "VariableName varchar(26) NOT NULL, "
-				+ "StartTime timestamp(3) NOT NULL, "
-				+ "VariableFormat varchar(50), "
-				+ "VariableType char(1) NOT NULL, "
+				+ "row_id int AUTO_INCREMENT not null, "
+				+ "template_id varchar(16) NOT NULL, "
+				+ "client_id varchar(16), "
+				+ "variable_name varchar(26) NOT NULL, "
+				+ "start_time timestamp(3) NOT NULL, "
+				+ "variable_format varchar(50), "
+				+ "variable_type char(1) NOT NULL, "
 				// T - text, N - numeric, D - DateField/time,
 				// A - address, X - X header, L - LOB(Attachment)
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
-				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
+				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
+				+ "allow_override char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime
-				+ "Required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to present in body template
-				+ "VariableValue text, "
-				+ "PRIMARY KEY (RowId), "
-				+ "INDEX (VariableName), "
-				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-				+ "INDEX (ClientId), "
-				+ "UNIQUE INDEX (TemplateId,ClientId,VariableName,StartTime)"
+				+ "variable_value text, "
+				+ "PRIMARY KEY (row_id), "
+				+ "INDEX (variable_name), "
+				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "INDEX (client_id), "
+				+ "UNIQUE INDEX (template_id,client_id,variable_name,start_time)"
 				+ ") ENGINE=InnoDB");
 			System.out.println("Created template_variable Table...");
 		}
@@ -209,40 +209,40 @@ public class TemplateTables extends CreateTableBase {
 	void createMsgSourceTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE msg_source ( "
-				+ "RowId int AUTO_INCREMENT not null, "
-				+ "MsgSourceId varchar(16) NOT NULL, "
-				+ "Description varchar(100), "
-				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
-				+ "FromAddrId bigint NOT NULL, "
-				+ "ReplyToAddrId bigint, "
-				+ "SubjTemplateId varchar(16) NOT NULL, "
-				+ "BodyTemplateId varchar(16) NOT NULL, "
-				+ "TemplateVariableId varchar(16), "
-				+ "ExcludingIdToken char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "row_id int AUTO_INCREMENT not null, "
+				+ "msg_source_id varchar(16) NOT NULL, "
+				+ "description varchar(100), "
+				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
+				+ "from_addr_id bigint NOT NULL, "
+				+ "reply_to_addr_id bigint, "
+				+ "subj_template_id varchar(16) NOT NULL, "
+				+ "body_template_id varchar(16) NOT NULL, "
+				+ "template_variable_id varchar(16), "
+				+ "excluding_id_token char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// Y - No email id will be embedded into message
-				+ "CarrierCode char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', "
+				+ "carrier_code char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', "
 				// Internet, WebMail, Internal Routing, ...
-				+ "AllowOverride char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
+				+ "allow_override char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override templates, addrs to be supplied at runtime
-				+ "SaveMsgStream char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
+				+ "save_msg_stream char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// Y - save rendered smtp message stream to msg_stream
-				+ "ArchiveInd char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "archive_ind char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// Y - archive the rendered messages
-				+ "PurgeAfter int, " // in month
-				+ "UpdtTime datetime(3) NOT NULL, "
-				+ "UpdtUserId varchar(10) NOT NULL, "
-				+ "PRIMARY KEY (RowId), "
-				+ "UNIQUE INDEX (MsgSourceId), "
-				+ "FOREIGN KEY (FromAddrId) REFERENCES email_address (EmailAddrId) ON DELETE RESTRICT ON UPDATE CASCADE, "
-				+ "INDEX (FromAddrId), "
-				+ "FOREIGN KEY (ReplyToAddrId) REFERENCES email_address (EmailAddrId) ON DELETE SET NULL ON UPDATE CASCADE, "
-				+ "INDEX (ReplyToAddrId), "
-				+ "FOREIGN KEY (TemplateVariableId) REFERENCES template_variable (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
-				+ "INDEX (TemplateVariableId), "
-				+ "FOREIGN KEY (SubjTemplateId) REFERENCES subj_template (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
-				+ "INDEX (SubjTemplateId), "
-				+ "FOREIGN KEY (BodyTemplateId) REFERENCES body_template (TemplateId) ON DELETE RESTRICT ON UPDATE CASCADE, "
-				+ "INDEX (BodyTemplateId) "
+				+ "purge_after int, " // in month
+				+ "updt_time datetime(3) NOT NULL, "
+				+ "updt_user_id varchar(10) NOT NULL, "
+				+ "PRIMARY KEY (row_id), "
+				+ "UNIQUE INDEX (msg_source_id), "
+				+ "FOREIGN KEY (from_addr_id) REFERENCES email_address (EmailAddrId) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "INDEX (from_addr_id), "
+				+ "FOREIGN KEY (reply_to_addr_id) REFERENCES email_address (EmailAddrId) ON DELETE SET NULL ON UPDATE CASCADE, "
+				+ "INDEX (reply_to_addr_id), "
+				+ "FOREIGN KEY (template_variable_id) REFERENCES template_variable (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "INDEX (template_variable_id), "
+				+ "FOREIGN KEY (subj_template_id) REFERENCES subj_template (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "INDEX (subj_template_id), "
+				+ "FOREIGN KEY (body_template_id) REFERENCES body_template (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "INDEX (body_template_id) "
 				+ ") ENGINE=InnoDB");
 			System.out.println("Created msg_source Table...");
 		}

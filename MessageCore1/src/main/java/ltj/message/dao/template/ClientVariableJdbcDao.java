@@ -27,15 +27,15 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"select * " +
 			"from " +
-				"client_variable where clientId=? and variableName=? ";
+				"client_variable where client_id=? and variable_name=? ";
 		
 		Object[] parms;
 		if (startTime!=null) {
-			sql += " and startTime=? ";
+			sql += " and start_time=? ";
 			parms = new Object[] {clientId,variableName,startTime};
 		}
 		else {
-			sql += " and startTime is null ";
+			sql += " and start_time is null ";
 			parms = new Object[] {clientId,variableName};
 		}
 		try {
@@ -53,7 +53,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"select * " +
 			"from " +
-				"client_variable where clientId=? and variableName=? ";
+				"client_variable where client_id=? and variable_name=? ";
 		
 		List<Object> keys = new ArrayList<>();
 		keys.add(clientId);
@@ -61,9 +61,9 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		if (startTime!=null) {
 			startTime = new Timestamp(System.currentTimeMillis());
 		}
-		sql += " and (startTime<=? or startTime is null) ";
+		sql += " and (start_time<=? or start_time is null) ";
 		keys.add(startTime);
-		sql += " order by startTime desc ";
+		sql += " order by start_time desc ";
 		
 		Object[] parms = keys.toArray();
 		List<ClientVariableVo> list = getJdbcTemplate().query(sql, parms, 
@@ -80,8 +80,8 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 		String sql = 
 			"select * " +
 			" from " +
-				" client_variable where variableName=? " +
-			" order by clientId, startTime asc ";
+				" client_variable where variable_name=? " +
+			" order by client_id, start_time asc ";
 		Object[] parms = new Object[] {variableName};
 		List<ClientVariableVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<ClientVariableVo>(ClientVariableVo.class));
@@ -95,15 +95,15 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 				"select * " +
 					" from client_variable a " +
 					" inner join ( " +
-					"  select b.clientid, b.variablename, max(b.starttime) as maxtime " +
+					"  select b.client_id, b.variable_name, max(b.start_time) as MaxTime " +
 					"   from client_variable b " +
-					"   where b.statusid=? and b.starttime<=? " +
-					"    and b.clientid=? " +
-					"   group by b.variablename " +
+					"   where b.status_id=? and b.start_time<=? " +
+					"    and b.client_id=? " +
+					"   group by b.variable_name " +
 					" ) as c " +
-					"  on a.variablename=c.variablename and a.starttime=c.maxtime " +
-					"    and a.clientid=c.clientid " +
-					" order by a.rowId asc ";
+					"  on a.variable_name=c.variable_name and a.start_time=c.MaxTime " +
+					"    and a.client_id=c.client_id " +
+					" order by a.row_id asc ";
 			Object[] parms = new Object[] { StatusId.ACTIVE.value(), new Timestamp(System.currentTimeMillis()), clientId };
 			List<ClientVariableVo> list = getJdbcTemplate().query(sql, parms,
 					new BeanPropertyRowMapper<ClientVariableVo>(ClientVariableVo.class));
@@ -128,17 +128,17 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	@Override
 	public int deleteByPrimaryKey(String clientId, String variableName, Timestamp startTime) {
 		String sql = 
-			"delete from client_variable where clientId=? and variableName=? ";
+			"delete from client_variable where client_id=? and variable_name=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
 		fields.add(variableName);
 		if (startTime!=null) {
-			sql += " and startTime=? ";
+			sql += " and start_time=? ";
 			fields.add(startTime);
 		}
 		else {
-			sql += " and startTime is null ";
+			sql += " and start_time is null ";
 		}
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -151,7 +151,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	@Override
 	public int deleteByVariableName(String variableName) {
 		String sql = 
-			"delete from client_variable where variableName=? ";
+			"delete from client_variable where variable_name=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(variableName);
@@ -166,7 +166,7 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	@Override
 	public int deleteByClientId(String clientId) {
 		String sql = 
-			"delete from client_variable where clientId=? ";
+			"delete from client_variable where client_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(clientId);
