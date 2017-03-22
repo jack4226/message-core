@@ -179,6 +179,28 @@ public class MetaDataUtil {
 					pkey.setPkName(pkName);
 					table.getPrimaryKeyMap().put(pkey.getColumnName().toLowerCase().replaceAll("_", ""), pkey);
 				}
+				java.sql.ResultSet uni_idx_rs = md.getIndexInfo(catalog, schema, tableName, true, false);
+				while(uni_idx_rs.next()) {
+				/*
+				TABLE_CAT String => table catalog (may be null)
+				TABLE_SCHEM String => table schema (may be null)
+				TABLE_NAME String => table name
+				NON_UNIQUE boolean => Can index values be non-unique. false when TYPE is tableIndexStatistic
+				INDEX_QUALIFIER String => index catalog (may be null); null when TYPE is tableIndexStatistic
+				INDEX_NAME String => index name; null when TYPE is tableIndexStatistic
+				TYPE short => index type:
+					tableIndexStatistic - this identifies table statistics that are returned in conjuction with a table's index descriptions
+					tableIndexClustered - this is a clustered index
+					tableIndexHashed - this is a hashed index
+					tableIndexOther - this is some other style of index
+				ORDINAL_POSITION short => column sequence number within index; zero when TYPE is tableIndexStatistic
+				COLUMN_NAME String => column name; null when TYPE is tableIndexStatistic
+				ASC_OR_DESC String => column sort sequence, "A" => ascending, "D" => descending, may be null if sort sequence is not supported; null when TYPE is tableIndexStatistic
+				CARDINALITY long => When TYPE is tableIndexStatistic, then this is the number of rows in the table; otherwise, it is the number of unique values in the index.
+				PAGES long => When TYPE is tableIndexStatisic then this is the number of pages used for the table, otherwise it is the number of pages used for the current index.
+				FILTER_CONDITION String => Filter condition, if any. (may be null)
+				 */
+				}
 				java.sql.ResultSet column_rs = md.getColumns(catalog, schema, tableName, "%");
 				while (column_rs.next()) {
 					//String tableName = column_rs.getString("TABLE_NAME");
@@ -206,6 +228,8 @@ public class MetaDataUtil {
 	public static void main(String[] args) {
 		Table msg_inbox = MetaDataUtil.getTableMetaData("msg_inbox");
 		logger.info("Table Metadata:" + PrintUtil.prettyPrint(msg_inbox));
+		Table timer_server = MetaDataUtil.getTableMetaData("timer_server");
+		logger.info("Table Metadata:" + PrintUtil.prettyPrint(timer_server, 2));
 		logger.info(buildUpdateStatement("msg_inbox", new MsgInboxVo()));
 		logger.info(buildInsertStatement("mailing_list", new MailingListVo()));
 		logger.info(buildUpdateStatement("msg_attachment", new MsgAttachmentVo()));
