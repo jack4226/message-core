@@ -30,29 +30,29 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 		public RuleVo mapRow(ResultSet rs, int rowNum) throws SQLException {
 			RuleVo ruleVo = new RuleVo();
 			
-			ruleVo.setRuleName(rs.getString("RuleName"));
+			ruleVo.setRuleName(rs.getString("rule_name"));
 			
 			RuleLogicVo ruleLogicVo = new RuleLogicVo();
-			ruleLogicVo.setRuleName(rs.getString("RuleName"));
-			ruleLogicVo.setRuleSeq(rs.getInt("RuleSeq"));
-			ruleLogicVo.setRuleType(rs.getString("RuleType"));
-			ruleLogicVo.setStatusId(rs.getString("StatusId"));
-			ruleLogicVo.setStartTime(rs.getTimestamp("StartTime"));
-			ruleLogicVo.setMailType(rs.getString("MailType"));
-			ruleLogicVo.setRuleCategory(rs.getString("RuleCategory"));
-			ruleLogicVo.setIsSubRule(rs.getString("IsSubRule"));
+			ruleLogicVo.setRuleName(rs.getString("rule_name"));
+			ruleLogicVo.setRuleSeq(rs.getInt("rule_seq"));
+			ruleLogicVo.setRuleType(rs.getString("rule_type"));
+			ruleLogicVo.setStatusId(rs.getString("status_id"));
+			ruleLogicVo.setStartTime(rs.getTimestamp("start_time"));
+			ruleLogicVo.setMailType(rs.getString("mail_type"));
+			ruleLogicVo.setRuleCategory(rs.getString("rule_category"));
+			ruleLogicVo.setIsSubRule(rs.getString("is_sub_rule"));
 			
 			RuleElementVo ruleElementVo = new RuleElementVo();
-			ruleElementVo.setRuleName(rs.getString("RuleName"));
-			ruleElementVo.setElementSeq(rs.getInt("ElementSeq"));
-			ruleElementVo.setDataName(rs.getString("DataName"));
-			ruleElementVo.setHeaderName(rs.getString("HeaderName"));
-			ruleElementVo.setCriteria(rs.getString("Criteria"));
-			ruleElementVo.setCaseSensitive(rs.getString("CaseSensitive"));
-			ruleElementVo.setTargetText(rs.getString("TargetText"));
-			ruleElementVo.setExclusions(rs.getString("Exclusions"));
-			ruleElementVo.setExclListProc(rs.getString("ExclListProc"));
-			ruleElementVo.setDelimiter(rs.getString("Delimiter"));
+			ruleElementVo.setRuleName(rs.getString("rule_name"));
+			ruleElementVo.setElementSeq(rs.getInt("element_seq"));
+			ruleElementVo.setDataName(rs.getString("data_name"));
+			ruleElementVo.setHeaderName(rs.getString("header_name"));
+			ruleElementVo.setCriteria(rs.getString("criteria"));
+			ruleElementVo.setCaseSensitive(rs.getString("case_sensitive"));
+			ruleElementVo.setTargetText(rs.getString("target_text"));
+			ruleElementVo.setExclusions(rs.getString("exclusions"));
+			ruleElementVo.setExclListProc(rs.getString("excl_list_proc"));
+			ruleElementVo.setDelimiter(rs.getString("delimiter"));
 			
 			ruleVo.setRuleLogicVo(ruleLogicVo);
 			ruleVo.getRuleElementVos().add(ruleElementVo);
@@ -66,9 +66,9 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 			"select " +
 			"  logic.*, element.* " +
 			" from rule_logic as logic " +
-			"  join rule_element as element on logic.ruleName=element.ruleName "+
-			" where logic.ruleName=? " +
-			" order by element.elementSeq ";
+			"  join rule_element as element on logic.rule_name=element.rule_name "+
+			" where logic.rule_name=? " +
+			" order by element.element_seq ";
 		
 		Object[] parms = new Object[] {ruleName};
 		

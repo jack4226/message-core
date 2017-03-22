@@ -19,7 +19,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 	
 	@Override
 	public UserVo getByUserId(String userId) {
-		String sql = "select * from user_tbl where UserId=?";
+		String sql = "select * from user_tbl where user_id=?";
 		Object[] parms = new Object[] {userId};
 		try {
 			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, new BeanPropertyRowMapper<UserVo>(UserVo.class));
@@ -32,7 +32,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 	
 	@Override
 	public UserVo getByPrimaryKey(long rowId) {
-		String sql = "select * from user_tbl where RowId=?";
+		String sql = "select * from user_tbl where row_id=?";
 		Object[] parms = new Object[] {rowId};
 		try {
 			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, new BeanPropertyRowMapper<UserVo>(UserVo.class));
@@ -45,7 +45,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 	
 	@Override
 	public UserVo getForLogin(String userId, String password) {
-		String sql = "select * from user_tbl where UserId=? and Password=?";
+		String sql = "select * from user_tbl where user_id=? and password=?";
 		Object[] parms = new Object[] {userId, password};
 		try {
 			UserVo vo = getJdbcTemplate().queryForObject(sql, parms, new BeanPropertyRowMapper<UserVo>(UserVo.class));
@@ -61,7 +61,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 		
 		String sql = "select * from user_tbl ";
 		if (onlyActive) {
-			sql += " where StatusId='" + StatusId.ACTIVE.value() + "'";
+			sql += " where status_id='" + StatusId.ACTIVE.value() + "'";
 		}
 		sql += " limit 100";
 		List<UserVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<UserVo>(UserVo.class));
@@ -90,10 +90,10 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 				};
 		
 		String sql = "update user_tbl set " +
-			"SessionId=?," +
-			"LastVisitTime=?," +
-			"Hits=?" +
-			" where RowId=?";
+			"session_id=?," +
+			"last_visit_time=?," +
+			"hits=?" +
+			" where row_id=?";
 		
 		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
@@ -101,7 +101,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 	
 	@Override
 	public int deleteByUserId(String userId) {
-		String sql = "delete from user_tbl where UserId=?";
+		String sql = "delete from user_tbl where user_id=?";
 		Object[] parms = new Object[] {userId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -109,7 +109,7 @@ public class UserJdbcDao extends AbstractDao implements UserDao {
 	
 	@Override
 	public int deleteByPrimaryKey(long rowId) {
-		String sql = "delete from user_tbl where RowId=?";
+		String sql = "delete from user_tbl where row_id=?";
 		Object[] parms = new Object[] {rowId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;

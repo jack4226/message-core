@@ -19,7 +19,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	
 	@Override
 	public SessionUploadVo getByPrimaryKey(String sessionId, int sessionSeq) {
-		String sql = "select * from session_upload where SessionId=? and sessionSeq=?";
+		String sql = "select * from session_upload where session_id=? and session_seq=?";
 		Object[] parms = new Object[] {sessionId, sessionSeq};
 		try {
 			SessionUploadVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -33,7 +33,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	
 	@Override
 	public List<SessionUploadVo> getBySessionId(String sessionId) {
-		String sql = "select * from session_upload where SessionId=?";
+		String sql = "select * from session_upload where session_id=?";
 		Object[] parms = new Object[] {sessionId};
 		List<SessionUploadVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SessionUploadVo>(SessionUploadVo.class));
@@ -62,7 +62,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	
 	@Override
 	public List<SessionUploadVo> getByUserId(String userId) {
-		String sql = "select * from session_upload where UserId=?";
+		String sql = "select * from session_upload where user_id=?";
 		Object[] parms = new Object[] {userId};
 		List<SessionUploadVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<SessionUploadVo>(SessionUploadVo.class));
@@ -82,7 +82,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	
 	@Override
 	public int deleteByPrimaryKey(String sessionId, int sessionSeq) {
-		String sql = "delete from session_upload where SessionId=? and SessionSeq=?";
+		String sql = "delete from session_upload where session_id=? and session_seq=?";
 		Object[] parms = new Object[] {sessionId, sessionSeq};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -90,7 +90,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 
 	@Override
 	public int deleteBySessionId(String sessionId) {
-		String sql = "delete from session_upload where SessionId=?";
+		String sql = "delete from session_upload where session_id=?";
 		Object[] parms = new Object[] {sessionId,};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -98,7 +98,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	
 	@Override
 	public int deleteByUserId(String userId) {
-		String sql = "delete from session_upload where UserId=?";
+		String sql = "delete from session_upload where user_id=?";
 		Object[] parms = new Object[] {userId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -109,7 +109,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -minutes); // roll back time
 		Timestamp now = new Timestamp(cal.getTimeInMillis());
-		String sql = "delete from session_upload where CreateTime<?";
+		String sql = "delete from session_upload where create_time<?";
 		Object[] parms = new Object[] {now};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;	
@@ -137,7 +137,7 @@ public class SessionUploadJdbcDao extends AbstractDao implements SessionUploadDa
 	@Override
 	public int insertLast(SessionUploadVo sessVo) {
 		synchronized (jvmLocker) {
-			String lastSeq = "select max(SessionSeq) from session_upload where SessionId = '" + sessVo.getSessionId() + "'";
+			String lastSeq = "select max(session_seq) from session_upload where session_id = '" + sessVo.getSessionId() + "'";
 			int sessSeq = getJdbcTemplate().queryForObject(lastSeq, Integer.class) + 1;
 			sessVo.setSessionSeq(sessSeq);
 			return insert(sessVo);

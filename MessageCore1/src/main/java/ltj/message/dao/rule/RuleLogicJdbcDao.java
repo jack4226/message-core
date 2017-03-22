@@ -25,43 +25,43 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	private String getSelectClause() {
 		String select = 
 				"select " +
-					"r.RowId, " +
-					"r.RuleName, " +
-					"r.RuleSeq, " +
-					"r.RuleType, " +
-					"r.StatusId, " +
-					"r.StartTime, " +
-					"r.MailType, " +
-					"r.RuleCategory, " +
-					"r.IsSubRule, " +
-					"r.BuiltinRule, " +
-					"r.Description, " +
-					"count(s.SubRuleName) as SubRuleCount " +
+					"r.row_id, " +
+					"r.rule_name, " +
+					"r.rule_seq, " +
+					"r.rule_type, " +
+					"r.status_id, " +
+					"r.start_time, " +
+					"r.mail_type, " +
+					"r.rule_category, " +
+					"r.is_sub_rule, " +
+					"r.built_in_rule, " +
+					"r.description, " +
+					"count(s.sub_rule_name) as SubRuleCount " +
 				" from rule_logic r " +
-					" left outer join rule_subrule_map s on r.RuleName=s.RuleName ";
+					" left outer join rule_subrule_map s on r.rule_name=s.rule_name ";
 		return select;
 	}
 	
 	private String getGroupByClause() {
 		String groupBy = " group by " +
-				"r.RowId, " +
-				"r.RuleName, " +
-				"r.RuleSeq, " +
-				"r.RuleType, " +
-				"r.StatusId, " +
-				"r.StartTime, " +
-				"r.MailType, " +
-				"r.RuleCategory, " +
-				"r.IsSubRule, " +
-				"r.BuiltinRule, " +
-				"r.Description ";
+				"r.row_id, " +
+				"r.rule_name, " +
+				"r.rule_seq, " +
+				"r.rule_type, " +
+				"r.status_id, " +
+				"r.start_time, " +
+				"r.mail_type, " +
+				"r.rule_category, " +
+				"r.is_sub_rule, " +
+				"r.built_in_rule, " +
+				"r.description ";
 		return groupBy;
 	}
 
 	@Override
 	public RuleLogicVo getByPrimaryKey(String ruleName, int ruleSeq) {
 		String sql = getSelectClause() +
-			" where r.ruleName=? and r.RuleSeq=? " +
+			" where r.rule_name=? and r.rule_seq=? " +
 			getGroupByClause();
 		
 		Object[] parms = new Object[] {ruleName};
@@ -78,9 +78,9 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	@Override
 	public List<RuleLogicVo> getByRuleName(String ruleName) {
 		String sql = getSelectClause() +
-			" where r.ruleName=? " +
+			" where r.rule_name=? " +
 			getGroupByClause() +
-			" order by r.RuleSeq ";
+			" order by r.rule_seq ";
 		
 		Object[] parms = new Object[] {ruleName};
 		
@@ -92,7 +92,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	@Override
 	public int getNextRuleSequence() {
 		String sql = 
-			"select max(RuleSeq) from rule_logic";
+			"select max(rule_seq) from rule_logic";
 
 		int nextSeq = getJdbcTemplate().queryForObject(sql, Integer.class);
 		return (nextSeq + 1);
@@ -101,9 +101,9 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	@Override
 	public List<RuleLogicVo> getActiveRules() {
 		String sql = getSelectClause() +
-			" where r.statusId=? and r.startTime<=? " +
+			" where r.status_id=? and r.start_time<=? " +
 			getGroupByClause() +
-			" order by r.ruleCategory asc, r.ruleSeq asc, r.ruleName asc ";
+			" order by r.rule_category asc, r.rule_seq asc, r.rule_name asc ";
 		Object[] parms = new Object[] {StatusId.ACTIVE.value(), new Timestamp(System.currentTimeMillis())};
 		List<RuleLogicVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
@@ -115,13 +115,13 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = getSelectClause();
 		
 		if (builtInRule) {
-			sql += " where r.BuiltInRule=? and r.IsSubRule!='" + Constants.Y + "' ";
+			sql += " where r.built_in_rule=? and r.is_sub_rule!='" + Constants.Y + "' ";
 		}
 		else {
-			sql += " where r.BuiltInRule!=? ";
+			sql += " where r.built_in_rule!=? ";
 		}
 		sql += getGroupByClause();
-		sql += " order by r.ruleCategory asc, r.ruleSeq asc, r.ruleName asc ";
+		sql += " order by r.rule_category asc, r.rule_seq asc, r.rule_name asc ";
 		List<String> fields = new ArrayList<>();
 		fields.add(Constants.Y);
 		List<RuleLogicVo> list = getJdbcTemplate().query(sql, fields.toArray(), 
@@ -134,11 +134,11 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = 
 			"select *, 0 as SubRuleCount " +
 			" from rule_logic " +
-				" where IsSubRule=? ";
+				" where is_sub_rule=? ";
 		List<String> fields = new ArrayList<>();
 		fields.add(Constants.Y);
 		if (excludeBuiltIn) {
-			sql += " and BuiltInRule!=? ";
+			sql += " and built_in_rule!=? ";
 			fields.add(Constants.Y);
 		}
 		
@@ -150,10 +150,10 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	@Override
 	public List<String> getBuiltinRuleNames4Web() {
 		String sql = 
-			"select distinct(RuleName) " +
+			"select distinct(rule_name) " +
 			" from rule_logic " +
-			" where BuiltInRule=? and IsSubRule!=? and RuleCategory=? " +
-			" order by RuleName ";
+			" where built_in_rule=? and is_sub_rule!=? and rule_category=? " +
+			" order by rule_name ";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(Constants.Y);
@@ -166,10 +166,10 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	@Override
 	public List<String> getCustomRuleNames4Web() {
 		String sql = 
-			"select distinct(RuleName) " +
+			"select distinct(rule_name) " +
 			" from rule_logic " +
-			" where BuiltInRule!=? and IsSubRule!=? and RuleCategory=? " +
-			" order by RuleName ";
+			" where built_in_rule!=? and is_sub_rule!=? and rule_category=? " +
+			" order by rule_name ";
 
 		List<String> fields = new ArrayList<>();
 		fields.add(Constants.Y);
@@ -193,7 +193,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	@Override
 	public synchronized int deleteByPrimaryKey(String ruleName, int ruleSeq) {
 		String sql = 
-			"delete from rule_logic where RuleName=? and RuleSeq=? ";
+			"delete from rule_logic where rule_name=? and rule_seq=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(ruleName);

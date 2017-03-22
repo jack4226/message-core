@@ -23,7 +23,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 		String sql = 
 			"select * " +
 			"from rule_element " +
-				" where ruleName=? and elementSeq=?";
+				" where rule_name=? and element_seq=?";
 		
 		Object[] parms = new Object[] {ruleName, elementSeq};
 		try {
@@ -42,7 +42,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 			"select * " +
 			" from " +
 				" rule_element " +
-			" order by ruleName asc, elementSeq asc ";
+			" order by rule_name asc, element_seq asc ";
 		List<RuleElementVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<RuleElementVo>(RuleElementVo.class));
 		return list;
@@ -54,8 +54,8 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 			"select * " +
 			" from " +
 				" rule_element " +
-				" where ruleName = ? " +
-			" order by elementSeq asc ";
+				" where rule_name = ? " +
+			" order by element_seq asc ";
 		Object[] parms = new Object[] { ruleName };
 		List<RuleElementVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<RuleElementVo>(RuleElementVo.class));
@@ -74,7 +74,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 	@Override
 	public synchronized int deleteByPrimaryKey(String ruleName, int elementSeq) {
 		String sql = 
-			"delete from rule_element where ruleName=? and elementSeq=?";
+			"delete from rule_element where rule_name=? and element_seq=?";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(ruleName);
@@ -88,7 +88,7 @@ public class RuleElementJdbcDao extends AbstractDao implements RuleElementDao {
 	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
-			"delete from rule_element where ruleName=?";
+			"delete from rule_element where rule_name=?";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);

@@ -50,26 +50,26 @@ public class UserTable extends CreateTableBase {
 	void createUserTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE user_tbl ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"UserId varchar(20) NOT NULL, " + 
-			"Password varchar(32) NOT NULL, " +
-			"SessionId varchar(50), " +
-			"FirstName varchar(32), " +
-			"LastName varchar(32), " +
-			"MiddleInit char(1), " +
-			"CreateTime datetime(3) NOT NULL, " +
-			"LastVisitTime datetime(3), " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"user_id varchar(20) NOT NULL, " + 
+			"password varchar(32) NOT NULL, " +
+			"session_id varchar(50), " +
+			"first_name varchar(32), " +
+			"last_name varchar(32), " +
+			"middle_init char(1), " +
+			"create_time datetime(3) NOT NULL, " +
+			"last_visit_time datetime(3), " +
 			"hits Integer NOT NULL DEFAULT 0, " +
-			"StatusId char(1) NOT NULL, " + // A - active, I - Inactive
-			"Role varchar(5) NOT NULL, " + // admin/user
-			"EmailAddr varchar(255), " +
-			"DefaultFolder varchar(8), " + // All/Received/Sent/Closed
-			"DefaultRuleName varchar(26), " + // All/...
-			"DefaultToAddr varchar(255), " +
-			"ClientId varchar(16) NOT NULL, " +
-			"PRIMARY KEY (RowId), " +
-			"FOREIGN KEY (ClientId) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"Constraint UNIQUE INDEX (UserId) " +
+			"status_id char(1) NOT NULL, " + // A - active, I - Inactive
+			"role varchar(5) NOT NULL, " + // admin/user
+			"email_addr varchar(255), " +
+			"default_folder varchar(8), " + // All/Received/Sent/Closed
+			"default_rule_name varchar(26), " + // All/...
+			"default_to_addr varchar(255), " +
+			"client_id varchar(16) NOT NULL, " +
+			"PRIMARY KEY (row_id), " +
+			"FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"Constraint UNIQUE INDEX (user_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created user_tbl Table...");
 		} catch (SQLException e) {
@@ -81,15 +81,15 @@ public class UserTable extends CreateTableBase {
 	void createSessionUploadTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE session_upload ( " +
-			"SessionId varchar(50) NOT NULL, " + 
-			"SessionSeq int NOT NULL, " +
-			"FileName varchar(100) NOT NULL, " +
-			"ContentType varchar(100), " +
-			"UserId varchar(20) NOT NULL, " +
-			"CreateTime datetime(3) NOT NULL, " +
-			"SessionValue mediumblob, " +
-			"INDEX (UserId), " +
-			"PRIMARY KEY (SessionId, SessionSeq) " +
+			"session_id varchar(50) NOT NULL, " + 
+			"session_seq int NOT NULL, " +
+			"file_name varchar(100) NOT NULL, " +
+			"content_type varchar(100), " +
+			"user_id varchar(20) NOT NULL, " +
+			"create_time datetime(3) NOT NULL, " +
+			"session_value mediumblob, " +
+			"INDEX (user_id), " +
+			"PRIMARY KEY (session_id, session_seq) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created session_upload Table...");
 		} catch (SQLException e) {
@@ -104,14 +104,14 @@ public class UserTable extends CreateTableBase {
 	void createUserSessionTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE user_session ( " +
-			"SessionId varchar(50) NOT NULL, " + 
-			"SessionName varchar(50), " +
-			"SessionValue text, " +
-			"UserRowId Integer NOT NULL, " +
-			"CreateTime datetime(3) NOT NULL, " +
-			"INDEX (UserRowId), " +
-			"PRIMARY KEY (SessionId, SessionName), " +
-			"FOREIGN KEY (UserRowId) REFERENCES user_tbl(RowId) ON DELETE CASCADE ON UPDATE CASCADE " +
+			"session_id varchar(50) NOT NULL, " + 
+			"session_name varchar(50), " +
+			"session_value text, " +
+			"user_row_id Integer NOT NULL, " +
+			"create_time datetime(3) NOT NULL, " +
+			"INDEX (user_row_id), " +
+			"PRIMARY KEY (session_id, session_name), " +
+			"FOREIGN KEY (user_row_id) REFERENCES user_tbl(row_id) ON DELETE CASCADE ON UPDATE CASCADE " +
 			") ENGINE=InnoDB");
 			System.out.println("Created user_session Table...");
 		} catch (SQLException e) {
@@ -191,11 +191,11 @@ public class UserTable extends CreateTableBase {
 		try {
 			PreparedStatement ps = con.prepareStatement(
 				"INSERT INTO user_session " +
-				"(SessionId," +
-				"SessionName," +
-				"SessionValue," +
-				"UserRowId," +
-				"CreateTime) " +
+				"(session_id," +
+				"session_name," +
+				"session_value," +
+				"user_row_id," +
+				"create_time) " +
 				"VALUES (?, ?, ?, ?, ?)"); 
 			
 			ps.setString(1, "test_session_id");

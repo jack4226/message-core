@@ -23,7 +23,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		String sql = 
 			"select * " +
 			"from " +
-				"rule_subrule_map where ruleName=? and subRuleName=? ";
+				"rule_subrule_map where rule_name=? and sub_rule_name=? ";
 		
 		Object[] parms = new Object[] {ruleName, subRuleName};
 		try {
@@ -41,8 +41,8 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 		String sql = 
 			"select * " +
 			" from " +
-				" rule_subrule_map where ruleName=? " +
-			" order by subRuleSeq asc ";
+				" rule_subrule_map where rule_name=? " +
+			" order by sub_rule_seq asc ";
 		
 		Object[] parms = new Object[] {ruleName};
 		List<RuleSubRuleMapVo> list = getJdbcTemplate().query(sql, parms, 
@@ -53,7 +53,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 	@Override
 	public synchronized int deleteByPrimaryKey(String ruleName, String subRuleName) {
 		String sql = 
-			"delete from rule_subrule_map where ruleName=? and subRuleName=? ";
+			"delete from rule_subrule_map where rule_name=? and sub_rule_name=? ";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);
@@ -67,7 +67,7 @@ public class RuleSubRuleMapJdbcDao extends AbstractDao implements RuleSubRuleMap
 	@Override
 	public synchronized int deleteByRuleName(String ruleName) {
 		String sql = 
-			"delete from rule_subrule_map where ruleName=? ";
+			"delete from rule_subrule_map where rule_name=? ";
 		
 		List<String> fields = new ArrayList<>();
 		fields.add(ruleName);
