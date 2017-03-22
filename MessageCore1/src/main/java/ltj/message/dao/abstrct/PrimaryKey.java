@@ -2,7 +2,7 @@ package ltj.message.dao.abstrct;
 
 public class PrimaryKey {
 	private String columnName;
-	private int keySeq;
+	private short keySeq;
 	private String pkName;
 
 	public String getColumnName() {
@@ -11,10 +11,10 @@ public class PrimaryKey {
 	public void setColumnName(String columnName) {
 		this.columnName = columnName;
 	}
-	public int getKeySeq() {
+	public short getKeySeq() {
 		return keySeq;
 	}
-	public void setKeySeq(int keySeq) {
+	public void setKeySeq(short keySeq) {
 		this.keySeq = keySeq;
 	}
 	public String getPkName() {

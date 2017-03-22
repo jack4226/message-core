@@ -12,6 +12,7 @@ public class Table {
 
 	private Map<String, PrimaryKey> primaryKeyMap = new LinkedHashMap<>();
 	private final Map<String, Column> columnMap = new LinkedHashMap<>();
+	private final Map<String, List<Index>> indexMap = new LinkedHashMap<>();
 	
 	public String getCatalog() {
 		return catalog;
@@ -42,5 +43,8 @@ public class Table {
 	}
 	public List<Column> getColumnList() {
 		return new ArrayList<Column>(columnMap.values());
+	}
+	public Map<String, List<Index>> getIndexMap() {
+		return indexMap;
 	}
 }

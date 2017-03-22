@@ -2,6 +2,7 @@ package ltj.message.util;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -196,89 +197,17 @@ public class PrintUtil {
 							|| method.getReturnType().equals(Class.forName("java.util.List"))) {
 						sb.append("a List");
 						List<?> lst = (List<?>) method.invoke(obj, params);
-						if (lst != null) {
-							try {
-								for (Iterator<?> it = lst.iterator(); it.hasNext();) {
-									Object _obj = it.next();
-									if (_obj == null) {
-										continue;
-									}
-									if (_obj.getClass().getName().startsWith(pkgName)) {
-										sb.append(prettyPrint(_obj, stack, level + 1, pkgName, levels));
-									}
-									else {
-										if (_obj instanceof java.lang.String) {
-											sb.append(StringUtil.LF + " ");
-											sb.append("     " + dots(level+1) + _obj.getClass().getCanonicalName());
-											sb.append("=" + _obj.toString());
-										}
-									}
-								}
-							}
-							catch (Exception e) {
-								sb.append(" - Exception caught: " + e.getMessage());
-							}
-						}
+						printCollection(lst, pkgName, stack, sb, level, levels);
 					}
 					else if (method.getReturnType().equals(Class.forName("java.util.Set"))) {
 						sb.append("a Set");
 						Set<?> set = (Set<?>) method.invoke(obj, params);
-						if (set != null) {
-							try {
-								for (Iterator<?> it = set.iterator(); it.hasNext();) {
-									Object _obj = it.next();
-									if (_obj == null) {
-										continue;
-									}
-									if (_obj instanceof java.lang.String) {
-										sb.append(StringUtil.LF + " ");
-										sb.append("     " + dots(level+1) + _obj.getClass().getCanonicalName());
-										sb.append("=" + _obj.toString());
-									}
-									else if (_obj.getClass().isEnum()) { // TODO - Skip Enum type, must revisit
-										continue;
-									}
-									else {
-										if (_obj.getClass().getName().startsWith(pkgName)) {
-											sb.append(prettyPrint(_obj, stack, level + 1, pkgName, levels));
-										}
-									}
-								}
-							}
-							catch (Exception e) {
-								sb.append(" - Exception caught: " + e.getMessage());
-							}
-						}
+						printCollection(set, pkgName, stack, sb, level, levels);
 					}
 					else if (method.getReturnType().equals(Class.forName("java.util.Map"))) {
 						sb.append("a Map");
 						Map<?, ?> map = (Map<?, ?>) method.invoke(obj, params);
-						if (map != null) {
-							try {
-								for (Iterator<?> it = map.keySet().iterator(); it.hasNext();) {
-									Object _key = it.next();
-									if (_key == null) {
-										continue;
-									}
-									Object _obj = map.get(_key);
-									if (_obj != null) {
-										if (_obj instanceof java.lang.String) {
-											sb.append(StringUtil.LF + " ");
-											sb.append("     " + dots(level+1) + _key.toString());
-											sb.append("=" + _obj.toString());
-										}
-										else {
-											if (_obj.getClass().getName().startsWith(pkgName)) {
-												sb.append(prettyPrint(_obj, stack, level + 1, pkgName, levels));
-											}
-										}
-									}
-								}
-							}
-							catch (Exception e) {
-								sb.append(" - Exception caught: " + e.getMessage());
-							}
-						}
+						printMap(map, pkgName, stack, sb, level, levels);
 					}
 					else if (method.getReturnType()==byte[].class) {
 						Object rtnObj = method.invoke(obj, params);
@@ -367,6 +296,66 @@ public class PrintUtil {
 		}
 		stack.pop();
 		return sb.toString();
+	}
+	
+	private static void printCollection(Collection<?> list, String pkgName, Stack<Object> stack, StringBuffer sb,
+			int level, int levels) {
+		if (list == null) {
+			return;
+		}
+		try {
+			for (Object obj : list) {
+				printObject(obj, pkgName, stack, sb, level, levels);
+			}
+		}
+		catch (Exception e) {
+			sb.append(" - Exception caught: " + e.getMessage());
+		}
+	}
+	
+	private static void printMap(Map<?, ?> map, String pkgName, Stack<Object> stack, StringBuffer sb, int level,
+			int levels) {
+		if (map == null) {
+			return;
+		}
+		try {
+			for (Iterator<?> it = map.keySet().iterator(); it.hasNext();) {
+				Object key = it.next();
+				if (key == null) {
+					continue;
+				}
+				Object obj = map.get(key);
+				printObject(obj, pkgName, stack, sb, level, levels);
+			}
+		}
+		catch (Exception e) {
+			sb.append(" - Exception caught: " + e.getMessage());
+		}
+	}
+	
+	private static void printObject(Object obj, String pkgName, Stack<Object> stack, StringBuffer sb, int level,
+			int levels) {
+		if (obj == null) {
+			return;
+		}
+		if (obj.getClass().getName().startsWith(pkgName)) {
+			sb.append(prettyPrint(obj, stack, level + 1, pkgName, levels));
+		}
+		else if (obj.getClass().isEnum()) { // TODO - Skip Enum type, must revisit
+			return;
+		}
+		else if (obj instanceof java.util.Collection) {
+			Collection<?> lst = (Collection<?>) obj;
+			sb.append(StringUtil.LF + "      " + dots(level + 1) + obj.getClass().getSimpleName() + "=a List");
+			printCollection(lst, pkgName, stack, sb, level + 1, levels);
+		}
+		else {
+			if (obj instanceof java.lang.String) {
+				sb.append(StringUtil.LF + " ");
+				sb.append("     " + dots(level + 1) + obj.getClass().getCanonicalName());
+				sb.append("=" + obj.toString());
+			}
+		}
 	}
 	
 	private static String getPkgName(Object obj) {

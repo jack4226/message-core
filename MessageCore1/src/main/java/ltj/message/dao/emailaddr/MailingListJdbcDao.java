@@ -27,7 +27,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 				" a.ListId, " +
 				" a.DisplayName, " +
 				" a.AcctUserName, " +
-				" c.DomainName, " + 
+				" c.domain_name, " + 
 				" a.Description, " +
 				" a.ClientId, " +
 				" a.StatusId, " +
@@ -41,7 +41,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 				" sum(b.ClickCount) as ClickCount " +
 				"from mailing_list a " +
 				" LEFT OUTER JOIN email_subscrpt b on a.ListId = b.ListId " +
-				" JOIN client_tbl c on a.ClientId = c.ClientId ";
+				" JOIN client_tbl c on a.ClientId = c.client_id ";
 		return select;
 	}
 
@@ -51,7 +51,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 				" a.ListId, " +
 				" a.DisplayName, " +
 				" a.AcctUserName, " +
-				" c.DomainName, " + 
+				" c.domain_name, " + 
 				" a.Description, " +
 				" a.ClientId, " +
 				" a.StatusId, " +
@@ -91,7 +91,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		String sql = getSelectClause() +
 			" where a.AcctUserName = ? ";
 		if (domainName != null && domainName.trim().length() > 0) {
-			sql += " and c.DomainName = '" + domainName + "' ";
+			sql += " and c.domain_name = '" + domainName + "' ";
 		}
 		sql += getGroupByClause();
 		Object[] parms = new Object[] {acctUserName};
@@ -140,14 +140,14 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 	public List<MailingListVo> getSubscribedLists(long emailAddrId) {
 		String sql = "SELECT " +
 			" m.*, " +
-			" c.DomainName, " +
+			" c.domain_name, " +
 			" s.Subscribed, " +
 			" s.SentCount, " +
 			" s.OpenCount, " +
 			" s.ClickCount " +
 			" FROM mailing_list m, email_subscrpt s, client_tbl c " +
 			" where m.ListId=s.ListId " +
-			" and m.ClientId=c.ClientId " +
+			" and m.ClientId=c.client_id " +
 			" and s.EmailAddrId=? ";
 		Object[] parms = new Object[] {emailAddrId};
 		List<MailingListVo> list = getJdbcTemplate().query(sql, parms,

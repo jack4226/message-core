@@ -42,8 +42,8 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 			lastFetchTime = currTime;
 		}
 		if (!clientCache.containsKey(clientId)) {
-			String sql = "select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
-					"from client_tbl where clientid=?";
+			String sql = "select *, client_id as OrigClientId, updt_time as OrigUpdtTime " +
+					"from client_tbl where client_id=?";
 			Object[] parms = new Object[] { clientId };
 			try {
 				ClientVo vo = getJdbcTemplate().queryForObject(sql, parms,
@@ -60,8 +60,8 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 
 	@Override
 	public ClientVo getByDomainName(String domainName) {
-		String sql = "select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
-				"from client_tbl where DomainName=?";
+		String sql = "select *, client_id as OrigClientId, updt_time as OrigUpdtTime " +
+				"from client_tbl where domain_name=?";
 		Object[] parms = new Object[] { domainName };
 		List<ClientVo> list = getJdbcTemplate().query(sql, parms, new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
 		if (list.size() > 0) {
@@ -75,8 +75,8 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	@Override
 	public List<ClientVo> getAll() {
 		String sql = 
-			"select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
-				"from client_tbl order by clientId";
+			"select *, client_id as OrigClientId, updt_time as OrigUpdtTime " +
+				"from client_tbl order by client_id";
 		
 		List<ClientVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<ClientVo>(ClientVo.class));
 		return list;
@@ -85,9 +85,9 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	@Override
 	public List<ClientVo> getAllForTrial() {
 		String sql = 
-			"select *, ClientId as OrigClientId, UpdtTime as OrigUpdtTime " +
+			"select *, client_id as OrigClientId, updt_time as OrigUpdtTime " +
 				"from client_tbl " +
-			" order by RowId " +
+			" order by row_id " +
 			" limit 1 ";
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
@@ -102,16 +102,16 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	@Override
 	public String getSystemId() {
 		String sql = 
-			"select SystemId " +
-				"from client_tbl where ClientId='" + Constants.DEFAULT_CLIENTID + "'";
+			"select system_id " +
+				"from client_tbl where client_id='" + Constants.DEFAULT_CLIENTID + "'";
 		return (String) getJdbcTemplate().queryForObject(sql, String.class);
 	}
 
 	@Override
 	public String getSystemKey() {
 		String sql = 
-			"select SystemKey " +
-				"from client_tbl where ClientId='" + Constants.DEFAULT_CLIENTID + "'";
+			"select system_key " +
+				"from client_tbl where client_id='" + Constants.DEFAULT_CLIENTID + "'";
 		return (String) getJdbcTemplate().queryForObject(sql, String.class);
 	}
 
@@ -120,8 +120,8 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		List<Object> keys = new ArrayList<>();
 		keys.add(key);
 		String sql = "update client_tbl set " +
-			"SystemKey=? " +
-			" where ClientId= '" + Constants.DEFAULT_CLIENTID + "'";
+			"system_key=? " +
+			" where client_id= '" + Constants.DEFAULT_CLIENTID + "'";
 		int rowsUpdated = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpdated;
 	}
@@ -134,7 +134,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		String sql = MetaDataUtil.buildUpdateStatement("client_tbl", clientVo);
 		if (clientVo.getOrigUpdtTime() != null) {
 			// optimistic locking
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		synchronized (clientCache) {
@@ -152,7 +152,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		if (Constants.DEFAULT_CLIENTID.equals(clientId)) {
 			throw new IllegalArgumentException("Can't delete System Default Client.");
 		}
-		String sql = "delete from client_tbl where clientid=?";
+		String sql = "delete from client_tbl where client_id=?";
 		Object[] parms = new Object[] {clientId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		synchronized (clientCache) {

@@ -49,58 +49,58 @@ public class ClientTable extends CreateTableBase {
 	void createClientTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE client_tbl ( "
-					+ "RowId int AUTO_INCREMENT not null, "
-					+ "ClientId varchar(16) NOT NULL, "
-					+ "ClientName varchar(40) NOT NULL, "
-					+ "ClientType char(1), " // TBD
-					+ "DomainName varchar(100) NOT NULL, " 
+					+ "row_id int AUTO_INCREMENT not null, "
+					+ "client_id varchar(16) NOT NULL, "
+					+ "client_name varchar(40) NOT NULL, "
+					+ "client_type char(1), " // TBD
+					+ "domain_name varchar(100) NOT NULL, " 
 						// used by VERP and System E-Mails to set Return-Path
-					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // 'A' or 'I'
-					+ "IrsTaxId varchar(10), " // IRS Tax Id
-					+ "WebSiteUrl varchar(100), "
-					+ "SaveRawMsg char(1) NOT NULL DEFAULT '" + Constants.Y + "', " 
+					+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // 'A' or 'I'
+					+ "irs_tax_id varchar(10), " // IRS Tax Id
+					+ "web_site_url varchar(100), "
+					+ "save_raw_msg char(1) NOT NULL DEFAULT '" + Constants.Y + "', " 
 						// save SMTP message stream to msg_stream? used by RuleEngine
-					+ "ContactName varchar(60), "
-					+ "ContactPhone varchar(18), "
-					+ "ContactEmail varchar(255) NOT NULL, "
+					+ "contact_name varchar(60), "
+					+ "contact_phone varchar(18), "
+					+ "contact_email varchar(255) NOT NULL, "
 					// for rule engine, email addresses used by ACTIONS
-					+ "SecurityEmail varchar(255) NOT NULL, "
-					+ "CustcareEmail varchar(255) NOT NULL, "
-					+ "RmaDeptEmail varchar(255) NOT NULL, "
-					+ "SpamCntrlEmail varchar(255) NOT NULL, "
-					+ "ChaRspHndlrEmail varchar(255) NOT NULL, "
+					+ "security_email varchar(255) NOT NULL, "
+					+ "custcare_email varchar(255) NOT NULL, "
+					+ "rma_dept_email varchar(255) NOT NULL, "
+					+ "spam_cntrl_email varchar(255) NOT NULL, "
+					+ "cha_rsp_hndlr_email varchar(255) NOT NULL, "
 					// for mail sender, embed EmailId to the bottom of email
-					+ "EmbedEmailId varchar(3) NOT NULL DEFAULT '" + Constants.YES + "', "
-					+ "ReturnPathLeft varchar(50) NOT NULL, "
+					+ "embed_email_id varchar(3) NOT NULL DEFAULT '" + Constants.YES + "', "
+					+ "return_path_left varchar(50) NOT NULL, "
 					// for mail sender, define testing addresses
-					+ "UseTestAddr varchar(3) NOT NULL DEFAULT '" + Constants.NO + "', "
-					+ "TestFromAddr varchar(255), "
-					+ "TestToAddr varchar(255), "
-					+ "TestReplytoAddr varchar(255), "
+					+ "use_test_addr varchar(3) NOT NULL DEFAULT '" + Constants.NO + "', "
+					+ "test_from_addr varchar(255), "
+					+ "test_to_addr varchar(255), "
+					+ "test_replyto_addr varchar(255), "
 					// for mail sender, use VERP in Return-Path?
-					+ "IsVerpEnabled varchar(3) NOT NULL DEFAULT '" + Constants.NO + "', "
-					+ "VerpSubDomain varchar(50), " // sub domain used by VERP bounces
+					+ "is_verp_enabled varchar(3) NOT NULL DEFAULT '" + Constants.NO + "', "
+					+ "verp_sub_domain varchar(50), " // sub domain used by VERP bounces
 					/*
 					 * we do not need to define a separate VERP domain. If the
 					 * domain in Return-Path is different from the one in FROM
 					 * address, it could trigger SPAM filter.
 					 */
-					+ "VerpInboxName varchar(50), " // mailbox name for VERP bounces
-					+ "VerpRemoveInbox varchar(50), " // mailbox name for VERP un-subscribe
+					+ "verp_inbox_name varchar(50), " // mailbox name for VERP bounces
+					+ "verp_remove_inbox varchar(50), " // mailbox name for VERP un-subscribe
 					// store time stamp when the table is initially loaded
-					+ "SystemId varchar(40) NOT NULL DEFAULT ' ', "
-					+ "SystemKey varchar(30), "
+					+ "system_id varchar(40) NOT NULL DEFAULT ' ', "
+					+ "system_key varchar(30), "
 					// Begin -> not implemented yet
-					+ "Dikm char(1), " // DIKM support - S:Send/R:Receive/B:Both/N:None
-					+ "DomainKey char(1), " // DomainKey support
-					+ "KeyFilePath varchar(200), " // Private Key file location
-					+ "SPF char(1), " // SPF check Y/N
+					+ "dikm char(1), " // DIKM support - S:Send/R:Receive/B:Both/N:None
+					+ "domain_key char(1), " // DomainKey support
+					+ "key_file_path varchar(200), " // Private Key file location
+					+ "spf char(1), " // SPF check Y/N
 					// <- End
-					+ "UpdtTime datetime(3) NOT NULL, "
-					+ "UpdtUserId char(10) NOT NULL, "
-					+ "PRIMARY KEY (RowId), "
+					+ "updt_time datetime(3) NOT NULL, "
+					+ "updt_user_id char(10) NOT NULL, "
+					+ "PRIMARY KEY (row_id), "
 					//+ "UNIQUE INDEX (DomainName), "
-					+ "UNIQUE INDEX (ClientId) "
+					+ "UNIQUE INDEX (client_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created client_tbl Table...");
 		}
@@ -113,13 +113,13 @@ public class ClientTable extends CreateTableBase {
 	void createReloadFlagsTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE reload_flags ( "
-					+ "RowId int AUTO_INCREMENT not null, "
-					+ "Clients int NOT NULL, "
-					+ "Rules int NOT NULL, "
-					+ "Actions int NOT NULL, "
-					+ "Templates int NOT NULL, "
-					+ "Schedules int NOT NULL, "
-					+ "PRIMARY KEY (RowId) "
+					+ "row_id int AUTO_INCREMENT not null, "
+					+ "clients int NOT NULL, "
+					+ "rules int NOT NULL, "
+					+ "actions int NOT NULL, "
+					+ "templates int NOT NULL, "
+					+ "schedules int NOT NULL, "
+					+ "PRIMARY KEY (row_id) "
 					+ ") ENGINE=MyISAM");
 			System.out.println("Created reload_flags Table...");
 			stm.execute("INSERT INTO reload_flags VALUES(1,0,0,0,0,0)");

@@ -3,7 +3,9 @@ package ltj.message.dao.abstrct;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -168,10 +170,11 @@ public class MetaDataUtil {
 				table.setCatalog(catalog);
 				table.setSchema(schema);
 				table.setTableName(tableName);
+				// build primary key map
 				java.sql.ResultSet pkey_rs = md.getPrimaryKeys(catalog, schema, tableName);
 				while (pkey_rs.next()) {
 					String column = pkey_rs.getString("COLUMN_NAME");
-					int seq = pkey_rs.getInt("KEY_SEQ");
+					short seq = pkey_rs.getShort("KEY_SEQ");
 					String pkName = pkey_rs.getString("PK_NAME");
 					PrimaryKey pkey = new PrimaryKey();
 					pkey.setColumnName(column);
@@ -179,28 +182,26 @@ public class MetaDataUtil {
 					pkey.setPkName(pkName);
 					table.getPrimaryKeyMap().put(pkey.getColumnName().toLowerCase().replaceAll("_", ""), pkey);
 				}
-				java.sql.ResultSet uni_idx_rs = md.getIndexInfo(catalog, schema, tableName, true, false);
+				// build index map
+				java.sql.ResultSet uni_idx_rs = md.getIndexInfo(catalog, schema, tableName, false, false);
 				while(uni_idx_rs.next()) {
-				/*
-				TABLE_CAT String => table catalog (may be null)
-				TABLE_SCHEM String => table schema (may be null)
-				TABLE_NAME String => table name
-				NON_UNIQUE boolean => Can index values be non-unique. false when TYPE is tableIndexStatistic
-				INDEX_QUALIFIER String => index catalog (may be null); null when TYPE is tableIndexStatistic
-				INDEX_NAME String => index name; null when TYPE is tableIndexStatistic
-				TYPE short => index type:
-					tableIndexStatistic - this identifies table statistics that are returned in conjuction with a table's index descriptions
-					tableIndexClustered - this is a clustered index
-					tableIndexHashed - this is a hashed index
-					tableIndexOther - this is some other style of index
-				ORDINAL_POSITION short => column sequence number within index; zero when TYPE is tableIndexStatistic
-				COLUMN_NAME String => column name; null when TYPE is tableIndexStatistic
-				ASC_OR_DESC String => column sort sequence, "A" => ascending, "D" => descending, may be null if sort sequence is not supported; null when TYPE is tableIndexStatistic
-				CARDINALITY long => When TYPE is tableIndexStatistic, then this is the number of rows in the table; otherwise, it is the number of unique values in the index.
-				PAGES long => When TYPE is tableIndexStatisic then this is the number of pages used for the table, otherwise it is the number of pages used for the current index.
-				FILTER_CONDITION String => Filter condition, if any. (may be null)
-				 */
+					String indexName = uni_idx_rs.getString("INDEX_NAME");
+					String column = uni_idx_rs.getString("COLUMN_NAME");
+					short position = uni_idx_rs.getShort("ORDINAL_POSITION");
+					boolean non_unique = uni_idx_rs.getBoolean("NON_UNIQUE");
+					Index idx = new Index();
+					idx.setColumnName(column);
+					idx.setIndexName(indexName);
+					idx.setPosition(position);
+					idx.setUnique(!non_unique);
+					String columnKey = column.toLowerCase().replaceAll("_", "");
+					if (!table.getIndexMap().containsKey(columnKey)) {
+						List<Index> idxList = new ArrayList<>();
+						table.getIndexMap().put(columnKey, idxList);
+					}
+					table.getIndexMap().get(columnKey).add(idx);
 				}
+				// build column map
 				java.sql.ResultSet column_rs = md.getColumns(catalog, schema, tableName, "%");
 				while (column_rs.next()) {
 					//String tableName = column_rs.getString("TABLE_NAME");
@@ -229,7 +230,7 @@ public class MetaDataUtil {
 		Table msg_inbox = MetaDataUtil.getTableMetaData("msg_inbox");
 		logger.info("Table Metadata:" + PrintUtil.prettyPrint(msg_inbox));
 		Table timer_server = MetaDataUtil.getTableMetaData("timer_server");
-		logger.info("Table Metadata:" + PrintUtil.prettyPrint(timer_server, 2));
+		logger.info("Table Metadata:" + PrintUtil.prettyPrint(timer_server, 3));
 		logger.info(buildUpdateStatement("msg_inbox", new MsgInboxVo()));
 		logger.info(buildInsertStatement("mailing_list", new MailingListVo()));
 		logger.info(buildUpdateStatement("msg_attachment", new MsgAttachmentVo()));

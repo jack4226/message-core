@@ -82,7 +82,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // A - active, V - verification, I - inactive
 				+ "TemplateValue varchar(255), "
 				+ "PRIMARY KEY (RowId), "
-				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (ClientId), "
 				+ "UNIQUE INDEX (TemplateId,ClientId,StartTime)) ENGINE=InnoDB");
 			System.out.println("Created subj_template Table...");
@@ -105,7 +105,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "ContentType varchar(100) NOT NULL, " // content mime type
 				+ "TemplateValue text, "
 				+ "PRIMARY KEY (RowId), "
-				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (ClientId), "
 				+ "UNIQUE INDEX (TemplateId,ClientId,StartTime)) ENGINE=InnoDB");
 			System.out.println("Created body_template Table...");
@@ -162,7 +162,7 @@ public class TemplateTables extends CreateTableBase {
 				// required to present in body template
 				+ "VariableValue text, "
 				+ "PRIMARY KEY (RowId), "
-				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (ClientId), "
 				+ "INDEX (VariableName), "
 				+ "UNIQUE INDEX (ClientId,VariableName,StartTime)) ENGINE=InnoDB");
@@ -194,7 +194,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "VariableValue text, "
 				+ "PRIMARY KEY (RowId), "
 				+ "INDEX (VariableName), "
-				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (ClientId), "
 				+ "UNIQUE INDEX (TemplateId,ClientId,VariableName,StartTime)"
 				+ ") ENGINE=InnoDB");

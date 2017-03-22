@@ -128,7 +128,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "CreateTime datetime(3) NOT NULL, "
 					+ "ListMasterEmailAddr varchar(255), "
 					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (ClientId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (AcctUserName), "
 					+ "UNIQUE INDEX (ListId) "
 					+ ") ENGINE=InnoDB");

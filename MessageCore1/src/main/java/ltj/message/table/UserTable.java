@@ -68,7 +68,7 @@ public class UserTable extends CreateTableBase {
 			"DefaultToAddr varchar(255), " +
 			"ClientId varchar(16) NOT NULL, " +
 			"PRIMARY KEY (RowId), " +
-			"FOREIGN KEY (ClientId) REFERENCES client_tbl(ClientId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (ClientId) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"Constraint UNIQUE INDEX (UserId) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created user_tbl Table...");

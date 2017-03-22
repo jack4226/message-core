@@ -38,11 +38,11 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	@Override
 	public int update(ReloadFlagsVo vo) {
 		String sql = "update reload_flags set " +
-			"Clients=?," +
-			"Rules=?," +
-			"Actions=?," +
-			"Templates=?," +
-			"Schedules=?";
+			"clients=?," +
+			"rules=?," +
+			"actions=?," +
+			"templates=?," +
+			"schedules=?";
 		List<Object> fields = new ArrayList<>();
 		fields.add(vo.getClients());
 		fields.add(vo.getRules());
@@ -57,7 +57,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	@Override
 	public int updateClientReloadFlag() {
 		String sql = "update reload_flags set " +
-			"Clients=Clients + 1";
+			"clients=clients + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
@@ -65,7 +65,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	@Override
 	public int updateRuleReloadFlag() {
 		String sql = "update reload_flags set " +
-			"Rules=Rules + 1";
+			"rules=rules + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
@@ -73,7 +73,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	@Override
 	public int updateActionReloadFlag() {
 		String sql = "update reload_flags set " +
-			"Actions=Actions + 1";
+			"actions=actions + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
@@ -81,7 +81,7 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	@Override
 	public int updateTemplateReloadFlag() {
 		String sql = "update reload_flags set " +
-			"Templates=Templates + 1";
+			"templates=templates + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
@@ -89,18 +89,18 @@ public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
 	@Override
 	public int updateScheduleReloadFlag() {
 		String sql = "update reload_flags set " +
-			"Schedules=Schedules + 1";
+			"schedules=schedules + 1";
 		int rows = getJdbcTemplate().update(sql);
 		return rows;
 	}
 
 	private int repair() {
 		String sql = "insert into reload_flags (" +
-				"Clients," +
-				"Rules," +
-				"Actions," +
-				"Templates," +
-				"Schedules) " +
+				"clients," +
+				"rules," +
+				"actions," +
+				"templates," +
+				"schedules) " +
 				" values (" +
 				"0,0,0,0,0)";
 		int rowsInserted = getJdbcTemplate().update(sql);
