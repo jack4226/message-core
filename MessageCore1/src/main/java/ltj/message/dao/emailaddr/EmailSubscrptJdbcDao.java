@@ -155,7 +155,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 			"select count(*) " +
 			" from email_subscrpt a " +
 				" join email_address b on a.EmailAddrId=b.EmailAddrId "
-				+ " LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.EmailAddrId " +
+				+ " LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.email_addr_id " +
 			whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -226,12 +226,12 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 				" a.ListId, " +
 				" a.Subscribed," +
 				" a.CreateTime, " +
-				" c.FirstName, " +
-				" c.LastName, " +
-				" c.MiddleName " +
+				" c.first_name, " +
+				" c.last_name, " +
+				" c.middle_name " +
 			" from email_subscrpt a" +
 				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.EmailAddrId " +
+				" LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.email_addr_id " +
 			whereSql +
 			" order by a.EmailAddrId " + fetchOrder +
 			" limit " + pageSize;
@@ -299,12 +299,12 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 				" a.ListId, " +
 				" a.Subscribed," +
 				" a.CreateTime, " +
-				" c.FirstName, " +
-				" c.LastName, " +
-				" c.MiddleName " +
+				" c.first_name, " +
+				" c.last_name, " +
+				" c.middle_name " +
 			" from email_subscrpt a" +
 				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.EmailAddrId " +
+				" LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.email_addr_id " +
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
@@ -329,12 +329,12 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 				" a.ListId, " +
 				" a.Subscribed," +
 				" a.CreateTime, " +
-				" c.FirstName, " +
-				" c.LastName, " +
-				" c.MiddleName " +
+				" c.first_name, " +
+				" c.last_name, " +
+				" c.middle_name " +
 			" from email_subscrpt a" +
 				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" JOIN customer_tbl c on a.EmailAddrId=c.EmailAddrId " +
+				" JOIN customer_tbl c on a.EmailAddrId=c.email_addr_id " +
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? ";
@@ -364,7 +364,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 			" where a.ListId=? " +
 				" and b.StatusId=? " +
 				" and a.Subscribed=? " +
-				" and not exists (select 1 from customer_tbl where EmailAddrId=b.EmailAddrId) ";
+				" and not exists (select 1 from customer_tbl where email_addr_id=b.EmailAddrId) ";
 		Object[] parms = new Object[] {listId, StatusId.ACTIVE.value(), Constants.Y};
 		List<EmailSubscrptVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailSubscrptVo>(EmailSubscrptVo.class));

@@ -1,11 +1,13 @@
 package ltj.message.table;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.EmailIdToken;
+import ltj.message.dao.idtokens.IdTokensDao;
 import ltj.message.main.CreateTableBase;
+import ltj.message.vo.IdTokensVo;
+import ltj.spring.util.SpringUtil;
 public class IdTokensTable extends CreateTableBase {
 	/**
 	 * Creates a new instance of IdTokenTables
@@ -27,20 +29,20 @@ public class IdTokensTable extends CreateTableBase {
 	public void createTables() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE id_tokens ( " +
-			"RowId int AUTO_INCREMENT not null, " +
-			"ClientId varchar(16) NOT NULL, " + 
-			"Description varchar(100), " +
-			"BodyBeginToken varchar(16) NOT NULL, " +
-			"BodyEndToken varchar(4) NOT NULL, " +
-			"XHeaderName varchar(20), " +
-			"XhdrBeginToken varchar(16), " +
-			"XhdrEndToken varchar(4), " +
-			"MaxLength integer NOT NULL, " +
-			"UpdtTime datetime(3) NOT NULL, " +
-			"UpdtUserId char(10) NOT NULL, " +
-			"FOREIGN KEY (ClientId) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"PRIMARY KEY (RowId), " +
-			"UNIQUE INDEX (ClientId) " +
+			"row_id int AUTO_INCREMENT not null, " +
+			"client_id varchar(16) NOT NULL, " + 
+			"description varchar(100), " +
+			"body_begin_token varchar(16) NOT NULL, " +
+			"body_end_token varchar(4) NOT NULL, " +
+			"x_header_name varchar(20), " +
+			"xhdr_begin_token varchar(16), " +
+			"xhdr_end_token varchar(4), " +
+			"max_length integer NOT NULL, " +
+			"updt_time datetime(3) NOT NULL, " +
+			"updt_user_id char(10) NOT NULL, " +
+			"FOREIGN KEY (client_id) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX (client_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created id_tokens Table...");
 		} catch (SQLException e) {
@@ -50,34 +52,25 @@ public class IdTokensTable extends CreateTableBase {
 	}
 	
 	public void loadTestData() throws SQLException {
+		IdTokensDao dao = SpringUtil.getDaoAppContext().getBean(IdTokensDao.class);
+		
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO id_tokens " +
-				"(ClientId," +
-				"Description," +
-				"BodyBeginToken," +
-				"BodyEndToken," +
-				"XHeaderName," +
-				"XhdrBeginToken," +
-				"XhdrEndToken," +
-				"MaxLength," +
-				"UpdtTime," +
-				"UpdtUserId) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			ps.setString(1, Constants.DEFAULT_CLIENTID);
-			ps.setString(2, "Default SenderId");
-			ps.setString(3, EmailIdToken.BODY_BEGIN);
-			ps.setString(4, EmailIdToken.BODY_END);
-			ps.setString(5, EmailIdToken.NAME);
-			ps.setString(6, EmailIdToken.XHDR_BEGIN);
-			ps.setString(7, EmailIdToken.XHDR_END);
-			ps.setInt(8, EmailIdToken.MAXIMUM_LENGTH);
-			ps.setTimestamp(9, new Timestamp(new java.util.Date().getTime()));
-			ps.setString(10, "SysAdmin");
-			ps.execute();
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			IdTokensVo vo = new IdTokensVo();
+			vo.setClientId(Constants.DEFAULT_CLIENTID);
+			vo.setDescription("Default SenderId");
+			vo.setBodyBeginToken(EmailIdToken.BODY_BEGIN);
+			vo.setBodyEndToken(EmailIdToken.BODY_END);
+			vo.setXHeaderName(EmailIdToken.NAME);
+			vo.setXhdrBeginToken(EmailIdToken.XHDR_BEGIN);
+			vo.setXhdrEndToken(EmailIdToken.XHDR_END);
+			vo.setMaxLength(EmailIdToken.MAXIMUM_LENGTH);
+			vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+			vo.setUpdtUserId("SysAdmin");
+			
+			int rows = dao.insert(vo);
+			
+			System.out.println("Number of rows inserted to id_tokens: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}

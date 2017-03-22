@@ -101,7 +101,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = "select count(*) from email_address a "
-				+ " LEFT OUTER JOIN customer_tbl b on a.EmailAddrId=b.EmailAddrId "
+				+ " LEFT OUTER JOIN customer_tbl b on a.EmailAddrId=b.email_addr_id "
 				+ " LEFT OUTER JOIN email_subscrpt c on a.EmailAddrId=c.EmailAddrId "
 				+ whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
@@ -159,18 +159,18 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 				+ " a.StatusChangeTime, a.StatusChangeUserId, a.BounceCount, "
 				+ " a.LastBounceTime, a.LastSentTime, a.LastRcptTime, a.AcceptHtml, "
 				+ " a.UpdtTime, a.UpdtUserId, a.EmailAddr as CurrEmailAddr, a.UpdtTime as OrigUpdtTime, "
-				+ " b.CustId, b.FirstName, b.MiddleName, b.LastName, "
+				+ " b.cust_id, b.first_name, b.middle_name, b.last_name, "
 				+ " sum(c.SentCount) as SentCount, sum(c.OpenCount) as OpenCount, "
 				+ " sum(c.ClickCount) as ClickCount "
 				+ "from email_address a "
-				+ " LEFT OUTER JOIN customer_tbl b on a.EmailAddrId=b.EmailAddrId "
+				+ " LEFT OUTER JOIN customer_tbl b on a.EmailAddrId=b.email_addr_id "
 				+ " LEFT OUTER JOIN email_subscrpt c on a.EmailAddrId=c.EmailAddrId "
 				+ whereSql
 				+ "group by "
 				+ " a.EmailAddrId, a.EmailAddr, a.OrigEmailAddr, a.StatusId, a.StatusChangeTime, "
 				+ " a.StatusChangeUserId, a.BounceCount, a.LastBounceTime, a.LastSentTime, "
 				+ " a.LastRcptTime, a.AcceptHtml, a.UpdtTime, a.UpdtUserId, "
-				+ " b.CustId, b.FirstName, b.MiddleName, b.LastName "
+				+ " b.cust_id, b.first_name, b.middle_name, b.last_name "
 				+ " order by a.EmailAddr "
 				+ fetchOrder
 				+ " limit "
@@ -227,7 +227,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	public long getEmailAddrIdForPreview() {
 		String sql = "SELECT min(e.emailaddrid) as emailaddrid "
 				+ " FROM email_address e, customer_tbl c "
-				+ " where e.emailaddrid=c.emailaddrid ";
+				+ " where e.emailaddrid=c.email_addr_id ";
 		Long emailAddrId = getJdbcTemplate().queryForObject(sql, Long.class);
 		if (emailAddrId == null) {
 			sql = "SELECT min(e.emailaddrid) as emailaddrid "

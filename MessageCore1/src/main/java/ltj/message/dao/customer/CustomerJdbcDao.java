@@ -30,8 +30,8 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	@Override
 	public CustomerVo getByCustId(String custId) {
 		String sql = 
-			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
-				"from customer_tbl where custid=? ";
+			"select *, cust_id as OrigCustId, updt_time as OrigUpdtTime " +
+				"from customer_tbl where cust_id=? ";
 		
 		Object[] parms = new Object[] {custId};
 		try {
@@ -47,8 +47,8 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	@Override
 	public List<CustomerVo> getByClientId(String clientId) {
 		String sql = 
-			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
-				"from customer_tbl where clientid=? ";
+			"select *, cust_id as OrigCustId, updt_time as OrigUpdtTime " +
+				"from customer_tbl where client_id=? ";
 		Object[] parms = new Object[] {clientId};
 		List<CustomerVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<CustomerVo>(CustomerVo.class));
@@ -58,8 +58,8 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	@Override
 	public CustomerVo getByEmailAddrId(long emailAddrId) {
 		String sql = 
-			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
-			" from customer_tbl where emailAddrId=? ";
+			"select *, cust_id as OrigCustId, updt_time as OrigUpdtTime " +
+			" from customer_tbl where email_addr_id=? ";
 		Object[] parms = new Object[] {Long.valueOf(emailAddrId)};
 		List<CustomerVo> list =getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<CustomerVo>(CustomerVo.class));
@@ -74,10 +74,10 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	@Override
 	public CustomerVo getByEmailAddress(String emailAddr) {
 		String sql = 
-			"select a.*, a.CustId as OrigCustId, a.UpdtTime as OrigUpdtTime " +
+			"select a.*, a.cust_id as OrigCustId, a.updt_time as OrigUpdtTime " +
 			" from customer_tbl a, email_address b " +
-			" where a.EmailAddrId=b.EmailAddrId " +
-			" and a.EmailAddr=? ";
+			" where a.email_addr_id=b.EmailAddrId " +
+			" and a.email_addr=? ";
 		Object[] parms = new Object[] {EmailAddrUtil.removeDisplayName(emailAddr)};
 		List<CustomerVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<CustomerVo>(CustomerVo.class));
@@ -92,7 +92,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	@Override
 	public List<CustomerVo> getFirst100() {
 		String sql = 
-			"select *, CustId as OrigCustId, UpdtTime as OrigUpdtTime " +
+			"select *, cust_id as OrigCustId, updt_time as OrigUpdtTime " +
 				"from customer_tbl limit 100";
 		
 		List<CustomerVo> list = getJdbcTemplate().query(sql, 
@@ -106,7 +106,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
 			"select count(*) from customer_tbl a " 
-			+ " LEFT OUTER JOIN email_address b on a.EmailAddrId=b.EmailAddrId "
+			+ " LEFT OUTER JOIN email_address b on a.email_addr_id=b.EmailAddrId "
 			+ whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -126,13 +126,13 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
 			if (vo.getStrIdLast() != null) {
-				whereSql += CRIT[parms.size()] + " a.CustId > ? ";
+				whereSql += CRIT[parms.size()] + " a.cust_id > ? ";
 				parms.add(vo.getStrIdLast());
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
 			if (vo.getStrIdFirst() != null) {
-				whereSql += CRIT[parms.size()] + " a.CustId < ? ";
+				whereSql += CRIT[parms.size()] + " a.cust_id < ? ";
 				parms.add(vo.getStrIdFirst());
 				fetchOrder = "desc";
 			}
@@ -144,33 +144,20 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 				pageSize = Math.min(rows, vo.getPageSize());
 			}
 			fetchOrder = "desc";
-//			List<CustomerVo> lastList = new ArrayList<CustomerVo>();
-//			vo.setPageAction(PagingVo.PageAction.NEXT);
-//			while (true) {
-//				List<CustomerVo> nextList = getCustomersWithPaging(vo);
-//				if (!nextList.isEmpty()) {
-//					lastList = nextList;
-//					vo.setStrIdLast(nextList.get(nextList.size() - 1).getCustId());
-//				}
-//				else {
-//					break;
-//				}
-//			}
-//			return lastList;
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
 			if (vo.getStrIdFirst() != null) {
-				whereSql += CRIT[parms.size()] + " a.CustId >= ? ";
+				whereSql += CRIT[parms.size()] + " a.cust_id >= ? ";
 				parms.add(vo.getStrIdFirst());
 			}
 		}
 		String sql = 
-			"select a.*, a.CustId as OrigCustId, a.UpdtTime as OrigUpdtTime, " +
+			"select a.*, a.cust_id as OrigCustId, a.updt_time as OrigUpdtTime, " +
 			"b.StatusId as EmailStatusId, b.BounceCount, b.AcceptHtml " +
 			" from customer_tbl a " +
-				" LEFT OUTER JOIN email_address b on a.EmailAddrId=b.EmailAddrId " +
+				" LEFT OUTER JOIN email_address b on a.email_addr_id=b.EmailAddrId " +
 			whereSql +
-			" order by a.CustId " + fetchOrder +
+			" order by a.cust_id " + fetchOrder +
 			" limit " + pageSize;
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
@@ -197,40 +184,40 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	private String buildWhereClause(PagingCustVo vo, List<Object> parms) {
 		String whereSql = "";
 		if (!StringUtil.isEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
+			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
 			parms.add(vo.getStatusId());
 		}
 		if (!StringUtil.isEmpty(vo.getClientId())) {
-			whereSql += CRIT[parms.size()] + " lower(a.ClientId) = ? ";
+			whereSql += CRIT[parms.size()] + " lower(a.client_id) = ? ";
 			parms.add(vo.getClientId().toLowerCase());
 		}
 		if (!StringUtil.isEmpty(vo.getSsnNumber())) {
-			whereSql += CRIT[parms.size()] + " a.SsnNumber = ? ";
+			whereSql += CRIT[parms.size()] + " a.ssn_number = ? ";
 			parms.add(vo.getSsnNumber());
 		}
 		if (!StringUtil.isEmpty(vo.getLastName())) {
-			whereSql += CRIT[parms.size()] + " lower(a.LastName) = ? ";
+			whereSql += CRIT[parms.size()] + " lower(a.last_name) = ? ";
 			parms.add(vo.getLastName().toLowerCase());
 		}
 		if (!StringUtil.isEmpty(vo.getFirstName())) {
-			whereSql += CRIT[parms.size()] + " lower(a.FirstName) = ? ";
+			whereSql += CRIT[parms.size()] + " lower(a.first_name) = ? ";
 			parms.add(vo.getFirstName().toLowerCase());
 		}
 		if (!StringUtil.isEmpty(vo.getDayPhone())) {
-			whereSql += CRIT[parms.size()] + " a.DayPhone = ? ";
+			whereSql += CRIT[parms.size()] + " a.day_phone = ? ";
 			parms.add(vo.getDayPhone());
 		}
 		// search by email address
 		if (!StringUtil.isEmpty(vo.getEmailAddr())) {
 			String addr = vo.getEmailAddr().trim();
 			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " a.EmailAddr LIKE ? ";
+				whereSql += CRIT[parms.size()] + " a.email_addr LIKE ? ";
 				parms.add("%" + addr + "%");
 			}
 			else {
 				//String regex = StringUtil.replaceAll(addr, " ", ".+");
 				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
-				whereSql += CRIT[parms.size()] + " a.EmailAddr REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " a.email_addr REGEXP ? ";
 				parms.add(regex);
 			}
 		}
@@ -245,7 +232,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		String sql = MetaDataUtil.buildUpdateStatement("customer_tbl", customerVo);
 
 		if (customerVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		customerVo.setOrigUpdtTime(customerVo.getUpdtTime());
@@ -256,7 +243,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	@Override
 	public int delete(String custId) {
 		String sql = 
-			"delete from customer_tbl where custid=? ";
+			"delete from customer_tbl where cust_id=? ";
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, new Object[] {custId});
 		return rowsDeleted;
@@ -269,7 +256,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 			return 0;
 		}
 		String sql = 
-			"delete from customer_tbl where EmailAddrId=? ";
+			"delete from customer_tbl where email_addr_id=? ";
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, new Object[] {addrVo.getEmailAddrId()});
 		return rowsDeleted;

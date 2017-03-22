@@ -27,7 +27,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 		 * performance impact at the minimal by sacrificing thread safety.
 		 */
 		if (!cache.containsKey(clientId)) {
-			String sql = "select * from id_tokens where clientId=?";
+			String sql = "select * from id_tokens where client_id=?";
 			Object[] parms = new Object[] {clientId};
 			try {
 			IdTokensVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -43,7 +43,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 	
 	@Override
 	public List<IdTokensVo> getAll() {
-		String sql = "select * from id_tokens order by clientId";
+		String sql = "select * from id_tokens order by client_id";
 		List<IdTokensVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<IdTokensVo>(IdTokensVo.class));
 		return list;
@@ -64,7 +64,7 @@ public class IdTokensJdbcDao extends AbstractDao implements IdTokensDao {
 	
 	@Override
 	public int delete(String clientId) {
-		String sql = "delete from id_tokens where clientId=?";
+		String sql = "delete from id_tokens where client_id=?";
 		Object[] parms = new Object[] {clientId};
 		synchronized (cache) {
 			int rowsDeleted = getJdbcTemplate().update(sql, parms);
