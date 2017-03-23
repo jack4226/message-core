@@ -51,7 +51,7 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 			"select m.* " +
 			"from msg_stream m " +
 				" join msg_address s on s.msgId=m.msgId and s.addrType='To' " +
-				" join email_address e on e.emailAddr=s.addrValue and e.emailAddrId=? ";
+				" join email_address e on e.email_addr=s.addrValue and e.email_addr_id=? ";
 		
 		Object[] parms = new Object[] {toAddrId};
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 
@@ -64,8 +64,8 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 		String sql = 
 			"select m.* " +
 			"from " +
-				"msg_stream m join email_address e on e.emailAddrId=m.fromAddrId " + 
-			" where e.emailAddr=? ";
+				"msg_stream m join email_address e on e.email_addr_id=m.fromAddrId " + 
+			" where e.email_addr=? ";
 		
 		Object[] parms = new Object[] {address};
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 
@@ -79,8 +79,8 @@ public class MsgStreamJdbcDao extends AbstractDao implements MsgStreamDao {
 			"select m.* " +
 			"from " +
 				"msg_stream m join msg_address s on s.msgId=m.msgId " +
-				" join email_address e on e.emailAddr=s.addrValue and s.addrType='To' " +
-			" where e.emailAddr=? ";
+				" join email_address e on e.email_addr=s.addrValue and s.addrType='To' " +
+			" where e.email_addr=? ";
 		
 		Object[] parms = new Object[] {address};
 		List<MsgStreamVo> list = getJdbcTemplate().query(sql, parms, 

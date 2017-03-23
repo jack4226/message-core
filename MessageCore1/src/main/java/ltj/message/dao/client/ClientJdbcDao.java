@@ -164,12 +164,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	}
 	
 	@Override
-	public int insert(ClientVo clientVo) {
-		return insert(clientVo, false);
-	}
-	
-	@Override
-	public synchronized int insert(ClientVo clientVo, boolean initialize) {
+	public synchronized int insert(ClientVo clientVo) {
 		clientVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		validateClientVo(clientVo);
 		String systemId = TimestampUtil.db2ToDecStr(TimestampUtil.getDb2Timestamp());
@@ -180,8 +175,10 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		clientVo.setRowId(retrieveRowId());
 		clientVo.setOrigUpdtTime(clientVo.getUpdtTime());
 		clientVo.setOrigClientId(clientVo.getClientId());
-		if (initialize == false) {
+		if (MetaDataUtil.getTableMetaData("client_variable") != null) {
 			updateClientVariables(clientVo);
+		}
+		if (MetaDataUtil.getTableMetaData("reload_flags") != null) {
 			updateReloadFlags();
 		}
 		return rowsInserted;

@@ -1,6 +1,5 @@
 package ltj.message.table;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,12 +14,18 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
+import ltj.message.dao.emailaddr.EmailVariableDao;
+import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.emailaddr.SchedulesBlob;
 import ltj.message.main.CreateTableBase;
 import ltj.message.util.BlobUtil;
 import ltj.message.vo.emailaddr.EmailAddressVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
+import ltj.message.vo.emailaddr.EmailVariableVo;
+import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.spring.util.SpringUtil;
 
 public class EmailAddrTable extends CreateTableBase {
@@ -87,21 +92,21 @@ public class EmailAddrTable extends CreateTableBase {
 	void createEmailTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE email_address ( "
-					+ "EmailAddrId bigint AUTO_INCREMENT NOT NULL, "
-					+ "EmailAddr varchar(255) NOT NULL, "
-					+ "OrigEmailAddr varchar(255) NOT NULL, "
-					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // A - active, S - suspended, I - Inactive
-					+ "StatusChangeTime datetime(3), "
-					+ "StatusChangeUserId varchar(10), "
-					+ "BounceCount decimal(3) NOT NULL DEFAULT 0, "
-					+ "LastBounceTime datetime(3), "
-					+ "LastSentTime datetime(3), "
-					+ "LastRcptTime datetime(3), "
-					+ "AcceptHtml char(1) not null default '" + Constants.Y + "', "
-					+ "UpdtTime datetime(3) NOT NULL, "
-					+ "UpdtUserId char(10) NOT NULL, "
-					+ "PRIMARY KEY (EmailAddrId), "
-					+ "UNIQUE INDEX (EmailAddr) "
+					+ "email_addr_id bigint AUTO_INCREMENT NOT NULL, "
+					+ "email_addr varchar(255) NOT NULL, "
+					+ "orig_email_addr varchar(255) NOT NULL, "
+					+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // A - active, S - suspended, I - Inactive
+					+ "status_change_time datetime(3), "
+					+ "status_change_user_id varchar(10), "
+					+ "bounce_count decimal(3) NOT NULL DEFAULT 0, "
+					+ "last_bounce_time datetime(3), "
+					+ "last_sent_time datetime(3), "
+					+ "last_rcpt_time datetime(3), "
+					+ "accept_html char(1) not null default '" + Constants.Y + "', "
+					+ "updt_time datetime(3) NOT NULL, "
+					+ "updt_user_id char(10) NOT NULL, "
+					+ "PRIMARY KEY (email_addr_id), "
+					+ "UNIQUE INDEX (email_addr) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_address Table...");
 		}
@@ -114,23 +119,23 @@ public class EmailAddrTable extends CreateTableBase {
 	void createMailingListTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE mailing_list ( "
-					+ "RowId int AUTO_INCREMENT not null, "
-					+ "ListId varchar(8) NOT NULL, "
-					+ "DisplayName varchar(50), "
-					+ "AcctUserName varchar(100) NOT NULL, " 
+					+ "row_id int AUTO_INCREMENT not null, "
+					+ "list_id varchar(8) NOT NULL, "
+					+ "display_name varchar(50), "
+					+ "acct_user_name varchar(100) NOT NULL, " 
 						// left part of email address, right part from client_tbl table's DomainName
-					+ "Description varchar(500), "
-					+ "ClientId varchar(16) NOT NULL, "
-					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " 
+					+ "description varchar(500), "
+					+ "client_id varchar(16) NOT NULL, "
+					+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " 
 						// A - active, I - Inactive
-					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.N + "', "
-					+ "IsSendText char(1), "
-					+ "CreateTime datetime(3) NOT NULL, "
-					+ "ListMasterEmailAddr varchar(255), "
-					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (ClientId) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "INDEX (AcctUserName), "
-					+ "UNIQUE INDEX (ListId) "
+					+ "is_built_in char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+					+ "is_send_text char(1), "
+					+ "create_time datetime(3) NOT NULL, "
+					+ "list_master_email_addr varchar(255), "
+					+ "PRIMARY KEY (row_id), "
+					+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX (acct_user_name), "
+					+ "UNIQUE INDEX (list_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created mailing_list Table...");
 		}
@@ -143,20 +148,20 @@ public class EmailAddrTable extends CreateTableBase {
 	void createEmailSubscrptTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE email_subscrpt ( "
-					+ "EmailAddrId bigint NOT NULL, "
-					+ "ListId varchar(8) NOT NULL, "
-					+ "Subscribed char(1) NOT NULL, " 
+					+ "email_addr_id bigint NOT NULL, "
+					+ "list_id varchar(8) NOT NULL, "
+					+ "subscribed char(1) NOT NULL, " 
 						// Y - subscribed, N - not subscribed, P - Pending Confirmation
-					+ "CreateTime datetime(3) NOT NULL, "
-					+ "SentCount int NOT NULL DEFAULT 0, "
-					+ "LastSentTime datetime(3), "
-					+ "OpenCount int NOT NULL DEFAULT 0, "
-					+ "LastOpenTime datetime(3), "
-					+ "ClickCount int NOT NULL DEFAULT 0, "
-					+ "LastClickTime datetime(3), "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (ListId) REFERENCES mailing_list (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "PRIMARY KEY (EmailAddrId,ListId) "
+					+ "create_time datetime(3) NOT NULL, "
+					+ "sent_count int NOT NULL DEFAULT 0, "
+					+ "last_sent_time datetime(3), "
+					+ "open_count int NOT NULL DEFAULT 0, "
+					+ "last_open_time datetime(3), "
+					+ "click_count int NOT NULL DEFAULT 0, "
+					+ "last_click_time datetime(3), "
+					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "PRIMARY KEY (email_addr_id,list_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_subscrpt Table...");
 		}
@@ -169,21 +174,21 @@ public class EmailAddrTable extends CreateTableBase {
 	void createEmailVariableTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE email_variable ( "
-					+ "RowId int AUTO_INCREMENT not null, "
-					+ "VariableName varchar(26) NOT NULL, "
-					+ "VariableType char(1) NOT NULL, " 
+					+ "row_id int AUTO_INCREMENT not null, "
+					+ "variable_name varchar(26) NOT NULL, "
+					+ "variable_type char(1) NOT NULL, " 
 						// S - system, C - customer (individual)
-					+ "TableName varchar(50), " // document only
-					+ "ColumnName varchar(50), " // document only
-					+ "StatusId char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " 
+					+ "table_name varchar(50), " // document only
+					+ "column_name varchar(50), " // document only
+					+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " 
 						// A - active, I - Inactive
-					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.N + "', "
-					+ "DefaultValue varchar(255), "
-					+ "VariableQuery varchar(255), " // 1) provides TO emailAddId as query criteria
+					+ "is_built_in char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+					+ "default_value varchar(255), "
+					+ "variable_query varchar(255), " // 1) provides TO emailAddId as query criteria
 													// 2) returns a single field called "ResultStr"
-					+ "VariableProc varchar(100), " // when Query is null or returns no result
-					+ "PRIMARY KEY (RowId), "
-					+ "UNIQUE INDEX (VariableName) "
+					+ "variable_proc varchar(100), " // when Query is null or returns no result
+					+ "PRIMARY KEY (row_id), "
+					+ "UNIQUE INDEX (variable_name) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_variable Table...");
 		}
@@ -196,23 +201,23 @@ public class EmailAddrTable extends CreateTableBase {
 	void createEmailTemplateTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE email_template ( "
-					+ "RowId int AUTO_INCREMENT not null, "
-					+ "TemplateId varchar(26) NOT NULL, "
-					+ "ListId varchar(8) NOT NULL, "
-					+ "Subject varchar(255), "
-					+ "BodyText mediumtext, "
-					+ "IsHtml char(1) NOT NULL DEFAULT '" + Constants.N + "', " // Y or N
-					+ "ListType varchar(12) NOT NULL, " // Traditional/Personalized
-					+ "DeliveryOption varchar(4) NOT NULL DEFAULT '" + MLDeliveryType.ALL_ON_LIST.value() + "', " // when ListType is Personalized
+					+ "row_id int AUTO_INCREMENT not null, "
+					+ "template_id varchar(26) NOT NULL, "
+					+ "list_id varchar(8) NOT NULL, "
+					+ "subject varchar(255), "
+					+ "body_text mediumtext, "
+					+ "is_html char(1) NOT NULL DEFAULT '" + Constants.N + "', " // Y or N
+					+ "list_type varchar(12) NOT NULL, " // Traditional/Personalized
+					+ "delivery_option varchar(4) NOT NULL DEFAULT '" + MLDeliveryType.ALL_ON_LIST.value() + "', " // when ListType is Personalized
 						// ALL - all on list, CUST - only email addresses with customer record
-					+ "SelectCriteria varchar(100), " 
+					+ "select_criteria varchar(100), " 
 						// additional selection criteria - to be implemented
-					+ "EmbedEmailId char(1) NOT NULL DEFAULT '', " // Y, N, or <Blank> - use system default
-					+ "IsBuiltIn char(1) NOT NULL DEFAULT '" + Constants.N + "', "
-					+ "Schedules blob, " // store a java object
-					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (ListId) REFERENCES mailing_list (ListId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "UNIQUE INDEX (TemplateId) "
+					+ "embed_email_id char(1) NOT NULL DEFAULT '', " // Y, N, or <Blank> - use system default
+					+ "is_built_in char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+					+ "schedules blob, " // store a java object
+					+ "PRIMARY KEY (row_id), "
+					+ "FOREIGN KEY (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "UNIQUE INDEX (template_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_template Table...");
 		}
@@ -225,14 +230,14 @@ public class EmailAddrTable extends CreateTableBase {
 	void createEmailUnsubCommentTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE email_unsub_cmnt ( "
-					+ "RowId int AUTO_INCREMENT not null, "
-					+ "EmailAddrId bigint NOT NULL, "
-					+ "ListId varchar(8), "
-					+ "Comments varchar(500) NOT NULL, "
-					+ "AddTime datetime(3) NOT NULL, "
-					+ "PRIMARY KEY (RowId), "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "INDEX (EmailAddrId) "
+					+ "row_id int AUTO_INCREMENT not null, "
+					+ "email_addr_id bigint NOT NULL, "
+					+ "list_id varchar(8), "
+					+ "comments varchar(500) NOT NULL, "
+					+ "add_time datetime(3) NOT NULL, "
+					+ "PRIMARY KEY (row_id), "
+					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX (email_addr_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_unsub_cmnt Table...");
 		}
@@ -249,7 +254,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS `message`.`FindByAddress` $$
 CREATE DEFINER=`email`@`%` PROCEDURE `FindByAddress`(
   IN iEmailAddr VARCHAR(255),
-  OUT oEmailAddrId LONG,
+  OUT oemail_addr_id LONG,
   OUT oEmailAddr VARCHAR(255),
   OUT oOrigEmailAddr VARCHAR(255),
   OUT oStatusId CHAR(1),
@@ -268,17 +273,17 @@ BEGIN
   declare pEmailAddrId long default 0;
   declare currTime DATETIME;
   declare pEmailAddr varchar(255) default null;
-  select EmailAddrId, EmailAddr, OrigEmailAddr, StatusId, StatusChangeTime, StatusChangeUserId,
-          BounceCount, LastBounceTime, LastSentTime, LastRcptTime, AcceptHtml,
-          UpdtTime, UpdtUserId
+  select email_addr_id, email_addr, orig_email_addr, status_id, status_change_time, status_change_user_id,
+          bounce_count, last_bounce_time, last_sent_time, last_rcpt_time, accept_html,
+          updt_time, updt_user_id
     into oEmailAddrId, oEmailAddr, oOrigEmailAddr, oStatusId, oStatusChangeTime, oStatusChangeUserId,
           oBounceCount, oLastBounceTime, oLastSentTime, oLastRcptTime, oAcceptHtml,
           oUpdtTime, oUpdtUserId
-    from email_address where EmailAddr=TRIM(iEmailAddr);
+    from email_address where email_addr=TRIM(iEmailAddr);
   select now() into currTime;
   if oEmailAddr is NULL then
-    insert into email_address (EmailAddr, OrigEmailAddr, StatusChangeTime,
-                          StatusChangeUserId, UpdtTime, UpdtUserId)
+    insert into email_address (email_addr, orig_email_addr, status_change_time,
+                          status_change_user_id, updt_time, updt_user_id)
       values (iEmailAddr, iEmailAddr, currTime, 'StoredProc', currTime, 'StoredProc');
     select last_insert_id() into oEmailAddrId;
     select iEmailAddr, iEmailAddr into oEmailAddr, oOrigEmailAddr;
@@ -325,17 +330,17 @@ DELIMITER ;
 				"  declare pEmailAddrId long default 0;" + LF +
 				"  declare currTime DATETIME;" + LF +
 				"  declare pEmailAddr varchar(255) default null;" + LF +
-				"  select EmailAddrId, EmailAddr, OrigEmailAddr, StatusId, StatusChangeTime, StatusChangeUserId," + LF +
-				"          BounceCount, LastBounceTime, LastSentTime, LastRcptTime, AcceptHtml," + LF +
-				"          UpdtTime, UpdtUserId" + LF +
+				"  select email_addr_id, email_addr, orig_email_addr, status_id, status_change_time, status_change_user_id," + LF +
+				"          bounce_count, last_bounce_time, last_sent_time, last_rcpt_time, accept_html," + LF +
+				"          updt_time, updt_user_id" + LF +
 				"    into oEmailAddrId, oEmailAddr, oOrigEmailAddr, oStatusId, oStatusChangeTime, oStatusChangeUserId," + LF +
 				"          oBounceCount, oLastBounceTime, oLastSentTime, oLastRcptTime, oAcceptHtml," + LF +
 				"          oUpdtTime, oUpdtUserId" + LF +
-				"    from email_address where EmailAddr=TRIM(iEmailAddr);" + LF +
+				"    from email_address where email_addr=TRIM(iEmailAddr);" + LF +
 				"  select now() into currTime;" + LF +
 				"  if oEmailAddr is NULL then" + LF +
-				"    insert into email_address (EmailAddr, OrigEmailAddr, StatusChangeTime," + LF +
-				"                          StatusChangeUserId, UpdtTime, UpdtUserId)" + LF +
+				"    insert into email_address (email_addr, orig_email_addr, status_change_time," + LF +
+				"                          status_change_user_id, updt_time, updt_user_id)" + LF +
 				"      values (iEmailAddr, iOrigEmailAddr, currTime, 'StoredProc', currTime, 'StoredProc');" + LF +
 				"    select last_insert_id() into oEmailAddrId;" + LF +
 				"    select iEmailAddr, iEmailAddr into oEmailAddr, oOrigEmailAddr;" + LF +
@@ -375,179 +380,132 @@ DELIMITER ;
 	}
 	
 	private void insertEmailAddrs() throws SQLException {
+		EmailAddressDao dao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO email_address " +
-				"(EmailAddr," +
-				"OrigEmailAddr," +
-				"StatusId," +
-				"StatusChangeTime," +
-				"StatusChangeUserId," +
-				"BounceCount," +
-				"LastBounceTime," +
-				"LastSentTime," +
-				"LastRcptTime," +
-				"UpdtTime," +
-				"UpdtUserId) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
+			int rows = 0;
 			for (SubscriberEnum.Subscriber sub : SubscriberEnum.Subscriber.values()) {
-				ps.setString(1, sub.getAddress());
-				ps.setString(2, sub.getAddress());
-				ps.setString(3, StatusId.ACTIVE.value());
-				ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
-				ps.setString(5, "testuser 1");
-				ps.setInt(6, 0);
-				ps.setTimestamp(7, null);
-				ps.setTimestamp(8, null);
-				ps.setTimestamp(9, null);
-				ps.setTimestamp(10, new Timestamp(System.currentTimeMillis()));
-				ps.setString(11, Constants.DEFAULT_USER_ID);
-				ps.execute();
+				EmailAddressVo vo = new EmailAddressVo();
+				vo.setEmailAddr(sub.getAddress());
+				vo.setOrigEmailAddr(sub.getAddress());
+				vo.setStatusId(StatusId.ACTIVE.value());
+				vo.setStatusChangeTime(new Timestamp(System.currentTimeMillis()));
+				vo.setStatusChangeUserId("testuser 1");
+				vo.setBounceCount(0);
+				vo.setLastBounceTime(null);
+				vo.setLastSentTime(null);
+				vo.setLastRcptTime(null);
+				vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
+				vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+				rows += dao.insert(vo);
 			}
 						
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			System.out.println("Inserted all rows to email_address: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
 	private void insertMaillingList() throws SQLException {
+		MailingListDao dao = SpringUtil.getDaoAppContext().getBean(MailingListDao.class);
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO mailing_list " +
-				"(ListId," +
-				"DisplayName," +
-				"AcctUserName," +
-				"Description," +
-				"ClientId," +
-				"StatusId," +
-				"IsBuiltIn," +
-				"CreateTime)" +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-			
+			int rows = 0;
 			for (MailingListEnum enu : MailingListEnum.values()) {
 				if (enu.isProd() == false) {
-					ps.setString(1, enu.name());
-					ps.setString(2, enu.getDescription());
-					ps.setString(3, enu.getAcctName());
-					ps.setString(4, enu.getDescription());
-					ps.setString(5, Constants.DEFAULT_CLIENTID);
-					ps.setString(6, enu.getStatusId().value());
-					ps.setString(7, enu.isBuiltin() ? Constants.Y : Constants.N);
-					ps.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
-					ps.execute();
+					MailingListVo vo = new MailingListVo();
+					vo.setListId(enu.name());
+					vo.setDisplayName(enu.getDisplayName());
+					vo.setAcctUserName(enu.getAcctName());
+					vo.setDescription(enu.getDescription());
+					vo.setClientId(Constants.DEFAULT_CLIENTID);
+					vo.setStatusId(enu.getStatusId().value());
+					vo.setIsBuiltIn(enu.isBuiltin() ? Constants.Y : Constants.N);
+					vo.setCreateTime(new Timestamp(System.currentTimeMillis()));
+					
+					rows += dao.insert(vo);
 				}
 			}
 			
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			System.out.println("Inserted all rows to mailing_list: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
 	}
 
 	private void insertProdMaillingList() throws SQLException {
+		MailingListDao dao = SpringUtil.getDaoAppContext().getBean(MailingListDao.class);
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO mailing_list " +
-				"(ListId," +
-				"DisplayName," +
-				"AcctUserName," +
-				"Description," +
-				"ClientId," +
-				"StatusId," +
-				"IsBuiltIn," +
-				"CreateTime)" +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-			
+			int rows = 0;
 			for (MailingListEnum enu : MailingListEnum.values()) {
-				if (enu.isProd() == true) {
-					ps.setString(1, enu.name());
-					ps.setString(2, enu.getDescription());
-					ps.setString(3, enu.getAcctName());
-					ps.setString(4, enu.getDescription());
-					ps.setString(5, Constants.DEFAULT_CLIENTID);
-					ps.setString(6, enu.getStatusId().value());
-					ps.setString(7, enu.isBuiltin() ? Constants.Y : Constants.N);
-					ps.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
-					ps.execute();
+				if (enu.isProd() == true) {					
+					MailingListVo vo = new MailingListVo();
+					vo.setListId(enu.name());
+					vo.setDisplayName(enu.getDisplayName());
+					vo.setAcctUserName(enu.getAcctName());
+					vo.setDescription(enu.getDescription());
+					vo.setClientId(Constants.DEFAULT_CLIENTID);
+					vo.setStatusId(enu.getStatusId().value());
+					vo.setIsBuiltIn(enu.isBuiltin() ? Constants.Y : Constants.N);
+					vo.setCreateTime(new Timestamp(System.currentTimeMillis()));
+					
+					rows += dao.insert(vo);
 				}
 			}
 
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			System.out.println("Inserted all rows to mailing_list: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}
 	}
 
 	private void insertSubscribers() throws SQLException {
+		EmailSubscrptDao dao = SpringUtil.getDaoAppContext().getBean(EmailSubscrptDao.class);
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO email_subscrpt " +
-				"(EmailAddrId," +
-				"ListId," +
-				"Subscribed," +
-				"CreateTime)" +
-				"VALUES (?, ?, ?, ?)");
-			
 			EmailAddressDao emailDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 			
+			int rows = 0;
 			for (SubscriberEnum sublst : SubscriberEnum.values()) {
 				for (SubscriberEnum.Subscriber sbsr : SubscriberEnum.Subscriber.values()) {
+					EmailSubscrptVo vo = new EmailSubscrptVo();
 					EmailAddressVo emailVo = emailDao.findByAddress(sbsr.getAddress());
-					ps.setLong(1, emailVo.getEmailAddrId());
-					ps.setString(2, sublst.getMailingList().name());
-					ps.setString(3, Constants.Y);
-					ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
-					ps.execute();
+					vo.setEmailAddrId(emailVo.getEmailAddrId());
+					vo.setListId(sublst.getMailingList().name());
+					vo.setSubscribed(Constants.Y);
+					vo.setCreateTime(new Timestamp(System.currentTimeMillis()));
+					
+					rows += dao.insert(vo);
 				}
 			}
 			
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			System.out.println("Inserted all rows to email_subscrpt: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
 	}
 
 	private void insertEmailVariable() throws SQLException {
+		EmailVariableDao dao = SpringUtil.getDaoAppContext().getBean(EmailVariableDao.class);
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO email_variable " +
-				"(VariableName," +
-				"VariableType," +
-				"TableName," +
-				"ColumnName," +
-				"StatusId," +
-				"IsBuiltIn," +
-				"DefaultValue," +
-				"VariableQuery," +
-				"VariableProc)" +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			
+			int rows = 0;
 			for (EmailVariableEnum var : EmailVariableEnum.values()) {
-				ps.setString(1, var.name());
-				ps.setString(2, var.getVariableType().value());
-				ps.setString(3, var.getTableName());
-				ps.setString(4, var.getColumnName());
-				ps.setString(5, StatusId.ACTIVE.value());
-				ps.setString(6, var.isBuiltin() ? Constants.Y : Constants.N);
-				ps.setString(7, var.getDefaultValue());
-				ps.setString(8, var.getVariableQuery());
-				ps.setString(9, var.getVariableProcName());
-				ps.execute();
+				EmailVariableVo vo = new EmailVariableVo();
+				vo.setVariableName(var.name());
+				vo.setVariableType(var.getVariableType().value());
+				vo.setTableName(var.getTableName());
+				vo.setColumnName(var.getColumnName());
+				vo.setStatusId(StatusId.ACTIVE.value());
+				vo.setIsBuiltIn(var.isBuiltin() ? Constants.Y : Constants.N);
+				vo.setDefaultValue(var.getDefaultValue());
+				vo.setVariableQuery(var.getVariableQuery());
+				vo.setVariableProc(var.getVariableProcName());
+				rows += dao.insert(vo);
 			}
 						
-			ps.close();
-			System.out.println("Inserted all rows...");
-		} catch (SQLException e) {
+			System.out.println("Inserted all rows to email_variable: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
@@ -555,53 +513,33 @@ DELIMITER ;
 
 	private void insertEmailTemplate() throws SQLException {
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO email_template " +
-				"(TemplateId," +
-				"ListId," +
-				"Subject," +
-				"BodyText," +
-				"IsHtml," +
-				"ListType," +
-				"DeliveryOption," +
-				"IsBuiltIn," +
-				"EmbedEmailId," +
-				"Schedules)" +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			
+			int rows = 0;
 			for (EmailTemplateEnum tmplt : EmailTemplateEnum.values()) {
 				if (tmplt.isProd()) {
 					continue;
 				}
-				ps.setString(1, tmplt.name());
-				ps.setString(2, tmplt.getMailingList().name());
-				ps.setString(3, tmplt.getSubject());
-				ps.setString(4, tmplt.getBodyText());
-				ps.setString(5, tmplt.isHtml() ? Constants.Y : Constants.N);
-				ps.setString(6, tmplt.getListType().value());
-				ps.setString(7, tmplt.getDeliveryType().value());
-				ps.setString(8, tmplt.isBuiltin() ? Constants.Y : Constants.N);
+				EmailTemplateVo vo = new EmailTemplateVo();
+				vo.setTemplateId(tmplt.name());
+				vo.setListId(tmplt.getMailingList().name());
+				vo.setSubject(tmplt.getSubject());
+				vo.setBodyText(tmplt.getBodyText());
+				vo.setIsHtml(tmplt.isHtml());
+				vo.setListType(tmplt.getListType().value());
+				vo.setDeliveryOption(tmplt.getDeliveryType().value());
+				vo.setIsBuiltIn(tmplt.isBuiltin() ? Constants.Y : Constants.N);
 				if (tmplt.getIsEmbedEmailId() == null) {
-					ps.setString(9, " "); // use system default
+					vo.setEmbedEmailId(" "); // use system default
 				}
 				else {
 					boolean embedEmailId = tmplt.getIsEmbedEmailId().booleanValue();
-					ps.setString(9,  embedEmailId ? Constants.Y : Constants.N);
+					vo.setEmbedEmailId(embedEmailId ? Constants.Y : Constants.N);
 				}
-				SchedulesBlob blob = new SchedulesBlob();
-				try {
-					byte[] baosarray = BlobUtil.objectToBytes(blob);
-					ps.setBytes(10, baosarray);
-				}
-				catch (IOException e) {
-					throw new SQLException("IOException caught - " + e.toString());
-				}
-				ps.execute();
+				vo.setSchedulesBlob(new SchedulesBlob());
+				rows += getEmailTemplateDao().insert(vo);
 			}
 						
-			ps.close();
-			System.out.println("Inserted email_template...");
-		} catch (SQLException e) {
+			System.out.println("Inserted all rows to email_template: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
@@ -610,14 +548,14 @@ DELIMITER ;
 	void selectEmailTemplate() throws SQLException {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-				"select * from email_template where TemplateId = 'test template'");
+				"select * from email_template where template_id = 'test template'");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				String id = rs.getString("ListId");
-				byte[] bytes = rs.getBytes("Schedules");
+				String id = rs.getString("list_id");
+				byte[] bytes = rs.getBytes("schedules");
 				try {
 					SchedulesBlob blob = (SchedulesBlob) BlobUtil.bytesToObject(bytes);
-					System.out.println("ListId: " + id + ", blob: " + blob);
+					System.out.println("list_id: " + id + ", blob: " + blob);
 				}
 				catch (Exception e) {
 					throw new SQLException("Exception caught - " + e.toString());
@@ -632,53 +570,33 @@ DELIMITER ;
 	
 	private void insertProdEmailTemplate() throws SQLException {
 		try {
-			PreparedStatement ps = con.prepareStatement(
-				"INSERT INTO email_template " +
-				"(TemplateId," +
-				"ListId," +
-				"Subject," +
-				"BodyText," +
-				"IsHtml," +
-				"ListType," +
-				"DeliveryOption," +
-				"IsBuiltIn," +
-				"EmbedEmailId," +
-				"Schedules)" +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			
+			int rows = 0;
 			for (EmailTemplateEnum tmplt : EmailTemplateEnum.values()) {
 				if (tmplt.isProd() == false) {
 					continue;
 				}
-				ps.setString(1, tmplt.name());
-				ps.setString(2, tmplt.getMailingList().name());
-				ps.setString(3, tmplt.getSubject());
-				ps.setString(4, tmplt.getBodyText());
-				ps.setString(5, tmplt.isHtml() ? Constants.Y : Constants.N);
-				ps.setString(6, tmplt.getListType().value());
-				ps.setString(7, tmplt.getDeliveryType().value());
-				ps.setString(8, tmplt.isBuiltin() ? Constants.Y : Constants.N);
+				EmailTemplateVo vo = new EmailTemplateVo();
+				vo.setTemplateId(tmplt.name());
+				vo.setListId(tmplt.getMailingList().name());
+				vo.setSubject(tmplt.getSubject());
+				vo.setBodyText(tmplt.getBodyText());
+				vo.setIsHtml(tmplt.isHtml());
+				vo.setListType(tmplt.getListType().value());
+				vo.setDeliveryOption(tmplt.getDeliveryType().value());
+				vo.setIsBuiltIn(tmplt.isBuiltin() ? Constants.Y : Constants.N);
 				if (tmplt.getIsEmbedEmailId() == null) {
-					ps.setString(9, " "); // use system default
+					vo.setEmbedEmailId(" "); // use system default
 				}
 				else {
 					boolean embedEmailId = tmplt.getIsEmbedEmailId().booleanValue();
-					ps.setString(9,  embedEmailId ? Constants.Y : Constants.N);
+					vo.setEmbedEmailId(embedEmailId ? Constants.Y : Constants.N);
 				}
-				SchedulesBlob blob = new SchedulesBlob();
-				try {
-					byte[] baosarray = BlobUtil.objectToBytes(blob);
-					ps.setBytes(10, baosarray);
-				}
-				catch (IOException e) {
-					throw new SQLException("IOException caught - " + e.toString());
-				}
-				ps.execute();
+				vo.setSchedulesBlob(new SchedulesBlob());
+				rows += getEmailTemplateDao().insert(vo);
 			}
 			
-			ps.close();
-			System.out.println("Inserted Product email_template...");
-		} catch (SQLException e) {
+			System.out.println("Inserted all production rows to email_template: " + rows);
+		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
 			throw e;
 		}	
@@ -691,7 +609,7 @@ DELIMITER ;
 		int rowsUpdated = 0;
 		List<EmailTemplateVo> list = getEmailTemplateDao().getAll();
 		for (EmailTemplateVo tmpltVo : list) {
-			tmpltVo.setUpdtTime(new Timestamp(new java.util.Date().getTime()));
+			tmpltVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 			rowsUpdated += getEmailTemplateDao().update(tmpltVo);
 		}
 		System.out.println("Updated email_template records: " + rowsUpdated);

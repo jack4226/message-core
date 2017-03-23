@@ -12,7 +12,6 @@ public interface ClientDao {
 	public int update(ClientVo clientVo);
 	public int delete(String clientId);
 	public int insert(ClientVo clientVo);
-	public int insert(ClientVo clientVo, boolean initialize);
 	public String getSystemId();
 	public String getSystemKey();
 	public int updateSystemKey(String key);

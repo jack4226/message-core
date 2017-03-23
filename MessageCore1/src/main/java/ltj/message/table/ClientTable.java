@@ -204,7 +204,7 @@ public class ClientTable extends CreateTableBase {
 		vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		
-		int rows = dao.insert(vo, true);
+		int rows = dao.insert(vo);
 		System.out.println("client_tbl: default client inserted: " + rows);
 	}
 
@@ -241,7 +241,7 @@ public class ClientTable extends CreateTableBase {
 		vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		
-		int rows = dao.insert(vo, true);
+		int rows = dao.insert(vo);
 		System.out.println("client_tbl: jbatch.com inserted: " + rows);
 	}
 

@@ -23,49 +23,49 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 	
 	private String getSelectClause() {
 		String select = "select " +
-				" a.RowId, " +
-				" a.ListId, " +
-				" a.DisplayName, " +
-				" a.AcctUserName, " +
+				" a.row_id, " +
+				" a.list_id, " +
+				" a.display_name, " +
+				" a.acct_user_name, " +
 				" c.domain_name, " + 
-				" a.Description, " +
-				" a.ClientId, " +
-				" a.StatusId, " +
-				" a.IsBuiltIn, " +
-				" a.IsSendText, " +
-				" a.CreateTime, " +
-				" a.ListMasterEmailAddr, " +
+				" a.description, " +
+				" a.client_id, " +
+				" a.status_id, " +
+				" a.is_built_in, " +
+				" a.is_send_text, " +
+				" a.create_time, " +
+				" a.list_master_email_addr, " +
 				" '' as Subscribed, " +
-				" a.ListId as OrigListId, " +
-				" sum(b.SentCount) as SentCount, sum(b.OpenCount) as OpenCount," +
-				" sum(b.ClickCount) as ClickCount " +
+				" a.list_id as OrigListId, " +
+				" sum(b.sent_count) as sent_count, sum(b.open_count) as open_count," +
+				" sum(b.click_count) as click_count " +
 				"from mailing_list a " +
-				" LEFT OUTER JOIN email_subscrpt b on a.ListId = b.ListId " +
-				" JOIN client_tbl c on a.ClientId = c.client_id ";
+				" LEFT OUTER JOIN email_subscrpt b on a.list_id = b.list_id " +
+				" JOIN client_tbl c on a.client_id = c.client_id ";
 		return select;
 	}
 
 	private String getGroupByClause() {
 		String groupBy = "group by " +
-				" a.RowId, " +
-				" a.ListId, " +
-				" a.DisplayName, " +
-				" a.AcctUserName, " +
+				" a.row_id, " +
+				" a.list_id, " +
+				" a.display_name, " +
+				" a.acct_user_name, " +
 				" c.domain_name, " + 
-				" a.Description, " +
-				" a.ClientId, " +
-				" a.StatusId, " +
-				" a.IsBuiltIn, " +
-				" a.IsSendText, " +
-				" a.CreateTime, " +
-				" a.ListMasterEmailAddr ";
+				" a.description, " +
+				" a.client_id, " +
+				" a.status_id, " +
+				" a.is_built_in, " +
+				" a.is_send_text, " +
+				" a.create_time, " +
+				" a.list_master_email_addr ";
 		return groupBy;
 	}
 
 	@Override
 	public MailingListVo getByListId(String listId) {
 		String sql = getSelectClause() +
-				" where a.ListId = ? " +
+				" where a.list_id = ? " +
 				getGroupByClause();
 		Object[] parms = new Object[] {listId};
 		try {
@@ -89,7 +89,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 			domainName = emailAddr.substring(atSignPos + 1);
 		}
 		String sql = getSelectClause() +
-			" where a.AcctUserName = ? ";
+			" where a.acct_user_name = ? ";
 		if (domainName != null && domainName.trim().length() > 0) {
 			sql += " and c.domain_name = '" + domainName + "' ";
 		}
@@ -105,11 +105,11 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		List<Object> parms = new ArrayList<>();
 		String sql = getSelectClause();
 		if (onlyActive) {
-			sql += " where a.StatusId = ? ";
+			sql += " where a.status_id = ? ";
 			parms.add(StatusId.ACTIVE.value());
 		}
 		sql += getGroupByClause();
-		sql += " order by a.RowId ";
+		sql += " order by a.row_id ";
 		List<MailingListVo> list = getJdbcTemplate().query(sql, parms.toArray(),
 				new BeanPropertyRowMapper<MailingListVo>(MailingListVo.class));
 		return list;
@@ -120,11 +120,11 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		List<Object> parms = new ArrayList<>();
 		String sql = getSelectClause();
 		if (onlyActive) {
-			sql += " where a.StatusId = ? ";
+			sql += " where a.status_id = ? ";
 			parms.add(StatusId.ACTIVE.value());
 		}
 		sql += getGroupByClause();
-		sql += " order by a.RowId limit 5";
+		sql += " order by a.row_id limit 5";
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(5);
@@ -141,14 +141,14 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 		String sql = "SELECT " +
 			" m.*, " +
 			" c.domain_name, " +
-			" s.Subscribed, " +
-			" s.SentCount, " +
-			" s.OpenCount, " +
-			" s.ClickCount " +
+			" s.subscribed, " +
+			" s.sent_count, " +
+			" s.open_count, " +
+			" s.click_count " +
 			" FROM mailing_list m, email_subscrpt s, client_tbl c " +
-			" where m.ListId=s.ListId " +
-			" and m.ClientId=c.client_id " +
-			" and s.EmailAddrId=? ";
+			" where m.list_id=s.list_id " +
+			" and m.client_id=c.client_id " +
+			" and s.email_addr_id=? ";
 		Object[] parms = new Object[] {emailAddrId};
 		List<MailingListVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MailingListVo>(MailingListVo.class));
@@ -166,7 +166,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 	
 	@Override
 	public int deleteByListId(String listId) {
-		String sql = "delete from mailing_list where ListId=?";
+		String sql = "delete from mailing_list where list_id=?";
 		Object[] parms = new Object[] {listId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -174,7 +174,7 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 	
 	@Override
 	public int deleteByAddress(String emailAddr) {
-		String sql = "delete from mailing_list where EmailAddr=?";
+		String sql = "delete from mailing_list where email_addr=?";
 		Object[] parms = new Object[] {emailAddr};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;

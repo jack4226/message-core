@@ -24,7 +24,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	
 	@Override
 	public EmailVariableVo getByName(String variableName) {
-		String sql = "select * from email_variable where VariableName=:variableName";
+		String sql = "select * from email_variable where variable_name=:variableName";
 		SqlParameterSource namedParameters = new MapSqlParameterSource("variableName", variableName);
 		try {
 			EmailVariableVo vo = getNamedParameterJdbcTemplate().queryForObject(sql, namedParameters, 
@@ -39,7 +39,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	@Override
 	public List<EmailVariableVo> getAll() {
 		String sql = "select * from email_variable " +
-		" order by RowId";
+		" order by row_id";
 		List<EmailVariableVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<EmailVariableVo>(EmailVariableVo.class));
 		return list;
@@ -48,7 +48,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	@Override
 	public List<EmailVariableVo> getAllForTrial() {
 		String sql = "select * from email_variable " +
-		" order by RowId" +
+		" order by row_id" +
 		" limit 50";
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
@@ -64,8 +64,8 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	@Override
 	public List<EmailVariableVo> getAllCustomVariables() {
 		String sql = "select * from email_variable " +
-			" where IsBuiltIn!=? " +
-			" order by RowId";
+			" where is_built_in!=? " +
+			" order by row_id";
 		Object[] parms = new Object[] {Constants.Y};
 		List<EmailVariableVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailVariableVo>(EmailVariableVo.class));
@@ -75,8 +75,8 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	@Override
 	public List<EmailVariableVo> getAllBuiltinVariables() {
 		String sql = "select * from email_variable " +
-			" where IsBuiltIn=? " +
-			" order by RowId";
+			" where is_built_in=? " +
+			" order by row_id";
 		Object[] parms = new Object[] {Constants.Y};
 		List<EmailVariableVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailVariableVo>(EmailVariableVo.class));
@@ -115,7 +115,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 	
 	@Override
 	public int deleteByName(String variableName) {
-		String sql = "delete from email_variable where VariableName=:variableName";
+		String sql = "delete from email_variable where variable_name=:variableName";
 		Map<String,?> namedParameters = Collections.singletonMap("variableName", variableName);
 		int rowsDeleted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		return rowsDeleted;

@@ -96,7 +96,7 @@ public class CustomerTable extends CreateTableBase {
 					+ "INDEX (ssn_number),"
 					+ "UNIQUE INDEX (email_addr_id), "
 					+ "FOREIGN KEY (client_id) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address(EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE "
+					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address(email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created customer_tbl Table...");
 		}

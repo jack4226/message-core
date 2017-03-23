@@ -51,8 +51,8 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 
 	@Override
 	public EmailAddressVo getByAddrId(long addrId) {
-		String sql = "select *, EmailAddr as CurrEmailAddr, UpdtTime as OrigUpdtTime " +
-				"from email_address where emailAddrId=?";
+		String sql = "select *, email_addr as CurrEmailAddr, updt_time as OrigUpdtTime " +
+				"from email_address where email_addr_id=?";
 		Object[] parms = new Object[] { addrId };
 		try {
 			EmailAddressVo vo = getJdbcTemplate().queryForObject(sql, parms,
@@ -66,8 +66,8 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 
 	@Override
 	public EmailAddressVo getByAddress(String address) {
-		String sql = "select *, EmailAddr as CurrEmailAddr, UpdtTime as OrigUpdtTime " +
-				"from email_address where EmailAddr=?";
+		String sql = "select *, email_addr as CurrEmailAddr, updt_time as OrigUpdtTime " +
+				"from email_address where email_addr=?";
 		String emailAddress = EmailAddrUtil.removeDisplayName(address);
 		Object[] parms = new Object[] { emailAddress };
 		List<EmailAddressVo> list = getJdbcTemplate().query(sql, parms,
@@ -83,8 +83,8 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	public EmailAddressVo getRandomRecord() {
 		String sql = 
 				"select * from email_address " +
-				" where EmailAddrId >= (RAND() * (select max(EmailAddrId) from email_address)) " +
-				" order by EmailAddrId limit 1 ";
+				" where email_addr_id >= (RAND() * (select max(email_addr_id) from email_address)) " +
+				" order by email_addr_id limit 1 ";
 			
 		List<EmailAddressVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<EmailAddressVo>(EmailAddressVo.class));
@@ -101,8 +101,8 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = "select count(*) from email_address a "
-				+ " LEFT OUTER JOIN customer_tbl b on a.EmailAddrId=b.email_addr_id "
-				+ " LEFT OUTER JOIN email_subscrpt c on a.EmailAddrId=c.EmailAddrId "
+				+ " LEFT OUTER JOIN customer_tbl b on a.email_addr_id=b.email_addr_id "
+				+ " LEFT OUTER JOIN email_subscrpt c on a.email_addr_id=c.email_addr_id "
 				+ whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -121,12 +121,12 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 			// do nothing
 		} else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
 			if (vo.getStrIdLast() != null) {
-				whereSql += CRIT[parms.size()] + " a.EmailAddr > ? ";
+				whereSql += CRIT[parms.size()] + " a.email_addr > ? ";
 				parms.add(vo.getStrIdLast());
 			}
 		} else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
 			if (vo.getStrIdFirst() != null) {
-				whereSql += CRIT[parms.size()] + " a.EmailAddr < ? ";
+				whereSql += CRIT[parms.size()] + " a.email_addr < ? ";
 				parms.add(vo.getStrIdFirst());
 				fetchOrder = "desc";
 			}
@@ -137,41 +137,29 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 				pageSize = Math.min(rows, vo.getPageSize());
 			}
 			fetchOrder = "desc";
-//			List<EmailAddressVo> lastList = new ArrayList<EmailAddressVo>();
-//			vo.setPageAction(PagingVo.PageAction.NEXT);
-//			while (true) {
-//				List<EmailAddressVo> nextList = getEmailAddrsWithPaging(vo);
-//				if (!nextList.isEmpty()) {
-//					lastList = nextList;
-//					vo.setStrIdLast(nextList.get(nextList.size() - 1).getEmailAddr());
-//				} else {
-//					break;
-//				}
-//			}
-//			return lastList;
 		} else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
 			if (vo.getStrIdFirst() != null) {
-				whereSql += CRIT[parms.size()] + " a.EmailAddr >= ? ";
+				whereSql += CRIT[parms.size()] + " a.email_addr >= ? ";
 				parms.add(vo.getStrIdFirst());
 			}
 		}
-		String sql = "select a.EmailAddrId, a.EmailAddr, a.OrigEmailAddr, a.StatusId, "
-				+ " a.StatusChangeTime, a.StatusChangeUserId, a.BounceCount, "
-				+ " a.LastBounceTime, a.LastSentTime, a.LastRcptTime, a.AcceptHtml, "
-				+ " a.UpdtTime, a.UpdtUserId, a.EmailAddr as CurrEmailAddr, a.UpdtTime as OrigUpdtTime, "
+		String sql = "select a.email_addr_id, a.email_addr, a.orig_email_addr, a.status_id, "
+				+ " a.status_change_time, a.status_change_user_id, a.bounce_count, "
+				+ " a.last_bounce_time, a.last_sent_time, a.last_rcpt_time, a.accept_html, "
+				+ " a.updt_time, a.updt_user_id, a.email_addr as CurrEmailAddr, a.updt_time as OrigUpdtTime, "
 				+ " b.cust_id, b.first_name, b.middle_name, b.last_name, "
-				+ " sum(c.SentCount) as SentCount, sum(c.OpenCount) as OpenCount, "
-				+ " sum(c.ClickCount) as ClickCount "
+				+ " sum(c.sent_count) as sent_count, sum(c.open_count) as open_count, "
+				+ " sum(c.click_count) as click_count "
 				+ "from email_address a "
-				+ " LEFT OUTER JOIN customer_tbl b on a.EmailAddrId=b.email_addr_id "
-				+ " LEFT OUTER JOIN email_subscrpt c on a.EmailAddrId=c.EmailAddrId "
+				+ " LEFT OUTER JOIN customer_tbl b on a.email_addr_id=b.email_addr_id "
+				+ " LEFT OUTER JOIN email_subscrpt c on a.email_addr_id=c.email_addr_id "
 				+ whereSql
 				+ "group by "
-				+ " a.EmailAddrId, a.EmailAddr, a.OrigEmailAddr, a.StatusId, a.StatusChangeTime, "
-				+ " a.StatusChangeUserId, a.BounceCount, a.LastBounceTime, a.LastSentTime, "
-				+ " a.LastRcptTime, a.AcceptHtml, a.UpdtTime, a.UpdtUserId, "
+				+ " a.email_addr_id, a.email_addr, a.orig_email_addr, a.status_id, a.status_change_time, "
+				+ " a.status_change_user_id, a.bounce_count, a.last_bounce_time, a.last_sent_time, "
+				+ " a.last_rcpt_time, a.accept_html, a.updt_time, a.updt_user_id, "
 				+ " b.cust_id, b.first_name, b.middle_name, b.last_name "
-				+ " order by a.EmailAddr "
+				+ " order by a.email_addr "
 				+ fetchOrder
 				+ " limit "
 				+ pageSize;
@@ -200,24 +188,24 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	private String buildWhereClause(PagingAddrVo vo, List<Object> parms) {
 		String whereSql = "";
 		if (!StringUtil.isEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
+			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
 			parms.add(vo.getStatusId());
 		}
 		// search by address
 		if (StringUtils.isNotBlank(vo.getEmailAddr())) {
 			String addr = vo.getEmailAddr().trim();
 			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr LIKE ? ";
+				whereSql += CRIT[parms.size()] + " a.orig_email_addr LIKE ? ";
 				parms.add("%" + addr + "%");
 			} else {
 				//String regex = (addr + "").replaceAll("[ ]+", ".+");
 				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
-				whereSql += CRIT[parms.size()] + " a.OrigEmailAddr REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " a.orig_email_addr REGEXP ? ";
 				parms.add(regex);
 			}
 		}
 //		if (parms.isEmpty()) { // make sure the parameter list is not empty
-//			whereSql += CRIT[parms.size()] + " a.EmailAddrId >= ? ";
+//			whereSql += CRIT[parms.size()] + " a.email_addr_id >= ? ";
 //			parms.add(Long.valueOf(0));
 //		}
 		return whereSql;
@@ -225,12 +213,12 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 
 	@Override
 	public long getEmailAddrIdForPreview() {
-		String sql = "SELECT min(e.emailaddrid) as emailaddrid "
+		String sql = "SELECT min(e.email_addr_id) as email_addr_id "
 				+ " FROM email_address e, customer_tbl c "
-				+ " where e.emailaddrid=c.email_addr_id ";
+				+ " where e.email_addr_id=c.email_addr_id ";
 		Long emailAddrId = getJdbcTemplate().queryForObject(sql, Long.class);
 		if (emailAddrId == null) {
-			sql = "SELECT min(e.emailaddrid) as emailaddrid "
+			sql = "SELECT min(email_addr_id) as email_addr_id "
 					+ " FROM email_address e ";
 			emailAddrId = (Long) getJdbcTemplate().queryForObject(sql, Long.class);
 		}
@@ -418,7 +406,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	@Override
 	public EmailAddressVo getFromByMsgId(Long msgId) {
 		String sql = "select a.*, b.RuleName from email_address a "
-				+ " inner join msg_inbox b on a.EmailAddrId = b.FromAddrId "
+				+ " inner join msg_inbox b on a.email_addr_id = b.FromAddrId "
 				+ " where" + " b.MsgId = ?";
 		Object[] parms = new Object[] { msgId };
 		List<EmailAddressVo> list = getJdbcTemplate().query(sql, parms,
@@ -433,7 +421,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	@Override
 	public EmailAddressVo getToByMsgId(Long msgId) {
 		String sql = "select a.*, b.RuleName from email_address a "
-				+ " inner join msg_inbox b on a.EmailAddrId = b.ToAddrId "
+				+ " inner join msg_inbox b on a.email_addr_id = b.ToAddrId "
 				+ " where" + " b.MsgId = ?";
 		Object[] parms = new Object[] { msgId };
 		List<EmailAddressVo> list = getJdbcTemplate().query(sql, parms,
@@ -458,7 +446,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(emailAddressVo);
 		String sql = MetaDataUtil.buildUpdateStatement("email_address", emailAddressVo);
 		if (emailAddressVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 
 		int rowsUpadted = 0;
@@ -480,8 +468,8 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		keys.add(new Timestamp(System.currentTimeMillis()));
 		keys.add(addrId);
 
-		String sql = "update email_address set " + " LastRcptTime=? "
-				+ " where emailAddrId=?";
+		String sql = "update email_address set " + " last_rcpt_time=? "
+				+ " where email_addr_id=?";
 
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
@@ -493,8 +481,8 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		keys.add(new Timestamp(System.currentTimeMillis()));
 		keys.add(addrId);
 
-		String sql = "update email_address set " + " LastSentTime=? "
-				+ " where emailAddrId=?";
+		String sql = "update email_address set " + " last_sent_time=? "
+				+ " where email_addr_id=?";
 
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
@@ -506,8 +494,8 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		keys.add(acceptHtml ? Constants.Y : Constants.N);
 		keys.add(addrId);
 
-		String sql = "update email_address set " + " AcceptHtml=? "
-				+ " where emailAddrId=?";
+		String sql = "update email_address set " + " accept_html=? "
+				+ " where email_addr_id=?";
 
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
@@ -515,7 +503,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 
 	@Override
 	public int updateBounceCount(long emailAddrId, int count) {
-		String sql = "update email_address set BounceCount=?, UpdtTime=? where emailAddrId=?";
+		String sql = "update email_address set bounce_count=?, updt_time=? where email_addr_id=?";
 		Object[] parms = new Object[] { count, new Timestamp(System.currentTimeMillis()), emailAddrId };
 		int rowsUpadted = getJdbcTemplate().update(sql, parms);
 		return rowsUpadted;
@@ -526,7 +514,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		emailAddressVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		List<Object> keys = new ArrayList<>();
 
-		String sql = "update email_address set BounceCount=?,";
+		String sql = "update email_address set bounce_count=?,";
 		emailAddressVo.setBounceCount(emailAddressVo.getBounceCount() + 1);
 		keys.add(emailAddressVo.getBounceCount());
 
@@ -539,21 +527,21 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 					emailAddressVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 				}
 				emailAddressVo.setStatusChangeTime(emailAddressVo.getUpdtTime());
-				sql += "StatusId=?," + "StatusChangeUserId=?," + "StatusChangeTime=?,";
+				sql += "status_id=?," + "status_change_user_id=?," + "status_change_time=?,";
 				keys.add(emailAddressVo.getStatusId());
 				keys.add(emailAddressVo.getStatusChangeUserId());
 				keys.add(emailAddressVo.getStatusChangeTime());
 			}
 		}
 
-		sql += "UpdtTime=?," + "UpdtUserId=? " + " where emailAddrId=?";
+		sql += "updt_time=?," + "updt_user_id=? " + " where email_addr_id=?";
 
 		keys.add(emailAddressVo.getUpdtTime());
 		keys.add(emailAddressVo.getUpdtUserId());
 		keys.add(emailAddressVo.getEmailAddrId());
 
 		if (emailAddressVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=?";
+			sql += " and updt_time=?";
 			keys.add(emailAddressVo.getOrigUpdtTime());
 		}
 
@@ -564,7 +552,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 
 	@Override
 	public int deleteByAddrId(long addrId) {
-		String sql = "delete from email_address where emailAddrId=?";
+		String sql = "delete from email_address where email_addr_id=?";
 		Object[] parms = new Object[] { addrId + "" };
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -572,7 +560,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 
 	@Override
 	public int deleteByAddress(String address) {
-		String sql = "delete from email_address where emailAddr=?";
+		String sql = "delete from email_address where email_addr=?";
 		Object[] parms = new Object[] { address };
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -594,7 +582,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(emailAddressVo);
 		String sql = MetaDataUtil.buildInsertStatement("email_address", emailAddressVo);
 		if (withUpdate) {
-			sql += " ON duplicate KEY UPDATE UpdtTime=:updtTime ";
+			sql += " ON duplicate KEY UPDATE updt_time=:updtTime ";
 		}
 
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
@@ -626,15 +614,15 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 				keys.add(emailAddressVo.getUpdtTime());
 				keys.add(emailAddressVo.getUpdtUserId());
 
-				String sql = "INSERT INTO email_address (" + "EmailAddr,"
-						+ "OrigEmailAddr," + "StatusId," + "StatusChangeTime,"
-						+ "StatusChangeUserId," + "BounceCount,"
-						+ "LastBounceTime," + "LastSentTime," + "LastRcptTime,"
-						+ "AcceptHtml," + "UpdtTime," + "UpdtUserId "
+				String sql = "INSERT INTO email_address (" + "email_addr,"
+						+ "OrigEmailAddr," + "status_id," + "status_change_time,"
+						+ "status_change_user_id," + "bounce_count,"
+						+ "last_bounce_time," + "last_sent_time," + "last_rcpt_time,"
+						+ "accept_html," + "updt_time," + "updt_user_id "
 						+ ") VALUES (" + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ? "
 						+ ",?, ? " + ")";
 				if (withUpdate) {
-					sql += " ON duplicate KEY UPDATE UpdtTime=?";
+					sql += " ON duplicate KEY UPDATE updt_time=?";
 					keys.add(emailAddressVo.getUpdtTime());
 				}
 				PreparedStatement ps = connection.prepareStatement(sql, new String[] { "id" });

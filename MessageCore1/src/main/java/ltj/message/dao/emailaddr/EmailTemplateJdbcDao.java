@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDataType;
 import ltj.message.dao.abstrct.AbstractDao;
+import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.action.MsgDataTypeDao;
 import ltj.message.dao.client.ReloadFlagsDao;
 import ltj.message.util.BlobUtil;
@@ -29,22 +30,22 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		public EmailTemplateVo mapRow(ResultSet rs, int rowNum) throws SQLException {
 			EmailTemplateVo emailTemplateVo = new EmailTemplateVo();
 			
-			emailTemplateVo.setRowId(rs.getInt("RowId"));
-			emailTemplateVo.setTemplateId(rs.getString("TemplateId"));
-			emailTemplateVo.setListId(rs.getString("ListId"));
-			emailTemplateVo.setSubject(rs.getString("Subject"));
-			emailTemplateVo.setBodyText(rs.getString("BodyText"));
-			String isHtml = rs.getString("IsHtml");
+			emailTemplateVo.setRowId(rs.getInt("row_id"));
+			emailTemplateVo.setTemplateId(rs.getString("template_id"));
+			emailTemplateVo.setListId(rs.getString("list_id"));
+			emailTemplateVo.setSubject(rs.getString("subject"));
+			emailTemplateVo.setBodyText(rs.getString("body_text"));
+			String isHtml = rs.getString("is_html");
 			emailTemplateVo.setIsHtml(Constants.Y.equals(isHtml) ? true : false);
-			emailTemplateVo.setListType(rs.getString("ListType"));
-			emailTemplateVo.setDeliveryOption(rs.getString("DeliveryOption"));
-			emailTemplateVo.setSelectCriteria(rs.getString("SelectCriteria"));
-			emailTemplateVo.setEmbedEmailId(rs.getString("EmbedEmailId"));
-			emailTemplateVo.setIsBuiltIn(rs.getString("IsBuiltIn"));
+			emailTemplateVo.setListType(rs.getString("list_type"));
+			emailTemplateVo.setDeliveryOption(rs.getString("delivery_option"));
+			emailTemplateVo.setSelectCriteria(rs.getString("select_criteria"));
+			emailTemplateVo.setEmbedEmailId(rs.getString("embed_email_id"));
+			emailTemplateVo.setIsBuiltIn(rs.getString("is_built_in"));
 			emailTemplateVo.setOrigTemplateId(emailTemplateVo.getTemplateId());
-			emailTemplateVo.setClientId(rs.getString("ClientId"));
+			emailTemplateVo.setClientId(rs.getString("client_id"));
 			// retrieve SchedulesBlob class
-			byte[] bytes = rs.getBytes("Schedules");
+			byte[] bytes = rs.getBytes("schedules");
 			try {
 				SchedulesBlob blob = (SchedulesBlob) BlobUtil.bytesToObject(bytes);
 				emailTemplateVo.setSchedulesBlob(blob);
@@ -59,9 +60,9 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	
 	@Override
 	public EmailTemplateVo getByTemplateId(String templateId) {
-		String sql = "select a.*, b.ClientId " +
+		String sql = "select a.*, b.client_id " +
 				" from email_template a, mailing_list b " +
-				" where a.ListId=b.ListId and a.TemplateId=?";
+				" where a.list_id=b.list_id and a.template_id=?";
 		Object[] parms = new Object[] {templateId};
 		List<?> list = (List<?>) getJdbcTemplate().query(sql, parms, new EmailTemplateMapper());
 		if (list.size()>0) {
@@ -74,10 +75,10 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	
 	@Override
 	public List<EmailTemplateVo> getByListId(String listId) {
-		String sql = "select a.*, b.ClientId " +
+		String sql = "select a.*, b.client_id " +
 				" from email_template a, mailing_list b " +
-				" where a.ListId=b.ListId and a.ListId=?" +
-				" order by a.TemplateId";
+				" where a.list_id=b.list_id and a.list_id=?" +
+				" order by a.template_id";
 		Object[] parms = new Object[] {listId};
 		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql, parms,
 				new EmailTemplateMapper());
@@ -86,10 +87,10 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 	
 	@Override
 	public List<EmailTemplateVo> getAll() {
-		String sql = "select a.*, b.ClientId " +
+		String sql = "select a.*, b.client_id " +
 				" from email_template a, mailing_list b " +
-				" where a.ListId=b.ListId" +
-				" order by a.RowId";
+				" where a.list_id=b.list_id" +
+				" order by a.row_id";
 		List<EmailTemplateVo> list = (List<EmailTemplateVo>) getJdbcTemplate().query(sql,
 				new EmailTemplateMapper());
 		return list;
@@ -97,10 +98,10 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 
 	@Override
 	public List<EmailTemplateVo> getAllForTrial() {
-		String sql = "select a.*, b.ClientId " +
+		String sql = "select a.*, b.client_id " +
 				" from email_template a, mailing_list b " +
-				" where a.ListId=b.ListId" +
-				" order by a.RowId" +
+				" where a.list_id=b.list_id" +
+				" order by a.row_id" +
 				" limit 20";
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
@@ -136,18 +137,18 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		keys.add(emailTemplateVo.getRowId());
 		
 		String sql = "update email_template set " +
-			"TemplateId=?," +
-			"ListId=?," +
-			"Subject=?," +
-			"BodyText=?," +
-			"IsHtml=?," +
-			"ListType=?," +
-			"DeliveryOption=?," +
-			"SelectCriteria=?," +
-			"EmbedEmailId=?," +
-			"IsBuiltIn=?," +
-			"Schedules=?" +
-			" where RowId=?";
+			"template_id=?," +
+			"list_id=?," +
+			"subject=?," +
+			"body_text=?," +
+			"is_html=?," +
+			"list_type=?," +
+			"delivery_option=?," +
+			"select_criteria=?," +
+			"embed_email_id=?," +
+			"is_built_in=?," +
+			"schedules=?" +
+			" where row_id=?";
 		
 		Object[] parms = keys.toArray();
 		int rowsUpadted = getJdbcTemplate().update(sql, parms);
@@ -159,7 +160,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 
 	@Override
 	public synchronized int deleteByTemplateId(String templateId) {
-		String sql = "delete from email_template where TemplateId=?";
+		String sql = "delete from email_template where template_id=?";
 		Object[] parms = new Object[] {templateId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		deleteMsgDataType(templateId);
@@ -193,17 +194,17 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 			};
 		
 		String sql = "INSERT INTO email_template (" +
-			"TemplateId," +
-			"ListId," +
-			"Subject," +
-			"BodyText," +
-			"IsHtml," +
-			"ListType," +
-			"DeliveryOption," +
-			"SelectCriteria," +
-			"EmbedEmailId," +
-			"IsBuiltIn," +
-			"Schedules" +
+			"template_id," +
+			"list_id," +
+			"subject," +
+			"body_text," +
+			"is_html," +
+			"list_type," +
+			"delivery_option," +
+			"select_criteria," +
+			"embed_email_id," +
+			"is_built_in," +
+			"schedules" +
 			") VALUES (" +
 				" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "+
 				" ? )";
@@ -211,7 +212,9 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		int rowsInserted = getJdbcTemplate().update(sql, parms);
 		emailTemplateVo.setRowId(retrieveRowId());
 		emailTemplateVo.setOrigTemplateId(emailTemplateVo.getTemplateId());
-		insertMsgDataType(emailTemplateVo);
+		if (MetaDataUtil.getTableMetaData("msg_data_type") != null) {
+			insertMsgDataType(emailTemplateVo);
+		}
 		updateReloadFlags();
 		return rowsInserted;
 	}

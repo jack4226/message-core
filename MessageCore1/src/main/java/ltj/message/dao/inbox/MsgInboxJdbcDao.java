@@ -171,7 +171,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
 			" from msg_inbox a " +
 				" join msg_address s on s.msgId=a.msgId and s.addrType=? " +
-				" join email_address e on e.emailAddr=s.addrValue and e.emailAddrId=? " +
+				" join email_address e on e.email_addr=s.addrValue and e.email_addr_id=? " +
 			" order by a.msgId";
 		Object[] parms = new Object[] {type.value(), addrId};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
@@ -194,7 +194,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
 			" from msg_inbox a " +
 				" join msg_address s on s.msgId=a.msgId and s.addrType=? " +
-				" join email_address e on e.emailAddr=s.addrValue and e.emailAddr=? " +
+				" join email_address e on e.email_addr=s.addrValue and e.email_addr=? " +
 			" order by a.msgId";
 		Object[] parms = new Object[] {type.value(), address};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms,
@@ -292,7 +292,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"SELECT count(*) " +
 			" FROM msg_inbox a " + 
-			" JOIN email_address b ON a.FromAddrId=b.EmailAddrId " +
+			" JOIN email_address b ON a.FromAddrId=b.email_addr_id " +
 			whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -374,7 +374,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				"a.StatusId as OrigStatusId " +
 			" FROM " +
 				"msg_inbox a " +
-				" JOIN email_address b ON a.FromAddrId=b.EmailAddrId " +
+				" JOIN email_address b ON a.FromAddrId=b.email_addr_id " +
 				whereSql +
 			" order by MsgId " + fetchOrder +
 			" limit " + pageSize;
@@ -488,13 +488,13 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		if (StringUtils.isNotBlank(vo.getFromAddr()) && vo.getFromAddrId() == null) {
 			String from = vo.getFromAddr().trim();
 			if (from.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE ? ";
+				whereSql += CRIT[parms.size()] + " b.orig_email_addr LIKE ? ";
 				parms.add("%" + from + "%");
 			}
 			else {
 				//String regex = (from + "").replaceAll("[ ]+", ".+");
 				String regex = (from + "").replaceAll("[ ]+", "|");
-				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " b.orig_email_addr REGEXP ? ";
 				parms.add(regex);
 			}
 		}

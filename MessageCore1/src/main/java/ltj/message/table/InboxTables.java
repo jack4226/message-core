@@ -298,9 +298,9 @@ public class InboxTables extends CreateTableBase {
 			"INDEX (LeadMsgId), " +
 			"FOREIGN KEY (RenderId) REFERENCES msg_rendered (RenderId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (RenderId), " +
-			"FOREIGN KEY (FromAddrId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (FromAddrId) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (FromAddrId), " +
-			"FOREIGN KEY (ToAddrId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (ToAddrId) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (ToAddrId)" +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_inbox Table...");
@@ -388,7 +388,7 @@ public class InboxTables extends CreateTableBase {
 			"DlvrStatus text, " +
 			"FOREIGN KEY (MsgId) REFERENCES msg_inbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (MsgId), " +
-			"FOREIGN KEY (FinalRcptId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (FinalRcptId) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (FinalRcptId), " +
 			"PRIMARY KEY (MsgId,RfcType)" +
 			") ENGINE=InnoDB");
@@ -436,7 +436,7 @@ public class InboxTables extends CreateTableBase {
 			"AddTime datetime(3), " +
 			"FOREIGN KEY (MsgId) REFERENCES msg_inbox (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (MsgId), " +
-			"FOREIGN KEY (FinalRecipientId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY (FinalRecipientId) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX (FinalRecipientId), " +
 			"PRIMARY KEY (MsgId,FinalRecipientId)) ENGINE=InnoDB");
 			System.out.println("Created delivery_status Table...");
@@ -509,7 +509,7 @@ public class InboxTables extends CreateTableBase {
 					+ "AddTime datetime(3) NOT NULL, "
 					+ "PRIMARY KEY (RowId), "
 					+ "FOREIGN KEY (MsgId) REFERENCES msg_click_count (MsgId) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (EmailAddrId) REFERENCES email_address (EmailAddrId) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (EmailAddrId) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (MsgId), "
 					+ "INDEX (EmailAddrId) "
 					+ ") ENGINE=InnoDB");

@@ -154,8 +154,8 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 		String sql = 
 			"select count(*) " +
 			" from email_subscrpt a " +
-				" join email_address b on a.EmailAddrId=b.EmailAddrId "
-				+ " LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.email_addr_id " +
+				" join email_address b on a.email_addr_id=b.email_addr_id "
+				+ " LEFT OUTER JOIN customer_tbl c on a.email_addr_id=c.email_addr_id " +
 			whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -175,13 +175,13 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
 			if (vo.getNbrIdLast() > -1) {
-				whereSql += CRIT[parms.size()] + " a.EmailAddrId > ? ";
+				whereSql += CRIT[parms.size()] + " a.email_addr_id > ? ";
 				parms.add(vo.getNbrIdLast());
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
 			if (vo.getNbrIdFirst() > -1) {
-				whereSql += CRIT[parms.size()] + " a.EmailAddrId < ? ";
+				whereSql += CRIT[parms.size()] + " a.email_addr_id < ? ";
 				parms.add(vo.getNbrIdFirst());
 				fetchOrder = "desc";
 			}
@@ -193,47 +193,34 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 				pageSize = Math.min(rows, vo.getPageSize());
 			}
 			fetchOrder = "desc";
-//			List<EmailSubscrptVo> lastList = new ArrayList<EmailSubscrptVo>();
-//			vo.setPageAction(PagingVo.PageAction.NEXT);
-//			while (true) {
-//				List<EmailSubscrptVo> nextList = getSubscribersWithPaging(vo);
-//				if (!nextList.isEmpty()) {
-//					lastList = nextList;
-//					vo.setNbrIdLast(nextList.get(nextList.size() - 1).getEmailAddrId());
-//				}
-//				else {
-//					break;
-//				}
-//			}
-//			return lastList;
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
 			if (vo.getNbrIdFirst() > -1) {
-				whereSql += CRIT[parms.size()] + " a.EmailAddrId >= ? ";
+				whereSql += CRIT[parms.size()] + " a.email_addr_id >= ? ";
 				parms.add(vo.getNbrIdFirst());
 			}
 		}
 		String sql = 
-			"select a.EmailAddrId, " +
-				" b.OrigEmailAddr as EmailAddr, " +
-				" b.AcceptHtml, " +
-				" a.SentCount, " +
-				" a.LastSentTime, " +
-				" a.OpenCount, " +
-				" a.LastOpenTime, " +
-				" a.ClickCount, " +
-				" a.LastClickTime, " +
-				" a.ListId, " +
-				" a.Subscribed," +
-				" a.CreateTime, " +
+			"select a.email_addr_id, " +
+				" b.orig_email_addr as email_addr, " +
+				" b.accept_html, " +
+				" a.sent_count, " +
+				" a.last_sent_time, " +
+				" a.open_count, " +
+				" a.last_open_time, " +
+				" a.click_count, " +
+				" a.last_click_time, " +
+				" a.list_id, " +
+				" a.subscribed," +
+				" a.create_time, " +
 				" c.first_name, " +
 				" c.last_name, " +
 				" c.middle_name " +
 			" from email_subscrpt a" +
-				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.email_addr_id " +
+				" JOIN email_address b ON a.email_addr_id=b.email_addr_id " +
+				" LEFT OUTER JOIN customer_tbl c on a.email_addr_id=c.email_addr_id " +
 			whereSql +
-			" order by a.EmailAddrId " + fetchOrder +
+			" order by a.email_addr_id " + fetchOrder +
 			" limit " + pageSize;
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
@@ -257,27 +244,27 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	private String buildWhereClause(PagingSbsrVo vo, List<Object> parms) {
 		String whereSql = "";
 		if (StringUtils.isNotBlank(vo.getListId())) {
-			whereSql = CRIT[parms.size()] + " a.ListId = ? ";
+			whereSql = CRIT[parms.size()] + " a.list_id = ? ";
 			parms.add(vo.getListId().trim());
 		}
 		if (!StringUtil.isEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " b.StatusId = ? ";
+			whereSql += CRIT[parms.size()] + " b.status_id = ? ";
 			parms.add(vo.getStatusId());
 		}
 		if (vo.getSubscribed() != null) {
-			whereSql += CRIT[parms.size()] + " a.Subscribed = ? ";
+			whereSql += CRIT[parms.size()] + " a.subscribed = ? ";
 			parms.add(vo.getSubscribed() ? Constants.Y : Constants.N);
 		}
 		// search by address
 		if (StringUtils.isNotBlank(vo.getEmailAddr())) {
 			String addr = vo.getEmailAddr().trim();
 			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr LIKE ? ";
+				whereSql += CRIT[parms.size()] + " b.orig_email_addr LIKE ? ";
 				parms.add("%" + addr + "%");
 			}
 			else {
 				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
-				whereSql += CRIT[parms.size()] + " b.OrigEmailAddr REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " b.orig_email_addr REGEXP ? ";
 				parms.add(regex);
 			}
 		}
@@ -287,27 +274,27 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	@Override
 	public List<EmailSubscrptVo> getSubscribers(String listId) {
 		String sql = 
-			"select a.EmailAddrId, " +
-				" b.OrigEmailAddr as EmailAddr, " +
-				" b.AcceptHtml, " +
-				" a.SentCount, " +
-				" a.LastSentTime, " +
-				" a.OpenCount, " +
-				" a.LastOpenTime, " +
-				" a.ClickCount, " +
-				" a.LastClickTime, " +
-				" a.ListId, " +
-				" a.Subscribed," +
-				" a.CreateTime, " +
+			"select a.email_addr_id, " +
+				" b.orig_email_addr as email_addr, " +
+				" b.accept_html, " +
+				" a.sent_count, " +
+				" a.last_sent_time, " +
+				" a.open_count, " +
+				" a.last_open_time, " +
+				" a.click_count, " +
+				" a.last_click_time, " +
+				" a.list_id, " +
+				" a.subscribed," +
+				" a.create_time, " +
 				" c.first_name, " +
 				" c.last_name, " +
 				" c.middle_name " +
 			" from email_subscrpt a" +
-				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" LEFT OUTER JOIN customer_tbl c on a.EmailAddrId=c.email_addr_id " +
-			" where a.ListId=? " +
-				" and b.StatusId=? " +
-				" and a.Subscribed=? ";
+				" JOIN email_address b ON a.email_addr_id=b.email_addr_id " +
+				" LEFT OUTER JOIN customer_tbl c on a.email_addr_id=c.email_addr_id " +
+			" where a.list_id=? " +
+				" and b.status_id=? " +
+				" and a.subscribed=? ";
 		Object[] parms = new Object[] {listId, StatusId.ACTIVE.value(), Constants.Y};
 		List<EmailSubscrptVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailSubscrptVo>(EmailSubscrptVo.class));
@@ -317,27 +304,27 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	@Override
 	public List<EmailSubscrptVo> getSubscribersWithCustomerRecord(String listId) {
 		String sql = 
-			"select a.EmailAddrId, " +
-				" b.OrigEmailAddr as EmailAddr, " +
-				" b.AcceptHtml, " +
-				" a.SentCount, " +
-				" a.LastSentTime, " +
-				" a.OpenCount, " +
-				" a.LastOpenTime, " +
-				" a.ClickCount, " +
-				" a.LastClickTime, " +
-				" a.ListId, " +
-				" a.Subscribed," +
-				" a.CreateTime, " +
+			"select a.email_addr_id, " +
+				" b.orig_email_addr as email_addr, " +
+				" b.accept_html, " +
+				" a.sent_count, " +
+				" a.last_sent_time, " +
+				" a.open_count, " +
+				" a.last_open_time, " +
+				" a.click_count, " +
+				" a.last_click_time, " +
+				" a.list_id, " +
+				" a.subscribed," +
+				" a.create_time, " +
 				" c.first_name, " +
 				" c.last_name, " +
 				" c.middle_name " +
 			" from email_subscrpt a" +
-				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" JOIN customer_tbl c on a.EmailAddrId=c.email_addr_id " +
-			" where a.ListId=? " +
-				" and b.StatusId=? " +
-				" and a.Subscribed=? ";
+				" JOIN email_address b ON a.email_addr_id=b.email_addr_id " +
+				" JOIN customer_tbl c on a.email_addr_id=c.email_addr_id " +
+			" where a.list_id=? " +
+				" and b.status_id=? " +
+				" and a.subscribed=? ";
 		Object[] parms = new Object[] {listId, StatusId.ACTIVE.value(), Constants.Y};
 		List<EmailSubscrptVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailSubscrptVo>(EmailSubscrptVo.class));
@@ -347,24 +334,24 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	@Override
 	public List<EmailSubscrptVo> getSubscribersWithoutCustomerRecord(String listId) {
 		String sql = 
-			"select a.EmailAddrId, " +
-				" b.OrigEmailAddr as EmailAddr, " +
-				" b.AcceptHtml, " +
-				" a.SentCount, " +
-				" a.LastSentTime, " +
-				" a.OpenCount, " +
-				" a.LastOpenTime, " +
-				" a.ClickCount, " +
-				" a.LastClickTime, " +
-				" a.ListId, " +
-				" a.Subscribed," +
-				" a.CreateTime " +
+			"select a.email_addr_id, " +
+				" b.orig_email_addr as email_addr, " +
+				" b.accept_html, " +
+				" a.sent_count, " +
+				" a.last_sent_time, " +
+				" a.open_count, " +
+				" a.last_open_time, " +
+				" a.click_count, " +
+				" a.last_click_time, " +
+				" a.list_id, " +
+				" a.subscribed," +
+				" a.create_time " +
 			" from email_subscrpt a " +
-				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-			" where a.ListId=? " +
-				" and b.StatusId=? " +
-				" and a.Subscribed=? " +
-				" and not exists (select 1 from customer_tbl where email_addr_id=b.EmailAddrId) ";
+				" JOIN email_address b ON a.email_addr_id=b.email_addr_id " +
+			" where a.list_id=? " +
+				" and b.status_id=? " +
+				" and a.subscribed=? " +
+				" and not exists (select 1 from customer_tbl where email_addr_id=b.email_addr_id) ";
 		Object[] parms = new Object[] {listId, StatusId.ACTIVE.value(), Constants.Y};
 		List<EmailSubscrptVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailSubscrptVo>(EmailSubscrptVo.class));
@@ -374,11 +361,11 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	@Override
 	public EmailSubscrptVo getByPrimaryKey(long addrId, String listId) {
 		String sql = "select a.*, " +
-				" b.EmailAddr, " +
-				" b.AcceptHtml " +
+				" b.email_addr, " +
+				" b.accept_html " +
 				" from email_subscrpt a " +
-				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" where a.EmailAddrId=? and a.ListId=?";
+				" JOIN email_address b ON a.email_addr_id=b.email_addr_id " +
+				" where a.email_addr_id=? and a.list_id=?";
 		Object[] parms = new Object[] {addrId, listId};
 		try {
 			EmailSubscrptVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -394,9 +381,9 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	public EmailSubscrptVo getRandomRecord() {
 		String sql = 
 				"select * " +
-				"from " +
-					"email_subscrpt where EmailAddrId >= (RAND() * (select max(EmailAddrId) from email_subscrpt)) " +
-				" order by EmailAddrId limit 1 ";
+				"from email_subscrpt " +
+					"where email_addr_id >= (RAND() * (select max(email_addr_id) from email_subscrpt)) " +
+				" order by email_addr_id limit 1 ";
 			
 		List<EmailSubscrptVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<EmailSubscrptVo>(EmailSubscrptVo.class));
@@ -411,11 +398,11 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	@Override
 	public EmailSubscrptVo getByAddrAndListId(String addr, String listId) {
 		String sql = "SELECT a.*, " +
-				" b.EmailAddr, " +
-				" b.AcceptHtml " +
+				" b.email_addr, " +
+				" b.accept_html " +
 				" from email_subscrpt a " +
-				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" and a.ListId=? and b.EmailAddr=?";
+				" JOIN email_address b ON a.email_addr_id=b.email_addr_id " +
+				" and a.list_id=? and b.email_addr=?";
 		Object[] parms = new Object[] {listId, addr};
 		try {
 			EmailSubscrptVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -431,11 +418,11 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	@Override
 	public List<EmailSubscrptVo> getByAddrId(long addrId) {
 		String sql = "select a.*, " +
-				" b.EmailAddr, " +
-				" b.AcceptHtml " +
+				" b.email_addr, " +
+				" b.accept_html " +
 				" from email_subscrpt a " +
-				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" and a.EmailAddrId=?";
+				" JOIN email_address b ON a.email_addr_id=b.email_addr_id " +
+				" and a.email_addr_id=?";
 		Object[] parms = new Object[] {addrId};
 		List<EmailSubscrptVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailSubscrptVo>(EmailSubscrptVo.class));
@@ -445,11 +432,11 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	@Override
 	public List<EmailSubscrptVo> getByListId(String listId) {
 		String sql = "select a.*, " +
-				" b.EmailAddr, " +
-				" b.AcceptHtml " +
+				" b.email_addr, " +
+				" b.accept_html " +
 				" from email_subscrpt a " +
-				" JOIN email_address b ON a.EmailAddrId=b.EmailAddrId " +
-				" and a.ListId=?";
+				" JOIN email_address b ON a.email_addr_id=b.email_addr_id " +
+				" and a.list_id=?";
 		Object[] parms = new Object[] {listId};
 		List<EmailSubscrptVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailSubscrptVo>(EmailSubscrptVo.class));
@@ -472,9 +459,9 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 		keys.add(listId);
 
 		String sql = "update email_subscrpt set " +
-			"SentCount=SentCount+1, " +
-			"LastSentTime=? " +
-			" where EmailAddrId=? and ListId=?";
+			"sent_count=sent_count+1, " +
+			"last_sent_time=? " +
+			" where email_addr_id=? and list_id=?";
 		
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
@@ -488,9 +475,9 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 		keys.add(listId);
 
 		String sql = "update email_subscrpt set " +
-			"OpenCount=OpenCount+1, " +
-			"LastOpenTime=? " +
-			" where EmailAddrId=? and ListId=?";
+			"open_count=open_count+1, " +
+			"last_open_time=? " +
+			" where email_addr_id=? and list_id=?";
 		
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
@@ -504,9 +491,9 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 		keys.add(listId);
 
 		String sql = "update email_subscrpt set " +
-			"Clickcount=ClickCount+1, " +
-			"LastClickTime=? " +
-			" where EmailAddrId=? and ListId=?";
+			"click_count=click_count+1, " +
+			"last_click_time=? " +
+			" where email_addr_id=? and list_id=?";
 		
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
 		return rowsUpadted;
@@ -514,7 +501,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	
 	@Override
 	public int deleteByPrimaryKey(long addrid, String listId) {
-		String sql = "delete from email_subscrpt where EmailAddrId=? and ListId=?";
+		String sql = "delete from email_subscrpt where email_addr_id=? and list_id=?";
 		Object[] parms = new Object[] {addrid, listId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -522,7 +509,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	
 	@Override
 	public int deleteByAddrId(long addrId) {
-		String sql = "delete from email_subscrpt where EmailAddrId=?";
+		String sql = "delete from email_subscrpt where email_addr_id=?";
 		Object[] parms = new Object[] {addrId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -530,7 +517,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	
 	@Override
 	public int deleteByListId(String listId) {
-		String sql = "delete from email_subscrpt where ListId=?";
+		String sql = "delete from email_subscrpt where list_id=?";
 		Object[] parms = new Object[] {listId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;

@@ -76,7 +76,7 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 				"select count(*) " +
 				" from msg_click_count a "
 				+ " join msg_inbox m on m.MsgId=a.MsgId "
-				+ " join email_address e on e.EmailAddrId=m.FromAddrid " +
+				+ " join email_address e on e.email_addr_id=m.FromAddrid " +
 				whereSql +
 				" and a.StartTime is not null ";
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
@@ -137,10 +137,10 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		}
 		
 		String sql = 
-			"select a.*, e.EmailAddrId, e.EmailAddr as fromAddr " +
+			"select a.*, e.email_addr_id, e.email_addr as fromAddr " +
 			" from msg_click_count a "
 			+ " join msg_inbox m on m.MsgId=a.MsgId "
-			+ " join email_address e on e.EmailAddrId=m.FromAddrid " +
+			+ " join email_address e on e.email_addr_id=m.FromAddrid " +
 			whereSql +
 			" and a.StartTime is not null " +
 			" order by a.MsgId " + fetchOrder +
@@ -189,11 +189,11 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		if (StringUtils.isNotBlank(vo.getFromEmailAddr())) {
 			String addr = vo.getFromEmailAddr().trim();
 			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " e.OrigEmailAddr LIKE ? ";
+				whereSql += CRIT[parms.size()] + " e.orig_email_addr LIKE ? ";
 				parms.add("%" + addr + "%");
 			} else {
 				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
-				whereSql += CRIT[parms.size()] + " e.OrigEmailAddr REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " e.orig_email_addr REGEXP ? ";
 				parms.add(regex);
 			}
 		}

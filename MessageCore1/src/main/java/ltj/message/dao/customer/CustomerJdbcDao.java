@@ -76,7 +76,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		String sql = 
 			"select a.*, a.cust_id as OrigCustId, a.updt_time as OrigUpdtTime " +
 			" from customer_tbl a, email_address b " +
-			" where a.email_addr_id=b.EmailAddrId " +
+			" where a.email_addr_id=b.email_addr_id " +
 			" and a.email_addr=? ";
 		Object[] parms = new Object[] {EmailAddrUtil.removeDisplayName(emailAddr)};
 		List<CustomerVo> list = getJdbcTemplate().query(sql, parms, 
@@ -106,7 +106,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
 			"select count(*) from customer_tbl a " 
-			+ " LEFT OUTER JOIN email_address b on a.email_addr_id=b.EmailAddrId "
+			+ " LEFT OUTER JOIN email_address b on a.email_addr_id=b.email_addr_id "
 			+ whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -153,9 +153,9 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		}
 		String sql = 
 			"select a.*, a.cust_id as OrigCustId, a.updt_time as OrigUpdtTime, " +
-			"b.StatusId as EmailStatusId, b.BounceCount, b.AcceptHtml " +
+			"b.status_id as EmailStatusId, b.bounce_count, b.accept_html " +
 			" from customer_tbl a " +
-				" LEFT OUTER JOIN email_address b on a.email_addr_id=b.EmailAddrId " +
+				" LEFT OUTER JOIN email_address b on a.email_addr_id=b.email_addr_id " +
 			whereSql +
 			" order by a.cust_id " + fetchOrder +
 			" limit " + pageSize;
