@@ -18,6 +18,7 @@ public interface EmailAddressDao {
 	 * find by email address. if it does not exist, add it to database.
 	 */
 	public EmailAddressVo findByAddress(String address);
+	public EmailAddressVo findByAddressSP(String address);
 	public int updateLastRcptTime(long addrId);
 	public int updateLastSentTime(long addrId);
 	public int updateAcceptHtml(long addrId, boolean acceptHtml);

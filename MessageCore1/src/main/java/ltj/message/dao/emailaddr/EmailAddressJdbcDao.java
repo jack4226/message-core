@@ -251,7 +251,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		// return findByAddressSP(address);
 	}
 
-	private static Object lock = new Object();
+	private static Object locker = new Object();
 
 	/*
 	 * We can also apply "synchronized" at method level, and that will eliminate
@@ -272,7 +272,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	private EmailAddressVo findByAddress(String address, int retries) {
 		EmailAddressVo vo = getByAddress(address);
 		if (vo == null) { // record not found, insert one
-			synchronized (lock) {
+			synchronized (locker) {
 				// concurrency issue still pops up but it is much better
 				// controlled
 				Timestamp updtTime = new Timestamp(System.currentTimeMillis());
@@ -336,7 +336,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 			emailAddressVo.setUpdtTime(updtTime);
 			emailAddressVo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 			// concurrency issue still pops up but it is much better controlled
-			synchronized (lock) {
+			synchronized (locker) {
 				insert(emailAddressVo, true);
 				// return emailAddrVo;
 			} // end of synchronized block
@@ -381,9 +381,11 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	/*
 	 * The stored procedure did not resolve the "Duplicate Key" problem.
 	 */
-	EmailAddressVo findByAddressSP(String address) {
+	@Override
+	public EmailAddressVo findByAddressSP(String address) {
 		FindByAddressProcedure sp = new FindByAddressProcedure(getJdbcTemplate().getDataSource(), "FindByAddress");
 		Map<String, Object> map = sp.execute(address);
+		logger.info("findByAddressSP() - map returned: " + map);
 		EmailAddressVo vo = new EmailAddressVo();
 		vo.setEmailAddrId(((BigDecimal) map.get("oEmailAddrId")).longValue());
 		vo.setEmailAddr((String) map.get("oOrigEmailAddr"));

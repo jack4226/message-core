@@ -69,6 +69,9 @@ public class EmailAddressTest extends DaoTestBase {
 			
 		long addrid = emailAddressDao.getEmailAddrIdForPreview();
 		assertTrue(addrid > 0);
+		
+		EmailAddressVo spvo = emailAddressDao.findByAddressSP("testsp@localhost");
+		assertNotNull(spvo);
 	}
 	
 	@Test
