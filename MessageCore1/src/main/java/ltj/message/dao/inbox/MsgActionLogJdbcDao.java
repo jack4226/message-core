@@ -22,15 +22,15 @@ public class MsgActionLogJdbcDao extends AbstractDao implements MsgActionLogDao 
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_action_log where msgId=? ";
+				"msg_action_log where msg_id=? ";
 		List<Object> fields = new ArrayList<Object>();
 		fields.add(msgId);
 		if (msgRefId == null) {
-			sql += "and msgRefId is null ";
+			sql += "and msg_ref_id is null ";
 		}
 		else {
 			fields.add(msgRefId);
-			sql += "and msgRefId=? ";
+			sql += "and msg_ref_id=? ";
 		}
 		try {
 			MsgActionLogVo vo = getJdbcTemplate().queryForObject(sql, fields.toArray(),
@@ -47,8 +47,8 @@ public class MsgActionLogJdbcDao extends AbstractDao implements MsgActionLogDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" msg_action_log where msgId=? " +
-			" order by msgRefId ";
+				" msg_action_log where msg_id=? " +
+			" order by msg_ref_id ";
 		Object[] parms = new Object[] {msgId};
 		List<MsgActionLogVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgActionLogVo>(MsgActionLogVo.class));
@@ -60,8 +60,8 @@ public class MsgActionLogJdbcDao extends AbstractDao implements MsgActionLogDao 
 		String sql = 
 			"select * " +
 			" from " +
-				" msg_action_log where leadMsgId=? " +
-			" order by addrTime";
+				" msg_action_log where lead_msg_id=? " +
+			" order by addr_time";
 		Object[] parms = new Object[] {leadMsgId};
 		List<MsgActionLogVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgActionLogVo>(MsgActionLogVo.class));
@@ -72,9 +72,9 @@ public class MsgActionLogJdbcDao extends AbstractDao implements MsgActionLogDao 
 	public List<MsgActionLogVo> getRandomRecord() {
 		String sql = 
 				"select * " +
-				" from " +
-					" msg_action_log where msgId >= (RAND() * (select max(msgId) from msg_action_log)) " +
-				" order by msgId limit 1 ";
+				" from msg_action_log " +
+					" where msg_id >= (RAND() * (select max(msg_id) from msg_action_log)) " +
+				" order by msg_id limit 1 ";
 		List<MsgActionLogVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgActionLogVo>(MsgActionLogVo.class));
 		if (list.size() > 0) {
@@ -88,10 +88,10 @@ public class MsgActionLogJdbcDao extends AbstractDao implements MsgActionLogDao 
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgActionLogVo);
 		String sql = MetaDataUtil.buildUpdateStatement("msg_action_log", msgActionLogVo);
 		if (msgActionLogVo.getMsgRefId() == null) {
-			sql += " and MsgRefId is null ";
+			sql += " and msg_ref_id is null ";
 		}
 		else {
-			sql += " and MsgRefId=:msgRefId ";
+			sql += " and msg_ref_id=:msgRefId ";
 		}
 		
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
@@ -101,16 +101,16 @@ public class MsgActionLogJdbcDao extends AbstractDao implements MsgActionLogDao 
 	@Override
 	public int deleteByPrimaryKey(long msgId, Long msgRefId) {
 		String sql = 
-			"delete from msg_action_log where msgId=? ";
+			"delete from msg_action_log where msg_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
 		if (msgRefId == null) {
-			sql += "and MsgRefId is null ";
+			sql += "and msg_ref_id is null ";
 		}
 		else {
 			fields.add(msgRefId);
-			sql += "and msgRefId=? ";
+			sql += "and msg_ref_id=? ";
 		}
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
@@ -120,7 +120,7 @@ public class MsgActionLogJdbcDao extends AbstractDao implements MsgActionLogDao 
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from msg_action_log where msgId=? ";
+			"delete from msg_action_log where msg_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -132,7 +132,7 @@ public class MsgActionLogJdbcDao extends AbstractDao implements MsgActionLogDao 
 	@Override
 	public int deleteByLeadMsgId(long leadMsgId) {
 		String sql = 
-			"delete from msg_action_log where leadMsgId=? ";
+			"delete from msg_action_log where lead_msg_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(leadMsgId);

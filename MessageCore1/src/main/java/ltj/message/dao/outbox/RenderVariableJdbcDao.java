@@ -21,7 +21,7 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 		String sql = 
 			"select * " +
 			"from " +
-				"render_variable where RenderId=? and variableName=? ";
+				"render_variable where render_id=? and variable_name=? ";
 		
 		Object[] parms = new Object[] {renderId, variableName};
 		try {
@@ -39,8 +39,8 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 		String sql = 
 			"select * " +
 			" from " +
-				" render_variable where RenderId=? " +
-			" order by variableName";
+				" render_variable where render_id=? " +
+			" order by variable_name";
 		Object[] parms = new Object[] {renderId};
 		List<RenderVariableVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<RenderVariableVo>(RenderVariableVo.class));
@@ -59,7 +59,7 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 	@Override
 	public int deleteByPrimaryKey(long msgId, String variableName) {
 		String sql = 
-			"delete from render_variable where renderId=? and variableName=? ";
+			"delete from render_variable where render_id=? and variable_name=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -72,7 +72,7 @@ public class RenderVariableJdbcDao extends AbstractDao implements RenderVariable
 	@Override
 	public int deleteByRenderId(long msgId) {
 		String sql = 
-			"delete from render_variable where renderId=? ";
+			"delete from render_variable where render_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);

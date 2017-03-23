@@ -22,7 +22,7 @@ public class MsgHeaderJdbcDao extends AbstractDao implements MsgHeaderDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_header where msgid=? and headerSeq=? ";
+				"msg_header where msg_id=? and header_seq=? ";
 		
 		Object[] parms = new Object[] {msgId, headerSeq};
 		try {
@@ -40,8 +40,8 @@ public class MsgHeaderJdbcDao extends AbstractDao implements MsgHeaderDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" msg_header where msgId=? " +
-			" order by headerSeq";
+				" msg_header where msg_id=? " +
+			" order by header_seq";
 		Object[] parms = new Object[] {msgId};
 		List<MsgHeaderVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgHeaderVo>(MsgHeaderVo.class));
@@ -52,9 +52,9 @@ public class MsgHeaderJdbcDao extends AbstractDao implements MsgHeaderDao {
 	public List<MsgHeaderVo> getRandomRecord() {
 		String sql = 
 				"select * " +
-				" from " +
-					" msg_header where msgId >= (RAND() * (select max(msgId) from msg_header)) " +
-				" order by msgId limit 1 ";
+				" from msg_header " +
+					" where msg_id >= (RAND() * (select max(msg_id) from msg_header)) " +
+				" order by msg_id limit 1 ";
 		List<MsgHeaderVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgHeaderVo>(MsgHeaderVo.class));
 		if (list.size() > 0) {
@@ -69,27 +69,13 @@ public class MsgHeaderJdbcDao extends AbstractDao implements MsgHeaderDao {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgHeaderVo);
 		String sql = MetaDataUtil.buildUpdateStatement("msg_header", msgHeaderVo);
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
-//		List<Object> fields = new ArrayList<>();
-//		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
-//		fields.add(msgHeadersVo.getHeaderValue());
-//		fields.add(msgHeadersVo.getMsgId());
-//		fields.add(msgHeadersVo.getHeaderSeq());
-//		
-//		String sql =
-//			"update msg_header set " +
-//				"HeaderName=?, " +
-//				"HeaderValue=? " +
-//			" where " +
-//				" msgid=? and headerSeq=?  ";
-//		
-//		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
 	
 	@Override
 	public int deleteByPrimaryKey(long msgId, int headerSeq) {
 		String sql = 
-			"delete from msg_header where msgid=? and headerSeq=? ";
+			"delete from msg_header where msg_id=? and header_seq=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -102,7 +88,7 @@ public class MsgHeaderJdbcDao extends AbstractDao implements MsgHeaderDao {
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from msg_header where msgid=? ";
+			"delete from msg_header where msg_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -117,23 +103,6 @@ public class MsgHeaderJdbcDao extends AbstractDao implements MsgHeaderDao {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgHeaderVo);
 		String sql = MetaDataUtil.buildInsertStatement("msg_header", msgHeaderVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
-//		String sql = 
-//			"INSERT INTO msg_header (" +
-//			"MsgId, " +
-//			"HeaderSeq, " +
-//			"HeaderName, " +
-//			"HeaderValue " +
-//			") VALUES (" +
-//				" ?, ?, ?, ? " +
-//				")";
-//		
-//		List<Object> fields = new ArrayList<>();
-//		fields.add(msgHeadersVo.getMsgId());
-//		fields.add(msgHeadersVo.getHeaderSeq());
-//		fields.add(StringUtils.left(msgHeadersVo.getHeaderName(), 100));
-//		fields.add(msgHeadersVo.getHeaderValue());
-//		
-//		int rowsInserted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsInserted;
 	}
 }

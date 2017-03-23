@@ -21,7 +21,7 @@ public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao 
 	
 	@Override
 	public MsgUnsubCmntVo getByPrimaryKey(int rowId){
-		String sql = "select * from msg_unsub_cmnt where RowId=?";
+		String sql = "select * from msg_unsub_cmnt where row_id=?";
 		Object[] parms = new Object[] {rowId};
 		try {
 			MsgUnsubCmntVo vo = getJdbcTemplate().queryForObject(sql, parms, 
@@ -36,7 +36,7 @@ public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao 
 	@Override
 	public List<MsgUnsubCmntVo> getFirst100() {
 		String sql = "select * from msg_unsub_cmnt " +
-		" order by RowId limit 100 ";
+		" order by row_id limit 100 ";
 		List<MsgUnsubCmntVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgUnsubCmntVo>(MsgUnsubCmntVo.class));
 		return list;
@@ -45,8 +45,8 @@ public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao 
 	@Override
 	public List<MsgUnsubCmntVo> getByMsgId(long msgId) {
 		String sql = "select * from msg_unsub_cmnt " +
-			" where MsgId=" + msgId +
-			" order by RowId";
+			" where msg_id=" + msgId +
+			" order by row_id";
 		List<MsgUnsubCmntVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgUnsubCmntVo>(MsgUnsubCmntVo.class));
 		return list;
@@ -55,8 +55,8 @@ public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao 
 	@Override
 	public List<MsgUnsubCmntVo> getByEmailAddrId(long emailAddrId) {
 		String sql = "select * from msg_unsub_cmnt " +
-			" where EmailAddrId=" + emailAddrId +
-			" order by RowId";
+			" where email_addr_id=" + emailAddrId +
+			" order by row_id";
 		List<MsgUnsubCmntVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgUnsubCmntVo>(MsgUnsubCmntVo.class));
 		return list;
@@ -65,8 +65,8 @@ public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao 
 	@Override
 	public List<MsgUnsubCmntVo> getByListId(String listId) {
 		String sql = "select * from msg_unsub_cmnt " +
-			" where ListId='" + listId + "' " +
-			" order by RowId";
+			" where list_id='" + listId + "' " +
+			" order by row_id";
 		List<MsgUnsubCmntVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgUnsubCmntVo>(MsgUnsubCmntVo.class));
 		return list;
@@ -82,7 +82,7 @@ public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao 
 	
 	@Override
 	public int deleteByPrimaryKey(int rowId) {
-		String sql = "delete from msg_unsub_cmnt where RowId=?";
+		String sql = "delete from msg_unsub_cmnt where row_id=?";
 		Object[] parms = new Object[] {rowId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -90,7 +90,7 @@ public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao 
 	
 	@Override
 	public int deleteByMsgId(long msgId) {
-		String sql = "delete from msg_unsub_cmnt where MsgId=?";
+		String sql = "delete from msg_unsub_cmnt where msg_id=?";
 		Object[] parms = new Object[] {msgId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;
@@ -98,7 +98,7 @@ public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao 
 	
 	@Override
 	public int deleteByEmailAddrId(long emailAddrId) {
-		String sql = "delete from msg_unsub_cmnt where EmailAddrId=?";
+		String sql = "delete from msg_unsub_cmnt where email_addr_id=?";
 		Object[] parms = new Object[] {emailAddrId};
 		int rowsDeleted = getJdbcTemplate().update(sql, parms);
 		return rowsDeleted;

@@ -35,10 +35,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	@Override
 	public MsgInboxVo getByPrimaryKey(long msgId) {
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, updt_time as OrigUpdtTime, read_count as OrigReadCount, status_id as OrigStatusId " +
 			"from " +
 				"msg_inbox " +
-			" where msgId=? ";
+			" where msg_id=? ";
 		Object[] parms = new Object[] {msgId};
 		try {
 			MsgInboxVo vo = getJdbcTemplate().queryForObject(sql, parms,
@@ -53,10 +53,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	@Override
 	public MsgInboxVo getLastRecord() {
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, updt_time as OrigUpdtTime, read_count as OrigReadCount, status_id as OrigStatusId " +
 			"from " +
 				"msg_inbox " +
-			" where msgId = (select max(MsgId) from msg_inbox) ";
+			" where msg_id = (select max(msg_id) from msg_inbox) ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		if (list.size() > 0) {
 			return list.get(0);
@@ -68,10 +68,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	@Override
 	public MsgInboxVo getRandomRecord() {
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, updt_time as OrigUpdtTime, read_count as OrigReadCount, status_id as OrigStatusId " +
 			"from " +
-				"msg_inbox where msgId >= (RAND() * (select max(msgId) from msg_inbox)) " +
-			" order by msgId limit 1 ";
+				"msg_inbox where msg_id >= (RAND() * (select max(msg_id) from msg_inbox)) " +
+			" order by msg_id limit 1 ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		if (list.size() > 0) {
 			return list.get(0);
@@ -83,10 +83,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	@Override
 	public MsgInboxVo getLastReceivedRecord() {
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, updt_time as OrigUpdtTime, read_count as OrigReadCount, status_id as OrigStatusId " +
 			"from " +
 				"msg_inbox " +
-			" where msgId = (select max(MsgId) from msg_inbox where MsgDirection = 'R') ";
+			" where msg_id = (select max(msg_id) from msg_inbox where msg_direction = 'R') ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		if (list.size() > 0) {
 			return list.get(0);
@@ -98,10 +98,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	@Override
 	public MsgInboxVo getLastSentRecord() {
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, updt_time as OrigUpdtTime, read_count as OrigReadCount, status_id as OrigStatusId " +
 			"from " +
 				"msg_inbox " +
-			" where msgId = (select max(MsgId) from msg_inbox where MsgDirection = 'S') ";
+			" where msg_id = (select max(msg_id) from msg_inbox where msg_direction = 'S') ";
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		if (list.size() > 0) {
 			return list.get(0);
@@ -113,11 +113,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	@Override
 	public List<MsgInboxWebVo> getByLeadMsgId(long leadMsgId) {
 		String sql = 
-			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, read_count as OrigReadCount, status_id as OrigStatusId " +
 			" from " +
 				" msg_inbox " +
-			" where leadMsgId=? " +
-			" order by msgId";
+			" where lead_msg_id=? " +
+			" order by msg_id";
 		Object[] parms = new Object[] {leadMsgId};
 		List<MsgInboxWebVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgInboxWebVo>(MsgInboxWebVo.class));
@@ -127,11 +127,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	@Override
 	public MsgInboxWebVo getByLeastLeadMsgId() {
 		String sql = 
-			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, read_count as OrigReadCount, status_id as OrigStatusId " +
 			" from " +
 				" msg_inbox " +
-			" where leadMsgId is not null and msgId != leadMsgId " +
-			" order by leadMsgId limit 1";
+			" where lead_msg_id is not null and msg_id != lead_msg_id " +
+			" order by lead_msg_id limit 1";
 		List<MsgInboxWebVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgInboxWebVo>(MsgInboxWebVo.class));
 		if (list.isEmpty()) {
@@ -145,11 +145,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	@Override
 	public List<MsgInboxWebVo> getByMsgRefId(long msgRefId) {
 		String sql = 
-			"select *, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, read_count as OrigReadCount, status_id as OrigStatusId " +
 			" from " +
 				" msg_inbox " +
-			" where MsgRefId=? " +
-			" order by msgId";
+			" where msg_ref_id=? " +
+			" order by msg_id";
 		Object[] parms = new Object[] {msgRefId};
 		List<MsgInboxWebVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgInboxWebVo>(MsgInboxWebVo.class));
@@ -168,11 +168,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 
 	private List<MsgInboxVo> getByToAddrIdAndType(long addrId, AddressType type) {
 			String sql = 
-			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
+			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
 			" from msg_inbox a " +
-				" join msg_address s on s.msgId=a.msgId and s.addrType=? " +
-				" join email_address e on e.email_addr=s.addrValue and e.email_addr_id=? " +
-			" order by a.msgId";
+				" join msg_address s on s.msg_id=a.msg_id and s.addr_type=? " +
+				" join email_address e on e.email_addr=s.addr_value and e.email_addr_id=? " +
+			" order by a.msg_id";
 		Object[] parms = new Object[] {type.value(), addrId};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
@@ -191,11 +191,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	
 	private List<MsgInboxVo> getByAddressAndType(String address, AddressType type) {
 		String sql = 
-			"select a.*, a.UpdtTime as OrigUpdtTime, a.ReadCount as OrigReadCount, a.StatusId as OrigStatusId " +
+			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
 			" from msg_inbox a " +
-				" join msg_address s on s.msgId=a.msgId and s.addrType=? " +
-				" join email_address e on e.email_addr=s.addrValue and e.email_addr=? " +
-			" order by a.msgId";
+				" join msg_address s on s.msg_id=a.msg_id and s.addr_type=? " +
+				" join email_address e on e.email_addr=s.addr_value and e.email_addr=? " +
+			" order by a.msg_id";
 		Object[] parms = new Object[] {type.value(), address};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
@@ -222,11 +222,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			date = new java.util.Date();
 		}
 		String sql = 
-			"select *, UpdtTime as OrigUpdtTime, ReadCount as OrigReadCount, StatusId as OrigStatusId " +
+			"select *, updt_time as OrigUpdtTime, read_count as OrigReadCount, status_id as OrigStatusId " +
 			" from " +
 				" msg_inbox " +
-			" where receivedTime>=? " +
-			" order by receivedTime desc limit 100";
+			" where received_time>=? " +
+			" order by received_time desc limit 100";
 		Object[] parms = new Object[] {new Timestamp(date.getTime())};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
@@ -254,9 +254,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			"select count(*) " +
 			" from " +
 				" msg_inbox " +
-			" where ReadCount=0 " +
-				" and MsgDirection=? " +
-				" and (StatusId is null OR StatusId!=?) ";
+			" where read_count=0 " +
+				" and msg_direction=? " +
+				" and (status_id is null OR status_id!=?) ";
 		List<Object> parms = new ArrayList<>();
 		parms.add(MsgDirection.RECEIVED.value());
 		parms.add(StatusId.CLOSED.value());
@@ -271,9 +271,9 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			"select count(*) " +
 			" from " +
 				" msg_inbox " +
-			" where ReadCount=0 " +
-				" and MsgDirection=? " +
-				" and (StatusId is null OR StatusId!=?) ";
+			" where read_count=0 " +
+				" and msg_direction=? " +
+				" and (status_id is null OR status_id!=?) ";
 		List<Object> parms = new ArrayList<>();
 		parms.add(MsgDirection.SENT.value());
 		parms.add(StatusId.CLOSED.value());
@@ -292,7 +292,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"SELECT count(*) " +
 			" FROM msg_inbox a " + 
-			" JOIN email_address b ON a.FromAddrId=b.email_addr_id " +
+			" JOIN email_address b ON a.from_addr_id=b.email_addr_id " +
 			whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -312,13 +312,13 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		else if (vo.getPageAction().equals(PageAction.NEXT)) {
 			if (vo.getMsgIdLast() > -1) {
-				whereSql += CRIT[parms.size()] + " a.MsgId < ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_id < ? ";
 				parms.add(vo.getMsgIdLast());
 			}
 		}
 		else if (vo.getPageAction().equals(PageAction.PREVIOUS)) {
 			if (vo.getMsgIdFirst() > -1) {
-				whereSql += CRIT[parms.size()] + " a.MsgId > ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_id > ? ";
 				parms.add(vo.getMsgIdFirst());
 				fetchOrder = "asc";
 			}
@@ -330,53 +330,40 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				pageSize = Math.min(rows, vo.getPageSize());
 			}
 			fetchOrder = "asc";
-//			List<MsgInboxWebVo> lastList = new ArrayList<MsgInboxWebVo>();
-//			vo.setPageAction(PageAction.NEXT);
-//			while (true) {
-//				List<MsgInboxWebVo> nextList = getListForWeb(vo);
-//				if (!nextList.isEmpty()) {
-//					lastList = nextList;
-//					vo.setMsgIdLast(nextList.get(nextList.size() - 1).getMsgId());
-//				}
-//				else {
-//					break;
-//				}
-//			}
-//			return lastList;
 		}
 		else if (vo.getPageAction().equals(PageAction.CURRENT)) {
 			if (vo.getMsgIdFirst() > -1) {
-				whereSql += CRIT[parms.size()] + " a.MsgId <= ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_id <= ? ";
 				parms.add(vo.getMsgIdFirst());
 			}
 		}
 		// build SQL
 		String sql = 
 			"SELECT " +
-				"MsgId, " +
-				"MsgRefId, " +
-				"LeadMsgId, " +
-				"MsgSubject, " +
-				"ReceivedTime, " +
-				"FromAddrId, " +
-				"ToAddrId, " +
-				"RuleName, " +
-				"ReadCount, " +
-				"ReplyCount, " +
-				"ForwardCount, " +
-				"Flagged, " +
-				"MsgDirection, " +
-				"a.StatusId, " +
-				"AttachmentCount, " +
-				"AttachmentSize, " +
-				"MsgBodySize, " +
-				"ReadCount as OrigReadCount, " +
-				"a.StatusId as OrigStatusId " +
+				"a.msg_id, " +
+				"a.msg_ref_id, " +
+				"a.lead_msg_id, " +
+				"a.msg_subject, " +
+				"a.received_time, " +
+				"a.from_addr_id, " +
+				"a.to_addr_id, " +
+				"a.rule_name, " +
+				"a.read_count, " +
+				"a.reply_count, " +
+				"a.forward_count, " +
+				"a.flagged, " +
+				"a.msg_direction, " +
+				"a.status_id, " +
+				"a.attachment_count, " +
+				"a.attachment_size, " +
+				"a.msg_body_size, " +
+				"a.read_count as OrigReadCount, " +
+				"a.status_id as OrigStatusId " +
 			" FROM " +
 				"msg_inbox a " +
-				" JOIN email_address b ON a.FromAddrId=b.email_addr_id " +
+				" JOIN email_address b ON a.from_addr_id=b.email_addr_id " +
 				whereSql +
-			" order by MsgId " + fetchOrder +
+			" order by a.msg_id " + fetchOrder +
 			" limit " + pageSize;
 		// set result set size
 		getJdbcTemplate().setFetchSize(vo.getPageSize());
@@ -404,11 +391,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			}
 		}
 		if (closed != null) {
-			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
+			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
 			parms.add(StatusId.CLOSED.value());
 		}
 		else {
-			whereSql += CRIT[parms.size()] + " a.StatusId != ? ";
+			whereSql += CRIT[parms.size()] + " a.status_id != ? ";
 			parms.add(StatusId.CLOSED.value());
 		}
 		// msgDirection
@@ -422,51 +409,51 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			}
 		}
 		if (direction != null && closed == null) { // and not closed
-			whereSql += CRIT[parms.size()] + " a.MsgDirection = ? ";
+			whereSql += CRIT[parms.size()] + " a.msg_direction = ? ";
 			parms.add(direction);
 		}
 		// ruleName
 		if (StringUtils.isNotBlank(vo.getRuleName())) {
 			if (!SearchFieldsVo.RuleName.All.name().equals(vo.getRuleName())) {
-				whereSql += CRIT[parms.size()] + " a.RuleName = ? ";
+				whereSql += CRIT[parms.size()] + " a.rule_name = ? ";
 				parms.add(vo.getRuleName());
 			}
 		}
 		// toAddress
 		if (vo.getToAddrId() != null) {
-			whereSql += CRIT[parms.size()] + " a.ToAddrId = ? ";
+			whereSql += CRIT[parms.size()] + " a.to_addr_id = ? ";
 			parms.add(vo.getToAddrId());
 		}
 		// fromAddress
 		if (vo.getFromAddrId() != null) {
-			whereSql += CRIT[parms.size()] + " a.FromAddrId = ? ";
+			whereSql += CRIT[parms.size()] + " a.from_addr_id = ? ";
 			parms.add(vo.getFromAddrId());
 		}
 		// readCount
 		if (vo.getRead() != null) {
 			if (vo.getRead()) {
-				whereSql += CRIT[parms.size()] + " a.ReadCount > ? ";
+				whereSql += CRIT[parms.size()] + " a.read_count > ? ";
 			}
 			else {
-				whereSql += CRIT[parms.size()] + " a.ReadCount <= ? ";
+				whereSql += CRIT[parms.size()] + " a.read_count <= ? ";
 			}
 			parms.add(0);
 		}
 		// msgFlag
 		if (vo.getFlagged() != null && vo.getFlagged()) {
-			whereSql += CRIT[parms.size()] + " a.Flagged = ? ";
+			whereSql += CRIT[parms.size()] + " a.flagged = ? ";
 			parms.add(Constants.Y);
 		}
 		// subject
 		if (StringUtils.isNotBlank(vo.getSubject())) {
 			String subj = vo.getSubject().trim();
 			if (subj.indexOf(" ") < 0) { // a single word
-				whereSql += CRIT[parms.size()] + " a.MsgSubject LIKE ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_subject LIKE ? ";
 				parms.add("%" + subj + "%");
 			}
 			else {
 				String regex = (subj + "").replaceAll("[ ]+", "|"); // match any word
-				whereSql += CRIT[parms.size()] + " a.MsgSubject REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_subject REGEXP ? ";
 				parms.add(regex);
 			}
 		}
@@ -474,13 +461,13 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		if (StringUtils.isNotBlank(vo.getBody())) {
 			String body = vo.getBody().trim();
 			if (body.indexOf(" ") < 0) { // a single word
-				whereSql += CRIT[parms.size()] + " a.MsgBody LIKE ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_body LIKE ? ";
 				parms.add("%" + body + "%");
 			}
 			else {
 				// ".+" or "[[:space:]].*" or "([[:space:]]+|[[:space:]].+[[:space:]])"
 				String regex = (body + "").replaceAll("[ ]+", "[[:space:]].*");
-				whereSql += CRIT[parms.size()] + " a.MsgBody REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_body REGEXP ? ";
 				parms.add(regex);
 			}
 		}
@@ -509,7 +496,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = MetaDataUtil.buildUpdateStatement("msg_inbox", msgInboxVo);
 		
 		if (msgInboxVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
@@ -539,17 +526,17 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		
 		String sql =
 			"update msg_inbox set " +
-				"UpdtTime=?, " +
-				"UpdtUserId=?, " +
-				"ReadCount=?, " +
-				"ReplyCount=?, " +
-				"ForwardCount=?, " +
-				"Flagged=? " +
+				"updt_time=?, " +
+				"updt_user_id=?, " +
+				"read_count=?, " +
+				"reply_count=?, " +
+				"forward_count=?, " +
+				"flagged=? " +
 			" where " +
-				" msgId=? ";
+				" msg_id=? ";
 		
 		if (msgInboxVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=?";
+			sql += " and updt_time=?";
 			fields.add(msgInboxVo.getOrigUpdtTime());
 		}
 
@@ -635,17 +622,17 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		
 		String sql =
 			"update msg_inbox set " +
-				"UpdtTime=?, " +
-				"UpdtUserId=?, " +
-				"ReadCount=?, " +
-				"ReplyCount=?, " +
-				"ForwardCount=?, " +
-				"Flagged=? " +
+				"updt_time=?, " +
+				"updt_user_id=?, " +
+				"read_count=?, " +
+				"reply_count=?, " +
+				"forward_count=?, " +
+				"flagged=? " +
 			" where " +
-				" msgId=? ";
+				" msg_id=? ";
 		
 		if (msgInboxVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=?";
+			sql += " and updt_time=?";
 			fields.add(msgInboxVo.getOrigUpdtTime());
 		}
 
@@ -671,14 +658,14 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		
 		String sql =
 			"update msg_inbox set " +
-				"UpdtTime=?, " +
-				"UpdtUserId=?, " +
-				"StatusId=? " +
+				"updt_time=?, " +
+				"updt_user_id=?, " +
+				"status_id=? " +
 			" where " +
-				" msgId=? ";
+				" msg_id=? ";
 		
 		if (msgInboxVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=?";
+			sql += " and updt_time=?";
 			fields.add(msgInboxVo.getOrigUpdtTime());
 		}
 
@@ -704,11 +691,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		
 		String sql =
 			"update msg_inbox set " +
-				"UpdtTime=?, " +
-				"UpdtUserId=?, " +
-				"StatusId=? " +
+				"updt_time=?, " +
+				"updt_user_id=?, " +
+				"status_id=? " +
 			" where " +
-				" LeadMsgId=? ";
+				" lead_msg_id=? ";
 
 		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		if (rowsUpadted > 0) {
@@ -725,7 +712,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgInboxVo);
 		String sql = MetaDataUtil.buildUpdateStatement("msg_inbox", msgInboxVo);
 		if (msgInboxVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
@@ -746,7 +733,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		
 		String sql = 
-			"delete from msg_inbox where msgId=? "; // TODO only refMsgId is null or orphaned
+			"delete from msg_inbox where msg_id=? "; // TODO only refMsgId is null or orphaned
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);

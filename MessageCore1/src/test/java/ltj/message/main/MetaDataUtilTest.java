@@ -64,12 +64,12 @@ public class MetaDataUtilTest  extends DaoTestBase {
 		for (Column col : msg_inbox.getColumnList()) {
 			colNameList.add(col.getColumnName());
 		}
-		assertTrue(colNameList.contains("MsgId"));
-		assertTrue(colNameList.contains("MsgRefId"));
-		assertTrue(colNameList.contains("LeadMsgId"));
-		assertTrue(colNameList.contains("RuleName"));
-		assertTrue(colNameList.contains("MsgSubject"));
-		assertTrue(colNameList.contains("MsgBody"));
+		assertTrue(colNameList.contains("msg_id"));
+		assertTrue(colNameList.contains("msg_ref_id"));
+		assertTrue(colNameList.contains("lead_msg_id"));
+		assertTrue(colNameList.contains("rule_name"));
+		assertTrue(colNameList.contains("msg_subject"));
+		assertTrue(colNameList.contains("msg_body"));
 	}
 	
 	@Test
@@ -102,7 +102,7 @@ public class MetaDataUtilTest  extends DaoTestBase {
 		
 		String updateSQL = MetaDataUtil.buildUpdateStatement("msg_inbox", vo1);
 		logger.info(updateSQL);
-		assertTrue(updateSQL.matches("Update msg_inbox set .* where MsgId\\=\\:msgId"));
+		assertTrue(updateSQL.matches("Update msg_inbox set .* where msg_id\\=\\:msgId"));
 		
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(vo1);
 		int rowsUpadted = new NamedParameterJdbcTemplate(mysqlDataSource).update(updateSQL, namedParameters);
@@ -121,9 +121,9 @@ public class MetaDataUtilTest  extends DaoTestBase {
 		MsgAttachmentVo vo1 = list1.get(list1.size() - 1);
 		String updtSQL1 = MetaDataUtil.buildUpdateStatement("msg_attachment", vo1);
 		logger.info(updtSQL1);
-		assertTrue(updtSQL1.matches("Update msg_attachment set .* MsgId\\=\\:msgId.*"));
-		assertTrue(updtSQL1.matches("Update msg_attachment set .* AttchmntSeq\\=\\:attchmntSeq.*"));
-		assertTrue(updtSQL1.matches("Update msg_attachment set .* AttchmntDepth\\=\\:attchmntDepth.*"));
+		assertTrue(updtSQL1.matches("Update msg_attachment set .* msg_id\\=\\:msgId.*"));
+		assertTrue(updtSQL1.matches("Update msg_attachment set .* attchmnt_seq\\=\\:attchmntSeq.*"));
+		assertTrue(updtSQL1.matches("Update msg_attachment set .* attchmnt_depth\\=\\:attchmntDepth.*"));
 		
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(vo1);
 		String suffix = StringUtils.leftPad(new Random().nextInt(10000) + "", 4, ' ');

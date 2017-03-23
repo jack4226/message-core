@@ -21,7 +21,7 @@ public class MsgRfcFieldJdbcDao extends AbstractDao implements MsgRfcFieldDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_rfc_field where msgid=? and rfcType=? ";
+				"msg_rfc_field where msg_id=? and rfc_type=? ";
 		
 		Object[] parms = new Object[] {msgId, rfcType};
 		try {
@@ -39,8 +39,8 @@ public class MsgRfcFieldJdbcDao extends AbstractDao implements MsgRfcFieldDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" msg_rfc_field where msgId=? " +
-			" order by rfcType";
+				" msg_rfc_field where msg_id=? " +
+			" order by rfc_type";
 		Object[] parms = new Object[] {msgId};
 		List<MsgRfcFieldVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgRfcFieldVo>(MsgRfcFieldVo.class));
@@ -51,9 +51,9 @@ public class MsgRfcFieldJdbcDao extends AbstractDao implements MsgRfcFieldDao {
 	public List<MsgRfcFieldVo> getRandomRecord() {
 		String sql = 
 				"select * " +
-				" from " +
-					" msg_rfc_field where msgId >= (RAND() * (select max(msgId) from msg_rfc_field)) " +
-				" order by msgId limit 1 ";
+				" from msg_rfc_field " +
+					" where msg_id >= (RAND() * (select max(msg_id) from msg_rfc_field)) " +
+				" order by msg_id limit 1 ";
 		List<MsgRfcFieldVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgRfcFieldVo>(MsgRfcFieldVo.class));
 		if (list.size() > 0) {
@@ -73,7 +73,7 @@ public class MsgRfcFieldJdbcDao extends AbstractDao implements MsgRfcFieldDao {
 	@Override
 	public int deleteByPrimaryKey(long msgId, String rfcType) {
 		String sql = 
-			"delete from msg_rfc_field where msgid=? and rfcType=? ";
+			"delete from msg_rfc_field where msg_id=? and rfc_type=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -86,7 +86,7 @@ public class MsgRfcFieldJdbcDao extends AbstractDao implements MsgRfcFieldDao {
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from msg_rfc_field where msgid=? ";
+			"delete from msg_rfc_field where msg_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);

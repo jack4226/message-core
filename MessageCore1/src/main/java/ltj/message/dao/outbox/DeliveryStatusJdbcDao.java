@@ -22,7 +22,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		String sql = 
 			"select * " +
 			"from " +
-				"delivery_status where msgid=? and finalRecipientId=? ";
+				"delivery_status where msg_id=? and final_recipient_id=? ";
 		
 		Object[] parms = new Object[] {msgId, finalRecipientId};
 		try {
@@ -40,8 +40,8 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 		String sql = 
 			"select * " +
 			" from " +
-				" delivery_status where msgId=? " +
-			" order by finalRecipient";
+				" delivery_status where msg_id=? " +
+			" order by final_recipient";
 		Object[] parms = new Object[] {msgId};
 		List<DeliveryStatusVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<DeliveryStatusVo>(DeliveryStatusVo.class));
@@ -52,9 +52,9 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 	public List<DeliveryStatusVo> getRandomRecord() {
 		String sql = 
 				"select * " +
-				" from " +
-					" delivery_status where msgId >= (RAND() * (select max(msgId) from delivery_status)) " +
-				" order by msgId limit 1";
+				" from delivery_status " +
+					" where msg_id >= (RAND() * (select max(msg_id) from delivery_status)) " +
+				" order by msg_id limit 1";
 		List<DeliveryStatusVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<DeliveryStatusVo>(DeliveryStatusVo.class));
 		if (list.size() > 0) {
@@ -77,7 +77,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 	@Override
 	public int deleteByPrimaryKey(long msgId, long finalRecipientId) {
 		String sql = 
-			"delete from delivery_status where msgid=? and finalRecipientId=? ";
+			"delete from delivery_status where msg_id=? and final_recipient_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -90,7 +90,7 @@ public class DeliveryStatusJdbcDao extends AbstractDao implements DeliveryStatus
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from delivery_status where msgid=? ";
+			"delete from delivery_status where msg_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);

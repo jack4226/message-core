@@ -27,8 +27,8 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		String sql = 
 			"select * " +
 			"from msg_click_count " +
-				" where MsgId >= (RAND() * (select max(MsgId) from msg_click_count)) " +
-			" order by MsgId limit 1 ";
+				" where msg_id >= (RAND() * (select max(msg_id) from msg_click_count)) " +
+			" order by msg_id limit 1 ";
 		
 		List<MsgClickCountVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgClickCountVo>(MsgClickCountVo.class));
@@ -45,7 +45,7 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		String sql = 
 			"select count(*) " +
 			"from " +
-				"msg_click_count where SentCount > 0 and StartTime is not null ";
+				"msg_click_count where sent_count > 0 and start_time is not null ";
 		int count = getJdbcTemplate().queryForObject(sql, Integer.class);
 		return count;
 	}
@@ -55,7 +55,7 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_click_count where msgid=? ";
+				"msg_click_count where msg_id=? ";
 		
 		Object[] parms = new Object[] {msgId};
 		try {
@@ -75,10 +75,10 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		String sql = 
 				"select count(*) " +
 				" from msg_click_count a "
-				+ " join msg_inbox m on m.MsgId=a.MsgId "
-				+ " join email_address e on e.email_addr_id=m.FromAddrid " +
+				+ " join msg_inbox m on m.msg_id=a.msg_id "
+				+ " join email_address e on e.email_addr_id=m.from_addr_id " +
 				whereSql +
-				" and a.StartTime is not null ";
+				" and a.start_time is not null ";
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
 	}
@@ -97,13 +97,13 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
 			if (vo.getNbrIdLast() > -1) {
-				whereSql += CRIT[parms.size()] + " a.MsgId < ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_id < ? ";
 				parms.add(vo.getNbrIdLast());
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
 			if (vo.getNbrIdFirst() > -1) {
-				whereSql += CRIT[parms.size()] + " a.MsgId > ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_id > ? ";
 				parms.add(vo.getNbrIdFirst());
 				fetchOrder = "asc";
 			}
@@ -115,35 +115,22 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 				pageSize = Math.min(rows, vo.getPageSize());
 			}
 			fetchOrder = "asc";
-//			List<MsgClickCountVo> lastList = new ArrayList<MsgClickCountVo>();
-//			vo.setPageAction(PagingVo.PageAction.NEXT);
-//			while (true) {
-//				List<MsgClickCountVo> nextList = getBroadcastsWithPaging(vo);
-//				if (!nextList.isEmpty()) {
-//					lastList = nextList;
-//					vo.setNbrIdLast(nextList.get(nextList.size() - 1).getMsgId());
-//				}
-//				else {
-//					break;
-//				}
-//			}
-//			return lastList;
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
 			if (vo.getNbrIdFirst() > -1) {
-				whereSql += CRIT[parms.size()] + " a.MsgId <= ? ";
+				whereSql += CRIT[parms.size()] + " a.msg_id <= ? ";
 				parms.add(vo.getNbrIdFirst());
 			}
 		}
 		
 		String sql = 
-			"select a.*, e.email_addr_id, e.email_addr as fromAddr " +
+			"select a.*, e.email_addr_id, e.email_addr as from_addr " +
 			" from msg_click_count a "
-			+ " join msg_inbox m on m.MsgId=a.MsgId "
-			+ " join email_address e on e.email_addr_id=m.FromAddrid " +
+			+ " join msg_inbox m on m.msg_id=a.msg_id "
+			+ " join email_address e on e.email_addr_id=m.from_addr_id " +
 			whereSql +
-			" and a.StartTime is not null " +
-			" order by a.MsgId " + fetchOrder +
+			" and a.start_time is not null " +
+			" order by a.msg_id " + fetchOrder +
 			" limit " + pageSize;
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
@@ -170,19 +157,19 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 	private String buildWhereClause(PagingCountVo vo, List<Object> parms) {
 		String whereSql = "";
 		if (!StringUtil.isEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " a.StatusId = ? ";
+			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
 			parms.add(vo.getStatusId());
 		}
 		if (vo.getSentCount() != null) {
-			whereSql += CRIT[parms.size()] + " a.SentCount >= ? ";
+			whereSql += CRIT[parms.size()] + " a.sent_count >= ? ";
 			parms.add(vo.getSentCount());
 		}
 		if (vo.getOpenCount() != null) {
-			whereSql += CRIT[parms.size()] + " a.OpenCount >= ? ";
+			whereSql += CRIT[parms.size()] + " a.open_count >= ? ";
 			parms.add(vo.getOpenCount());
 		}
 		if (vo.getClickCount() != null) {
-			whereSql += CRIT[parms.size()] + " a.ClickCount >= ? ";
+			whereSql += CRIT[parms.size()] + " a.click_count >= ? ";
 			parms.add(vo.getClickCount());
 		}
 		// search by address
@@ -214,10 +201,10 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		fields.add(msgId);
 		String sql =
 			"update msg_click_count set " +
-				"SentCount=SentCount+" + count +
-				", EndTime=now() " +
+				"sent_count=sent_count+" + count +
+				", end_time=now() " +
 			" where " +
-				" MsgId=? ";
+				" msg_id=? ";
 		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;
 	}
@@ -228,10 +215,10 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		fields.add(msgId);
 		String sql =
 			"update msg_click_count set " +
-				"OpenCount=OpenCount+" + count +
-				", LastOpenTime=now() " +
+				"open_count=open_count+" + count +
+				", last_open_time=now() " +
 			" where " +
-				" MsgId=? ";
+				" msg_id=? ";
 		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
@@ -249,10 +236,10 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		fields.add(msgId);
 		String sql =
 			"update msg_click_count set " +
-				"ClickCount=ClickCount+" + count +
-				" ,LastClickTime=? " +
+				"click_count=click_count+" + count +
+				" ,last_click_time=? " +
 			" where " +
-				" MsgId=? ";
+				" msg_id=? ";
 		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
@@ -268,9 +255,9 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		fields.add(msgId);
 		String sql =
 			"update msg_click_count set " +
-				"ReferralCount=ReferralCount+" + count +
+				"referral_count=referral_count+" + count +
 			" where " +
-				" MsgId=? ";
+				" msg_id=? ";
 		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
@@ -288,9 +275,9 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		fields.add(msgId);
 		String sql =
 			"update msg_click_count set " +
-				"StartTime=? " +
+				"start_time=? " +
 			" where " +
-				" MsgId=? ";
+				" msg_id=? ";
 		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
@@ -301,9 +288,9 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		fields.add(msgId);
 		String sql =
 			"update msg_click_count set " +
-				"UnsubscribeCount=UnsubscribeCount+" + count +
+				"unsubscribe_count=unsubscribe_count+" + count +
 			" where " +
-				" MsgId=? ";
+				" msg_id=? ";
 		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
@@ -314,9 +301,9 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		fields.add(msgId);
 		String sql =
 			"update msg_click_count set " +
-				"ComplaintCount=ComplaintCount+" + count +
+				"complaint_count=complaint_count+" + count +
 			" where " +
-				" MsgId=? ";
+				" msg_id=? ";
 		int rowsUpadted = getJdbcTemplate().update(sql, fields.toArray());
 		return rowsUpadted;		
 	}
@@ -324,7 +311,7 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 	@Override
 	public int deleteByPrimaryKey(long msgId) {
 		String sql = 
-			"delete from msg_click_count where msgid=? ";
+			"delete from msg_click_count where msg_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);

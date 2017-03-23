@@ -21,7 +21,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		String sql = 
 			"select * " +
 			"from " +
-				"rander_attachment where renderId=? and attchmntSeq=? ";
+				"rander_attachment where render_id=? and attchmnt_seq=? ";
 		
 		Object[] parms = new Object[] {renderId, attchmntSeq};
 		try {
@@ -39,8 +39,8 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 		String sql = 
 			"select * " +
 			" from " +
-				" rander_attachment where renderId=? " +
-			" order by attchmntSeq";
+				" rander_attachment where render_id=? " +
+			" order by attchmnt_seq";
 		Object[] parms = new Object[] {renderId};
 		List<RenderAttachmentVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<RenderAttachmentVo>(RenderAttachmentVo.class));
@@ -58,7 +58,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 	@Override
 	public int deleteByPrimaryKey(long renderId, int attchmntSeq) {
 		String sql = 
-			"delete from rander_attachment where renderId=? and attchmntSeq=? ";
+			"delete from rander_attachment where render_id=? and attchmnt_seq=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(renderId);
@@ -71,7 +71,7 @@ public class RenderAttachmentJdbcDao extends AbstractDao implements RenderAttach
 	@Override
 	public int deleteByRenderId(long renderId) {
 		String sql = 
-			"delete from rander_attachment where renderId=? ";
+			"delete from rander_attachment where render_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(renderId);

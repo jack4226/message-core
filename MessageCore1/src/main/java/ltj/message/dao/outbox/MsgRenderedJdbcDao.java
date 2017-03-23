@@ -22,7 +22,7 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_rendered where renderId=? ";
+				"msg_rendered where render_id=? ";
 		
 		Object[] parms = new Object[] {renderId};
 		try {
@@ -40,7 +40,7 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_rendered where renderId=(select max(RenderId) from msg_rendered) ";
+				"msg_rendered where render_id=(select max(render_id) from msg_rendered) ";
 		
 		List<MsgRenderedVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgRenderedVo>(MsgRenderedVo.class));
@@ -56,8 +56,8 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_rendered where renderId >= (RAND() *(select max(RenderId) from msg_rendered)) " +
-				 "order by renderId limit 1 ";
+				"msg_rendered where render_id >= (RAND() *(select max(render_id) from msg_rendered)) " +
+				 "order by render_id limit 1 ";
 		
 		List<MsgRenderedVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgRenderedVo>(MsgRenderedVo.class));
@@ -73,8 +73,8 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		String sql = 
 			"select * " +
 			" from " +
-				" msg_rendered where msgSourceId=? " +
-			" order by renderId";
+				" msg_rendered where msg_source_id=? " +
+			" order by render_id";
 		Object[] parms = new Object[] {msgSourceId};
 		List<MsgRenderedVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgRenderedVo>(MsgRenderedVo.class));
@@ -87,7 +87,7 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(msgRenderedVo);
 		String sql = MetaDataUtil.buildUpdateStatement("msg_rendered", msgRenderedVo);
 		if (msgRenderedVo.getOrigUpdtTime() != null) {
-			sql += " and UpdtTime=:origUpdtTime ";
+			sql += " and updt_time=:origUpdtTime ";
 		}
 		int rowsUpadted = getNamedParameterJdbcTemplate().update(sql, namedParameters);
 		msgRenderedVo.setOrigUpdtTime(msgRenderedVo.getUpdtTime());
@@ -97,7 +97,7 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 	@Override
 	public int deleteByPrimaryKey(long renderId) {
 		String sql = 
-			"delete from msg_rendered where renderId=? ";
+			"delete from msg_rendered where render_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(renderId);

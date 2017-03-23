@@ -56,7 +56,7 @@ public class MsgInboxBoTest extends BoTestBase {
 			String hdrName = EmailIdParser.getDefaultParser().getEmailIdXHdrName();
 			String hdrValue = EmailIdParser.getDefaultParser().wrapupEmailId4XHdr(msgId);
 			if (StringUtils.isBlank(hdrName)) {
-				hdrName = "msg_inbox_bo_test";
+				hdrName = "MsgInboxBoTest";
 			}
 			if (StringUtils.isBlank(hdrValue)) {
 				hdrValue = "MsgInboxBoTest Test Value";

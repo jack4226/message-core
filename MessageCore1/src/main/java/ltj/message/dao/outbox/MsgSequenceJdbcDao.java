@@ -12,7 +12,7 @@ public class MsgSequenceJdbcDao extends AbstractDao implements MsgSequenceDao {
 	@Override
 	public long findNextValue() {
 		/* simulate a sequence table */
-		String sql1 = "update msg_sequence set seqId = LAST_INSERT_ID(seqId + 1)";
+		String sql1 = "update msg_sequence set seq_id = LAST_INSERT_ID(seq_id + 1)";
 		String sql2 = "select LAST_INSERT_ID()";
 		try {
 			getJdbcTemplate().update(sql1);
@@ -31,11 +31,11 @@ public class MsgSequenceJdbcDao extends AbstractDao implements MsgSequenceDao {
 	private long repair() {
 		logger.info("repair() - perform delete and insert...");
 		String sql = 
-			"select max(SeqId) from msg_sequence ";
+			"select max(seq_id) from msg_sequence ";
 		long currValue = getJdbcTemplate().queryForObject(sql, Long.class);
 		sql = "delete from msg_sequence";
 		getJdbcTemplate().update(sql);
-		sql = "insert into msg_sequence (SeqId) values(" +(currValue + 1)+ ")";
+		sql = "insert into msg_sequence (seq_id) values(" +(currValue + 1)+ ")";
 		getJdbcTemplate().update(sql);
 		sql = "select LAST_INSERT_ID()";
 		long nextValue = getJdbcTemplate().queryForObject(sql, Long.class);

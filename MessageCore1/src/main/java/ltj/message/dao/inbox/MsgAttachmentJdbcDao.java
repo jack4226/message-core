@@ -21,7 +21,7 @@ public class MsgAttachmentJdbcDao extends AbstractDao implements MsgAttachmentDa
 		String sql = 
 			"select * " +
 			"from " +
-				"msg_attachment where msgid=? and attchmntDepth=? and attchmntSeq=? ";
+				"msg_attachment where msg_id=? and attchmnt_depth=? and attchmnt_seq=? ";
 		
 		Object[] parms = new Object[] {msgId, attchmntDepth, attchmntSeq};
 		try {
@@ -39,8 +39,8 @@ public class MsgAttachmentJdbcDao extends AbstractDao implements MsgAttachmentDa
 		String sql = 
 			"select * " +
 			" from " +
-				" msg_attachment where msgId=? " +
-			" order by attchmntDepth, attchmntSeq";
+				" msg_attachment where msg_id=? " +
+			" order by attchmnt_depth, attchmnt_seq";
 		Object[] parms = new Object[] {msgId};
 		List<MsgAttachmentVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgAttachmentVo>(MsgAttachmentVo.class));
@@ -51,9 +51,9 @@ public class MsgAttachmentJdbcDao extends AbstractDao implements MsgAttachmentDa
 	public List<MsgAttachmentVo> getRandomRecord() {
 		String sql = 
 				"select * " +
-				" from " +
-					" msg_attachment where msgId >= (RAND() * (select max(msgId) from msg_attachment)) " +
-				" order by msgId limit 1 ";
+				" from msg_attachment " +
+					" where msg_id >= (RAND() * (select max(msg_id) from msg_attachment)) " +
+				" order by msg_id limit 1 ";
 
 		List<MsgAttachmentVo> list = getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<MsgAttachmentVo>(MsgAttachmentVo.class));
@@ -74,7 +74,7 @@ public class MsgAttachmentJdbcDao extends AbstractDao implements MsgAttachmentDa
 	@Override
 	public int deleteByPrimaryKey(long msgId, int attchmntDepth, int attchmntSeq) {
 		String sql = 
-			"delete from msg_attachment where msgid=? and attchmntDepth=? and attchmntSeq=? ";
+			"delete from msg_attachment where msg_id=? and attchmnt_depth=? and attchmnt_seq=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
@@ -88,7 +88,7 @@ public class MsgAttachmentJdbcDao extends AbstractDao implements MsgAttachmentDa
 	@Override
 	public int deleteByMsgId(long msgId) {
 		String sql = 
-			"delete from msg_attachment where msgid=? ";
+			"delete from msg_attachment where msg_id=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(msgId);
