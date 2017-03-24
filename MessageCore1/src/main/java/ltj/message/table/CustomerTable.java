@@ -91,12 +91,12 @@ public class CustomerTable extends CreateTableBase {
 					+ "updt_time datetime(3) NOT NULL, "  //40
 					+ "updt_user_id varchar(10) NOT NULL, "
 					+ "PRIMARY KEY (row_id), "
+					+ "FOREIGN KEY (client_id) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address(email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "UNIQUE INDEX (cust_id), "
 					+ "INDEX (client_id), "
-					+ "INDEX (ssn_number),"
 					+ "UNIQUE INDEX (email_addr_id), "
-					+ "FOREIGN KEY (client_id) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address(email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE "
+					+ "INDEX (ssn_number) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created customer_tbl Table...");
 		}

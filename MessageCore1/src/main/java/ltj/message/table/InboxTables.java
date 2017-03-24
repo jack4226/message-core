@@ -409,8 +409,8 @@ public class InboxTables extends CreateTableBase {
 			"msg_subject varchar(255), " +
 			"add_time datetime(3), " +
 			"msg_stream mediumblob, " +
-			"PRIMARY KEY (msg_id), " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE " +
+			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"PRIMARY KEY (msg_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_stream Table...");
 		}
@@ -457,6 +457,7 @@ public class InboxTables extends CreateTableBase {
 			"parameters varchar(255), " +
 			"add_time datetime(3), " +
 			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX (msg_id), " +
 			/* disable following foreign keys for performance reason */ 
 			//"FOREIGN KEY (msg_ref_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			//"FOREIGN KEY (lead_msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
@@ -509,8 +510,8 @@ public class InboxTables extends CreateTableBase {
 					+ "add_time datetime(3) NOT NULL, "
 					+ "PRIMARY KEY (row_id), "
 					+ "FOREIGN KEY (msg_id) REFERENCES msg_click_count (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (msg_id), "
+					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "INDEX (email_addr_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created msg_unsub_cmnt Table...");

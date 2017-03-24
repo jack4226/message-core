@@ -106,7 +106,8 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "updt_time datetime(3) NOT NULL, "
 					+ "updt_user_id char(10) NOT NULL, "
 					+ "PRIMARY KEY (email_addr_id), "
-					+ "UNIQUE INDEX (email_addr) "
+					+ "UNIQUE INDEX (email_addr), "
+					+ "UNIQUE INDEX (orig_email_addr) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_address Table...");
 		}
@@ -160,9 +161,9 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "click_count int NOT NULL DEFAULT 0, "
 					+ "last_click_time datetime(3), "
 					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX (email_addr_id), "
 					+ "FOREIGN KEY (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "PRIMARY KEY (email_addr_id,list_id), "
-					+ "INDEX (email_addr_id) "
+					+ "PRIMARY KEY (email_addr_id,list_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_subscrpt Table...");
 		}
@@ -216,8 +217,8 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "embed_email_id char(1) NOT NULL DEFAULT '', " // Y, N, or <Blank> - use system default
 					+ "is_built_in char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 					+ "schedules blob, " // store a java object
-					+ "PRIMARY KEY (row_id), "
 					+ "FOREIGN KEY (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "PRIMARY KEY (row_id), "
 					+ "UNIQUE INDEX (template_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_template Table...");

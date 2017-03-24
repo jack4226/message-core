@@ -80,6 +80,7 @@ public class RuleTables extends CreateTableBase {
 			"built_in_rule char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
 			"description varchar(255), " +
 			"PRIMARY KEY (row_id), " +
+			"INDEX (rule_name), " +
 			"UNIQUE INDEX (rule_name, rule_seq) " + // use index to allow update to rule name
 			") ENGINE=InnoDB");
 			System.out.println("Created rule_logic Table...");
@@ -107,7 +108,7 @@ public class RuleTables extends CreateTableBase {
 			"delimiter char(5) DEFAULT ',', " +
 			"PRIMARY KEY (row_id), " +
 			"FOREIGN KEY (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX(rule_name), " +
+			"INDEX (rule_name), " +
 			"UNIQUE INDEX (rule_name, element_seq) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created rule_element Table...");
@@ -127,7 +128,9 @@ public class RuleTables extends CreateTableBase {
 			"sub_rule_seq int NOT NULL, " +
 			"PRIMARY KEY (row_id), " +
 			"FOREIGN KEY (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX (rule_name), " +
 			"FOREIGN KEY (sub_rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX (sub_rule_name), " +
 			"UNIQUE INDEX (rule_name, sub_rule_name) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created rule_subrule_map Table...");

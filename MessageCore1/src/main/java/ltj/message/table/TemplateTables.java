@@ -84,6 +84,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "PRIMARY KEY (row_id), "
 				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (client_id), "
+				+ "INDEX (template_id), "
 				+ "UNIQUE INDEX (template_id,client_id,start_time)) ENGINE=InnoDB");
 			System.out.println("Created subj_template Table...");
 		}
@@ -107,6 +108,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "PRIMARY KEY (row_id), "
 				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (client_id), "
+				+ "INDEX (template_id), "
 				+ "UNIQUE INDEX (template_id,client_id,start_time)) ENGINE=InnoDB");
 			System.out.println("Created body_template Table...");
 		}
@@ -196,6 +198,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "INDEX (variable_name), "
 				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 				+ "INDEX (client_id), "
+				+ "INDEX (template_id), "
 				+ "UNIQUE INDEX (template_id,client_id,variable_name,start_time)"
 				+ ") ENGINE=InnoDB");
 			System.out.println("Created template_variable Table...");
