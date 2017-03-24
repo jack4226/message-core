@@ -24,14 +24,13 @@ public class RenderResponse implements Serializable {
 			Timestamp startTime,
 			Map<String, RenderVariable> variableFinal,
 			Map<String, RenderVariable> variableErrors,
-			MessageBean messageBean)
-		{
-			this.msgSourceVo=msgSourceVo;
-			this.clientId=clientId;
-			this.startTime=startTime;
-			this.variableFinal=variableFinal;
-			this.variableErrors=variableErrors;
-			this.messageBean=messageBean;
+			MessageBean messageBean) {
+		this.msgSourceVo=msgSourceVo;
+		this.clientId=clientId;
+		this.startTime=startTime;
+		this.variableFinal=variableFinal;
+		this.variableErrors=variableErrors;
+		this.messageBean=messageBean;
     }
 
 	public String toString() {
@@ -68,11 +67,12 @@ public class RenderResponse implements Serializable {
 		else {
 			sb.append("VariableErrors:   "+"null"+LF);
 		}
-		if (messageBean!=null)
-			sb.append(LF+messageBean.toString());
+		if (messageBean != null) {
+			sb.append(LF + "MessageBean:" + LF + messageBean.toString());
+		}
 		return sb.toString();
 	}
-	   
+
     public String getClientId() {
 		return clientId;
 	}

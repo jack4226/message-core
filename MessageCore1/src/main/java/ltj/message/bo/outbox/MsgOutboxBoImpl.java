@@ -68,15 +68,17 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 	}
 	
 	public static void main(String[] args) {
-		MsgOutboxBo msgOutboxBo = (MsgOutboxBo) SpringUtil.getAppContext().getBean("msgOutboxBo");
-		long renderId = 2L;
+		MsgOutboxBo msgOutboxBo = SpringUtil.getAppContext().getBean(MsgOutboxBo.class);
+		MsgRenderedDao renderedDao = SpringUtil.getDaoAppContext().getBean(MsgRenderedDao.class);
+		MsgRenderedVo vo = renderedDao.getRandomRecord();
 		try {
-			MessageBean bean = msgOutboxBo.getMessageByPK(renderId);
+			MessageBean bean = msgOutboxBo.getMessageByPK(vo.getRenderId());
 			System.out.println("MessageBean retrieved:\n" + bean);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.exit(0);
 	}
 	
 	/**

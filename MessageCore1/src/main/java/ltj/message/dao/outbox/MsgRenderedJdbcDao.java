@@ -39,8 +39,8 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 	public MsgRenderedVo getLastRecord() {
 		String sql = 
 			"select * " +
-			"from " +
-				"msg_rendered where render_id=(select max(render_id) from msg_rendered) ";
+			"from msg_rendered " +
+				"where render_id=(select max(render_id) from msg_rendered) ";
 		
 		List<MsgRenderedVo> list = getJdbcTemplate().query(sql, 
 				new BeanPropertyRowMapper<MsgRenderedVo>(MsgRenderedVo.class));
@@ -55,8 +55,8 @@ public class MsgRenderedJdbcDao extends AbstractDao implements MsgRenderedDao {
 	public MsgRenderedVo getRandomRecord() {
 		String sql = 
 			"select * " +
-			"from " +
-				"msg_rendered where render_id >= (RAND() *(select max(render_id) from msg_rendered)) " +
+			"from msg_rendered " +
+				"where render_id >= (RAND() *(select max(render_id) from msg_rendered)) " +
 				 "order by render_id limit 1 ";
 		
 		List<MsgRenderedVo> list = getJdbcTemplate().query(sql, 
