@@ -115,6 +115,21 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 
 		MsgInboxVo msgVo = new MsgInboxVo();
+
+		/* First, save email addresses to the database */
+		EmailAddressVo fromAddrVo = findSertEmailAddr(msgBean.getFrom());
+		if (fromAddrVo != null) { // should always be true
+			msgVo.setFromAddrId(fromAddrVo.getEmailAddrId());
+		}
+		EmailAddressVo toAddrVo = findSertEmailAddr(msgBean.getTo());
+		if (toAddrVo != null) { // should always be true
+			msgVo.setToAddrId(toAddrVo.getEmailAddrId());
+		}
+		EmailAddressVo replaToVo = findSertEmailAddr(msgBean.getReplyto());
+		Long replyToAddrId = replaToVo == null ? null : replaToVo.getEmailAddrId();
+		msgVo.setReplyToAddrId(replyToAddrId);
+		/* end of email addresses */
+		
 		long msgId = msgSequenceDao.findNextValue();
 		msgBean.setMsgId(Long.valueOf(msgId));
 		logger.info("saveMessage() - MsgId to be saved: " + msgId + ", From MailReader: " + msgBean.getIsReceived());
@@ -129,20 +144,6 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		msgVo.setMsgPriority(MessageBeanUtil.getMsgPriority(msgBean.getPriority()));
 		Timestamp ts = msgBean.getSendDate() == null ? updtTime : new Timestamp(msgBean.getSendDate().getTime());
 		msgVo.setReceivedTime(ts);
-		
-		/* insert email addresses */
-		EmailAddressVo fromAddrVo = getEmailAddrVo(msgBean.getFrom());
-		if (fromAddrVo != null) { // should always be true
-			msgVo.setFromAddrId(fromAddrVo.getEmailAddrId());
-		}
-		EmailAddressVo toAddrVo = getEmailAddrVo(msgBean.getTo());
-		if (toAddrVo != null) { // should always be true
-			msgVo.setToAddrId(toAddrVo.getEmailAddrId());
-		}
-		EmailAddressVo replaToVo = getEmailAddrVo(msgBean.getReplyto());
-		Long replyToAddrId = replaToVo == null ? null : replaToVo.getEmailAddrId();
-		msgVo.setReplyToAddrId(replyToAddrId);
-		/* end of email addresses */
 		
 		Calendar cal = Calendar.getInstance();
 		if (msgBean.getPurgeAfter() != null) {
@@ -500,7 +501,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 	}
 	
 	// get the first email address from the list and return its EmailAddrId
-	private EmailAddressVo getEmailAddrVo(Address[] addrs) {
+	private EmailAddressVo findSertEmailAddr(Address[] addrs) {
 		EmailAddressVo emailAddressVo = null;
 		for (int i = 0; addrs != null && i < addrs.length; i++) {
 			Address addr = addrs[i];
