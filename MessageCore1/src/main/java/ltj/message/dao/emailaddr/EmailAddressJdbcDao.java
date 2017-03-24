@@ -31,8 +31,6 @@ import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
@@ -204,10 +202,6 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 				parms.add(regex);
 			}
 		}
-//		if (parms.isEmpty()) { // make sure the parameter list is not empty
-//			whereSql += CRIT[parms.size()] + " a.email_addr_id >= ? ";
-//			parms.add(Long.valueOf(0));
-//		}
 		return whereSql;
 	}
 
@@ -235,7 +229,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	/*
 	 * Standard JPA does not support custom isolation levels.
 	 */
-	@Transactional(propagation = Propagation.REQUIRED)
+	//@Transactional(propagation = Propagation.REQUIRED)
 	/*
 	 * Just did the test. The Isolation level is still set to READ COMMITTED
 	 * inside the DAO method with @Transactional set as you described it. JDBC
@@ -470,7 +464,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		keys.add(new Timestamp(System.currentTimeMillis()));
 		keys.add(addrId);
 
-		String sql = "update email_address set " + " last_rcpt_time=? "
+		String sql = "update email_address set last_rcpt_time=? "
 				+ " where email_addr_id=?";
 
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
@@ -483,7 +477,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		keys.add(new Timestamp(System.currentTimeMillis()));
 		keys.add(addrId);
 
-		String sql = "update email_address set " + " last_sent_time=? "
+		String sql = "update email_address set last_sent_time=? "
 				+ " where email_addr_id=?";
 
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
@@ -496,7 +490,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		keys.add(acceptHtml ? Constants.Y : Constants.N);
 		keys.add(addrId);
 
-		String sql = "update email_address set " + " accept_html=? "
+		String sql = "update email_address set accept_html=? "
 				+ " where email_addr_id=?";
 
 		int rowsUpadted = getJdbcTemplate().update(sql, keys.toArray());
@@ -516,7 +510,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		emailAddressVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		List<Object> keys = new ArrayList<>();
 
-		String sql = "update email_address set bounce_count=?,";
+		String sql = "update email_address set bounce_count=?, ";
 		emailAddressVo.setBounceCount(emailAddressVo.getBounceCount() + 1);
 		keys.add(emailAddressVo.getBounceCount());
 
@@ -529,14 +523,14 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 					emailAddressVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
 				}
 				emailAddressVo.setStatusChangeTime(emailAddressVo.getUpdtTime());
-				sql += "status_id=?," + "status_change_user_id=?," + "status_change_time=?,";
+				sql += "status_id=?, status_change_user_id=?, status_change_time=?, ";
 				keys.add(emailAddressVo.getStatusId());
 				keys.add(emailAddressVo.getStatusChangeUserId());
 				keys.add(emailAddressVo.getStatusChangeTime());
 			}
 		}
 
-		sql += "updt_time=?," + "updt_user_id=? " + " where email_addr_id=?";
+		sql += "updt_time=?, updt_user_id=? where email_addr_id=? ";
 
 		keys.add(emailAddressVo.getUpdtTime());
 		keys.add(emailAddressVo.getUpdtUserId());
@@ -616,13 +610,11 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 				keys.add(emailAddressVo.getUpdtTime());
 				keys.add(emailAddressVo.getUpdtUserId());
 
-				String sql = "INSERT INTO email_address (" + "email_addr,"
-						+ "OrigEmailAddr," + "status_id," + "status_change_time,"
-						+ "status_change_user_id," + "bounce_count,"
-						+ "last_bounce_time," + "last_sent_time," + "last_rcpt_time,"
-						+ "accept_html," + "updt_time," + "updt_user_id "
-						+ ") VALUES (" + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ? "
-						+ ",?, ? " + ")";
+				String sql = "INSERT INTO email_address "
+						+ "(email_addr, orig_email_addr, status_id, status_change_time, "
+						+ "status_change_user_id, bounce_count, last_bounce_time, "
+						+ "last_sent_time, last_rcpt_time, accept_html, updt_time, "
+						+ "updt_user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				if (withUpdate) {
 					sql += " ON duplicate KEY UPDATE updt_time=?";
 					keys.add(emailAddressVo.getUpdtTime());
