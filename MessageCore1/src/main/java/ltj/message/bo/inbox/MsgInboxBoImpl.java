@@ -191,6 +191,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 				long minutesInMillis = 10 * 60 * 1000; // 10 minutes
 				if (fromAddrVo.getLastRcptTime() == null
 						|| fromAddrVo.getLastRcptTime().getTime() < (updtTime.getTime() - minutesInMillis)) {
+					// XXX revisit this, it have caused concurrency issues and deadlocks
 					emailAddressDao.updateLastRcptTime(msgVo.getFromAddrId());
 				}
 			}

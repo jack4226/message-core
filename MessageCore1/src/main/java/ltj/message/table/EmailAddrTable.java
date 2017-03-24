@@ -388,7 +388,6 @@ DELIMITER ;
 			for (SubscriberEnum.Subscriber sub : SubscriberEnum.Subscriber.values()) {
 				EmailAddressVo vo = new EmailAddressVo();
 				vo.setEmailAddr(sub.getAddress());
-				vo.setOrigEmailAddr(sub.getAddress());
 				vo.setStatusId(StatusId.ACTIVE.value());
 				vo.setStatusChangeTime(new Timestamp(System.currentTimeMillis()));
 				vo.setStatusChangeUserId("testuser 1");
