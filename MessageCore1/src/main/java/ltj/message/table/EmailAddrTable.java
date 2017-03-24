@@ -161,7 +161,8 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "last_click_time datetime(3), "
 					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "FOREIGN KEY (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "PRIMARY KEY (email_addr_id,list_id) "
+					+ "PRIMARY KEY (email_addr_id,list_id), "
+					+ "INDEX (email_addr_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_subscrpt Table...");
 		}
