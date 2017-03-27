@@ -81,11 +81,12 @@ public class TemplateTables extends CreateTableBase {
 				+ "description varchar(100), "
 				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // A - active, V - verification, I - inactive
 				+ "template_value varchar(255), "
-				+ "PRIMARY KEY (row_id), "
-				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-				+ "INDEX (client_id), "
-				+ "INDEX (template_id), "
-				+ "UNIQUE INDEX (template_id,client_id,start_time)) ENGINE=InnoDB");
+				+ "CONSTRAINT subj_template_pkey PRIMARY KEY (row_id), "
+				+ "FOREIGN KEY subj_tmplt_client_id_fkey (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "INDEX subj_tmplt_ix_client_id (client_id), "
+				+ "INDEX subj_tmplt_ix_template_id (template_id), "
+				+ "UNIQUE INDEX subj_tmplt_ix_tmpid_cltid_strtm (template_id,client_id,start_time) "
+				+ ") ENGINE=InnoDB");
 			System.out.println("Created subj_template Table...");
 		}
 		catch (SQLException e) {
@@ -105,11 +106,12 @@ public class TemplateTables extends CreateTableBase {
 				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				+ "content_type varchar(100) NOT NULL, " // content mime type
 				+ "template_value text, "
-				+ "PRIMARY KEY (row_id), "
-				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-				+ "INDEX (client_id), "
-				+ "INDEX (template_id), "
-				+ "UNIQUE INDEX (template_id,client_id,start_time)) ENGINE=InnoDB");
+				+ "CONSTRAINT body_template_pkey PRIMARY KEY (row_id), "
+				+ "FOREIGN KEY body_tmplt_client_id_fkey (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "INDEX body_tmplt_ix_client_id (client_id), "
+				+ "INDEX body_tmplt_ix_template_id (template_id), "
+				+ "UNIQUE INDEX body_tmplt_ix_tmpid_cltid_strtm (template_id,client_id,start_time) "
+				+ ") ENGINE=InnoDB");
 			System.out.println("Created body_template Table...");
 		}
 		catch (SQLException e) {
@@ -135,9 +137,10 @@ public class TemplateTables extends CreateTableBase {
 				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to be present in body template
 				+ "variable_value varchar(255), "
-				+ "PRIMARY KEY (row_id), "
-				+ "INDEX (variable_name), "
-				+ "UNIQUE INDEX (variable_name,start_time)) ENGINE=InnoDB");
+				+ "CONSTRAINT global_variable_pkey PRIMARY KEY (row_id), "
+				+ "INDEX global_varbl_ix_varbl_name (variable_name), "
+				+ "UNIQUE INDEX global_varbl_ix_varnm_strtm (variable_name,start_time) "
+				+ ") ENGINE=InnoDB");
 			System.out.println("Created global_variable Table...");
 		}
 		catch (SQLException e) {
@@ -163,11 +166,12 @@ public class TemplateTables extends CreateTableBase {
 				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to present in body template
 				+ "variable_value text, "
-				+ "PRIMARY KEY (row_id), "
-				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-				+ "INDEX (client_id), "
-				+ "INDEX (variable_name), "
-				+ "UNIQUE INDEX (client_id,variable_name,start_time)) ENGINE=InnoDB");
+				+ "CONSTRAINT client_variable_pkey PRIMARY KEY (row_id), "
+				+ "FOREIGN KEY client_varbl_client_id_fkey (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "INDEX client_varbl_ix_client_id (client_id), "
+				+ "INDEX client_varbl_ix_varbl_name (variable_name), "
+				+ "UNIQUE INDEX client_varbl_ix_cltid_varnm_strtm (client_id,variable_name,start_time) "
+				+ ") ENGINE=InnoDB");
 			System.out.println("Created client_variable Table...");
 		}
 		catch (SQLException e) {
@@ -194,12 +198,12 @@ public class TemplateTables extends CreateTableBase {
 				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 				// required to present in body template
 				+ "variable_value text, "
-				+ "PRIMARY KEY (row_id), "
-				+ "INDEX (variable_name), "
-				+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-				+ "INDEX (client_id), "
-				+ "INDEX (template_id), "
-				+ "UNIQUE INDEX (template_id,client_id,variable_name,start_time)"
+				+ "CONSTRAINT template_variable_pkey PRIMARY KEY (row_id), "
+				+ "INDEX tmplt_varbl_ix_varbl_name (variable_name), "
+				+ "FOREIGN KEY tmplt_varbl_client_id_fkey (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+				+ "INDEX tmplt_varbl_ix_client_id (client_id), "
+				+ "INDEX tmplt_varbl_ix_template_id (template_id), "
+				+ "UNIQUE INDEX tmplt_varbl_ix_tmpid_cltid_varnm_strtm (template_id,client_id,variable_name,start_time)"
 				+ ") ENGINE=InnoDB");
 			System.out.println("Created template_variable Table...");
 		}
@@ -234,18 +238,18 @@ public class TemplateTables extends CreateTableBase {
 				+ "purge_after int, " // in month
 				+ "updt_time datetime(3) NOT NULL, "
 				+ "updt_user_id varchar(10) NOT NULL, "
-				+ "PRIMARY KEY (row_id), "
-				+ "UNIQUE INDEX (msg_source_id), "
-				+ "FOREIGN KEY (from_addr_id) REFERENCES email_address (email_addr_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
-				+ "INDEX (from_addr_id), "
-				+ "FOREIGN KEY (reply_to_addr_id) REFERENCES email_address (email_addr_id) ON DELETE SET NULL ON UPDATE CASCADE, "
-				+ "INDEX (reply_to_addr_id), "
-				+ "FOREIGN KEY (template_variable_id) REFERENCES template_variable (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
-				+ "INDEX (template_variable_id), "
-				+ "FOREIGN KEY (subj_template_id) REFERENCES subj_template (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
-				+ "INDEX (subj_template_id), "
-				+ "FOREIGN KEY (body_template_id) REFERENCES body_template (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
-				+ "INDEX (body_template_id) "
+				+ "CONSTRAINT msg_source_pkey PRIMARY KEY (row_id), "
+				+ "UNIQUE INDEX msg_source_ix_msg_source_id (msg_source_id), "
+				+ "FOREIGN KEY msg_source_from_addr_id_fkey (from_addr_id) REFERENCES email_address (email_addr_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "INDEX msg_source_ix_from_addr_id (from_addr_id), "
+				+ "FOREIGN KEY msg_source_reply_to_addr_id_fkey (reply_to_addr_id) REFERENCES email_address (email_addr_id) ON DELETE SET NULL ON UPDATE CASCADE, "
+				+ "INDEX msg_source_ix_reply_to_addr_id (reply_to_addr_id), "
+				+ "FOREIGN KEY msg_source_tmplt_varbl_id_fkey (template_variable_id) REFERENCES template_variable (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "INDEX msg_source_ix_tmplt_varbl_id (template_variable_id), "
+				+ "FOREIGN KEY msg_source_subj_tmplt_id_fkey (subj_template_id) REFERENCES subj_template (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "INDEX msg_source_ix_subj_tmplt_id (subj_template_id), "
+				+ "FOREIGN KEY msg_source_body_tmplt_id_fkey (body_template_id) REFERENCES body_template (template_id) ON DELETE RESTRICT ON UPDATE CASCADE, "
+				+ "INDEX msg_source_ix_body_tmplt_id (body_template_id) "
 				+ ") ENGINE=InnoDB");
 			System.out.println("Created msg_source Table...");
 		}

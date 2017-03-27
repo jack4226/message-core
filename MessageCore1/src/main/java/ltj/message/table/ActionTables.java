@@ -58,9 +58,9 @@ public class ActionTables extends CreateTableBase {
 			"data_type varchar(16) NOT NULL, " +
 			"data_type_value varchar(100) NOT NULL, " +
 			"misc_properties varchar(255), " +
-			"PRIMARY KEY (row_id), " +
-			"UNIQUE INDEX (data_type, data_type_value), " +
-			"INDEX (data_type) " +
+			"CONSTRAINT msg_data_type_pkey PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX msg_data_type_ix_dattp_value (data_type, data_type_value), " +
+			"INDEX msg_data_type_ix_data_type (data_type) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_data_type Table...");
 		} catch (SQLException e) {
@@ -80,10 +80,10 @@ public class ActionTables extends CreateTableBase {
 			"data_type varchar(16), " +
 			"updt_time datetime(3) NOT NULL, " +
 			"updt_user_id varchar(10) NOT NULL, " +
-			"FOREIGN KEY (data_type) REFERENCES msg_data_type (data_type) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (data_type), " +
-			"UNIQUE INDEX (action_id), " +
-			"PRIMARY KEY (row_id) " +
+			"FOREIGN KEY msg_action_detail_data_type_fkey (data_type) REFERENCES msg_data_type (data_type) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_action_detail_ix_data_type (data_type), " +
+			"UNIQUE INDEX msg_action_detail_ix_action_id (action_id), " +
+			"CONSTRAINT msg_action_detail_pkey PRIMARY KEY (row_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_action_detail Table...");
 		} catch (SQLException e) {
@@ -103,12 +103,12 @@ public class ActionTables extends CreateTableBase {
 			"status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
 			"action_id varchar(16) NOT NULL, " +
 			"data_type_values text, " + // maximum size of 65,535, to accommodate template text
-			"PRIMARY KEY (row_id), " +
-			"FOREIGN KEY (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX(rule_name), " +
-			"FOREIGN KEY (action_id) REFERENCES msg_action_detail (action_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX(action_id), " +
-			"UNIQUE INDEX (rule_name, action_seq, start_time, client_id) " +
+			"CONSTRAINT msg_action_pkey PRIMARY KEY (row_id), " +
+			"FOREIGN KEY msg_action_rule_name_fkey (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_action_ix_rule_name (rule_name), " +
+			"FOREIGN KEY msg_action_action_id_fkey (action_id) REFERENCES msg_action_detail (action_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_action_ix_action_id (action_id), " +
+			"UNIQUE INDEX msg_action_ix_rulnm_actsq_strtm_cltid (rule_name, action_seq, start_time, client_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_action Table...");
 		}

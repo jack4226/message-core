@@ -105,9 +105,9 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "accept_html char(1) not null default '" + Constants.Y + "', "
 					+ "updt_time datetime(3) NOT NULL, "
 					+ "updt_user_id char(10) NOT NULL, "
-					+ "PRIMARY KEY (email_addr_id), "
-					+ "UNIQUE INDEX (email_addr), "
-					+ "UNIQUE INDEX (orig_email_addr) "
+					+ "CONSTRAINT email_address_pkey PRIMARY KEY (email_addr_id), "
+					+ "UNIQUE INDEX email_address_ix_email_addr (email_addr), "
+					+ "UNIQUE INDEX email_address_ix_orig_email_addr (orig_email_addr) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_address Table...");
 		}
@@ -133,10 +133,10 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "is_send_text char(1), "
 					+ "create_time datetime(3) NOT NULL, "
 					+ "list_master_email_addr varchar(255), "
-					+ "PRIMARY KEY (row_id), "
-					+ "FOREIGN KEY (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "INDEX (acct_user_name), "
-					+ "UNIQUE INDEX (list_id) "
+					+ "CONSTRAINT mailing_list_pkey PRIMARY KEY (row_id), "
+					+ "FOREIGN KEY mailing_list_client_id_fkey (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX mailing_list_ix_acct_user_name (acct_user_name), "
+					+ "UNIQUE INDEX mailing_list_ix_list_id (list_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created mailing_list Table...");
 		}
@@ -160,10 +160,10 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "last_open_time datetime(3), "
 					+ "click_count int NOT NULL DEFAULT 0, "
 					+ "last_click_time datetime(3), "
-					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "INDEX (email_addr_id), "
-					+ "FOREIGN KEY (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "PRIMARY KEY (email_addr_id,list_id) "
+					+ "FOREIGN KEY email_subscrpt_email_addr_id_fkey (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX email_subscrpt_ix_email_addr_id (email_addr_id), "
+					+ "FOREIGN KEY email_subscrpt_list_id_fkey (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "CONSTRAINT email_subscrpt_pkey PRIMARY KEY (email_addr_id,list_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_subscrpt Table...");
 		}
@@ -189,8 +189,8 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "variable_query varchar(255), " // 1) provides TO emailAddId as query criteria
 													// 2) returns a single field called "ResultStr"
 					+ "variable_proc varchar(100), " // when Query is null or returns no result
-					+ "PRIMARY KEY (row_id), "
-					+ "UNIQUE INDEX (variable_name) "
+					+ "CONSTRAINT email_variable_pkey PRIMARY KEY (row_id), "
+					+ "UNIQUE INDEX email_variable_ix_varbl_name (variable_name) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_variable Table...");
 		}
@@ -217,9 +217,9 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "embed_email_id char(1) NOT NULL DEFAULT '', " // Y, N, or <Blank> - use system default
 					+ "is_built_in char(1) NOT NULL DEFAULT '" + Constants.N + "', "
 					+ "schedules blob, " // store a java object
-					+ "FOREIGN KEY (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "PRIMARY KEY (row_id), "
-					+ "UNIQUE INDEX (template_id) "
+					+ "FOREIGN KEY email_template_list_id_fkey (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "CONSTRAINT email_template_pkey PRIMARY KEY (row_id), "
+					+ "UNIQUE INDEX email_template_ix_tmplt_id (template_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_template Table...");
 		}
@@ -237,9 +237,9 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "list_id varchar(8), "
 					+ "comments varchar(500) NOT NULL, "
 					+ "add_time datetime(3) NOT NULL, "
-					+ "PRIMARY KEY (row_id), "
-					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "INDEX (email_addr_id) "
+					+ "CONSTRAINT email_unsub_cmnt_pkey PRIMARY KEY (row_id), "
+					+ "FOREIGN KEY email_unsub_cmnt_email_addr_id_fkey (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX email_unsub_cmnt_ix_email_addr_id (email_addr_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created email_unsub_cmnt Table...");
 		}

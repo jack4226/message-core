@@ -98,9 +98,9 @@ public class ClientTable extends CreateTableBase {
 					// <- End
 					+ "updt_time datetime(3) NOT NULL, "
 					+ "updt_user_id char(10) NOT NULL, "
-					+ "PRIMARY KEY (row_id), "
-					//+ "UNIQUE INDEX (DomainName), "
-					+ "UNIQUE INDEX (client_id) "
+					+ "CONSTRAINT client_pkey PRIMARY KEY (row_id), "
+					//+ "UNIQUE INDEX client_ix_domain_name (DomainName), "
+					+ "UNIQUE INDEX client_ix_client_id (client_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created client_tbl Table...");
 		}
@@ -119,7 +119,7 @@ public class ClientTable extends CreateTableBase {
 					+ "actions int NOT NULL, "
 					+ "templates int NOT NULL, "
 					+ "schedules int NOT NULL, "
-					+ "PRIMARY KEY (row_id) "
+					+ "CONSTRAINT reload_flags_pkey PRIMARY KEY (row_id) "
 					+ ") ENGINE=MyISAM");
 			System.out.println("Created reload_flags Table...");
 			stm.execute("INSERT INTO reload_flags VALUES(1,0,0,0,0,0)");

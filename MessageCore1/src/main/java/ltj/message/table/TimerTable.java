@@ -42,8 +42,8 @@ public class TimerTable extends CreateTableBase {
 			"processor_name varchar(100) NOT NULL, " +
 			"updt_time datetime(3) NOT NULL, " +
 			"updt_user_id char(10) NOT NULL, " +
-			"PRIMARY KEY (row_id), " +
-			"UNIQUE INDEX (server_name) " +
+			"CONSTRAINT timer_server_pkey PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX timer_server_ix_server_name (server_name) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created timer_server Table...");
 		} catch (SQLException e) {

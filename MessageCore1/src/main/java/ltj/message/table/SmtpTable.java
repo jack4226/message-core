@@ -77,8 +77,8 @@ public class SmtpTable extends CreateTableBase {
 			"message_count integer NOT NULL, " +
 			"updt_time datetime(3) NOT NULL, " +
 			"updt_user_id char(10) NOT NULL, " +
-			"PRIMARY KEY (row_id), " +
-			"UNIQUE INDEX (server_name) " +
+			"CONSTRAINT smtp_server_pkey PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX smtp_server_ix_server_name (server_name) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created smtp_server Table...");
 		} catch (SQLException e) {
@@ -104,7 +104,7 @@ public class SmtpTable extends CreateTableBase {
 			"is_verp_enabled varchar(3) NOT NULL, " +
 			"updt_time datetime(3) NOT NULL, " +
 			"updt_user_id char(10) NOT NULL, " +
-			"PRIMARY KEY (row_id) " +
+			"CONSTRAINT mail_sender_props_pkey PRIMARY KEY (row_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created mail_sender_props Table...");
 		} catch (SQLException e) {

@@ -79,9 +79,9 @@ public class RuleTables extends CreateTableBase {
 			"is_sub_rule char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
 			"built_in_rule char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
 			"description varchar(255), " +
-			"PRIMARY KEY (row_id), " +
-			"INDEX (rule_name), " +
-			"UNIQUE INDEX (rule_name, rule_seq) " + // use index to allow update to rule name
+			"CONSTRAINT rule_logic_pkey PRIMARY KEY (row_id), " +
+			"INDEX rule_logic_ix_rule_name (rule_name), " +
+			"UNIQUE INDEX rule_logic_ix_rulnm_rulsq (rule_name, rule_seq) " + // use index to allow update to rule name
 			") ENGINE=InnoDB");
 			System.out.println("Created rule_logic Table...");
 		}
@@ -106,10 +106,10 @@ public class RuleTables extends CreateTableBase {
 			"exclusions text, " + // delimited
 			"excl_list_proc varchar(100), " + // valid bean id
 			"delimiter char(5) DEFAULT ',', " +
-			"PRIMARY KEY (row_id), " +
-			"FOREIGN KEY (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (rule_name), " +
-			"UNIQUE INDEX (rule_name, element_seq) " +
+			"CONSTRAINT rule_element_pkey PRIMARY KEY (row_id), " +
+			"FOREIGN KEY rule_element_rule_name_fkey (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX rule_element_ix_rule_name (rule_name), " +
+			"UNIQUE INDEX rule_element_ix_rulnm_elmsq (rule_name, element_seq) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created rule_element Table...");
 		}
@@ -126,12 +126,12 @@ public class RuleTables extends CreateTableBase {
 			"rule_name varchar(26) NOT NULL, " +
 			"sub_rule_name varchar(26) NOT NULL, " +
 			"sub_rule_seq int NOT NULL, " +
-			"PRIMARY KEY (row_id), " +
-			"FOREIGN KEY (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (rule_name), " +
-			"FOREIGN KEY (sub_rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (sub_rule_name), " +
-			"UNIQUE INDEX (rule_name, sub_rule_name) " +
+			"CONSTRAINT rul_subrule_map_pkey PRIMARY KEY (row_id), " +
+			"FOREIGN KEY rule_subrule_map_rule_name_fkey (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX rule_subrule_map_ix_rule_name (rule_name), " +
+			"FOREIGN KEY rule_subrule_map_sub_rule_name_fkey (sub_rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX rule_subrule_map_ix_sub_rule_name (sub_rule_name), " +
+			"UNIQUE INDEX rule_subrule_map_ix_rulnm_subnm (rule_name, sub_rule_name) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created rule_subrule_map Table...");
 		}

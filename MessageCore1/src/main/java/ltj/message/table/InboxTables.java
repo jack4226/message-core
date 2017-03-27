@@ -93,8 +93,8 @@ public class InboxTables extends CreateTableBase {
 		}
 		
 		try {
-			stm.execute("DROP TABLE rander_attachment");
-			System.out.println("Dropped rander_attachment Table...");
+			stm.execute("DROP TABLE render_attachment");
+			System.out.println("Dropped render_attachment Table...");
 		}
 		catch (SQLException e) {
 		}
@@ -155,8 +155,8 @@ public class InboxTables extends CreateTableBase {
 			"purge_after int, " +
 			"updt_time datetime(3) NOT NULL, " +
 			"updt_user_id varchar(10) NOT NULL, " +
-			"PRIMARY KEY (render_id), " +
-			"INDEX (msg_source_id) " +
+			"CONSTRAINT msg_rendered_pkey PRIMARY KEY (render_id), " +
+			"INDEX msg_rendered_ix_msg_source_id (msg_source_id) " +
 			") ENGINE=InnoDB"); // row-level locking
 			System.out.println("Created msg_rendered Table...");
 		}
@@ -168,17 +168,18 @@ public class InboxTables extends CreateTableBase {
 
 	void createRenderAttachmentTable() throws SQLException {
 		try {
-			stm.execute("CREATE TABLE rander_attachment ( " +
+			stm.execute("CREATE TABLE render_attachment ( " +
 			"render_id bigint NOT NULL, " +
 			"attchmnt_seq decimal(2) NOT NULL, " + // up to 100 attachments per message
 			"attchmnt_name varchar(100), " +
 			"attchmnt_type varchar(100), " +
 			"attchmnt_disp varchar(100), " +
 			"attchmnt_value mediumblob, " +
-			"FOREIGN KEY (render_id) REFERENCES msg_rendered (render_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (render_id), " +
-			"PRIMARY KEY (render_id,attchmnt_seq)) ENGINE=InnoDB");
-			System.out.println("Created rander_attachment Table...");
+			"FOREIGN KEY render_attch_render_id_fkey (render_id) REFERENCES msg_rendered (render_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX render_attch_ix_render_id (render_id), " +
+			"CONSTRAINT render_attachment_pkey PRIMARY KEY (render_id,attchmnt_seq) " +
+			") ENGINE=InnoDB");
+			System.out.println("Created render_attachment Table...");
 		}
 		catch (SQLException e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -196,9 +197,9 @@ public class InboxTables extends CreateTableBase {
 			// T - text, N - numeric, D - DateField/time,
 			// A - address, X - X-Header, L - LOB(Attachment)
 			"variable_value text, " +
-			"FOREIGN KEY (render_id) REFERENCES msg_rendered (render_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (render_id), " +
-			"PRIMARY KEY (render_id,variable_name)) ENGINE=InnoDB");
+			"FOREIGN KEY render_varbl_render_id_fkey (render_id) REFERENCES msg_rendered (render_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX render_varbl_ix_render_id (render_id), " +
+			"CONSTRAINT render_variable_pkey PRIMARY KEY (render_id,variable_name)) ENGINE=InnoDB");
 			System.out.println("Created render_variable Table...");
 		}
 		catch (SQLException e) {
@@ -217,9 +218,9 @@ public class InboxTables extends CreateTableBase {
 			// T - text, N - numeric, D - DateField/time,
 			// A - address, X - X-Header, L - LOB(Attachment), C - Collection
 			"variable_value mediumblob, " +
-			"FOREIGN KEY (render_id) REFERENCES msg_rendered (render_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (render_id), " +
-			"PRIMARY KEY (render_id,variable_name)) ENGINE=InnoDB");
+			"FOREIGN KEY render_object_render_id_fkey (render_id) REFERENCES msg_rendered (render_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX render_object_ix_render_id (render_id), " +
+			"CONSTRAINT render_object_pkey PRIMARY KEY (render_id,variable_name)) ENGINE=InnoDB");
 			System.out.println("Created render_object Table...");
 		}
 		catch (SQLException e) {
@@ -294,14 +295,14 @@ public class InboxTables extends CreateTableBase {
 			"msg_content_type varchar(100) NOT NULL, " +
 			"body_content_type varchar(50), " +
 			"msg_body mediumtext, " +
-			"PRIMARY KEY (msg_id), " +
-			"INDEX (lead_msg_id), " +
-			"FOREIGN KEY (render_id) REFERENCES msg_rendered (render_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (render_id), " +
-			"FOREIGN KEY (from_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (from_addr_id), " +
-			"FOREIGN KEY (to_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (to_addr_id)" +
+			"CONSTRAINT msg_inbox_pkey PRIMARY KEY (msg_id), " +
+			"INDEX msg_inbox_ix_lead_msg_id (lead_msg_id), " +
+			"FOREIGN KEY msg_inbox_render_id_fkey (render_id) REFERENCES msg_rendered (render_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_inbox_ix_render_id (render_id), " +
+			"FOREIGN KEY msg_inbox_from_addr_id_fkey (from_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_inbox_ix_from_addr_id  (from_addr_id), " +
+			"FOREIGN KEY msg_inbox_to_addr_id_fkey (to_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_inbox_ix_to_addr_id (to_addr_id)" +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_inbox Table...");
 		}
@@ -321,9 +322,9 @@ public class InboxTables extends CreateTableBase {
 			"attchmnt_type varchar(100), " +
 			"attchmnt_disp varchar(100), " +
 			"attchmnt_value mediumblob, " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (msg_id), " +
-			"PRIMARY KEY (msg_id,attchmnt_depth,attchmnt_seq)" +
+			"FOREIGN KEY msg_attachment_msg_id_fkey (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_attachment_ix_msg_id (msg_id), " +
+			"CONSTRAINT msg_attachment_pkey PRIMARY KEY (msg_id,attchmnt_depth,attchmnt_seq)" +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_attachment Table...");
 		}
@@ -340,9 +341,9 @@ public class InboxTables extends CreateTableBase {
 			"addr_type varchar(7) NOT NULL, " + // from, replyto, to, cc, bcc
 			"addr_seq decimal(4) NOT NULL, " +
 			"addr_value varchar(255), " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (msg_id), " +
-			"PRIMARY KEY (msg_id,addr_type,addr_seq)" +
+			"FOREIGN KEY msg_address_msg_id_fkey (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_address_ix_msg_id (msg_id), " +
+			"CONSTRAINT msg_address_pkey PRIMARY KEY (msg_id,addr_type,addr_seq)" +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_address Table...");
 		}
@@ -359,9 +360,9 @@ public class InboxTables extends CreateTableBase {
 			"header_seq decimal(4) NOT NULL, " +
 			"header_name varchar(100), " +
 			"header_value text, " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (msg_id), " +
-			"PRIMARY KEY (msg_id,header_seq)" +
+			"FOREIGN KEY msg_header_msg_id_fkey (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_header_ix_msg_id (msg_id), " +
+			"CONSTRAINT msg_header_pkey PRIMARY KEY (msg_id,header_seq)" +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_header Table...");
 		}
@@ -386,11 +387,11 @@ public class InboxTables extends CreateTableBase {
 			"dsn_text text, " +
 			"dsn_rfc822 text, " +
 			"dlvr_status text, " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (msg_id), " +
-			"FOREIGN KEY (final_rcpt_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (final_rcpt_id), " +
-			"PRIMARY KEY (msg_id,rfc_type)" +
+			"FOREIGN KEY msg_rfc_field_msg_id_fkey (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_rfc_field_ix_msg_id (msg_id), " +
+			"FOREIGN KEY msg_rfc_field_final_rcpt_id_fkey (final_rcpt_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_rfc_field_ix_final_rcpt_id (final_rcpt_id), " +
+			"CONSTRAINT msg_rfc_field_pkey PRIMARY KEY (msg_id,rfc_type)" +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_rfc_field Table...");
 		}
@@ -409,8 +410,8 @@ public class InboxTables extends CreateTableBase {
 			"msg_subject varchar(255), " +
 			"add_time datetime(3), " +
 			"msg_stream mediumblob, " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"PRIMARY KEY (msg_id) " +
+			"FOREIGN KEY msg_stream_msg_id_fkey (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"CONSTRAINT msg_stream_pkey PRIMARY KEY (msg_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_stream Table...");
 		}
@@ -434,11 +435,11 @@ public class InboxTables extends CreateTableBase {
 			"dsn_rfc822 text, " +
 			"delivery_status text, " +
 			"add_time datetime(3), " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (msg_id), " +
-			"FOREIGN KEY (final_recipient_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (final_recipient_id), " +
-			"PRIMARY KEY (msg_id,final_recipient_id)) ENGINE=InnoDB");
+			"FOREIGN KEY delivery_status_msg_id_fkey (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX delivery_status_ix_msg_id (msg_id), " +
+			"FOREIGN KEY delivery_status_final_rcpt_id_fkey (final_recipient_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX delivery_status_ix_final_rcpt_id (final_recipient_id), " +
+			"CONSTRAINT delivery_status_pkey PRIMARY KEY (msg_id,final_recipient_id)) ENGINE=InnoDB");
 			System.out.println("Created delivery_status Table...");
 		}
 		catch (SQLException e) {
@@ -456,13 +457,13 @@ public class InboxTables extends CreateTableBase {
 			"action_bo varchar(50) NOT NULL, " +
 			"parameters varchar(255), " +
 			"add_time datetime(3), " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (msg_id), " +
+			"FOREIGN KEY msg_action_log_msg_id_fkey (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"INDEX msg_action_log_ix_msg_id (msg_id), " +
 			/* disable following foreign keys for performance reason */ 
 			//"FOREIGN KEY (msg_ref_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			//"FOREIGN KEY (lead_msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"INDEX (lead_msg_id), " +
-			"PRIMARY KEY (msg_id, msg_ref_id) " + // use index to make msg_ref_id nullable
+			"INDEX msg_action_log_ix_lead_msg_id (lead_msg_id), " +
+			"CONSTRAINT msg_action_log_pkey PRIMARY KEY (msg_id, msg_ref_id) " + // use index to make msg_ref_id nullable
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_action_log Table...");
 		}
@@ -488,8 +489,8 @@ public class InboxTables extends CreateTableBase {
 			"unsubscribe_count int NOT NULL DEFAULT 0, " +
 			"complaint_count int NOT NULL DEFAULT 0, " +
 			"referral_count int NOT NULL DEFAULT 0, " +
-			"FOREIGN KEY (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
-			"PRIMARY KEY (msg_id) " +
+			"FOREIGN KEY msg_click_count_msg_id_fkey (msg_id) REFERENCES msg_inbox (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"CONSTRAINT msg_click_count_pkey PRIMARY KEY (msg_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created msg_click_count Table...");
 		}
@@ -508,11 +509,11 @@ public class InboxTables extends CreateTableBase {
 					+ "list_id varchar(8), "
 					+ "comments varchar(500) NOT NULL, "
 					+ "add_time datetime(3) NOT NULL, "
-					+ "PRIMARY KEY (row_id), "
-					+ "FOREIGN KEY (msg_id) REFERENCES msg_click_count (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "INDEX (msg_id), "
-					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "INDEX (email_addr_id) "
+					+ "CONSTRAINT msg_unsub_cmnt_pkey PRIMARY KEY (row_id), "
+					+ "FOREIGN KEY msg_unsub_cmnt_msg_id_fkey (msg_id) REFERENCES msg_click_count (msg_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX msg_unsub_cmnt_ix_msg_id (msg_id), "
+					+ "FOREIGN KEY msg_unsub_cmnt_email_addr_id_fkey (email_addr_id) REFERENCES email_address (email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX msg_unsub_cmnt_ix_email_addr_id (email_addr_id) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created msg_unsub_cmnt Table...");
 		}

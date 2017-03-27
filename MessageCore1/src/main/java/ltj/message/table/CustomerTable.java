@@ -90,13 +90,13 @@ public class CustomerTable extends CreateTableBase {
 					+ "user_password varchar(32), "
 					+ "updt_time datetime(3) NOT NULL, "  //40
 					+ "updt_user_id varchar(10) NOT NULL, "
-					+ "PRIMARY KEY (row_id), "
-					+ "FOREIGN KEY (client_id) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "FOREIGN KEY (email_addr_id) REFERENCES email_address(email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
-					+ "UNIQUE INDEX (cust_id), "
-					+ "INDEX (client_id), "
-					+ "UNIQUE INDEX (email_addr_id), "
-					+ "INDEX (ssn_number) "
+					+ "CONSTRAINT customer_pkey PRIMARY KEY (row_id), "
+					+ "FOREIGN KEY customer_client_id_fkey (client_id) REFERENCES client_tbl(client_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "INDEX customer_ix_client_id (client_id), "
+					+ "FOREIGN KEY customer_email_addr_id_fkey (email_addr_id) REFERENCES email_address(email_addr_id) ON DELETE CASCADE ON UPDATE CASCADE, "
+					+ "UNIQUE INDEX customer_ix_email_addr_id (email_addr_id), "
+					+ "UNIQUE INDEX customer_ix_cust_id (cust_id), "
+					+ "INDEX customer_ix_ssn_number (ssn_number) "
 					+ ") ENGINE=InnoDB");
 			System.out.println("Created customer_tbl Table...");
 		}

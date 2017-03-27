@@ -57,9 +57,9 @@ public class SocketServerTable extends CreateTableBase {
 			"message_count integer NOT NULL, " +
 			"updt_time datetime(3) NOT NULL, " +
 			"updt_user_id char(10) NOT NULL, " +
-			"PRIMARY KEY (row_id), " +
-			"Constraint UNIQUE INDEX (server_name), " +
-			"Constraint UNIQUE INDEX (socket_port) " +
+			"CONSTRAINT socket_server_pkey PRIMARY KEY (row_id), " +
+			"Constraint UNIQUE INDEX socket_server_ix_server_name (server_name), " +
+			"Constraint UNIQUE INDEX socket_server_ix_server_port (socket_port) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created socket_server Table...");
 		} catch (SQLException e) {

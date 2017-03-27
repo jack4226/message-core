@@ -95,8 +95,8 @@ public class MailboxTable extends CreateTableBase {
 			"processor_name varchar(100) NOT NULL, " +
 			"updt_time datetime(3) NOT NULL, " +
 			"updt_user_id char(10) NOT NULL, " +
-			"PRIMARY KEY (row_id), " +
-			"UNIQUE INDEX (user_id, host_name) " +
+			"CONSTRAINT mail_box_pkey PRIMARY KEY (row_id), " +
+			"UNIQUE INDEX mail_box_ix_usrid_hstnm (user_id, host_name) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created mail_box Table...");
 		} catch (SQLException e) {
