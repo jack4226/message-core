@@ -107,7 +107,7 @@ public class RuleTables extends CreateTableBase {
 			"excl_list_proc varchar(100), " + // valid bean id
 			"delimiter char(5) DEFAULT ',', " +
 			"CONSTRAINT rule_element_pkey PRIMARY KEY (row_id), " +
-			"FOREIGN KEY rule_element_rule_name_fkey (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY rule_element_fk_rule_name (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX rule_element_ix_rule_name (rule_name), " +
 			"UNIQUE INDEX rule_element_ix_rulnm_elmsq (rule_name, element_seq) " +
 			") ENGINE=InnoDB");
@@ -127,9 +127,9 @@ public class RuleTables extends CreateTableBase {
 			"sub_rule_name varchar(26) NOT NULL, " +
 			"sub_rule_seq int NOT NULL, " +
 			"CONSTRAINT rul_subrule_map_pkey PRIMARY KEY (row_id), " +
-			"FOREIGN KEY rule_subrule_map_rule_name_fkey (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY rule_subrule_map_fk_rule_name (rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX rule_subrule_map_ix_rule_name (rule_name), " +
-			"FOREIGN KEY rule_subrule_map_sub_rule_name_fkey (sub_rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY rule_subrule_map_fk_sub_rule_name (sub_rule_name) REFERENCES rule_logic (rule_name) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"INDEX rule_subrule_map_ix_sub_rule_name (sub_rule_name), " +
 			"UNIQUE INDEX rule_subrule_map_ix_rulnm_subnm (rule_name, sub_rule_name) " +
 			") ENGINE=InnoDB");

@@ -68,7 +68,7 @@ public class UserTable extends CreateTableBase {
 			"default_to_addr varchar(255), " +
 			"client_id varchar(16) NOT NULL, " +
 			"CONSTRAINT user_pkey PRIMARY KEY (row_id), " +
-			"FOREIGN KEY user_client_id_fkey (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+			"FOREIGN KEY user_fk_client_id (client_id) REFERENCES client_tbl (client_id) ON DELETE CASCADE ON UPDATE CASCADE, " +
 			"Constraint UNIQUE INDEX user_ix_user_id (user_id) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created user_tbl Table...");
@@ -111,7 +111,7 @@ public class UserTable extends CreateTableBase {
 			"create_time datetime(3) NOT NULL, " +
 			"INDEX user_session_ix_user_row_id (user_row_id), " +
 			"CONSTRAINT user_session_pkey PRIMARY KEY (session_id, session_name), " +
-			"FOREIGN KEY user_session_user_row_id_fkey (user_row_id) REFERENCES user_tbl(row_id) ON DELETE CASCADE ON UPDATE CASCADE " +
+			"FOREIGN KEY user_session_fk_user_row_id (user_row_id) REFERENCES user_tbl(row_id) ON DELETE CASCADE ON UPDATE CASCADE " +
 			") ENGINE=InnoDB");
 			System.out.println("Created user_session Table...");
 		} catch (SQLException e) {
