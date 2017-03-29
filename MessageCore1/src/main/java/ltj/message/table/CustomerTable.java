@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 
+import ltj.jbatch.common.PasswordUtil;
+import ltj.jbatch.common.PasswordUtil.PasswordTuple;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MobileCarrier;
 import ltj.message.constant.StatusId;
@@ -87,7 +89,8 @@ public class CustomerTable extends CreateTableBase {
 					+ "email_addr_id bigint NOT NULL, "
 					+ "prev_email_addr varchar(255), "
 					+ "password_change_time datetime(3), "
-					+ "user_password varchar(32), "
+					+ "user_password varchar(40), "
+					+ "password_salt varchar(16), "
 					+ "updt_time datetime(3) NOT NULL, "  //40
 					+ "updt_user_id varchar(10) NOT NULL, "
 					+ "CONSTRAINT customer_pkey PRIMARY KEY (row_id), "
@@ -124,6 +127,7 @@ public class CustomerTable extends CreateTableBase {
 		EmailAddressDao addrDao = SpringUtil.getDaoAppContext().getBean(EmailAddressDao.class);
 		String emailAddr = "jsmith@test.com";
 		EmailAddressVo addrvo = addrDao.findByAddress(emailAddr);
+		PasswordTuple tuple = PasswordUtil.getEncryptedPassword("test@pswd");
 		
 		CustomerDao dao = SpringUtil.getDaoAppContext().getBean(CustomerDao.class);
 		
@@ -170,7 +174,8 @@ public class CustomerTable extends CreateTableBase {
 			vo.setEmailAddrId(addrvo.getEmailAddrId());
 			vo.setPrevEmailAddr(null);
 			vo.setPasswordChangeTime(null);
-			vo.setUserPassword(null);
+			vo.setUserPassword(tuple.getPassword());
+			vo.setPasswordSalt(tuple.getSalt());
 			vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 			vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 			

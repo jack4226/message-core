@@ -14,6 +14,7 @@ public interface CustomerDao {
 	public int getCustomerCount(PagingCustVo vo);
 	public List<CustomerVo> getCustomersWithPaging(PagingCustVo vo);
 	public int update(CustomerVo customerVo);
+	public int updatePassword(String custId, String newPassword);
 	public int delete(String custId);
 	public int deleteByEmailAddr(String emailAddr);
 	public int insert(CustomerVo customerVo);

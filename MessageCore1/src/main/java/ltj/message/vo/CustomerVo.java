@@ -45,6 +45,7 @@ public class CustomerVo extends BaseVoWithRowId implements Serializable {
 	private String prevEmailAddr = null;
 	private Timestamp passwordChangeTime = null;
 	private String userPassword = null;
+	private String passwordSalt = null;
 	private String securityQuestion = null;
 	private String securityAnswer = null;
 	
@@ -290,6 +291,12 @@ public class CustomerVo extends BaseVoWithRowId implements Serializable {
 	}
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+	public String getPasswordSalt() {
+		return passwordSalt;
+	}
+	public void setPasswordSalt(String passwordSalt) {
+		this.passwordSalt = passwordSalt;
 	}
 	public Timestamp getPasswordChangeTime() {
 		return passwordChangeTime;

@@ -15,11 +15,32 @@ import org.apache.log4j.Logger;
 public class PasswordUtil {
 	static final Logger logger = Logger.getLogger(PasswordUtil.class);
 
-	public static boolean authenticate(String attemptedPassword, String encryptedPassword, String salt)
-			throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static PasswordTuple getEncryptedPassword(String clearPassword) {
+		PasswordTuple tuple = new PasswordTuple();
+		try {
+			byte[] salt = generateSalt();
+			byte[] pswd = getEncryptedPassword(clearPassword, salt);
+			tuple.password = toHex(pswd);
+			tuple.salt = toHex(salt);
+		}
+		catch (NoSuchAlgorithmException | InvalidKeySpecException e) { // should never happen
+			logger.error("Exception caught", e);
+			throw new RuntimeException(e);
+		}
+		return tuple;
+	}
+	
+	public static boolean authenticate(String attemptedPassword, String encryptedPassword, String salt) {
 		// Encrypt the clear-text password using the same salt that was used to
 		// encrypt the original password
-		byte[] encryptedAttemptedPassword = getEncryptedPassword(attemptedPassword, fromHex(salt));
+		byte[] encryptedAttemptedPassword = null;
+		try {
+			encryptedAttemptedPassword = getEncryptedPassword(attemptedPassword, fromHex(salt));
+		}
+		catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			logger.error("Exception caught", e);
+			throw new RuntimeException(e);
+		}
 
 		// Authentication succeeds if encrypted password that the user entered
 		// is equal to the stored hash
@@ -104,6 +125,18 @@ public class PasswordUtil {
 		return Arrays.equals(hash1, hash2);
 	}
 
+	public static class PasswordTuple {
+		String password;
+		String salt;
+		
+		public String getPassword() {
+			return password;
+		}
+		public String getSalt() {
+			return salt;
+		}
+	}
+	
 	public static void main(String[] args) {
 		try {
 			byte[] salt = generateSalt();

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -13,6 +14,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import ltj.jbatch.common.PasswordUtil;
+import ltj.jbatch.common.PasswordUtil.PasswordTuple;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.emailaddr.EmailAddressDao;
@@ -241,6 +244,16 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	}
 	
 	@Override
+	public int updatePassword(String custId, String newPassword) {
+		Timestamp tms = new Timestamp(System.currentTimeMillis());
+		PasswordTuple pswd = PasswordUtil.getEncryptedPassword(newPassword);
+		String sql = "update customer_tbl set user_password=?, password_salt=?, password_change_time=? "
+				+ "where cust_id=? ";
+		int rows = getJdbcTemplate().update(sql, new Object[] {pswd.getPassword(), pswd.getSalt(), tms, custId});
+		return rows;
+	}
+	
+	@Override
 	public int delete(String custId) {
 		String sql = 
 			"delete from customer_tbl where cust_id=? ";
@@ -266,6 +279,13 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	public int insert(CustomerVo customerVo) {
 		customerVo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 		syncupEmailFields(customerVo);
+		if (StringUtils.isNotBlank(customerVo.getUserPassword())) {
+			if (StringUtils.isBlank(customerVo.getPasswordSalt())) {
+				PasswordTuple pswd = PasswordUtil.getEncryptedPassword(customerVo.getUserPassword());
+				customerVo.setUserPassword(pswd.getPassword());
+				customerVo.setPasswordSalt(pswd.getSalt());
+			}
+		}
 		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(customerVo);
 		String sql = MetaDataUtil.buildInsertStatement("customer_tbl", customerVo);
 		int rowsInserted = getNamedParameterJdbcTemplate().update(sql, namedParameters);

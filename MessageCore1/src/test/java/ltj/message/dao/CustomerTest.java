@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import ltj.jbatch.common.PasswordUtil;
 import ltj.message.constant.Constants;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.customer.CustomerDao;
@@ -110,6 +111,29 @@ public class CustomerTest extends DaoTestBase {
 		for (CustomerVo custvo : list1) {
 			logger.info("Customer search result: " + PrintUtil.prettyPrint(custvo, 2));
 		}
+	}
+	
+	@Test
+	public void testAuthenticate() {
+		String testCustId = "test";
+		CustomerVo vo = customerDao.getByCustId(testCustId);
+		assertNotNull(vo);
+		String oldPswd = "test@pswd";
+		boolean b = PasswordUtil.authenticate(oldPswd, vo.getUserPassword(), vo.getPasswordSalt());
+		assertTrue(b);
+		
+		String newPswd = "#newTestPswd";
+		int rowsUpdated = customerDao.updatePassword(vo.getCustId(), newPswd);
+		assertEquals(1, rowsUpdated);
+		vo = customerDao.getByCustId(testCustId);
+		b = PasswordUtil.authenticate(newPswd, vo.getUserPassword(), vo.getPasswordSalt());
+		assertTrue(b);
+		
+		rowsUpdated = customerDao.updatePassword(vo.getCustId(), oldPswd);
+		assertEquals(1, rowsUpdated);
+		vo = customerDao.getByCustId(testCustId);
+		b = PasswordUtil.authenticate(oldPswd, vo.getUserPassword(), vo.getPasswordSalt());
+		assertTrue(b);
 	}
 	
 	void assertCustomerVosAreSame(CustomerVo vo1, CustomerVo vo2) {
