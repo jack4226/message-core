@@ -1,5 +1,6 @@
 package ltj.jbatch.common;
 
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -14,6 +15,17 @@ import org.apache.log4j.Logger;
 public class PasswordUtil {
 	static final Logger logger = Logger.getLogger(PasswordUtil.class);
 
+	public static boolean authenticate(String attemptedPassword, String encryptedPassword, String salt)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
+		// Encrypt the clear-text password using the same salt that was used to
+		// encrypt the original password
+		byte[] encryptedAttemptedPassword = getEncryptedPassword(attemptedPassword, fromHex(salt));
+
+		// Authentication succeeds if encrypted password that the user entered
+		// is equal to the stored hash
+		return areHashesEqual(encryptedPassword, encryptedAttemptedPassword);
+	}
+	
 	public static boolean authenticate(String attemptedPassword, byte[] encryptedPassword, byte[] salt)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		// Encrypt the clear-text password using the same salt that was used to
@@ -22,7 +34,7 @@ public class PasswordUtil {
 
 		// Authentication succeeds if encrypted password that the user entered
 		// is equal to the stored hash
-		return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
+		return areHashesEqual(encryptedPassword, encryptedAttemptedPassword);
 	}
 
 	public static byte[] getEncryptedPassword(String password, byte[] salt)
@@ -57,18 +69,54 @@ public class PasswordUtil {
 
 		return salt;
 	}
+
+	public static String toHex(byte[] array) {
+		BigInteger bi = new BigInteger(1, array);
+		String hex = bi.toString(16);
+		int paddingLength = (array.length * 2) - hex.length();
+		if (paddingLength > 0) {
+			return String.format("%0" + paddingLength + "d", 0) + hex;
+		} else {
+			return hex;
+		}
+	}
+
+	public static byte[] fromHex(String hex) {
+		byte[] bytes = new byte[hex.length() / 2];
+		for (int i = 0; i < bytes.length; i++) {
+			bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+		}
+		return bytes;
+	}
 	
+	static boolean areHashesEqual(String hash1, byte[] hash2) {
+		return Arrays.equals(fromHex(hash1), hash2);
+	}
+
+	static boolean areHashesEqual(byte[] hash1, byte[] hash2) {
+		/*
+		int diff = hash1.length ^ hash2.length;
+		for (int i = 0; i < hash1.length && i < hash2.length; i++) {
+			diff |= hash1[i] ^ hash2[i];
+		}
+		return diff == 0;
+		*/
+		return Arrays.equals(hash1, hash2);
+	}
+
 	public static void main(String[] args) {
 		try {
 			byte[] salt = generateSalt();
-			
+
 			byte[] password = getEncryptedPassword("test@pswd", salt);
-			logger.info("Encrypted Password: " + new String(password));
+			logger.info("Length in byte - salt: " + salt.length + ", pswd: " + password.length);
+			logger.info("Encrypted Password: " + toHex(password));
+
+			logger.info("Should be False -> " + authenticate("test pswd", password, salt));
+			logger.info("Should be  True -> " + authenticate("test@pswd", password, salt));
 			
-			logger.info("Should Fail -> " + authenticate("test pswd", password, salt));
-			logger.info("Should Succeed -> " + authenticate("test@pswd", password, salt));
-		}
-		catch (Exception e) {
+			logger.info("Should be  True -> " + authenticate("test@pswd", toHex(password), toHex(salt)));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
