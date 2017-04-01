@@ -122,8 +122,8 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		}
 		sql += getGroupByClause();
 		sql += " order by r.rule_category asc, r.rule_seq asc, r.rule_name asc ";
-		List<String> fields = new ArrayList<>();
-		fields.add(Constants.Y);
+		List<Object> fields = new ArrayList<>();
+		fields.add(true);
 		List<RuleLogicVo> list = getJdbcTemplate().query(sql, fields.toArray(), 
 				new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
 		return list;
@@ -135,11 +135,11 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			"select *, 0 as SubRuleCount " +
 			" from rule_logic " +
 				" where is_sub_rule=? ";
-		List<String> fields = new ArrayList<>();
+		List<Object> fields = new ArrayList<>();
 		fields.add(Constants.Y);
 		if (excludeBuiltIn) {
 			sql += " and built_in_rule!=? ";
-			fields.add(Constants.Y);
+			fields.add(true);
 		}
 		
 		List<RuleLogicVo> list = getJdbcTemplate().query(sql, fields.toArray(),
@@ -155,8 +155,8 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			" where built_in_rule=? and is_sub_rule!=? and rule_category=? " +
 			" order by rule_name ";
 		
-		List<String> fields = new ArrayList<>();
-		fields.add(Constants.Y);
+		List<Object> fields = new ArrayList<>();
+		fields.add(true);
 		fields.add(Constants.Y);
 		fields.add(RuleBase.MAIN_RULE);
 		List<String> list = getJdbcTemplate().queryForList(sql, fields.toArray(), String.class);
@@ -171,8 +171,8 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			" where built_in_rule!=? and is_sub_rule!=? and rule_category=? " +
 			" order by rule_name ";
 
-		List<String> fields = new ArrayList<>();
-		fields.add(Constants.Y);
+		List<Object> fields = new ArrayList<>();
+		fields.add(true);
 		fields.add(Constants.Y);
 		fields.add(RuleBase.MAIN_RULE);
 		List<String> list = getJdbcTemplate().queryForList(sql, fields.toArray(), String.class);

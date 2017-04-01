@@ -47,6 +47,27 @@ public class RuleLogicTest extends DaoTestBase {
 			fail();
 		}
 	}
+	
+	@Test
+	public void testGetBuiltinRules() {
+		List<RuleLogicVo> list1 = ruleLogicDao.getAll(true);
+		assertFalse(list1.isEmpty());
+		
+		List<RuleLogicVo> list2 = ruleLogicDao.getAllSubRules(false);
+		assertFalse(list2.isEmpty());
+		int size2 = list2.size();
+		
+		list2 = ruleLogicDao.getAllSubRules(true);
+		assertTrue(size2 > list2.size());
+		
+		List<String> list3 = ruleLogicDao.getBuiltinRuleNames4Web();
+		assertFalse(list3.isEmpty());
+		logger.info("Builtin Rule Names: " + list3);
+		
+		List<String> list4 = ruleLogicDao.getCustomRuleNames4Web();
+		assertFalse(list4.isEmpty());
+		logger.info("Custom Rule Names: " + list4);
+	}
 
 	private List<RuleLogicVo> selectByPrimaryKey(String ruleName) {
 		List<RuleLogicVo> list = ruleLogicDao.getByRuleName(ruleName);
