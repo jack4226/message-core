@@ -20,6 +20,8 @@ public class SubjTemplateTest extends DaoTestBase {
 	
 	static Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 	final static String testTemplateId = "WeekendDeals";
+	
+	final static String TestTmpltValue = "Weekend Deals at mydot.com";
 
 	@Test
 	public void testSubtemplate() {
@@ -38,6 +40,9 @@ public class SubjTemplateTest extends DaoTestBase {
 			assertTrue(vo1.equalsTo(vo3));
 			int rowsUpdated = update(vo3);
 			assertEquals(1, rowsUpdated);
+			SubjTemplateVo vo4 = subjTemplateDao.getByRowId(vo3.getRowId());
+			assertNotNull(vo4);
+			assertEquals(TestTmpltValue, vo4.getTemplateValue());
 			int rowsDeleted = deleteByPrimaryKey(vo3);
 			assertEquals(1, rowsDeleted);
 			
@@ -66,7 +71,7 @@ public class SubjTemplateTest extends DaoTestBase {
 	}
 
 	private int update(SubjTemplateVo subjTemplateVo) {
-		subjTemplateVo.setTemplateValue("Weekend Deals at mydot.com");
+		subjTemplateVo.setTemplateValue(TestTmpltValue);
 		int rows = subjTemplateDao.update(subjTemplateVo);
 		logger.info("RuleElementDao - update: rows updated " + rows);
 		return rows;

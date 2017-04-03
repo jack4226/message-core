@@ -12,6 +12,8 @@ public interface TemplateVariableDao {
 	public TemplateVariableVo getByBestMatch(String templateId, String clientId,
 			String variableName, Timestamp startTime);
 
+	public TemplateVariableVo getByRowId(long rowId);
+	
 	public List<TemplateVariableVo> getByVariableName(String variableName);
 
 	public List<TemplateVariableVo> getByClientId(String clientId);

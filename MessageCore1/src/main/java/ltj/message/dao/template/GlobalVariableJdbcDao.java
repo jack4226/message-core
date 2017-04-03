@@ -72,6 +72,20 @@ public class GlobalVariableJdbcDao extends AbstractDao implements GlobalVariable
 	}
 	
 	@Override
+	public GlobalVariableVo getByRowId(long rowId) {
+		String sql = "select * from global_variable where row_id=?";
+		Object[] parms = new Object[] {rowId};
+		try {
+			GlobalVariableVo vo = getJdbcTemplate().queryForObject(sql, parms,
+					new BeanPropertyRowMapper<GlobalVariableVo>(GlobalVariableVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	@Override
 	public List<GlobalVariableVo> getByVariableName(String variableName) {
 		String sql = 
 			"select * " +

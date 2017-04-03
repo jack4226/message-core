@@ -17,7 +17,7 @@ import ltj.vo.template.ClientVariableVo;
 public class ClientVariableTest extends DaoTestBase {
 	@Resource
 	private ClientVariableDao clientVariableDao;
-	Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
+	Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 	final String testVariableName = "CurrentDate";
 
 	@Test
@@ -39,6 +39,10 @@ public class ClientVariableTest extends DaoTestBase {
 			assertTrue(vo1.equalsTo(vo3));
 			int rowsUpdated = update(vo3);
 			assertEquals(rowsUpdated, 1);
+			ClientVariableVo vo4 = clientVariableDao.getByRowId(vo3.getRowId());
+			assertNotNull(vo4);
+			assertEquals(updtTime.toString(), vo4.getVariableValue());
+			assertEquals(true, vo4.getRequired());
 			int rowsDeleted = deleteByPrimaryKey(vo3);
 			assertEquals(rowsDeleted, 1);
 		}
@@ -72,6 +76,7 @@ public class ClientVariableTest extends DaoTestBase {
 	}
 	private int update(ClientVariableVo clientVariableVo) {
 		clientVariableVo.setVariableValue(updtTime.toString());
+		clientVariableVo.setRequired(true);
 		int rows = clientVariableDao.update(clientVariableVo);
 		logger.info("ClientVariableDao - update: rows updated " + rows);
 		return rows;

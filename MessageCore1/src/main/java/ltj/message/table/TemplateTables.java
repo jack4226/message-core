@@ -134,7 +134,7 @@ public class TemplateTables extends CreateTableBase {
 				// A - Active, I - Inactive
 				+ "allow_override char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime, Y/N/M, M=Mandatory
-				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "required boolean NOT NULL DEFAULT false, "
 				// required to be present in body template
 				+ "variable_value varchar(255), "
 				+ "CONSTRAINT global_variable_pkey PRIMARY KEY (row_id), "
@@ -163,7 +163,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				+ "allow_override char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime
-				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "required boolean NOT NULL DEFAULT false, "
 				// required to present in body template
 				+ "variable_value text, "
 				+ "CONSTRAINT client_variable_pkey PRIMARY KEY (row_id), "
@@ -195,7 +195,7 @@ public class TemplateTables extends CreateTableBase {
 				+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', "
 				+ "allow_override char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override value to be supplied at runtime
-				+ "required char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "required boolean NOT NULL DEFAULT false, "
 				// required to present in body template
 				+ "variable_value text, "
 				+ "CONSTRAINT template_variable_pkey PRIMARY KEY (row_id), "
@@ -225,15 +225,15 @@ public class TemplateTables extends CreateTableBase {
 				+ "subj_template_id varchar(16) NOT NULL, "
 				+ "body_template_id varchar(16) NOT NULL, "
 				+ "template_variable_id varchar(16), "
-				+ "excluding_id_token char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "exclude_id_token boolean NOT NULL DEFAULT false, "
 				// Y - No email id will be embedded into message
 				+ "carrier_code char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', "
 				// Internet, WebMail, Internal Routing, ...
 				+ "allow_override char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
 				// allow override templates, addrs to be supplied at runtime
-				+ "save_msg_stream char(1) NOT NULL DEFAULT '" + Constants.Y + "', "
+				+ "save_msg_stream boolean NOT NULL DEFAULT true, "
 				// Y - save rendered smtp message stream to msg_stream
-				+ "archive_ind char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+				+ "archive_ind boolean NOT NULL DEFAULT false, "
 				// Y - archive the rendered messages
 				+ "purge_after int, " // in month
 				+ "updt_time datetime(3) NOT NULL, "

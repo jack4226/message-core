@@ -36,6 +36,10 @@ public class GlobalVariableTest extends DaoTestBase {
 			assertTrue(vo1.equalsTo(vo3));
 			int rowsUpdated = update(vo3);
 			assertEquals(rowsUpdated, 1);
+			GlobalVariableVo vo4 = globalVariableDao.getByRowId(vo3.getRowId());
+			assertNotNull(vo4);
+			assertEquals(updtTime.toString(), vo4.getVariableValue());
+			assertEquals(true, vo4.getRequired());
 			int rowsDeleted = deleteByPrimaryKey(vo3);
 			assertEquals(rowsDeleted, 1);
 		}
@@ -64,6 +68,7 @@ public class GlobalVariableTest extends DaoTestBase {
 
 	private int update(GlobalVariableVo globalVariableVo) {
 		globalVariableVo.setVariableValue(updtTime.toString());
+		globalVariableVo.setRequired(true);
 		int rows = globalVariableDao.update(globalVariableVo);
 		logger.info("GlobalVariableDao - update: rows upadted " + rows);
 		return rows;

@@ -19,7 +19,7 @@ public class GlobalVariableVo extends BaseVoWithRowId implements Serializable {
 	// A - Active, I - Inactive
 	private String allowOverride = Constants.Y;
 	// allow override value to be supplied at runtime, Y/N/M, M=Mandatory
-	private String required = Constants.N;
+	private boolean required = false;
 	
 	public String getAllowOverride() {
 		return allowOverride;
@@ -27,10 +27,10 @@ public class GlobalVariableVo extends BaseVoWithRowId implements Serializable {
 	public void setAllowOverride(String allowOverride) {
 		this.allowOverride = allowOverride;
 	}
-	public String getRequired() {
+	public boolean getRequired() {
 		return required;
 	}
-	public void setRequired(String required) {
+	public void setRequired(boolean required) {
 		this.required = required;
 	}
 	public Timestamp getStartTime() {

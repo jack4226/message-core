@@ -8,6 +8,7 @@ import ltj.vo.template.BodyTemplateVo;
 public interface BodyTemplateDao {
 	public BodyTemplateVo getByPrimaryKey(String templateId, String clientId, Timestamp startTime);
 	public BodyTemplateVo getByBestMatch(String templateId, String clientId, Timestamp startTime);
+	public BodyTemplateVo getByRowId(long rowId);
 	public List<BodyTemplateVo> getByTemplateId(String templateId);
 	public List<BodyTemplateVo> getByClientId(String clientId);
 	public int update(BodyTemplateVo bodyTemplateVo);

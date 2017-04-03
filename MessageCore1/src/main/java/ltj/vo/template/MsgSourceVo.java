@@ -16,15 +16,15 @@ public class MsgSourceVo extends BaseVoWithRowId implements Serializable {
 	private String subjTemplateId = "";
 	private String bodyTemplateId = "";
 	private String templateVariableId = null;
-	private String excludingIdToken = Constants.N;
+	private boolean excludeIdToken = false;
 	// Y - No email id will be embedded into message
 	private String carrierCode = CarrierCode.SMTPMAIL.value();
 	// Internet, WebMail, Internal Routing, ...
 	private String allowOverride = Constants.Y;
 	// allow override templates, addresses to be supplied at runtime
-	private String saveMsgStream = Constants.Y;
+	private boolean saveMsgStream = true;
 	// Y - save rendered SMTP message stream to MSGOBSTREAM
-	private String archiveInd = Constants.N;
+	private boolean archiveInd = false;
 	// Y - archive the rendered messages
 	private Integer purgeAfter = null; // in month
 	
@@ -38,10 +38,10 @@ public class MsgSourceVo extends BaseVoWithRowId implements Serializable {
 	public void setAllowOverride(String allowOverride) {
 		this.allowOverride = allowOverride;
 	}
-	public String getArchiveInd() {
+	public boolean getArchiveInd() {
 		return archiveInd;
 	}
-	public void setArchiveInd(String archiveInd) {
+	public void setArchiveInd(boolean archiveInd) {
 		this.archiveInd = archiveInd;
 	}
 	public String getBodyTemplateId() {
@@ -62,11 +62,11 @@ public class MsgSourceVo extends BaseVoWithRowId implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getExcludingIdToken() {
-		return excludingIdToken;
+	public boolean getExcludeIdToken() {
+		return excludeIdToken;
 	}
-	public void setExcludingIdToken(String excludingIdToken) {
-		this.excludingIdToken = excludingIdToken;
+	public void setExcludeIdToken(boolean excludingIdToken) {
+		this.excludeIdToken = excludingIdToken;
 	}
 	public Long getFromAddrId() {
 		return fromAddrId;
@@ -92,10 +92,10 @@ public class MsgSourceVo extends BaseVoWithRowId implements Serializable {
 	public void setReplyToAddrId(Long replyToAddrId) {
 		this.replyToAddrId = replyToAddrId;
 	}
-	public String getSaveMsgStream() {
+	public boolean getSaveMsgStream() {
 		return saveMsgStream;
 	}
-	public void setSaveMsgStream(String saveMsgStream) {
+	public void setSaveMsgStream(boolean saveMsgStream) {
 		this.saveMsgStream = saveMsgStream;
 	}
 	public String getSubjTemplateId() {

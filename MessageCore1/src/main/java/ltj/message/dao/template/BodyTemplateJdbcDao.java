@@ -88,6 +88,20 @@ public class BodyTemplateJdbcDao extends AbstractDao implements BodyTemplateDao 
 	}
 	
 	@Override
+	public BodyTemplateVo getByRowId(long rowId) {
+		String sql = "select * from body_template where row_id=?";
+		Object[] parms = new Object[] {rowId};
+		try {
+			BodyTemplateVo vo = getJdbcTemplate().queryForObject(sql, parms,
+					new BeanPropertyRowMapper<BodyTemplateVo>(BodyTemplateVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+	
+	@Override
 	public List<BodyTemplateVo> getByTemplateId(String templateId) {
 		String sql = 
 			"select * " +

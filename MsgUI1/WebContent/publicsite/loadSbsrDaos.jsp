@@ -107,7 +107,7 @@
 					null,
 					VariableType.TEXT,
 					Constants.Y,
-					Constants.N,
+					false,
 					null);
 			vars.put(var.getVariableName(), var);
 		}
@@ -118,7 +118,7 @@
 					null,
 					VariableType.TEXT,
 					Constants.Y,
-					Constants.N,
+					false,
 					null);
 			vars.put(var.getVariableName(), var);
 		}
@@ -129,7 +129,7 @@
 					null,
 					VariableType.TEXT,
 					Constants.Y,
-					Constants.N,
+					false,
 					null);
 			vars.put(var.getVariableName(), var);
 		}

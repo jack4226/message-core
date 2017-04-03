@@ -95,6 +95,20 @@ public class TemplateVariableJdbcDao extends AbstractDao implements TemplateVari
 	}
 	
 	@Override
+	public TemplateVariableVo getByRowId(long rowId) {
+		String sql = "select * from template_variable where row_id=?";
+		Object[] parms = new Object[] {rowId};
+		try {
+			TemplateVariableVo vo = getJdbcTemplate().queryForObject(sql, parms,
+					new BeanPropertyRowMapper<TemplateVariableVo>(TemplateVariableVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+	
+	@Override
 	public List<TemplateVariableVo> getByVariableName(String variableName) {
 		String sql = 
 			"select * " +

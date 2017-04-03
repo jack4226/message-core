@@ -18,6 +18,8 @@ public class MsgSourceTest extends DaoTestBase {
 	private MsgSourceDao msgSourceDao;
 	Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 	final String testMsgSourceId = "WeekendDeals";
+	
+	final static String TestDesc = "message source for WeekendDeals";
 
 	@Test
 	public void testMsgCource() {
@@ -36,6 +38,12 @@ public class MsgSourceTest extends DaoTestBase {
 			assertTrue(vo1.equalsTo(vo2));
 			int rowsUpdated = update(vo2);
 			assertEquals(1, rowsUpdated);
+			MsgSourceVo vo3 = msgSourceDao.getByPrimaryKey(vo2.getMsgSourceId());
+			assertNotNull(vo3);
+			assertEquals(TestDesc, vo3.getDescription());
+			assertEquals(true, vo3.getExcludeIdToken());
+			assertEquals(true, vo3.getSaveMsgStream());
+			assertEquals(true, vo3.getArchiveInd());
 			int rowsDeleted = deleteByPrimaryKey(vo2);
 			assertEquals(1, rowsDeleted);
 		}
@@ -62,7 +70,10 @@ public class MsgSourceTest extends DaoTestBase {
 	}
 
 	private int update(MsgSourceVo msgSourceVo) {
-		msgSourceVo.setDescription("message source for WeekendDeals");
+		msgSourceVo.setDescription(TestDesc);
+		msgSourceVo.setExcludeIdToken(true);
+		msgSourceVo.setArchiveInd(true);
+		msgSourceVo.setSaveMsgStream(true);
 		int rows = msgSourceDao.update(msgSourceVo);
 		logger.info("MsgSourceDao - update: rows updated " + rows);
 		return rows;

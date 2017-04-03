@@ -144,7 +144,7 @@ public class RenderTest extends BoTestBase {
 					null, 
 					VariableType.ADDRESS, 
 					Constants.Y,
-					Constants.N, 
+					false, 
 					null
 				);
 			map.put(toAddr.getVariableName(), toAddr);
@@ -159,7 +159,7 @@ public class RenderTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req2 = new RenderVariable(
@@ -168,7 +168,7 @@ public class RenderTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req3 = new RenderVariable(
@@ -177,7 +177,7 @@ public class RenderTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req4 = new RenderVariable(
@@ -186,7 +186,7 @@ public class RenderTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req5 = new RenderVariable(
@@ -195,7 +195,7 @@ public class RenderTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		
@@ -205,7 +205,7 @@ public class RenderTest extends BoTestBase {
 				"text/plain", 
 				VariableType.LOB, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		
@@ -237,7 +237,7 @@ public class RenderTest extends BoTestBase {
 					"text/plain",
 					VariableType.LOB, 
 					Constants.Y,
-					Constants.N, 
+					false, 
 					null
 				);
 			map.put("attachment2", req6_2);
@@ -253,7 +253,7 @@ public class RenderTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req2_row2 = new RenderVariable(
@@ -262,7 +262,7 @@ public class RenderTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		List<Map<String, RenderVariable>> collection = new ArrayList<Map<String, RenderVariable>>();
@@ -280,7 +280,7 @@ public class RenderTest extends BoTestBase {
 				null, 
 				VariableType.COLLECTION, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		// end of Collection

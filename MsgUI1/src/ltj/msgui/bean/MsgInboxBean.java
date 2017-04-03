@@ -3,8 +3,6 @@ package ltj.msgui.bean;
 import static ltj.message.constant.Constants.DASHES_OF_33;
 import static ltj.message.constant.Constants.MSG_DELIMITER_BEGIN;
 import static ltj.message.constant.Constants.MSG_DELIMITER_END;
-import static ltj.message.constant.Constants.N;
-import static ltj.message.constant.Constants.Y;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -506,8 +504,8 @@ public class MsgInboxBean {
 			MsgInboxWebVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				vo.setMarkedForDeletion(false);
-				if (!Y.equalsIgnoreCase(vo.getFlagged())) {
-					vo.setFlagged(Y);
+				if (!vo.isFlagged()) {
+					vo.setFlagged(true);
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
 					int rowsUpdated = getMsgInboxDao().updateCounts(vo);
 					if (rowsUpdated > 0) {
@@ -533,8 +531,8 @@ public class MsgInboxBean {
 			MsgInboxWebVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				vo.setMarkedForDeletion(false);
-				if (!N.equalsIgnoreCase(vo.getFlagged())) {
-					vo.setFlagged(N);
+				if (vo.isFlagged()) {
+					vo.setFlagged(false);
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
 					int rowsUpdated = getMsgInboxDao().updateCounts(vo);
 					if (rowsUpdated > 0) {

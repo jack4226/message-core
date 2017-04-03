@@ -75,7 +75,7 @@ public class RenderUtilTest extends BoTestBase {
 				null,
 				VariableType.TEXT,
 				null,
-				null,
+				(Boolean) null,
 				null);
 		Map<String, RenderVariable> vars = new HashMap<String, RenderVariable>();
 		vars.put(var.getVariableName(), var);
@@ -116,7 +116,7 @@ public class RenderUtilTest extends BoTestBase {
 					null,
 					VariableType.TEXT,
 					null,
-					null,
+					(Boolean) null,
 					null);
 			Map<String, RenderVariable> vars = new HashMap<String, RenderVariable>();
 			vars.put(var.getVariableName(), var);

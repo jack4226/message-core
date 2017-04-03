@@ -28,7 +28,7 @@ public final class MailingListUtil {
 				null,
 				VariableType.TEXT,
 				Constants.Y,
-				Constants.N,
+				false,
 				null);
 		variables.put(varName, var);
 		
@@ -39,7 +39,7 @@ public final class MailingListUtil {
 				null,
 				VariableType.TEXT,
 				Constants.Y,
-				Constants.N,
+				false,
 				null);
 		variables.put(varName, var);
 		
@@ -50,7 +50,7 @@ public final class MailingListUtil {
 				null,
 				VariableType.TEXT,
 				Constants.Y,
-				Constants.N,
+				false,
 				null);
 		variables.put(varName, var);
 		
@@ -61,7 +61,7 @@ public final class MailingListUtil {
 				null,
 				VariableType.TEXT,
 				Constants.Y,
-				Constants.N,
+				false,
 				null);
 		variables.put(varName, var);
 		
@@ -72,7 +72,7 @@ public final class MailingListUtil {
 				null,
 				VariableType.TEXT,
 				Constants.Y,
-				Constants.N,
+				false,
 				null);
 		variables.put(varName, var);
 		

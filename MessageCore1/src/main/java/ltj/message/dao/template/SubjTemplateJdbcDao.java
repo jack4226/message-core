@@ -79,6 +79,20 @@ public class SubjTemplateJdbcDao extends AbstractDao implements SubjTemplateDao 
 	}
 	
 	@Override
+	public SubjTemplateVo getByRowId(long rowId) {
+		String sql = "select * from subj_template where row_id=?";
+		Object[] parms = new Object[] {rowId};
+		try {
+			SubjTemplateVo vo = getJdbcTemplate().queryForObject(sql, parms,
+					new BeanPropertyRowMapper<SubjTemplateVo>(SubjTemplateVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+	
+	@Override
 	public List<SubjTemplateVo> getByTemplateId(String templateId) {
 		String sql = 
 			"select * " +

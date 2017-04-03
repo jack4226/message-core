@@ -20,6 +20,8 @@ public class BodyTemplateTest extends DaoTestBase {
 	Timestamp updtTime = new Timestamp(new java.util.Date().getTime());
 	final String testTemplateId = "WeekendDeals";
 
+	final static String TestTmpltValue = "Dear customer, here is a list of great deals on gardening tools provided to you by ${company.url}";
+	
 	@Test
 	public void testBodyTemplate() {
 		try {
@@ -37,6 +39,9 @@ public class BodyTemplateTest extends DaoTestBase {
 			assertTrue(vo1.equalsTo(vo3));
 			int rowsUpdated = update(vo3);
 			assertEquals(rowsUpdated, 1);
+			BodyTemplateVo vo4 = bodyTemplateDao.getByRowId(vo3.getRowId());
+			assertNotNull(vo4);
+			assertEquals(TestTmpltValue, vo4.getTemplateValue());
 			int rowsDeleted = deleteByPrimaryKey(vo3);
 			assertEquals(rowsDeleted, 1);
 		}
@@ -65,7 +70,7 @@ public class BodyTemplateTest extends DaoTestBase {
 	}
 
 	private int update(BodyTemplateVo bodyTemplateVo) {
-		bodyTemplateVo.setTemplateValue("Dear customer, here is a list of great deals on gardening tools provided to you by ${company.url}");
+		bodyTemplateVo.setTemplateValue(TestTmpltValue);
 		int rows = bodyTemplateDao.update(bodyTemplateVo);
 		logger.info("BodyTemplateDao - update: rows updated " + rows);
 		return rows;

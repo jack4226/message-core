@@ -89,7 +89,7 @@ public class LoadTemplateTables {
 			in.setVariableType(var.getVariableType().value());
 			in.setStatusId(StatusId.ACTIVE.value());
 			in.setAllowOverride(var.getAllowOverride().value());
-			in.setRequired(Constants.N);
+			in.setRequired(false);
 			globalVariableDao.insert(in);
 		}
 		
@@ -110,7 +110,7 @@ public class LoadTemplateTables {
 			in.setVariableType(var.getVariableType().value());
 			in.setStatusId(StatusId.ACTIVE.value());
 			in.setAllowOverride(var.getAllowOverride().value());
-			in.setRequired(Constants.N);
+			in.setRequired(false);
 
 			clientVariableDao.insert(in);
 		}
@@ -137,7 +137,7 @@ public class LoadTemplateTables {
 		in.setVariableType(VariableType.DATETIME.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
+		in.setRequired(false);
 
 		templateVariableDao.insert(in);
 
@@ -150,7 +150,7 @@ public class LoadTemplateTables {
 		in.setVariableType(VariableType.DATETIME.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
+		in.setRequired(false);
 
 		templateVariableDao.insert(in);
 
@@ -204,11 +204,11 @@ public class LoadTemplateTables {
 		in.setSubjTemplateId(TestTemplateId_1);
 		in.setBodyTemplateId(TestTemplateId_1);
 		in.setTemplateVariableId(TestTemplateId_1);
-		in.setExcludingIdToken(Constants.N);
+		in.setExcludeIdToken(false);
 		in.setCarrierCode(CarrierCode.SMTPMAIL.value());
 		in.setAllowOverride(Constants.Y);
-		in.setSaveMsgStream(Constants.Y);
-		in.setArchiveInd(Constants.N);
+		in.setSaveMsgStream(true);
+		in.setArchiveInd(true);
 		in.setPurgeAfter(null);
 		in.setUpdtUserId("testuser");
 
@@ -262,11 +262,11 @@ public class LoadTemplateTables {
 		in.setSubjTemplateId(TestTemplateId_1);
 		in.setBodyTemplateId(TestTemplateId_2);
 		in.setTemplateVariableId(TestTemplateId_1);
-		in.setExcludingIdToken(Constants.N);
+		in.setExcludeIdToken(false);
 		in.setCarrierCode(CarrierCode.SMTPMAIL.value());
 		in.setAllowOverride(Constants.Y);
-		in.setSaveMsgStream(Constants.Y);
-		in.setArchiveInd(Constants.N);
+		in.setSaveMsgStream(true);
+		in.setArchiveInd(false);
 		in.setPurgeAfter(null);
 		in.setUpdtUserId("testuser");
 
@@ -287,7 +287,7 @@ public class LoadTemplateTables {
 		in.setVariableType(VariableType.TEXT.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.N);
+		in.setRequired(false);
 
 		clientVariableDao.insert(in);
 
@@ -307,7 +307,7 @@ public class LoadTemplateTables {
 		in.setVariableType(VariableType.TEXT.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(Constants.Y);
-		in.setRequired(Constants.Y);
+		in.setRequired(true);
 
 		templateVariableDao.insert(in);
 
@@ -325,7 +325,7 @@ public class LoadTemplateTables {
 		in.setVariableType(VariableType.ADDRESS.value());
 		in.setStatusId(StatusId.ACTIVE.value());
 		in.setAllowOverride(CodeType.MANDATORY.value());
-		in.setRequired(Constants.Y);
+		in.setRequired(true);
 
 		globalVariableDao.insert(in);
 

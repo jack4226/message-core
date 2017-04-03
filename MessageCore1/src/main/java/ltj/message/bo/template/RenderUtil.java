@@ -506,7 +506,7 @@ public final class RenderUtil {
 			}
 			logger.info("renderEmailVariables() - name=" + name + ", value=" + value);
 			RenderVariable var = new RenderVariable(name, value, null, VariableType.TEXT, Constants.Y,
-					Constants.N, null);
+					false, null);
 			vars.put(name, var);
 		}
 		return vars;
@@ -534,7 +534,7 @@ public final class RenderUtil {
 					null,
 					VariableType.TEXT,
 					Constants.Y,
-					Constants.N,
+					false,
 					null);
 			vars.put("SubscriberAddressId", var);
 		}
@@ -644,7 +644,7 @@ public final class RenderUtil {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
 				RenderVariable var = new RenderVariable(key, variables.get(key), null, VariableType.TEXT,
-						Constants.Y, Constants.N, null);
+						Constants.Y, false, null);
 				vars.put(key, var);
 			}
 		}
@@ -793,7 +793,7 @@ public final class RenderUtil {
 			Set<String> keys = variables.keySet();
 			for (String key : keys) {
 				RenderVariable var = new RenderVariable(key, variables.get(key), null,
-						VariableType.TEXT, Constants.Y, Constants.N, null);
+						VariableType.TEXT, Constants.Y, false, null);
 				vars.put(key, var);
 			}
 		}

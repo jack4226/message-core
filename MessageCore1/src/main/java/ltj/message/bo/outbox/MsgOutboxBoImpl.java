@@ -152,12 +152,12 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 			
 		}
 		
-		if (Constants.Y.equalsIgnoreCase(rsp.getMsgSourceVo().getExcludingIdToken())) {
+		if (rsp.getMsgSourceVo().getExcludeIdToken()) {
 			// operation moved to MailSender after message is written to database
 			msgBean.setEmBedEmailId(Boolean.valueOf(false));
 		}
 		
-		if (Constants.N.equalsIgnoreCase(rsp.getMsgSourceVo().getSaveMsgStream())) {
+		if (rsp.getMsgSourceVo().getSaveMsgStream() == false) {
 			// operation moved to MailSender after mail is sent
 			msgBean.setSaveMsgStream(false);
 		}
@@ -340,7 +340,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 						varVo.getVariableFormat(),
 						VariableType.getByValue(varVo.getVariableType()), 
 						Constants.Y, // allow override
-						Constants.N, // required
+						false, // required
 						null // error message
 						);
 				
@@ -371,7 +371,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 						varVo.getVariableFormat(),
 						VariableType.getByValue(varVo.getVariableType()),
 						Constants.Y, // allow override
-						Constants.N, // required
+						false, // required
 						null // error message
 						);
 				
@@ -397,7 +397,7 @@ public class MsgOutboxBoImpl implements MsgOutboxBo {
 					attVo.getAttchmntType(), // content type as format
 					VariableType.LOB, 
 					Constants.Y, 
-					Constants.N, 
+					false, 
 					null
 					);
 				varblFinal.put(r.getVariableName(), r);

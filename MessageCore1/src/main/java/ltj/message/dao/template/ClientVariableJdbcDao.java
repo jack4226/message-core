@@ -76,6 +76,20 @@ public class ClientVariableJdbcDao extends AbstractDao implements ClientVariable
 	}
 	
 	@Override
+	public ClientVariableVo getByRowId(long rowId) {
+		String sql = "select * from client_variable where row_id=?";
+		Object[] parms = new Object[] {rowId};
+		try {
+			ClientVariableVo vo = getJdbcTemplate().queryForObject(sql, parms,
+					new BeanPropertyRowMapper<ClientVariableVo>(ClientVariableVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	@Override
 	public List<ClientVariableVo> getByVariableName(String variableName) {
 		String sql = 
 			"select * " +

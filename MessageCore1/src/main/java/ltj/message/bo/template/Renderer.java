@@ -363,7 +363,7 @@ public final class Renderer implements java.io.Serializable {
 				"yyyy-MM-dd", 
 				VariableType.DATETIME, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		map.put(currentDate.getVariableName(), currentDate);
@@ -374,7 +374,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req2 = new RenderVariable(
@@ -383,7 +383,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req3 = new RenderVariable(
@@ -392,7 +392,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req4 = new RenderVariable(
@@ -401,7 +401,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req5 = new RenderVariable(
@@ -410,7 +410,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		
@@ -420,7 +420,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.NUMERIC, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		
@@ -430,7 +430,7 @@ public final class Renderer implements java.io.Serializable {
 				"000,000,000.0#;(-000,000,000.0#)",
 				VariableType.NUMERIC, 
 				Constants.Y,
-				Constants.N,
+				false,
 				null
 			);
 		
@@ -440,7 +440,7 @@ public final class Renderer implements java.io.Serializable {
 				null,  // default format
 				VariableType.DATETIME, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		
@@ -450,7 +450,7 @@ public final class Renderer implements java.io.Serializable {
 				"MM/dd/yyyy", // custom format
 				VariableType.DATETIME,
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		
@@ -460,7 +460,7 @@ public final class Renderer implements java.io.Serializable {
 				"yyyy-MM-dd:hh.mm.ss a", // custom format
 				VariableType.DATETIME,
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		
@@ -470,7 +470,7 @@ public final class Renderer implements java.io.Serializable {
 				null,
 				VariableType.ADDRESS,
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		map.put("address1", req8_1);
@@ -482,7 +482,7 @@ public final class Renderer implements java.io.Serializable {
 					null,
 					VariableType.ADDRESS,
 					Constants.Y,
-					Constants.N, 
+					false, 
 					null
 				);
 			map.put("address2", req8_2);
@@ -498,7 +498,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		RenderVariable req2_row2 = new RenderVariable(
@@ -507,7 +507,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		ArrayList<Map<String, RenderVariable>> collection = new ArrayList<Map<String, RenderVariable>>();
@@ -525,7 +525,7 @@ public final class Renderer implements java.io.Serializable {
 				null, 
 				VariableType.COLLECTION, 
 				Constants.Y,
-				Constants.N, 
+				false, 
 				null
 			);
 		// end of Collection

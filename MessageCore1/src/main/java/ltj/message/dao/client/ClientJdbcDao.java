@@ -222,7 +222,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		vo.setVariableFormat(null);
 		vo.setVariableType(VariableType.TEXT.value());
 		vo.setAllowOverride(Constants.Y);
-		vo.setRequired(Constants.N);
+		vo.setRequired(false);
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		
@@ -231,7 +231,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		vo.setVariableFormat(null);
 		vo.setVariableType(VariableType.TEXT.value());
 		vo.setAllowOverride(Constants.Y);
-		vo.setRequired(Constants.N);
+		vo.setRequired(false);
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		
@@ -241,7 +241,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 			vo.setVariableFormat(null);
 			vo.setVariableType(VariableType.TEXT.value());
 			vo.setAllowOverride(Constants.Y);
-			vo.setRequired(Constants.N);
+			vo.setRequired(false);
 			getClientVariableDao().insert(vo);
 			rowsInserted++;
 		}
@@ -251,7 +251,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		vo.setVariableFormat(null);
 		vo.setVariableType(VariableType.TEXT.value());
 		vo.setAllowOverride(Constants.Y);
-		vo.setRequired(Constants.N);
+		vo.setRequired(false);
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		
@@ -261,7 +261,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 			vo.setVariableFormat(null);
 			vo.setVariableType(VariableType.TEXT.value());
 			vo.setAllowOverride(Constants.Y);
-			vo.setRequired(Constants.N);
+			vo.setRequired(false);
 			getClientVariableDao().insert(vo);
 			rowsInserted++;
 		}
@@ -271,7 +271,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		vo.setVariableFormat(null);
 		vo.setVariableType(VariableType.TEXT.value());
 		vo.setAllowOverride(Constants.Y);
-		vo.setRequired(Constants.N);
+		vo.setRequired(false);
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		
@@ -280,7 +280,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		vo.setVariableFormat(null);
 		vo.setVariableType(VariableType.DATETIME.value());
 		vo.setAllowOverride(Constants.Y);
-		vo.setRequired(Constants.N);
+		vo.setRequired(false);
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		
@@ -289,7 +289,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		vo.setVariableFormat("yyyy-MM-dd");
 		vo.setVariableType(VariableType.DATETIME.value());
 		vo.setAllowOverride(Constants.Y);
-		vo.setRequired(Constants.N);
+		vo.setRequired(false);
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		
@@ -298,7 +298,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		vo.setVariableFormat("hh:mm:ss a");
 		vo.setVariableType(VariableType.DATETIME.value());
 		vo.setAllowOverride(Constants.Y);
-		vo.setRequired(Constants.N);
+		vo.setRequired(false);
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		

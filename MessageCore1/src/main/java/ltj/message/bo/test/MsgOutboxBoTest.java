@@ -161,7 +161,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.ADDRESS, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		map.put(toAddr.getVariableName(), toAddr);
@@ -172,7 +172,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"maximum 16 characters", 
 				VariableType.TEXT, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		map.put(customer.getVariableName(), customer);
@@ -183,7 +183,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		RenderVariable req2 = new RenderVariable(
@@ -192,7 +192,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		RenderVariable req3 = new RenderVariable(
@@ -201,7 +201,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		RenderVariable req4 = new RenderVariable(
@@ -210,7 +210,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		RenderVariable req5 = new RenderVariable(
@@ -219,7 +219,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		
@@ -229,7 +229,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				"text/plain; charset=\"iso-8859-1\"", 
 				VariableType.LOB, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		
@@ -251,7 +251,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 					"application/octet-stream",
 					VariableType.LOB, 
 					"Y",
-					"N", 
+					false, 
 					null
 				);
 			map.put("attachment2", req6_2);
@@ -267,7 +267,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		RenderVariable req2_row2 = new RenderVariable(
@@ -276,7 +276,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.TEXT, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		List<Map<String, RenderVariable>> collection = new ArrayList<Map<String, RenderVariable>>();
@@ -294,7 +294,7 @@ public class MsgOutboxBoTest extends BoTestBase {
 				null, 
 				VariableType.COLLECTION, 
 				"Y",
-				"N", 
+				false, 
 				null
 			);
 		// end of Collection

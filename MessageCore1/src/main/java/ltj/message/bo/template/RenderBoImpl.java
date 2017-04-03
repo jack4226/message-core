@@ -382,16 +382,12 @@ public class RenderBoImpl implements RenderBo {
 			mBean.setCarrierCode(rsp.msgSourceVo.getCarrierCode());
 		}
 
-		if (Constants.Y.equalsIgnoreCase(src.getExcludingIdToken())) {
+		if (src.getExcludeIdToken()) {
 			mBean.setEmBedEmailId(Boolean.valueOf(false));
 		}
 
-		if (Constants.Y.equalsIgnoreCase(src.getSaveMsgStream())) {
-			mBean.setSaveMsgStream(true);
-		}
-		else {
-			mBean.setSaveMsgStream(false);
-		}
+
+		mBean.setSaveMsgStream(src.getSaveMsgStream());
 	}
 	
 	/*
@@ -456,7 +452,7 @@ public class RenderBoImpl implements RenderBo {
 				null,
 				VariableType.TEXT, 
 				Constants.Y,
-				Constants.Y,
+				true,
 				null);
 		s_ht.put(vreq.getVariableName(), vreq);
 		
@@ -466,7 +462,7 @@ public class RenderBoImpl implements RenderBo {
 			null,
 			VariableType.ADDRESS, 
 			Constants.Y,
-			Constants.Y,
+			true,
 			null);
 		s_ht.put(vreq.getVariableName(), vreq);
 		
@@ -477,7 +473,7 @@ public class RenderBoImpl implements RenderBo {
 				null,
 				VariableType.ADDRESS, 
 				Constants.Y,
-				Constants.N,
+				false,
 				null);
 			s_ht.put(vreq.getVariableName(), vreq);
 		}

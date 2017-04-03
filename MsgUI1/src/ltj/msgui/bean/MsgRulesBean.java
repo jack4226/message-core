@@ -222,7 +222,7 @@ public class MsgRulesBean {
 		dest.setDataName(src.getDataName());
 		dest.setHeaderName(src.getHeaderName());
 		dest.setCriteria(src.getCriteria());
-		dest.setCaseSensitive(src.getCaseSensitive());
+		dest.setCaseSensitive(src.isCaseSensitive());
 		dest.setTargetText(src.getTargetText());
 		dest.setTargetProc(src.getTargetProc());
 		dest.setExclusions(src.getExclusions());

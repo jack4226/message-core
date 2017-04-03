@@ -38,6 +38,10 @@ public class TemplateVariableTest extends DaoTestBase {
 			assertTrue(vo1.equalsTo(vo3));
 			int rows = update(vo3);
 			assertEquals(1, rows);
+			TemplateVariableVo vo4 = templateVariableDao.getByRowId(vo3.getRowId());
+			assertNotNull(vo4);
+			assertEquals(updtTime.toString(), vo4.getVariableValue());
+			assertEquals(true, vo4.getRequired());
 			rows = deleteByPrimaryKey(vo3);
 			assertEquals(1, rows);
 		}
@@ -67,6 +71,7 @@ public class TemplateVariableTest extends DaoTestBase {
 
 	private int update(TemplateVariableVo vo) {
 		vo.setVariableValue(updtTime.toString());
+		vo.setRequired(true);
 		int rows = templateVariableDao.update(vo);
 		logger.info("TemplateVariableDao - update: rows updated " + rows);
 		return rows;

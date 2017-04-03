@@ -32,7 +32,7 @@ public class RenderVariable implements Serializable {
 	// L - LOB(Attachment), C - Collection
 	private final VariableType variableType;
 	private final String allowOverride;
-	private final String required;
+	private final Boolean required;
 	private String errorMsg;
     
     public RenderVariable(
@@ -41,7 +41,7 @@ public class RenderVariable implements Serializable {
 			String variableFormat,
 			@NotNull VariableType variableType,
 			String allowOverride,
-			String required,
+			Boolean required,
 			String errorMsg) {
     	
 		this.variableName=variableName;
@@ -163,7 +163,7 @@ public class RenderVariable implements Serializable {
 		return allowOverride;
 	}
 
-	public String getRequired() {
+	public boolean getRequired() {
 		return required;
 	}
 
