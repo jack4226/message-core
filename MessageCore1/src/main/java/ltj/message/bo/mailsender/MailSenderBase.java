@@ -143,12 +143,12 @@ public abstract class MailSenderBase {
 			msgBean.setIsReceived(false); // out going message
 			if (msgBean.getEmBedEmailId() == null) { // not provided by calling program
 				// use system default
-				msgBean.setEmBedEmailId(Boolean.valueOf(clientVo.getIsEmbedEmailId()));
+				msgBean.setEmBedEmailId(Boolean.valueOf(clientVo.isEmbedEmailId()));
 			}
 			// save the message to database
 			msgInboxBo.saveMessage(msgBean);
 			// check if VERP is enabled
-			if (clientVo.getIsVerpAddressEnabled()) {
+			if (clientVo.isIsVerpEnabled()) {
 				// set return path with VERP, msgBean.msgId must be valued.
 				String emailId = EmailIdToken.XHDR_BEGIN + MsgIdCipher.encode(msgBean.getMsgId())
 						+ EmailIdToken.XHDR_END;
@@ -346,7 +346,7 @@ public abstract class MailSenderBase {
 			logger.debug("Entering rebuildAddresses method...");
 		}
 		// set TO address to Test Address if it's a test run
-		if (clientVo.getUseTestAddress() && overrideTestAddr == false) {
+		if (clientVo.isUseTestAddr() && overrideTestAddr == false) {
 			// use the original address as Display Name 
 			Address[] to_addrs = m.getRecipients(javax.mail.Message.RecipientType.TO);
 			List<String> addr_list = new ArrayList<>();;
@@ -391,7 +391,7 @@ public abstract class MailSenderBase {
 			throw new AddressException("TO address is blank!");
 		}
 		// Set From address to Test Address if it's a test run and not provided
-		if (clientVo.getUseTestAddress() && !overrideTestAddr && (m.getFrom() == null || m.getFrom().length == 0)) {
+		if (clientVo.isUseTestAddr() && !overrideTestAddr && (m.getFrom() == null || m.getFrom().length == 0)) {
 			if (isDebugEnabled) {
 				logger.debug("rebuildAddresses() - Original From is missing, use testing address: "
 						+ clientVo.getTestFromAddr());
@@ -408,7 +408,7 @@ public abstract class MailSenderBase {
 			throw new AddressException("FROM address is blank!");
 		}
 		// set ReplyTo address to Test Address if it's a test run and not provided
-		if (clientVo.getUseTestAddress() && overrideTestAddr == false
+		if (clientVo.isUseTestAddr() && overrideTestAddr == false
 				&& (m.getReplyTo() == null || m.getReplyTo().length == 0)) {
 			if (StringUtils.isNotBlank(clientVo.getTestReplytoAddr())) {
 				if (EmailAddrUtil.hasDisplayName(clientVo.getTestReplytoAddr())) {

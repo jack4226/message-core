@@ -12,7 +12,7 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	private String domainName = "";
 	private String irsTaxId = null;
 	private String webSiteUrl = null;
-	private String saveRawMsg = Constants.Y;
+	private boolean saveRawMsg = true;
 	private String contactName = null;
 	private String contactPhone = null;
 	private String contactEmail = "";
@@ -21,13 +21,13 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	private String rmaDeptEmail = "";
 	private String spamCntrlEmail = "";
 	private String chaRspHndlrEmail = "";
-	private String embedEmailId = "";
+	private boolean embedEmailId = true;
 	private String returnPathLeft = "";
-	private String useTestAddr = Constants.NO;
+	private boolean useTestAddr = false;
 	private String testFromAddr = null; 
 	private String testToAddr = null;
 	private String testReplytoAddr = null;
-	private String isVerpEnabled = Constants.NO;
+	private boolean isVerpEnabled = false;
 	private String verpSubDomain = null;
 	private String verpInboxName = null;
 	private String verpRemoveInbox = null;
@@ -36,18 +36,6 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	private String origClientId = null;
 	
 	/** define components for UI */
-	public boolean getUseTestAddress() {
-		return Constants.YES.equalsIgnoreCase(useTestAddr);
-	}
-	
-	public boolean getIsVerpAddressEnabled() {
-		return Constants.YES.equalsIgnoreCase(isVerpEnabled);
-	}
-	
-	public boolean getIsEmbedEmailId() {
-		return Constants.YES.equalsIgnoreCase(embedEmailId);
-	}
-	
 	public boolean getIsSystemClient() {
 		return Constants.DEFAULT_CLIENTID.equalsIgnoreCase(clientId);
 	}
@@ -83,10 +71,10 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	public void setIrsTaxId(String irsTaxId) {
 		this.irsTaxId = irsTaxId;
 	}
-	public String getSaveRawMsg() {
+	public boolean isSaveRawMsg() {
 		return saveRawMsg;
 	}
-	public void setSaveRawMsg(String saveRawMsg) {
+	public void setSaveRawMsg(boolean saveRawMsg) {
 		this.saveRawMsg = saveRawMsg;
 	}
 	public String getWebSiteUrl() {
@@ -155,16 +143,16 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	public void setSystemKey(String systemKey) {
 		this.systemKey = systemKey;
 	}
-	public String getEmbedEmailId() {
+	public boolean isEmbedEmailId() {
 		return embedEmailId;
 	}
-	public void setEmbedEmailId(String embedEmailId) {
+	public void setEmbedEmailId(boolean embedEmailId) {
 		this.embedEmailId = embedEmailId;
 	}
-	public String getUseTestAddr() {
+	public boolean isUseTestAddr() {
 		return useTestAddr;
 	}
-	public void setUseTestAddr(String useTestAddr) {
+	public void setUseTestAddr(boolean useTestAddr) {
 		this.useTestAddr = useTestAddr;
 	}
 	public String getTestFromAddr() {
@@ -185,10 +173,10 @@ public class ClientVo extends BaseVoWithRowId implements Serializable {
 	public void setTestReplytoAddr(String testReplytoAddr) {
 		this.testReplytoAddr = testReplytoAddr;
 	}
-	public String getIsVerpEnabled() {
+	public boolean isIsVerpEnabled() {
 		return isVerpEnabled;
 	}
-	public void setIsVerpEnabled(String isVerpEnabled) {
+	public void setIsVerpEnabled(boolean isVerpEnabled) {
 		this.isVerpEnabled = isVerpEnabled;
 	}
 	public String getVerpSubDomain() {

@@ -58,7 +58,7 @@ public class ClientTable extends CreateTableBase {
 					+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " // 'A' or 'I'
 					+ "irs_tax_id varchar(10), " // IRS Tax Id
 					+ "web_site_url varchar(100), "
-					+ "save_raw_msg char(1) NOT NULL DEFAULT '" + Constants.Y + "', " 
+					+ "save_raw_msg boolean NOT NULL DEFAULT true, " 
 						// save SMTP message stream to msg_stream? used by RuleEngine
 					+ "contact_name varchar(60), "
 					+ "contact_phone varchar(18), "
@@ -70,15 +70,15 @@ public class ClientTable extends CreateTableBase {
 					+ "spam_cntrl_email varchar(255) NOT NULL, "
 					+ "cha_rsp_hndlr_email varchar(255) NOT NULL, "
 					// for mail sender, embed EmailId to the bottom of email
-					+ "embed_email_id varchar(3) NOT NULL DEFAULT '" + Constants.YES + "', "
+					+ "embed_email_id boolean NOT NULL DEFAULT true, "
 					+ "return_path_left varchar(50) NOT NULL, "
 					// for mail sender, define testing addresses
-					+ "use_test_addr varchar(3) NOT NULL DEFAULT '" + Constants.NO + "', "
+					+ "use_test_addr boolean NOT NULL DEFAULT false, "
 					+ "test_from_addr varchar(255), "
 					+ "test_to_addr varchar(255), "
 					+ "test_replyto_addr varchar(255), "
 					// for mail sender, use VERP in Return-Path?
-					+ "is_verp_enabled varchar(3) NOT NULL DEFAULT '" + Constants.NO + "', "
+					+ "is_verp_enabled boolean NOT NULL DEFAULT false, "
 					+ "verp_sub_domain varchar(50), " // sub domain used by VERP bounces
 					/*
 					 * we do not need to define a separate VERP domain. If the
@@ -169,7 +169,7 @@ public class ClientTable extends CreateTableBase {
 		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setIrsTaxId("0000000000");
 		vo.setWebSiteUrl("http://localhost:8080/MsgUI/publicsite");
-		vo.setSaveRawMsg(Constants.Y); // save raw stream
+		vo.setSaveRawMsg(true); // save raw stream
 		if (loadTestData) {
 			vo.setContactEmail("sitemaster@emailsphere.com");
 			vo.setSecurityEmail("security@localhost");
@@ -186,13 +186,13 @@ public class ClientTable extends CreateTableBase {
 			vo.setSpamCntrlEmail("spam_ctrl@localhost");
 			vo.setChaRspHndlrEmail("challenge@localhost");
 		}
-		vo.setEmbedEmailId(Constants.YES); // Embed EmailId
+		vo.setEmbedEmailId(true); // Embed EmailId
 		vo.setReturnPathLeft("support"); // return-path left
-		vo.setUseTestAddr(Constants.YES); // use testing address
+		vo.setUseTestAddr(true); // use testing address
 		vo.setTestFromAddr("testfrom@localhost");
 		vo.setTestToAddr("testto@localhost");
 		vo.setTestReplytoAddr(null);
-		vo.setIsVerpEnabled(Constants.YES); // is VERP enabled
+		vo.setIsVerpEnabled(true); // is VERP enabled
 		vo.setVerpSubDomain(null); // VERP sub domain
 		vo.setVerpInboxName("bounce"); // VERP bounce mailbox
 		vo.setVerpRemoveInbox("remove"); // VERP un-subscribe mailbox
@@ -219,20 +219,20 @@ public class ClientTable extends CreateTableBase {
 		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setIrsTaxId("0000000000");
 		vo.setWebSiteUrl("http://www.jbatch.com");
-		vo.setSaveRawMsg(Constants.Y); // save raw stream
+		vo.setSaveRawMsg(true); // save raw stream
 		vo.setContactEmail("sitemaster@jbatch.com");
 		vo.setSecurityEmail("security@jbatch.com");
 		vo.setCustcareEmail("custcare@jbatch.com");
 		vo.setRmaDeptEmail("rma_dept@jbatch.com");
 		vo.setSpamCntrlEmail("spam_ctrl@jbatch.com");
 		vo.setChaRspHndlrEmail("challenge@jbatch.com");
-		vo.setEmbedEmailId(Constants.YES); // Embed EmailId
+		vo.setEmbedEmailId(true); // Embed EmailId
 		vo.setReturnPathLeft("support"); // return-path left
-		vo.setUseTestAddr(Constants.NO); // use testing address
+		vo.setUseTestAddr(false); // use testing address
 		vo.setTestFromAddr("testfrom@jbatch.com");
 		vo.setTestToAddr("testto@jbatch.com");
 		vo.setTestReplytoAddr(null);
-		vo.setIsVerpEnabled(Constants.NO); // is VERP enabled
+		vo.setIsVerpEnabled(false); // is VERP enabled
 		vo.setVerpSubDomain(null); // VERP sub domain
 		vo.setVerpInboxName("bounce"); // VERP bounce mailbox
 		vo.setVerpRemoveInbox("remove"); // VERP un-subscribe mailbox
@@ -254,19 +254,19 @@ public class ClientTable extends CreateTableBase {
 		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setIrsTaxId("0000000000");
 		vo.setWebSiteUrl("http://www.emailsphere.com/newsletter");
-		vo.setSaveRawMsg(Constants.Y); // save raw stream
+		vo.setSaveRawMsg(true); // save raw stream
 		vo.setContactEmail("sitemaster@emailsphere.com");
 		vo.setSecurityEmail("security@emailsphere.com");
 		vo.setCustcareEmail("custcare@emailsphere.com");
 		vo.setRmaDeptEmail("rma_dept@emailsphere.com");
 		vo.setSpamCntrlEmail("spam_.ctrl@emailsphere.com");
 		vo.setChaRspHndlrEmail("challenge@emailsphere.com");
-		vo.setEmbedEmailId(Constants.YES); // Embed EmailId 
-		vo.setUseTestAddr(Constants.NO); // use testing address
+		vo.setEmbedEmailId(true); // Embed EmailId 
+		vo.setUseTestAddr(false); // use testing address
 		vo.setTestFromAddr("testfrom@emailsphere.com");
 		vo.setTestToAddr("testto@emailsphere.com");
 		//vo.setTestReplytoAddr(null);
-		vo.setIsVerpEnabled(Constants.YES); // is VERP enabled
+		vo.setIsVerpEnabled(true); // is VERP enabled
 		//vo.setVerpSubDomain(null); // VERP sub domain
 		vo.setVerpInboxName("bounce"); // VERP bounce mailbox
 		vo.setVerpRemoveInbox("remove"); // VERP un-subscribe mailbox

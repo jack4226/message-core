@@ -33,7 +33,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 					"r.start_time, " +
 					"r.mail_type, " +
 					"r.rule_category, " +
-					"r.is_sub_rule, " +
+					"r.sub_rule, " +
 					"r.built_in_rule, " +
 					"r.description, " +
 					"count(s.sub_rule_name) as SubRuleCount " +
@@ -52,7 +52,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 				"r.start_time, " +
 				"r.mail_type, " +
 				"r.rule_category, " +
-				"r.is_sub_rule, " +
+				"r.sub_rule, " +
 				"r.built_in_rule, " +
 				"r.description ";
 		return groupBy;
@@ -115,7 +115,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = getSelectClause();
 		
 		if (builtInRule) {
-			sql += " where r.built_in_rule=? and r.is_sub_rule!='" + Constants.Y + "' ";
+			sql += " where r.built_in_rule=? and r.sub_rule!='" + Constants.Y + "' ";
 		}
 		else {
 			sql += " where r.built_in_rule!=? ";
@@ -134,9 +134,9 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = 
 			"select *, 0 as SubRuleCount " +
 			" from rule_logic " +
-				" where is_sub_rule=? ";
+				" where sub_rule=? ";
 		List<Object> fields = new ArrayList<>();
-		fields.add(Constants.Y);
+		fields.add(true);
 		if (excludeBuiltIn) {
 			sql += " and built_in_rule!=? ";
 			fields.add(true);
@@ -152,12 +152,12 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = 
 			"select distinct(rule_name) " +
 			" from rule_logic " +
-			" where built_in_rule=? and is_sub_rule!=? and rule_category=? " +
+			" where built_in_rule=? and sub_rule!=? and rule_category=? " +
 			" order by rule_name ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(true);
-		fields.add(Constants.Y);
+		fields.add(true);
 		fields.add(RuleBase.MAIN_RULE);
 		List<String> list = getJdbcTemplate().queryForList(sql, fields.toArray(), String.class);
 		return list;
@@ -168,12 +168,12 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = 
 			"select distinct(rule_name) " +
 			" from rule_logic " +
-			" where built_in_rule!=? and is_sub_rule!=? and rule_category=? " +
+			" where built_in_rule!=? and sub_rule!=? and rule_category=? " +
 			" order by rule_name ";
 
 		List<Object> fields = new ArrayList<>();
 		fields.add(true);
-		fields.add(Constants.Y);
+		fields.add(true);
 		fields.add(RuleBase.MAIN_RULE);
 		List<String> list = getJdbcTemplate().queryForList(sql, fields.toArray(), String.class);
 		return list;

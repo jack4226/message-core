@@ -40,7 +40,7 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 			ruleLogicVo.setStartTime(rs.getTimestamp("start_time"));
 			ruleLogicVo.setMailType(rs.getString("mail_type"));
 			ruleLogicVo.setRuleCategory(rs.getString("rule_category"));
-			ruleLogicVo.setIsSubRule(rs.getString("is_sub_rule"));
+			ruleLogicVo.setSubRule(rs.getBoolean("sub_rule"));
 			
 			RuleElementVo ruleElementVo = new RuleElementVo();
 			ruleElementVo.setRuleName(rs.getString("rule_name"));

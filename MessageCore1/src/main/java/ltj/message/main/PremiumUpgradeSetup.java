@@ -103,8 +103,8 @@ public class PremiumUpgradeSetup {
 		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setMailType(Constants.SMTP_MAIL);
 		vo.setRuleCategory(RuleBase.MAIN_RULE);
-		vo.setIsSubRule(Constants.N);
-		vo.setBuiltInRule(Constants.N);
+		vo.setSubRule(false);
+		vo.setBuiltInRule(false);
 		vo.setDescription("A limited time free Premium upgrade");
 	}
 

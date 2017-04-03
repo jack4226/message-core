@@ -21,6 +21,7 @@ import ltj.message.vo.BaseVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.inbox.MsgAttachmentVo;
 import ltj.message.vo.inbox.MsgInboxVo;
+import ltj.message.vo.rule.RuleLogicVo;
 import ltj.spring.util.SpringUtil;
 
 public class MetaDataUtil {
@@ -65,12 +66,17 @@ public class MetaDataUtil {
 				continue;
 			}
 			Class<?> parmTypes[] = method.getParameterTypes();
-			if (method.getName().length()<=3 || !method.getName().startsWith("get") || parmTypes.length != 0) {
+			String name = method.getName();
+			if (method.getReturnType().isAssignableFrom(java.lang.Boolean.class)
+					|| "boolean".equals(method.getReturnType().getName())) {
+				name = name.replaceFirst("^is", "get");
+			}
+			if (name.length()<=3 || !name.startsWith("get") || parmTypes.length != 0) {
 				// must be a getter and not have any input parameters
 				continue;
 			}
 			//logger.info("Method name: " + method.getName());
-			String columnName = method.getName().substring(3).toLowerCase();
+			String columnName = name.substring(3).toLowerCase();
 			if (table.getColumnMap().containsKey(columnName)) {
 				Column column = table.getColumnMap().get(columnName);
 				String uncapName = StringUtils.uncapitalize(column.getColumnName());
@@ -111,12 +117,17 @@ public class MetaDataUtil {
 				continue;
 			}
 			Class<?> parmTypes[] = method.getParameterTypes();
-			if (method.getName().length()<=3 || !method.getName().startsWith("get") || parmTypes.length != 0) {
+			String name = method.getName();
+			if (method.getReturnType().isAssignableFrom(java.lang.Boolean.class)
+					|| "boolean".equals(method.getReturnType().getName())) {
+				name = name.replaceFirst("^is", "get");
+			}
+			if (name.length()<=3 || !name.startsWith("get") || parmTypes.length != 0) {
 				// must be a getter and not have any input parameters
 				continue;
 			}
 			//logger.info("Method name: " + method.getName());
-			String columnName = method.getName().substring(3).toLowerCase();
+			String columnName = name.substring(3).toLowerCase();
 			if (table.getColumnMap().containsKey(columnName)) {
 				Column column = table.getColumnMap().get(columnName);
 				String uncapName = StringUtils.uncapitalize(column.getColumnName());
@@ -229,10 +240,11 @@ public class MetaDataUtil {
 	public static void main(String[] args) {
 		Table msg_inbox = MetaDataUtil.getTableMetaData("msg_inbox");
 		logger.info("Table Metadata:" + PrintUtil.prettyPrint(msg_inbox));
-		Table timer_server = MetaDataUtil.getTableMetaData("timer_server");
-		logger.info("Table Metadata:" + PrintUtil.prettyPrint(timer_server, 3));
+		Table rule_logic = MetaDataUtil.getTableMetaData("rule_logic");
+		logger.info("Table Metadata:" + PrintUtil.prettyPrint(rule_logic, 3));
 		logger.info(buildUpdateStatement("msg_inbox", new MsgInboxVo()));
 		logger.info(buildInsertStatement("mailing_list", new MailingListVo()));
 		logger.info(buildUpdateStatement("msg_attachment", new MsgAttachmentVo()));
+		logger.info(buildInsertStatement("rule_logic", new RuleLogicVo()));
 	}
 }

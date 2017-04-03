@@ -76,8 +76,8 @@ public class RuleTables extends CreateTableBase {
 			"start_time datetime(3) NOT NULL, " +
 			"mail_type varchar(8) NOT NULL, " + // smtpmail, webmail, ...
 			"rule_category char(1) DEFAULT '" + RuleBase.MAIN_RULE + "', " + // E - Pre Scan, 'M' - Main Rule, P - Post Scan
-			"is_sub_rule char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
-			"built_in_rule char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
+			"sub_rule boolean NOT NULL DEFAULT false, " +
+			"built_in_rule boolean NOT NULL DEFAULT false, " +
 			"description varchar(255), " +
 			"CONSTRAINT rule_logic_pkey PRIMARY KEY (row_id), " +
 			"INDEX rule_logic_ix_rule_name (rule_name), " +
@@ -156,8 +156,8 @@ public class RuleTables extends CreateTableBase {
 				vo.setStartTime(new Timestamp(System.currentTimeMillis()));
 				vo.setMailType(Constants.SMTP_MAIL);
 				vo.setRuleCategory(rl.getRuleCategory().value());
-				vo.setIsSubRule(rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
-				vo.setBuiltInRule(rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
+				vo.setSubRule(rl.isSubrule()); // sub rule?
+				vo.setBuiltInRule(rl.isBuiltin()); // built-in rule?
 				vo.setDescription(rl.getDescription());
 				
 				rows += dao.insert(vo);
@@ -179,8 +179,8 @@ public class RuleTables extends CreateTableBase {
 				vo.setStartTime(new Timestamp(System.currentTimeMillis()));
 				vo.setMailType(Constants.SMTP_MAIL);
 				vo.setRuleCategory(rl.getRuleCategory().value());
-				vo.setIsSubRule(rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
-				vo.setBuiltInRule(rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
+				vo.setSubRule(rl.isSubrule()); // sub rule?
+				vo.setBuiltInRule(rl.isBuiltin()); // built-in rule?
 				vo.setDescription(rl.getDescription());
 				
 				rows += dao.insert(vo);
@@ -202,8 +202,8 @@ public class RuleTables extends CreateTableBase {
 				vo.setStartTime(new Timestamp(System.currentTimeMillis()));
 				vo.setMailType(Constants.SMTP_MAIL);
 				vo.setRuleCategory(rl.getRuleCategory().value());
-				vo.setIsSubRule(rl.isSubrule() ? Constants.Y : Constants.N); // sub rule?
-				vo.setBuiltInRule(rl.isBuiltin() ? Constants.Y : Constants.N); // built-in rule?
+				vo.setSubRule(rl.isSubrule()); // sub rule?
+				vo.setBuiltInRule(rl.isBuiltin()); // built-in rule?
 				vo.setDescription(rl.getDescription());
 				
 				rows += dao.insert(vo);

@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.Constants;
 import ltj.message.dao.client.ClientDao;
 import ltj.message.dao.client.ReloadFlagsDao;
 import ltj.message.dao.emailaddr.MailingListDao;
@@ -403,7 +402,7 @@ public final class RuleLoader implements java.io.Serializable {
 	private String buildReturnPath(ClientVo vo) {
 		String domainName = vo.getDomainName().trim();
 		String returnPath = vo.getReturnPathLeft().trim() + "@" + domainName;
-		if (Constants.YES.equalsIgnoreCase(vo.getIsVerpEnabled())) {
+		if (vo.isIsVerpEnabled()) {
 			// if VERP is enabled, add VERP addresses to the pattern 
 			String verpSub = vo.getVerpSubDomain();
 			verpSub = (StringUtil.isEmpty(verpSub) ? "" : verpSub.trim() + ".");
@@ -414,7 +413,7 @@ public final class RuleLoader implements java.io.Serializable {
 				returnPath += "|" + vo.getVerpRemoveInbox().trim() + "@" + verpSub + domainName;
 			}
 		}
-		if (Constants.YES.equalsIgnoreCase(vo.getUseTestAddr())) {
+		if (vo.isUseTestAddr()) {
 			// if in test mode, add test address to the pattern
 			if (!StringUtil.isEmpty(vo.getTestFromAddr())) {
 				returnPath += "|" + vo.getTestFromAddr().trim();

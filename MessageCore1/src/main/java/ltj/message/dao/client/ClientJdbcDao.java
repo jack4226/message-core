@@ -185,12 +185,12 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 	}
 	
 	public static void validateClientVo(ClientVo clientVo) {
-		if (clientVo.getUseTestAddress()) {
+		if (clientVo.isUseTestAddr()) {
 			if (StringUtil.isEmpty(clientVo.getTestToAddr())) {
 				throw new IllegalStateException("Test TO Address was null");
 			}
 		}
-		if (clientVo.getIsVerpAddressEnabled()) {
+		if (clientVo.isIsVerpEnabled()) {
 			if (StringUtil.isEmpty(clientVo.getVerpInboxName())) {
 				throw new IllegalStateException("VERP bounce inbox name was null");
 			}

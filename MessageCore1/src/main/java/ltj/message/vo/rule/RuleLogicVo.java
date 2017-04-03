@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 import ltj.message.bo.rule.RuleBase;
-import ltj.message.constant.Constants;
 import ltj.message.vo.BaseVoWithRowId;
 
 public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
@@ -16,8 +15,8 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 	private Timestamp startTime;
 	private String mailType = "";
 	private String ruleCategory = RuleBase.MAIN_RULE;
-	private String isSubRule = Constants.N;
-	private String builtInRule = Constants.N;
+	private boolean subRule = false;
+	private boolean builtInRule = false;
 	private String description = null;
 	private int subRuleCount = -1;
 	
@@ -25,14 +24,8 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 	private int origRuleSeq = -1;
 	
 	/** Define properties for UI components */
-	public boolean isSubRule() {
-		return Constants.Y.equalsIgnoreCase(isSubRule);
-	}
-	public void setSubRule(boolean value) {
-		setIsSubRule(value == true ? Constants.Y : Constants.N);
-	}
-	public String getIsSubRuleDesc() {
-		if (Constants.Y.equalsIgnoreCase(getIsSubRule())) {
+	public String getSubRuleDesc() {
+		if (isSubRule()) {
 			return "SubRule";
 		}
 		else if (subRuleCount > 0) {
@@ -52,9 +45,6 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 		else {
 			return "Main";
 		}
-	}
-	public boolean isBuiltInRule() {
-		return Constants.Y.equalsIgnoreCase(builtInRule);
 	}
 	
 	private java.util.Date startDate = null;
@@ -132,16 +122,16 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 	public void setRuleCategory(String ruleCategory) {
 		this.ruleCategory = ruleCategory;
 	}
-	public String getIsSubRule() {
-		return isSubRule;
+	public boolean isSubRule() {
+		return subRule;
 	}
-	public void setIsSubRule(String isSubRule) {
-		this.isSubRule = isSubRule;
+	public void setSubRule(boolean value) {
+		this.subRule = value;
 	}
-	public String getBuiltInRule() {
+	public boolean isBuiltInRule() {
 		return builtInRule;
 	}
-	public void setBuiltInRule(String builtInRule) {
+	public void setBuiltInRule(boolean builtInRule) {
 		this.builtInRule = builtInRule;
 	}
 	public String getDescription() {
