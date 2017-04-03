@@ -97,11 +97,11 @@
 		EmailAddressVo addrVo = getEmailAddressDao(ctx).getByAddress(emailAddr);
 		if (chosens.length > 0 && addrVo != null) {
 			// update "AcceptHTML" flag if needed
-			String acceptHtml = Constants.Y;
+			boolean acceptHtml = true;
 			if ("text".equals(emailType)) {
-				acceptHtml = Constants.N;
+				acceptHtml = false;
 			}
-			if (!acceptHtml.equals(addrVo.getAcceptHtml())) {
+			if (acceptHtml != addrVo.getAcceptHtml()) {
 				addrVo.setAcceptHtml(acceptHtml);
 				getEmailAddressDao(ctx).update(addrVo);
 			}

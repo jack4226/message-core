@@ -20,7 +20,6 @@ import javax.faces.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import ltj.message.bo.rule.RuleBase;
-import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.dao.rule.RuleElementDao;

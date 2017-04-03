@@ -13,7 +13,6 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 
-import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailSubscrptDao;
