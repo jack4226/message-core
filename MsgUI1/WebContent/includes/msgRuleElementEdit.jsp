@@ -78,7 +78,7 @@
 		
 		<h:outputText value="#{msgs.caseSensitivePrompt}"/>
 		<h:selectBooleanCheckbox id="case" 
-			value="#{msgrules.ruleElement.textCaseSensitive}"/>
+			value="#{msgrules.ruleElement.isCaseSensitive}"/>
 		<h:message for="case" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.targetProcPrompt}"/>

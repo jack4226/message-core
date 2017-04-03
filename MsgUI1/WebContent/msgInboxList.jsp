@@ -83,7 +83,7 @@
 				</f:facet>
 				<div class="cellHeight">
 				<h:graphicImage value="/images/flag.gif" style="border: 0px"
-					rendered="#{mail.flaggedMsg}" title="Message Flagged"/>
+					rendered="#{mail.flagged}" title="Message Flagged"/>
 				<h:graphicImage value="/images/replied.gif" style="border: 0px"
 					rendered="#{mail.replyCount>0}" title="Message Replied"/>
 				<h:graphicImage value="/images/forwarded.gif" style="border: 0px"
