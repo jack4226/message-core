@@ -116,7 +116,7 @@ public class MailReaderTaskExr {
 				vo.setHostName("localhost");
 				vo.setProtocol("pop3");
 				vo.setReadPerPass(10);
-				vo.setUseSsl("no");
+				vo.setUseSsl(false);
 				vo.setFromTimer(true);
 				MailReaderBoImpl reader = new MailReaderBoImpl(vo);
 				try {

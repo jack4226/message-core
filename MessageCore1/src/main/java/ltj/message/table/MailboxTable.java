@@ -79,18 +79,18 @@ public class MailboxTable extends CreateTableBase {
 			"mail_box_desc varchar(50), " +
 			"status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
 			"carrier_code char(1) NOT NULL DEFAULT '" + CarrierCode.SMTPMAIL.value() + "', " +
-			"internal_only varchar(3), " +
+			"internal_only boolean, " +
 			"read_per_pass integer NOT NULL, " +
-			"use_ssl varchar(3) NOT NULL, " +
+			"use_ssl boolean NOT NULL DEFAULT false, " +
 			"threads integer NOT NULL, " +
 			"retry_max integer, " +
 			"minimum_wait integer, " +
 			"message_count integer NOT NULL, " +
-			"to_plain_text varchar(3), " +
+			"to_plain_text boolean, " +
 			"to_addr_domain varchar(500), " +
-			"check_duplicate varchar(3), " +
-			"alert_duplicate varchar(3), " +
-			"log_duplicate varchar(3), " +
+			"check_duplicate boolean, " +
+			"alert_duplicate boolean, " +
+			"log_duplicate boolean, " +
 			"purge_dups_after integer, " +
 			"processor_name varchar(100) NOT NULL, " +
 			"updt_time datetime(3) NOT NULL, " +
@@ -140,18 +140,18 @@ public class MailboxTable extends CreateTableBase {
 				vo.setDescription(in.getDescription());
 				vo.setStatusId(in.getStatus().value());
 				vo.setCarrierCode(CarrierCode.SMTPMAIL.value());
-				vo.setInternalOnly(in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
+				vo.setInternalOnly(in.getIsInternalOnly());
 				vo.setReadPerPass(in.getReadPerPass()); // ReadPerPass
-				vo.setUseSsl(in.isUseSsl() ? Constants.YES : Constants.NO);
+				vo.setUseSsl(in.isUseSsl());
 				vo.setThreads(in.getNumberOfThreads()); // Threads
 				vo.setRetryMax(in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
 				vo.setMinimumWait(in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
 				vo.setMessageCount(in.getMessageCount());
-				vo.setToPlainText(in.getIsToPlainText() == null ? null : in.getIsToPlainText() ? Constants.YES : Constants.NO);
+				vo.setToPlainText(in.getIsToPlainText());
 				vo.setToAddrDomain(in.getToAddressDomain());
-				vo.setCheckDuplicate(in.getIsCheckDuplicate() == null ? null : in.getIsCheckDuplicate() ? Constants.YES : Constants.NO);
-				vo.setAlertDuplicate(in.getIsAlertDuplicate() == null ? null : in.getIsAlertDuplicate() ? Constants.YES : Constants.NO);
-				vo.setLogDuplicate(in.getIsLogDuplicate() == null ? null : in.getIsLogDuplicate() ? Constants.YES : Constants.NO);
+				vo.setCheckDuplicate(in.getIsCheckDuplicate());
+				vo.setAlertDuplicate(in.getIsAlertDuplicate());
+				vo.setLogDuplicate(in.getIsLogDuplicate());
 				vo.setPurgeDupsAfter(in.getPurgeDupsAfter());
 				vo.setProcessorName("mailProcessor");
 				vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
@@ -177,18 +177,18 @@ public class MailboxTable extends CreateTableBase {
 				vo.setDescription(in.getDescription());
 				vo.setStatusId(in.getStatus().value());
 				vo.setCarrierCode(CarrierCode.SMTPMAIL.value());
-				vo.setInternalOnly(in.getIsInternalOnly() == null ? null : in.getIsInternalOnly() ? Constants.YES : Constants.NO);
+				vo.setInternalOnly(in.getIsInternalOnly());
 				vo.setReadPerPass(in.getReadPerPass()); // ReadPerPass
-				vo.setUseSsl(in.isUseSsl() ? Constants.YES : Constants.NO);
+				vo.setUseSsl(in.isUseSsl());
 				vo.setThreads(in.getNumberOfThreads()); // Threads
 				vo.setRetryMax(in.getMaximumRetries() == null ? 5 : in.getMaximumRetries()); // RetryMax
 				vo.setMinimumWait(in.getMinimumWait() == null ? 10 : in.getMinimumWait()); // MinimumWait
 				vo.setMessageCount(in.getMessageCount());
-				vo.setToPlainText(in.getIsToPlainText() == null ? null : in.getIsToPlainText() ? Constants.YES : Constants.NO);
+				vo.setToPlainText(in.getIsToPlainText());
 				vo.setToAddrDomain(in.getToAddressDomain());
-				vo.setCheckDuplicate(in.getIsCheckDuplicate() == null ? null : in.getIsCheckDuplicate() ? Constants.YES : Constants.NO);
-				vo.setAlertDuplicate(in.getIsAlertDuplicate() == null ? null : in.getIsAlertDuplicate() ? Constants.YES : Constants.NO);
-				vo.setLogDuplicate(in.getIsLogDuplicate() == null ? null : in.getIsLogDuplicate() ? Constants.YES : Constants.NO);
+				vo.setCheckDuplicate(in.getIsCheckDuplicate());
+				vo.setAlertDuplicate(in.getIsAlertDuplicate());
+				vo.setLogDuplicate(in.getIsLogDuplicate());
 				vo.setPurgeDupsAfter(in.getPurgeDupsAfter());
 				vo.setProcessorName("mailProcessor");
 				vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
@@ -209,18 +209,18 @@ public class MailboxTable extends CreateTableBase {
 		vo.setMailBoxDesc("Test User");
 		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setCarrierCode(CarrierCode.SMTPMAIL.value());
-		vo.setInternalOnly(Constants.NO);
+		vo.setInternalOnly(Boolean.FALSE);
 		vo.setReadPerPass(5);
-		vo.setUseSsl(Constants.NO);
+		vo.setUseSsl(false);
 		vo.setThreads(2);
 		vo.setRetryMax(5);
 		vo.setMinimumWait(10);
 		vo.setMessageCount(-1);
-		vo.setToPlainText(Constants.NO);
+		vo.setToPlainText(Boolean.FALSE);
 		vo.setToAddrDomain("localhost");
-		vo.setCheckDuplicate(Constants.YES);
-		vo.setAlertDuplicate(Constants.YES);
-		vo.setLogDuplicate(Constants.YES);
+		vo.setCheckDuplicate(Boolean.TRUE);
+		vo.setAlertDuplicate(Boolean.TRUE);
+		vo.setLogDuplicate(Boolean.TRUE);
 		vo.setProcessorName("mailProcessor");
 		vo.setPurgeDupsAfter(Integer.valueOf(6));
 		vo.setUpdtUserId("SysAdmin");

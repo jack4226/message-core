@@ -276,7 +276,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 				emailAddressVo.setStatusId(StatusId.ACTIVE.value());
 				emailAddressVo.setStatusChangeTime(updtTime);
 				emailAddressVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
-				emailAddressVo.setAcceptHtml(Constants.Y);
+				emailAddressVo.setAcceptHtml(true);
 				emailAddressVo.setUpdtTime(updtTime);
 				emailAddressVo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 				try {
@@ -326,7 +326,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 			emailAddressVo.setStatusId(StatusId.ACTIVE.value());
 			emailAddressVo.setStatusChangeTime(updtTime);
 			emailAddressVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);
-			emailAddressVo.setAcceptHtml(Constants.Y);
+			emailAddressVo.setAcceptHtml(true);
 			emailAddressVo.setUpdtTime(updtTime);
 			emailAddressVo.setUpdtUserId(Constants.DEFAULT_USER_ID);
 			// concurrency issue still pops up but it is much better controlled
@@ -357,7 +357,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 			declareParameter(new SqlOutParameter("oLastBounceTime", Types.TIMESTAMP));
 			declareParameter(new SqlOutParameter("oLastSentTime", Types.TIMESTAMP));
 			declareParameter(new SqlOutParameter("oLastRcptTime", Types.TIMESTAMP));
-			declareParameter(new SqlOutParameter("oAcceptHtml", Types.CHAR));
+			declareParameter(new SqlOutParameter("oAcceptHtml", Types.BOOLEAN));
 			declareParameter(new SqlOutParameter("oUpdtTime", Types.TIMESTAMP));
 			declareParameter(new SqlOutParameter("oUpdtUserId", Types.VARCHAR));
 			compile();
@@ -390,7 +390,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		vo.setLastBounceTime((Timestamp) map.get("oLastBounceTime"));
 		vo.setLastSentTime((Timestamp) map.get("oLastSentTime"));
 		vo.setLastRcptTime((Timestamp) map.get("oLastRcptTime"));
-		vo.setAcceptHtml((String) map.get("oAcceptHtml"));
+		vo.setAcceptHtml((Boolean) map.get("oAcceptHtml"));
 		vo.setUpdtTime((Timestamp) map.get("oUpdtTime"));
 		vo.setUpdtUserId((String) map.get("oUpdtUserId"));
 
@@ -487,7 +487,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	@Override
 	public int updateAcceptHtml(long addrId, boolean acceptHtml) {
 		List<Object> keys = new ArrayList<>();
-		keys.add(acceptHtml ? Constants.Y : Constants.N);
+		keys.add(acceptHtml);
 		keys.add(addrId);
 
 		String sql = "update email_address set accept_html=? "

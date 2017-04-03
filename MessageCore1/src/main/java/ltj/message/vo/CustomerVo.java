@@ -31,7 +31,7 @@ public class CustomerVo extends BaseVoWithRowId implements Serializable {
 	private String eveningPhone = null;
 	private String mobilePhone = null;
 	private Date birthDate = null;
-	private Date startDate = new Date(new java.util.Date().getTime());
+	private Date startDate = new Date(System.currentTimeMillis());
 	private Date endDate = null;
 	private String mobileCarrier = null;
 	private String msgHeader = null;

@@ -50,7 +50,7 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	private Timestamp deliveryTime;
 	private String smtpMessageId = null;
 	private Long renderId = null;
-	private String overrideTestAddr = null;
+	private Boolean overrideTestAddr = null;
 	
 	private int attachmentCount = 0;
 	private int attachmentSize = 0;
@@ -536,10 +536,10 @@ public class MsgInboxVo extends BaseVo implements Serializable {
 	public void setRenderId(Long renderId) {
 		this.renderId = renderId;
 	}
-	public String getOverrideTestAddr() {
+	public Boolean getOverrideTestAddr() {
 		return overrideTestAddr;
 	}
-	public void setOverrideTestAddr(String overrideTestAddr) {
+	public void setOverrideTestAddr(Boolean overrideTestAddr) {
 		this.overrideTestAddr = overrideTestAddr;
 	}
 	public MsgRenderedVo getMsgRenderedVo() {

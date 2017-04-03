@@ -15,8 +15,8 @@ public class MailingListVo extends BaseVoWithRowId implements Serializable {
 	private String domainName = ""; // from client_tbl table
 	private String description = null;
 	private String clientId = "";
-	private String isBuiltIn = Constants.N;
-	private String isSendText = null;
+	private boolean isBuiltIn = false;
+	private Boolean isSendText = null;
 	private Timestamp CreateTime = null;
 	private String listMasterEmailAddr = null;
 	private String origListId = null;
@@ -37,7 +37,7 @@ public class MailingListVo extends BaseVoWithRowId implements Serializable {
 	}
 	
 	public boolean getIsBuiltInList() {
-		return Constants.Y.equals(isBuiltIn);
+		return isBuiltIn;
 	}
 	/** end of UI */
 	
@@ -75,17 +75,17 @@ public class MailingListVo extends BaseVoWithRowId implements Serializable {
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
-	public String getIsBuiltIn() {
+	public boolean getIsBuiltIn() {
 		return isBuiltIn;
 	}
-	public void setIsBuiltIn(String isBuiltIn) {
+	public void setIsBuiltIn(boolean isBuiltIn) {
 		this.isBuiltIn = isBuiltIn;
 	}
-	public String getIsSendText() {
+	public Boolean getIsSendText() {
 		return isSendText;
 	}
 
-	public void setIsSendText(String isSendText) {
+	public void setIsSendText(Boolean isSendText) {
 		this.isSendText = isSendText;
 	}
 

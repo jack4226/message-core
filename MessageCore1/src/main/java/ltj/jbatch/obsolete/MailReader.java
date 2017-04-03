@@ -166,7 +166,7 @@ public class MailReader extends JbThread implements Serializable, JbEventListene
 		m_props.setProperty("mail.imap.partialfetch","false");
 		
 		// Get a Session object
-		if ("yes".equalsIgnoreCase(mailBoxVo.getUseSsl())) {
+		if (mailBoxVo.getUseSsl()) {
 			m_props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 			m_props.setProperty("mail.pop3.socketFactory.fallback", "false");
 			m_props.setProperty("mail.pop3.port", mailBoxVo.getPortNumber()+"");

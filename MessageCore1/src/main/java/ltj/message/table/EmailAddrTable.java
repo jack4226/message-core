@@ -102,7 +102,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "last_bounce_time datetime(3), "
 					+ "last_sent_time datetime(3), "
 					+ "last_rcpt_time datetime(3), "
-					+ "accept_html char(1) not null default '" + Constants.Y + "', "
+					+ "accept_html boolean not null default true, "
 					+ "updt_time datetime(3) NOT NULL, "
 					+ "updt_user_id char(10) NOT NULL, "
 					+ "CONSTRAINT email_address_pkey PRIMARY KEY (email_addr_id), "
@@ -129,8 +129,8 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "client_id varchar(16) NOT NULL, "
 					+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " 
 						// A - active, I - Inactive
-					+ "is_built_in char(1) NOT NULL DEFAULT '" + Constants.N + "', "
-					+ "is_send_text char(1), "
+					+ "is_built_in boolean NOT NULL DEFAULT false, "
+					+ "is_send_text boolean, "
 					+ "create_time datetime(3) NOT NULL, "
 					+ "list_master_email_addr varchar(255), "
 					+ "CONSTRAINT mailing_list_pkey PRIMARY KEY (row_id), "
@@ -184,7 +184,7 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "column_name varchar(50), " // document only
 					+ "status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " 
 						// A - active, I - Inactive
-					+ "is_built_in char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+					+ "is_built_in boolean NOT NULL DEFAULT false, "
 					+ "default_value varchar(255), "
 					+ "variable_query varchar(255), " // 1) provides TO emailAddId as query criteria
 													// 2) returns a single field called "ResultStr"
@@ -208,14 +208,14 @@ public class EmailAddrTable extends CreateTableBase {
 					+ "list_id varchar(8) NOT NULL, "
 					+ "subject varchar(255), "
 					+ "body_text mediumtext, "
-					+ "is_html char(1) NOT NULL DEFAULT '" + Constants.N + "', " // Y or N
+					+ "is_html boolean NOT NULL DEFAULT false, "
 					+ "list_type varchar(12) NOT NULL, " // Traditional/Personalized
 					+ "delivery_option varchar(4) NOT NULL DEFAULT '" + MLDeliveryType.ALL_ON_LIST.value() + "', " // when ListType is Personalized
 						// ALL - all on list, CUST - only email addresses with customer record
 					+ "select_criteria varchar(100), " 
 						// additional selection criteria - to be implemented
-					+ "embed_email_id char(1) NOT NULL DEFAULT '', " // Y, N, or <Blank> - use system default
-					+ "is_built_in char(1) NOT NULL DEFAULT '" + Constants.N + "', "
+					+ "embed_email_id boolean, " // true, false, or null to use system default
+					+ "is_built_in boolean NOT NULL DEFAULT false, "
 					+ "schedules blob, " // store a java object
 					+ "FOREIGN KEY email_template_fk_list_id (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "
 					+ "CONSTRAINT email_template_pkey PRIMARY KEY (row_id), "
@@ -266,7 +266,7 @@ CREATE DEFINER=`email`@`%` PROCEDURE `FindByAddress`(
   OUT oLastBounceTime DATETIME,
   OUT oLastSentTime DATETIME,
   OUT oLastRcptTime DATETIME,
-  OUT oAcceptHtml CHAR(1),
+  OUT oAcceptHtml BOOLEAN,
   OUT oUpdtTime DATETIME,
   OUT oUpdtUserId VARCHAR(10)
  )
@@ -293,7 +293,7 @@ BEGIN
     select currTime, 'StoredProc' into oStatusChangeTime, oStatusChangeUserId;
     select 0 into oBounceCount;
     select null, null, null into oLastBounceTime, oLastSentTime, oLastRcptTime;
-    select 'Y' into oAcceptHtml;
+    select true into oAcceptHtml;
     select currTime, 'StoredProc' into oUpdtTime, oUpdtUserId;
   end if;
   select oEmailAddrId, oEmailAddr, oOrigEmailAddr, oStatusId, oStatusChangeTime, oStatusChangeUserId,
@@ -323,7 +323,7 @@ DELIMITER ;
 				"  OUT oLastBounceTime DATETIME," + LF +
 				"  OUT oLastSentTime DATETIME," + LF +
 				"  OUT oLastRcptTime DATETIME," + LF +
-				"  OUT oAcceptHtml CHAR(1)," + LF +
+				"  OUT oAcceptHtml BOOLEAN," + LF +
 				"  OUT oUpdtTime DATETIME," + LF +
 				"  OUT oUpdtUserId VARCHAR(10)" + LF +
 				" )" + LF +
@@ -350,7 +350,7 @@ DELIMITER ;
 				"    select currTime, 'StoredProc' into oStatusChangeTime, oStatusChangeUserId;" + LF +
 				"    select 0 into oBounceCount;" + LF +
 				"    select null, null, null into oLastBounceTime, oLastSentTime, oLastRcptTime;" + LF +
-				"    select 'Y' into oAcceptHtml;" + LF +
+				"    select true into oAcceptHtml;" + LF +
 				"    select currTime, 'StoredProc' into oUpdtTime, oUpdtUserId;" + LF +
 				"  end if;" + LF +
 				"END "
@@ -420,7 +420,7 @@ DELIMITER ;
 					vo.setDescription(enu.getDescription());
 					vo.setClientId(Constants.DEFAULT_CLIENTID);
 					vo.setStatusId(enu.getStatusId().value());
-					vo.setIsBuiltIn(enu.isBuiltin() ? Constants.Y : Constants.N);
+					vo.setIsBuiltIn(enu.isBuiltin());
 					vo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 					
 					rows += dao.insert(vo);
@@ -447,7 +447,7 @@ DELIMITER ;
 					vo.setDescription(enu.getDescription());
 					vo.setClientId(Constants.DEFAULT_CLIENTID);
 					vo.setStatusId(enu.getStatusId().value());
-					vo.setIsBuiltIn(enu.isBuiltin() ? Constants.Y : Constants.N);
+					vo.setIsBuiltIn(enu.isBuiltin());
 					vo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 					
 					rows += dao.insert(vo);
@@ -498,7 +498,7 @@ DELIMITER ;
 				vo.setTableName(var.getTableName());
 				vo.setColumnName(var.getColumnName());
 				vo.setStatusId(StatusId.ACTIVE.value());
-				vo.setIsBuiltIn(var.isBuiltin() ? Constants.Y : Constants.N);
+				vo.setIsBuiltIn(var.isBuiltin());
 				vo.setDefaultValue(var.getDefaultValue());
 				vo.setVariableQuery(var.getVariableQuery());
 				vo.setVariableProc(var.getVariableProcName());
@@ -527,18 +527,12 @@ DELIMITER ;
 				vo.setIsHtml(tmplt.isHtml());
 				vo.setListType(tmplt.getListType().value());
 				vo.setDeliveryOption(tmplt.getDeliveryType().value());
-				vo.setIsBuiltIn(tmplt.isBuiltin() ? Constants.Y : Constants.N);
-				if (tmplt.getIsEmbedEmailId() == null) {
-					vo.setEmbedEmailId(" "); // use system default
-				}
-				else {
-					boolean embedEmailId = tmplt.getIsEmbedEmailId().booleanValue();
-					vo.setEmbedEmailId(embedEmailId ? Constants.Y : Constants.N);
-				}
+				vo.setIsBuiltIn(tmplt.isBuiltin());
+				vo.setEmbedEmailId(tmplt.getIsEmbedEmailId());
 				vo.setSchedulesBlob(new SchedulesBlob());
 				rows += getEmailTemplateDao().insert(vo);
 			}
-						
+			
 			System.out.println("Inserted all rows to email_template: " + rows);
 		} catch (Exception e) {
 			System.err.println("SQL Error: " + e.getMessage());
@@ -584,14 +578,8 @@ DELIMITER ;
 				vo.setIsHtml(tmplt.isHtml());
 				vo.setListType(tmplt.getListType().value());
 				vo.setDeliveryOption(tmplt.getDeliveryType().value());
-				vo.setIsBuiltIn(tmplt.isBuiltin() ? Constants.Y : Constants.N);
-				if (tmplt.getIsEmbedEmailId() == null) {
-					vo.setEmbedEmailId(" "); // use system default
-				}
-				else {
-					boolean embedEmailId = tmplt.getIsEmbedEmailId().booleanValue();
-					vo.setEmbedEmailId(embedEmailId ? Constants.Y : Constants.N);
-				}
+				vo.setIsBuiltIn(tmplt.isBuiltin());
+				vo.setEmbedEmailId(tmplt.getIsEmbedEmailId());
 				vo.setSchedulesBlob(new SchedulesBlob());
 				rows += getEmailTemplateDao().insert(vo);
 			}

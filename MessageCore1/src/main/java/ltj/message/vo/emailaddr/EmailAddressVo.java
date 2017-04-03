@@ -40,7 +40,7 @@ public class EmailAddressVo extends BaseVo implements Serializable {
     @XmlJavaTypeAdapter(TimestampAdapter.class)
 	private Timestamp lastRcptTime= null;
     @XmlElement
-	private String acceptHtml = Constants.Y;
+	private boolean acceptHtml = true;
 
     // used when join with MsgInbox table
 	private String ruleName = null;
@@ -63,7 +63,7 @@ public class EmailAddressVo extends BaseVo implements Serializable {
 	}
 	
 	public String getAcceptHtmlDesc() {
-		return "N".equals(acceptHtml) ? Constants.NO : Constants.YES;
+		return acceptHtml ? Constants.YES : Constants.NO;
 	}
 	
 	public String getCustomerName() {
@@ -143,11 +143,11 @@ public class EmailAddressVo extends BaseVo implements Serializable {
 		this.statusChangeUserId = statusChangeUserId;
 	}
 
-	public String getAcceptHtml() {
+	public boolean getAcceptHtml() {
 		return acceptHtml;
 	}
 
-	public void setAcceptHtml(String acceptHtml) {
+	public void setAcceptHtml(boolean acceptHtml) {
 		this.acceptHtml = acceptHtml;
 	}
 

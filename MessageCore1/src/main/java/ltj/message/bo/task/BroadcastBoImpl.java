@@ -21,7 +21,6 @@ import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.HtmlConverter;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.template.RenderUtil;
-import ltj.message.constant.Constants;
 import ltj.message.constant.MobileCarrier;
 import ltj.message.constant.VariableName;
 import ltj.message.dao.customer.CustomerDao;
@@ -140,7 +139,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		setTargetToMailSender();
 		for (EmailSubscrptVo sub : subs) {
 			mailsSent += constructAndSendMessage(msgBean, sub, listVo, bodyText, subjVarNames, saveEmbedEmailId, false);
-			if (Constants.Y.equalsIgnoreCase(listVo.getIsSendText())) {
+			if (Boolean.TRUE.equals(listVo.getIsSendText())) {
 				mailsSent += constructAndSendMessage(msgBean, sub, listVo, bodyText, subjVarNames, saveEmbedEmailId, true);
 			}
 		}
@@ -208,7 +207,7 @@ public class BroadcastBoImpl extends TaskBaseAdaptor {
 		// set TO to subscriber address
 		msgBean.setTo(to);
 		String body = renderVo.getBody();
-		if ("text/html".equals(msgBean.getBodyContentType()) && Constants.N.equals(sub.getAcceptHtml())
+		if ("text/html".equals(msgBean.getBodyContentType()) && Boolean.FALSE.equals(sub.getAcceptHtml())
 				|| isText) {
 			// convert to plain text
 			try {

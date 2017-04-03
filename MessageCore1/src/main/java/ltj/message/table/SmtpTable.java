@@ -62,11 +62,11 @@ public class SmtpTable extends CreateTableBase {
 			"smtp_host varchar(100) NOT NULL, " +
 			"smtp_port integer NOT NULL, " +
 			"description varchar(100), " +
-			"use_ssl varchar(3) NOT NULL, " +
-			"use_auth varchar(3), " +
+			"use_ssl boolean NOT NULL DEFAULT false, " +
+			"use_auth boolean, " +
 			"user_id varchar(30) NOT NULL, " + 
 			"user_pswd varchar(30) NOT NULL, " +
-			"persistence varchar(3) NOT NULL, " +
+			"persistence boolean NOT NULL default false, " +
 			"status_id char(1) NOT NULL DEFAULT '" + StatusId.ACTIVE.value() + "', " +
 			"server_type varchar(5) DEFAULT '" + MailServerType.SMTP.value() + "', " +
 			"threads integer NOT NULL, " +
@@ -97,11 +97,11 @@ public class SmtpTable extends CreateTableBase {
 			"row_id int AUTO_INCREMENT not null, " +
 			"internal_loopback varchar(100) NOT NULL, " +
 			"external_loopback varchar(100) NOT NULL, " +
-			"use_test_addr varchar(3) NOT NULL, " +
+			"use_test_addr boolean NOT NULL, " +
 			"test_from_addr varchar(255), " +
 			"test_to_addr varchar(255) NOT NULL, " +
 			"test_replyto_addr varchar(255), " + 
-			"is_verp_enabled varchar(3) NOT NULL, " +
+			"is_verp_enabled boolean NOT NULL, " +
 			"updt_time datetime(3) NOT NULL, " +
 			"updt_user_id char(10) NOT NULL, " +
 			"CONSTRAINT mail_sender_props_pkey PRIMARY KEY (row_id) " +
@@ -138,10 +138,10 @@ public class SmtpTable extends CreateTableBase {
 				vo.setSmtpPort(ss.getSmtpPort());
 				vo.setServerName(ss.getServerName());
 				vo.setDescription(ss.getDescription());
-				vo.setUseSsl(ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
+				vo.setUseSsl(ss.isUseSsl()); // use ssl
 				vo.setUserId(ss.getUserId());
 				vo.setUserPswd(ss.getUserPswd());
-				vo.setPersistence(ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
+				vo.setPersistence(ss.isPersistence()); // persistence
 				vo.setStatusId(ss.getStatus().value()); // status id
 				vo.setServerType(ss.getServerType().value()); // server type
 				vo.setThreads(ss.getNumberOfThreads()); // Threads
@@ -175,10 +175,10 @@ public class SmtpTable extends CreateTableBase {
 					vo.setSmtpPort(ss.getSmtpPort());
 					vo.setServerName(ss.getServerName());
 					vo.setDescription(ss.getDescription());
-					vo.setUseSsl(ss.isUseSsl() ? Constants.YES : Constants.NO); // use ssl
+					vo.setUseSsl(ss.isUseSsl()); // use ssl
 					vo.setUserId(ss.getUserId());
 					vo.setUserPswd(ss.getUserPswd());
-					vo.setPersistence(ss.isPersistence() ? Constants.YES : Constants.NO); // persistence
+					vo.setPersistence(ss.isPersistence()); // persistence
 					vo.setStatusId(ss.getStatus().value()); // status id
 					vo.setServerType(ss.getServerType().value()); // server type
 					vo.setThreads(ss.getNumberOfThreads()); // Threads
@@ -234,11 +234,11 @@ public class SmtpTable extends CreateTableBase {
 			MailSenderVo vo = new MailSenderVo();
 			vo.setInternalLoopback("testto@localhost");
 			vo.setExternalLoopback("inbox@lagacytojava.com");
-			vo.setUseTestAddr(Constants.YES);
+			vo.setUseTestAddr(true);
 			vo.setTestFromAddr("testfrom@localhost");
 			vo.setTestToAddr("testto@localhost");
 			vo.setTestReplytoAddr("testreplyto@localhost");
-			vo.setIsVerpEnabled(Constants.NO);
+			vo.setIsVerpEnabled(false);
 			vo.setUpdtTime(new Timestamp(System.currentTimeMillis()));
 			vo.setUpdtUserId("SysAdmin");
 			

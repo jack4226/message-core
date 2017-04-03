@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import ltj.message.bo.rule.RuleBase;
 import ltj.message.constant.Constants;
+import ltj.message.constant.StatusId;
 import ltj.message.dao.action.MsgActionDao;
 import ltj.message.dao.rule.RuleElementDao;
 import ltj.message.dao.rule.RuleLogicDao;
@@ -878,8 +879,8 @@ public class MsgRulesBean {
 		List<MsgActionUIVo> list = getMsgActionList();
 		MsgActionUIVo vo = new MsgActionUIVo(new MsgActionVo());
 		vo.setActionSeq(0);
-		vo.setStartTime(new Timestamp(new Date().getTime()));
-		vo.setStatusId(Constants.Y);
+		vo.setStartTime(new Timestamp(System.currentTimeMillis()));
+		vo.setStatusId(StatusId.ACTIVE.value());
 		vo.setMarkedForEdition(true);
 		list.add(vo);
 		return TO_SELF;

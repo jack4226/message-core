@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.Constants;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.vo.emailaddr.EmailVariableVo;
@@ -66,7 +65,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		String sql = "select * from email_variable " +
 			" where is_built_in!=? " +
 			" order by row_id";
-		Object[] parms = new Object[] {Constants.Y};
+		Object[] parms = new Object[] {true};
 		List<EmailVariableVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailVariableVo>(EmailVariableVo.class));
 		return list;
@@ -77,7 +76,7 @@ public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDa
 		String sql = "select * from email_variable " +
 			" where is_built_in=? " +
 			" order by row_id";
-		Object[] parms = new Object[] {Constants.Y};
+		Object[] parms = new Object[] {true};
 		List<EmailVariableVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<EmailVariableVo>(EmailVariableVo.class));
 		return list;

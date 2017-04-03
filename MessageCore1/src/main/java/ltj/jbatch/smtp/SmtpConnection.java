@@ -84,7 +84,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		if (StringUtils.isNotBlank(smtpHost)) {
 			sys_props.setProperty("mail.smtp.host", smtpHost);
 		}
-		if ("yes".equalsIgnoreCase(vo.getUseSsl())) {
+		if (vo.getUseSsl()) {
 			sys_props.setProperty("mail.smtps.auth", "true");
 			protocol = MailServerType.SMTPS.value();
 			sys_props.setProperty("mail.user", userId);
@@ -92,7 +92,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		}
 		else {
 			protocol = MailServerType.SMTP.value();
-			if ("yes".equalsIgnoreCase(vo.getUseAuth())) {
+			if (Boolean.TRUE.equals(vo.getUseAuth())) {
 				sys_props.setProperty("mail.smtp.auth", "true");
 				sys_props.setProperty("mail.user", userId);
 				sys_props.setProperty("mail.password", password);
@@ -173,7 +173,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		 * exclude SendFailedException) - reissue transport.connect() and re-send
 		 * the message
 		 */
-		if ("yes".equalsIgnoreCase(vo.getPersistence())) {
+		if (vo.getPersistence()) {
 			persistent = true;
 		}
 		logger.info("Persistent SMTP Connection used for " + smtpHost + "? " + persistent);
@@ -212,9 +212,9 @@ public final class SmtpConnection implements java.io.Serializable {
 		vo.setUserId(props.getProperty("userid"));
 		vo.setUserPswd(props.getProperty("password"));
 		vo.setServerType(props.getProperty("server_type", MailServerType.SMTP.value()));
-		vo.setUseSsl(props.getProperty("use_ssl"));
-		vo.setPersistence(props.getProperty("persistence"));
-		vo.setUseAuth(props.getProperty("use_auth"));
+		vo.setUseSsl("yes".equalsIgnoreCase(props.getProperty("use_ssl")));
+		vo.setPersistence("yes".equalsIgnoreCase(props.getProperty("persistence")));
+		vo.setUseAuth("yes".equalsIgnoreCase(props.getProperty("use_auth")));
 		
 		try {
 			vo.setThreads(Integer.parseInt(props.getProperty("threads", "2")));

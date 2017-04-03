@@ -21,7 +21,7 @@ public class EmailSubscrptVo extends BaseVo implements Serializable {
 	private Timestamp lastClickTime = null;
 	
 	// used when joining EmailAddr table to get Email Address
-	private String acceptHtml = "";
+	private Boolean acceptHtml = null;
 	private String emailAddr = null;
 	// used when joining customer_tbl table to get customer name
 	private String firstName = null;
@@ -38,7 +38,7 @@ public class EmailSubscrptVo extends BaseVo implements Serializable {
 	}
 	
 	public String getAcceptHtmlDesc() {
-		return Constants.N.equals(acceptHtml) ? Constants.NO : Constants.YES;
+		return Boolean.FALSE.equals(acceptHtml) ? Constants.NO : Constants.YES;
 	}
 	
 	public String getCustomerName() {
@@ -76,10 +76,10 @@ public class EmailSubscrptVo extends BaseVo implements Serializable {
 	public void setEmailAddr(String emailAddr) {
 		this.emailAddr = emailAddr;
 	}
-	public String getAcceptHtml() {
+	public Boolean getAcceptHtml() {
 		return acceptHtml;
 	}
-	public void setAcceptHtml(String acceptHtml) {
+	public void setAcceptHtml(Boolean acceptHtml) {
 		this.acceptHtml = acceptHtml;
 	}
 

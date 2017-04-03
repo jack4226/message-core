@@ -58,8 +58,8 @@ public class MailSenderPropsTest extends DaoTestBase {
 	}
 	
 	private int update(MailSenderVo mailSenderVo) {
-		if ("Yes".equalsIgnoreCase(mailSenderVo.getUseTestAddr())) {
-			mailSenderVo.setUseTestAddr("yes");
+		if (mailSenderVo.getUseTestAddr()) {
+			mailSenderVo.setUseTestAddr(true);
 		}
 		int rows = mailSenderPropsDao.update(mailSenderVo);
 		logger.info("MailSenderPropsDao - update: rows updated "+rows);

@@ -175,7 +175,7 @@ public class SmtpServersBean {
 		Properties sys_props = (Properties) System.getProperties().clone();
 		sys_props.put("mail.smtp.host", smtpHost);
 		String protocol = null;
-		if ("yes".equalsIgnoreCase(smtpServer.getUseSsl())) {
+		if (smtpServer.getUseSsl()) {
 			sys_props.put("mail.smtps.auth", "true");
 			sys_props.put("mail.user", userId);
 			protocol = MailServerType.SMTPS.value();
@@ -257,7 +257,7 @@ public class SmtpServersBean {
 		this.smtpServer = new SmtpConnVo();
 		smtpServer.setMarkedForEdition(true);
 		smtpServer.setUpdtUserId(Constants.DEFAULT_USER_ID);
-		smtpServer.setUseSsl("No");
+		smtpServer.setUseSsl(false);
 		setDefaultValues(smtpServer);
 		editMode = false;
 		return "smtpserver.edit";

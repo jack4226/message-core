@@ -18,7 +18,6 @@ import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.constant.CarrierCode;
-import ltj.message.constant.Constants;
 import ltj.message.vo.MailBoxVo;
 
 /**
@@ -103,9 +102,9 @@ public class MailProcessor extends RunnableProcessor {
 		// mailbox carrierCode
 		msgBean.setCarrierCode(mailBoxVo.getCarrierCode());
 		// internal mail only flag
-		msgBean.setInternalOnly(Constants.YES.equalsIgnoreCase(mailBoxVo.getInternalOnly()));
+		msgBean.setInternalOnly(Boolean.TRUE.equals(mailBoxVo.getInternalOnly()));
 		// mailbox SSL flag
-		msgBean.setUseSecureServer(Constants.YES.equalsIgnoreCase(mailBoxVo.getUseSsl()));
+		msgBean.setUseSecureServer(mailBoxVo.getUseSsl());
 		// MailBox Host Address
 		msgBean.setMailboxHost(mailBoxVo.getHostName());
 		// MailBox User Id
@@ -115,7 +114,7 @@ public class MailProcessor extends RunnableProcessor {
 		// Folder Name
 		msgBean.setFolderName(mailBoxVo.getFolderName());
 		// to_plain_text indicator, default to "no"
-		msgBean.setToPlainText("yes".equalsIgnoreCase(mailBoxVo.getToPlainText()));
+		msgBean.setToPlainText(Boolean.TRUE.equals(mailBoxVo.getToPlainText()));
 		
 		// for prototype only. Remove it.
 		if (msgBean.getCarrierCode().toUpperCase().startsWith(CarrierCode.READONLY.value())) {
@@ -156,7 +155,7 @@ public class MailProcessor extends RunnableProcessor {
 		else { // email size within the limit
 			boolean isDuplicate = false;
 			// check for duplicate
-			if (msgBean.getSmtpMessageId() != null && "yes".equalsIgnoreCase(mailBoxVo.getCheckDuplicate())) {
+			if (msgBean.getSmtpMessageId() != null && Boolean.TRUE.equals(mailBoxVo.getCheckDuplicate())) {
 				isDuplicate = duplicateCheck.isDuplicate(msgBean.getSmtpMessageId());
 			}
 			else {
@@ -167,7 +166,7 @@ public class MailProcessor extends RunnableProcessor {
 				logger.error("Duplicate Message received, messageId: " + msgBean.getSmtpMessageId());
 
 				// write raw stream to logging file
-				if ("yes".equalsIgnoreCase(mailBoxVo.getLogDuplicate())) {
+				if (Boolean.TRUE.equals(mailBoxVo.getLogDuplicate())) {
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					try {
 						p.writeTo(baos);

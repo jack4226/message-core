@@ -25,7 +25,6 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.template.RenderUtil;
-import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
@@ -52,7 +51,7 @@ public class MailingListComposeBean {
 	private String msgSubject = null;
 	private String msgBody = null;
 	private boolean isHtml = true;
-	private String embedEmailId = " "; // use system default
+	private Boolean embedEmailId = null; // use system default
 	private String renderedBody = null;
 	private String renderedSubj = null;
 	private String templateId =null;
@@ -220,12 +219,9 @@ public class MailingListComposeBean {
 			MessageBean mBean = new MessageBean();
 			mBean.setMailingListId(listId);
 			mBean.setRuleName(RuleNameEnum.BROADCAST.name());
-			if (Constants.Y.equals(embedEmailId)) {
-				mBean.setEmBedEmailId(Boolean.valueOf(true));
-			}
-			else if (Constants.N.equals(embedEmailId)) {
-				mBean.setEmBedEmailId(Boolean.valueOf(false));
-			}
+
+			mBean.setEmBedEmailId(embedEmailId);
+
 			if (MLDeliveryType.CUSTOMERS_ONLY.value().equals(deliveryOption)) {
 				mBean.setToCustomersOnly(true);
 			}
@@ -422,11 +418,11 @@ public class MailingListComposeBean {
 		this.isHtml = isHtml;
 	}
 
-	public String getEmbedEmailId() {
+	public Boolean getEmbedEmailId() {
 		return embedEmailId;
 	}
 
-	public void setEmbedEmailId(String embedEmailId) {
+	public void setEmbedEmailId(Boolean embedEmailId) {
 		this.embedEmailId = embedEmailId;
 	}
 

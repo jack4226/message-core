@@ -287,7 +287,7 @@ public class InboxTables extends CreateTableBase {
 			"status_id char(1) NOT NULL, " + // P - pending, D - delivered by MailSender, F - delivery failed, C/O - closed/Open (for received mail)
 			"smtp_message_id varchar(255), " + // SMTP message Id, updated by MailSender once delivered
 			"render_id bigint, " + // link to a msg_rendered record
-			"override_test_addr char(1), " + // Y - tell MailSender to use TO address even under test mode
+			"override_test_addr boolean, " + // true - tell MailSender to use TO address even under test mode
 			"attachment_count smallint NOT NULL DEFAULT 0, " + // for UI performance
 			"attachment_size int NOT NULL DEFAULT 0, " + // for UI performance
 			"msg_body_size int NOT NULL DEFAULT 0, " + // for UI performance

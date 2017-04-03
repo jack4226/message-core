@@ -171,7 +171,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 		}
 		
 		// Get a Session object
-		if ("yes".equalsIgnoreCase(mailBoxVo.getUseSsl())) {
+		if (mailBoxVo.getUseSsl()) {
 			m_props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 			m_props.setProperty("mail.pop3.socketFactory.fallback", "false");
 			m_props.setProperty("mail.pop3.port", mailBoxVo.getPortNumber()+"");

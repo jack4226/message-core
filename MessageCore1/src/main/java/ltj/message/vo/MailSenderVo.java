@@ -7,16 +7,16 @@ public class MailSenderVo extends ServerBaseVo implements Serializable {
 	
 	private String internalLoopback = "";
 	private String externalLoopback = "";
-	private String useTestAddr = "";
+	private boolean useTestAddr;
 	private String testFromAddr = null; 
 	private String testToAddr = "";
 	private String testReplytoAddr = null;
-	private String isVerpEnabled = "";
+	private boolean isVerpEnabled;
 	
-	public String getIsVerpEnabled() {
+	public boolean getIsVerpEnabled() {
 		return isVerpEnabled;
 	}
-	public void setIsVerpEnabled(String isVerpEnabled) {
+	public void setIsVerpEnabled(boolean isVerpEnabled) {
 		this.isVerpEnabled = isVerpEnabled;
 	}
 	public String getExternalLoopback() {
@@ -49,10 +49,10 @@ public class MailSenderVo extends ServerBaseVo implements Serializable {
 	public void setTestToAddr(String testToAddr) {
 		this.testToAddr = testToAddr;
 	}
-	public String getUseTestAddr() {
+	public boolean getUseTestAddr() {
 		return useTestAddr;
 	}
-	public void setUseTestAddr(String useTestAddr) {
+	public void setUseTestAddr(boolean useTestAddr) {
 		this.useTestAddr = useTestAddr;
 	}
 }

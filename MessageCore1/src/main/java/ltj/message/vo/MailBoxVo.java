@@ -16,16 +16,16 @@ public class MailBoxVo extends ServerBaseVo implements Serializable {
 	private String folderName = "INBOX";
 	private String mailBoxDesc = null;
 	private String carrierCode = CarrierCode.SMTPMAIL.value();
-	private String internalOnly = null;
+	private Boolean internalOnly = null;
 	private int readPerPass = -1;
-	private String useSsl = "";
+	private boolean useSsl = false;
 	private Integer retryMax = null;
 	private Integer minimumWait = null;
-	private String toPlainText = null;
+	private Boolean toPlainText = null;
 	private String toAddrDomain = null;
-	private String checkDuplicate = null;
-	private String alertDuplicate = null;
-	private String logDuplicate = null;
+	private Boolean checkDuplicate = null;
+	private Boolean alertDuplicate = null;
+	private Boolean logDuplicate = null;
 	private Integer purgeDupsAfter = null;
 	
 	// used to tell if it's from batch or EJB timer
@@ -37,10 +37,10 @@ public class MailBoxVo extends ServerBaseVo implements Serializable {
 		return "mailProcessor";
 	}
 	
-	public String getAlertDuplicate() {
+	public Boolean getAlertDuplicate() {
 		return alertDuplicate;
 	}
-	public void setAlertDuplicate(String alertDuplicate) {
+	public void setAlertDuplicate(Boolean alertDuplicate) {
 		this.alertDuplicate = alertDuplicate;
 	}
 	public String getCarrierCode() {
@@ -49,10 +49,10 @@ public class MailBoxVo extends ServerBaseVo implements Serializable {
 	public void setCarrierCode(String carrierCode) {
 		this.carrierCode = carrierCode;
 	}
-	public String getCheckDuplicate() {
+	public Boolean getCheckDuplicate() {
 		return checkDuplicate;
 	}
-	public void setCheckDuplicate(String checkDuplicate) {
+	public void setCheckDuplicate(Boolean checkDuplicate) {
 		this.checkDuplicate = checkDuplicate;
 	}
 	public String getFolderName() {
@@ -67,10 +67,10 @@ public class MailBoxVo extends ServerBaseVo implements Serializable {
 	public void setHostName(String hostName) {
 		this.hostName = hostName;
 	}
-	public String getLogDuplicate() {
+	public Boolean getLogDuplicate() {
 		return logDuplicate;
 	}
-	public void setLogDuplicate(String logDuplicate) {
+	public void setLogDuplicate(Boolean logDuplicate) {
 		this.logDuplicate = logDuplicate;
 	}
 	public String getMailBoxDesc() {
@@ -127,10 +127,10 @@ public class MailBoxVo extends ServerBaseVo implements Serializable {
 	public void setToAddrDomain(String toAddrDomain) {
 		this.toAddrDomain = toAddrDomain;
 	}
-	public String getToPlainText() {
+	public Boolean getToPlainText() {
 		return toPlainText;
 	}
-	public void setToPlainText(String toPlainText) {
+	public void setToPlainText(Boolean toPlainText) {
 		this.toPlainText = toPlainText;
 	}
 	public String getUserId() {
@@ -145,18 +145,18 @@ public class MailBoxVo extends ServerBaseVo implements Serializable {
 	public void setUserPswd(String userPswd) {
 		this.userPswd = userPswd;
 	}
-	public String getUseSsl() {
+	public boolean getUseSsl() {
 		return useSsl;
 	}
-	public void setUseSsl(String useSsl) {
+	public void setUseSsl(boolean useSsl) {
 		this.useSsl = useSsl;
 	}
 
-	public String getInternalOnly() {
+	public Boolean getInternalOnly() {
 		return internalOnly;
 	}
 
-	public void setInternalOnly(String internalOnly) {
+	public void setInternalOnly(Boolean internalOnly) {
 		this.internalOnly = internalOnly;
 	}
 

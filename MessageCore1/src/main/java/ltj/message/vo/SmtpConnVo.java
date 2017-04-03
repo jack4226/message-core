@@ -6,11 +6,11 @@ public class SmtpConnVo extends ServerBaseVo implements Serializable {
 	private static final long serialVersionUID = -1343713327747984527L;
 	private String smtpHost = "";
 	private int smtpPort = -1;
-	private String useSsl = "";
-	private String useAuth = null;
+	private boolean useSsl = false;
+	private Boolean useAuth = null;
 	private String userId = ""; 
 	private String userPswd = "";
-	private String persistence = "";
+	private boolean persistence = false;
 	private String serverType = null;
 	private int retries = -1;
 	private int retryFreq = -1;
@@ -18,7 +18,7 @@ public class SmtpConnVo extends ServerBaseVo implements Serializable {
 	private String alertLevel = null;
 	
 	public boolean isSsl() {
-		return ("yes".equalsIgnoreCase(useSsl));
+		return useSsl;
 	}
 	
 	public Integer getAlertAfter() {
@@ -33,10 +33,10 @@ public class SmtpConnVo extends ServerBaseVo implements Serializable {
 	public void setAlertLevel(String alertLevel) {
 		this.alertLevel = alertLevel;
 	}
-	public String getPersistence() {
+	public boolean getPersistence() {
 		return persistence;
 	}
-	public void setPersistence(String persistence) {
+	public void setPersistence(boolean persistence) {
 		this.persistence = persistence;
 	}
 	public int getRetries() {
@@ -81,16 +81,16 @@ public class SmtpConnVo extends ServerBaseVo implements Serializable {
 	public void setUserPswd(String userPswd) {
 		this.userPswd = userPswd;
 	}
-	public String getUseSsl() {
+	public boolean getUseSsl() {
 		return useSsl;
 	}
-	public void setUseSsl(String useSsl) {
+	public void setUseSsl(boolean useSsl) {
 		this.useSsl = useSsl;
 	}
-	public String getUseAuth() {
+	public Boolean getUseAuth() {
 		return useAuth;
 	}
-	public void setUseAuth(String useAuth) {
+	public void setUseAuth(Boolean useAuth) {
 		this.useAuth = useAuth;
 	}
 }

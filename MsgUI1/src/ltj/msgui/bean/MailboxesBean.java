@@ -179,7 +179,7 @@ public class MailboxesBean {
 		Properties m_props = (Properties) System.getProperties().clone();
 		Session session = null;
 		// Get a Session object
-		if ("yes".equalsIgnoreCase(mailbox.getUseSsl())) {
+		if (mailbox.getUseSsl()) {
 			m_props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 			m_props.setProperty("mail.pop3.socketFactory.fallback", "false");
 			m_props.setProperty("mail.pop3.port", mailbox.getPortNumber()+"");
@@ -257,8 +257,8 @@ public class MailboxesBean {
 		this.mailbox = new MailBoxVo();
 		mailbox.setMarkedForEdition(true);
 		mailbox.setUpdtUserId(Constants.DEFAULT_USER_ID);
-		mailbox.setUseSsl("No");
-		mailbox.setToPlainText("No");
+		mailbox.setUseSsl(false);
+		mailbox.setToPlainText(Boolean.FALSE);
 		mailbox.setReadPerPass(5);
 		setDefaultValues(mailbox);
 		editMode = false;
@@ -268,12 +268,12 @@ public class MailboxesBean {
 	private void setDefaultValues(MailBoxVo mailbox) {
 		// default values, not present on screen
 		mailbox.setProcessorName("mailProcessor");
-		mailbox.setCheckDuplicate(Constants.YES);
-		mailbox.setAlertDuplicate(Constants.YES);
-		mailbox.setLogDuplicate(Constants.YES);
+		mailbox.setCheckDuplicate(Boolean.TRUE);
+		mailbox.setAlertDuplicate(Boolean.TRUE);
+		mailbox.setLogDuplicate(Boolean.TRUE);
 		mailbox.setPurgeDupsAfter(24); // in hours
 		mailbox.setCarrierCode(CarrierCode.SMTPMAIL.value());
-		mailbox.setInternalOnly(Constants.NO);
+		mailbox.setInternalOnly(Boolean.FALSE);
 		mailbox.setMessageCount(-1);
 	}
 	

@@ -2,7 +2,6 @@ package ltj.message.vo.emailaddr;
 
 import java.io.Serializable;
 
-import ltj.message.constant.Constants;
 import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.vo.BaseVoWithRowId;
 
@@ -12,7 +11,7 @@ public class EmailVariableVo extends BaseVoWithRowId implements Serializable {
 	private String variableType = "";
 	private String tableName = null;
 	private String columnName = null;
-	private String isBuiltIn = Constants.N;
+	private boolean isBuiltIn = false;
 	private String defaultValue = null;
 	private String variableQuery = null;
 	private String variableProc = null;
@@ -49,7 +48,7 @@ public class EmailVariableVo extends BaseVoWithRowId implements Serializable {
 	}
 	
 	public boolean getIsBuiltInVariable() {
-		return Constants.Y.equals(isBuiltIn);
+		return isBuiltIn;
 	}
 	/** end of UI components */
 	
@@ -95,10 +94,10 @@ public class EmailVariableVo extends BaseVoWithRowId implements Serializable {
 	public void setVariableProc(String variableProc) {
 		this.variableProc = variableProc;
 	}
-	public String getIsBuiltIn() {
+	public boolean getIsBuiltIn() {
 		return isBuiltIn;
 	}
-	public void setIsBuiltIn(String isBuiltIn) {
+	public void setIsBuiltIn(boolean isBuiltIn) {
 		this.isBuiltIn = isBuiltIn;
 	}
 }

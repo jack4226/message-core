@@ -230,7 +230,7 @@ public class SubscribersListBean {
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
 				}
 				int rowsUpdated = getSubscriptionDao().update(vo);
-				boolean acceptHtml =  Constants.Y.equalsIgnoreCase(vo.getAcceptHtml());
+				boolean acceptHtml =  vo.getAcceptHtml();
 				rowsUpdated += getEmailAddrDao().updateAcceptHtml(vo.getEmailAddrId(), acceptHtml);
 				if (rowsUpdated > 0) {
 					logger.info("saveSubscribers() - Subscriber updated: " + vo.getEmailAddr());

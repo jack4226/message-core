@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDataType;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
@@ -35,13 +34,12 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 			emailTemplateVo.setListId(rs.getString("list_id"));
 			emailTemplateVo.setSubject(rs.getString("subject"));
 			emailTemplateVo.setBodyText(rs.getString("body_text"));
-			String isHtml = rs.getString("is_html");
-			emailTemplateVo.setIsHtml(Constants.Y.equals(isHtml) ? true : false);
+			emailTemplateVo.setIsHtml(rs.getBoolean("is_html"));
 			emailTemplateVo.setListType(rs.getString("list_type"));
 			emailTemplateVo.setDeliveryOption(rs.getString("delivery_option"));
 			emailTemplateVo.setSelectCriteria(rs.getString("select_criteria"));
-			emailTemplateVo.setEmbedEmailId(rs.getString("embed_email_id"));
-			emailTemplateVo.setIsBuiltIn(rs.getString("is_built_in"));
+			emailTemplateVo.setEmbedEmailId(rs.getBoolean("embed_email_id"));
+			emailTemplateVo.setIsBuiltIn(rs.getBoolean("is_built_in"));
 			emailTemplateVo.setOrigTemplateId(emailTemplateVo.getTemplateId());
 			emailTemplateVo.setClientId(rs.getString("client_id"));
 			// retrieve SchedulesBlob class
@@ -120,7 +118,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 		keys.add(emailTemplateVo.getListId());
 		keys.add(emailTemplateVo.getSubject());
 		keys.add(emailTemplateVo.getBodyText());
-		keys.add(emailTemplateVo.getIsHtml() ? Constants.Y : Constants.N);
+		keys.add(emailTemplateVo.getIsHtml());
 		keys.add(emailTemplateVo.getListType());
 		keys.add(emailTemplateVo.getDeliveryOption());
 		keys.add(emailTemplateVo.getSelectCriteria());
@@ -184,7 +182,7 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 				emailTemplateVo.getListId(),
 				emailTemplateVo.getSubject(),
 				emailTemplateVo.getBodyText(),
-				emailTemplateVo.getIsHtml() ? Constants.Y : Constants.N,
+				emailTemplateVo.getIsHtml(),
 				emailTemplateVo.getListType(),
 				emailTemplateVo.getDeliveryOption(),
 				emailTemplateVo.getSelectCriteria(),

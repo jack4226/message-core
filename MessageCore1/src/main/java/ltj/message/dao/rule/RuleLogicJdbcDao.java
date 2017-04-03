@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bo.rule.RuleBase;
-import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
@@ -115,7 +114,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 		String sql = getSelectClause();
 		
 		if (builtInRule) {
-			sql += " where r.built_in_rule=? and r.sub_rule!='" + Constants.Y + "' ";
+			sql += " where r.built_in_rule=? and r.sub_rule!=true ";
 		}
 		else {
 			sql += " where r.built_in_rule!=? ";

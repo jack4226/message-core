@@ -1070,7 +1070,7 @@ public final class MessageBeanBuilder {
 		msgBean.setCustId(msgVo.getCustId());
 		msgBean.setSmtpMessageId(msgVo.getSmtpMessageId());
 		msgBean.setRenderId(msgVo.getRenderId());
-		msgBean.setOverrideTestAddr(Constants.Y.equals(msgVo.getOverrideTestAddr()));
+		msgBean.setOverrideTestAddr(msgVo.getOverrideTestAddr() == null ? false : msgVo.getOverrideTestAddr());
 		msgBean.setRuleName(msgVo.getRuleName());
 		
 		// set message body and attachments

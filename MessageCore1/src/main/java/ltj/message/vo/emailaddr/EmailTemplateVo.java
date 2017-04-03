@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
 
-import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.constant.MailingListType;
 import ltj.message.dao.emailaddr.SchedulesBlob;
@@ -20,8 +19,8 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	private String listType = MailingListType.TRADITIONAL.value();
 	private String deliveryOption = MLDeliveryType.ALL_ON_LIST.value();
 	private String selectCriteria = null;
-	private String embedEmailId = " "; // use system default
-	private String isBuiltIn = Constants.N;
+	private Boolean embedEmailId = null; // null -> use system default
+	private boolean isBuiltIn = false;
 	private SchedulesBlob schedulesBlob = null;
 	private String origTemplateId = null;
 	private String clientId = "";
@@ -49,7 +48,7 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	}
 	
 	public boolean getIsBuiltInTemplate() {
-		return Constants.Y.equals(isBuiltIn);
+		return isBuiltIn;
 	}
 	/** end of UI */
 
@@ -109,19 +108,19 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 		this.deliveryOption = deliveryOption;
 	}
 
-	public String getEmbedEmailId() {
+	public Boolean getEmbedEmailId() {
 		return embedEmailId;
 	}
 
-	public void setEmbedEmailId(String embedEmailId) {
+	public void setEmbedEmailId(Boolean embedEmailId) {
 		this.embedEmailId = embedEmailId;
 	}
 
-	public String getIsBuiltIn() {
+	public boolean getIsBuiltIn() {
 		return isBuiltIn;
 	}
 
-	public void setIsBuiltIn(String isBuiltIn) {
+	public void setIsBuiltIn(boolean isBuiltIn) {
 		this.isBuiltIn = isBuiltIn;
 	}
 	

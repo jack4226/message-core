@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
@@ -99,8 +98,8 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<SmtpConnVo> getBySslFlag(boolean useSSL, boolean onlyActive) {
-		List<String> keys = new ArrayList<>();
-		keys.add(useSSL ? Constants.YES : Constants.NO);
+		List<Object> keys = new ArrayList<>();
+		keys.add(useSSL);
 		String sql = "select * from smtp_server where use_ssl=?";
 		if (onlyActive) {
 			sql += " and status_id=? ";
@@ -115,8 +114,8 @@ public class SmtpServerJdbcDao extends AbstractDao implements SmtpServerDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<SmtpConnVo> getBySslFlagForTrial(boolean useSSL, boolean onlyActive) {
-		List<String> keys = new ArrayList<>();
-		keys.add(useSSL ? Constants.YES : Constants.NO);
+		List<Object> keys = new ArrayList<>();
+		keys.add(useSSL);
 		String sql = "select * from smtp_server where use_ssl=?";
 		if (onlyActive) {
 			sql += " and status_id=? ";

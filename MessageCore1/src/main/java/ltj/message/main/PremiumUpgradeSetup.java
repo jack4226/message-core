@@ -63,7 +63,7 @@ public class PremiumUpgradeSetup {
 	private void setTemplateData(EmailTemplateVo vo) {
 		vo.setIsHtml(true);
 		vo.setListId("ORDERLST");
-		vo.setEmbedEmailId(Constants.Y);
+		vo.setEmbedEmailId(true);
 		vo.setDeliveryOption(MLDeliveryType.ALL_ON_LIST.value());
 		vo.setListType(MailingListType.TRADITIONAL.value());
 		vo.setSubject("Product Key for EmailSphere premium version included");

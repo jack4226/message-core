@@ -18,7 +18,6 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bo.task.TaskBaseBo;
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.constant.CarrierCode;
-import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
@@ -208,12 +207,9 @@ public class MailingListBoImpl implements MailingListBo {
 		msgBean.setIsReceived(false);
 		msgBean.setOverrideTestAddr(false);
 		msgBean.setRuleName(RuleNameEnum.BROADCAST.name());
-		if (Constants.Y.equalsIgnoreCase(tmpltVo.getEmbedEmailId())) {
-			msgBean.setEmBedEmailId(Boolean.TRUE);
-		}
-		else if (Constants.N.equalsIgnoreCase(tmpltVo.getEmbedEmailId())) {
-			msgBean.setEmBedEmailId(Boolean.FALSE);
-		}
+
+		msgBean.setEmBedEmailId(tmpltVo.getEmbedEmailId());
+
 		msgBean.setToCustomersOnly(MLDeliveryType.CUSTOMERS_ONLY.value().equals(tmpltVo.getDeliveryOption()));
 		msgBean.setToProspectsOnly(MLDeliveryType.PROSPECTS_ONLY.value().equals(tmpltVo.getDeliveryOption()));
 		
