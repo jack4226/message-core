@@ -83,14 +83,14 @@ public abstract class RuleBase implements java.io.Serializable {
 			String _dataName,
 			String _headerName,
 			String _criteria, 
-			String _caseSensitive) {
+			boolean _caseSensitive) {
 		this.ruleName = _ruleName;
 		this.ruleType = _ruleType;
 		this.mailType = _mailType;
 		this.dataName = _dataName;
 		this.headerName = _headerName;
 		this.criteria = _criteria;
-		this.caseSensitive = "Y".equalsIgnoreCase(_caseSensitive);
+		this.caseSensitive = _caseSensitive;
 		if (this.ruleName != null && !ruleNameList.contains(this.ruleName)) {
 			ruleNameList.add(this.ruleName);
 		}

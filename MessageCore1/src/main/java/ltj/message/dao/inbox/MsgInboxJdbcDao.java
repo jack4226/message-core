@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import ltj.message.constant.AddressType;
-import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
@@ -442,7 +441,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		// msgFlag
 		if (vo.getFlagged() != null && vo.getFlagged()) {
 			whereSql += CRIT[parms.size()] + " a.flagged = ? ";
-			parms.add(Constants.Y);
+			parms.add(true);
 		}
 		// subject
 		if (StringUtils.isNotBlank(vo.getSubject())) {
@@ -520,7 +519,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		fields.add(msgInboxVo.getReadCount());
 		fields.add(msgInboxVo.getReplyCount());
 		fields.add(msgInboxVo.getForwardCount());
-		fields.add(msgInboxVo.getFlagged());
+		fields.add(msgInboxVo.isFlagged());
 		
 		fields.add(msgInboxVo.getMsgId());
 		
@@ -616,7 +615,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		fields.add(msgInboxVo.getReadCount());
 		fields.add(msgInboxVo.getReplyCount());
 		fields.add(msgInboxVo.getForwardCount());
-		fields.add(msgInboxVo.getFlagged());
+		fields.add(msgInboxVo.isFlagged());
 		
 		fields.add(msgInboxVo.getMsgId());
 		

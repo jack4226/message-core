@@ -2,7 +2,6 @@ package ltj.message.vo.rule;
 
 import java.io.Serializable;
 
-import ltj.message.constant.Constants;
 import ltj.message.vo.BaseVoWithRowId;
 
 public class RuleElementVo extends BaseVoWithRowId implements Serializable {
@@ -13,24 +12,17 @@ public class RuleElementVo extends BaseVoWithRowId implements Serializable {
 	private String dataName = "";
 	private String headerName = null;
 	private String criteria = ""; 
-	private String caseSensitive = Constants.N;
+	private boolean caseSensitive = false;
 	private String targetText = null;
 	private String targetProc = null;
 	private String exclusions = null;
 	private String exclListProc = null;
 	private String delimiter = null;
 	
-	public boolean isTextCaseSensitive() {
-		return Constants.Y.equalsIgnoreCase(getCaseSensitive());
-	}
-	public void setTextCaseSensitive(boolean value) {
-		setCaseSensitive(value == true ? Constants.Y : Constants.N);
-	}
-	
-	public String getCaseSensitive() {
+	public boolean isCaseSensitive() {
 		return caseSensitive;
 	}
-	public void setCaseSensitive(String caseSensitive) {
+	public void setCaseSensitive(boolean caseSensitive) {
 		this.caseSensitive = caseSensitive;
 	}
 	public String getCriteria() {

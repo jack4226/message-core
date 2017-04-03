@@ -119,7 +119,7 @@ public class PremiumUpgradeSetup {
 		vo.setElementSeq(0);
 		vo.setDataName(VariableName.SUBJECT.value());
 		vo.setCriteria(RuleBase.EQUALS);
-		vo.setCaseSensitive(Constants.N);
+		vo.setCaseSensitive(false);
 		vo.setTargetText("Inquiry About: Free Premium Upgrade");
 		int rows = dao.insert(vo);
 		vo.setElementSeq(1);

@@ -48,7 +48,7 @@ public class RuleJdbcDao extends AbstractDao implements RuleDao {
 			ruleElementVo.setDataName(rs.getString("data_name"));
 			ruleElementVo.setHeaderName(rs.getString("header_name"));
 			ruleElementVo.setCriteria(rs.getString("criteria"));
-			ruleElementVo.setCaseSensitive(rs.getString("case_sensitive"));
+			ruleElementVo.setCaseSensitive(rs.getBoolean("case_sensitive"));
 			ruleElementVo.setTargetText(rs.getString("target_text"));
 			ruleElementVo.setExclusions(rs.getString("exclusions"));
 			ruleElementVo.setExclListProc(rs.getString("excl_list_proc"));

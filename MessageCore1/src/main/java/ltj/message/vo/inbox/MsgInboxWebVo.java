@@ -3,7 +3,6 @@ package ltj.message.vo.inbox;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.vo.BaseVo;
@@ -23,7 +22,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	private int readCount = 0;
 	private int replyCount = 0;
 	private int forwardCount = 0;
-	private String flagged = "";
+	private boolean flagged = false;
 	private String msgDirection = "";
 	
 	private int attachmentCount = 0;
@@ -39,7 +38,7 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	private int threadLevel = -1; // don't change
 
 	public MsgInboxWebVo() {
-		flagged = "";
+		flagged = false;
 		msgDirection = "";
 		setStatusId("");		
 	}
@@ -62,10 +61,6 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 
 	public boolean isHasAttachments() {
 		return (attachmentCount > 0 ? true : false);
-	}
-	
-	public boolean isFlaggedMsg() {
-		return (Constants.Y.equalsIgnoreCase(flagged));
 	}
 	
 	public boolean isReceivedMsg() {
@@ -211,10 +206,10 @@ public class MsgInboxWebVo extends BaseVo implements Serializable {
 	public void setForwardCount(int forwardCount) {
 		this.forwardCount = forwardCount;
 	}
-	public String getFlagged() {
+	public boolean isFlagged() {
 		return flagged;
 	}
-	public void setFlagged(String flagged) {
+	public void setFlagged(boolean flagged) {
 		this.flagged = flagged;
 	}
 	public String getMsgDirection() {

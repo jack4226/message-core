@@ -3,7 +3,6 @@ package ltj.message.table;
 import java.sql.SQLException;
 
 import ltj.message.constant.CarrierCode;
-import ltj.message.constant.Constants;
 import ltj.message.constant.MLDeliveryType;
 import ltj.message.main.CreateTableBase;
 
@@ -283,7 +282,7 @@ public class InboxTables extends CreateTableBase {
 			"read_count int NOT NULL DEFAULT 0, " + // how many times it's been read
 			"reply_count int NOT NULL DEFAULT 0, " + // how many times it's been replied
 			"forward_count int NOT NULL DEFAULT 0, " + // how many times it's been forwarded
-			"flagged char(1) NOT NULL DEFAULT '" + Constants.N + "', " +
+			"flagged boolean NOT NULL DEFAULT false, " +
 			"delivery_time datetime(3), " + // for out-bound messages only, updated by MailSender
 			"status_id char(1) NOT NULL, " + // P - pending, D - delivered by MailSender, F - delivery failed, C/O - closed/Open (for received mail)
 			"smtp_message_id varchar(255), " + // SMTP message Id, updated by MailSender once delivered

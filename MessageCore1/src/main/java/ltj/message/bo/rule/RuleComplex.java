@@ -13,7 +13,7 @@ public class RuleComplex extends RuleBase {
 	private final List<RuleBase> ruleList;
 	
 	public RuleComplex(String _ruleName, String _ruleType, String _mailType, List<RuleBase> _rule_list) {
-		super(_ruleName, _ruleType, _mailType, "", null, RuleBase.EQUALS, "N");
+		super(_ruleName, _ruleType, _mailType, "", null, RuleBase.EQUALS, false);
 		this.ruleList = _rule_list;
 		logger.info(">>>>> Complex-Rule initialized for " + ruleName);
 	}

@@ -157,6 +157,7 @@ public class LoadInboxTables {
 		in.setBodyContentType("text/plain");
 		in.setMsgBody("Test Broadcast Message Body");
 		in.setStatusId(StatusId.CLOSED.value());
+		in.setFlagged(true);
 
 		msgInboxDao.insert(in);
 

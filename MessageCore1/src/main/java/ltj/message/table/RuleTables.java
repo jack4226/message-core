@@ -100,7 +100,7 @@ public class RuleTables extends CreateTableBase {
 			"data_name varchar(26) NOT NULL, " +
 			"header_name varchar(50), " + // X-Header name if DataName is X-Header
 			"criteria varchar(16) NOT NULL, " +
-			"case_sensitive char(1) NOT NULL DEFAULT '" + Constants.N + "', " + // Y/N
+			"case_sensitive boolean NOT NULL DEFAULT false, " +
 			"target_text varchar(2000), " + 
 			"target_proc varchar(100), " +
 			"exclusions text, " + // delimited
@@ -229,7 +229,7 @@ public class RuleTables extends CreateTableBase {
 				vo.setDataName(re.getRuleDataName().getValue());
 				vo.setHeaderName(re.getXheaderNameEnum() == null ? null : re.getXheaderNameEnum().value());
 				vo.setCriteria(re.getRuleCriteria().value());
-				vo.setCaseSensitive(re.isCaseSensitive() ? Constants.Y : Constants.N);
+				vo.setCaseSensitive(re.isCaseSensitive());
 				vo.setTargetText(re.getTargetText());
 				vo.setTargetProc(re.getTargetProcName());
 				vo.setExclusions(re.getExclusions());

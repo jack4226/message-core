@@ -291,7 +291,7 @@ public class MsgInboxTest extends DaoTestBase {
 	void assertMsgInboxWebVosSame(MsgInboxWebVo vo1, MsgInboxWebVo vo2) {
 		assertEquals(vo1.getAttachmentCount(), vo2.getAttachmentCount());
 		assertEquals(vo1.getAttachmentSize(), vo2.getAttachmentSize());
-		assertEquals(vo1.getFlagged(), vo2.getFlagged());
+		assertEquals(vo1.isFlagged(), vo2.isFlagged());
 		assertEquals(vo1.getForwardCount(), vo2.getForwardCount());
 		assertEquals(vo1.getFromAddrId(), vo2.getFromAddrId());
 		assertEquals(vo1.getFromAddress(), vo2.getFromAddress());

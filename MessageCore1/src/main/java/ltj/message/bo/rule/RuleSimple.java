@@ -27,7 +27,7 @@ public class RuleSimple extends RuleBase {
 			String _dataName,
 			String _headerName,
 			String _criteria, 
-			String _case_sensitive, 
+			boolean _case_sensitive, 
 			String _targetText, 
 			String _exclusion_list,
 			String _stored_procedure,
