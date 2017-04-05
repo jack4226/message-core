@@ -19,16 +19,6 @@ public class RuleElementVo extends BaseVoWithRowId implements Serializable {
 	private String exclListProc = null;
 	private String delimiter = null;
 	
-	/**
-	 * Web UI methods
-	 */
-	public boolean getIsCaseSensitive() {
-		return isCaseSensitive();
-	}
-	/**
-	 * End Web UI
-	 */
-	
 	public boolean isCaseSensitive() {
 		return caseSensitive;
 	}

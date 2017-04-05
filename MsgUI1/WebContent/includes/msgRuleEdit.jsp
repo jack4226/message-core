@@ -66,7 +66,7 @@
 		<h:message for="rulecategory" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.subRulePrompt}"/>
-		<h:selectOneMenu id="subrule" value="#{msgrules.ruleLogic.isSubRule}"
+		<h:selectOneMenu id="subrule" value="#{msgrules.ruleLogic.subRule}"
 			required="true" label="#{msgs.subRulePrompt}">
 			<f:selectItems value="#{codes.yorNItems}"/>
 		</h:selectOneMenu>
@@ -152,7 +152,7 @@
 			<f:facet name="header">
 				<h:outputText value="#{msgs.caseSensitiveColumn}"/> 
 			</f:facet>
-			<h:selectBooleanCheckbox value="#{element.textCaseSensitive}"/>
+			<h:selectBooleanCheckbox value="#{element.caseSensitive}"/>
         </h:column>
 		<h:column>
 			<f:facet name="header">

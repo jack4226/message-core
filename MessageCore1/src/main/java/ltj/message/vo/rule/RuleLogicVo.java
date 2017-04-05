@@ -24,10 +24,6 @@ public class RuleLogicVo extends BaseVoWithRowId implements Serializable {
 	private int origRuleSeq = -1;
 	
 	/** Define properties for UI components */
-	public boolean getIsSubRule() {
-		return isSubRule();
-	}
-	
 	public String getIsSubRuleDesc() {
 		if (isSubRule()) {
 			return "SubRule";
