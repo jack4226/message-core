@@ -19,7 +19,15 @@ public class Login {
 		logger.info("user.dir = " + user_dir);
 		String selenium_dir = StringUtils.replaceAll(user_dir, "\\\\", "/") + "/src/main/resources/selenium";
 
-		File chrome = new File(selenium_dir + "/chromedriver.exe");
+		String driver_file = null;
+		if (OSUtil.isWindows()) {
+			driver_file = "/chromedriver.exe";
+		}
+		else if (OSUtil.isMac()) {
+			driver_file = "/chromedriver";
+		}
+		
+		File chrome = new File(selenium_dir + driver_file);
 		if (!chrome.exists() || !chrome.isFile()) {
 			throw new RuntimeException("Could not find chromedriver.exe!");
 		}
