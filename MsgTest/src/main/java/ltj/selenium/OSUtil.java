@@ -1,36 +1,62 @@
 package ltj.selenium;
 
-public class OSUtil {
+import java.io.File;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
+public class OSUtil {
+	static final Logger logger = Logger.getLogger(OSUtil.class);
+	
 	private static String OS = System.getProperty("os.name").toLowerCase();
 
 	public static boolean isWindows() {
-
 		return (OS.indexOf("win") >= 0);
-
 	}
 
 	public static boolean isMac() {
-
 		return (OS.indexOf("mac") >= 0);
-
 	}
 
 	public static boolean isUnix() {
-
 		return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0);
-
 	}
 
 	public static boolean isSolaris() {
-
 		return (OS.indexOf("sunos") >= 0);
 	}
 	
+	public static void setupSeleniumBrowserDriver() {
+		String user_dir = System.getProperty("user.dir");
+		logger.info("user.dir = " + user_dir);
+		String selenium_dir = StringUtils.replaceAll(user_dir, "\\\\", "/") + "/src/main/resources/selenium";
+
+		String chrome_file = "/chromedriver.exe";
+		String gecko_file = "/geckodriver.exe";
+		
+		if (OSUtil.isMac()) {
+			chrome_file = "/chromedriver";
+			gecko_file = "/geckodriver";
+		}
+		else if (OSUtil.isUnix()) {
+			// TODO
+		}
+		
+		File chrome = new File(selenium_dir + chrome_file);
+		if (!chrome.exists() || !chrome.isFile()) {
+			throw new RuntimeException("Could not find chromedriver.exe!");
+		}
+		System.setProperty("webdriver.chrome.driver", chrome.getAbsolutePath());
+
+		File gecko = new File(selenium_dir + gecko_file);
+		if (!gecko.exists() || !gecko.isFile()) {
+			throw new RuntimeException("Could not find geckodriver.exe!");
+		}
+		System.setProperty("webdriver.gecko.driver", gecko.getAbsolutePath());
+	}
+	
 	public static void main(String[] args) {
-
-		System.out.println(OS);
-
+		logger.info("OS: " + OS);
 		if (isWindows()) {
 			System.out.println("This is Windows");
 		} else if (isMac()) {

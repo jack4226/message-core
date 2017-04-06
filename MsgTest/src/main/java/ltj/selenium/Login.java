@@ -16,30 +16,8 @@ public class Login {
 	static final Logger logger = Logger.getLogger(Login.class);
 
 	public static void main(String[] args) {
-		String user_dir = System.getProperty("user.dir");
-		logger.info("user.dir = " + user_dir);
-		String selenium_dir = StringUtils.replaceAll(user_dir, "\\\\", "/") + "/src/main/resources/selenium";
-
-		String chrome_file = null;
-		if (OSUtil.isWindows()) {
-			chrome_file = "/chromedriver.exe";
-		}
-		else if (OSUtil.isMac()) {
-			chrome_file = "/chromedriver";
-		}
+		OSUtil.setupSeleniumBrowserDriver();
 		
-		File chrome = new File(selenium_dir + chrome_file);
-		if (!chrome.exists() || !chrome.isFile()) {
-			throw new RuntimeException("Could not find chromedriver.exe!");
-		}
-		System.setProperty("webdriver.chrome.driver", chrome.getAbsolutePath());
-
-		File gecko = new File(selenium_dir + "/geckodriver.exe");
-		if (!gecko.exists() || !gecko.isFile()) {
-			throw new RuntimeException("Could not find geckodriver.exe!");
-		}
-		System.setProperty("webdriver.gecko.driver", gecko.getAbsolutePath());
-
 		// Create a new instance of the Chrome driver
 		// Notice that the remainder of the code relies on the interface,
 		// not the implementation.
