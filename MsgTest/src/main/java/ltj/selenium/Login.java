@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -19,31 +20,31 @@ public class Login {
 		logger.info("user.dir = " + user_dir);
 		String selenium_dir = StringUtils.replaceAll(user_dir, "\\\\", "/") + "/src/main/resources/selenium";
 
-		String driver_file = null;
+		String chrome_file = null;
 		if (OSUtil.isWindows()) {
-			driver_file = "/chromedriver.exe";
+			chrome_file = "/chromedriver.exe";
 		}
 		else if (OSUtil.isMac()) {
-			driver_file = "/chromedriver";
+			chrome_file = "/chromedriver";
 		}
 		
-		File chrome = new File(selenium_dir + driver_file);
+		File chrome = new File(selenium_dir + chrome_file);
 		if (!chrome.exists() || !chrome.isFile()) {
 			throw new RuntimeException("Could not find chromedriver.exe!");
 		}
 		System.setProperty("webdriver.chrome.driver", chrome.getAbsolutePath());
 
-//		File gecko = new File(selenium_dir + "/geckodriver.exe");
-//		if (!gecko.exists() || !gecko.isFile()) {
-//			throw new RuntimeException("Could not find geckodriver.exe!");
-//		}
-//		System.setProperty("webdriver.gecko.driver", gecko.getAbsolutePath());
+		File gecko = new File(selenium_dir + "/geckodriver.exe");
+		if (!gecko.exists() || !gecko.isFile()) {
+			throw new RuntimeException("Could not find geckodriver.exe!");
+		}
+		System.setProperty("webdriver.gecko.driver", gecko.getAbsolutePath());
 
 		// Create a new instance of the Chrome driver
 		// Notice that the remainder of the code relies on the interface,
 		// not the implementation.
 		WebDriver driver = new ChromeDriver();
-		// driver = new FirefoxDriver();
+		//WebDriver driver = new FirefoxDriver();
 		
 		try {
 		// And now use this to visit login page
