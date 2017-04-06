@@ -291,6 +291,16 @@ public class StaticCodes {
 		new SelectItem(false, "False")
 	};
 	
+	public SelectItem[] getYesNoBoolItems() {
+		return yesNoBoolItems;
+	}
+
+	private static SelectItem[] yesNoBoolItems = {
+		new SelectItem(Boolean.TRUE, "Yes"),
+		new SelectItem(Boolean.FALSE, "No")
+	};
+	
+
 	// PROPERTY: Yes/No Enum Items 
 	public SelectItem[] getYesNoEnumItems() {
 		return yesNoEnumItems;

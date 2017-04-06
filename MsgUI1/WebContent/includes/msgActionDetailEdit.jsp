@@ -61,7 +61,7 @@
 				action="#{actiondetails.testActionDetail}" />
 			<f:verbatim>&nbsp;</f:verbatim>
 			<h:commandButton value="#{msgs.submitButtonText}" title="Submit changes"
-				action="#{actiondetails.saveMsgActionDetail}"
+				action="#{actiondetails.saveMsgActionDetail}" id="submit"
 				onclick="javascript:return confirmSubmit();" />
 			<f:verbatim>&nbsp;</f:verbatim>
 			<h:commandButton type="reset" value="#{msgs.resetButtonText}"

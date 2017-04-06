@@ -81,7 +81,7 @@
 		<h:outputText value="#{msgs.embedEmailIdPrompt}"/>
 		<h:selectOneMenu value="#{profileBean.client.embedEmailId}"
 			id="emailid" label="#{msgs.embedEmailIdPrompt}">
-			<f:selectItems value="#{codes.yesNoItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="emailid" styleClass="errorMessage"/>
 
@@ -149,7 +149,7 @@
 		<h:selectOneMenu id="usetest" value="#{profileBean.client.useTestAddr}"
 			binding="#{profileBean.useTestAddrInput}"
 			required="true" label="#{msgs.useTestAddressPrompt}" onchange="submit()">
-			<f:selectItems value="#{codes.yesNoItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="usetest" styleClass="errorMessage"/>
 
@@ -184,7 +184,7 @@
 		<h:selectOneMenu id="useverp" value="#{profileBean.client.isVerpEnabled}"
 			binding="#{profileBean.verpEnabledInput}"
 			required="true" label="#{msgs.isVerpEnabledPrompt}" onchange="submit()">
-			<f:selectItems value="#{codes.yesNoItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="useverp" styleClass="errorMessage"/>
 
@@ -221,7 +221,7 @@
 		columnClasses="alignLeft70, alignRight30">
 		<h:panelGroup>
 			<h:commandButton value="#{msgs.submitButtonText}" title="Submit changes"
-				action="#{profileBean.saveClient}"
+				action="#{profileBean.saveClient}" id="submit"
 				onclick="javascript:return confirmSubmit();" />
 			<f:verbatim>&nbsp;</f:verbatim>
 			<h:commandButton value="#{msgs.refreshLinkText}" 

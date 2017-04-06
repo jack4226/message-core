@@ -191,7 +191,7 @@
 		columnClasses="alignLeft70, alignRight30">
 		<h:panelGroup>
 			<h:commandButton value="#{msgs.submitButtonText}" title="Submit Changes"
-				action="#{msgrules.saveRuleLogic}"
+				action="#{msgrules.saveRuleLogic}" id="submit"
 				onclick="javascript:return confirmSubmit();" />
 			<f:verbatim>&nbsp;</f:verbatim>
 			<h:commandButton type="reset" value="#{msgs.resetButtonText}"

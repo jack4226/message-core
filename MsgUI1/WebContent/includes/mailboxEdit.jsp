@@ -169,7 +169,7 @@
 				id="testmbox" />
 			<f:verbatim>&nbsp;</f:verbatim>
 			<h:commandButton value="#{msgs.submitButtonText}" title="Submit changes"
-				action="#{mailboxes.saveMailbox}"
+				action="#{mailboxes.saveMailbox}" id="submit"
 				onclick="javascript:return confirmSubmit();" />
 			<f:verbatim>&nbsp;</f:verbatim>
 			<h:commandButton type="reset" value="#{msgs.resetButtonText}"

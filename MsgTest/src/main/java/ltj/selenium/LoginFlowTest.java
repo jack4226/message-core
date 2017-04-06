@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import junit.framework.TestCase;
@@ -145,8 +146,26 @@ public class LoginFlowTest extends TestCase {
 			link.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.titleIs("Edit Site Profile"));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailprof:footer:gettingStartedFooter")));
 			
+			WebElement siteName = driver.findElement(By.id("emailprof:content:sitename"));
+			logger.info("Site Name: " + siteName.toString() + ", text: " + siteName.getText());
+			//assertEquals("JBatch Corp. Site", siteName.getText());
+			siteName.sendKeys("JBatch Corp. Site");
+			
+			Select select = new Select(driver.findElement(By.id("emailprof:content:useverp")));
+			WebElement selected = select.getFirstSelectedOption();
+			logger.info("Is Verp selected before: " + selected.getText());
+			if ("No".equals(selected.getText())) {
+				select.selectByVisibleText("Yes");
+			}
+			else {
+				select.selectByVisibleText("No");
+			}
+			
+			WebElement submit = driver.findElement(By.id("emailprof:content:submit"));
+			assertNotNull(submit);
+			submit.click();
 			
 		}
 		catch (Exception e) {
