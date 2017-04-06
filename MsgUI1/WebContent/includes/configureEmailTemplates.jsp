@@ -20,7 +20,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.templateIdHeader}"/>
       </f:facet>
-      <h:commandLink action="#{emailtemplates.viewEmailTemplate}">
+      <h:commandLink action="#{emailtemplates.viewEmailTemplate}" title="#{tmplt.templateId}">
       	<h:outputText value="#{tmplt.templateId}" title="Click to Edit"/>
       	<f:param name="templateId" value="#{tmplt.templateId}"/>
       </h:commandLink>

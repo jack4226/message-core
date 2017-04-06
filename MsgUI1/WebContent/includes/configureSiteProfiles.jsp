@@ -21,7 +21,7 @@
          <h:outputText value="#{msgs.siteIdHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:commandLink action="#{profileBean.viewSiteProfile}">
+      <h:commandLink action="#{profileBean.viewSiteProfile}" title="#{list.clientId}">
       	<h:outputText value="#{list.clientId}" title="Click to Edit"/>
       	<f:param name="clientId" value="#{list.clientId}"/>
       </h:commandLink>

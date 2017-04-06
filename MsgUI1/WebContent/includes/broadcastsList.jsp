@@ -22,7 +22,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.timeStartedHeader}"/>
       </f:facet>
-      <h:commandLink action="#{broadcastsListBean.viewBroadcastMsg}">
+      <h:commandLink action="#{broadcastsListBean.viewBroadcastMsg}" title="#{list.msgId}">
 	      <h:outputText value="#{list.startTime}" title="Click to view broadcast message">
 	      	<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
 	      </h:outputText>

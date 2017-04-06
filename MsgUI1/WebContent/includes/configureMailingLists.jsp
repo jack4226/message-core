@@ -20,7 +20,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.listIdHeader}"/>
       </f:facet>
-      <h:commandLink action="#{maillsts.viewMailingList}">
+      <h:commandLink action="#{maillsts.viewMailingList}" title="#{list.listId}">
       	<h:outputText value="#{list.listId}" title="Click to Edit"/>
       	<f:param name="listId" value="#{list.listId}"/>
       </h:commandLink>

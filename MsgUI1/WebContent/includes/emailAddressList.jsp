@@ -25,7 +25,7 @@
          <h:outputText value="#{msgs.emailAddrHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:commandLink action="#{emailAddrsBean.viewEmailAddr}">
+      <h:commandLink action="#{emailAddrsBean.viewEmailAddr}" title="#{list.emailAddr}">
       	<h:outputText value="#{list.emailAddr}" title="Click to Edit"/>
       	<f:param name="emailaddr" value="#{list.emailAddr}"/>
       </h:commandLink>

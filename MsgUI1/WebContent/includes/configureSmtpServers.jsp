@@ -21,7 +21,7 @@
          <h:outputText value="#{msgs.serverNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:commandLink action="#{smtpsvrs.viewSmtpServer}">
+      <h:commandLink action="#{smtpsvrs.viewSmtpServer}" title="#{smtp.serverName}">
       	<h:outputText value="#{smtp.serverName}" title="Click to Edit"/>
       	<f:param name="serverName" value="#{smtp.serverName}"/>
       </h:commandLink>

@@ -21,7 +21,7 @@
          <h:outputText value="#{msgs.ruleNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:commandLink action="#{msgrules.viewRuleLogic}">
+      <h:commandLink action="#{msgrules.viewRuleLogic}" title="#{rule.ruleName}">
       	<h:outputText value="#{rule.ruleName}" title="Click to Edit Rules"/>
       	<f:param name="ruleName" value="#{rule.ruleName}"/>
       </h:commandLink>

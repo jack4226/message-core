@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -90,7 +91,7 @@ public class LoginFlowTest extends TestCase {
 		}
 	}
 	
-	@Test
+	@Ignore
 	public void testMainPage() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		try {
@@ -125,6 +126,58 @@ public class LoginFlowTest extends TestCase {
 			fail();
 		}
 	}
+	
+	@Test
+	public void testSiteProfiles() {
+		logger.info("Current URL: " + driver.getCurrentUrl());
+		try {
+			WebElement link = driver.findElement(By.linkText("Configure Site Profiles"));
+			assertNotNull(link);
+			link.click();
+			
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.titleIs("Configure Site Profiles"));
+			
+			logger.info("Switched to URL: " + driver.getCurrentUrl());
+			link = driver.findElement(By.linkText("JBatchCorp"));
+			assertNotNull(link);
+			
+			link.click();
+			
+			logger.info("Edit page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.titleIs("Edit Site Profile"));
+			
+			
+		}
+		catch (Exception e) {
+			logger.error("Exception caught", e);
+			fail();
+		}
+	}
+	
+	/*
+	 Configure Site Profiles
+	 Configure POP/IMAP Accounts
+	 Configure SMTP Servers
+	 
+	 Customize Actions for Built-in Rules
+	 Setup Custom Bounce Rules and Actions
+	 Customize Action Details
+	 
+	 Setup Email Mailing Lists
+	 Upload Email Addresses to List
+	 Setup Email Variables
+	 Setup Email Templates
+	 
+	 Manage Email Correspondence
+	 Broadcast to a Mailing List
+	 Manage Email Addresses
+	 Manage Customer Information
+	 View Broadcast Messages
+	 
+	 Manage Site Users
+	 Change Password
+	 */
 	
 	
 	public static void main(String[] args) {

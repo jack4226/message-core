@@ -23,7 +23,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.customerIdHeader}"/>
       </f:facet>
-      <h:commandLink action="#{customers.viewCustomer}">
+      <h:commandLink action="#{customers.viewCustomer}" title="#{list.custId}">
       	<h:outputText value="#{list.custId}" title="Click to Edit"/>
       	<f:param name="custId" value="#{list.custId}"/>
       </h:commandLink>

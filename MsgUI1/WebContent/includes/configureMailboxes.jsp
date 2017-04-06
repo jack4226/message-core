@@ -21,7 +21,7 @@
          <h:outputText value="#{msgs.hostNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:commandLink action="#{mailboxes.viewMailBox}">
+      <h:commandLink action="#{mailboxes.viewMailBox}" title="#{mbox.hostName} #{mbox.userId}">
       	<h:outputText value="#{mbox.hostName}" title="Click to Edit"/>
       	<f:param name="hostName" value="#{mbox.hostName}"/>
       	<f:param name="userId" value="#{mbox.userId}"/>

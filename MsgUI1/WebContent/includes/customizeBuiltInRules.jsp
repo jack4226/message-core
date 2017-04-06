@@ -20,7 +20,7 @@
          <h:outputText value="#{msgs.msgActionsHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:commandLink action="#{builtinrules.viewMsgActions}">
+      <h:commandLink action="#{builtinrules.viewMsgActions}" title="#{rule.ruleName}">
       	<h:outputText value="Create" title="Click to Creat Actions"
       		rendered="#{not builtinrules.hasMsgActions}"/>
       	<h:outputText value="Edit" title="Click to Edit Actions"

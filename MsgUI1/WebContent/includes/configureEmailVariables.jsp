@@ -20,7 +20,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.variableNameHeader}"/>
       </f:facet>
-      <h:commandLink action="#{emailvariables.viewEmailVariable}">
+      <h:commandLink action="#{emailvariables.viewEmailVariable}" title="#{varbl.variableName}">
       	<h:outputText value="#{varbl.variableName}" title="Click to Edit"/>
       	<f:param name="variableName" value="#{varbl.variableName}"/>
       </h:commandLink>
