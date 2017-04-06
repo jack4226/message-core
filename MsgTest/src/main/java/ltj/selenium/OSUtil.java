@@ -44,13 +44,13 @@ public class OSUtil {
 		
 		File chrome = new File(selenium_dir + chrome_file);
 		if (!chrome.exists() || !chrome.isFile()) {
-			throw new RuntimeException("Could not find chromedriver.exe!");
+			throw new RuntimeException("Could not find " + chrome.getAbsolutePath());
 		}
 		System.setProperty("webdriver.chrome.driver", chrome.getAbsolutePath());
 
 		File gecko = new File(selenium_dir + gecko_file);
 		if (!gecko.exists() || !gecko.isFile()) {
-			throw new RuntimeException("Could not find geckodriver.exe!");
+			throw new RuntimeException("Could not find " + gecko.getAbsolutePath());
 		}
 		System.setProperty("webdriver.gecko.driver", gecko.getAbsolutePath());
 	}
