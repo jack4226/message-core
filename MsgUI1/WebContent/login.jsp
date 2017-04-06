@@ -47,7 +47,7 @@
 			<h:outputText value="#{msgs.invalidLoginMessage}"
 				rendered="#{login.message != null}" styleClass="errorMessage"/>
 			<f:verbatim><br></f:verbatim>
-			<h:commandButton value="#{msgs.loginButtonText}" title="Login"
+			<h:commandButton value="#{msgs.loginButtonText}" title="Login" id="submit"
 				action="#{login.login}"/>
 		</h:panelGrid>
 	</h:panelGroup>

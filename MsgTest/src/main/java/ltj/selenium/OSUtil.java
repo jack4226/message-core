@@ -27,32 +27,53 @@ public class OSUtil {
 	}
 	
 	public static void setupSeleniumBrowserDriver() {
-		String user_dir = System.getProperty("user.dir");
-		logger.info("user.dir = " + user_dir);
-		String selenium_dir = StringUtils.replaceAll(user_dir, "\\\\", "/") + "/src/main/resources/selenium";
+		String chrome_path = getChromeDriverPath();
+		String gecko_path = getGeckoDriverPath();
 
-		String chrome_file = "/chromedriver.exe";
-		String gecko_file = "/geckodriver.exe";
-		
-		if (OSUtil.isMac()) {
-			chrome_file = "/chromedriver";
-			gecko_file = "/geckodriver";
-		}
-		else if (OSUtil.isUnix()) {
-			// TODO
-		}
-		
-		File chrome = new File(selenium_dir + chrome_file);
+		File chrome = new File(chrome_path);
 		if (!chrome.exists() || !chrome.isFile()) {
 			throw new RuntimeException("Could not find " + chrome.getAbsolutePath());
 		}
 		System.setProperty("webdriver.chrome.driver", chrome.getAbsolutePath());
 
-		File gecko = new File(selenium_dir + gecko_file);
+		File gecko = new File(gecko_path);
 		if (!gecko.exists() || !gecko.isFile()) {
 			throw new RuntimeException("Could not find " + gecko.getAbsolutePath());
 		}
 		System.setProperty("webdriver.gecko.driver", gecko.getAbsolutePath());
+	}
+	
+	public static String getChromeDriverPath() {
+		String selenium_dir = getSeleniumDriverRoot();
+
+		String chrome_file = "/chromedriver.exe";
+		if (OSUtil.isMac()) {
+			chrome_file = "/chromedriver";
+		}
+		else if (OSUtil.isUnix()) {
+			// TODO
+		}
+		return (selenium_dir + chrome_file);
+	}
+	
+	public static String getGeckoDriverPath() {
+		String selenium_dir = getSeleniumDriverRoot();
+		String gecko_file = "/geckodriver.exe";
+		
+		if (OSUtil.isMac()) {
+			gecko_file = "/geckodriver";
+		}
+		else if (OSUtil.isUnix()) {
+			// TODO
+		}
+		return (selenium_dir + gecko_file);
+	}
+	
+	private static String getSeleniumDriverRoot() {
+		String user_dir = System.getProperty("user.dir");
+		logger.info("user.dir = " + user_dir);
+		String selenium_dir = StringUtils.replaceAll(user_dir, "\\\\", "/") + "/src/main/resources/selenium";
+		return selenium_dir;
 	}
 	
 	public static void main(String[] args) {
