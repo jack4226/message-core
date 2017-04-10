@@ -32,32 +32,32 @@
          <h:outputText value="#{msgs.siteNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{list.clientName}"/>
+      <h:outputText value="#{list.clientName}" title="#{list.clientId}_siteName"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.emberEmailIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.embedEmailId}"/>
+      <h:outputText value="#{list.embedEmailId}" title="#{list.clientId}_embedEmailId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.useTestAddressHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.useTestAddr}"/>
+      <h:outputText value="#{list.useTestAddr}" title="#{list.clientId}_useTestAddr"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.enableVerpHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.isVerpEnabled}"/>
+      <h:outputText value="#{list.isVerpEnabled}" title="#{list.clientId}_isVerpEnabled"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.statusIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.statusIdDesc}"/>
+      <h:outputText value="#{list.statusIdDesc}" title="#{list.clientId}_statusId"/>
    </h:column>
 </h:dataTable>
 <f:verbatim><p/></f:verbatim>

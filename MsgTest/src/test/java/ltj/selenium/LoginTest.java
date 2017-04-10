@@ -2,9 +2,6 @@ package ltj.selenium;
 
 import static org.junit.Assert.*;
 
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
-
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +14,7 @@ public class LoginTest {
 	private HtmlUnitDriver driver;
 
 	@Before
-	public void setup() throws MalformedURLException, UnknownHostException{
+	public void setup() {
 	    driver = new HtmlUnitDriver(true);
 	    driver.get("http://localhost:8080/MsgUI1/login.faces");
 	}

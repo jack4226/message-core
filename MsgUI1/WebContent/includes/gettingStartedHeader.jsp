@@ -19,5 +19,5 @@
 
 <f:verbatim>
 <!-- verbatim tag is used to prevent JSF from rendering tr/td tags to javascript -->
-<script type="text/javascript" src="includes/msguiCommon.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/includes/msguiCommon.js"></script>
 </f:verbatim>
