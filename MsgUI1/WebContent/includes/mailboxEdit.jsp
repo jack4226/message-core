@@ -83,7 +83,7 @@
 		<h:outputText value="#{msgs.useSslPrompt}"/>
 		<h:selectOneMenu id="ssl" value="#{mailboxes.mailbox.useSsl}"
 			required="true" label="#{msgs.useSslPrompt}">
-			<f:selectItems value="#{codes.yesNoItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="ssl" styleClass="errorMessage"/>
 		

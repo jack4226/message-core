@@ -130,103 +130,105 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testSiteProfiles() {
+	public void testSmtpServers() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		try {
-			WebElement link = driver.findElement(By.linkText("Configure Site Profiles"));
+			WebElement link = driver.findElement(By.linkText("Configure SMTP Servers"));
 			assertNotNull(link);
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
-			wait.until(ExpectedConditions.titleIs("Configure Site Profiles"));
+			wait.until(ExpectedConditions.titleIs("Configure SMTP Servers"));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			WebElement siteNameElm = driver.findElement(By.cssSelector("span[title=JBatchCorp_siteName]"));
-			assertNotNull(siteNameElm);
-			logger.info("Site Name: " + siteNameElm.toString() + ", text: " + siteNameElm.getText());
-			String siteNameBefore = siteNameElm.getText();
-			String siteNameAfter = null;
-			if (StringUtils.endsWith(siteNameBefore, "_updated")) {
-				siteNameAfter = StringUtils.removeEnd(siteNameBefore, "_updated");
-			}
-			else {
-				siteNameAfter = siteNameBefore + "_updated";
-			}
+			WebElement useSslElm = driver.findElement(By.cssSelector("span[title=smtpServer_useSsl]"));
+			assertNotNull(useSslElm);
+			logger.info("useSsl before: " + useSslElm.toString() + ", text: " + useSslElm.getText());
 			
-			WebElement useTestAddrElm = driver.findElement(By.cssSelector("span[title=JBatchCorp_useTestAddr]"));
-			assertNotNull(useTestAddrElm);
-			logger.info("useTestAddr: " + useTestAddrElm.toString() + ", text: " + useTestAddrElm.getText());
+			String useSslBefore = useSslElm.getText();
 			
-			String useTestAddr = useTestAddrElm.getText();
+			WebElement persistenceElm = driver.findElement(By.cssSelector("span[title=smtpServer_persistence]"));
+			assertNotNull(persistenceElm);
+			logger.info("Persistence before: " + persistenceElm.toString() + ", text: " + persistenceElm.getText());
 			
-			link = driver.findElement(By.linkText("JBatchCorp"));
+			String persistenceBefore = persistenceElm.getText();
+			
+			link = driver.findElement(By.cssSelector("a[title='smtpServer']"));
 			assertNotNull(link);
 			
 			link.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailprof:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpedit:footer:gettingStartedFooter")));
 			
-			WebElement siteName = driver.findElement(By.id("emailprof:content:sitename"));
-			siteName.clear();
-			siteName.sendKeys(siteNameAfter);
+			WebElement desc = driver.findElement(By.id("smtpedit:content:desc"));
+			assertNotNull(desc);
+			logger.info("Description: " + desc.getAttribute("value") + ", test: " + desc.getText());
+			//desc.clear();
+			//desc.sendKeys("");
 			
-			Select selectTest = new Select(driver.findElement(By.id("emailprof:content:usetest")));
-			WebElement selectedTest = selectTest.getFirstSelectedOption();
-			logger.info("Use Test Address selected before: " + selectedTest.getText());
-			if ("true".equalsIgnoreCase(useTestAddr)) {
-				assertEquals("Yes", selectedTest.getText());
-				selectTest.selectByVisibleText("No");
+			Select selectSsl = new Select(driver.findElement(By.id("smtpedit:content:ssl")));
+			assertNotNull(selectSsl);
+			WebElement selectedSsl = selectSsl.getFirstSelectedOption();
+			logger.info("Use SSL selected before: " + selectedSsl.getText());
+			if ("true".equalsIgnoreCase(useSslBefore)) {
+				assertEquals("Yes", selectedSsl.getText());
+				selectSsl.selectByVisibleText("No");
 			}
 			else {
-				assertEquals("No", selectedTest.getText());
-				selectTest.selectByVisibleText("Yes");
+				assertEquals("No", selectedSsl.getText());
+				selectSsl.selectByVisibleText("Yes");
 			}
  			
-			Select selectVerp = new Select(driver.findElement(By.id("emailprof:content:useverp")));
-			WebElement selectedVerp = selectVerp.getFirstSelectedOption();
-			logger.info("Is Verp selected before: " + selectedVerp.getText());
-			String selectedVerpBefore = selectedVerp.getText();
-			if ("No".equals(selectedVerp.getText())) {
-				selectVerp.selectByVisibleText("Yes");
+			Select selectStatus = new Select(driver.findElement(By.id("smtpedit:content:statusid")));
+			assertNotNull(selectStatus);
+			WebElement selectedStatus = selectStatus.getFirstSelectedOption();
+			logger.info("StatusId before: " + selectedStatus.getAttribute("value") + ", text: " + selectedStatus.getText());
+			String selectedStatusIdBefore = selectedStatus.getAttribute("value");
+			//selectStatus.deselectAll();
+			if ("A".equals(selectedStatusIdBefore)) {
+				selectStatus.selectByValue("I");
 			}
 			else {
-				selectVerp.selectByVisibleText("No");
+				selectStatus.selectByValue("A");
 			}
 			
-			WebElement submit = driver.findElement(By.id("emailprof:content:submit"));
+			WebElement submit = driver.findElement(By.id("smtpedit:content:submit"));
 			assertNotNull(submit);
 			submit.click();
 			
 			// accept (Click OK) JavaScript Alert pop-up
-			Alert alert = (org.openqa.selenium.Alert) wait.until(ExpectedConditions.alertIsPresent());
-			alert.accept();
-			logger.info("Accepted the alert successfully.");
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running from Maven test
+				logger.error(e.getMessage());
+			}
 			
 			// verify the results
-			wait.until(ExpectedConditions.titleIs("Configure Site Profiles"));
+			wait.until(ExpectedConditions.titleIs("Configure SMTP Servers"));
 			
-			WebElement siteNameAfterElm = driver.findElement(By.cssSelector("span[title=JBatchCorp_siteName]"));
-			assertNotNull(siteNameAfterElm);
-			assertEquals(siteNameAfter, siteNameAfterElm.getText());
-			
-			WebElement useTestAddrAfter = driver.findElement(By.cssSelector("span[title=JBatchCorp_useTestAddr]"));
-			assertNotNull(useTestAddrAfter);
-			if ("true".equalsIgnoreCase(useTestAddr)) {
-				assertEquals("false", useTestAddrAfter.getText());
+			WebElement useSslAfter = driver.findElement(By.cssSelector("span[title=smtpServer_useSsl]"));
+			assertNotNull(useSslAfter);
+			if ("true".equalsIgnoreCase(useSslBefore)) {
+				assertEquals("false", useSslAfter.getText());
 			}
 			else {
-				assertEquals("true", useTestAddrAfter.getText());
+				assertEquals("true", useSslAfter.getText());
 			}
 			
-			WebElement selectedVerpAfter = driver.findElement(By.cssSelector("span[title=JBatchCorp_isVerpEnabled]"));
-			assertNotNull(selectedVerpAfter);
-			if ("yes".equalsIgnoreCase(selectedVerpBefore)) {
-				assertEquals("false", selectedVerpAfter.getText());
+			WebElement selectedStatusAfter = driver.findElement(By.cssSelector("span[title=smtpServer_statusId]"));
+			assertNotNull(selectedStatusAfter);
+			logger.info("StatusId after: " + selectedStatusAfter.getText());
+			if ("A".equals(selectedStatusIdBefore)) {
+				assertEquals("Inactive", selectedStatusAfter.getText());
 			}
 			else {
-				assertEquals("true", selectedVerpAfter.getText());
+				assertEquals("Active", selectedStatusAfter.getText());
 			}
 		}
 		catch (Exception e) {
@@ -234,6 +236,7 @@ public class LoginFlowTest extends TestCase {
 			fail();
 		}
 	}
+
 	
 	/*
 	 Configure Site Profiles

@@ -37,7 +37,7 @@
 		<h:selectOneMenu id="ssl" value="#{smtpsvrs.smtpServer.useSsl}"
 			binding="#{smtpsvrs.useSslInput}"
 			required="true" label="#{msgs.useSslPrompt}" onchange="submit()">
-			<f:selectItems value="#{codes.yesNoItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="ssl" styleClass="errorMessage"/>
 		
@@ -45,7 +45,7 @@
 		<h:selectOneMenu id="auth" value="#{smtpsvrs.smtpServer.useAuth}"
 			binding="#{smtpsvrs.useAuthInput}"
 			label="#{msgs.useAuthPrompt}" onchange="submit()">
-			<f:selectItems value="#{codes.yesNoItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="auth" styleClass="errorMessage"/>
 		
@@ -72,7 +72,7 @@
 		<h:outputText value="#{msgs.persistencePrompt}"/>
 		<h:selectOneMenu id="persistence" value="#{smtpsvrs.smtpServer.persistence}"
 			required="true" label="#{msgs.persistencePrompt}">
-			<f:selectItems value="#{codes.yesNoItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="persistence" styleClass="errorMessage"/>
 		

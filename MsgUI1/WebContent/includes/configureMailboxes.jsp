@@ -32,39 +32,39 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.portNumberHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.portNumber}"/>
+      <h:outputText value="#{mbox.portNumber}" title="#{mbox.hostName}_#{mbox.userId}_portNumber"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.protocolHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.protocol}"/>
+      <h:outputText value="#{mbox.protocol}" title="#{mbox.hostName}_#{mbox.userId}_protocol"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.userIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.userId}"/>
+      <h:outputText value="#{mbox.userId}" title="#{mbox.hostName}_#{mbox.userId}_userId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.descriptionHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{mbox.mailBoxDesc}"/>
+      <h:outputText value="#{mbox.mailBoxDesc}" title="#{mbox.hostName}_#{mbox.userId}_desc"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.useSslHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.useSsl}"/>
+      <h:outputText value="#{mbox.useSsl}" title="#{mbox.hostName}_#{mbox.userId}_useSsl"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.statusIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.statusIdDesc}"/>
+      <h:outputText value="#{mbox.statusIdDesc}" title="#{mbox.hostName}_#{mbox.userId}_statusId"/>
    </h:column>
 </h:dataTable>
 <f:verbatim><p/></f:verbatim>
