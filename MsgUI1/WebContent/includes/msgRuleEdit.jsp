@@ -68,7 +68,7 @@
 		<h:outputText value="#{msgs.subRulePrompt}"/>
 		<h:selectOneMenu id="subrule" value="#{msgrules.ruleLogic.subRule}"
 			required="true" label="#{msgs.subRulePrompt}">
-			<f:selectItems value="#{codes.yorNItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="subrule" styleClass="errorMessage"/>
 		
@@ -92,14 +92,14 @@
            <f:facet name="header">
               <h:outputText value=""/>
            </f:facet>
-           <h:selectBooleanCheckbox value="#{element.markedForDeletion}" 
+           <h:selectBooleanCheckbox value="#{element.markedForDeletion}" title="#{element.dataName}_delete"
               onclick="submit()"/>
         </h:column>
 		<h:column>
 			<f:facet name="header">
 				<h:outputText value="#{msgs.dataNameColumn}"/> 
 			</f:facet>
-			<h:selectOneMenu value="#{element.dataName}" onchange="submit()">
+			<h:selectOneMenu value="#{element.dataName}" onchange="submit()" title="#{element.dataName}_change">
 				<f:selectItems value="#{codes.ruleDataNameItems}"/>
 			</h:selectOneMenu>
         </h:column>
@@ -115,7 +115,7 @@
 			<f:facet name="header">
 				<h:outputText value="#{msgs.criteriaColumn}"/> 
 			</f:facet>
-			<h:selectOneMenu value="#{element.criteria}" onchange="submit()">
+			<h:selectOneMenu value="#{element.criteria}" onchange="submit()" title="#{element.dataName}_criteria">
 				<f:selectItems value="#{codes.ruleCriteriaItems}"/>
 			</h:selectOneMenu>
         </h:column>
@@ -152,13 +152,13 @@
 			<f:facet name="header">
 				<h:outputText value="#{msgs.caseSensitiveColumn}"/> 
 			</f:facet>
-			<h:selectBooleanCheckbox value="#{element.caseSensitive}"/>
+			<h:selectBooleanCheckbox value="#{element.caseSensitive}" title="#{element.dataName}_caseSensitive"/>
         </h:column>
 		<h:column>
 			<f:facet name="header">
 				<h:outputText value="#{msgs.advancedColumn}"/>
 			</f:facet>
-			<h:commandLink action="#{msgrules.viewRuleElement}" 
+			<h:commandLink action="#{msgrules.viewRuleElement}" title="#{element.dataName}_viewElement"
 				style="color: darkblue; font-size: 1em; font-weight: bold;">
 				<f:param name="rulename" value="#{element.ruleName}"/>
 				<f:param name="seq" value="#{element.elementSeq}"/>

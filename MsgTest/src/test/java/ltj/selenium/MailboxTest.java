@@ -69,7 +69,7 @@ public class MailboxTest extends BaseLogin {
 			}
 			else {
 				assertEquals("No", selectedSsl.getText());
-				selectSsl.selectByVisibleText("Yes");
+				//selectSsl.selectByVisibleText("Yes");
 			}
  			
 			Select selectStatus = new Select(driver.findElement(By.id("mboxedit:content:statusid")));
@@ -77,7 +77,6 @@ public class MailboxTest extends BaseLogin {
 			WebElement selectedStatus = selectStatus.getFirstSelectedOption();
 			logger.info("StatusId before: " + selectedStatus.getAttribute("value") + ", text: " + selectedStatus.getText());
 			String selectedStatusIdBefore = selectedStatus.getAttribute("value");
-			//selectStatus.deselectAll();
 			if ("A".equals(selectedStatusIdBefore)) {
 				selectStatus.selectByValue("I");
 			}
@@ -109,12 +108,13 @@ public class MailboxTest extends BaseLogin {
 			
 			WebElement useSslAfter = driver.findElement(By.cssSelector("span[title=localhost_jwang_useSsl]"));
 			assertNotNull(useSslAfter);
-			if ("true".equalsIgnoreCase(useSslBefore)) {
-				assertEquals("false", useSslAfter.getText());
-			}
-			else {
-				assertEquals("true", useSslAfter.getText());
-			}
+			assertEquals("false", useSslAfter.getText());
+//			if ("true".equalsIgnoreCase(useSslBefore)) {
+//				assertEquals("false", useSslAfter.getText());
+//			}
+//			else {
+//				assertEquals("true", useSslAfter.getText());
+//			}
 			
 			WebElement selectedStatusAfter = driver.findElement(By.cssSelector("span[title=localhost_jwang_statusId]"));
 			assertNotNull(selectedStatusAfter);

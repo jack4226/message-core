@@ -31,7 +31,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.msgActionsHeader}"/>
       </f:facet>
-      <h:commandLink action="#{msgrules.viewMsgActions}" rendered="#{not rule.subRule}">
+      <h:commandLink action="#{msgrules.viewMsgActions}" rendered="#{not rule.subRule}" title="#{rule.ruleName}_viewAction">
       	<h:outputText value="Add" title="Click to Add Actions"
       		rendered="#{not msgrules.hasMsgActions}"/>
       	<h:outputText value="Edit" title="Click to Edit Actions"
@@ -43,7 +43,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.isSubRuleHeader}"/>
       </f:facet>
-      <h:commandLink action="#{msgrules.viewSubRules}" rendered="#{not rule.subRule}">
+      <h:commandLink action="#{msgrules.viewSubRules}" rendered="#{not rule.subRule}" title="#{rule.ruleName}_viewSubRule">
       	<h:outputText value="#{rule.isSubRuleDesc}" title="Click to Add/Edit Sub-Rules"/>
       </h:commandLink>
       <h:outputText value="#{rule.isSubRuleDesc}" style="font-style: italic; font-size: 0.8em;"
@@ -53,13 +53,13 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.ruleTypeHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.ruleType}"/>
+      <h:outputText value="#{rule.ruleType}" title="#{rule.ruleName}_ruleType"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.startTimeHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.startTime}">
+      <h:outputText value="#{rule.startTime}" title="#{rule.ruleName}_startTime">
       	<f:convertDateTime pattern="MM/dd/yyyy"/>
       	<%-- f:convertDateTime pattern="MM/dd/yyyy kk:mm"/ --%>
       </h:outputText>
@@ -68,19 +68,19 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.mailTypeHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.mailType}"/>
+      <h:outputText value="#{rule.mailType}" title="#{rule.ruleName}_mailType"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.statusIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.statusIdDesc}"/>
+      <h:outputText value="#{rule.statusIdDesc}" title="#{rule.ruleName}_statusId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.ruleCategoryHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.ruleCategoryDesc}"/>
+      <h:outputText value="#{rule.ruleCategoryDesc}" title="#{rule.ruleName}_category"/>
    </h:column>
    <h:column>
       <f:facet name="header">

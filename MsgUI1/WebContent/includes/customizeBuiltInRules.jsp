@@ -13,7 +13,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.ruleNameHeader}"/>
       </f:facet>
-   	  <h:outputText value="#{rule.ruleName}"/>
+   	  <h:outputText value="#{rule.ruleName}" title="#{rule.ruleName}_ruleName"/>
    </h:column>
    <h:column>
       <f:facet name="header">
@@ -32,19 +32,19 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.isSubRuleHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.isSubRuleDesc}"/>
+      <h:outputText value="#{rule.isSubRuleDesc}" title="#{rule.ruleName}_subRuleDesc"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.ruleTypeHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.ruleType}"/>
+      <h:outputText value="#{rule.ruleType}" title="#{rule.ruleName}_ruleType"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.startTimeHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.startTime}">
+      <h:outputText value="#{rule.startTime}" title="#{rule.ruleName}_startTime">
       	<f:convertDateTime pattern="MM/dd/yyyy"/>
       </h:outputText>
    </h:column>
@@ -52,19 +52,19 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.mailTypeHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.mailType}"/>
+      <h:outputText value="#{rule.mailType}" title="#{rule.ruleName}_mailType"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.statusIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.statusIdDesc}"/>
+      <h:outputText value="#{rule.statusIdDesc}" title="#{rule.ruleName}_statusId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.ruleCategoryHeader}"/>
       </f:facet>
-      <h:outputText value="#{rule.ruleCategoryDesc}"/>
+      <h:outputText value="#{rule.ruleCategoryDesc}" title="#{rule.ruleName}_category"/>
    </h:column>
 </h:dataTable>
 <f:verbatim><p/></f:verbatim>

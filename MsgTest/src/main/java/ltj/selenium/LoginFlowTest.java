@@ -10,7 +10,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -22,7 +21,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -93,142 +91,139 @@ public class LoginFlowTest extends TestCase {
 		}
 	}
 	
-	@Ignore
-	public void testMainPage() {
-		logger.info("Current URL: " + driver.getCurrentUrl());
-		try {
-			List<WebElement> links = driver.findElements(By.partialLinkText("Configure"));
-			for (WebElement we : links) {
-				logger.info("HREF Link: " + we.toString());
-			}
-			assertEquals(3, links.size());
-			
-			String winHandleBefore = driver.getWindowHandle();
-			logger.info("Current Window Handle: " + winHandleBefore);
-	        for(String winHandle : driver.getWindowHandles()) {
-	        	if (!StringUtils.equals(winHandleBefore, winHandle)) {
-	        		logger.info("Switch to Window Handle: " + winHandle);
-	        		driver.switchTo().window(winHandle);
-	        	}
-	        }
-	        
-	        links.get(0).click();
-	        logger.info("Next URL: " + driver.getCurrentUrl());
-			
-			(new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>() {
-				public Boolean apply(WebDriver d) {
-					return d.getTitle().equals("Configure Site Profiles");
-				}
-			});
-			
-			Thread.sleep(1000);
-		}
-		catch (Exception e) {
-			logger.error("Exception caught", e);
-			fail();
-		}
-	}
-	
 	@Test
-	public void testSmtpServers() {
+	public void testCustomRules() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		try {
-			WebElement link = driver.findElement(By.linkText("Configure SMTP Servers"));
+			WebElement link = driver.findElement(By.linkText("Setup Custom Bounce Rules and Actions"));
 			assertNotNull(link);
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
-			wait.until(ExpectedConditions.titleIs("Configure SMTP Servers"));
+			wait.until(ExpectedConditions.titleIs("Setup Custom Bounce Rules and Actions"));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			WebElement useSslElm = driver.findElement(By.cssSelector("span[title=smtpServer_useSsl]"));
-			assertNotNull(useSslElm);
-			logger.info("useSsl before: " + useSslElm.toString() + ", text: " + useSslElm.getText());
 			
-			String useSslBefore = useSslElm.getText();
+			WebElement ruleType = driver.findElement(By.cssSelector("span[title=OutOfOffice_AutoReply_ruleType]"));
+			assertNotNull(ruleType);
+			assertEquals("All", ruleType.getText());
 			
-			WebElement persistenceElm = driver.findElement(By.cssSelector("span[title=smtpServer_persistence]"));
-			assertNotNull(persistenceElm);
-			logger.info("Persistence before: " + persistenceElm.toString() + ", text: " + persistenceElm.getText());
+			WebElement statusId = driver.findElement(By.cssSelector("span[title=OutOfOffice_AutoReply_statusId]"));
+			assertNotNull(statusId);
+			assertEquals("Active", statusId.getText());
 			
-			String persistenceBefore = persistenceElm.getText();
+			WebElement ruleEditLink = driver.findElement(By.cssSelector("a[title=OutOfOffice_AutoReply]"));
+			assertNotNull(ruleEditLink);
+			logger.info("OutOfOffice_AutoReply: " + ruleEditLink.getText());
+			assertEquals("OutOfOffice_AutoReply", ruleEditLink.getText());
 			
-			link = driver.findElement(By.cssSelector("a[title='smtpServer']"));
-			assertNotNull(link);
+			WebElement viewActionLink = driver.findElement(By.cssSelector("a[title=OutOfOffice_AutoReply_viewAction]"));
+			assertNotNull(viewActionLink);
+			logger.info("View Action Link Test: " +viewActionLink.getText());
+			assertEquals("Edit", viewActionLink.getText());
 			
-			link.click();
+			WebElement viewSubRuleLink = driver.findElement(By.cssSelector("a[title=Unattended_Mailbox_viewSubRule]"));
+			assertNotNull(viewSubRuleLink);
+			logger.info("View SubRule Link Text: " +viewSubRuleLink.getText());
+			assertEquals("Add", viewSubRuleLink.getText());
 			
+			ruleEditLink.click();
+			
+			// Rule Edit Page
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
-			WebElement desc = driver.findElement(By.id("smtpedit:content:desc"));
-			assertNotNull(desc);
-			logger.info("Description: " + desc.getAttribute("value") + ", test: " + desc.getText());
-			//desc.clear();
-			//desc.sendKeys("");
+			WebElement ruleNameElm = driver.findElement(By.id("ruleedit:content:rulename"));
+			assertNotNull(ruleNameElm);
+			logger.info("Rule Name: " + ruleNameElm.getText());
+			assertEquals("OutOfOffice_AutoReply", ruleNameElm.getAttribute("value"));
 			
-			Select selectSsl = new Select(driver.findElement(By.id("smtpedit:content:ssl")));
-			assertNotNull(selectSsl);
-			WebElement selectedSsl = selectSsl.getFirstSelectedOption();
-			logger.info("Use SSL selected before: " + selectedSsl.getText());
-			if ("true".equalsIgnoreCase(useSslBefore)) {
-				assertEquals("Yes", selectedSsl.getText());
-				selectSsl.selectByVisibleText("No");
-			}
-			else {
-				assertEquals("No", selectedSsl.getText());
-				selectSsl.selectByVisibleText("Yes");
-			}
+			WebElement ruleDescElm = driver.findElement(By.id("ruleedit:content:desc"));
+			assertNotNull(ruleDescElm);
+			assertEquals("Ouf of the office auto reply", ruleDescElm.getAttribute("value"));
  			
-			Select selectStatus = new Select(driver.findElement(By.id("smtpedit:content:statusid")));
-			assertNotNull(selectStatus);
-			WebElement selectedStatus = selectStatus.getFirstSelectedOption();
-			logger.info("StatusId before: " + selectedStatus.getAttribute("value") + ", text: " + selectedStatus.getText());
-			String selectedStatusIdBefore = selectedStatus.getAttribute("value");
-			//selectStatus.deselectAll();
-			if ("A".equals(selectedStatusIdBefore)) {
-				selectStatus.selectByValue("I");
-			}
-			else {
-				selectStatus.selectByValue("A");
-			}
+			Select selectStatId = new Select(driver.findElement(By.id("ruleedit:content:statusid")));
+			WebElement selectedStatId = selectStatId.getFirstSelectedOption();
+			logger.info("Status Id selected: " + selectedStatId.getText());
+			assertEquals("A", selectedStatId.getAttribute("value"));
 			
-			WebElement submit = driver.findElement(By.id("smtpedit:content:submit"));
+			Select selectMailType = new Select(driver.findElement(By.id("ruleedit:content:mailtype")));
+			assertNotNull(selectMailType);
+			WebElement selectedMailType = selectMailType.getFirstSelectedOption();
+			assertEquals("SMTP Mail", selectedMailType.getText());
+			
+			Select selectCategory = new Select(driver.findElement(By.id("ruleedit:content:rulecategory")));
+			WebElement selectedCategory = selectCategory.getFirstSelectedOption();
+			logger.info("Rule Category selected: " + selectedCategory.getText());
+			assertEquals("M", selectedCategory.getAttribute("value"));
+			
+			Select selectSubrule = new Select(driver.findElement(By.id("ruleedit:content:subrule")));
+			WebElement selectedSubrule = selectSubrule.getFirstSelectedOption();
+			logger.info("Is Subrule selected: " + selectedSubrule.getText());
+			assertEquals("false", selectedSubrule.getAttribute("value"));
+			
+			
+			List<WebElement> ruleTypes = driver.findElements(By.cssSelector("input[type='radio'][name='ruleedit:content:ruletype']"));
+			boolean found = false;
+			for (WebElement type : ruleTypes) {
+				String checked = type.getAttribute("checked");
+				if (StringUtils.isNotBlank(checked)) {
+					assertEquals("All", type.getAttribute("value"));
+					found = true;
+					break;
+				}
+			}
+			assertEquals(true, found);
+
+			Select selectVarName = new Select(driver.findElement(By.cssSelector("select[title=Subject_change]")));
+			WebElement selectedVarName = selectVarName.getFirstSelectedOption();
+			logger.info("Variable name selected: " + selectedVarName.getText());
+			assertEquals("Subject", selectedVarName.getAttribute("value"));
+
+			Select selectCriteria = new Select(driver.findElement(By.cssSelector("select[title=Subject_criteria]")));
+			WebElement selectedCriteria = selectCriteria.getFirstSelectedOption();
+			logger.info("Criteria selected: " + selectedCriteria.getText());
+			assertEquals("reg_ex", selectedCriteria.getAttribute("value"));
+
+			
+			WebElement viewElement = driver.findElement(By.cssSelector("a[title='Subject_viewElement']"));
+			assertNotNull(viewElement);
+			viewElement.click();
+			
+			// View Rule Element page
+			logger.info("View Element URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			WebElement elmRuleName = driver.findElement(By.id("ruleedit:content:rulename"));
+			logger.info("Element Rule Name selected: " + elmRuleName.getText());
+			assertEquals("OutOfOffice_AutoReply", elmRuleName.getAttribute("value"));
+			assertFalse(elmRuleName.isEnabled());
+			
+			Select selectDataName = new Select(driver.findElement(By.id("ruleedit:content:dataname")));
+			WebElement selectedDataName = selectDataName.getFirstSelectedOption();
+			logger.info("Data Name selected: " + selectedDataName.getText());
+			assertEquals("Subject", selectedDataName.getAttribute("value"));
+			
+			// Cancel changes and go back to previous page
+			WebElement cancel = driver.findElement(By.cssSelector("input[title='Cancel Changes']"));
+			assertNotNull(cancel);
+			cancel.click();
+			
+			// submit change
+			WebElement submit = driver.findElement(By.id("ruleedit:content:submit"));
 			assertNotNull(submit);
 			submit.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
+			// dismiss (Click Cancel) JavaScript Alert pop-up
 			try {
 				WebDriverWait waitShort = new WebDriverWait(driver, 1);
 				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
+				alert.dismiss(); // cancel the alert to prevent changes to the database
+				logger.info("Cancelled the alert successfully.");
 			}
 			catch (org.openqa.selenium.TimeoutException e) { // when running from Maven test
 				logger.error(e.getMessage());
-			}
-			
-			// verify the results
-			wait.until(ExpectedConditions.titleIs("Configure SMTP Servers"));
-			
-			WebElement useSslAfter = driver.findElement(By.cssSelector("span[title=smtpServer_useSsl]"));
-			assertNotNull(useSslAfter);
-			if ("true".equalsIgnoreCase(useSslBefore)) {
-				assertEquals("false", useSslAfter.getText());
-			}
-			else {
-				assertEquals("true", useSslAfter.getText());
-			}
-			
-			WebElement selectedStatusAfter = driver.findElement(By.cssSelector("span[title=smtpServer_statusId]"));
-			assertNotNull(selectedStatusAfter);
-			logger.info("StatusId after: " + selectedStatusAfter.getText());
-			if ("A".equals(selectedStatusIdBefore)) {
-				assertEquals("Inactive", selectedStatusAfter.getText());
-			}
-			else {
-				assertEquals("Active", selectedStatusAfter.getText());
 			}
 		}
 		catch (Exception e) {

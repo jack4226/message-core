@@ -111,7 +111,7 @@
 		<h:outputText value="#{msgs.toPlainTextPrompt}"/>
 		<h:selectOneMenu id="toplaintext" value="#{mailboxes.mailbox.toPlainText}"
 			label="#{msgs.toPlainTextPrompt}">
-			<f:selectItems value="#{codes.yesNoItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="toplaintext" styleClass="errorMessage"/>
 		
