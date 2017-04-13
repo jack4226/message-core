@@ -30,7 +30,7 @@
          <h:outputText value="#{msgs.defaultValueHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{varbl.defaultValue}"/>
+      <h:outputText value="#{varbl.defaultValue}" title="#{varbl.variableName}_defaultValue"/>
       </div>
    </h:column>
    <h:column>
@@ -38,20 +38,20 @@
          <h:outputText value="#{msgs.variableQueryHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{varbl.variableQueryShort}"/>
+      <h:outputText value="#{varbl.variableQueryShort}" title="#{varbl.variableName}_variableQuery"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.variableProcHeader}"/>
       </f:facet>
-      <h:outputText value="#{varbl.classNameShort}"/>
+      <h:outputText value="#{varbl.classNameShort}" title="#{varbl.variableName}_className"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.statusIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{varbl.statusIdDesc}"/>
+      <h:outputText value="#{varbl.statusIdDesc}" title="#{varbl.variableName}_statusId"/>
    </h:column>
 </h:dataTable>
 <f:verbatim><p/></f:verbatim>
