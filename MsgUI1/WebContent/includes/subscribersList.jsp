@@ -15,20 +15,20 @@
       <f:facet name="header">
          <h:outputText value=""/>
       </f:facet>
-      <h:selectBooleanCheckbox value="#{list.markedForDeletion}" 
+      <h:selectBooleanCheckbox value="#{list.markedForDeletion}" title="#{list.emailAddrId}_checkbox"
          disabled="#{not list.editable}" onchange="submit()"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.emailAddrHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.emailAddrShort}"/>
+      <h:outputText value="#{list.emailAddrShort}" title="#{list.emailAddrId}_emailAddr"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.subscribedHeader}"/>
       </f:facet>
-		<h:selectOneMenu value="#{list.subscribed}">
+		<h:selectOneMenu value="#{list.subscribed}" title="#{list.emailAddrId}_subscribed">
 			<f:selectItems value="#{codes.yorNItems}"/>
 			<f:selectItem itemLabel="Pending" itemValue="P"/>
 		</h:selectOneMenu>
@@ -37,7 +37,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.createDateHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.createTime}">
+      <h:outputText value="#{list.createTime}" title="#{list.emailAddrId}_createTime">
       	<f:convertDateTime pattern="yyyy-MM-dd"/>
       </h:outputText>
    </h:column>
@@ -45,33 +45,33 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.acceptHtmlHeader}"/>
       </f:facet>
-		<h:selectOneMenu value="#{list.acceptHtml}">
-			<f:selectItems value="#{codes.yorNItems}"/>
+		<h:selectOneMenu value="#{list.acceptHtml}" title="#{list.emailAddrId}_acceptHtml">
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.sentCountHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.sentCount}"/>
+      <h:outputText value="#{list.sentCount}" title="#{list.emailAddrId}_sentCount"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.openCountHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.openCount}"/>
+      <h:outputText value="#{list.openCount}" title="#{list.emailAddrId}_openCount"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.clickCountHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.clickCount}"/>
+      <h:outputText value="#{list.clickCount}" title="#{list.emailAddrId}_clickCount"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.lastOpenedHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.lastOpenTime}">
+      <h:outputText value="#{list.lastOpenTime}" title="#{list.emailAddrId}_lastOpenTime">
       	<f:convertDateTime pattern="yyyy-MM-dd"/>
       </h:outputText>
    </h:column>
@@ -79,7 +79,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.lastClickedHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.lastClickTime}">
+      <h:outputText value="#{list.lastClickTime}" title="#{list.emailAddrId}_lastClickTime">
       	<f:convertDateTime pattern="yyyy-MM-dd"/>
       </h:outputText>
    </h:column>
@@ -87,7 +87,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.customerNameHeader}"/>
       </f:facet>
-	  <h:outputText value="#{list.customerName}"/>
+	  <h:outputText value="#{list.customerName}" title="#{list.emailAddrId}_customerName"/>
    </h:column>
 	<f:facet name="footer">
     <h:panelGroup>
@@ -140,7 +140,7 @@
 			onclick="javascript:return confirmDelete();" />
 		<f:verbatim>&nbsp;</f:verbatim>
 		<h:commandButton value="#{msgs.saveSelectedButtonText}"
-			title="Delete selected rows" action="#{subscribersListBean.saveSubscribers}"
+			title="Save selected rows" action="#{subscribersListBean.saveSubscribers}"
 			disabled="#{not subscribersListBean.anySubscribersMarkedForDeletion}"
 			onclick="javascript:return confirmSubmit();" />
 		<f:verbatim>&nbsp;</f:verbatim>

@@ -95,7 +95,7 @@ public class MailboxTest extends BaseLogin {
 				alert.accept();
 				logger.info("Accepted the alert successfully.");
 			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running from Maven test
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
 				logger.error(e.getMessage());
 			}
 			

@@ -101,7 +101,7 @@ public class BuiltinRuleTest extends BaseLogin {
 				alert.dismiss(); // cancel the alert to prevent changes to the database
 				logger.info("Cancelled the alert successfully.");
 			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running from Maven test
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
 				logger.error(e.getMessage());
 			}
 		}

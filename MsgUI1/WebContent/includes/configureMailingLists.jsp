@@ -30,7 +30,7 @@
          <h:outputText value="#{msgs.displayNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{list.displayName}"/>
+      <h:outputText value="#{list.displayName}" title="#{list.listId}_displayName"/>
       </div>
    </h:column>
    <h:column>
@@ -38,26 +38,26 @@
          <h:outputText value="#{msgs.emailAddrHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{list.emailAddr}"/>
+      <h:outputText value="#{list.emailAddr}" title="#{list.listId}_emailAddr"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.createTimeHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.createTime}"/>
+      <h:outputText value="#{list.createTime}" title="#{list.listId}_createTime"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.statusIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.statusIdDesc}"/>
+      <h:outputText value="#{list.statusIdDesc}" title="#{list.listId}_statusId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.subscribersHeader}"/>
       </f:facet>
-      <h:outputLink value="subscribersList.faces" styleClass="cellLink">
+      <h:outputLink value="subscribersList.faces" styleClass="cellLink" title="#{list.listId}_viewList">
 		<h:outputText value="View list" title="Click to View"/>
       	<f:param name="listId" value="#{list.listId}"/>
 	  </h:outputLink>

@@ -30,7 +30,7 @@
          <h:outputText value="#{msgs.descriptionHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{actiondetail.description}"/>
+      <h:outputText value="#{actiondetail.description}" title="#{actiondetail.actionId}_desc"/>
       </div>
    </h:column>
    <h:column>
@@ -38,7 +38,7 @@
          <h:outputText value="#{msgs.processBeanIdHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{actiondetail.processBeanId}"/>
+      <h:outputText value="#{actiondetail.processBeanId}" title="#{actiondetail.actionId}_beanId"/>
       </div>
    </h:column>
    <%-- h:column>
@@ -51,7 +51,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.dataTypeHeader}"/>
       </f:facet>
-      <h:outputText value="#{actiondetail.dataType}"/>
+      <h:outputText value="#{actiondetail.dataType}" title="#{actiondetail.actionId}_dataType"/>
    </h:column>
 </h:dataTable>
 <f:verbatim><p/></f:verbatim>
