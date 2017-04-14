@@ -34,53 +34,52 @@
 			</h:panelGroup>
 			<h:panelGroup style="align: right; text-align: right;">
 				<h:outputText value="#{msgs.showFullHeaderPrompt}"/>
-				<h:selectBooleanCheckbox value="#{msgfolder.message.showAllHeaders}"
+				<h:selectBooleanCheckbox value="#{msgfolder.message.showAllHeaders}" id="show_all_headers"
 					onchange="submit()"/>
 				<f:verbatim>&nbsp;&nbsp;&nbsp;</f:verbatim>
 				<h:outputText value="#{msgs.showRawMessagePrompt}"/>
-				<h:selectBooleanCheckbox value="#{msgfolder.message.showRawMessage}"
+				<h:selectBooleanCheckbox value="#{msgfolder.message.showRawMessage}" id="show_raw_message"
 					onchange="submit()"/>
 			</h:panelGroup>
 		</h:panelGrid>
 		<f:verbatim>
 			<p />
 		</f:verbatim>
-		<h:panelGrid columns="2" styleClass="smtpHeaders" 
-			columnClasses="smtpLabelColumn, smtpTextColumn"
+		<h:panelGrid columns="2" styleClass="smtpHeaders" columnClasses="smtpLabelColumn, smtpTextColumn"
 			rendered="#{not msgfolder.message.showAllHeaders}">
 			
 			<h:outputText value="#{msgs.fromAddressPrompt}" />
-			<h:outputText value="#{msgfolder.message.fromAddress}"/>
+			<h:outputText value="#{msgfolder.message.fromAddress}" id="from_address"/>
 
 			<h:outputText value="#{msgs.toAddressPrompt}" />
-			<h:outputText value="#{msgfolder.message.toAddress}"/>
+			<h:outputText value="#{msgfolder.message.toAddress}" id="to_address"/>
 
 			<h:outputText value="#{msgs.ccAddressPrompt}" />
-			<h:outputText value="#{msgfolder.message.ccAddress}" />
+			<h:outputText value="#{msgfolder.message.ccAddress}" id="cc_address"/>
 
 			<h:outputText value="#{msgs.msgSubjectPrompt}" />
-			<h:outputText value="#{msgfolder.message.msgSubject}" />
+			<h:outputText value="#{msgfolder.message.msgSubject}" id="msg_subject"/>
 
 			<h:outputText value="#{msgs.receivedDatePrompt}" />
-			<h:outputText value="#{msgfolder.message.receivedDate}">
+			<h:outputText value="#{msgfolder.message.receivedDate}" id="received_date">
 				<f:convertDateTime dateStyle="default"/>
 			</h:outputText>
 
 			<h:outputText value="#{msgs.finalRecipientPrompt}" 
 				rendered="#{msgfolder.rfcFields != null}" />
-			<h:outputText value="#{msgfolder.rfcFields.finalRcpt}" 
+			<h:outputText value="#{msgfolder.rfcFields.finalRcpt}" id="final_recipient"
 				rendered="#{msgfolder.rfcFields != null}" />
 			
 			<h:outputText value="#{msgs.siteIdPrompt}" 
 				rendered="#{msgfolder.message.clientId != null}" />
-			<h:outputText value="#{msgfolder.message.clientId}" 
+			<h:outputText value="#{msgfolder.message.clientId}" id="client_id"
 				rendered="#{msgfolder.message.clientId != null}" />
 			
 			<h:outputText value="#{msgs.ruleNamePrompt}" />
-			<h:outputText value="#{msgfolder.message.ruleName}" />
+			<h:outputText value="#{msgfolder.message.ruleName}" id="rule_name"/>
 
 			<h:outputText value="#{msgs.bodyContentTypePrompt}" />
-			<h:outputText value="#{msgfolder.message.bodyContentType}" />
+			<h:outputText value="#{msgfolder.message.bodyContentType}" id="body_content_type"/>
 		</h:panelGrid>
 		
 		<h:dataTable value="#{msgfolder.message.msgHeaders}" var="hdr" 
@@ -88,7 +87,7 @@
    			columnClasses="smtpLabelColumn, smtpTextColumn"
    			rendered="#{msgfolder.message.showAllHeaders}">
 		   <h:column>
-		      <h:outputText value="#{hdr.headerName}:"/>
+		      <h:outputText value="#{hdr.headerName}:" title="#{hdr.headerName}"/>
 		   </h:column>
 		   <h:column>
 		      <h:outputText value="#{hdr.headerValue}"/>
@@ -97,9 +96,9 @@
 		
 		<f:verbatim><br/></f:verbatim>
 		<h:panelGrid columns="1" styleClass="smtpBody">
-			<h:outputText value="#{msgfolder.message.displayBody}" escape="false" 
+			<h:outputText value="#{msgfolder.message.displayBody}" escape="false" id="body_content_msg"
 				rendered="#{not msgfolder.message.showRawMessage}"/>
-			<h:outputText value="#{msgfolder.message.rawMessage}" escape="false" 
+			<h:outputText value="#{msgfolder.message.rawMessage}" escape="false" id="body_content_raw"
 				rendered="#{msgfolder.message.showRawMessage}"/>
 		</h:panelGrid>
 		<h:panelGrid columns="1" styleClass="fullWidth">
@@ -114,7 +113,7 @@
 					<h:column>
 						<h:graphicImage value="/images/clip_1.gif" style="border: 0px"
 							title="attachment"/>
-						<h:outputLink value="file"
+						<h:outputLink value="file" title="#{attch.msgId}_#{attch.attchmntName}"
 							style="color: darkblue; font-size: 1em; font-weight: bold;">
 							<f:param name="id" value="#{attch.msgId}"/>
 							<f:param name="depth" value="#{attch.attchmntDepth}"/>
@@ -122,7 +121,7 @@
 							<h:outputText value="#{attch.attchmntName}"/>
 						</h:outputLink>
 						<f:verbatim>&nbsp;&nbsp;</f:verbatim>
-						<h:outputText value="#{msgs.sizePrompt}"/>
+						<h:outputText value="#{msgs.sizePrompt}" id="attachment_total_size"/>
 						<h:outputText value="(#{attch.sizeAsString})"/>
 					</h:column>
 				</h:dataTable>

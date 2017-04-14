@@ -39,26 +39,26 @@
 	<h:outputText value="#{msgs.ruleNamePrompt}" style="font-weight: bold;"/>
 	<%-- h:selectOneMenu value="#{mailtracking.ruleName}" onchange="submit()"
 		valueChangeListener="#{mailtracking.ruleNameChanged}"/ --%>
-	<h:selectOneMenu value="#{mailtracking.ruleName}">
+	<h:selectOneMenu value="#{mailtracking.ruleName}" title="Select Rule Name">
 		<f:selectItem itemValue="All" itemLabel="All Rule Names"/>
 		<f:selectItems value="#{dynacodes.builtinRuleNameItems}"/>
 		<f:selectItems value="#{dynacodes.customRuleNameItems}"/>
 	</h:selectOneMenu>
 	
 	<h:outputText value="#{msgs.subjectPrompt}" style="font-weight: bold;"/>
-	<h:inputText value="#{mailtracking.subject}" size="22" maxlength="255" id="subject">
+	<h:inputText value="#{mailtracking.subject}" size="22" maxlength="255" id="subject" title="Subject Search Text">
 		<f:converter converterId="NullableStringConverter" />
 	</h:inputText>
 	
 	<h:outputText value="#{msgs.bodyTextPrompt}" style="font-weight: bold;"/>
-	<h:inputText value="#{mailtracking.body}" size="22" maxlength="255" id="body">
+	<h:inputText value="#{mailtracking.body}" size="22" maxlength="255" id="body" title="Body Search Text">
 		<f:converter converterId="NullableStringConverter" />
 	</h:inputText>
 	
 	<h:outputText value="#{msgs.fromAddressPrompt}" style="font-weight: bold;"/>
 	<h:panelGroup>
 	<h:inputText value="#{mailtracking.fromAddress}" size="22" maxlength="255"
-		id="fromaddr">
+		id="fromaddr" title="From Address Search Text">
 		<f:converter converterId="NullableStringConverter" />
 	</h:inputText>
 	<h:message for="fromaddr" styleClass="errorMessage"/>
@@ -67,7 +67,7 @@
 	<h:outputText value="#{msgs.toEmailAddressPrompt}" style="font-weight: bold;"/>
 	<h:panelGroup>
 	<h:inputText value="#{mailtracking.toAddress}" size="22" maxlength="255"
-		id="toaddr" validator="#{mailtracking.checkEmailAddress}">
+		id="toaddr" validator="#{mailtracking.checkEmailAddress}" title="To Address Search Text">
 		<f:converter converterId="NullableStringConverter" />
 	</h:inputText>
 	<h:message for="toaddr" styleClass="errorMessage"/>

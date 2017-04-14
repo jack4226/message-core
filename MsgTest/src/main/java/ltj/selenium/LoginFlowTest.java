@@ -2,6 +2,7 @@ package ltj.selenium;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -92,9 +92,8 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testEmailTemplates() {
-		String listTitle = "Setup Email Templates";
-		String testTmpltName = "SampleNewsletter2";
+	public void testEmailBrowser() {
+		String listTitle = "Manage Email Correspondence";
 		
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		try {
@@ -105,167 +104,115 @@ public class LoginFlowTest extends TestCase {
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			
-			// Email Template List page
+			// Email List page
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			WebElement subject = driver.findElement(By.cssSelector("span[title='SampleNewsletter2_subject']"));
-			assertNotNull(subject);
-			String subjectBefore = subject.getText();
-			assertTrue(subjectBefore.startsWith("Sample HTML newsletter to"));
+			WebElement allMsgLink = driver.findElement(By.cssSelector("a[title='All Messages']"));
+			allMsgLink.click();
 			
-			WebElement listId = driver.findElement(By.cssSelector("span[title='SampleNewsletter2_listId']"));
-			assertNotNull(listId);
-			String listIdBefore = listId.getText();
-			assertEquals("SMPLLST2", listIdBefore);
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
 			
-			WebElement listType = driver.findElement(By.cssSelector("span[title='SampleNewsletter2_listType']"));
-			assertNotNull(listType);
-			String listTypeBefore= listType.getText();
-			assertEquals("Traditional", listTypeBefore);
+			Select selectRuleName = new Select(driver.findElement(By.cssSelector("select[title='Select Rule Name']")));
+			WebElement selectedRuleName = selectRuleName.getFirstSelectedOption();
+			assertEquals("All", selectedRuleName.getAttribute("value"));
 			
-			WebElement dlvrOpt = driver.findElement(By.cssSelector("span[title='SampleNewsletter2_deliveryOption']"));
-			String dlvrOptBefore = dlvrOpt.getText();
-			assertEquals("All on list", dlvrOptBefore);
+			WebElement checkAll = driver.findElement(By.id("msgform:msgrow:checkAll"));
+			checkAll.click();
+
+			WebElement markUnreadLink = driver.findElement(By.cssSelector("a[title='Mark as unread']"));
+			markUnreadLink.click();
 			
-			WebElement listEditLink = driver.findElement(By.cssSelector("a[title='SampleNewsletter2']"));
-			assertNotNull(listEditLink);
-			assertEquals(testTmpltName, listEditLink.getText());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
 			
-			listEditLink.click();
+			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
+			assertFalse(checkBoxList.isEmpty());
 			
-			// Email Template Edit Page
-			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
-			
-			WebElement tmpltNameElm = driver.findElement(By.id("emailtmplt:content:templateid"));
-			assertNotNull(tmpltNameElm);
-			assertEquals(testTmpltName, tmpltNameElm.getAttribute("value"));
-			
-			Select selectListType = new Select(driver.findElement(By.id("emailtmplt:content:listtype")));
-			WebElement selectedListType = selectListType.getFirstSelectedOption();
-			if ("Traditional".equals(listTypeBefore)) {
-				assertEquals("Traditional", selectedListType.getText());
-			}
-			else {
-				assertEquals("Personalized", selectedListType.getText());
-			}
-			
-			Select selectDlvrOpt = new Select(driver.findElement(By.id("emailtmplt:content:dlvropt")));
-			WebElement selectedDlvrOpt = selectDlvrOpt.getFirstSelectedOption();
-			logger.info("Delivery Option selected: " + selectedDlvrOpt.getText());
-			if ("All on list".equals(dlvrOptBefore)) {
-				assertEquals("ALL", selectedDlvrOpt.getAttribute("value"));
-			}
-			else if ("Customers only".equals(dlvrOptBefore)) {
-				assertEquals("CUST", selectedDlvrOpt.getAttribute("value"));
-			}
-			else {
-				assertEquals("PROS", selectedDlvrOpt.getAttribute("value"));
+			List<String> fromAddrList = new ArrayList<>();
+			List<String> subjectList = new ArrayList<>();
+			List<String> ruleNameList = new ArrayList<>();
+
+			WebElement viewMsgLink = null;
+
+			for (int i = 0; i < checkBoxList.size() && i < 2; i++) {
+				WebElement elm = checkBoxList.get(i);
+				String checkBoxTitle = elm.getAttribute("title");
+				String prefix = StringUtils.removeEnd(checkBoxTitle, "_checkBox");
+				
+				WebElement dispNameElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_dispName']"));
+				String fromAddr = dispNameElm.getText();
+				assertTrue(StringUtils.isNotBlank(fromAddr));
+				fromAddrList.add(fromAddr);
+				
+				WebElement ruleNameElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_ruleName']"));
+				String ruleName = ruleNameElm.getText();
+				assertTrue(StringUtils.isNotBlank(ruleName));
+				ruleNameList.add(ruleName);
+				
+				// View Message page
+				viewMsgLink = driver.findElement(By.cssSelector("a[title='" + prefix + "_viewMessage']"));
+				String subject = viewMsgLink.getText();
+				subjectList.add(subject);
 			}
 			
-			Select selectEmbed = new Select(driver.findElement(By.id("emailtmplt:content:emailid")));
-			List<WebElement> selectedElms = selectEmbed.getAllSelectedOptions();
-			assertEquals(1, selectedElms.size());
+			// View message details
+			assertNotNull(viewMsgLink);
+			viewMsgLink.click();
 			
-			WebElement subjectElm = driver.findElement(By.id("emailtmplt:content:subject"));
-			assertNotNull(subjectElm);
-			String subjectAfter = subjectElm.getAttribute("value");
-			assertEquals(subjectBefore, subjectAfter);
-			if (StringUtils.endsWith(subjectAfter, "_updated")) {
-				subjectAfter = StringUtils.removeEnd(subjectAfter, "_updated");
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("inboxview:gettingStartedFooter")));
+
+			// verify that fields from details and list match
+			WebElement fromAddrElm = driver.findElement(By.id("inboxview:from_address"));
+			assertTrue(StringUtils.contains(fromAddrElm.getText(), fromAddrList.get(fromAddrList.size() - 1)));
+			
+			WebElement ruleNameElm = driver.findElement(By.id("inboxview:rule_name"));
+			assertEquals(ruleNameElm.getText(), ruleNameList.get(ruleNameList.size() - 1));
+			
+			WebElement subjectElm = driver.findElement(By.id("inboxview:msg_subject"));
+			assertTrue(StringUtils.contains(subjectElm.getText(), subjectList.get(subjectList.size() - 1)));
+			
+			WebElement bodyElm = driver.findElement(By.id("inboxview:body_content_msg"));
+			String body = bodyElm.getText();
+			assertTrue(StringUtils.isNotBlank(body));
+			if (StringUtils.contains(body, "System Email Id:")) {
+				logger.info("Embeded Email Id Found.");
 			}
-			else {
-				subjectAfter += "_updated";
-			}
-			assertFalse(subjectAfter.equals(subjectBefore));
-			subjectElm.clear();
-			subjectElm.sendKeys(subjectAfter);
- 			
-			WebElement bodyElm = driver.findElement(By.id("emailtmplt:content:bodytext"));
-			// TextArea, use getAttribute("value") to retrieve text content
-			assertTrue(bodyElm.getAttribute("value").length() > 0);
 			
-			// submit the changes and go back to list page
-			WebElement submit = driver.findElement(By.id("emailtmplt:content:submit"));
-			submit.click();
+			Select selectNewRM = new Select(driver.findElement(By.id("inboxview:newrulename")));
+			WebElement selectednewRM = selectNewRM.getFirstSelectedOption();
+			assertEquals(ruleNameElm.getText(), selectednewRM.getAttribute("value"));
 			
-			// Accept (Click OK on JavaScript Alert pop-up)
+			// Go back to the list
+			WebElement goback = driver.findElement(By.cssSelector("input[title='Go back to List']"));
+			goback.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
+			
+			// click page next/previous
 			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
+				WebElement pageNext = driver.findElement(By.id("msgform:msgrow:pagenext"));
+				pageNext.click();
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
+				WebElement pagePrev = driver.findElement(By.id("msgform:msgrow:pageprev"));
+				pagePrev.click();
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
 			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
+			catch (Exception e) {
+				logger.error("Exception caught", e);
 			}
-			
-			wait.until(ExpectedConditions.titleIs(listTitle));
-			
-			WebElement refreshLink = driver.findElement(By.cssSelector("input[title='Refresh from database']"));
-			refreshLink.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("advanced:footer:gettingStartedFooter")));
-			
-			// verify results
-			WebElement subjectAfterElm = driver.findElement(By.cssSelector("span[title='SampleNewsletter2_subject']"));
-			assertEquals(subjectAfter, subjectAfterElm.getText());
-			
-			
-			// View/Edit Scheduler page
-			WebElement schedulerLink = driver.findElement(By.cssSelector("a[title='SampleNewsletter2_editSchedule']"));
-			schedulerLink.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailsched:footer:gettingStartedFooter")));
-			
-			//  Scheduler edit page
-			tmpltNameElm = driver.findElement(By.id("emailsched:content:tmpltid"));
-			assertEquals(testTmpltName, tmpltNameElm.getAttribute("value"));
-			assertFalse(tmpltNameElm.isEnabled());
-			
-			Select selectHour = new Select(driver.findElement(By.id("emailsched:content:starttime")));
-			WebElement selectedHour = selectHour.getFirstSelectedOption();
-			assertEquals("2", selectedHour.getAttribute("value"));
-			
-			Select selectMinute = new Select(driver.findElement(By.id("emailsched:content:startminute")));
-			WebElement selectedMinute = selectMinute.getFirstSelectedOption();
-			String minuteStr = selectedMinute.getAttribute("value");
-			int minuteAfter = (Integer.parseInt(minuteStr) + 5) % 60;
-			selectMinute.selectByValue("" + minuteAfter);
-			
-			WebElement sundayElm = driver.findElement(By.id("emailsched:content:weekly:0")); // Sunday
-			boolean sundayBefore = sundayElm.isSelected();
-			sundayElm.click();
-			assertFalse(sundayElm.isSelected() == sundayBefore);
-			
-			// Save change and go back to the list page
-			WebElement saveSchedule = driver.findElement(By.id("emailsched:content:submit"));
-			saveSchedule.click();
-			
-			// Accept (Click OK on JavaScript Alert pop-up)
+
+			// click page last/first
 			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
+				WebElement pageLast = driver.findElement(By.id("msgform:msgrow:pagelast"));
+				pageLast.click();
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
+				WebElement pageFirst = driver.findElement(By.id("msgform:msgrow:pagefirst"));
+				pageFirst.click();
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
 			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
+			catch (Exception e) {
+				logger.error("Exception caught", e);
 			}
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("advanced:footer:gettingStartedFooter")));
-			
-			// verify results
-			schedulerLink = driver.findElement(By.cssSelector("a[title='SampleNewsletter2_editSchedule']"));
-			schedulerLink.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailsched:footer:gettingStartedFooter")));
-			
-			selectMinute = new Select(driver.findElement(By.id("emailsched:content:startminute")));
-			assertEquals("" + minuteAfter, selectMinute.getFirstSelectedOption().getAttribute("value"));
-			
-			sundayElm = driver.findElement(By.id("emailsched:content:weekly:0"));
-			assertFalse(sundayBefore == sundayElm.isSelected());
+
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

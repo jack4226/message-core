@@ -75,7 +75,7 @@
 						onclick="javascript:changeAllCheckBoxes(this)"/>
 				</f:facet>
 				<h:selectBooleanCheckbox value="#{mail.markedForDeletion}"
-					disabled="#{not mail.editable}" id="lnchkbox"/>
+					disabled="#{not mail.editable}" id="lnchkbox" title="#{mail.msgId}_checkBox"/>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
@@ -89,7 +89,7 @@
 				<h:graphicImage value="/images/forwarded.gif" style="border: 0px"
 					rendered="#{mail.replyCount<=0 && mail.forwardCount>0}" 
 					title="Message Forwarded"/>
-				<h:outputText value="#{mail.fromDisplayName}"/>
+				<h:outputText value="#{mail.fromDisplayName}" title="#{mail.msgId}_dispName"/>
 				</div>
 			</h:column>
 			<h:column>
@@ -101,7 +101,7 @@
 					rendered="#{mail.hasAttachments}" title="Message has attachment(s)"/>
 				<h:graphicImage value="/images/space.gif" style="border: 0px"
 					rendered="#{!mail.hasAttachments}" height="1" width="16"/>
-				<h:commandLink action="#{msgfolder.viewMessage}">
+				<h:commandLink action="#{msgfolder.viewMessage}" title="#{mail.msgId}_viewMessage">
 					<h:outputText value="#{mail.msgSubject==null?'null':mail.msgSubject}"
 						title="Click to View" style="font-weight: bold;"
 						rendered="#{mail.readCount<=0}"/>
@@ -116,13 +116,14 @@
 				<f:facet name="header">
 					<h:outputText value="#{msgs.ruleNameHeader}"/>
 				</f:facet>
-				<h:outputText value="#{mail.ruleName}" style="font-size: 0.8em; color: darkblue;"/>
+				<h:outputText value="#{mail.ruleName}" style="font-size: 0.8em; color: darkblue;"
+					title="#{mail.msgId}_ruleName"/>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="#{msgs.receivedDateHeader}"/>
 				</f:facet>
-				<h:outputText value="#{mail.receivedDate}">
+				<h:outputText value="#{mail.receivedDate}" title="#{mail.msgId}_receivedDate">
 					<f:convertDateTime pattern="MM/dd_HH:mm"/>
 				</h:outputText>
 			</h:column>
@@ -130,7 +131,7 @@
 				<f:facet name="header">
 					<h:outputText value="#{msgs.msgSizeHeader}"/>
 				</f:facet>
-				<h:outputText value="#{mail.size}" />
+				<h:outputText value="#{mail.size}" title="#{mail.msgId}_mailSize"/>
 			</h:column>
 			<h:column>
 				<h:graphicImage value="/images/received.gif" style="border: 0px"
@@ -145,21 +146,21 @@
 				columnClasses="alignLeft50, alignRight50">
 				<h:panelGroup>
 				<h:outputText value="#{msgs.footerViewText} "/>
-                <h:commandLink value="#{msgs.allLinkText}" action="#{msgfolder.viewAll}"/>
+                <h:commandLink value="#{msgs.allLinkText}" action="#{msgfolder.viewAll}" title="View All"/>
 				<f:verbatim>&nbsp;</f:verbatim>
-                <h:commandLink value="#{msgs.unreadLinkText}" action="#{msgfolder.viewUnread}"/>
+                <h:commandLink value="#{msgs.unreadLinkText}" action="#{msgfolder.viewUnread}" title="View Unread"/>
                 <f:verbatim>&nbsp;</f:verbatim>
-                <h:commandLink value="#{msgs.readLinkText}" action="#{msgfolder.viewRead}"/>
+                <h:commandLink value="#{msgs.readLinkText}" action="#{msgfolder.viewRead}" title="View Read"/>
                 <f:verbatim>&nbsp;</f:verbatim>
-                <h:commandLink value="#{msgs.flaggedLinkText}" action="#{msgfolder.viewFlagged}"/>
+                <h:commandLink value="#{msgs.flaggedLinkText}" action="#{msgfolder.viewFlagged}" title="View Flagged"/>
 				</h:panelGroup>
 				<h:panelGroup>
-            	<h:outputText value="#{msgfolder.dataTable.first + 1}"
+            	<h:outputText value="#{msgfolder.dataTable.first + 1}" id="first_msg_nbr"
             		style="font-weight: bold;"/>
             	<h:outputText value=" - "/>
-				<h:outputText value="#{msgfolder.lastPageRow}"
+				<h:outputText value="#{msgfolder.lastPageRow}" id="last_msg_nbr"
 					style="font-weight: bold;" />
-				<h:outputText value=" of #{msgfolder.dataTable.rowCount}" 
+				<h:outputText value=" of #{msgfolder.dataTable.rowCount}" id="total_msg_count"
             		style="font-weight: bold;"/>
             	<f:verbatim>&nbsp;&nbsp;</f:verbatim>
                 <h:commandLink value="#{msgs.firstLinkText}" action="#{msgfolder.pageFirst}"
