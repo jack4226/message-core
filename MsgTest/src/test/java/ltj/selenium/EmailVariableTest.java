@@ -71,9 +71,9 @@ public class EmailVariableTest extends BaseLogin {
 			assertTrue(procNameElm.getAttribute("value").endsWith(classNameShort));
 			
 			WebElement defaultElm = driver.findElement(By.id("emailvarbl:content:defaultvalue"));
-			assertNotNull(defaultElm);
-			String defaultValueAfter = defaultElm.getText();
-			assertTrue(defaultValueAfter.startsWith("Valued Customer"));
+			// TextArea - use getAttribute("value") instead of getText()
+			String defaultValueAfter = defaultElm.getAttribute("value");
+			assertEquals(defaultValueBefore, defaultValueAfter);
 			if (StringUtils.endsWith(defaultValueAfter, "_updated")) {
 				defaultValueAfter = StringUtils.removeEnd(defaultValueAfter, "_updated");
 			}
@@ -128,7 +128,7 @@ public class EmailVariableTest extends BaseLogin {
 			// verify results
 			WebElement defaultValueAfterElm = driver.findElement(By.cssSelector("span[title='CustomerFirstName_defaultValue']"));
 			assertNotNull(defaultValueAfterElm);
-			// TODO fix this
+			// TODO fix this when running from Maven
 			//assertEquals(defaultValueAfter, defaultValueAfterElm.getText());
 			
 			

@@ -214,7 +214,7 @@ public class EmailAddrTable extends CreateTableBase {
 						// ALL - all on list, CUST - only email addresses with customer record
 					+ "select_criteria varchar(100), " 
 						// additional selection criteria - to be implemented
-					+ "embed_email_id boolean, " // true, false, or null to use system default
+					+ "embed_email_id Boolean default NULL, " // true, false, or null to use system default
 					+ "is_built_in boolean NOT NULL DEFAULT false, "
 					+ "schedules blob, " // store a java object
 					+ "FOREIGN KEY email_template_fk_list_id (list_id) REFERENCES mailing_list (list_id) ON DELETE CASCADE ON UPDATE CASCADE, "

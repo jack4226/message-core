@@ -38,7 +38,13 @@ public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDa
 			emailTemplateVo.setListType(rs.getString("list_type"));
 			emailTemplateVo.setDeliveryOption(rs.getString("delivery_option"));
 			emailTemplateVo.setSelectCriteria(rs.getString("select_criteria"));
-			emailTemplateVo.setEmbedEmailId(rs.getBoolean("embed_email_id"));
+			Boolean embedEmailId = rs.getBoolean("embed_email_id");
+			if (rs.wasNull()) {
+				emailTemplateVo.setEmbedEmailId(null);
+			}
+			else {
+				emailTemplateVo.setEmbedEmailId(embedEmailId);
+			}
 			emailTemplateVo.setIsBuiltIn(rs.getBoolean("is_built_in"));
 			emailTemplateVo.setOrigTemplateId(emailTemplateVo.getTemplateId());
 			emailTemplateVo.setClientId(rs.getString("client_id"));

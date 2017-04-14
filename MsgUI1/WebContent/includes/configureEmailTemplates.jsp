@@ -13,7 +13,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.deleteColumnHeader}"/>
       </f:facet>
-      <h:selectBooleanCheckbox value="#{tmplt.markedForDeletion}" 
+      <h:selectBooleanCheckbox value="#{tmplt.markedForDeletion}" title="#{tmplt.templateId}_checkBox"
          disabled="#{not tmplt.editable || tmplt.isBuiltInTemplate}" onchange="submit()"/>
    </h:column>
    <h:column>
@@ -29,33 +29,33 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.defaultListIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{tmplt.listId}"/>
+      <h:outputText value="#{tmplt.listId}" title="#{tmplt.templateId}_listId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.subjectHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{tmplt.subject}"/>
+      <h:outputText value="#{tmplt.subject}" title="#{tmplt.templateId}_subject"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.listTypeHeader}"/>
       </f:facet>
-      <h:outputText value="#{tmplt.listType}"/>
+      <h:outputText value="#{tmplt.listType}" title="#{tmplt.templateId}_listType"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.deliveryOptionHeader}"/>
       </f:facet>
-      <h:outputText value="#{tmplt.deliveryOptionDesc}"/>
+      <h:outputText value="#{tmplt.deliveryOptionDesc}" title="#{tmplt.templateId}_deliveryOption"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.schedulesHeader}"/>
       </f:facet>
-      <h:commandLink action="#{emailtemplates.editSchedules}">
+      <h:commandLink action="#{emailtemplates.editSchedules}" title="#{tmplt.templateId}_editSchedule">
       	<h:outputText value="Edit" title="Click to Edit Schedules"/>
       	<f:param name="templateId" value="#{tmplt.templateId}"/>
       </h:commandLink>

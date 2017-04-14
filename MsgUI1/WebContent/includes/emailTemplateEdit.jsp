@@ -53,7 +53,7 @@
 		<h:message for="select" styleClass="errorMessage"/>
 
 		<h:outputText value="#{msgs.embedEmailIdPrompt}"/>
-		<h:selectOneMenu value="#{emailtemplates.emailTemplate.embedEmailId}"
+		<h:selectOneMenu value="#{emailtemplates.emailTemplate.isEmbedEmailId}"
 			id="emailid" label="#{msgs.embedEmailIdPrompt}">
 			<f:selectItems value="#{codes.yorNItems}"/>
 			<f:selectItem itemLabel="Use System default" itemValue=" "/>

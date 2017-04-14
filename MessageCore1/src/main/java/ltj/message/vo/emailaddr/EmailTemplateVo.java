@@ -50,6 +50,24 @@ public class EmailTemplateVo extends BaseVoWithRowId implements Serializable {
 	public boolean getIsBuiltInTemplate() {
 		return isBuiltIn;
 	}
+	
+	public String getIsEmbedEmailId() {
+		if (embedEmailId == null) { // use system default
+			return " ";
+		}
+		else {
+			return (embedEmailId ? "Y" : "N");
+		}
+	}
+	
+	public void setIsEmbedEmailId(String str) {
+		if (StringUtils.isBlank(str)) {
+			embedEmailId = null;
+		}
+		else {
+			embedEmailId = ("Y".equals(str) ? true : false);
+		}
+	}
 	/** end of UI */
 
 	public String getTemplateId() {
