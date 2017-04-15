@@ -39,7 +39,7 @@
 	<h:outputText value="#{msgs.ruleNamePrompt}" style="font-weight: bold;"/>
 	<%-- h:selectOneMenu value="#{mailtracking.ruleName}" onchange="submit()"
 		valueChangeListener="#{mailtracking.ruleNameChanged}"/ --%>
-	<h:selectOneMenu value="#{mailtracking.ruleName}" title="Select Rule Name">
+	<h:selectOneMenu value="#{mailtracking.ruleName}" title="Select Rule Name" id="by_rulename">
 		<f:selectItem itemValue="All" itemLabel="All Rule Names"/>
 		<f:selectItems value="#{dynacodes.builtinRuleNameItems}"/>
 		<f:selectItems value="#{dynacodes.customRuleNameItems}"/>
