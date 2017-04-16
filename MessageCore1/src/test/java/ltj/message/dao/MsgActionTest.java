@@ -26,14 +26,15 @@ public class MsgActionTest extends DaoTestBase {
 	
 	@Test
 	public void testSelects() {
-		List<MsgActionVo> list = selectByRuleName(testRuleName);
-		assertTrue(list.size()>0);
-		list = selectByBestMatch();
-		assertTrue(list.size()>0);
-		MsgActionVo vo = selectByUniqueKey(testRuleName, 1, null);
-		assertNotNull(vo);
+		List<MsgActionVo> list1 = selectByRuleName(testRuleName);
+		assertTrue(list1.size() > 0);
+		List<MsgActionVo> list2 = selectByBestMatch();
+		assertTrue(list2.size() > 0);
+		MsgActionVo vo1 = list1.get(0);
+		MsgActionVo vo2 = selectByUniqueKey(vo1.getRuleName(), vo1.getActionSeq(), vo1.getClientId());
+		assertNotNull(vo2);
 		int rowsDeleted = deleteByRuleName("test");
-		assertEquals(rowsDeleted, 0);
+		assertEquals(0, rowsDeleted);
 	}
 
 	@Test
