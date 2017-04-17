@@ -39,6 +39,7 @@ import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.user.SessionUploadDao;
 import ltj.message.exception.DataValidationException;
 import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.PrintUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingVo.PageAction;
 import ltj.message.vo.SessionUploadVo;
@@ -130,10 +131,10 @@ public class MsgInboxBean {
 	}
 
 	public String pageLast() {
+		searchVo.setPageAction(PageAction.LAST);
 		int count = dataTable.getRowCount();
 		int rows = dataTable.getRows();
 		dataTable.setFirst(count - ((count % rows != 0) ? count % rows : rows));
-		searchVo.setPageAction(PageAction.LAST);
 		return TO_PAGING;
 	}
 
@@ -162,13 +163,14 @@ public class MsgInboxBean {
 	
 	public DataModel getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
+		logger.info("getAll() - fromPage=" + fromPage + ", pagingButtonPushed=" + pagingButtonPushed + LF + "SearchVo: " + PrintUtil.prettyPrint(searchVo, 2));
 		if (fromPage != null && fromPage.equals("main")) {
 			resetSearchVo();
 		}
 		SimpleMailTrackingMenu menu = (SimpleMailTrackingMenu) FacesUtil.getSessionMapValue("mailtracking");
 		if (menu != null) {
 			SearchFieldsVo menuSearchVo = menu.getSearchFieldVo();
-			//logger.info("Menu SearchFieldVo: " + menuSearchVo);
+			logger.info("Menu SearchFieldVo: " + PrintUtil.prettyPrint(menuSearchVo, 2));
 			//logger.info("Inbox SearchFieldVo: " + searchVo);
 			if (!menuSearchVo.equalsLevel1(searchVo)) {
 				if (menuSearchVo.getLogList().size() > 0) {

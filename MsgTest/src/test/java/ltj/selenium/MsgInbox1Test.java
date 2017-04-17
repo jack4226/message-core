@@ -111,9 +111,8 @@ public class MsgInbox1Test extends BaseLogin {
 				WebElement pageLast = driver.findElement(By.id("msgform:msgrow:pagelast"));
 				pageLast.click();
 				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
-				// TODO fix this
-				//ListTuple last = getListDetails();
-				//assertFalse(tuple1.equalsTo(last));
+				ListTuple last = getListDetails();
+				assertFalse(tuple1.equalsTo(last));
 				WebElement pageFirst = driver.findElement(By.id("msgform:msgrow:pagefrst"));
 				pageFirst.click();
 				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));

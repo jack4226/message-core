@@ -65,6 +65,10 @@ public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable 
 		}
 	}
 	
+	public Set<String> getSearchFields() {
+		return searchFields;
+	}
+	
 	public boolean equalsToSearch(PagingVo vo) {
 		getLogList().clear();
 		if (this == vo) {
@@ -134,7 +138,7 @@ public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable 
 				System.out.println("Method Name: " + name + ", Return Type: " + method.getReturnType().getName());
 			}
 		}
-		for (Iterator<String> it=searchFields.iterator(); it.hasNext();) {
+		for (Iterator<String> it = searchFields.iterator(); it.hasNext();) {
 			String searchField = it.next();
 			System.out.println("Search Field: " + searchField);
 		}
