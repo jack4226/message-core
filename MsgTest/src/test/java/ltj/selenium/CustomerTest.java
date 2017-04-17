@@ -205,26 +205,24 @@ public class CustomerTest extends BaseLogin {
 		dtl.birthDateList = new ArrayList<>();
 		
 		dtl.idx = new Random().nextInt(checkBoxList.size());
+		
+		List<WebElement> emailAddrList = driver.findElements(By.cssSelector("span[title$='_emailAddr']"));
+		assertEquals(checkBoxList.size(), emailAddrList.size());
+		
+		List<WebElement> lastNameList = driver.findElements(By.cssSelector("span[title$='_lastName']"));
+		assertEquals(checkBoxList.size(), lastNameList.size());
+		
+		List<WebElement> birthDateList = driver.findElements(By.cssSelector("span[title$='_birthDate']"));
+		assertEquals(checkBoxList.size(), birthDateList.size());
 
 		for (int i = 0; i < checkBoxList.size(); i++) {
+			dtl.emailAddrList.add(emailAddrList.get(i).getText());
+			dtl.lastNameList.add(lastNameList.get(i).getText());
+			dtl.birthDateList.add(birthDateList.get(i).getText());
+			
 			WebElement elm = checkBoxList.get(i);
 			String checkBoxTitle = elm.getAttribute("title");
 			String prefix = StringUtils.removeEnd(checkBoxTitle, "_checkBox");
-			
-			WebElement emailAddrElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_emailAddr']"));
-			String emailAddr = emailAddrElm.getText();
-			assertTrue(StringUtils.isNotBlank(emailAddr));
-			dtl.emailAddrList.add(emailAddr);
-			
-			WebElement lastNameElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_lastName']"));
-			String lastName = lastNameElm.getText();
-			assertTrue(StringUtils.isNotBlank(lastName));
-			dtl.lastNameList.add(lastName);
-			
-			WebElement birthDateElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_birthDate']"));
-			String birthDate = birthDateElm.getText();
-			assertTrue(StringUtils.isNotBlank(birthDate));
-			dtl.birthDateList.add(birthDate);
 			
 			WebElement viewMsgLink = driver.findElement(By.cssSelector("a[title='" + prefix + "']"));
 			String custId = viewMsgLink.getText();

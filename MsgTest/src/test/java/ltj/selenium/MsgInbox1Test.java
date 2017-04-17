@@ -228,41 +228,55 @@ public class MsgInbox1Test extends BaseLogin {
 		List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
 		assertFalse(checkBoxList.isEmpty());
 		
-		MsgListDetail tuple = new MsgListDetail();
+		MsgListDetail detail = new MsgListDetail();
 		
-		tuple.fromAddrList = new ArrayList<>();
-		tuple.subjectList = new ArrayList<>();
-		tuple.ruleNameList = new ArrayList<>();
+		detail.fromAddrList = new ArrayList<>();
+		detail.subjectList = new ArrayList<>();
+		detail.ruleNameList = new ArrayList<>();
 		
-		tuple.idx = new Random().nextInt(checkBoxList.size());
+		detail.idx = new Random().nextInt(checkBoxList.size());
 
+		List<WebElement> dispNameList = driver.findElements(By.cssSelector("span[title$='_dispName']"));
+		assertEquals(checkBoxList.size(), dispNameList.size());
+		
+		List<WebElement> ruleNameList = driver.findElements(By.cssSelector("span[title$='_ruleName']"));
+		assertEquals(checkBoxList.size(), ruleNameList.size());
+		
+		List<WebElement> viewMessageList = driver.findElements(By.cssSelector("a[title$='_viewMessage']"));
+		assertEquals(checkBoxList.size(), viewMessageList.size());
+		
 		for (int i = 0; i < checkBoxList.size(); i++) {
-			WebElement elm = checkBoxList.get(i);
-			String checkBoxTitle = elm.getAttribute("title");
-			String prefix = StringUtils.removeEnd(checkBoxTitle, "_checkBox");
+			detail.fromAddrList.add(dispNameList.get(i).getText());
+			detail.ruleNameList.add(ruleNameList.get(i).getText());
+			detail.subjectList.add(viewMessageList.get(i).getText());
+			detail.viewMsgLink = viewMessageList.get(detail.idx);
 			
-			WebElement dispNameElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_dispName']"));
-			String fromAddr = dispNameElm.getText();
-			assertTrue(StringUtils.isNotBlank(fromAddr));
-			tuple.fromAddrList.add(fromAddr);
-			
-			WebElement ruleNameElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_ruleName']"));
-			String ruleName = ruleNameElm.getText();
-			assertTrue(StringUtils.isNotBlank(ruleName));
-			tuple.ruleNameList.add(ruleName);
-			
-			WebElement viewMsgLink = driver.findElement(By.cssSelector("a[title='" + prefix + "_viewMessage']"));
-			String subject = viewMsgLink.getText();
-			tuple.subjectList.add(subject);
-			
-			if (i == tuple.idx) {
-				tuple.viewMsgLink = viewMsgLink;
-			}
+//			WebElement elm = checkBoxList.get(i);
+//			String checkBoxTitle = elm.getAttribute("title");
+//			String prefix = StringUtils.removeEnd(checkBoxTitle, "_checkBox");
+//			
+//			WebElement dispNameElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_dispName']"));
+//			String fromAddr = dispNameElm.getText();
+//			assertTrue(StringUtils.isNotBlank(fromAddr));
+//			detail.fromAddrList.add(fromAddr);
+//			
+//			WebElement ruleNameElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_ruleName']"));
+//			String ruleName = ruleNameElm.getText();
+//			assertTrue(StringUtils.isNotBlank(ruleName));
+//			detail.ruleNameList.add(ruleName);
+//			
+//			WebElement viewMsgLink = driver.findElement(By.cssSelector("a[title='" + prefix + "_viewMessage']"));
+//			String subject = viewMsgLink.getText();
+//			detail.subjectList.add(subject);
+//			
+//			if (i == detail.idx) {
+//				detail.viewMsgLink = viewMsgLink;
+//			}
 		}
 		
-		assertNotNull(tuple.viewMsgLink);
+		assertNotNull(detail.viewMsgLink);
 		
-		return tuple;
+		return detail;
 	}
 	
 }

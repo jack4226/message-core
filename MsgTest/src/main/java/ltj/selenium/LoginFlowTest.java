@@ -119,12 +119,12 @@ public class LoginFlowTest extends TestCase {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("viewbcst:footer:gettingStartedFooter")));
 			
 			// verify that fields from details and list match
-			WebElement emailAddrElm = driver.findElement(By.id("custedit:content:emailaddr"));
-			String emailAddr = emailAddrElm.getAttribute("value");
-			assertEquals(dtl1.listIdList.get(dtl1.idx), emailAddr);
+			WebElement toAddrElm = driver.findElement(By.cssSelector("span[title='To Address']"));
+			String toAddr = toAddrElm.getText();
+			assertTrue(StringUtils.isNotBlank(toAddr));
 			
-			WebElement lastNameElm = driver.findElement(By.id("custedit:content:lastnm"));
-			assertEquals(dtl1.unsubCountList.get(dtl1.idx), lastNameElm.getAttribute("value"));
+			WebElement msgIdElm = driver.findElement(By.id("viewbcst:content:msgId"));
+			assertEquals(dtl1.brstMsgIdList.get(dtl1.idx), msgIdElm.getAttribute("value"));
 			
 			// go back to list
 			WebElement viewSubmit = driver.findElement(By.cssSelector("input[title='Go back to List']"));
@@ -133,7 +133,7 @@ public class LoginFlowTest extends TestCase {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("brdslist:footer:gettingStartedFooter")));
 			
 			// Get total number of rows
-			WebElement totalRowsElm = driver.findElement(By.cssSelector("span[title='Total Number of Customers']"));
+			WebElement totalRowsElm = driver.findElement(By.cssSelector("span[title='Total Row Count']"));
 			String totalRowsStr = totalRowsElm.getText();
 			int totalRows = Integer.parseInt(totalRowsStr);
 			if (totalRows > 20) { // test paging
@@ -141,13 +141,13 @@ public class LoginFlowTest extends TestCase {
 					// page next
 					WebElement pageNextElm = driver.findElement(By.cssSelector("a[title='Page Next']"));
 					pageNextElm.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custlist:footer:gettingStartedFooter")));
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("brdslist:footer:gettingStartedFooter")));
 					BrstMsgListDetail dtl2 = getListDetails();
 					assertFalse(dtl1.brstMsgIdList.equals(dtl2.brstMsgIdList));
 					// page previous
 					WebElement pagePrevElm = driver.findElement(By.cssSelector("a[title='Page Previous']"));
 					pagePrevElm.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custlist:footer:gettingStartedFooter")));
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("brdslist:footer:gettingStartedFooter")));
 					BrstMsgListDetail dtl3 = getListDetails();
 					assertTrue(dtl1.brstMsgIdList.equals(dtl3.brstMsgIdList) && dtl1.listIdList.equals(dtl3.listIdList));
 				}
@@ -160,13 +160,13 @@ public class LoginFlowTest extends TestCase {
 					// page last
 					WebElement pageLastElm = driver.findElement(By.cssSelector("a[title='Page Last']"));
 					pageLastElm.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custlist:footer:gettingStartedFooter")));
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("brdslist:footer:gettingStartedFooter")));
 					BrstMsgListDetail dtl4 = getListDetails();
 					assertFalse(dtl1.brstMsgIdList.equals(dtl4.brstMsgIdList));
 					// page first
 					WebElement pageFirstElm = driver.findElement(By.cssSelector("a[title='Page First']"));
 					pageFirstElm.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custlist:footer:gettingStartedFooter")));
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("brdslist:footer:gettingStartedFooter")));
 					BrstMsgListDetail dtl5 = getListDetails();
 					assertTrue(dtl1.brstMsgIdList.equals(dtl5.brstMsgIdList) && dtl1.listIdList.equals(dtl5.listIdList));
 				}

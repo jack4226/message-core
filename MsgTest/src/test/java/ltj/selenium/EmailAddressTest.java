@@ -191,22 +191,20 @@ public class EmailAddressTest extends BaseLogin {
 		dtl.bounceCountList = new ArrayList<>();
 		
 		dtl.idx = new Random().nextInt(checkBoxList.size());
-
+		
+		List<WebElement> acceptHtmlList = driver.findElements(By.cssSelector("span[title$='_acceptHtml']"));
+		assertEquals(checkBoxList.size(), acceptHtmlList.size());
+		
+		List<WebElement> bounceCountList = driver.findElements(By.cssSelector("span[title$='_bounceCount']"));
+		assertEquals(checkBoxList.size(), bounceCountList.size());
+		
 		for (int i = 0; i < checkBoxList.size(); i++) {
-			WebElement elm = checkBoxList.get(i);
-			String checkBoxTitle = elm.getAttribute("title");
+			dtl.accetpHtmlList.add(acceptHtmlList.get(i).getText());
+			dtl.bounceCountList.add(bounceCountList.get(i).getText());
+			
+			String checkBoxTitle = checkBoxList.get(i).getAttribute("title");
 			String prefix = StringUtils.removeEnd(checkBoxTitle, "_checkBox");
-			
-			WebElement acceptHtmlElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_acceptHtml']"));
-			String acceptHtml = acceptHtmlElm.getText();
-			assertTrue(StringUtils.isNotBlank(acceptHtml));
-			dtl.accetpHtmlList.add(acceptHtml);
-			
-			WebElement bounceCountElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_bounceCount']"));
-			String bounceCount = bounceCountElm.getText();
-			assertTrue(StringUtils.isNotBlank(bounceCount));
-			dtl.bounceCountList.add(bounceCount);
-			
+
 			WebElement viewMsgLink = driver.findElement(By.cssSelector("a[title='" + prefix + "']"));
 			String emailAddr = viewMsgLink.getText();
 			dtl.emailAddrList.add(emailAddr);

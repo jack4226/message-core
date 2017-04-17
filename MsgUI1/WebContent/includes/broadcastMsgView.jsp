@@ -8,29 +8,29 @@
 	columnClasses="smtpLabelColumn, smtpTextColumn">
 	
 	<h:outputText value="#{msgs.fromAddressPrompt}" />
-	<h:outputText value="#{broadcastsListBean.broadcastMsg.fromAddress}"/>
+	<h:outputText value="#{broadcastsListBean.broadcastMsg.fromAddress}" title="From Address"/>
 
 	<h:outputText value="#{msgs.toAddressPrompt}" />
-	<h:outputText value="#{broadcastsListBean.broadcastMsg.toAddress}"/>
+	<h:outputText value="#{broadcastsListBean.broadcastMsg.toAddress}" title="To Address"/>
 
 	<h:outputText value="#{msgs.msgSubjectPrompt}" />
-	<h:outputText value="#{broadcastsListBean.broadcastMsg.msgSubject}" />
+	<h:outputText value="#{broadcastsListBean.broadcastMsg.msgSubject}" title="Subject"/>
 
 	<h:outputText value="#{msgs.receivedDatePrompt}" />
-	<h:outputText value="#{broadcastsListBean.broadcastMsg.receivedDate}">
+	<h:outputText value="#{broadcastsListBean.broadcastMsg.receivedDate}" title="Received Date">
 		<f:convertDateTime dateStyle="default"/>
 	</h:outputText>
 
-	<h:outputText value="#{msgs.siteIdPrompt}" 
+	<h:outputText value="#{msgs.siteIdPrompt}"
 		rendered="#{broadcastsListBean.broadcastMsg.clientId != null}" />
-	<h:outputText value="#{broadcastsListBean.broadcastMsg.clientId}" 
+	<h:outputText value="#{broadcastsListBean.broadcastMsg.clientId}" title="Client Id"
 		rendered="#{broadcastsListBean.broadcastMsg.clientId != null}" />
 	
 	<h:outputText value="#{msgs.ruleNamePrompt}" />
-	<h:outputText value="#{broadcastsListBean.broadcastMsg.ruleName}" />
+	<h:outputText value="#{broadcastsListBean.broadcastMsg.ruleName}"  title="Broadcast MsgId"/>
 
 	<h:outputText value="#{msgs.bodyContentTypePrompt}" />
-	<h:outputText value="#{broadcastsListBean.broadcastMsg.bodyContentType}" />
+	<h:outputText value="#{broadcastsListBean.broadcastMsg.bodyContentType}"  title="Content TYpe"/>
 	
 	<h:inputHidden id="msgId" value="#{broadcastsListBean.broadcastMsg.msgId}"/>
 </h:panelGrid>
@@ -40,7 +40,7 @@
  			columnClasses="smtpLabelColumn, smtpTextColumn"
  			rendered="#{broadcastsListBean.broadcastMsg.showAllHeaders}">
    <h:column>
-      <h:outputText value="#{hdr.headerName}:"/>
+      <h:outputText value="#{hdr.headerName}:"  title="#{hdr.headerName}_headerName"/>
    </h:column>
    <h:column>
       <h:outputText value="#{hdr.headerValue}"/>
@@ -49,10 +49,10 @@
 
 <f:verbatim><br/></f:verbatim>
 <h:panelGrid columns="1" styleClass="smtpBody">
-	<h:outputText value="#{broadcastsListBean.broadcastMsg.displayBody}" escape="false" 
-		rendered="#{not broadcastsListBean.broadcastMsg.showRawMessage}"/>
+	<h:outputText value="#{broadcastsListBean.broadcastMsg.displayBody}" escape="false"
+		rendered="#{not broadcastsListBean.broadcastMsg.showRawMessage}" title="Body Text"/>
 	<h:outputText value="#{broadcastsListBean.broadcastMsg.rawMessage}" escape="false" 
-		rendered="#{broadcastsListBean.broadcastMsg.showRawMessage}"/>
+		rendered="#{broadcastsListBean.broadcastMsg.showRawMessage}" title="Body Raw"/>
 </h:panelGrid>
 
 <h:panelGrid columns="2"

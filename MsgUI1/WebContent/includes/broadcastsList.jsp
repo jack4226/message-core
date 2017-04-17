@@ -102,7 +102,8 @@
           	<h:outputText value=" - "/>
 			<h:outputText value="#{broadcastsListBean.lastPageRow}" title="Last Number"
 				style="font-weight: bold;" />
-			<h:outputText value=" of #{broadcastsListBean.dataTable.rowCount}" title="Total Row Count"
+			<h:outputText value=" of " style="font-weight: bold;"/>
+			<h:outputText value="#{broadcastsListBean.dataTable.rowCount}" title="Total Row Count"
           		style="font-weight: bold;"/>
           	<f:verbatim>&nbsp;&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.firstLinkText}" action="#{broadcastsListBean.pageFirst}"
