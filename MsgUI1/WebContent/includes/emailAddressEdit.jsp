@@ -28,7 +28,7 @@
 		<h:outputText value="#{msgs.acceptHtmlPrompt}"/>
 		<h:selectOneMenu id="html" value="#{emailAddrsBean.emailAddr.acceptHtml}"
 			label="#{msgs.acceptHtmlPrompt}">
-			<f:selectItems value="#{codes.yorNItems}"/>
+			<f:selectItems value="#{codes.yesNoBoolItems}"/>
 		</h:selectOneMenu>
 		<h:message for="html" styleClass="errorMessage"/>
 		

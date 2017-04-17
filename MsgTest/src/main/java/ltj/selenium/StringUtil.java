@@ -104,6 +104,39 @@ public final class StringUtil {
 		return null;
 	}
 
+	public static String removeDisplayName(String addr, boolean toLowerCase) {
+		if (StringUtils.isEmpty(addr)) {
+			return addr;
+		}
+		int at_pos = addr.lastIndexOf("@");
+		if (at_pos > 0) {
+			int pos1 = addr.lastIndexOf("<", at_pos);
+			int pos2 = addr.indexOf(">", at_pos + 1);
+			if (pos1 >= 0 && pos2 > pos1) {
+				addr = addr.substring(pos1 + 1, pos2);
+			}
+		}
+		if (toLowerCase) {
+			return addr.toLowerCase();
+		}
+		else {
+			return addr;
+		}
+	}
+
+	public static String getEmailDomainName(String addr) {
+		if (StringUtils.isEmpty(addr)) {
+			return null;
+		}
+		addr = removeDisplayName(addr, true);
+		int pos;
+		if ((pos = addr.lastIndexOf("@")) > 0) {
+			String domain = addr.substring(pos + 1).trim();
+			return (domain.length() == 0 ? null : domain);
+		}
+		return null;
+	}
+
 	public static List<Integer> getRandomElements(int sizeOfList) {
 		Set<Integer> set = new HashSet<>();
 		Random r = new Random();

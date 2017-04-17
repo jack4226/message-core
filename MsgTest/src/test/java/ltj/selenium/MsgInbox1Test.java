@@ -18,12 +18,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class MsgInbox1Test extends BaseLogin {
 	static final Logger logger = Logger.getLogger(MsgInbox1Test.class);
 
-	static final List<String> FromAddrList = new ArrayList<>();
-	static final List<String> RuleNameList = new ArrayList<>();
-	static final List<String> SubjectList = new ArrayList<>();
-	
 	@Test
-	public void testEmailBrowser() {
+	public void testMessageBrowser() {
 		String listTitle = "Manage Email Correspondence";
 		
 		logger.info("Current URL: " + driver.getCurrentUrl());
@@ -55,23 +51,23 @@ public class MsgInbox1Test extends BaseLogin {
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
 			
-			ListTuple tuple1 = getListDetails();
+			MsgListDetail dtl1 = getListDetails();
 			
 			// View message details
-			assertNotNull(tuple1.viewMsgLink);
-			tuple1.viewMsgLink.click();
+			assertNotNull(dtl1.viewMsgLink);
+			dtl1.viewMsgLink.click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("inboxview:gettingStartedFooter")));
 
 			// verify that fields from details and list match
 			WebElement fromAddrElm = driver.findElement(By.id("inboxview:from_address"));
-			assertTrue(StringUtils.contains(fromAddrElm.getText(), tuple1.fromAddrList.get(tuple1.idx)));
+			assertTrue(StringUtils.contains(fromAddrElm.getText(), dtl1.fromAddrList.get(dtl1.idx)));
 			
 			WebElement ruleNameElm = driver.findElement(By.id("inboxview:rule_name"));
-			assertEquals(ruleNameElm.getText(), tuple1.ruleNameList.get(tuple1.idx));
+			assertEquals(ruleNameElm.getText(), dtl1.ruleNameList.get(dtl1.idx));
 			
 			WebElement subjectElm = driver.findElement(By.id("inboxview:msg_subject"));
-			assertTrue(StringUtils.contains(subjectElm.getText(), tuple1.subjectList.get(tuple1.idx)));
+			assertTrue(StringUtils.contains(subjectElm.getText(), dtl1.subjectList.get(dtl1.idx)));
 			
 			WebElement bodyElm = driver.findElement(By.id("inboxview:body_content_msg"));
 			String bodyText = bodyElm.getText();
@@ -95,8 +91,8 @@ public class MsgInbox1Test extends BaseLogin {
 				WebElement pageNext = driver.findElement(By.id("msgform:msgrow:pagenext"));
 				pageNext.click();
 				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
-				ListTuple next = getListDetails();
-				assertFalse(tuple1.equalsTo(next));
+				MsgListDetail next = getListDetails();
+				assertFalse(dtl1.equalsTo(next));
 				WebElement pagePrev = driver.findElement(By.id("msgform:msgrow:pageprev"));
 				pagePrev.click();
 				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
@@ -111,8 +107,8 @@ public class MsgInbox1Test extends BaseLogin {
 				WebElement pageLast = driver.findElement(By.id("msgform:msgrow:pagelast"));
 				pageLast.click();
 				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
-				ListTuple last = getListDetails();
-				assertFalse(tuple1.equalsTo(last));
+				MsgListDetail last = getListDetails();
+				assertFalse(dtl1.equalsTo(last));
 				WebElement pageFirst = driver.findElement(By.id("msgform:msgrow:pagefrst"));
 				pageFirst.click();
 				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
@@ -147,19 +143,19 @@ public class MsgInbox1Test extends BaseLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("msgform:gettingStartedFooter")));
 			
 			// verify the list page hasn't changed
-			ListTuple tuple2 = getListDetails();
-			assertTrue(tuple1.equalsTo(tuple2));
+			MsgListDetail dtl2 = getListDetails();
+			assertTrue(dtl1.equalsTo(dtl2));
 			
 			// search by from address and subject
-			int idx = new Random().nextInt(SubjectList.size());
+			int idx = new Random().nextInt(dtl1.subjectList.size());
 			WebElement srchSubject = driver.findElement(By.id("msgform:subject"));
 			srchSubject.clear();
-			String subjSrchWord = StringUtil.getRandomWord(SubjectList.get(idx));
+			String subjSrchWord = StringUtil.getRandomWord(dtl1.subjectList.get(idx));
 			srchSubject.sendKeys(subjSrchWord);
 			
 			WebElement srchFromAddr = driver.findElement(By.id("msgform:fromaddr"));
 			srchFromAddr.clear();
-			String fromAddrWord = FromAddrList.get(idx);
+			String fromAddrWord = dtl1.fromAddrList.get(idx);
 			if (fromAddrWord.indexOf("@") > 0) {
 				fromAddrWord = StringUtil.getDisplayName(fromAddrWord);
 			}
@@ -167,7 +163,7 @@ public class MsgInbox1Test extends BaseLogin {
 				fromAddrWord = StringUtil.getRandomWord(fromAddrWord);
 			}
 			if (StringUtils.isBlank(fromAddrWord)) {
-				fromAddrWord = FromAddrList.get(idx);
+				fromAddrWord = dtl1.fromAddrList.get(idx);
 			}
 			srchFromAddr.sendKeys(fromAddrWord);
 			
@@ -201,14 +197,14 @@ public class MsgInbox1Test extends BaseLogin {
 		}
 	}
 
-	private static class ListTuple {
+	static class MsgListDetail {
 		List<String> fromAddrList;
 		List<String> subjectList;
 		List<String> ruleNameList;
 		WebElement viewMsgLink;
 		int idx;
 		
-		boolean equalsTo(ListTuple other) {
+		boolean equalsTo(MsgListDetail other) {
 			if (fromAddrList != null) {
 				if (other.fromAddrList == null) {
 					return false;
@@ -228,11 +224,11 @@ public class MsgInbox1Test extends BaseLogin {
 		}
 	}
 	
-	ListTuple getListDetails() {
+	static MsgListDetail getListDetails() {
 		List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
 		assertFalse(checkBoxList.isEmpty());
 		
-		ListTuple tuple = new ListTuple();
+		MsgListDetail tuple = new MsgListDetail();
 		
 		tuple.fromAddrList = new ArrayList<>();
 		tuple.subjectList = new ArrayList<>();
@@ -264,15 +260,6 @@ public class MsgInbox1Test extends BaseLogin {
 			}
 		}
 		
-		if (FromAddrList.isEmpty()) {
-			FromAddrList.addAll(tuple.fromAddrList);
-		}
-		if (RuleNameList.isEmpty()) {
-			RuleNameList.addAll(tuple.ruleNameList);
-		}
-		if (SubjectList.isEmpty()) {
-			SubjectList.addAll(tuple.subjectList);
-		}
 		assertNotNull(tuple.viewMsgLink);
 		
 		return tuple;
