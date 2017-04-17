@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 
 <h:messages styleClass="errors" layout="list" rendered="#{debug.showMessages}"/>
-<h:outputFormat value="#{msgs.broadcastsListLabel}" styleClass="gridHeader">
+<h:outputFormat value="#{msgs.viewBroadcastMessages}" styleClass="gridHeader">
    <f:param value=""/>
 </h:outputFormat>
 <h:dataTable binding="#{broadcastsListBean.dataTable}" 
@@ -15,7 +15,7 @@
       <f:facet name="header">
          <h:outputText value=""/>
       </f:facet>
-      <h:selectBooleanCheckbox value="#{list.markedForDeletion}" 
+      <h:selectBooleanCheckbox value="#{list.markedForDeletion}" title="#{list.msgId}_checkBox"
          disabled="#{not list.editable}" onchange="submit()"/>
    </h:column>
    <h:column>
@@ -33,7 +33,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.timeEndedHeader}"/>
       </f:facet>
-		<h:outputText value="#{list.endTime}">
+		<h:outputText value="#{list.endTime}" title="#{list.msgId}_endTime">
 		  <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
 		</h:outputText>
    </h:column>
@@ -41,37 +41,37 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.listIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.listId}" />
+      <h:outputText value="#{list.listId}" title="#{list.msgId}_listId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.deliveryOptionHeader}"/>
       </f:facet>
-		<h:outputText value="#{list.deliveryOptionDesc}" />
+		<h:outputText value="#{list.deliveryOptionDesc}" title="#{list.msgId}_dlvrOpt"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.sentCountHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.sentCount}"/>
+      <h:outputText value="#{list.sentCount}" title="#{list.msgId}_sentCount"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.openCountHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.openCount}"/>
+      <h:outputText value="#{list.openCount}" title="#{list.msgId}_openCount"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.clickCountHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.clickCount}"/>
+      <h:outputText value="#{list.clickCount}" title="#{list.msgId}_clickCount"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.lastOpenedHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.lastOpenTime}">
+      <h:outputText value="#{list.lastOpenTime}" title="#{list.msgId}_lastOpenTime">
       	<f:convertDateTime pattern="yyyy-MM-dd"/>
       </h:outputText>
    </h:column>
@@ -79,7 +79,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.lastClickedHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.lastClickTime}">
+      <h:outputText value="#{list.lastClickTime}" title="#{list.msgId}_lastClickTime">
       	<f:convertDateTime pattern="yyyy-MM-dd"/>
       </h:outputText>
    </h:column>
@@ -87,7 +87,7 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.unsubscribeCountHeader}"/>
       </f:facet>
-	  <h:outputText value="#{list.unsubscribeCount}"/>
+	  <h:outputText value="#{list.unsubscribeCount}" title="#{list.msgId}_unsubCount"/>
    </h:column>
 	<f:facet name="footer">
     <h:panelGroup>
@@ -97,27 +97,27 @@
 			<f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGroup>
 		<h:panelGroup>
-          	<h:outputText value="#{broadcastsListBean.dataTable.first + 1}"
+          	<h:outputText value="#{broadcastsListBean.dataTable.first + 1}" title="First Number"
           		style="font-weight: bold;"/>
           	<h:outputText value=" - "/>
-			<h:outputText value="#{broadcastsListBean.lastPageRow}"
+			<h:outputText value="#{broadcastsListBean.lastPageRow}" title="Last Number"
 				style="font-weight: bold;" />
-			<h:outputText value=" of #{broadcastsListBean.dataTable.rowCount}" 
+			<h:outputText value=" of #{broadcastsListBean.dataTable.rowCount}" title="Total Row Count"
           		style="font-weight: bold;"/>
           	<f:verbatim>&nbsp;&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.firstLinkText}" action="#{broadcastsListBean.pageFirst}"
-                disabled="#{broadcastsListBean.dataTable.first == 0}" />
+                disabled="#{broadcastsListBean.dataTable.first == 0}" title="Page First"/>
             <f:verbatim>&nbsp;|&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.prevLinkText}" action="#{broadcastsListBean.pagePrevious}"
-                disabled="#{broadcastsListBean.dataTable.first == 0}" />
+                disabled="#{broadcastsListBean.dataTable.first == 0}" title="Page Previous"/>
             <f:verbatim>&nbsp;|&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.nextLinkText}" action="#{broadcastsListBean.pageNext}"
                 disabled="#{broadcastsListBean.dataTable.first + broadcastsListBean.dataTable.rows
-                    >= broadcastsListBean.dataTable.rowCount}" />
+                    >= broadcastsListBean.dataTable.rowCount}" title="Page Next"/>
             <f:verbatim>&nbsp;|&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.lastLinkText}" action="#{broadcastsListBean.pageLast}"
                 disabled="#{broadcastsListBean.dataTable.first + broadcastsListBean.dataTable.rows
-                    >= broadcastsListBean.dataTable.rowCount}" />
+                    >= broadcastsListBean.dataTable.rowCount}" title="Page Last"/>
         </h:panelGroup>
     </h:panelGrid>
     </h:panelGroup>

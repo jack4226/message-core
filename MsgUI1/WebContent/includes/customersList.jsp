@@ -16,7 +16,7 @@
       <f:facet name="header">
          <h:outputText value=""/>
       </f:facet>
-      <h:selectBooleanCheckbox value="#{list.markedForDeletion}" 
+      <h:selectBooleanCheckbox value="#{list.markedForDeletion}" title="#{list.custId}_checkBox"
          disabled="#{not list.editable}" onchange="submit()"/>
    </h:column>
    <h:column>
@@ -33,7 +33,7 @@
          <h:outputText value="#{msgs.firstNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{list.firstName}"/>
+      <h:outputText value="#{list.firstName}" title="#{list.custId}_firstName"/>
       </div>
    </h:column>
    <h:column>
@@ -41,7 +41,7 @@
          <h:outputText value="#{msgs.lastNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{list.lastName}"/>
+      <h:outputText value="#{list.lastName}" title="#{list.custId}_lastName"/>
       </div>
    </h:column>
    <h:column>
@@ -49,14 +49,14 @@
          <h:outputText value="#{msgs.emailAddrHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{list.emailAddr}"/>
+      <h:outputText value="#{list.emailAddr}" title="#{list.custId}_emailAddr"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.startDateHeader}"/>
       </f:facet>
-		<h:outputText value="#{list.startDate}">
+		<h:outputText value="#{list.startDate}" title="#{list.custId}_startDate">
 			<f:convertDateTime pattern="yyyy-MM-dd" type="date"/>
 		</h:outputText>
    </h:column>
@@ -64,13 +64,13 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.dayPhoneNumberHeader}"/>
       </f:facet>
-	  <h:outputText value="#{list.dayPhone}"/>
+	  <h:outputText value="#{list.dayPhone}" title="#{list.custId}_dayPhone"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.birthDateHeader}"/>
       </f:facet>
-	  <h:outputText value="#{list.birthDate}">
+	  <h:outputText value="#{list.birthDate}" title="#{list.custId}_birthDate">
 	  	<f:convertDateTime pattern="yyyy-MM-dd" type="date"/>
 	  </h:outputText>
    </h:column>
@@ -79,38 +79,39 @@
 	<h:panelGrid columns="2" styleClass="fullWidth"
 		columnClasses="alignLeft50, alignRight50">
 		<h:panelGroup>
-			<h:inputText value="#{customers.searchString}" size="30"
+			<h:inputText value="#{customers.searchString}" size="30" title="Email Address to Search"
 				maxlength="100"/>
 			<f:verbatim>&nbsp;</f:verbatim>
 			<h:commandButton value="#{msgs.searchByEmailButtonText}"
 				title="Search By Email Address"
 				action="#{customers.searchByAddress}" />
 			<f:verbatim>&nbsp;</f:verbatim>
-			<h:commandButton value="#{msgs.resetButtonText}" title="Reset"
+			<h:commandButton value="#{msgs.resetButtonText}" title="Reset Search"
 				action="#{customers.resetSearch}" />
 		</h:panelGroup>
 		<h:panelGroup>
-          	<h:outputText value="#{customers.dataTable.first + 1}"
+          	<h:outputText value="#{customers.dataTable.first + 1}" title="First Customer Number"
           		style="font-weight: bold;"/>
           	<h:outputText value=" - "/>
-			<h:outputText value="#{customers.lastPageRow}"
+			<h:outputText value="#{customers.lastPageRow}" title="Last Customer Number"
 				style="font-weight: bold;" />
-			<h:outputText value=" of #{customers.dataTable.rowCount}" 
+			<h:outputText value=" of " style="font-weight: bold;"/>
+			<h:outputText value="#{customers.dataTable.rowCount}" title="Total Number of Customers"
           		style="font-weight: bold;"/>
           	<f:verbatim>&nbsp;&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.firstLinkText}" action="#{customers.pageFirst}"
-                disabled="#{customers.dataTable.first == 0}" />
+                disabled="#{customers.dataTable.first == 0}" title="Page First"/>
             <f:verbatim>&nbsp;|&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.prevLinkText}" action="#{customers.pagePrevious}"
-                disabled="#{customers.dataTable.first == 0}" />
+                disabled="#{customers.dataTable.first == 0}" title="Page Previous"/>
             <f:verbatim>&nbsp;|&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.nextLinkText}" action="#{customers.pageNext}"
                 disabled="#{customers.dataTable.first + customers.dataTable.rows
-                    >= customers.dataTable.rowCount}" />
+                    >= customers.dataTable.rowCount}" title="Page Next"/>
             <f:verbatim>&nbsp;|&nbsp;</f:verbatim>
             <h:commandLink value="#{msgs.lastLinkText}" action="#{customers.pageLast}"
                 disabled="#{customers.dataTable.first + customers.dataTable.rows
-                    >= customers.dataTable.rowCount}" />
+                    >= customers.dataTable.rowCount}" title="Page Last"/>
         </h:panelGroup>
     </h:panelGrid>
     </h:panelGroup>

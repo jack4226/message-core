@@ -6,7 +6,7 @@
    <f:view>
       <head>
          <link href="styles.css" rel="stylesheet" type="text/css"/>
-         <title><h:outputText value="#{msgs.listBroadcastsPageTitle}"/></title>
+         <title><h:outputText value="#{msgs.viewBroadcastMessages}"/></title>
       </head>
 
       <body>

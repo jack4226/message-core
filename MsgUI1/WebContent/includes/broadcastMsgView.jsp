@@ -31,6 +31,8 @@
 
 	<h:outputText value="#{msgs.bodyContentTypePrompt}" />
 	<h:outputText value="#{broadcastsListBean.broadcastMsg.bodyContentType}" />
+	
+	<h:inputHidden id="msgId" value="#{broadcastsListBean.broadcastMsg.msgId}"/>
 </h:panelGrid>
 
 <h:dataTable value="#{broadcastsListBean.broadcastMsg.msgHeaders}" var="hdr" 

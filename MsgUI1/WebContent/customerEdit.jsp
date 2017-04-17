@@ -13,7 +13,7 @@
 
       <body>
       <div align="center">
-         <h:form id="custlist">
+         <h:form id="custedit">
             <h:panelGrid columns="1" styleClass="headerMenuContent"
                    columnClasses="contentColumn">
                <f:facet name="header">

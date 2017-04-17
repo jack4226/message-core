@@ -2,7 +2,9 @@ package ltj.selenium;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -24,7 +26,6 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import junit.framework.TestCase;
@@ -94,8 +95,8 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testEmailAddrBrowser() {
-		String listTitle = "Manage Email Addresses";
+	public void testBroadcastMsgBrowser() {
+		String listTitle = "View Broadcast Messages";
 		
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		try {
@@ -108,77 +109,31 @@ public class LoginFlowTest extends TestCase {
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			// Address List page
-			EmailAddrListDetail dtl1 = getListDetails();
+			// Customer List page
+			BrstMsgListDetail dtl1 = getListDetails();
 			
-			// View Email Details
+			// View Customer Details
 			assertNotNull(dtl1.viewMsgLink);
 			dtl1.viewMsgLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("addredit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("viewbcst:footer:gettingStartedFooter")));
 			
 			// verify that fields from details and list match
-			WebElement emailAddrElm = driver.findElement(By.id("addredit:content:emailaddr"));
+			WebElement emailAddrElm = driver.findElement(By.id("custedit:content:emailaddr"));
 			String emailAddr = emailAddrElm.getAttribute("value");
-			assertEquals(dtl1.emailAddrList.get(dtl1.idx), emailAddr);
+			assertEquals(dtl1.listIdList.get(dtl1.idx), emailAddr);
 			
-			Select selectHtml = new Select(driver.findElement(By.id("addredit:content:html")));
-			WebElement selectedHtml = selectHtml.getFirstSelectedOption();
-			assertEquals(dtl1.accetpHtmlList.get(dtl1.idx), selectedHtml.getText());
+			WebElement lastNameElm = driver.findElement(By.id("custedit:content:lastnm"));
+			assertEquals(dtl1.unsubCountList.get(dtl1.idx), lastNameElm.getAttribute("value"));
 			
-			WebElement bounceCountElm = driver.findElement(By.id("addredit:content:bounce"));
-			String bounceCountStr = bounceCountElm.getAttribute("value");
-			assertEquals(dtl1.bounceCountList.get(dtl1.idx), bounceCountStr);
-			
-			int bounceCount = Integer.parseInt(bounceCountStr);
-			bounceCountElm.clear();
-			bounceCountElm.sendKeys((++bounceCount) + "");
-			
-			WebElement viewSubmit = driver.findElement(By.id("addredit:content:submit"));
+			// go back to list
+			WebElement viewSubmit = driver.findElement(By.cssSelector("input[title='Go back to List']"));
 			viewSubmit.click();
 			
-			// Accept (Click OK on JavaScript Alert pop-up)
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("addrlist:footer:gettingStartedFooter")));
-			
-			// verify edit results
-			WebElement bounceCountAfterElm = driver.findElement(By.cssSelector("span[title='" + emailAddr + "_bounceCount']"));
-			assertEquals(bounceCount + "", bounceCountAfterElm.getText());
-			
-			// test search by address
-			WebElement addrToSrch = driver.findElement(By.cssSelector("input[title='Address to Search']"));
-			addrToSrch.clear();
-			String emailDomain = StringUtil.getEmailDomainName(emailAddr);
-			addrToSrch.sendKeys(emailDomain);
-			
-			WebElement submitSearch = driver.findElement(By.cssSelector("input[title='Submit Search']"));
-			submitSearch.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("addrlist:footer:gettingStartedFooter")));
-			
-			// verify search results
-			EmailAddrListDetail srchdtl = getListDetails();
-			for (String addr : srchdtl.emailAddrList) {
-				assertTrue(StringUtils.contains(addr, emailDomain));
-			}
-			
-			// reset search
-			WebElement resetSearch = driver.findElement(By.cssSelector("input[title='Reset Search']"));
-			resetSearch.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("addrlist:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("brdslist:footer:gettingStartedFooter")));
 			
 			// Get total number of rows
-			WebElement totalRowsElm = driver.findElement(By.cssSelector("span[title='Total Address Count']"));
+			WebElement totalRowsElm = driver.findElement(By.cssSelector("span[title='Total Number of Customers']"));
 			String totalRowsStr = totalRowsElm.getText();
 			int totalRows = Integer.parseInt(totalRowsStr);
 			if (totalRows > 20) { // test paging
@@ -186,15 +141,15 @@ public class LoginFlowTest extends TestCase {
 					// page next
 					WebElement pageNextElm = driver.findElement(By.cssSelector("a[title='Page Next']"));
 					pageNextElm.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("addrlist:footer:gettingStartedFooter")));
-					EmailAddrListDetail dtl2 = getListDetails();
-					assertFalse(dtl1.emailAddrList.equals(dtl2.emailAddrList));
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custlist:footer:gettingStartedFooter")));
+					BrstMsgListDetail dtl2 = getListDetails();
+					assertFalse(dtl1.brstMsgIdList.equals(dtl2.brstMsgIdList));
 					// page previous
 					WebElement pagePrevElm = driver.findElement(By.cssSelector("a[title='Page Previous']"));
 					pagePrevElm.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("addrlist:footer:gettingStartedFooter")));
-					EmailAddrListDetail dtl3 = getListDetails();
-					assertTrue(dtl1.emailAddrList.equals(dtl3.emailAddrList) && dtl1.accetpHtmlList.equals(dtl3.accetpHtmlList));
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custlist:footer:gettingStartedFooter")));
+					BrstMsgListDetail dtl3 = getListDetails();
+					assertTrue(dtl1.brstMsgIdList.equals(dtl3.brstMsgIdList) && dtl1.listIdList.equals(dtl3.listIdList));
 				}
 				catch (Exception e) {
 					logger.info(e.getMessage());
@@ -205,15 +160,15 @@ public class LoginFlowTest extends TestCase {
 					// page last
 					WebElement pageLastElm = driver.findElement(By.cssSelector("a[title='Page Last']"));
 					pageLastElm.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("addrlist:footer:gettingStartedFooter")));
-					EmailAddrListDetail dtl4 = getListDetails();
-					assertFalse(dtl1.emailAddrList.equals(dtl4.emailAddrList));
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custlist:footer:gettingStartedFooter")));
+					BrstMsgListDetail dtl4 = getListDetails();
+					assertFalse(dtl1.brstMsgIdList.equals(dtl4.brstMsgIdList));
 					// page first
 					WebElement pageFirstElm = driver.findElement(By.cssSelector("a[title='Page First']"));
 					pageFirstElm.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("addrlist:footer:gettingStartedFooter")));
-					EmailAddrListDetail dtl5 = getListDetails();
-					assertTrue(dtl1.emailAddrList.equals(dtl5.emailAddrList) && dtl1.accetpHtmlList.equals(dtl5.accetpHtmlList));
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custlist:footer:gettingStartedFooter")));
+					BrstMsgListDetail dtl5 = getListDetails();
+					assertTrue(dtl1.brstMsgIdList.equals(dtl5.brstMsgIdList) && dtl1.listIdList.equals(dtl5.listIdList));
 				}
 				catch (Exception e) {
 					logger.info(e.getMessage());
@@ -227,42 +182,42 @@ public class LoginFlowTest extends TestCase {
 		}
 	}
 
-	static class EmailAddrListDetail {
-		List<String> emailAddrList;
-		List<String> accetpHtmlList;
-		List<String> bounceCountList;
+	static class BrstMsgListDetail {
+		List<String> brstMsgIdList;
+		List<String> listIdList;
+		List<String> unsubCountList;
 		WebElement viewMsgLink;
 		int idx;
 		
-		boolean equalsTo(EmailAddrListDetail other) {
-			if (emailAddrList != null) {
-				if (other.emailAddrList == null) {
+		boolean equalsTo(BrstMsgListDetail other) {
+			if (brstMsgIdList != null) {
+				if (other.brstMsgIdList == null) {
 					return false;
 				}
 			}
-			if (accetpHtmlList != null) {
-				if (other.accetpHtmlList == null) {
+			if (listIdList != null) {
+				if (other.listIdList == null) {
 					return false;
 				}
 			}
-			if (bounceCountList != null) {
-				if (other.bounceCountList == null) {
+			if (unsubCountList != null) {
+				if (other.unsubCountList == null) {
 					return false;
 				}
 			}
-			return (emailAddrList.equals(other.emailAddrList) && accetpHtmlList.equals(other.accetpHtmlList) && bounceCountList.equals(other.bounceCountList));
+			return (brstMsgIdList.equals(other.brstMsgIdList) && listIdList.equals(other.listIdList) && unsubCountList.equals(other.unsubCountList));
 		}
 	}
 	
-	EmailAddrListDetail getListDetails() {
+	BrstMsgListDetail getListDetails() {
 		List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
 		assertFalse(checkBoxList.isEmpty());
 		
-		EmailAddrListDetail dtl = new EmailAddrListDetail();
+		BrstMsgListDetail dtl = new BrstMsgListDetail();
 		
-		dtl.emailAddrList = new ArrayList<>();
-		dtl.accetpHtmlList = new ArrayList<>();
-		dtl.bounceCountList = new ArrayList<>();
+		dtl.brstMsgIdList = new ArrayList<>();
+		dtl.listIdList = new ArrayList<>();
+		dtl.unsubCountList = new ArrayList<>();
 		
 		dtl.idx = new Random().nextInt(checkBoxList.size());
 
@@ -271,19 +226,19 @@ public class LoginFlowTest extends TestCase {
 			String checkBoxTitle = elm.getAttribute("title");
 			String prefix = StringUtils.removeEnd(checkBoxTitle, "_checkBox");
 			
-			WebElement acceptHtmlElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_acceptHtml']"));
-			String acceptHtml = acceptHtmlElm.getText();
-			assertTrue(StringUtils.isNotBlank(acceptHtml));
-			dtl.accetpHtmlList.add(acceptHtml);
+			WebElement listIdElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_listId']"));
+			String listId = listIdElm.getText();
+			assertTrue(StringUtils.isNotBlank(listId));
+			dtl.listIdList.add(listId);
 			
-			WebElement bounceCountElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_bounceCount']"));
-			String bounceCount = bounceCountElm.getText();
-			assertTrue(StringUtils.isNotBlank(bounceCount));
-			dtl.bounceCountList.add(bounceCount);
+			WebElement unsubCountElm = driver.findElement(By.cssSelector("span[title='" + prefix + "_unsubCount']"));
+			String unsubCount = unsubCountElm.getText();
+			assertTrue(StringUtils.isNotBlank(unsubCount));
+			dtl.unsubCountList.add(unsubCount);
 			
 			WebElement viewMsgLink = driver.findElement(By.cssSelector("a[title='" + prefix + "']"));
-			String emailAddr = viewMsgLink.getText();
-			dtl.emailAddrList.add(emailAddr);
+			String brstMsgId = viewMsgLink.getAttribute("title");
+			dtl.brstMsgIdList.add(brstMsgId);
 			
 			if (i == dtl.idx) {
 				dtl.viewMsgLink = viewMsgLink;
