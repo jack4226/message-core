@@ -150,7 +150,8 @@
 		<h:commandButton value="#{msgs.refreshLinkText}"
 			title="Refresh from database" action="#{subscribersListBean.refreshPage}" />
 		<f:verbatim>&nbsp;</f:verbatim>
-		<h:commandButton value="#{msgs.backButtonText}" action="#{subscribersListBean.cancelEdit}"/>
+		<h:commandButton value="#{msgs.backButtonText}" 
+			title="Go Back" action="#{subscribersListBean.cancelEdit}"/>
 	</h:panelGroup>
 	<h:panelGroup>
 		<f:verbatim>&nbsp;</f:verbatim>

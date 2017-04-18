@@ -12,8 +12,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class ActionDetailsTest extends BaseLogin {
-	static final Logger logger = Logger.getLogger(ActionDetailsTest.class);
+public class EmailUploadTest extends BaseLogin {
+	static final Logger logger = Logger.getLogger(EmailUploadTest.class);
 
 	@Test
 	public void testActionDetails() {

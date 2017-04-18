@@ -2,7 +2,9 @@ package ltj.selenium;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
@@ -16,9 +18,8 @@ public class EmailVariableTest extends BaseLogin {
 	static final Logger logger = Logger.getLogger(EmailVariableTest.class);
 
 	@Test
-	public void testEmailVariables() {
-		String listTitle = "Setup Email Variables";
-		String testVarName = "CustomerLastName";
+	public void testEmailListUpload() {
+		String listTitle = "Upload Email Addresses to List";
 		
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		try {
@@ -27,85 +28,73 @@ public class EmailVariableTest extends BaseLogin {
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
+			
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			
-			// Email Variable List page
-			logger.info("Switched to URL: " + driver.getCurrentUrl());
+			Select selectImpTo = new Select(driver.findElement(By.id("import_to")));
+			selectImpTo.selectByValue("ORDERLST");
 			
-			WebElement defaultValue = driver.findElement(By.cssSelector("span[title='CustomerLastName_defaultValue']"));
-			assertNotNull(defaultValue);
-			String defaultValueBefore = defaultValue.getText();
-			assertTrue(defaultValueBefore.startsWith("Valued Customer"));
+			Select selectImpFrom = new Select(driver.findElement(By.id("import_from")));
+			selectImpFrom.selectByValue("SMPLLST2");
 			
-			WebElement className = driver.findElement(By.cssSelector("span[title='CustomerLastName_className']"));
-			assertNotNull(className);
-			String classNameShort = className.getText();
-			assertEquals(".CustomerNameResolver", className.getText());
+			WebElement submitImpLink = driver.findElement(By.id("submit_import_from_list"));
+			submitImpLink.click();
 			
-			WebElement listStatId = driver.findElement(By.cssSelector("span[title='CustomerLastName_statusId']"));
-			assertNotNull(listStatId);
-			assertEquals("Active", listStatId.getText());
-			String statusId = listStatId.getText();
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("done_import_from_list")));
 			
-			WebElement listEditLink = driver.findElement(By.cssSelector("a[title=CustomerLastName]"));
-			assertNotNull(listEditLink);
-			assertEquals(testVarName, listEditLink.getText());
+			// Go back to menu
+			WebElement doneImpLink = driver.findElement(By.id("done_import_from_list"));
+			doneImpLink.click();
 			
-			listEditLink.click();
+			wait.until(ExpectedConditions.titleIs("Main Page"));
 			
-			// Email Variable Edit Page
-			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailvarbl:footer:gettingStartedFooter")));
+			// Verify results
+			listTitle = "Setup Email Mailing Lists";
 			
-			WebElement varNameElm = driver.findElement(By.id("emailvarbl:content:variablename"));
-			assertNotNull(varNameElm);
-			assertEquals(testVarName, varNameElm.getAttribute("value"));
-			assertFalse(varNameElm.isEnabled());
+			WebElement mlistLink = driver.findElement(By.linkText(listTitle));
+			mlistLink.click();
 			
-			WebElement colNameElm = driver.findElement(By.id("emailvarbl:content:columnname"));
-			assertNotNull(colNameElm);
-			assertEquals("LastName", colNameElm.getAttribute("value"));
+			wait.until(ExpectedConditions.titleIs(listTitle));
 			
-			WebElement procNameElm = driver.findElement(By.id("emailvarbl:content:variableproc"));
-			assertNotNull(procNameElm);
-			assertTrue(procNameElm.getAttribute("value").endsWith(classNameShort));
+			// View Subscriber List page
+			WebElement viewListLink = driver.findElement(By.cssSelector("a[title='ORDERLST_viewList']"));
+			viewListLink.click();
 			
-			WebElement defaultElm = driver.findElement(By.id("emailvarbl:content:defaultvalue"));
-			// TextArea - use getAttribute("value") instead of getText()
-			String defaultValueAfter = defaultElm.getAttribute("value");
-			assertEquals(defaultValueBefore, defaultValueAfter);
-			if (StringUtils.endsWith(defaultValueAfter, "_updated")) {
-				defaultValueAfter = StringUtils.removeEnd(defaultValueAfter, "_updated");
-			}
-			else {
-				defaultValueAfter += "_updated";
-			}
-			assertFalse(defaultValueAfter.equals(defaultValueBefore));
-			defaultElm.clear();
-			defaultElm.sendKeys(defaultValueAfter);
- 			
-			Select selectStatId = new Select(driver.findElement(By.id("emailvarbl:content:statusid")));
-			WebElement selectedStatId = selectStatId.getFirstSelectedOption();
-			logger.info("Status Id selected: " + selectedStatId.getText());
-			if ("Active".equals(statusId)) {
-				assertEquals("A", selectedStatId.getAttribute("value"));
-			}
-			else {
-				assertEquals("I", selectedStatId.getAttribute("value"));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+			
+			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkbox']"));
+			assertFalse(checkBoxList.isEmpty());
+			// save check box titles
+			List<String> checkBoxTitleList = new ArrayList<>();
+			for (int i = 0; i < checkBoxList.size(); i++) {
+				checkBoxTitleList.add(checkBoxList.get(i).getAttribute("title"));
 			}
 			
-			// Click on Test button to test SQL query
-			WebElement testQuery = driver.findElement(By.id("emailvarbl:content:testquery"));
-			assertNotNull(testQuery);
-			testQuery.click();
-			// Verify query test result
-			WebElement testResult = driver.findElement(By.id("emailvarbl:content:testResult"));
-			assertEquals("Test was successful, query is valid.", testResult.getText());
+			List<WebElement> addrElmList = driver.findElements(By.cssSelector("span[title$='_emailAddr']"));
+			assertEquals(checkBoxList.size(), addrElmList.size());
 			
-			// submit the changes and go back to list page
-			WebElement submit = driver.findElement(By.id("emailvarbl:content:submit"));
-			assertNotNull(submit);
-			submit.click();
+			for (int i = 0; i < checkBoxList.size(); i++) {
+				logger.info("Subscriber email address: " + addrElmList.get(i).getText());
+			}
+
+			// delete all subscribers but the first
+			for (int i = 1; i < checkBoxList.size(); i++) {
+				WebElement checkBox = driver.findElement(By.cssSelector("input[title='" + checkBoxTitleList.get(i) + "']"));
+				// tick the check box
+				if (checkBox.isEnabled() && !checkBox.isSelected()) {
+					checkBox.click();
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+				}
+				else {
+					fail("The check box is not enabled or is already selected!");
+				}
+			}
+
+			// submit the delete
+			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
+			if (deleteLink.isEnabled()) {
+				deleteLink.click();
+			}
 			
 			// Accept (Click OK on JavaScript Alert pop-up)
 			try {
@@ -118,41 +107,13 @@ public class EmailVariableTest extends BaseLogin {
 				logger.error(e.getMessage());
 			}
 			
-			wait.until(ExpectedConditions.titleIs(listTitle));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
 			
-			WebElement refreshLink = driver.findElement(By.cssSelector("input[title='Refresh from database']"));
-			refreshLink.click();
+			// Go back to list page
+			WebElement gobackLink = driver.findElement(By.cssSelector("input[title='Go Back']"));
+			gobackLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("advanced:footer:gettingStartedFooter")));
-			
-			// verify results
-			WebElement defaultValueAfterElm = driver.findElement(By.cssSelector("span[title='CustomerFirstName_defaultValue']"));
-			assertNotNull(defaultValueAfterElm);
-			// TODO fix this when running from Maven
-			//assertEquals(defaultValueAfter, defaultValueAfterElm.getText());
-			
-			
-			// View SubscriberUrl
-			WebElement subrUrlLink = driver.findElement(By.cssSelector("a[title=SubscribeURL]"));
-			assertEquals("SubscribeURL", subrUrlLink.getText());
-			
-			subrUrlLink.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailvarbl:footer:gettingStartedFooter")));
-			
-			// SubscriberURL edit page
-			varNameElm = driver.findElement(By.id("emailvarbl:content:variablename"));
-			assertEquals("SubscribeURL", varNameElm.getAttribute("value"));
-			assertFalse(varNameElm.isEnabled());
-			
-			defaultElm = driver.findElement(By.id("emailvarbl:content:defaultvalue"));
-			assertTrue(defaultElm.getText().contains("sbsrid=${SubscriberAddressId}"));
-			
-			// Go back to the list page
-			WebElement cancel = driver.findElement(By.cssSelector("input[title='Cancel changes']"));
-			cancel.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("advanced:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillist:footer:gettingStartedFooter")));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

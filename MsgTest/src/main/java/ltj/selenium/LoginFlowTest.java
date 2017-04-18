@@ -2,10 +2,9 @@ package ltj.selenium;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -14,9 +13,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -94,8 +92,8 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testBroadcastToList() {
-		String listTitle = "Broadcast to a Mailing List";
+	public void testEmailListUpload() {
+		String listTitle = "Upload Email Addresses to List";
 		
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		try {
@@ -105,110 +103,91 @@ public class LoginFlowTest extends TestCase {
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mlstcomp:gettingStartedFooter")));
+			wait.until(ExpectedConditions.titleIs(listTitle));
 			
-			Select selectTmpltId = new Select(driver.findElement(By.id("mlstcomp:template")));
-			selectTmpltId.selectByValue("SampleNewsletter2");
+			Select selectImpTo = new Select(driver.findElement(By.id("import_to")));
+			selectImpTo.selectByValue("ORDERLST");
 			
-			WebElement loadTmpltLink = driver.findElement(By.cssSelector("input[title='Copy from Template']"));
-			loadTmpltLink.click();
+			Select selectImpFrom = new Select(driver.findElement(By.id("import_from")));
+			selectImpFrom.selectByValue("SMPLLST2");
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mlstcomp:gettingStartedFooter")));
+			WebElement submitImpLink = driver.findElement(By.id("submit_import_from_list"));
+			submitImpLink.click();
 			
-			// verify fields are populated
-			// Mailing List Id
-			Select selectListId = new Select(driver.findElement(By.id("mlstcomp:listid")));
-			WebElement selectedListId = selectListId.getFirstSelectedOption();
-			assertEquals("SMPLLST2", selectedListId.getAttribute("value"));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("done_import_from_list")));
 			
-			// Message Subject
-			WebElement subjectElm = driver.findElement(By.id("mlstcomp:subject"));
-			String subject = subjectElm.getAttribute("value");
-			assertTrue(StringUtils.contains(subject, "Sample HTML newsletter"));
-			
-			// Message body text
-			WebElement bodyTextElm = driver.findElement(By.id("mlstcomp:bodytext"));
-			String bodyText = bodyTextElm.getAttribute("value");
-			assertTrue(StringUtils.contains(bodyText, "This is a sample HTML newsletter message for a traditional mailing list."));
-			// TODO  fix this - "element not visible" exception
-			try {
-				bodyTextElm.sendKeys(Keys.CONTROL, Keys.END, Keys.ENTER);
-				bodyTextElm.sendKeys("Current Date Time: ");
-				fail(); // TODO remove after it's fixed
-			}
-			catch (ElementNotVisibleException e) {
-				logger.error("ElementNotVisibleException caught: " + e.getMessage());
-			}
-			
-			// Variable Name
-			Select selectVarNm = new Select(driver.findElement(By.id("mlstcomp:vname")));
-			assertEquals(1, selectVarNm.getAllSelectedOptions().size());
-			selectVarNm.selectByValue("CurrentDateTime");
-			
-			// Insert a variable
-			WebElement insertVarEm = driver.findElement(By.id("insert_variable"));
-			insertVarEm.click();
-			
-			bodyTextElm = driver.findElement(By.id("mlstcomp:bodytext"));
-			bodyText = bodyTextElm.getAttribute("value");
-			// TODO does not work, fix "insert variable"
-			//assertTrue(StringUtils.contains(bodyText, "${CurrentDateTime}"));
-			
-			// Embed EmailId
-			Select selectEmbed = new Select(driver.findElement(By.id("mlstcomp:embed_email_id")));
-			WebElement selectedEmbed = selectEmbed.getFirstSelectedOption();
-			assertEquals("System default", selectedEmbed.getText());
-			
-			// Delivery Option
-			Select selectDlvrOpt = new Select(driver.findElement(By.id("mlstcomp:dlvropt")));
-			WebElement selectedDlvrOpt = selectDlvrOpt.getFirstSelectedOption();
-			assertEquals("ALL", selectedDlvrOpt.getAttribute("value"));
-			
-			WebElement isHtmlElm = driver.findElement(By.id("mlstcomp:is_html"));
-			assertEquals(true, isHtmlElm.isSelected());
-			
-			// preview the message
-			WebElement previewLink = driver.findElement(By.cssSelector("input[title='Preview Rendered Message']"));
-			previewLink.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("preview:gettingStartedFooter")));
-			
-			WebElement renderedSubjElm = driver.findElement(By.cssSelector("span[title='Rendered Subject']"));
-			String renderedSubj = renderedSubjElm.getText();
-			assertTrue(StringUtils.contains(renderedSubj, "Sample HTML newsletter"));
-			
-			WebElement renderedBodyElm = driver.findElement(By.cssSelector("span[title='Rendered Body']"));
-			String renderedBody = renderedBodyElm.getText();
-			logger.info("Rendered body text: " + renderedBody);
-			assertTrue(StringUtils.contains(renderedBody, "This is a sample HTML newsletter message for a traditional mailing list."));
-			if (StringUtils.contains(bodyText, "${CurrentDate}")) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				assertTrue(StringUtils.contains(renderedBody, sdf.format(new java.util.Date())));
-			}
-			if (StringUtils.contains(bodyText, "${MailingListId}")) {
-				assertTrue(StringUtils.contains(renderedBody, "SMPLLST2"));
-			}
-			if (StringUtils.contains(bodyText, "${FooterWithUnsubAddr}")) {
-				assertTrue(StringUtils.contains(renderedBody, "To unsubscribe from this mailing list, send an e-mail to: demolist2@localhost"));
-			}
-			
-			// Go back to compose page
-			WebElement goBackToCompose = driver.findElement(By.cssSelector("input[title='Go Back']"));
-			goBackToCompose.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mlstcomp:gettingStartedFooter")));
-			
-			// Send message link
-//			WebElement sendMsgLink = driver.findElement(By.cssSelector("input[title='Send message']"));
-//			sendMsgLink.click();
-//			
-//			wait.until(ExpectedConditions.titleIs("Main Page"));
-			
-			// Go back link
-			WebElement gobackLink = driver.findElement(By.cssSelector("input[title='Cancel']"));
-			gobackLink.click();
+			// Go back to menu
+			WebElement doneImpLink = driver.findElement(By.id("done_import_from_list"));
+			doneImpLink.click();
 			
 			wait.until(ExpectedConditions.titleIs("Main Page"));
+			
+			// Verify results
+			listTitle = "Setup Email Mailing Lists";
+			
+			WebElement mlistLink = driver.findElement(By.linkText(listTitle));
+			mlistLink.click();
+			
+			wait.until(ExpectedConditions.titleIs(listTitle));
+			
+			// View Subscriber List page
+			WebElement viewListLink = driver.findElement(By.cssSelector("a[title='ORDERLST_viewList']"));
+			viewListLink.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+			
+			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkbox']"));
+			assertFalse(checkBoxList.isEmpty());
+			// save check box titles
+			List<String> checkBoxTitleList = new ArrayList<>();
+			for (int i = 0; i < checkBoxList.size(); i++) {
+				checkBoxTitleList.add(checkBoxList.get(i).getAttribute("title"));
+			}
+			
+			List<WebElement> addrElmList = driver.findElements(By.cssSelector("span[title$='_emailAddr']"));
+			assertEquals(checkBoxList.size(), addrElmList.size());
+			
+			for (int i = 0; i < checkBoxList.size(); i++) {
+				logger.info("Subscriber email address: " + addrElmList.get(i).getText());
+			}
+
+			// delete all subscribers but the first
+			for (int i = 1; i < checkBoxList.size(); i++) {
+				WebElement checkBox = driver.findElement(By.cssSelector("input[title='" + checkBoxTitleList.get(i) + "']"));
+				// tick the check box
+				if (checkBox.isEnabled() && !checkBox.isSelected()) {
+					checkBox.click();
+					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+				}
+				else {
+					fail("The check box is not enabled or is already selected!");
+				}
+			}
+
+			// submit the delete
+			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
+			if (deleteLink.isEnabled()) {
+				deleteLink.click();
+			}
+			
+			// Accept (Click OK on JavaScript Alert pop-up)
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+			
+			// Go back to list page
+			WebElement gobackLink = driver.findElement(By.cssSelector("input[title='Go Back']"));
+			gobackLink.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillist:footer:gettingStartedFooter")));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

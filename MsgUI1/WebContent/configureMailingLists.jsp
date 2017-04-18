@@ -9,7 +9,7 @@
          <title><h:outputText value="#{msgs.configureMailingLists}"/></title>
       </head>
       <body><div align="center">
-         <h:form id="advanced">
+         <h:form id="maillist">
             <h:panelGrid columns="1" styleClass="headerMenuContent"
                    columnClasses="contentColumn">
                <f:facet name="header">

@@ -67,7 +67,7 @@
 				<tr>
 					<td style="width: 10%; text-align: right; font-weight: bold;">Import to:</td>
 					<td style="width: 40%;">
-						<select name="listid">
+						<select name="listid" id="import_to">
 						<c:forEach items="${dynamicCodes.mailingListIdItems}" var="listId">
 							<option <c:if test="${listId.value == param.listid}">selected</c:if> value="${listId.value}"><c:out value="${listId.label}"/></option> 
 						</c:forEach>
@@ -98,7 +98,7 @@
 				<tr>
 					<td style="width: 10%; text-align: right; font-weight: bold;">File:</td>
 					<td style="width: 60%;">
-					<input type="file" name="file1" value="${uploadForm.pathes.file1}" size="40" /></td>
+					<input type="file" name="file1" id="select_file" value="${uploadForm.pathes.file1}" size="40" /></td>
 					<td style="width: 30%; text-align: left;">
 					<c:if test="${uploadForm.errors.file1 != null}">
 						<span style="color: red;">${uploadForm.errors.file1}</span>
@@ -152,12 +152,12 @@
 			<tr>
 				<td style="width: 10%;">&nbsp;</td>
 				<td style="width: 90%; align: left;">
-					<input type="submit" name="submit" value="Import From File" />&nbsp;
+					<input type="submit" name="submit" value="Import From File" title="Import from file"/>&nbsp;
 					<c:if test="${fn:length(uploadForm.errors) == 0 and fn:length(uploadForm.messages) == 0}">
-						<input type="submit" name="submit" value="Cancel"/>
+						<input type="submit" name="submit" value="Cancel" title="Cancel import"/>
 					</c:if>
 					<c:if test="${fn:length(uploadForm.errors) > 0 or fn:length(uploadForm.messages) > 0}">
-						<input type="submit" name="submit" value="Done"/>
+						<input type="submit" name="submit" value="Done" title="Done import"/>
 					</c:if>
 				</td>
 			</tr>
@@ -191,7 +191,7 @@
 			<tr>
 				<td style="width: 10%; text-align: right; font-weight: bold;">Import from:</td>
 				<td style="width: 60%;">
-					<select name="fromlistid">
+					<select name="fromlistid" id="import_from">
 					<c:forEach items="${dynamicCodes.mailingListIdItems}" var="listId">
 						<option value="${listId.value}"><c:out value="${listId.label}"/></option> 
 					</c:forEach>
@@ -245,12 +245,12 @@
 			<tr>
 				<td style="width: 10%;">&nbsp;</td>
 				<td style="width: 90%; align: left;">
-					<input type="submit" name="submit" value="Import From List" />&nbsp;
+					<input type="submit" name="submit" value="Import From List" id="submit_import_from_list"/>&nbsp;
 					<c:if test="${fn:length(uploadForm.errors) == 0 and fn:length(uploadForm.messages) == 0}">
-						<input type="submit" name="submit" value="Cancel"/>
+						<input type="submit" name="submit" value="Cancel" id="cancel_import_from_list"/>
 					</c:if>
 					<c:if test="${fn:length(uploadForm.errors) > 0 or fn:length(uploadForm.messages) > 0}">
-						<input type="submit" name="submit" value="Done"/>
+						<input type="submit" name="submit" value="Done" id="done_import_from_list"/>
 					</c:if>
 				</td>
 			</tr>

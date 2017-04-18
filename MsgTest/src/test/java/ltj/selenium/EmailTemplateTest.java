@@ -131,7 +131,7 @@ public class EmailTemplateTest extends BaseLogin {
 			WebElement refreshLink = driver.findElement(By.cssSelector("input[title='Refresh from database']"));
 			refreshLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("advanced:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailtmpt:footer:gettingStartedFooter")));
 			
 			// verify results
 			WebElement subjectAfterElm = driver.findElement(By.cssSelector("span[title='SampleNewsletter2_subject']"));
@@ -179,7 +179,7 @@ public class EmailTemplateTest extends BaseLogin {
 				logger.error(e.getMessage());
 			}
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("advanced:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailtmpt:footer:gettingStartedFooter")));
 			
 			// verify results
 			schedulerLink = driver.findElement(By.cssSelector("a[title='SampleNewsletter2_editSchedule']"));
