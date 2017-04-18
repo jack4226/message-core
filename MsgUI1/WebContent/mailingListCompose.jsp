@@ -19,7 +19,7 @@
 	<h:panelGroup>
 		<h:messages styleClass="errors" layout="list"
 			rendered="#{debug.showMessages}" />
-		<h:outputText value="#{maillistcomp.actionFailure}"
+		<h:outputText value="#{maillistcomp.actionFailure}" title="Failure Message"
 			rendered="#{maillistcomp.actionFailure != null}" styleClass="errorMessage"/>
 		<h:outputFormat value="#{msgs.composeForListLink}" styleClass="gridHeader">
 		   <f:param value=""/>
@@ -96,7 +96,7 @@
 						<f:selectItems value="#{dynacodes.globalVariableNameItems}"/>
 					</h:selectOneMenu>
 					<f:verbatim>
-					<input type="button" value="Insert Selected Variable"
+					<input type="button" value="Insert Selected Variable" id="insert_variable"
 						onclick="insertFieldToBody('mlstcomp:vname');"/>
 						<%--onclick="insertIntoBody('mlstcomp:bodytext', 'mlstcomp:vname');"/ --%>
 					</f:verbatim>
@@ -104,7 +104,7 @@
 			</h:panelGrid>
 			
 			<h:inputTextarea value="#{maillistcomp.msgBody}"
-				id="bodytext" rows="25" style="width: 100%;"/>
+				id="bodytext" rows="25" style="width: 100%;" immediate="true"/>
 			<f:verbatim>
 			<script type="text/javascript">
 				buttonPath = "images/whizzywigbuttons/";
@@ -117,7 +117,7 @@
 			<h:panelGroup style="text-align: left;">
 				<h:outputText value="#{msgs.embedEmailIdPrompt}"/>
 				<%--h:selectBooleanCheckbox value="#{maillistcomp.embedEmailId}"/ --%>
-				<h:selectOneMenu value="#{maillistcomp.embedEmailId}">
+				<h:selectOneMenu value="#{maillistcomp.isEmbedEmailId}" id="embed_email_id">
 					<f:selectItems value="#{codes.yorNItems}"/>
 					<f:selectItem itemLabel="System default" itemValue=" "/>
 				</h:selectOneMenu>
@@ -129,7 +129,7 @@
 			</h:panelGroup>
 			<h:panelGroup style="text-align: right;">
 				<h:outputText value="#{msgs.htmlContentPrompt}"/>
-				<h:selectBooleanCheckbox value="#{maillistcomp.html}"/>
+				<h:selectBooleanCheckbox value="#{maillistcomp.html}" id="is_html"/>
 				<f:verbatim>&nbsp;&nbsp;&nbsp;</f:verbatim>
 				<h:commandButton value="#{msgs.mailingListPreviewLink}"
 					action="#{maillistcomp.previewMsgBody}"

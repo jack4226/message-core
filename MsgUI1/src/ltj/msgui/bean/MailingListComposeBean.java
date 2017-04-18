@@ -17,6 +17,7 @@ import javax.mail.Part;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import ltj.data.preload.RuleNameEnum;
@@ -375,6 +376,21 @@ public class MailingListComposeBean {
 		}
 		return list;
 	}
+	
+	/* Method for UI only*/
+	public String getIsEmbedEmailId() {
+		return (embedEmailId == null ? " " : (embedEmailId ? "Y" : "N"));
+	}
+	
+	public void setIsEmbedEmailId(String str) {
+		if (StringUtils.isBlank(str)) {
+			embedEmailId = null;
+		}
+		else {
+			embedEmailId = "Y".equals(str);
+		}
+	}
+	/* End of UI only */
 	
 	public String getListId() {
 		return listId;

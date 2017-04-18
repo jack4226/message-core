@@ -220,8 +220,7 @@ public class CustomerTest extends BaseLogin {
 			dtl.lastNameList.add(lastNameList.get(i).getText());
 			dtl.birthDateList.add(birthDateList.get(i).getText());
 			
-			WebElement elm = checkBoxList.get(i);
-			String checkBoxTitle = elm.getAttribute("title");
+			String checkBoxTitle = checkBoxList.get(i).getAttribute("title");
 			String prefix = StringUtils.removeEnd(checkBoxTitle, "_checkBox");
 			
 			WebElement viewMsgLink = driver.findElement(By.cssSelector("a[title='" + prefix + "']"));

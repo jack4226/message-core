@@ -13,7 +13,7 @@
 	<h:panelGrid columns="1" styleClass="headerMenuContent">
 	<c:import url="includes/gettingStartedHeader.jsp"/>
 	<h:panelGroup>
-		<h:messages styleClass="errors" layout="list"
+		<h:messages styleClass="errors" layout="list" title="Failure Message"
 			rendered="#{debug.showMessages}" />
 		<f:verbatim><br/></f:verbatim>
 		<h:outputText value="#{msgs.previewMessageTitle}" styleClass="mediumLargeSizeTitle"/>
@@ -21,14 +21,14 @@
 		<h:panelGrid columns="2" styleClass="smtpHeaders" 
 			columnClasses="smtpLabelColumn, smtpTextColumn">
 			<h:outputText value="#{msgs.msgSubjectPrompt}" />
-			<h:outputText value="#{maillistcomp.renderedSubj}" escape="false"/>
+			<h:outputText value="#{maillistcomp.renderedSubj}" escape="false" title="Rendered Subject"/>
 		</h:panelGrid>
 		<f:verbatim>&nbsp;<p/></f:verbatim>
 		<h:panelGrid columns="1" style="background: White;" styleClass="fullWidthWithBorder">
-			<h:outputText value="#{maillistcomp.renderedBody}" escape="false"/>
+			<h:outputText value="#{maillistcomp.renderedBody}" escape="false" title="Rendered Body"/>
 		</h:panelGrid>
 		<f:verbatim><br/>
-			<input type="button" value="Back" onclick="history.back()"/>
+			<input type="button" value="Back" onclick="history.back()" title="Go Back"/>
 		</f:verbatim>
 	</h:panelGroup>
 	<c:import url="includes/gettingStartedFooter.jsp"/>
