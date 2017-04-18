@@ -1,4 +1,4 @@
-package ltj.selenium;
+package ltj.msgui1;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +12,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import ltj.selenium.MsgInbox1Test.MsgListDetail;
+import ltj.msgui1.MsgInbox1Test.MsgListDetail;
+import ltj.selenium.StringUtil;
 
 public class MsgInbox2Test extends BaseLogin {
 	static final Logger logger = Logger.getLogger(MsgInbox2Test.class);

@@ -1,4 +1,4 @@
-package ltj.selenium;
+package ltj.msgui1;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +16,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ltj.selenium.StringUtil;
 
 public class CustomerTest extends BaseLogin {
 	static final Logger logger = Logger.getLogger(CustomerTest.class);

@@ -2,9 +2,9 @@ package ltj.selenium;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -59,7 +59,7 @@ public class LoginFlowTest extends TestCase {
 
 	void login() {
 		try {
-			driver.get("http://localhost:8080/MsgUI1/login.faces");
+			driver.get("http://localhost:8080/MsgUI2/login.faces");
 	
 			// Find the text input element by its name
 			WebElement element_user = driver.findElement(By.id("login:userid"));
@@ -92,85 +92,69 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testEmailListUpload() {
-		String listTitle = "Upload Email Addresses to List";
-		
+	public void testSiteProfiles() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
+		String listTitle = "Configure Site Profiles";
 		try {
 			WebElement link = driver.findElement(By.linkText(listTitle));
-			assertNotNull(link);
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
-			
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			
-			Select selectImpTo = new Select(driver.findElement(By.id("import_to")));
-			selectImpTo.selectByValue("ORDERLST");
+			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			Select selectImpFrom = new Select(driver.findElement(By.id("import_from")));
-			selectImpFrom.selectByValue("SMPLLST2");
 			
-			WebElement submitImpLink = driver.findElement(By.id("submit_import_from_list"));
-			submitImpLink.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("done_import_from_list")));
-			
-			// Go back to menu
-			WebElement doneImpLink = driver.findElement(By.id("done_import_from_list"));
-			doneImpLink.click();
-			
-			wait.until(ExpectedConditions.titleIs("Main Page"));
-			
-			// Verify results
-			listTitle = "Setup Email Mailing Lists";
-			
-			WebElement mlistLink = driver.findElement(By.linkText(listTitle));
-			mlistLink.click();
-			
-			wait.until(ExpectedConditions.titleIs(listTitle));
-			
-			// View Subscriber List page
-			WebElement viewListLink = driver.findElement(By.cssSelector("a[title='ORDERLST_viewList']"));
-			viewListLink.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
-			
-			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkbox']"));
-			assertFalse(checkBoxList.isEmpty());
-			// save check box titles
-			List<String> checkBoxTitleList = new ArrayList<>();
-			for (int i = 0; i < checkBoxList.size(); i++) {
-				checkBoxTitleList.add(checkBoxList.get(i).getAttribute("title"));
+			WebElement siteNameElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_senderName']"));
+			String siteNameBefore = siteNameElm.getText();
+			String siteNameAfter = null;
+			if (StringUtils.endsWith(siteNameBefore, "_updated")) {
+				siteNameAfter = StringUtils.removeEnd(siteNameBefore, "_updated");
+			}
+			else {
+				siteNameAfter = siteNameBefore + "_updated";
 			}
 			
-			List<WebElement> addrElmList = driver.findElements(By.cssSelector("span[title$='_emailAddr']"));
-			assertEquals(checkBoxList.size(), addrElmList.size());
+			WebElement useTestAddrElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_userTestAddr']"));
+			String useTestAddr = useTestAddrElm.getText();
 			
-			for (int i = 0; i < checkBoxList.size(); i++) {
-				logger.info("Subscriber email address: " + addrElmList.get(i).getText());
+			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='JBatchCorp_viewDetail']"));
+			viewDetailLink.click();
+			
+			logger.info("Edit page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailprof:footer:gettingStartedFooter")));
+			
+			WebElement siteName = driver.findElement(By.id("emailprof:content:sitename"));
+			siteName.clear();
+			siteName.sendKeys(siteNameAfter);
+			
+			Select selectTest = new Select(driver.findElement(By.id("emailprof:content:usetest")));
+			WebElement selectedTest = selectTest.getFirstSelectedOption();
+			logger.info("Use Test Address selected before: " + selectedTest.getText());
+			if ("true".equalsIgnoreCase(useTestAddr)) {
+				assertEquals("Yes", selectedTest.getText());
+				selectTest.selectByVisibleText("No");
 			}
-
-			// delete all subscribers but the first
-			for (int i = 1; i < checkBoxList.size(); i++) {
-				WebElement checkBox = driver.findElement(By.cssSelector("input[title='" + checkBoxTitleList.get(i) + "']"));
-				// tick the check box
-				if (checkBox.isEnabled() && !checkBox.isSelected()) {
-					checkBox.click();
-					wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
-				}
-				else {
-					fail("The check box is not enabled or is already selected!");
-				}
+			else {
+				assertEquals("No", selectedTest.getText());
+				selectTest.selectByVisibleText("Yes");
 			}
-
-			// submit the delete
-			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
-			if (deleteLink.isEnabled()) {
-				deleteLink.click();
+ 			
+			Select selectVerp = new Select(driver.findElement(By.id("emailprof:content:useverp")));
+			WebElement selectedVerp = selectVerp.getFirstSelectedOption();
+			logger.info("Is Verp selected before: " + selectedVerp.getText());
+			String selectedVerpBefore = selectedVerp.getText();
+			if ("No".equals(selectedVerp.getText())) {
+				selectVerp.selectByVisibleText("Yes");
+			}
+			else {
+				selectVerp.selectByVisibleText("No");
 			}
 			
-			// Accept (Click OK on JavaScript Alert pop-up)
+			WebElement submit = driver.findElement(By.id("emailprof:content:submit"));
+			submit.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
 			try {
 				WebDriverWait waitShort = new WebDriverWait(driver, 1);
 				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
@@ -181,13 +165,27 @@ public class LoginFlowTest extends TestCase {
 				logger.error(e.getMessage());
 			}
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+			// verify the results
+			wait.until(ExpectedConditions.titleIs(listTitle));
 			
-			// Go back to list page
-			WebElement gobackLink = driver.findElement(By.cssSelector("input[title='Go Back']"));
-			gobackLink.click();
+			WebElement siteNameAfterElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_senderName']"));
+			assertEquals(siteNameAfter, siteNameAfterElm.getText());
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillist:footer:gettingStartedFooter")));
+			WebElement useTestAddrAfter = driver.findElement(By.cssSelector("span[title='JBatchCorp_userTestAddr']"));
+			if ("true".equalsIgnoreCase(useTestAddr)) {
+				assertEquals("false", useTestAddrAfter.getText());
+			}
+			else {
+				assertEquals("true", useTestAddrAfter.getText());
+			}
+			
+			WebElement selectedVerpAfter = driver.findElement(By.cssSelector("span[title='JBatchCorp_verpEnabled']"));
+			if ("yes".equalsIgnoreCase(selectedVerpBefore)) {
+				assertEquals("false", selectedVerpAfter.getText());
+			}
+			else {
+				assertEquals("true", selectedVerpAfter.getText());
+			}
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

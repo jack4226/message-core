@@ -1,4 +1,4 @@
-package ltj.selenium;
+package ltj.msgui1;
 
 import static org.junit.Assert.fail;
 
