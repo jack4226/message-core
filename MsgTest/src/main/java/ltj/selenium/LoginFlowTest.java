@@ -92,9 +92,9 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testSiteProfiles() {
+	public void testMailBoxes2() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
-		String listTitle = "Configure Site Profiles";
+		String listTitle = "Configure POP/IMAP Accounts";
 		try {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
@@ -104,88 +104,23 @@ public class LoginFlowTest extends TestCase {
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
+			// select a record to copy
+			WebElement checkBoxElm = driver.findElement(By.cssSelector("input[title='localhost_jwang_checkBox']"));
+			checkBoxElm.click();
 			
-			WebElement siteNameElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_senderName']"));
-			String siteNameBefore = siteNameElm.getText();
-			String siteNameAfter = null;
-			if (StringUtils.endsWith(siteNameBefore, "_updated")) {
-				siteNameAfter = StringUtils.removeEnd(siteNameBefore, "_updated");
-			}
-			else {
-				siteNameAfter = siteNameBefore + "_updated";
-			}
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("advanced:footer:gettingStartedFooter")));
 			
-			WebElement useTestAddrElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_userTestAddr']"));
-			String useTestAddr = useTestAddrElm.getText();
+			// copy to a new record
+			WebElement copyToNewElm = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
+			copyToNewElm.click();
 			
-			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='JBatchCorp_viewDetail']"));
-			viewDetailLink.click();
-			
+			// Edit Detail Page
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailprof:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mboxedit:footer:gettingStartedFooter")));
 			
-			WebElement siteName = driver.findElement(By.id("emailprof:content:sitename"));
-			siteName.clear();
-			siteName.sendKeys(siteNameAfter);
-			
-			Select selectTest = new Select(driver.findElement(By.id("emailprof:content:usetest")));
-			WebElement selectedTest = selectTest.getFirstSelectedOption();
-			logger.info("Use Test Address selected before: " + selectedTest.getText());
-			if ("true".equalsIgnoreCase(useTestAddr)) {
-				assertEquals("Yes", selectedTest.getText());
-				selectTest.selectByVisibleText("No");
-			}
-			else {
-				assertEquals("No", selectedTest.getText());
-				selectTest.selectByVisibleText("Yes");
-			}
- 			
-			Select selectVerp = new Select(driver.findElement(By.id("emailprof:content:useverp")));
-			WebElement selectedVerp = selectVerp.getFirstSelectedOption();
-			logger.info("Is Verp selected before: " + selectedVerp.getText());
-			String selectedVerpBefore = selectedVerp.getText();
-			if ("No".equals(selectedVerp.getText())) {
-				selectVerp.selectByVisibleText("Yes");
-			}
-			else {
-				selectVerp.selectByVisibleText("No");
-			}
-			
-			WebElement submit = driver.findElement(By.id("emailprof:content:submit"));
-			submit.click();
-			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
-			
-			// verify the results
-			wait.until(ExpectedConditions.titleIs(listTitle));
-			
-			WebElement siteNameAfterElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_senderName']"));
-			assertEquals(siteNameAfter, siteNameAfterElm.getText());
-			
-			WebElement useTestAddrAfter = driver.findElement(By.cssSelector("span[title='JBatchCorp_userTestAddr']"));
-			if ("true".equalsIgnoreCase(useTestAddr)) {
-				assertEquals("false", useTestAddrAfter.getText());
-			}
-			else {
-				assertEquals("true", useTestAddrAfter.getText());
-			}
-			
-			WebElement selectedVerpAfter = driver.findElement(By.cssSelector("span[title='JBatchCorp_verpEnabled']"));
-			if ("yes".equalsIgnoreCase(selectedVerpBefore)) {
-				assertEquals("false", selectedVerpAfter.getText());
-			}
-			else {
-				assertEquals("true", selectedVerpAfter.getText());
-			}
+			// Cancel and go back
+			WebElement gobackElm = driver.findElement(By.cssSelector("input[title='Go Back']"));
+			gobackElm.click();
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
