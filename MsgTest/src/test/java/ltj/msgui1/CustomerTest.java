@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import ltj.selenium.StringUtil;
 
-public class CustomerTest extends BaseLogin {
+public class CustomerTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(CustomerTest.class);
 
 	@Test

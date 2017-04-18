@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import ltj.msgui1.MsgInbox1Test.MsgListDetail;
 import ltj.selenium.StringUtil;
 
-public class MsgInbox2Test extends BaseLogin {
+public class MsgInbox2Test extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(MsgInbox2Test.class);
 
 	@Test

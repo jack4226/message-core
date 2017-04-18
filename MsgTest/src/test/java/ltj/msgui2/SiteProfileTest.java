@@ -1,6 +1,4 @@
-package ltj.msgui1;
-
-import static org.junit.Assert.*;
+package ltj.msgui2;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -12,25 +10,24 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class SiteNameTest extends AbstractLogin {
-	static final Logger logger = Logger.getLogger(SiteNameTest.class);
+public class SiteProfileTest extends AbstractLogin {
+	static final Logger logger = Logger.getLogger(SiteProfileTest.class);
 
 	@Test
 	public void testSiteProfiles() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
+		String listTitle = "Configure Site Profiles";
 		try {
-			WebElement link = driver.findElement(By.linkText("Configure Site Profiles"));
-			assertNotNull(link);
+			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
-			wait.until(ExpectedConditions.titleIs("Configure Site Profiles"));
+			wait.until(ExpectedConditions.titleIs(listTitle));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			WebElement siteNameElm = driver.findElement(By.cssSelector("span[title=JBatchCorp_siteName]"));
-			assertNotNull(siteNameElm);
-			logger.info("Site Name: " + siteNameElm.toString() + ", text: " + siteNameElm.getText());
+			
+			WebElement siteNameElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_senderName']"));
 			String siteNameBefore = siteNameElm.getText();
 			String siteNameAfter = null;
 			if (StringUtils.endsWith(siteNameBefore, "_updated")) {
@@ -40,16 +37,11 @@ public class SiteNameTest extends AbstractLogin {
 				siteNameAfter = siteNameBefore + "_updated";
 			}
 			
-			WebElement useTestAddrElm = driver.findElement(By.cssSelector("span[title=JBatchCorp_useTestAddr]"));
-			assertNotNull(useTestAddrElm);
-			logger.info("useTestAddr: " + useTestAddrElm.toString() + ", text: " + useTestAddrElm.getText());
-			
+			WebElement useTestAddrElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_userTestAddr']"));
 			String useTestAddr = useTestAddrElm.getText();
 			
-			link = driver.findElement(By.linkText("JBatchCorp"));
-			assertNotNull(link);
-			
-			link.click();
+			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='JBatchCorp_viewDetail']"));
+			viewDetailLink.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailprof:footer:gettingStartedFooter")));
@@ -82,7 +74,6 @@ public class SiteNameTest extends AbstractLogin {
 			}
 			
 			WebElement submit = driver.findElement(By.id("emailprof:content:submit"));
-			assertNotNull(submit);
 			submit.click();
 			
 			// accept (Click OK) JavaScript Alert pop-up
@@ -97,14 +88,12 @@ public class SiteNameTest extends AbstractLogin {
 			}
 			
 			// verify the results
-			wait.until(ExpectedConditions.titleIs("Configure Site Profiles"));
+			wait.until(ExpectedConditions.titleIs(listTitle));
 			
-			WebElement siteNameAfterElm = driver.findElement(By.cssSelector("span[title=JBatchCorp_siteName]"));
-			assertNotNull(siteNameAfterElm);
+			WebElement siteNameAfterElm = driver.findElement(By.cssSelector("span[title='JBatchCorp_senderName']"));
 			assertEquals(siteNameAfter, siteNameAfterElm.getText());
 			
-			WebElement useTestAddrAfter = driver.findElement(By.cssSelector("span[title=JBatchCorp_useTestAddr]"));
-			assertNotNull(useTestAddrAfter);
+			WebElement useTestAddrAfter = driver.findElement(By.cssSelector("span[title='JBatchCorp_userTestAddr']"));
 			if ("true".equalsIgnoreCase(useTestAddr)) {
 				assertEquals("false", useTestAddrAfter.getText());
 			}
@@ -112,8 +101,7 @@ public class SiteNameTest extends AbstractLogin {
 				assertEquals("true", useTestAddrAfter.getText());
 			}
 			
-			WebElement selectedVerpAfter = driver.findElement(By.cssSelector("span[title=JBatchCorp_isVerpEnabled]"));
-			assertNotNull(selectedVerpAfter);
+			WebElement selectedVerpAfter = driver.findElement(By.cssSelector("span[title='JBatchCorp_verpEnabled']"));
 			if ("yes".equalsIgnoreCase(selectedVerpBefore)) {
 				assertEquals("false", selectedVerpAfter.getText());
 			}

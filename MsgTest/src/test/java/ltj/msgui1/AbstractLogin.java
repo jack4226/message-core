@@ -12,8 +12,8 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class BaseLogin {
-	protected static final Logger logger = Logger.getLogger(BaseLogin.class);
+public abstract class AbstractLogin {
+	protected static final Logger logger = Logger.getLogger(AbstractLogin.class);
 
 	protected static HtmlUnitDriver driver;
 	

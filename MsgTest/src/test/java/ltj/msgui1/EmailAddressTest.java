@@ -18,7 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import ltj.selenium.StringUtil;
 
-public class EmailAddressTest extends BaseLogin {
+public class EmailAddressTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(EmailAddressTest.class);
 
 	@Test

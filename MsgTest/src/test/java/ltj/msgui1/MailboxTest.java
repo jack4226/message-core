@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class MailboxTest extends BaseLogin {
+public class MailboxTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(MailboxTest.class);
 
 	@Test

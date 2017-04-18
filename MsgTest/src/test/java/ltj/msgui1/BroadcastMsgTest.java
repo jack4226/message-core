@@ -14,7 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class BroadcastMsgTest extends BaseLogin {
+public class BroadcastMsgTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(BroadcastMsgTest.class);
 
 	@Test

@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class BroadcastToListTest extends BaseLogin {
+public class BroadcastToListTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(BroadcastToListTest.class);
 
 	@Test

@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class MailingListTest extends BaseLogin {
+public class MailingListTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(MailingListTest.class);
 
 	@Test
