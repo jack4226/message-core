@@ -1,5 +1,8 @@
 package ltj.msgui2;
 
+import java.util.List;
+import java.util.Random;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -14,7 +17,7 @@ public class MailBoxTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(MailBoxTest.class);
 
 	@Test
-	public void testMailBoxes() {
+	public void testListAndViewDetail() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		String listTitle = "Configure POP/IMAP Accounts";
 		try {
@@ -114,4 +117,187 @@ public class MailBoxTest extends AbstractLogin {
 			fail();
 		}
 	}
+	
+	@Test
+	public void testCopyFromSelected() {
+		logger.info("Current URL: " + driver.getCurrentUrl());
+		String listTitle = "Configure POP/IMAP Accounts";
+		try {
+			WebElement link = driver.findElement(By.linkText(listTitle));
+			link.click();
+			
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.titleIs(listTitle));
+			
+			logger.info("Switched to URL: " + driver.getCurrentUrl());
+			
+			// select a record to copy
+			WebElement checkBoxElm = driver.findElement(By.cssSelector("input[title='localhost_jwang_checkBox']"));
+			checkBoxElm.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Create a new row from selected']")));
+			
+			// copy to a new record
+			WebElement copyToNewElm = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
+			copyToNewElm.click();
+			
+			logger.info("Edit page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mboxedit:footer:gettingStartedFooter")));
+			
+			// Edit Detail Page
+			Random r = new Random();
+			String randomStr1 = StringUtils.leftPad(r.nextInt(1000) + "", 3, '0');
+			
+			WebElement hostNameElm = driver.findElement(By.id("mboxedit:content:hostname"));
+			hostNameElm.sendKeys("testhost_" + randomStr1 + ".local");
+			
+			WebElement userIdElm = driver.findElement(By.id("mboxedit:content:userid"));
+			userIdElm.sendKeys("testuser_" + randomStr1);
+			
+			WebElement submitElm = driver.findElement(By.id("mboxedit:content:submit"));
+			submitElm.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
+			
+			// Now delete the added record
+			// locate the record by title
+			String title = "testhost_" + randomStr1 + ".local_" + "testuser_" + randomStr1 + "_checkBox";
+			checkBoxElm = driver.findElement(By.cssSelector("input[title='" + title + "']"));
+			checkBoxElm.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			
+			// delete the record
+			WebElement deleteRowElm = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
+			deleteRowElm.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector("input[title='" + title + "']"))));
+			
+			// verify the record is deleted
+			List<WebElement> checkBoxs = driver.findElements(By.cssSelector("input[title='" + title + "']"));
+			assertTrue(checkBoxs.isEmpty());
+		}
+		catch (Exception e) {
+			logger.error("Exception caught", e);
+			fail();
+		}
+	}
+
+	@Test
+	public void testAddNewRecord() {
+		logger.info("Current URL: " + driver.getCurrentUrl());
+		String listTitle = "Configure POP/IMAP Accounts";
+		try {
+			WebElement link = driver.findElement(By.linkText(listTitle));
+			link.click();
+			
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.titleIs(listTitle));
+			logger.info("Switched to URL: " + driver.getCurrentUrl());
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Add a new row']")));
+			
+			// add a new record
+			WebElement copyToNewElm = driver.findElement(By.cssSelector("input[title='Add a new row']"));
+			copyToNewElm.click();
+			
+			logger.info("Edit page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mboxedit:footer:gettingStartedFooter")));
+			
+			// Edit Detail Page
+			Random r = new Random();
+			String randomStr1 = StringUtils.leftPad(r.nextInt(1000) + "", 3, '0');
+			
+			WebElement hostNameElm = driver.findElement(By.id("mboxedit:content:hostname"));
+			hostNameElm.sendKeys("testhost_" + randomStr1 + ".local");
+			
+			WebElement userIdElm = driver.findElement(By.id("mboxedit:content:userid"));
+			userIdElm.sendKeys("testuser_" + randomStr1);
+			
+			WebElement passwordElm = driver.findElement(By.id("mboxedit:content:password"));
+			passwordElm.sendKeys("testpswd_" + randomStr1);
+			
+			WebElement descElm = driver.findElement(By.id("mboxedit:content:desc"));
+			descElm.sendKeys("test description " + randomStr1);
+
+			WebElement retrymaxElm = driver.findElement(By.id("mboxedit:content:retrymax"));
+			retrymaxElm.sendKeys("10");
+			WebElement minWaitElm = driver.findElement(By.id("mboxedit:content:minimumwait"));
+			minWaitElm.sendKeys("10");
+
+			WebElement submitElm = driver.findElement(By.id("mboxedit:content:submit"));
+			submitElm.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
+			
+			// Now delete the added record
+			// locate the record by title
+			String title = "testhost_" + randomStr1 + ".local_" + "testuser_" + randomStr1 + "_checkBox";
+			WebElement checkBoxElm = driver.findElement(By.cssSelector("input[title='" + title + "']"));
+			checkBoxElm.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			
+			// delete the record
+			WebElement deleteRowElm = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
+			deleteRowElm.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector("input[title='" + title + "']"))));
+			
+			// verify the record is deleted
+			List<WebElement> checkBoxs = driver.findElements(By.cssSelector("input[title='" + title + "']"));
+			assertTrue(checkBoxs.isEmpty());
+		}
+		catch (Exception e) {
+			logger.error("Exception caught", e);
+			fail();
+		}
+	}
+
 }
