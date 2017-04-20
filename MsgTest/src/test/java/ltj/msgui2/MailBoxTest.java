@@ -194,7 +194,7 @@ public class MailBoxTest extends AbstractLogin {
 			}
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
-			wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector("input[title='" + title + "']"))));
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[title='" + title + "']"))));
 			
 			// verify the record is deleted
 			List<WebElement> checkBoxs = driver.findElements(By.cssSelector("input[title='" + title + "']"));
@@ -288,7 +288,7 @@ public class MailBoxTest extends AbstractLogin {
 			}
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
-			wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector("input[title='" + title + "']"))));
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[title='" + title + "']"))));
 			
 			// verify the record is deleted
 			List<WebElement> checkBoxs = driver.findElements(By.cssSelector("input[title='" + title + "']"));

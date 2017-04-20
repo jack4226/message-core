@@ -175,7 +175,7 @@ public class LoginFlowTest extends TestCase {
 			}
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
-			//wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector("input[title='" + title + "']"))));
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[title='" + title + "']"))));
 			
 			// verify the record is deleted
 			List<WebElement> checkBoxs = driver.findElements(By.cssSelector("input[title='" + title + "']"));
