@@ -24,7 +24,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -93,7 +93,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			WebElement submit = driver.findElement(By.cssSelector("input[title='Go Back']"));
 			submit.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
 			
 		}
 		catch (Exception e) {
@@ -112,7 +112,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -196,7 +196,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			WebElement goback = driver.findElement(By.cssSelector("input[title='Go Back']"));
 			goback.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
