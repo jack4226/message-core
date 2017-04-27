@@ -139,7 +139,7 @@ public class SmtpServerTest extends AbstractLogin {
 			WebElement checkBoxElm = driver.findElement(By.cssSelector("input[title='smtpServer_checkBox']"));
 			checkBoxElm.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Create a new row from selected']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
 			
 			WebElement copyToNewElm = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
@@ -186,7 +186,7 @@ public class SmtpServerTest extends AbstractLogin {
 			assertEquals(true, checkBoxLink.isDisplayed());
 			checkBoxLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + title + "']"), true));
 			
 			// delete the added record
@@ -283,7 +283,7 @@ public class SmtpServerTest extends AbstractLogin {
 			assertEquals(true, checkBoxLink.isDisplayed());
 			checkBoxLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + title + "']"), true));
 			
 			// delete the added record

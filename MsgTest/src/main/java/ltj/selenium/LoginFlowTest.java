@@ -93,7 +93,7 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testListAndViewActions() {
+	public void testListAndViewDetails() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		String listTitle = "Setup Custom Bounce Rules and Actions";
 		try {
@@ -119,7 +119,7 @@ public class LoginFlowTest extends TestCase {
 			WebElement viewActionsLink = driver.findElement(By.cssSelector("a[title='XHeader_SpamScore_viewActions']"));
 			viewActionsLink.click();
 			
-			logger.info("Edit page URL: " + driver.getCurrentUrl());
+			logger.info("View Actions page URL: " + driver.getCurrentUrl());
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
 			
 			// View/Edit Actions Page
@@ -164,6 +164,109 @@ public class LoginFlowTest extends TestCase {
 			submit.click();
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			
+			// View/Edit Details page
+			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']"));
+			viewDetailLink.click();
+
+			logger.info("View Detail page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			WebElement ruleDescEdt = driver.findElement(By.id("ruleedit:content:desc"));
+			String desc = ruleDescEdt.getAttribute("value");
+			if (StringUtils.endsWith(desc, "_updated")) {
+				desc = StringUtils.removeEnd(desc, "_updated");
+			}
+			else {
+				desc += "_updated";
+			}
+			ruleDescEdt.sendKeys(desc);
+			
+			Select selectCategory = new Select(driver.findElement(By.id("ruleedit:content:rulecategory")));
+			WebElement selectedCtgy = selectCategory.getFirstSelectedOption();
+			assertEquals("P", selectedCtgy.getAttribute("value"));
+			
+			Select selectSubrule = new Select(driver.findElement(By.id("ruleedit:content:subrule")));
+			WebElement selectedSubrule = selectSubrule.getFirstSelectedOption();
+			assertEquals("false", selectedSubrule.getAttribute("value"));
+			
+			List<WebElement> ruleTypeList = driver.findElements(By.cssSelector("input[id^='ruleedit:content:ruletype:']"));
+			assertEquals(4, ruleTypeList.size());
+			WebElement ruleTypeElm2 = ruleTypeList.get(1);
+			assertEquals(true, ruleTypeElm2.isSelected());
+			
+			List<WebElement> chkboxList = driver.findElements(By.cssSelector("input[id$=':checkbox']"));
+			assertTrue(chkboxList.size() >= 2);
+			int nextIdx = chkboxList.size();
+			
+			WebElement checkBox2Link = chkboxList.get(nextIdx - 1);
+			checkBox2Link.click();
+			
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
+			
+			// Create a new record from selected
+			WebElement copySelecedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
+			copySelecedLink.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			Select selectDataName = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
+			selectDataName.selectByValue("From");
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			
+			Select selectCriteria = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			selectCriteria.selectByValue("contains");
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Submit Changes']")));
+			
+			// Submit changes
+			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit Changes']"));
+			submitChanges.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			// Delete the added record
+			WebElement chkboxLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
+			chkboxLink.click();
+			
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
+			deleteLink.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+			
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

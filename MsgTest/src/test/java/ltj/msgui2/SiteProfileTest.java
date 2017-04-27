@@ -136,6 +136,7 @@ public class SiteProfileTest extends AbstractLogin {
 			checkBoxElm.click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Create a new row from selected']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sitename:footer:gettingStartedFooter")));
 			
 			WebElement copyToNewElm = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
@@ -183,6 +184,7 @@ public class SiteProfileTest extends AbstractLogin {
 			checkBoxLink.click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sitename:footer:gettingStartedFooter")));
 			
 			// delete the added record

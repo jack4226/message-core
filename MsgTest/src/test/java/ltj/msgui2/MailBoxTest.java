@@ -136,6 +136,7 @@ public class MailBoxTest extends AbstractLogin {
 			checkBoxElm.click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Create a new row from selected']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
 			
 			// copy to a new record
 			WebElement copyToNewElm = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
@@ -177,6 +178,7 @@ public class MailBoxTest extends AbstractLogin {
 			checkBoxElm.click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			
 			// delete the record
 			WebElement deleteRowElm = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
@@ -271,6 +273,7 @@ public class MailBoxTest extends AbstractLogin {
 			checkBoxElm.click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			
 			// delete the record
 			WebElement deleteRowElm = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
