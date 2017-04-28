@@ -97,14 +97,14 @@ public class LoginFlowTest extends TestCase {
 	@Test
 	public void testCopyFromSelected() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
-		String listTitle = "Customize Action Details";
+		String listTitle = "Setup Email Mailing Lists";
 		try {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -113,17 +113,18 @@ public class LoginFlowTest extends TestCase {
 			assertFalse(checkBoxList.isEmpty());
 			int nextIdx = checkBoxList.size();
 			
-			List<WebElement> serviceNameList = driver.findElements(By.cssSelector("span[title$='_serviceName']"));
-			assertEquals(checkBoxList.size(), serviceNameList.size());
-			String bean_n = serviceNameList.get(nextIdx - 1).getText();
+			List<WebElement> dispNameList = driver.findElements(By.cssSelector("span[title$='_dispName']"));
+			assertEquals(checkBoxList.size(), dispNameList.size());
+			String dispName0 = dispNameList.get(0).getText();
 			
 			// Tick the selected record
-			WebElement checkBoxLink = checkBoxList.get(nextIdx - 1);
-			checkBoxLink = driver.findElement(By.cssSelector("input[title='" + (nextIdx - 1) + "_checkBox']"));
+			WebElement checkBoxLink = checkBoxList.get(0);
+			String chkboxTitle = checkBoxLink.getAttribute("title");
+			checkBoxLink = driver.findElement(By.cssSelector("input[title='" + chkboxTitle + "']"));
 			checkBoxLink.click();
 
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + (nextIdx - 1) + "_checkBox']"), true));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + chkboxTitle + "']"), true));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
 			// Copy from selected
 			WebElement copySelectedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
@@ -146,7 +147,7 @@ public class LoginFlowTest extends TestCase {
 			descElm.sendKeys("_" + suffix);
 			
 			WebElement beanElm = driver.findElement(By.id("actdtledt:content:beanid"));
-			assertEquals(bean_n, beanElm.getAttribute("value"));
+			assertEquals(dispName0, beanElm.getAttribute("value"));
 			
 			Select dataTypeSelect = new Select(driver.findElement(By.id("actdtledt:content:datatype")));
 			dataTypeSelect.selectByValue("EMAIL_ADDRESS"); 
