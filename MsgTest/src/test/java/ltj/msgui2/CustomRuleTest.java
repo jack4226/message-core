@@ -1,5 +1,6 @@
 package ltj.msgui2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -305,4 +307,177 @@ public class CustomRuleTest extends AbstractLogin {
 		}
 	}
 
+	@Test
+	public void testViewDetailsAndElement() {
+		logger.info("Current URL: " + driver.getCurrentUrl());
+		String listTitle = "Setup Custom Bounce Rules and Actions";
+		try {
+			WebElement link = driver.findElement(By.linkText(listTitle));
+			link.click();
+			
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.titleIs(listTitle));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			
+			logger.info("Switched to URL: " + driver.getCurrentUrl());
+			
+			// View/Edit Details page
+			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']"));
+			viewDetailLink.click();
+
+			logger.info("View Detail page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			List<WebElement> chkboxList = driver.findElements(By.cssSelector("input[id$=':checkbox']"));
+			assertTrue(chkboxList.size() >= 2);
+			int nextIdx = chkboxList.size();
+			
+			// Add a new record
+			WebElement addNewLink = driver.findElement(By.cssSelector("input[title='Add a new row']"));
+			addNewLink.click();
+
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			Select selectDataName = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
+			selectDataName.selectByValue("X-Header"); // triggers ajax event
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":headername")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			
+			WebElement hdrNameElm = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":headername"));
+			
+			Actions builder = new Actions(driver);
+			builder.moveToElement(hdrNameElm).build().perform();
+			
+			hdrNameElm.sendKeys("X_Rule_Test");
+			
+			// to "blur" the header name field and trigger the ajax event
+			driver.findElement(By.cssSelector("input[title='" + nextIdx + "_input_targetText']")).click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("select[title='" + nextIdx + "_criteria']")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='" + nextIdx + "_input_targetText']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_editElement']")));
+			
+			WebElement criteriaElm = driver.findElement(By.cssSelector("select[title='" + nextIdx + "_criteria']"));
+			builder.moveToElement(criteriaElm).build().perform(); // move cursor to "select criteria"
+			
+			Select selectCriteria = new Select(criteriaElm);
+			List<WebElement> optionList = selectCriteria.getOptions();
+			List<String> optionValues = new ArrayList<>();
+			for (WebElement option : optionList) {
+				optionValues.add(option.getAttribute("value"));
+			}
+			assertTrue(optionValues.contains("contains"));
+			selectCriteria.selectByValue("contains"); // triggers ajax event
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":headername")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("select[title='" + nextIdx + "_criteria']")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='" + nextIdx + "_input_targetText']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_editElement']")));
+		
+			List<WebElement> targetList = driver.findElements(By.cssSelector("input[title$='_input_targetText']"));
+			assertTrue(targetList.size() > 0);
+			WebElement targetElm = targetList.get(targetList.size() - 1);
+			targetElm = driver.findElement(By.cssSelector("input[title='" + nextIdx + "_input_targetText']"));
+			
+			try {
+				builder.moveToElement(targetElm).build().perform(); // move cursor to "target text"
+				targetElm.sendKeys("Test add new element");
+			}
+			catch (Exception e) {
+				logger.error("Failed to send target text: " + e.getMessage());
+				Thread.sleep(1000);
+				targetElm = driver.findElement(By.cssSelector("input[title='" + nextIdx + "_input_targetText']"));
+				targetElm.sendKeys("Test add new element");
+			}
+			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Submit Changes']")));
+			
+			// Submit changes
+			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit Changes']"));
+			submitChanges.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			// Enter edit rule element
+			WebElement elementLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement"));
+			elementLink.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("elementedit:footer:gettingStartedFooter")));
+			
+			WebElement ruleNameElm = driver.findElement(By.id("elementedit:content:rulename"));
+			assertEquals("HardBouce_WatchedMailbox", ruleNameElm.getAttribute("value"));
+			
+			Select selectDataNameElm = new Select(driver.findElement(By.id("elementedit:content:dataname")));
+			assertEquals("X-Header", selectDataNameElm.getFirstSelectedOption().getAttribute("value"));
+			
+			Select selectCriteriaElm = new Select(driver.findElement(By.id("elementedit:content:criteria")));
+			assertNotNull(selectCriteriaElm.getFirstSelectedOption().getText());
+			assertEquals("contains", selectCriteriaElm.getFirstSelectedOption().getAttribute("value"));
+			
+			WebElement targetTextElm = driver.findElement(By.id("elementedit:content:targettext1"));
+			assertEquals("Test add new element", targetTextElm.getAttribute("value"));
+			
+			WebElement exclusionsElm = driver.findElement(By.id("elementedit:content:exclusions"));
+			exclusionsElm.click();
+			exclusionsElm.sendKeys("test exclusions");
+			
+			driver.findElement(By.id("elementedit:content:delimiter")).sendKeys(",");
+			
+			// Submit rule element changes
+			WebElement doneEditLink = driver.findElement(By.cssSelector("input[title='Done Edit']"));
+			doneEditLink.click();
+			
+			//wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
+			//wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			// Delete the added record
+			WebElement chkboxLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
+			chkboxLink.click();
+			
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
+			deleteLink.click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+			
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+		}
+		catch (Exception e) {
+			logger.error("Exception caught", e);
+			fail();
+		}
+	}
 }

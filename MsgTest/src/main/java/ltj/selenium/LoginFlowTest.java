@@ -2,6 +2,7 @@ package ltj.selenium;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,6 +21,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -93,62 +95,64 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testViewDetailsAndElement() {
+	public void testCopyFromSelected() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
-		String listTitle = "Setup Custom Bounce Rules and Actions";
+		String listTitle = "Customize Action Details";
 		try {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			// View/Edit Details page
-			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']"));
-			viewDetailLink.click();
+			// List
+			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
+			assertFalse(checkBoxList.isEmpty());
+			int nextIdx = checkBoxList.size();
+			
+			List<WebElement> serviceNameList = driver.findElements(By.cssSelector("span[title$='_serviceName']"));
+			assertEquals(checkBoxList.size(), serviceNameList.size());
+			String bean_n = serviceNameList.get(nextIdx - 1).getText();
+			
+			// Tick the selected record
+			WebElement checkBoxLink = checkBoxList.get(nextIdx - 1);
+			checkBoxLink = driver.findElement(By.cssSelector("input[title='" + (nextIdx - 1) + "_checkBox']"));
+			checkBoxLink.click();
 
-			logger.info("View Detail page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + (nextIdx - 1) + "_checkBox']"), true));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			
-			List<WebElement> chkboxList = driver.findElements(By.cssSelector("input[id$=':checkbox']"));
-			assertTrue(chkboxList.size() >= 2);
-			int nextIdx = chkboxList.size();
+			// Copy from selected
+			WebElement copySelectedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
+			copySelectedLink.click();
 			
-			// Add a new record
-			WebElement addNewLink = driver.findElement(By.cssSelector("input[title='Add a new row']"));
-			addNewLink.click();
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtledt:footer:gettingStartedFooter")));
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			
-			Select selectDataName = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
-			selectDataName.selectByValue("X-Header");
+			WebElement actionIdElm = driver.findElement(By.id("actdtledt:content:actionid"));
+			assertEquals("", actionIdElm.getAttribute("value"));
+			actionIdElm.sendKeys("TestActionId_" + suffix);
+
+			Actions builder = new Actions(driver);
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":headername")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			builder.moveToElement(driver.findElement(By.id("actdtledt:content:description"))).build().perform();
+
+			WebElement descElm = driver.findElement(By.id("actdtledt:content:description"));
+			assertTrue(StringUtils.isNotBlank(descElm.getAttribute("value")));
+			descElm.sendKeys("_" + suffix);
 			
-			WebElement hdrNameElm = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":headername"));
-			hdrNameElm.sendKeys("X_Rule_Test");
+			WebElement beanElm = driver.findElement(By.id("actdtledt:content:beanid"));
+			assertEquals(bean_n, beanElm.getAttribute("value"));
 			
-			Select selectCriteria = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
-			selectCriteria.selectByValue("contains");
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + nextIdx + "_input_targetText']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Submit Changes']")));
-		
-			List<WebElement> targetList = driver.findElements(By.cssSelector("input[title$='_input_targetText']"));
-			assertTrue(targetList.size() > 0);
-			WebElement targetElm = targetList.get(targetList.size() - 1); //driver.findElement(By.cssSelector("input[title='" + nextIdx + "_input_targetText']"));
-			targetElm.clear();
-			targetElm.sendKeys("Test add new element");
+			Select dataTypeSelect = new Select(driver.findElement(By.id("actdtledt:content:datatype")));
+			dataTypeSelect.selectByValue("EMAIL_ADDRESS"); 
 			
 			// Submit changes
-			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit Changes']"));
+			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit changes']"));
 			submitChanges.click();
 			
 			// accept (Click OK) JavaScript Alert pop-up
@@ -162,42 +166,16 @@ public class LoginFlowTest extends TestCase {
 				logger.error(e.getMessage());
 			}
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
-			
-			// Enter exit rule element
-			WebElement elementLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement"));
-			elementLink.click();
-			
-			WebElement ruleNameElm = driver.findElement(By.id("elementedit:content:rulename"));
-			assertEquals("HardBouce_WatchedMailbox", ruleNameElm.getAttribute("value"));
-			
-			Select selectDataNameElm = new Select(driver.findElement(By.id("elementedit:content:dataname")));
-			assertEquals("X-Header", selectDataNameElm.getFirstSelectedOption().getAttribute("value"));
-			
-			Select selectCriteriaElm = new Select(driver.findElement(By.id("elementedit:content:criteria")));
-			assertEquals("contains", selectCriteriaElm.getFirstSelectedOption().getAttribute("value"));
-			
-			WebElement targetTextElm = driver.findElement(By.id("elementedit:content:targettext1"));
-			assertEquals("Test add new element", targetTextElm.getAttribute("value"));
-			
-			// Submit rule element changes
-			WebElement doneEditLink = driver.findElement(By.cssSelector("input[title='Done Edit']"));
-			doneEditLink.click();
-			
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			//wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			
 			// Delete the added record
-			WebElement chkboxLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
+			WebElement chkboxLink = driver.findElement(By.cssSelector("input[title='" + nextIdx + "_checkBox']"));
 			chkboxLink.click();
 			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + nextIdx + "_checkBox']"), true));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			
 			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			deleteLink.click();
@@ -213,8 +191,8 @@ public class LoginFlowTest extends TestCase {
 				logger.error(e.getMessage());
 			}
 			
-			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("span[id^='" + nextIdx + "_']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			
 		}
 		catch (Exception e) {
