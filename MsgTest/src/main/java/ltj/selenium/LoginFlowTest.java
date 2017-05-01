@@ -28,6 +28,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.gargoylesoftware.htmlunit.javascript.host.css.CSS;
+
 import junit.framework.TestCase;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -131,33 +133,54 @@ public class LoginFlowTest extends TestCase {
 			assertFalse(checkBoxList.isEmpty());
 			
 			int idx = new Random().nextInt(checkBoxList.size() - 1);
+			WebElement checkBoxLink = checkBoxList.get(idx);
+			String checkBoxTitle = checkBoxLink.getAttribute("title");
 			
 			List<WebElement> emailAddrList = driver.findElements(By.cssSelector("span[title$='_emailAddr']"));
 			assertEquals(checkBoxList.size(), emailAddrList.size());
 			
+			List<WebElement> acceptHtmlList = driver.findElements(By.cssSelector("span[title$='_acceptHtml']"));
+			assertEquals(checkBoxList.size(), acceptHtmlList.size());
+			
 			List<WebElement> subscribedList = driver.findElements(By.cssSelector("select[title$='_subscribed']"));
 			assertEquals(checkBoxList.size(), subscribedList.size());
 			
-			Select subedSelect = new Select(subscribedList.get(idx));
+			WebElement subedElm = subscribedList.get(idx);
+			String subedTitle = subedElm.getAttribute("title");
+			
+			Select subedSelect = new Select(driver.findElement(By.cssSelector("select[title='" + subedTitle + "'")));
 			WebElement isSubed = subedSelect.getFirstSelectedOption();
 			if ("true".equals(isSubed.getAttribute("value"))) {
-				subedSelect.selectByValue("false");
+				//subedSelect.selectByValue("false");
 			}
 			else {
 				subedSelect.selectByValue("true");
 			}
 			
-			List<WebElement> acceptHtmlList = driver.findElements(By.cssSelector("span[title$='_acceptHtml']"));
-			assertEquals(checkBoxList.size(), acceptHtmlList.size());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("select[title='" + subedTitle + "'")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("select[title='" + subedTitle + "'")));
 			
-			WebElement checkBoxLink = checkBoxList.get(idx);
-			String checkBoxTitle = checkBoxLink.getAttribute("title");
+			checkBoxLink = driver.findElement(By.cssSelector("input[title='" + checkBoxTitle + "'"));
 			checkBoxLink.click();
 			
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Save Selected Rows'")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Save selected rows'")));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + checkBoxTitle + "'"), true));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='" + checkBoxTitle + "'")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
 			
+			driver.findElement(By.cssSelector("input[title='Save selected rows'")).click();
+			
+			// accept (Click OK) JavaScript Alert pop-up
+			try {
+				WebDriverWait waitShort = new WebDriverWait(driver, 1);
+				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
+				alert.accept();
+				logger.info("Accepted the alert successfully.");
+			}
+			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+				logger.error(e.getMessage());
+			}
+
 			// Go back to the list
 			driver.findElement(By.cssSelector("input[title='Go Back']")).click();
 			
