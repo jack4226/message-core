@@ -95,7 +95,7 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testCopyFromSelected() {
+	public void testViewSubscrbers() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		String listTitle = "Setup Email Mailing Lists";
 		try {
@@ -109,91 +109,59 @@ public class LoginFlowTest extends TestCase {
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
 			// List
+			List<WebElement> viewSbsrsList = driver.findElements(By.cssSelector("a[title$='_viewSbsrs']"));
+			assertFalse(viewSbsrsList.isEmpty());
+			WebElement viewSbsrsLink = null;
+			for (WebElement elm : viewSbsrsList) {
+				if (StringUtils.startsWith(elm.getAttribute("title"), "SMPLLST1")) {
+					viewSbsrsLink = elm;
+				}
+			}
+			assertNotNull(viewSbsrsLink);
+			
+			// View Subscribers page
+			String viewSbsrsTitle = viewSbsrsLink.getAttribute("title");
+			viewSbsrsLink = driver.findElement(By.cssSelector("a[title='" + viewSbsrsTitle + "']"));
+			viewSbsrsLink.click();
+
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+			
+			// View List page
 			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
 			assertFalse(checkBoxList.isEmpty());
-			int nextIdx = checkBoxList.size();
 			
-			List<WebElement> dispNameList = driver.findElements(By.cssSelector("span[title$='_dispName']"));
-			assertEquals(checkBoxList.size(), dispNameList.size());
-			String dispName0 = dispNameList.get(0).getText();
+			int idx = new Random().nextInt(checkBoxList.size() - 1);
 			
-			// Tick the selected record
-			WebElement checkBoxLink = checkBoxList.get(0);
-			String chkboxTitle = checkBoxLink.getAttribute("title");
-			checkBoxLink = driver.findElement(By.cssSelector("input[title='" + chkboxTitle + "']"));
+			List<WebElement> emailAddrList = driver.findElements(By.cssSelector("span[title$='_emailAddr']"));
+			assertEquals(checkBoxList.size(), emailAddrList.size());
+			
+			List<WebElement> subscribedList = driver.findElements(By.cssSelector("select[title$='_subscribed']"));
+			assertEquals(checkBoxList.size(), subscribedList.size());
+			
+			Select subedSelect = new Select(subscribedList.get(idx));
+			WebElement isSubed = subedSelect.getFirstSelectedOption();
+			if ("true".equals(isSubed.getAttribute("value"))) {
+				subedSelect.selectByValue("false");
+			}
+			else {
+				subedSelect.selectByValue("true");
+			}
+			
+			List<WebElement> acceptHtmlList = driver.findElements(By.cssSelector("span[title$='_acceptHtml']"));
+			assertEquals(checkBoxList.size(), acceptHtmlList.size());
+			
+			WebElement checkBoxLink = checkBoxList.get(idx);
+			String checkBoxTitle = checkBoxLink.getAttribute("title");
 			checkBoxLink.click();
-
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + chkboxTitle + "']"), true));
+			
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Save Selected Rows'")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='" + checkBoxTitle + "'")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+			
+			// Go back to the list
+			driver.findElement(By.cssSelector("input[title='Go Back']")).click();
+			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
-			
-			// Copy from selected
-			WebElement copySelectedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
-			copySelectedLink.click();
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtledt:footer:gettingStartedFooter")));
-
-			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
-			
-			WebElement actionIdElm = driver.findElement(By.id("actdtledt:content:actionid"));
-			assertEquals("", actionIdElm.getAttribute("value"));
-			actionIdElm.sendKeys("TestActionId_" + suffix);
-
-			Actions builder = new Actions(driver);
-			
-			builder.moveToElement(driver.findElement(By.id("actdtledt:content:description"))).build().perform();
-
-			WebElement descElm = driver.findElement(By.id("actdtledt:content:description"));
-			assertTrue(StringUtils.isNotBlank(descElm.getAttribute("value")));
-			descElm.sendKeys("_" + suffix);
-			
-			WebElement beanElm = driver.findElement(By.id("actdtledt:content:beanid"));
-			assertEquals(dispName0, beanElm.getAttribute("value"));
-			
-			Select dataTypeSelect = new Select(driver.findElement(By.id("actdtledt:content:datatype")));
-			dataTypeSelect.selectByValue("EMAIL_ADDRESS"); 
-			
-			// Submit changes
-			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit changes']"));
-			submitChanges.click();
-			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
-
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
-			
-			// Delete the added record
-			WebElement chkboxLink = driver.findElement(By.cssSelector("input[title='" + nextIdx + "_checkBox']"));
-			chkboxLink.click();
-			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + nextIdx + "_checkBox']"), true));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
-			
-			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
-			deleteLink.click();
-			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
-			
-			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("span[id^='" + nextIdx + "_']"))));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			
 		}
 		catch (Exception e) {
