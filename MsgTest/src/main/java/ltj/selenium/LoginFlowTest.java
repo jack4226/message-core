@@ -95,89 +95,167 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testCopyFromSelected() {
+	public void testListAndViewDetails() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
-		String listTitle = "Setup Email Mailing Lists";
+		String listTitle = "Setup Custom Bounce Rules and Actions";
 		try {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			// List
-			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
-			assertFalse(checkBoxList.isEmpty());
-			int nextIdx = checkBoxList.size();
+			// Retrieve field values from the list
+			WebElement ruleNameElm = driver.findElement(By.cssSelector("a[title='XHeader_SpamScore_viewDetail']"));
+			String ruleNameBefore = ruleNameElm.getText();
 			
-			List<WebElement> dispNameList = driver.findElements(By.cssSelector("span[title$='_dispName']"));
-			assertEquals(checkBoxList.size(), dispNameList.size());
+			WebElement ruleTypeElm = driver.findElement(By.cssSelector("span[title='XHeader_SpamScore_ruleType']"));
+			String ruleTypeBefore = ruleTypeElm.getText();
 			
-			// Tick the selected record
-			WebElement checkBoxLink = checkBoxList.get(0);
-			String chkboxTitle = checkBoxLink.getAttribute("title");
-			checkBoxLink = driver.findElement(By.cssSelector("input[title='" + chkboxTitle + "']"));
-			checkBoxLink.click();
+			WebElement categoryElm = driver.findElement(By.cssSelector("span[title='XHeader_SpamScore_category']"));
+			String categoryBefore = categoryElm.getText();
+			
+			WebElement viewActionsLink = driver.findElement(By.cssSelector("a[title='XHeader_SpamScore_viewActions']"));
+			viewActionsLink.click();
+			
+			logger.info("View Actions page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
+			
+			// View/Edit Actions Page
+			WebElement ruleNameEdt = driver.findElement(By.id("actionedit:content:rulename"));
+			assertEquals(ruleNameBefore, ruleNameEdt.getText());
+			
+			WebElement ruleTypeEdt = driver.findElement(By.id("actionedit:content:ruletype"));
+			assertEquals(ruleTypeBefore, ruleTypeEdt.getText());
+			
+			WebElement categoryEdt = driver.findElement(By.id("actionedit:content:rulecategory"));
+			assertEquals(categoryBefore, categoryEdt.getText());
+			
+			WebElement seqEdt = driver.findElement(By.id("actionedit:content:jsftable:0:actionseq"));
+			assertEquals("1", seqEdt.getAttribute("value"));
+			
+			List<WebElement> actSeqList = driver.findElements(By.cssSelector("input[id$=':actionseq']"));
+			assertFalse(actSeqList.isEmpty());
+			
+			List<WebElement> actIdList = driver.findElements(By.cssSelector("select[id$=':actionid']"));
+			assertEquals(actSeqList.size(), actIdList.size());
+			for (int i = 0; i < actIdList.size(); i++) {
+				Select selectActId = new Select(actIdList.get(i));
+				WebElement selectedActId = selectActId.getFirstSelectedOption();
+				if (i == 0) {
+					assertEquals("SAVE", selectedActId.getAttribute("value"));
+				}
+				else if (i == 1) {
+					assertEquals("CLOSE", selectedActId.getAttribute("value"));
+				}
+			}
+			
+			List<WebElement> statIdList = driver.findElements(By.cssSelector("select[id$=':statusid']"));
+			assertEquals(actSeqList.size(), statIdList.size());
+			for (WebElement elm : statIdList) {
+				Select selectStatId = new Select(elm);
+				WebElement selectedStatId = selectStatId.getFirstSelectedOption();
+				assertEquals("A", selectedStatId.getAttribute("value"));
+			}
+			
+			// Go back to list
+			WebElement submit = driver.findElement(By.cssSelector("input[title='Go Back']"));
+			submit.click();
 
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + chkboxTitle + "']"), true));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			
+			// View/Edit Details page
+			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']"));
+			viewDetailLink.click();
+
+			logger.info("View Detail page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			WebElement ruleDescEdt = driver.findElement(By.id("ruleedit:content:desc"));
+			String desc = ruleDescEdt.getAttribute("value");
+			if (StringUtils.endsWith(desc, "_updated")) {
+				desc = StringUtils.removeEnd(desc, "_updated");
+			}
+			else {
+				desc += "_updated";
+			}
+			ruleDescEdt.sendKeys(desc);
+			
+			Select selectCategory = new Select(driver.findElement(By.id("ruleedit:content:rulecategory")));
+			WebElement selectedCtgy = selectCategory.getFirstSelectedOption();
+			assertEquals("P", selectedCtgy.getAttribute("value"));
+			
+			Select selectSubrule = new Select(driver.findElement(By.id("ruleedit:content:subrule")));
+			WebElement selectedSubrule = selectSubrule.getFirstSelectedOption();
+			assertEquals("false", selectedSubrule.getAttribute("value"));
+			
+			List<WebElement> ruleTypeList = driver.findElements(By.cssSelector("input[id^='ruleedit:content:ruletype:']"));
+			assertEquals(4, ruleTypeList.size());
+			WebElement ruleTypeElm2 = ruleTypeList.get(1);
+			assertEquals(true, ruleTypeElm2.isSelected());
+			
+			List<WebElement> chkboxList = driver.findElements(By.cssSelector("input[id$=':checkbox']"));
+			assertTrue(chkboxList.size() >= 2);
+			int nextIdx = chkboxList.size();
+			
+			// Select the last record to copy from
+			WebElement checkBox2Link = chkboxList.get(nextIdx - 1);
+			checkBox2Link.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Create a new row from selected']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
-			// Copy from selected
-			WebElement copySelectedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
-			copySelectedLink.click();
+			// Create a new record from selected record
+			WebElement copySelecedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
+			copySelecedLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mlstedit:footer:gettingStartedFooter")));
-
-			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
-			WebElement listIdElm = driver.findElement(By.id("mlstedit:content:listid"));
-			assertEquals("", listIdElm.getAttribute("value"));
-			String listIdNew = "TstId" + suffix;
-			listIdElm.sendKeys(listIdNew);
-
-			Actions builder = new Actions(driver);
+			Select selectDataName = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
+			selectDataName.selectByValue("From");
 			
-			builder.moveToElement(driver.findElement(By.id("mlstedit:content:dispname"))).build().perform();
-
-			WebElement dispNameElm = driver.findElement(By.id("mlstedit:content:dispname"));
-			assertTrue(StringUtils.isNotBlank(dispNameElm.getAttribute("value")));
-			dispNameElm.sendKeys("_" + suffix);
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
 			
-			WebElement acctUserElm = driver.findElement(By.id("mlstedit:content:acctuser"));
-			assertEquals("", acctUserElm.getAttribute("value"));
-			acctUserElm.sendKeys("test_" + suffix);
+			Select selectCriteria = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			selectCriteria.selectByValue("contains");
 			
-			Select dataTypeSelect = new Select(driver.findElement(By.id("mlstedit:content:clientid")));
-			assertEquals("System", dataTypeSelect.getFirstSelectedOption().getText()); 
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":casesensitive")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Submit Changes']")));
 			
 			// Submit changes
-			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit changes']"));
+			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit Changes']"));
 			submitChanges.click();
 			
 			AlertUtil.handleAlert(driver);
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
 			// Delete the added record
-			WebElement chkboxLink = driver.findElement(By.cssSelector("input[title='" + listIdNew + "_checkBox']"));
+			WebElement chkboxLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
 			chkboxLink.click();
 			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + listIdNew + "_checkBox']"), true));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
 			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			deleteLink.click();
 			
 			AlertUtil.handleAlert(driver);
 			
-			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("span[id^='" + nextIdx + "_']"))));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
 		}
 		catch (Exception e) {
