@@ -7,12 +7,13 @@ import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ltj.selenium.AlertUtil;
 
 public class EmailVariableTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(EmailVariableTest.class);
@@ -79,16 +80,7 @@ public class EmailVariableTest extends AbstractLogin {
 			// Submit changes
 			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
 			
@@ -150,16 +142,7 @@ public class EmailVariableTest extends AbstractLogin {
 			// Submit changes
 			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
 			
@@ -171,16 +154,7 @@ public class EmailVariableTest extends AbstractLogin {
 			
 			driver.findElement(By.cssSelector("input[title='Delete selected rows']")).click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
 			
@@ -236,16 +210,7 @@ public class EmailVariableTest extends AbstractLogin {
 			// Submit changes
 			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
 			
@@ -267,16 +232,7 @@ public class EmailVariableTest extends AbstractLogin {
 			
 			driver.findElement(By.cssSelector("input[title='Delete selected rows']")).click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
 			

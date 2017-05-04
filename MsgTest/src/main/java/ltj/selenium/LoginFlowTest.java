@@ -95,16 +95,16 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testAddNewRecord() {
+	public void testCopyFromSelected() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
-		String listTitle = "Setup Email Templates";
+		String listTitle = "Setup Email Mailing Lists";
 		try {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailtmplst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -113,92 +113,79 @@ public class LoginFlowTest extends TestCase {
 			assertFalse(checkBoxList.isEmpty());
 			int nextIdx = checkBoxList.size();
 			
-			// Add a new record
-			driver.findElement(By.cssSelector("input[title='Add a new row']")).click();
+			List<WebElement> dispNameList = driver.findElements(By.cssSelector("span[title$='_dispName']"));
+			assertEquals(checkBoxList.size(), dispNameList.size());
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
-						
+			// Tick the selected record
+			WebElement checkBoxLink = checkBoxList.get(0);
+			String chkboxTitle = checkBoxLink.getAttribute("title");
+			checkBoxLink = driver.findElement(By.cssSelector("input[title='" + chkboxTitle + "']"));
+			checkBoxLink.click();
+
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + chkboxTitle + "']"), true));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			
+			// Copy from selected
+			WebElement copySelectedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
+			copySelectedLink.click();
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mlstedit:footer:gettingStartedFooter")));
+
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
-			String testTmpltId = "TestTemplate_" + suffix;
-			driver.findElement(By.id("emailtmplt:content:templateid")).sendKeys(testTmpltId);
 			
-			Select listIdSelect = new Select(driver.findElement(By.id("emailtmplt:content:listid")));
-			listIdSelect.selectByValue("SMPLLST2");
-			
-			driver.findElement(By.id("emailtmplt:content:subject")).sendKeys("Test Subject " + suffix);
-			
-			Select listTypeSelect = new Select(driver.findElement(By.id("emailtmplt:content:listtype")));
-			listTypeSelect.selectByValue("Personalized");
-			
-			Select emailIdSelect = new Select(driver.findElement(By.id("emailtmplt:content:emailid")));
-			emailIdSelect.selectByVisibleText("Y");
-			
-			//Select varNameSelect = new Select(driver.findElement(By.id("emailtmplt:content:vname")));
-			//varNameSelect.selectByValue("SubscriberAddressId");
-			// XXX StaleElementReferenceException: stale element reference: element is not attached to the page document
-			
-			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("insert_variable")));
-			//wait.until(ExpectedConditions.elementToBeClickable(By.id("insert_variable")));
-			//driver.findElement(By.id("insert_variable")).click();
-			// XXX StaleElementReferenceException: stale element reference: element is not attached to the page document
-			
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:content:bodytext")));
-			
+			WebElement listIdElm = driver.findElement(By.id("mlstedit:content:listid"));
+			assertEquals("", listIdElm.getAttribute("value"));
+			String listIdNew = "TstId" + suffix;
+			listIdElm.sendKeys(listIdNew);
+
 			Actions builder = new Actions(driver);
-			builder.moveToElement(driver.findElement(By.id("emailtmplt:content:bodytext"))).build().perform();
 			
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:content:bodytext")));
-			//driver.findElement(By.id("emailtmplt:content:bodytext")).sendKeys("Test message body " + suffix);
-			// XXX ElementNotVisibleException: element not visible
+			builder.moveToElement(driver.findElement(By.id("mlstedit:content:dispname"))).build().perform();
+
+			WebElement dispNameElm = driver.findElement(By.id("mlstedit:content:dispname"));
+			assertTrue(StringUtils.isNotBlank(dispNameElm.getAttribute("value")));
+			dispNameElm.sendKeys("_" + suffix);
+			
+			WebElement acctUserElm = driver.findElement(By.id("mlstedit:content:acctuser"));
+			assertEquals("", acctUserElm.getAttribute("value"));
+			acctUserElm.sendKeys("test_" + suffix);
+			
+			Select dataTypeSelect = new Select(driver.findElement(By.id("mlstedit:content:clientid")));
+			assertEquals("System", dataTypeSelect.getFirstSelectedOption().getText()); 
 			
 			// Submit changes
-			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
+			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit changes']"));
+			submitChanges.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailtmplst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
-			// Verify update results
-			WebElement tmpltIdVrf = driver.findElement(By.cssSelector("a[title='" + nextIdx + "_viewDetail']"));
-			assertEquals(testTmpltId, tmpltIdVrf.getText());
+			// Delete the added record
+			WebElement chkboxLink = driver.findElement(By.cssSelector("input[title='" + listIdNew + "_checkBox']"));
+			chkboxLink.click();
 			
-			// Delete added record
-			driver.findElement(By.cssSelector("input[title='" + nextIdx + "_checkBox']")).click();
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + nextIdx + "_checkBox']"), true));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + listIdNew + "_checkBox']"), true));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailtmplst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
-			driver.findElement(By.cssSelector("input[title='Delete selected rows']")).click();
+			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
+			deleteLink.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailtmplst:footer:gettingStartedFooter")));
-
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("span[id^='" + nextIdx + "_']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
 			fail();
 		}
 	}
-	
+
 	/*
 	 Configure Site Profiles
 	 Configure POP/IMAP Accounts

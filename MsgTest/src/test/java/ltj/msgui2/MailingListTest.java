@@ -6,13 +6,14 @@ import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ltj.selenium.AlertUtil;
 
 public class MailingListTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(MailingListTest.class);
@@ -93,16 +94,7 @@ public class MailingListTest extends AbstractLogin {
 			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit changes']"));
 			submitChanges.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
@@ -118,16 +110,7 @@ public class MailingListTest extends AbstractLogin {
 			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			deleteLink.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 			
 			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("span[id^='" + nextIdx + "_']"))));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
@@ -168,6 +151,7 @@ public class MailingListTest extends AbstractLogin {
 			checkBoxLink.click();
 
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + chkboxTitle + "']"), true));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
 			// Copy from selected
@@ -202,16 +186,7 @@ public class MailingListTest extends AbstractLogin {
 			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit changes']"));
 			submitChanges.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
@@ -227,16 +202,7 @@ public class MailingListTest extends AbstractLogin {
 			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			deleteLink.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 			
 			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("span[id^='" + nextIdx + "_']"))));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
@@ -322,16 +288,7 @@ public class MailingListTest extends AbstractLogin {
 			
 			driver.findElement(By.cssSelector("input[title='Save selected rows'")).click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			// Go back to the list
 			driver.findElement(By.cssSelector("input[title='Go Back']")).click();

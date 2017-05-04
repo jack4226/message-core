@@ -6,13 +6,14 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ltj.selenium.AlertUtil;
 
 public class CustomRuleTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(CustomRuleTest.class);
@@ -68,16 +69,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement submit = driver.findElement(By.cssSelector("input[title='Submit changes']"));
 			submit.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "datatypevalues1")));
@@ -95,16 +87,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement delete = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			delete.click();
 
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("select[id='" + prefix + "']"))));
 			
@@ -259,16 +242,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit Changes']"));
 			submitChanges.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
@@ -286,16 +260,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			deleteLink.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 			
 			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
@@ -400,16 +365,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit Changes']"));
 			submitChanges.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
@@ -460,16 +416,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			deleteLink.click();
 			
-			// accept (Click OK) JavaScript Alert pop-up
-			try {
-				WebDriverWait waitShort = new WebDriverWait(driver, 1);
-				Alert alert = (org.openqa.selenium.Alert) waitShort.until(ExpectedConditions.alertIsPresent());
-				alert.accept();
-				logger.info("Accepted the alert successfully.");
-			}
-			catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-				logger.error(e.getMessage());
-			}
+			AlertUtil.handleAlert(driver);
 			
 			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
