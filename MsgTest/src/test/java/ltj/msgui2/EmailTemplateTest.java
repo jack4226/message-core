@@ -204,22 +204,28 @@ public class EmailTemplateTest extends AbstractLogin {
 			assertFalse(checkBoxList.isEmpty());
 			int nextIdx = checkBoxList.size();
 			
+			Actions builder = new Actions(driver);
+			
 			// Add a new record
 			driver.findElement(By.cssSelector("input[title='Add a new row']")).click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
-						
+			
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			String testTmpltId = "TestTemplate_" + suffix;
+			
 			driver.findElement(By.id("emailtmplt:content:templateid")).sendKeys(testTmpltId);
 			
 			Select listIdSelect = new Select(driver.findElement(By.id("emailtmplt:content:listid")));
 			listIdSelect.selectByValue("SMPLLST2");
 			
-			driver.findElement(By.id("emailtmplt:content:subject")).sendKeys("Test Subject " + suffix);
+			//Select listTypeSelect = new Select(driver.findElement(By.id("emailtmplt:content:listtype")));
+			//listTypeSelect.selectByValue("Personalized");
+			// XXX above statement fires ajax event and causes the reset of templateId to blank
+			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:content:listid")));
 			
-			Select listTypeSelect = new Select(driver.findElement(By.id("emailtmplt:content:listtype")));
-			listTypeSelect.selectByValue("Personalized");
+			driver.findElement(By.id("emailtmplt:content:subject")).sendKeys("Test Subject " + suffix);
 			
 			Select emailIdSelect = new Select(driver.findElement(By.id("emailtmplt:content:emailid")));
 			emailIdSelect.selectByVisibleText("Y");
@@ -235,12 +241,14 @@ public class EmailTemplateTest extends AbstractLogin {
 			
 			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:content:bodytext")));
 			
-			Actions builder = new Actions(driver);
+			
 			builder.moveToElement(driver.findElement(By.id("emailtmplt:content:bodytext"))).build().perform();
 			
 			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:content:bodytext")));
 			//driver.findElement(By.id("emailtmplt:content:bodytext")).sendKeys("Test message body " + suffix);
 			// XXX ElementNotVisibleException: element not visible
+			
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Submit changes']")));
 			
 			// Submit changes
 			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
