@@ -92,6 +92,8 @@ public class CustomRuleTest extends AbstractLogin {
 			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("select[id='" + prefix + "']"))));
 			
 			// Go back to list
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Go Back']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
 			WebElement goback = driver.findElement(By.cssSelector("input[title='Go Back']"));
 			goback.click();
 
@@ -255,6 +257,7 @@ public class CustomRuleTest extends AbstractLogin {
 			
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
