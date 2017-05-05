@@ -97,7 +97,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement goback = driver.findElement(By.cssSelector("input[title='Go Back']"));
 			goback.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
@@ -176,7 +176,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement submit = driver.findElement(By.cssSelector("input[title='Go Back']"));
 			submit.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 			// View/Edit Details page
 			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']"));

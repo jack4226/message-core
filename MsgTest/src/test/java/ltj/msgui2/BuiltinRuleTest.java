@@ -94,7 +94,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			WebElement submit = driver.findElement(By.cssSelector("input[title='Go Back']"));
 			submit.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
+			waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
 			
 		}
 		catch (Exception e) {
@@ -179,7 +179,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			WebElement goback = driver.findElement(By.cssSelector("input[title='Go Back']"));
 			goback.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
+			waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

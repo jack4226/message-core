@@ -29,6 +29,9 @@ public abstract class AbstractLogin extends TestCase {
 
 	private static ChromeDriverService service;
 	protected WebDriver driver;
+	
+	protected WebDriverWait waitLong = new WebDriverWait(driver, 30);
+	protected WebDriverWait waitShort = new WebDriverWait(driver, 2);
 
 	@BeforeClass
 	public static void createAndStartService() throws IOException {
