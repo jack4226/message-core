@@ -30,8 +30,8 @@ public abstract class AbstractLogin extends TestCase {
 	private static ChromeDriverService service;
 	protected WebDriver driver;
 	
-	protected WebDriverWait waitLong = new WebDriverWait(driver, 30);
-	protected WebDriverWait waitShort = new WebDriverWait(driver, 2);
+	protected WebDriverWait waitLong;
+	protected WebDriverWait waitShort;
 
 	@BeforeClass
 	public static void createAndStartService() throws IOException {
@@ -48,6 +48,8 @@ public abstract class AbstractLogin extends TestCase {
 	@Before
 	public void createDriver() {
 		driver = new RemoteWebDriver(service.getUrl(), DesiredCapabilities.chrome());
+		waitLong = new WebDriverWait(driver, 30);
+		waitShort = new WebDriverWait(driver, 2);
 		login();
 	}
 
