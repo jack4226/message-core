@@ -259,6 +259,7 @@ public class CustomRuleTest extends AbstractLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("input[title$='rows']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
 			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
