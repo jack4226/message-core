@@ -18,7 +18,6 @@ import ltj.selenium.AlertUtil;
 public class CustomRuleTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(CustomRuleTest.class);
 
-
 	@Test
 	public void testAddNewAction() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
@@ -79,13 +78,14 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement checkBoxLink = driver.findElement(By.id(prefix + "checkbox"));
 			checkBoxLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id(prefix + "checkbox"), true));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(prefix + "checkbox")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
+
 			// Delete the record
-			WebElement delete = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
-			delete.click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Delete selected rows']"));
 
 			AlertUtil.handleAlert(driver);
 
@@ -106,7 +106,7 @@ public class CustomRuleTest extends AbstractLogin {
 	}
 
 	@Test
-	public void testListAndViewDetails() {
+	public void testListAndViewAction() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		String listTitle = "Setup Custom Bounce Rules and Actions";
 		try {
@@ -177,6 +177,27 @@ public class CustomRuleTest extends AbstractLogin {
 			submit.click();
 
 			waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			
+		}
+		catch (Exception e) {
+			logger.error("Exception caught", e);
+			fail();
+		}
+	}
+
+	@Test
+	public void testListAndViewDetails() {
+		logger.info("Current URL: " + driver.getCurrentUrl());
+		String listTitle = "Setup Custom Bounce Rules and Actions";
+		try {
+			WebElement link = driver.findElement(By.linkText(listTitle));
+			link.click();
+			
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.titleIs(listTitle));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			
+			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
 			// View/Edit Details page
 			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']"));
@@ -251,21 +272,34 @@ public class CustomRuleTest extends AbstractLogin {
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
-			// Delete the added record
-			WebElement chkboxLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
-			chkboxLink.click();
-			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("input[title$='rows']")));
+			// Refresh from database
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Refresh from database']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Refresh from database']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			driver.findElement(By.cssSelector("input[title='Refresh from database']")).click();
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), false));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
-			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
-			deleteLink.click();
+			// Delete the added record
+			AlertUtil.clickCommandLink(driver, By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
+			
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Delete selected rows']"));
 			
 			AlertUtil.handleAlert(driver);
+			
+			// Refresh from database
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Refresh from database']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Refresh from database']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			driver.findElement(By.cssSelector("input[title='Refresh from database']")).click();
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
 			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
@@ -414,6 +448,7 @@ public class CustomRuleTest extends AbstractLogin {
 			chkboxLink.click();
 			
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
