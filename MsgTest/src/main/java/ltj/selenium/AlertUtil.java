@@ -40,6 +40,9 @@ public class AlertUtil {
 	}
 
 	public static void clickCommandLink(WebDriver driver, By by) {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.presenceOfElementLocated(by));
+		wait.until(ExpectedConditions.elementToBeClickable(by));
 		try {
 			WebElement commandLink = driver.findElement(by);
 			commandLink.click();
