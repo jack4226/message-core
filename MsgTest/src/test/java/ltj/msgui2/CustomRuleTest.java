@@ -94,7 +94,7 @@ public class CustomRuleTest extends AbstractLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
 			try {
 				AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
-				waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			}
 			catch (WebDriverException e) {
 				logger.error("WebDriverException caught: " + e.getMessage());
