@@ -96,124 +96,108 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testListAndViewDetails() {
+	public void testAddNewRecord() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
-		String listTitle = "Setup Custom Bounce Rules and Actions";
+		String listTitle = "Setup Email Templates";
 		try {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			// View/Edit Details page
-			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']"));
-			viewDetailLink.click();
-
-			logger.info("View Detail page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			// List
+			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
+			assertFalse(checkBoxList.isEmpty());
+			int nextIdx = checkBoxList.size();
 			
-			WebElement ruleDescEdt = driver.findElement(By.id("ruleedit:content:desc"));
-			String desc = ruleDescEdt.getAttribute("value");
-			if (StringUtils.endsWith(desc, "_updated")) {
-				desc = StringUtils.removeEnd(desc, "_updated");
-			}
-			else {
-				desc += "_updated";
-			}
-			ruleDescEdt.sendKeys(desc);
+			Actions builder = new Actions(driver);
 			
-			Select selectCategory = new Select(driver.findElement(By.id("ruleedit:content:rulecategory")));
-			WebElement selectedCtgy = selectCategory.getFirstSelectedOption();
-			assertEquals("P", selectedCtgy.getAttribute("value"));
+			// Add a new record
+			driver.findElement(By.cssSelector("input[title='Add a new row']")).click();
 			
-			Select selectSubrule = new Select(driver.findElement(By.id("ruleedit:content:subrule")));
-			WebElement selectedSubrule = selectSubrule.getFirstSelectedOption();
-			assertEquals("false", selectedSubrule.getAttribute("value"));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:templateid")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:bodytext")));
 			
-			List<WebElement> ruleTypeList = driver.findElements(By.cssSelector("input[id^='ruleedit:content:ruletype:']"));
-			assertEquals(4, ruleTypeList.size());
-			WebElement ruleTypeElm2 = ruleTypeList.get(1);
-			assertEquals(true, ruleTypeElm2.isSelected());
+			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
+			String testTmpltId = "TestTemplate_" + suffix;
 			
-			List<WebElement> chkboxList = driver.findElements(By.cssSelector("input[id$=':checkbox']"));
-			assertTrue(chkboxList.size() >= 2);
-			int nextIdx = chkboxList.size();
+			driver.findElement(By.id("emailtmplt:detail:templateid")).sendKeys(testTmpltId);
 			
-			// Select the last record to copy from
-			WebElement checkBox2Link = chkboxList.get(nextIdx - 1);
-			checkBox2Link.click();
+			Select listIdSelect = new Select(driver.findElement(By.id("emailtmplt:detail:listid")));
+			listIdSelect.selectByValue("SMPLLST2");
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Create a new row from selected']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
+			//Select listTypeSelect = new Select(driver.findElement(By.id("emailtmplt:detail:listtype")));
+			//listTypeSelect.selectByValue("Personalized");
+			// XXX above statement fires ajax event and causes the reset of templateId to blank
+			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:listid")));
 			
-			// Create a new record from selected record
-			WebElement copySelecedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
-			copySelecedLink.click();
+			driver.findElement(By.id("emailtmplt:detail:subject")).sendKeys("Test Subject " + suffix);
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			Select emailIdSelect = new Select(driver.findElement(By.id("emailtmplt:detail:emailid")));
+			emailIdSelect.selectByVisibleText("Y");
 			
-			Select selectDataName = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
-			selectDataName.selectByValue("From");
+			//Select varNameSelect = new Select(driver.findElement(By.id("emailtmplt:detail:vname")));
+			//varNameSelect.selectByValue("SubscriberAddressId");
+			// XXX StaleElementReferenceException: stale element reference: element is not attached to the page document
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("insert_variable")));
+			//wait.until(ExpectedConditions.elementToBeClickable(By.id("insert_variable")));
+			//driver.findElement(By.id("insert_variable")).click();
+			// XXX StaleElementReferenceException: stale element reference: element is not attached to the page document
 			
-			Select selectCriteria = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
-			selectCriteria.selectByValue("contains");
+			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:bodytext")));
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":casesensitive")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Submit Changes']")));
+			
+			builder.moveToElement(driver.findElement(By.id("emailtmplt:detail:bodytext"))).build().perform();
+			
+			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:bodytext")));
+			//driver.findElement(By.id("emailtmplt:detail:bodytext")).sendKeys("Test message body " + suffix);
+			// XXX ElementNotVisibleException: element not visible
+			
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Submit changes']")));
 			
 			// Submit changes
-			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit Changes']"));
-			submitChanges.click();
+			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
 			
 			AlertUtil.handleAlert(driver);
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			// wait until the last record become available
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_viewDetail']")));
 			
-			// Refresh from database
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Refresh from database']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Refresh from database']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
-			driver.findElement(By.cssSelector("input[title='Refresh from database']")).click();
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), false));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			// Verify update results
+			List<WebElement> viewDetailList =  driver.findElements(By.cssSelector("a[title$='_viewDetail']"));
+			WebElement viewDetailElm = null;
+			for (WebElement elm : viewDetailList) {
+				logger.info("viewDetail item: " + elm.getAttribute("title") + ", " + elm.getText());
+				if (StringUtils.equals(testTmpltId, elm.getText())) {
+					viewDetailElm = elm;
+					break;
+				}
+			}
+			assertNotNull(viewDetailElm);
+			String tmpltTitle = viewDetailElm.getAttribute("title");
+			String tmpltIdx = StringUtils.removeEnd(tmpltTitle, "_viewDetail");
 			
-			// Delete the added record
-			AlertUtil.clickCommandLink(driver, By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
-			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+			// Delete added record
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + tmpltIdx + "_checkBox']")));
+			driver.findElement(By.cssSelector("input[title='" + tmpltIdx + "_checkBox']")).click();
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + tmpltIdx + "_checkBox']"), true));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
 			
-			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Delete selected rows']"));
+			driver.findElement(By.cssSelector("input[title='Delete selected rows']")).click();
 			
 			AlertUtil.handleAlert(driver);
 			
-			// Refresh from database
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Refresh from database']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Refresh from database']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
-			driver.findElement(By.cssSelector("input[title='Refresh from database']")).click();
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
-			
-			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
-			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
