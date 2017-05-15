@@ -275,7 +275,9 @@ public class CustomRuleTest extends AbstractLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Refresh from database']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Refresh from database']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
-			driver.findElement(By.cssSelector("input[title='Refresh from database']")).click();
+			
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Refresh from database']"));
+			
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), false));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
@@ -406,8 +408,7 @@ public class CustomRuleTest extends AbstractLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
 			// Enter edit rule element
-			WebElement elementLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement"));
-			elementLink.click();
+			AlertUtil.clickCommandLink(driver, By.id("ruleedit:content:data_table:" + nextIdx + ":editelement"));
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("elementedit:footer:gettingStartedFooter")));
 			
