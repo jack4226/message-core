@@ -56,5 +56,14 @@ public class AlertUtil {
 			}
 			driver.findElement(by).click();
 		}
+		catch (org.openqa.selenium.WebDriverException e) { //unknown error
+			logger.error("WebDriverException caught: " + e.getMessage());
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ie) {
+				// ignore 
+			}
+			driver.findElement(by).click();
+		}
 	}
 }
