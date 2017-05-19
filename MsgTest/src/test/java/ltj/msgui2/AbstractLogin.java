@@ -83,7 +83,7 @@ public abstract class AbstractLogin extends TestCase {
 			logger.info("Page source is: " + driver.getPageSource());
 	        
 			// wait until page is loaded
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs("Main Page"));
 		}
 		catch (Exception e) {

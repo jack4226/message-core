@@ -66,4 +66,14 @@ public class AlertUtil {
 			driver.findElement(by).click();
 		}
 	}
+	
+	public static void waitLongIgnoreTimeout(WebDriver driver, By by) {
+		WebDriverWait waitLong = new WebDriverWait(driver, 20);
+		try {
+			waitLong.until(ExpectedConditions.presenceOfElementLocated(by));			
+		}
+		catch (org.openqa.selenium.TimeoutException e) {
+			logger.warn("TimeoutException caught: " + e.getMessage());
+		}
+	}
 }

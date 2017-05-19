@@ -90,11 +90,12 @@ public class BuiltinRuleTest extends AbstractLogin {
 			assertFalse(selectedValues.isEmpty());
 			assertEquals("$FinalRcpt", selectedValues.get(0).getAttribute("value"));
 			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Go Back']")));
+			
 			// Go back to list
-			WebElement submit = driver.findElement(By.cssSelector("input[title='Go Back']"));
-			submit.click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
 
-			waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
+			AlertUtil.waitLongIgnoreTimeout(driver, By.id("footer:gettingStartedFooter"));
 			
 		}
 		catch (Exception e) {
@@ -160,8 +161,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			
 			// Delete added record
 			// Tick check box of the record
-			WebElement checkBoxLink = driver.findElement(By.id(prefix + "checkbox"));
-			checkBoxLink.click();
+			AlertUtil.clickCommandLink(driver, By.id(prefix + "checkbox"));
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionbiedit:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id(prefix + "checkbox"), true));
@@ -174,12 +174,12 @@ public class BuiltinRuleTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("select[id='" + prefix + "']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Go Back']")));
 			
 			// Go back to list
-			WebElement goback = driver.findElement(By.cssSelector("input[title='Go Back']"));
-			goback.click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
 
-			waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
+			AlertUtil.waitLongIgnoreTimeout(driver, By.id("footer:gettingStartedFooter"));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

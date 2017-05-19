@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -73,11 +72,11 @@ public class CustomRuleTest extends AbstractLogin {
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "datatypevalues1")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "checkbox")));
 			
 			// Delete added record
 			// Tick check box of the record
-			WebElement checkBoxLink = driver.findElement(By.id(prefix + "checkbox"));
-			checkBoxLink.click();
+			AlertUtil.clickCommandLink(driver, By.id(prefix + "checkbox"));
 			
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id(prefix + "checkbox"), true));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(prefix + "checkbox")));
@@ -92,13 +91,8 @@ public class CustomRuleTest extends AbstractLogin {
 			
 			// Go back to list
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
-			try {
-				AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
-				wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
-			}
-			catch (WebDriverException e) {
-				logger.error("WebDriverException caught: " + e.getMessage());
-			}
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
+			AlertUtil.waitLongIgnoreTimeout(driver, By.id("custrulelst:footer:gettingStartedFooter"));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
@@ -174,11 +168,9 @@ public class CustomRuleTest extends AbstractLogin {
 			}
 			
 			// Go back to list
-			WebElement submit = driver.findElement(By.cssSelector("input[title='Go Back']"));
-			submit.click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
 
-			waitLong.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
-			
+			AlertUtil.waitLongIgnoreTimeout(driver, By.id("custrulelst:footer:gettingStartedFooter"));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

@@ -27,6 +27,8 @@ public class SmtpServerTest extends AbstractLogin {
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("span[title='gmailServer_persistence']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -52,24 +54,25 @@ public class SmtpServerTest extends AbstractLogin {
 			serverNameLink.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:detail:persistence")));
 			
 			// View/Edit Detail Page
-			WebElement serverNameEdt = driver.findElement(By.id("smtpedit:content:servername"));
+			WebElement serverNameEdt = driver.findElement(By.id("smtpsrvr:detail:servername"));
 			assertEquals(serverNameBefore, serverNameEdt.getAttribute("value"));
 			assertEquals(false, serverNameEdt.isEnabled());
 			
-			WebElement hostNameEdt = driver.findElement(By.id("smtpedit:content:smtphost"));
+			WebElement hostNameEdt = driver.findElement(By.id("smtpsrvr:detail:smtphost"));
 			assertEquals(hostNameBefore, hostNameEdt.getAttribute("value"));
 			
-			WebElement userIdEdt = driver.findElement(By.id("smtpedit:content:userid"));
+			WebElement userIdEdt = driver.findElement(By.id("smtpsrvr:detail:userid"));
 			assertEquals(userIdBefore, userIdEdt.getAttribute("value"));
 			
-			Select selectUseSsl = new Select(driver.findElement(By.id("smtpedit:content:ssl")));
+			Select selectUseSsl = new Select(driver.findElement(By.id("smtpsrvr:detail:ssl")));
 			WebElement selectedUseSsl = selectUseSsl.getFirstSelectedOption();
 			assertEquals(useSslBefore, selectedUseSsl.getAttribute("value"));
 			
-			Select selectPersist = new Select(driver.findElement(By.id("smtpedit:content:persistence")));
+			Select selectPersist = new Select(driver.findElement(By.id("smtpsrvr:detail:persistence")));
 			WebElement selectedPersist = selectPersist.getFirstSelectedOption();
 			assertEquals(persistBefore, selectedPersist.getAttribute("value"));
 			if ("false".equals(persistBefore)) {
@@ -79,7 +82,7 @@ public class SmtpServerTest extends AbstractLogin {
 				selectPersist.selectByValue("false");
 			}
 			
-			WebElement descEdt = driver.findElement(By.id("smtpedit:content:desc"));
+			WebElement descEdt = driver.findElement(By.id("smtpsrvr:detail:desc"));
 			String desc = descEdt.getAttribute("value");
 			if (StringUtils.endsWith(desc, "_updated")) {
 				desc = StringUtils.removeEnd(desc, "_updated");
@@ -98,6 +101,7 @@ public class SmtpServerTest extends AbstractLogin {
 			
 			// verify the results
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("span[title='gmailServer_persistence']")));
 			
 			WebElement persistAfterElm = driver.findElement(By.cssSelector("span[title='gmailServer_persistence']"));
 			String persistAfter = persistAfterElm.getText();
@@ -124,6 +128,8 @@ public class SmtpServerTest extends AbstractLogin {
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='smtpServer_checkBox']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -138,21 +144,22 @@ public class SmtpServerTest extends AbstractLogin {
 			copyToNewElm.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:detail:password")));
 			
 			// Edit Detail Page
 			Random r = new Random();
 			String randomStr1 = StringUtils.leftPad(r.nextInt(1000) + "", 3, '0');
 			
-			WebElement serverNameId = driver.findElement(By.id("smtpedit:content:servername"));
+			WebElement serverNameId = driver.findElement(By.id("smtpsrvr:detail:servername"));
 			serverNameId.clear();
 			serverNameId.sendKeys("testserver_" + randomStr1);
 			
-			WebElement userId = driver.findElement(By.id("smtpedit:content:userid"));
+			WebElement userId = driver.findElement(By.id("smtpsrvr:detail:userid"));
 			userId.clear();
 			userId.sendKeys("testuser_" + randomStr1);
 			
-			WebElement password = driver.findElement(By.id("smtpedit:content:password"));
+			WebElement password = driver.findElement(By.id("smtpsrvr:detail:password"));
 			password.clear();
 			password.sendKeys("testpswd_" + randomStr1 + ".local");
 			
@@ -165,6 +172,8 @@ public class SmtpServerTest extends AbstractLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
 			
 			String title = "testserver_" + randomStr1 + "_checkBox";
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + title + "']")));
+			
 			WebElement checkBoxLink = driver.findElement(By.cssSelector("input[title='" + title + "']"));
 			assertEquals(true, checkBoxLink.isDisplayed());
 			checkBoxLink.click();
@@ -201,6 +210,7 @@ public class SmtpServerTest extends AbstractLogin {
 			
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -209,29 +219,30 @@ public class SmtpServerTest extends AbstractLogin {
 			copyToNewElm.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:detail:password")));
 			
 			// Edit Detail Page
 			Random r = new Random();
 			String randomStr1 = StringUtils.leftPad(r.nextInt(1000) + "", 3, '0');
 			
-			WebElement serverName = driver.findElement(By.id("smtpedit:content:servername"));
+			WebElement serverName = driver.findElement(By.id("smtpsrvr:detail:servername"));
 			serverName.clear();
 			serverName.sendKeys("testserver_" + randomStr1);
 			
-			WebElement hostName = driver.findElement(By.id("smtpedit:content:smtphost"));
+			WebElement hostName = driver.findElement(By.id("smtpsrvr:detail:smtphost"));
 			hostName.clear();
 			hostName.sendKeys("localhost");
 			
-			WebElement userId = driver.findElement(By.id("smtpedit:content:userid"));
+			WebElement userId = driver.findElement(By.id("smtpsrvr:detail:userid"));
 			userId.clear();
 			userId.sendKeys("testuser_" + randomStr1);
 			
-			WebElement password = driver.findElement(By.id("smtpedit:content:password"));
+			WebElement password = driver.findElement(By.id("smtpsrvr:detail:password"));
 			password.clear();
 			password.sendKeys("testpswd_" + randomStr1 + ".local");
 			
-			WebElement desc = driver.findElement(By.id("smtpedit:content:desc"));
+			WebElement desc = driver.findElement(By.id("smtpsrvr:detail:desc"));
 			desc.clear();
 			desc.sendKeys("Test Host - " + randomStr1);
 			
@@ -244,6 +255,8 @@ public class SmtpServerTest extends AbstractLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("smtpsrvr:footer:gettingStartedFooter")));
 			
 			String title = "testserver_" + randomStr1 + "_checkBox";
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + title + "']")));
+			
 			WebElement checkBoxLink = driver.findElement(By.cssSelector("input[title='" + title + "']"));
 			assertEquals(true, checkBoxLink.isDisplayed());
 			checkBoxLink.click();

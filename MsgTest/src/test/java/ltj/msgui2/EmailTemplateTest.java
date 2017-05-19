@@ -27,7 +27,7 @@ public class EmailTemplateTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
 			
@@ -86,9 +86,10 @@ public class EmailTemplateTest extends AbstractLogin {
 			subjectElm.clear();
 			subjectElm.sendKeys(subjectAfter);
 			
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Submit changes']")));
+			
 			// Submit changes
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Submit changes']")));
-			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Submit changes']"));
 			
 			AlertUtil.handleAlert(driver);
 			
@@ -114,7 +115,7 @@ public class EmailTemplateTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
 			
@@ -139,31 +140,39 @@ public class EmailTemplateTest extends AbstractLogin {
 			driver.findElement(By.cssSelector("input[title='" + checkBoxTitle + "']")).click();
 			
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + checkBoxTitle + "']"), true));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
 			
 			// Copy from selected
-			driver.findElement(By.cssSelector("input[title='Create a new row from selected']")).click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Create a new row from selected']"));
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:templateid")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:listtype")));
-						
+			
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			String testTmpltId = "TestTemplate_" + suffix;
 			driver.findElement(By.id("emailtmplt:detail:templateid")).sendKeys(testTmpltId);
-			
+						
 			Select listTypeSelect = new Select(driver.findElement(By.id("emailtmplt:detail:listtype")));
-			if ("Traditional".equals(listTypeSelect.getFirstSelectedOption().getAttribute("value"))) {
-				listTypeSelect.selectByValue("Personalized");
+			String valueBefore = listTypeSelect.getFirstSelectedOption().getAttribute("value");
+			String valueAfter = null;
+			if ("Traditional".equals(valueBefore)) {
+				valueAfter = "Personalized";
 			}
 			else {
-				listTypeSelect.selectByValue("Traditional");
+				valueAfter = "Traditional";
+				
 			}
+			listTypeSelect.selectByValue(valueAfter);
+			
+			wait.until(ExpectedConditions.textToBePresentInElementValue(By.id("emailtmplt:detail:listtype"), valueAfter));
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Submit changes']")));
 			
 			// Submit changes
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Submit changes']")));
-			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Submit changes']"));
 			
 			AlertUtil.handleAlert(driver);
 
@@ -172,7 +181,7 @@ public class EmailTemplateTest extends AbstractLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_viewDetail']")));
 			
 			// Verify update results
-			List<WebElement> viewDetailList =  driver.findElements(By.cssSelector("a[title$='_viewDetail']"));
+			List<WebElement> viewDetailList = driver.findElements(By.cssSelector("a[title$='_viewDetail']"));
 			WebElement viewDetailElm = null;
 			for (WebElement elm : viewDetailList) {
 				logger.info("viewDetail item: " + elm.getAttribute("title") + ", " + elm.getText());
@@ -197,7 +206,6 @@ public class EmailTemplateTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
-
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
@@ -213,7 +221,7 @@ public class EmailTemplateTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
 			
@@ -241,19 +249,25 @@ public class EmailTemplateTest extends AbstractLogin {
 			Select listIdSelect = new Select(driver.findElement(By.id("emailtmplt:detail:listid")));
 			listIdSelect.selectByValue("SMPLLST2");
 			
-			//Select listTypeSelect = new Select(driver.findElement(By.id("emailtmplt:detail:listtype")));
-			//listTypeSelect.selectByValue("Personalized");
-			// XXX above statement fires ajax event and causes the reset of templateId to blank
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:listid")));
+			Select listTypeSelect = new Select(driver.findElement(By.id("emailtmplt:detail:listtype")));
+			listTypeSelect.selectByValue("Personalized"); // this will trigger an ajax event
+			
+			wait.until(ExpectedConditions.textToBePresentInElementValue(By.id("emailtmplt:detail:listtype"), "Personalized"));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:subject")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("emailtmplt:detail:subject")));
 			
 			driver.findElement(By.id("emailtmplt:detail:subject")).sendKeys("Test Subject " + suffix);
+			
+			wait.until(ExpectedConditions.elementToBeClickable(By.id("emailtmplt:detail:emailid")));
+			builder.moveToElement(driver.findElement(By.id("emailtmplt:detail:emailid"))).build().perform();
 			
 			Select emailIdSelect = new Select(driver.findElement(By.id("emailtmplt:detail:emailid")));
 			emailIdSelect.selectByVisibleText("Y");
 			
-			//Select varNameSelect = new Select(driver.findElement(By.id("emailtmplt:detail:vname")));
-			//varNameSelect.selectByValue("SubscriberAddressId");
+			Select varNameSelect = new Select(driver.findElement(By.id("emailtmplt:detail:vname")));
+			varNameSelect.selectByValue("SubscriberAddressId");
 			// XXX StaleElementReferenceException: stale element reference: element is not attached to the page document
 			
 			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("insert_variable")));
@@ -273,7 +287,7 @@ public class EmailTemplateTest extends AbstractLogin {
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Submit changes']")));
 			
 			// Submit changes
-			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Submit changes']"));
 			
 			AlertUtil.handleAlert(driver);
 
@@ -307,12 +321,10 @@ public class EmailTemplateTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
-
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
 			fail();
 		}
 	}
-
 }
