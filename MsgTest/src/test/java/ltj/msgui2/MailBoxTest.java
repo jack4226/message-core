@@ -48,13 +48,14 @@ public class MailBoxTest extends AbstractLogin {
 
 			// View/Edit Detail Page
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mboxedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:statusid")));
 			
-			WebElement descEditElm = driver.findElement(By.id("mboxedit:content:desc"));
+			WebElement descEditElm = driver.findElement(By.id("mailbox:detail:desc"));
 			descEditElm.clear();
 			descEditElm.sendKeys(descriptionAfter);
 			
-			Select selectSsl = new Select(driver.findElement(By.id("mboxedit:content:ssl")));
+			Select selectSsl = new Select(driver.findElement(By.id("mailbox:detail:ssl")));
 			WebElement selectedSsl = selectSsl.getFirstSelectedOption();
 			logger.info("Use SSL selected before: " + selectedSsl.getText());
 			if ("true".equalsIgnoreCase(useSslBefore)) {
@@ -66,7 +67,7 @@ public class MailBoxTest extends AbstractLogin {
 				//selectSsl.selectByVisibleText("Yes");
 			}
  			
-			Select selectStatus = new Select(driver.findElement(By.id("mboxedit:content:statusid")));
+			Select selectStatus = new Select(driver.findElement(By.id("mailbox:detail:statusid")));
 			WebElement selectedStatus = selectStatus.getFirstSelectedOption();
 			String selectedStatusIdBefore = selectedStatus.getAttribute("value");
 			if ("A".equals(selectedStatusIdBefore)) {
@@ -76,13 +77,14 @@ public class MailBoxTest extends AbstractLogin {
 				selectStatus.selectByValue("A");
 			}
 			
-			WebElement submit = driver.findElement(By.id("mboxedit:content:submit"));
+			WebElement submit = driver.findElement(By.id("mailbox:detail:submit"));
 			submit.click();
 			
 			AlertUtil.handleAlert(driver);
 			
 			// verify the results
 			wait.until(ExpectedConditions.titleIs(listTitle));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("span[title='localhost_jwang_description']")));
 			
 			WebElement descAfterElm = driver.findElement(By.cssSelector("span[title='localhost_jwang_description']"));
 			assertEquals(descriptionAfter, descAfterElm.getText());
@@ -135,19 +137,21 @@ public class MailBoxTest extends AbstractLogin {
 			copyToNewElm.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mboxedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:hostname")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:submit")));
 			
 			// Edit Detail Page
 			Random r = new Random();
 			String randomStr1 = StringUtils.leftPad(r.nextInt(1000) + "", 3, '0');
 			
-			WebElement hostNameElm = driver.findElement(By.id("mboxedit:content:hostname"));
+			WebElement hostNameElm = driver.findElement(By.id("mailbox:detail:hostname"));
 			hostNameElm.sendKeys("testhost_" + randomStr1 + ".local");
 			
-			WebElement userIdElm = driver.findElement(By.id("mboxedit:content:userid"));
+			WebElement userIdElm = driver.findElement(By.id("mailbox:detail:userid"));
 			userIdElm.sendKeys("testuser_" + randomStr1);
 			
-			WebElement submitElm = driver.findElement(By.id("mboxedit:content:submit"));
+			WebElement submitElm = driver.findElement(By.id("mailbox:detail:submit"));
 			submitElm.click();
 			
 			AlertUtil.handleAlert(driver);
@@ -157,6 +161,8 @@ public class MailBoxTest extends AbstractLogin {
 			// Now delete the added record
 			// locate the record by title
 			String title = "testhost_" + randomStr1 + ".local_" + "testuser_" + randomStr1 + "_checkBox";
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + title + "']")));
+			
 			checkBoxElm = driver.findElement(By.cssSelector("input[title='" + title + "']"));
 			checkBoxElm.click();
 			
@@ -201,30 +207,30 @@ public class MailBoxTest extends AbstractLogin {
 			copyToNewElm.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mboxedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
 			
 			// Edit Detail Page
 			Random r = new Random();
 			String randomStr1 = StringUtils.leftPad(r.nextInt(1000) + "", 3, '0');
 			
-			WebElement hostNameElm = driver.findElement(By.id("mboxedit:content:hostname"));
+			WebElement hostNameElm = driver.findElement(By.id("mailbox:detail:hostname"));
 			hostNameElm.sendKeys("testhost_" + randomStr1 + ".local");
 			
-			WebElement userIdElm = driver.findElement(By.id("mboxedit:content:userid"));
+			WebElement userIdElm = driver.findElement(By.id("mailbox:detail:userid"));
 			userIdElm.sendKeys("testuser_" + randomStr1);
 			
-			WebElement passwordElm = driver.findElement(By.id("mboxedit:content:password"));
+			WebElement passwordElm = driver.findElement(By.id("mailbox:detail:password"));
 			passwordElm.sendKeys("testpswd_" + randomStr1);
 			
-			WebElement descElm = driver.findElement(By.id("mboxedit:content:desc"));
+			WebElement descElm = driver.findElement(By.id("mailbox:detail:desc"));
 			descElm.sendKeys("test description " + randomStr1);
 
-			WebElement retrymaxElm = driver.findElement(By.id("mboxedit:content:retrymax"));
+			WebElement retrymaxElm = driver.findElement(By.id("mailbox:detail:retrymax"));
 			retrymaxElm.sendKeys("10");
-			WebElement minWaitElm = driver.findElement(By.id("mboxedit:content:minimumwait"));
+			WebElement minWaitElm = driver.findElement(By.id("mailbox:detail:minimumwait"));
 			minWaitElm.sendKeys("10");
 
-			WebElement submitElm = driver.findElement(By.id("mboxedit:content:submit"));
+			WebElement submitElm = driver.findElement(By.id("mailbox:detail:submit"));
 			submitElm.click();
 			
 			AlertUtil.handleAlert(driver);
@@ -234,6 +240,8 @@ public class MailBoxTest extends AbstractLogin {
 			// Now delete the added record
 			// locate the record by title
 			String title = "testhost_" + randomStr1 + ".local_" + "testuser_" + randomStr1 + "_checkBox";
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + title + "']")));
+			
 			WebElement checkBoxElm = driver.findElement(By.cssSelector("input[title='" + title + "']"));
 			checkBoxElm.click();
 			

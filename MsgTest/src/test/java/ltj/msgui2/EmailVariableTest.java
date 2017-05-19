@@ -59,13 +59,15 @@ public class EmailVariableTest extends AbstractLogin {
 			String variableName = viewDetailLink.getText();
 			viewDetailLink.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailvarbl:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:detail:variablename")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:detail:defaultvalue")));
 			
-			WebElement varNameElm = driver.findElement(By.id("emailvarbl:content:variablename"));
+			WebElement varNameElm = driver.findElement(By.id("mailvarlst:detail:variablename"));
 			assertEquals(variableName, varNameElm.getAttribute("value"));
 			assertEquals(false, varNameElm.isEnabled());
 			
-			WebElement defaulElm = driver.findElement(By.id("emailvarbl:content:defaultvalue"));
+			WebElement defaulElm = driver.findElement(By.id("mailvarlst:detail:defaultvalue"));
 			String defaultValueAfter = defaulElm.getAttribute("value");
 			assertEquals(defaulValueBefore, defaultValueAfter);
 			if (StringUtils.endsWith(defaultValueAfter, "_updated")) {
@@ -78,11 +80,13 @@ public class EmailVariableTest extends AbstractLogin {
 			defaulElm.sendKeys(defaultValueAfter);
 			
 			// Submit changes
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Submit changes']")));
 			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
 			
 			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("span[title='" + defaultValueTitle + "']")));
 			
 			// Verify update results
 			WebElement defaultVrf = driver.findElement(By.cssSelector("span[title='" + defaultValueTitle + "']"));
@@ -133,11 +137,12 @@ public class EmailVariableTest extends AbstractLogin {
 			// Copy from selected
 			driver.findElement(By.cssSelector("input[title='Create a new row from selected']")).click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailvarbl:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:detail:variablename")));
 			
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			String testVarName = "TestVariable_" + suffix;
-			driver.findElement(By.id("emailvarbl:content:variablename")).sendKeys(testVarName);
+			driver.findElement(By.id("mailvarlst:detail:variablename")).sendKeys(testVarName);
 			
 			// Submit changes
 			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
@@ -145,10 +150,26 @@ public class EmailVariableTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
+			// wait until the last record become available
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_viewDetail']")));
 			
+			// Verify results
+			List<WebElement> viewDetailList =  driver.findElements(By.cssSelector("a[title$='_viewDetail']"));
+			WebElement viewDetailElm = null;
+			for (WebElement elm : viewDetailList) {
+				logger.info("viewDetail item: " + elm.getAttribute("title") + ", " + elm.getText());
+				if (StringUtils.equals(testVarName, elm.getText())) {
+					viewDetailElm = elm;
+					break;
+				}
+			}
+			assertNotNull(viewDetailElm);
+			String varNameTitle = viewDetailElm.getAttribute("title");
+			String varNameIdx = StringUtils.removeEnd(varNameTitle, "_viewDetail");
+
 			// Delete added record
-			driver.findElement(By.cssSelector("input[title='" + nextIdx + "_checkBox']")).click();
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + nextIdx + "_checkBox']"), true));
+			driver.findElement(By.cssSelector("input[title='" + varNameIdx + "_checkBox']")).click();
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + varNameIdx + "_checkBox']"), true));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
 			
@@ -187,25 +208,27 @@ public class EmailVariableTest extends AbstractLogin {
 			// Add a new record
 			driver.findElement(By.cssSelector("input[title='Add a new row']")).click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailvarbl:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:detail:variablename")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:detail:variableproc")));
 			
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			String testVarName = "TestVariable_" + suffix;
-			driver.findElement(By.id("emailvarbl:content:variablename")).sendKeys(testVarName);
+			driver.findElement(By.id("mailvarlst:detail:variablename")).sendKeys(testVarName);
 			
-			Select varTypeSelect = new Select(driver.findElement(By.id("emailvarbl:content:varbltype")));
+			Select varTypeSelect = new Select(driver.findElement(By.id("mailvarlst:detail:varbltype")));
 			varTypeSelect.selectByVisibleText("Customer");
 			
-			driver.findElement(By.id("emailvarbl:content:tablename")).sendKeys("subscriber_data");
+			driver.findElement(By.id("mailvarlst:detail:tablename")).sendKeys("subscriber_data");
 			
-			driver.findElement(By.id("emailvarbl:content:columnname")).sendKeys("LastName");
+			driver.findElement(By.id("mailvarlst:detail:columnname")).sendKeys("LastName");
 			
-			driver.findElement(By.id("emailvarbl:content:defaultvalue")).sendKeys("Valued Customer " + suffix);
+			driver.findElement(By.id("mailvarlst:detail:defaultvalue")).sendKeys("Valued Customer " + suffix);
 			
 			String query ="SELECT c.LastName as ResultStr FROM subscriber_data c, email_address e where e.row_id=c.EmailAddrRowId and e.row_id=?1";
-			driver.findElement(By.id("emailvarbl:content:variablequery")).sendKeys(query);
+			driver.findElement(By.id("mailvarlst:detail:variablequery")).sendKeys(query);
 			
-			driver.findElement(By.id("emailvarbl:content:variableproc")).sendKeys("jpa.service.external.SubscriberNameResolver");
+			driver.findElement(By.id("mailvarlst:detail:variableproc")).sendKeys("jpa.service.external.SubscriberNameResolver");
 			
 			// Submit changes
 			driver.findElement(By.cssSelector("input[title='Submit changes']")).click();
@@ -213,20 +236,32 @@ public class EmailVariableTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
+			// wait until the last record become available
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_viewDetail']")));
 			
 			// Verify results
-			WebElement viewDetailLink = driver.findElement(By.cssSelector("a[title='" + nextIdx + "_viewDetail']"));
-			assertEquals(testVarName, viewDetailLink.getText());
+			List<WebElement> viewDetailList =  driver.findElements(By.cssSelector("a[title$='_viewDetail']"));
+			WebElement viewDetailElm = null;
+			for (WebElement elm : viewDetailList) {
+				logger.info("viewDetail item: " + elm.getAttribute("title") + ", " + elm.getText());
+				if (StringUtils.equals(testVarName, elm.getText())) {
+					viewDetailElm = elm;
+					break;
+				}
+			}
+			assertNotNull(viewDetailElm);
+			String varNameTitle = viewDetailElm.getAttribute("title");
+			String varNameIdx = StringUtils.removeEnd(varNameTitle, "_viewDetail");
 			
-			WebElement defaultValue = driver.findElement(By.cssSelector("span[title='" + nextIdx + "_defaultValue']"));
+			WebElement defaultValue = driver.findElement(By.cssSelector("span[title='" + varNameIdx + "_defaultValue']"));
 			assertEquals("Valued Customer " + suffix, defaultValue.getText());
 			
-			WebElement beanClass = driver.findElement(By.cssSelector("span[title='" + nextIdx + "_className']"));
+			WebElement beanClass = driver.findElement(By.cssSelector("span[title='" + varNameIdx + "_className']"));
 			assertTrue(StringUtils.contains("jpa.service.external.SubscriberNameResolver", beanClass.getText()));
 			
 			// Delete added record
-			driver.findElement(By.cssSelector("input[title='" + nextIdx + "_checkBox']")).click();
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + nextIdx + "_checkBox']"), true));
+			driver.findElement(By.cssSelector("input[title='" + varNameIdx + "_checkBox']")).click();
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + varNameIdx + "_checkBox']"), true));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailvarlst:footer:gettingStartedFooter")));
 			

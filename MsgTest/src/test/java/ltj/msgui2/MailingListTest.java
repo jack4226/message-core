@@ -51,44 +51,48 @@ public class MailingListTest extends AbstractLogin {
 			viewDetailLink = driver.findElement(By.cssSelector("a[title='" + viewDetailTitle + "']"));
 			viewDetailLink.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mlstedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:detail:dispname")));
 			
-			assertEquals(listId0, driver.findElement(By.id("mlstedit:content:listid")).getAttribute("value"));
-			assertEquals(dispName0, driver.findElement(By.id("mlstedit:content:dispname")).getAttribute("value"));
+			assertEquals(listId0, driver.findElement(By.id("maillistlst:detail:listid")).getAttribute("value"));
+			assertEquals(dispName0, driver.findElement(By.id("maillistlst:detail:dispname")).getAttribute("value"));
 			
 			// Go back to the list
 			driver.findElement(By.cssSelector("input[title='Go Back']")).click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Add a new row']")));
 			
 			// Add a new record
 			WebElement copySelectedLink = driver.findElement(By.cssSelector("input[title='Add a new row']"));
 			copySelectedLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mlstedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:detail:listid")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:detail:clientid")));
 
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			
-			WebElement listIdElm = driver.findElement(By.id("mlstedit:content:listid"));
+			WebElement listIdElm = driver.findElement(By.id("maillistlst:detail:listid"));
 			String listIdNew = "TstId" + suffix;
 			listIdElm.sendKeys(listIdNew);
 
 			Actions builder = new Actions(driver);
 			
-			builder.moveToElement(driver.findElement(By.id("mlstedit:content:dispname"))).build().perform();
+			builder.moveToElement(driver.findElement(By.id("maillistlst:detail:dispname"))).build().perform();
 
-			WebElement dispNameElm = driver.findElement(By.id("mlstedit:content:dispname"));
+			WebElement dispNameElm = driver.findElement(By.id("maillistlst:detail:dispname"));
 			dispNameElm.sendKeys("Test List " + suffix);
 			
-			WebElement acctUserElm = driver.findElement(By.id("mlstedit:content:acctuser"));
+			WebElement acctUserElm = driver.findElement(By.id("maillistlst:detail:acctuser"));
 			assertEquals("", acctUserElm.getAttribute("value"));
 			acctUserElm.sendKeys("test_" + suffix);
 			
-			Select dataTypeSelect = new Select(driver.findElement(By.id("mlstedit:content:clientid")));
+			Select dataTypeSelect = new Select(driver.findElement(By.id("maillistlst:detail:clientid")));
 			assertEquals("System", dataTypeSelect.getFirstSelectedOption().getText()); 
 			
-			driver.findElement(By.id("mlstedit:content:desc")).sendKeys("Test List add new " + suffix);
-			driver.findElement(By.id("mlstedit:content:mstraddr")).sendKeys("test" + suffix + "@localhost");
+			driver.findElement(By.id("maillistlst:detail:desc")).sendKeys("Test List add new " + suffix);
+			driver.findElement(By.id("maillistlst:detail:mstraddr")).sendKeys("test" + suffix + "@localhost");
 			
 			// Submit changes
 			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit changes']"));
@@ -97,6 +101,7 @@ public class MailingListTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + listIdNew + "_checkBox']")));
 			
 			// Delete the added record
 			WebElement chkboxLink = driver.findElement(By.cssSelector("input[title='" + listIdNew + "_checkBox']"));
@@ -158,28 +163,29 @@ public class MailingListTest extends AbstractLogin {
 			WebElement copySelectedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
 			copySelectedLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mlstedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:detail:listid")));
 
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			
-			WebElement listIdElm = driver.findElement(By.id("mlstedit:content:listid"));
+			WebElement listIdElm = driver.findElement(By.id("maillistlst:detail:listid"));
 			assertEquals("", listIdElm.getAttribute("value"));
 			String listIdNew = "TstId" + suffix;
 			listIdElm.sendKeys(listIdNew);
 
 			Actions builder = new Actions(driver);
 			
-			builder.moveToElement(driver.findElement(By.id("mlstedit:content:dispname"))).build().perform();
+			builder.moveToElement(driver.findElement(By.id("maillistlst:detail:dispname"))).build().perform();
 
-			WebElement dispNameElm = driver.findElement(By.id("mlstedit:content:dispname"));
+			WebElement dispNameElm = driver.findElement(By.id("maillistlst:detail:dispname"));
 			assertTrue(StringUtils.isNotBlank(dispNameElm.getAttribute("value")));
 			dispNameElm.sendKeys("_" + suffix);
 			
-			WebElement acctUserElm = driver.findElement(By.id("mlstedit:content:acctuser"));
+			WebElement acctUserElm = driver.findElement(By.id("maillistlst:detail:acctuser"));
 			assertEquals("", acctUserElm.getAttribute("value"));
 			acctUserElm.sendKeys("test_" + suffix);
 			
-			Select dataTypeSelect = new Select(driver.findElement(By.id("mlstedit:content:clientid")));
+			Select dataTypeSelect = new Select(driver.findElement(By.id("maillistlst:detail:clientid")));
 			assertEquals("System", dataTypeSelect.getFirstSelectedOption().getText()); 
 			
 			// Submit changes
@@ -189,6 +195,7 @@ public class MailingListTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + listIdNew + "_checkBox']")));
 			
 			// Delete the added record
 			WebElement chkboxLink = driver.findElement(By.cssSelector("input[title='" + listIdNew + "_checkBox']"));
@@ -241,10 +248,12 @@ public class MailingListTest extends AbstractLogin {
 			
 			// View Subscribers page
 			String viewSbsrsTitle = viewSbsrsLink.getAttribute("title");
-			viewSbsrsLink = driver.findElement(By.cssSelector("a[title='" + viewSbsrsTitle + "']"));
-			viewSbsrsLink.click();
+			driver.findElement(By.cssSelector("a[title='" + viewSbsrsTitle + "']")).click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("input[title$='_checkBox']")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("span[title$='_emailAddr']")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("select[title$='_subscribed']")));
 			
 			// View List page
 			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
@@ -284,7 +293,7 @@ public class MailingListTest extends AbstractLogin {
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Save selected rows'")));
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + checkBoxTitle + "'"), true));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='" + checkBoxTitle + "'")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("subrlist:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("maillistlst:footer:gettingStartedFooter")));
 			
 			driver.findElement(By.cssSelector("input[title='Save selected rows'")).click();
 			
