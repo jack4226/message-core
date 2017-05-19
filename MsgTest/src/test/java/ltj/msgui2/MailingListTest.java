@@ -286,9 +286,9 @@ public class MailingListTest extends AbstractLogin {
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("select[title='" + subedTitle + "'")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("select[title='" + subedTitle + "'")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='" + checkBoxTitle + "'")));
 			
-			checkBoxLink = driver.findElement(By.cssSelector("input[title='" + checkBoxTitle + "'"));
-			checkBoxLink.click();
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='" + checkBoxTitle + "'"));
 			
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Save selected rows'")));
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + checkBoxTitle + "'"), true));

@@ -142,6 +142,8 @@ public class SiteProfileTest extends AbstractLogin {
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sitename:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sitename:detail:senderid")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sitename:detail:submit")));
 			
 			// Edit Detail Page
 			Random r = new Random();
