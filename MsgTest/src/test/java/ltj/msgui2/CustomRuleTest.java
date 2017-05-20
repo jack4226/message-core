@@ -108,7 +108,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
@@ -186,7 +186,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
@@ -308,7 +308,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
