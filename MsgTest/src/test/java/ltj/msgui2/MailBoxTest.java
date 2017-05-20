@@ -49,7 +49,9 @@ public class MailBoxTest extends AbstractLogin {
 			// View/Edit Detail Page
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:statusid")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:desc")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:ssl")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:submit")));
 			
 			WebElement descEditElm = driver.findElement(By.id("mailbox:detail:desc"));
 			descEditElm.clear();
@@ -208,6 +210,8 @@ public class MailBoxTest extends AbstractLogin {
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:hostname")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("mailbox:detail:submit")));
 			
 			// Edit Detail Page
 			Random r = new Random();
