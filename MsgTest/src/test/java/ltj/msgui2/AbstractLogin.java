@@ -35,9 +35,18 @@ public abstract class AbstractLogin extends TestCase {
 
 	@BeforeClass
 	public static void createAndStartService() throws IOException {
-		service = new ChromeDriverService.Builder().usingDriverExecutable(new File(OSUtil.getChromeDriverPath()))
-				.usingAnyFreePort().build();
-		service.start();
+		String driverPath = OSUtil.getChromeDriverPath();
+		File driverFile = new File(driverPath);
+		if (!driverFile.exists()) {
+			fail("Failed to locate Chrome driver: " + driverPath);
+		}
+		try {
+			service = new ChromeDriverService.Builder().usingDriverExecutable(driverFile).usingAnyFreePort().build();
+			service.start();
+		}
+		catch (Exception e) {
+			logger.error("Exception caught", e);
+		}
 	}
 
 	@AfterClass

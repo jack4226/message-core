@@ -51,7 +51,7 @@ public class OSUtil {
 			chrome_file = "/chromedriver";
 		}
 		else if (OSUtil.isUnix()) {
-			// TODO
+			chrome_file = "/chromedriver.nix";
 		}
 		return (selenium_dir + chrome_file);
 	}
@@ -64,7 +64,7 @@ public class OSUtil {
 			gecko_file = "/geckodriver";
 		}
 		else if (OSUtil.isUnix()) {
-			// TODO
+			gecko_file = "/geckodriver.nix";
 		}
 		return (selenium_dir + gecko_file);
 	}
@@ -73,6 +73,7 @@ public class OSUtil {
 		String user_dir = System.getProperty("user.dir");
 		logger.info("user.dir = " + user_dir);
 		String selenium_dir = StringUtils.replaceAll(user_dir, "\\\\", "/") + "/src/main/resources/selenium";
+		logger.info("selenium dir = " + selenium_dir);
 		return selenium_dir;
 	}
 	
