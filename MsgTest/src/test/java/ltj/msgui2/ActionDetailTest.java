@@ -29,6 +29,7 @@ public class ActionDetailTest extends AbstractLogin {
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("input[title$='_checkBox']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -54,38 +55,43 @@ public class ActionDetailTest extends AbstractLogin {
 			viewDetailLink.click();
 
 			logger.info("View Detail page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtledt:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:detail:description")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:detail:beanid")));
 			
-			WebElement descElm = driver.findElement(By.id("actdtledt:content:description"));
+			WebElement descElm = driver.findElement(By.id("actdtllst:detail:description"));
 			assertEquals(desc0, descElm.getAttribute("value"));
 			
-			WebElement beanElm = driver.findElement(By.id("actdtledt:content:beanid"));
+			WebElement beanElm = driver.findElement(By.id("actdtllst:detail:beanid"));
 			assertEquals(bean0, beanElm.getAttribute("value"));
 			
 			WebElement goBackLink = driver.findElement(By.cssSelector("input[title='Go Back']"));
 			goBackLink.click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Add a new row']")));
 			
 			// Add a new record
 			WebElement addNewLink = driver.findElement(By.cssSelector("input[title='Add a new row']"));
 			addNewLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtledt:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:detail:actionid")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:detail:description")));
 
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			
-			WebElement actionIdElm = driver.findElement(By.id("actdtledt:content:actionid"));
+			WebElement actionIdElm = driver.findElement(By.id("actdtllst:detail:actionid"));
 			actionIdElm.sendKeys("TestId_" + suffix);
 
 			Actions builder = new Actions(driver);
 			
-			builder.moveToElement(driver.findElement(By.id("actdtledt:content:description"))).build().perform();
+			builder.moveToElement(driver.findElement(By.id("actdtllst:detail:description"))).build().perform();
 
-			driver.findElement(By.id("actdtledt:content:description")).sendKeys("Test Action " + suffix);
-			driver.findElement(By.id("actdtledt:content:beanid")).sendKeys(bean0);
+			driver.findElement(By.id("actdtllst:detail:description")).sendKeys("Test Action " + suffix);
+			driver.findElement(By.id("actdtllst:detail:beanid")).sendKeys(bean0);
 			
-			Select dataTypeSelect = new Select(driver.findElement(By.id("actdtledt:content:datatype")));
+			Select dataTypeSelect = new Select(driver.findElement(By.id("actdtllst:detail:datatype")));
 			dataTypeSelect.selectByValue("EMAIL_ADDRESS"); 
 			
 			// Submit changes
@@ -95,6 +101,7 @@ public class ActionDetailTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + nextIdx + "_checkBox']")));
 			
 			// Delete the added record
 			WebElement chkboxLink = driver.findElement(By.cssSelector("input[title='" + nextIdx + "_checkBox']"));
@@ -131,6 +138,7 @@ public class ActionDetailTest extends AbstractLogin {
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("input[title$='_checkBox']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -155,26 +163,28 @@ public class ActionDetailTest extends AbstractLogin {
 			WebElement copySelectedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
 			copySelectedLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtledt:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:detail:description")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:detail:beanid")));
 
 			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
 			
-			WebElement actionIdElm = driver.findElement(By.id("actdtledt:content:actionid"));
+			WebElement actionIdElm = driver.findElement(By.id("actdtllst:detail:actionid"));
 			assertEquals("", actionIdElm.getAttribute("value"));
 			actionIdElm.sendKeys("TestActionId_" + suffix);
 
 			Actions builder = new Actions(driver);
 			
-			builder.moveToElement(driver.findElement(By.id("actdtledt:content:description"))).build().perform();
+			builder.moveToElement(driver.findElement(By.id("actdtllst:detail:description"))).build().perform();
 
-			WebElement descElm = driver.findElement(By.id("actdtledt:content:description"));
+			WebElement descElm = driver.findElement(By.id("actdtllst:detail:description"));
 			assertTrue(StringUtils.isNotBlank(descElm.getAttribute("value")));
 			descElm.sendKeys("_" + suffix);
 			
-			WebElement beanElm = driver.findElement(By.id("actdtledt:content:beanid"));
+			WebElement beanElm = driver.findElement(By.id("actdtllst:detail:beanid"));
 			assertEquals(bean_n, beanElm.getAttribute("value"));
 			
-			Select dataTypeSelect = new Select(driver.findElement(By.id("actdtledt:content:datatype")));
+			Select dataTypeSelect = new Select(driver.findElement(By.id("actdtllst:detail:datatype")));
 			dataTypeSelect.selectByValue("EMAIL_ADDRESS"); 
 			
 			// Submit changes
@@ -184,6 +194,7 @@ public class ActionDetailTest extends AbstractLogin {
 			AlertUtil.handleAlert(driver);
 
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + nextIdx + "_checkBox']")));
 			
 			// Delete the added record
 			WebElement chkboxLink = driver.findElement(By.cssSelector("input[title='" + nextIdx + "_checkBox']"));
