@@ -23,9 +23,10 @@ public class BuiltinRuleTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='Hard Bounce_viewActions']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -43,19 +44,20 @@ public class BuiltinRuleTest extends AbstractLogin {
 			viewActionsLink.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionbiedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:detail:rulecategory")));
 			
 			// View/Edit Detail Page
-			WebElement ruleNameEdt = driver.findElement(By.id("actionbiedit:content:rulename"));
+			WebElement ruleNameEdt = driver.findElement(By.id("builtinlst:detail:rulename"));
 			assertEquals(ruleNameBefore, ruleNameEdt.getText());
 			
-			WebElement ruleTypeEdt = driver.findElement(By.id("actionbiedit:content:ruletype"));
+			WebElement ruleTypeEdt = driver.findElement(By.id("builtinlst:detail:ruletype"));
 			assertEquals(ruleTypeBefore, ruleTypeEdt.getText());
 			
-			WebElement categoryEdt = driver.findElement(By.id("actionbiedit:content:rulecategory"));
+			WebElement categoryEdt = driver.findElement(By.id("builtinlst:detail:rulecategory"));
 			assertEquals(categoryBefore, categoryEdt.getText());
 			
-			WebElement seqEdt = driver.findElement(By.id("actionbiedit:content:builtin:0:actionseq"));
+			WebElement seqEdt = driver.findElement(By.id("builtinlst:detail:builtin:0:actionseq"));
 			assertEquals("1", seqEdt.getAttribute("value"));
 			
 			List<WebElement> actSeqList = driver.findElements(By.cssSelector("input[id$=':actionseq']"));
@@ -85,7 +87,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 				assertEquals("A", selectedStatId.getAttribute("value"));
 			}
 			
-			Select selectValues = new Select(driver.findElement(By.id("actionbiedit:content:builtin:1:datatypevalues1")));
+			Select selectValues = new Select(driver.findElement(By.id("builtinlst:detail:builtin:1:datatypevalues1")));
 			List<WebElement> selectedValues = selectValues.getAllSelectedOptions();
 			assertFalse(selectedValues.isEmpty());
 			assertEquals("$FinalRcpt", selectedValues.get(0).getAttribute("value"));
@@ -95,8 +97,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			// Go back to list
 			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
 
-			AlertUtil.waitLongIgnoreTimeout(driver, By.id("footer:gettingStartedFooter"));
-			
+			AlertUtil.waitLongIgnoreTimeout(driver, By.id("builtinlst:footer:gettingStartedFooter"));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);
@@ -112,9 +113,10 @@ public class BuiltinRuleTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='Mail Block_viewActions']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -123,7 +125,8 @@ public class BuiltinRuleTest extends AbstractLogin {
 			viewActionsLink.click();
 			
 			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionbiedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("select[id$=':actionid']")));
 			
 			// View/Edit Detail Page
 			List<WebElement> actSeqList = driver.findElements(By.cssSelector("input[id$=':actionseq']"));
@@ -137,7 +140,7 @@ public class BuiltinRuleTest extends AbstractLogin {
 			WebElement addNewLink = driver.findElement(By.cssSelector("input[title='Add a new row']"));
 			addNewLink.click();
 			
-			String prefix = "actionbiedit:content:builtin:" + listSize + ":";
+			String prefix = "builtinlst:detail:builtin:" + listSize + ":";
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "statusid")));
 			
@@ -156,30 +159,30 @@ public class BuiltinRuleTest extends AbstractLogin {
 			
 			AlertUtil.handleAlert(driver);
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionbiedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "datatypevalues1")));
 			
 			// Delete added record
-			// Tick check box of the record
+			// 1) Tick check box of the record
 			AlertUtil.clickCommandLink(driver, By.id(prefix + "checkbox"));
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionbiedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("builtinlst:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id(prefix + "checkbox"), true));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
 			
-			// Delete the record
+			// 2) Delete the record
 			WebElement delete = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			delete.click();
 
 			AlertUtil.handleAlert(driver);
 
-			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("select[id='" + prefix + "']"))));
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("select[id^='" + prefix + "']"))));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Go Back']")));
 			
 			// Go back to list
 			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
 
-			AlertUtil.waitLongIgnoreTimeout(driver, By.id("footer:gettingStartedFooter"));
+			AlertUtil.waitLongIgnoreTimeout(driver, By.id("builtinlst:footer:gettingStartedFooter"));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

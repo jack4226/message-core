@@ -97,114 +97,78 @@ public class LoginFlowTest extends TestCase {
 	}
 	
 	@Test
-	public void testAddNewRecord() {
+	public void testListAndViewAction() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
-		String listTitle = "Setup Email Templates";
+		String listTitle = "Setup Custom Bounce Rules and Actions";
 		try {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
 			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='XHeader_SpamScore_viewActions']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
-			// List
-			List<WebElement> checkBoxList = driver.findElements(By.cssSelector("input[title$='_checkBox']"));
-			assertFalse(checkBoxList.isEmpty());
-			int nextIdx = checkBoxList.size();
+			// Retrieve field values from the list
+			WebElement ruleNameElm = driver.findElement(By.cssSelector("a[title='XHeader_SpamScore_viewDetail']"));
+			String ruleNameBefore = ruleNameElm.getText();
 			
-			Actions builder = new Actions(driver);
+			WebElement ruleTypeElm = driver.findElement(By.cssSelector("span[title='XHeader_SpamScore_ruleType']"));
+			String ruleTypeBefore = ruleTypeElm.getText();
 			
-			// Add a new record
-			driver.findElement(By.cssSelector("input[title='Add a new row']")).click();
+			WebElement categoryElm = driver.findElement(By.cssSelector("span[title='XHeader_SpamScore_category']"));
+			String categoryBefore = categoryElm.getText();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:templateid")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:bodytext")));
+			WebElement viewActionsLink = driver.findElement(By.cssSelector("a[title='XHeader_SpamScore_viewActions']"));
+			viewActionsLink.click();
 			
-			String suffix = StringUtils.leftPad(new Random().nextInt(1000) + "", 3, '0');
-			String testTmpltId = "TestTemplate_" + suffix;
+			logger.info("View Actions page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:action:rulecategory")));
 			
-			driver.findElement(By.id("emailtmplt:detail:templateid")).sendKeys(testTmpltId);
+			// View/Edit Actions Page
+			WebElement ruleNameEdt = driver.findElement(By.id("custrulelst:action:rulename"));
+			assertEquals(ruleNameBefore, ruleNameEdt.getText());
 			
-			Select listIdSelect = new Select(driver.findElement(By.id("emailtmplt:detail:listid")));
-			listIdSelect.selectByValue("SMPLLST2");
+			WebElement ruleTypeEdt = driver.findElement(By.id("custrulelst:action:ruletype"));
+			assertEquals(ruleTypeBefore, ruleTypeEdt.getText());
 			
-			Select listTypeSelect = new Select(driver.findElement(By.id("emailtmplt:detail:listtype")));
-			listTypeSelect.selectByValue("Personalized");
-			// above statement will fire an ajax event
+			WebElement categoryEdt = driver.findElement(By.id("custrulelst:action:rulecategory"));
+			assertEquals(categoryBefore, categoryEdt.getText());
 			
-			wait.until(ExpectedConditions.textToBePresentInElementValue(By.id("emailtmplt:detail:listtype"), "Personalized"));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			WebElement seqEdt = driver.findElement(By.id("custrulelst:action:jsftable:0:actionseq"));
+			assertEquals("1", seqEdt.getAttribute("value"));
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:subject")));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("emailtmplt:detail:subject")));
+			List<WebElement> actSeqList = driver.findElements(By.cssSelector("input[id$=':actionseq']"));
+			assertFalse(actSeqList.isEmpty());
 			
-			driver.findElement(By.id("emailtmplt:detail:subject")).sendKeys("Test Subject " + suffix);
-			
-			wait.until(ExpectedConditions.elementToBeClickable(By.id("emailtmplt:detail:emailid")));
-			builder.moveToElement(driver.findElement(By.id("emailtmplt:detail:emailid"))).build().perform();
-			
-			Select emailIdSelect = new Select(driver.findElement(By.id("emailtmplt:detail:emailid")));
-			emailIdSelect.selectByVisibleText("Y");
-			
-			Select varNameSelect = new Select(driver.findElement(By.id("emailtmplt:detail:vname")));
-			varNameSelect.selectByValue("SubscriberAddressId");
-			// XXX StaleElementReferenceException: stale element reference: element is not attached to the page document
-			
-			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("insert_variable")));
-			//wait.until(ExpectedConditions.elementToBeClickable(By.id("insert_variable")));
-			//driver.findElement(By.id("insert_variable")).click();
-			// XXX StaleElementReferenceException: stale element reference: element is not attached to the page document
-			
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:bodytext")));
-			
-			
-			builder.moveToElement(driver.findElement(By.id("emailtmplt:detail:bodytext"))).build().perform();
-			
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:detail:bodytext")));
-			//driver.findElement(By.id("emailtmplt:detail:bodytext")).sendKeys("Test message body " + suffix);
-			// XXX ElementNotVisibleException: element not visible
-			
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Submit changes']")));
-			
-			// Submit changes
-			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Submit changes']"));
-			
-			AlertUtil.handleAlert(driver);
-
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
-			// wait until the last record become available
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_viewDetail']")));
-			
-			// Verify update results
-			List<WebElement> viewDetailList =  driver.findElements(By.cssSelector("a[title$='_viewDetail']"));
-			WebElement viewDetailElm = null;
-			for (WebElement elm : viewDetailList) {
-				logger.info("viewDetail item: " + elm.getAttribute("title") + ", " + elm.getText());
-				if (StringUtils.equals(testTmpltId, elm.getText())) {
-					viewDetailElm = elm;
-					break;
+			List<WebElement> actIdList = driver.findElements(By.cssSelector("select[id$=':actionid']"));
+			assertEquals(actSeqList.size(), actIdList.size());
+			for (int i = 0; i < actIdList.size(); i++) {
+				Select selectActId = new Select(actIdList.get(i));
+				WebElement selectedActId = selectActId.getFirstSelectedOption();
+				if (i == 0) {
+					assertEquals("SAVE", selectedActId.getAttribute("value"));
+				}
+				else if (i == 1) {
+					assertEquals("CLOSE", selectedActId.getAttribute("value"));
 				}
 			}
-			assertNotNull(viewDetailElm);
-			String tmpltTitle = viewDetailElm.getAttribute("title");
-			String tmpltIdx = StringUtils.removeEnd(tmpltTitle, "_viewDetail");
 			
-			// Delete added record
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='" + tmpltIdx + "_checkBox']")));
-			driver.findElement(By.cssSelector("input[title='" + tmpltIdx + "_checkBox']")).click();
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + tmpltIdx + "_checkBox']"), true));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			List<WebElement> statIdList = driver.findElements(By.cssSelector("select[id$=':statusid']"));
+			assertEquals(actSeqList.size(), statIdList.size());
+			for (WebElement elm : statIdList) {
+				Select selectStatId = new Select(elm);
+				WebElement selectedStatId = selectStatId.getFirstSelectedOption();
+				assertEquals("A", selectedStatId.getAttribute("value"));
+			}
 			
-			driver.findElement(By.cssSelector("input[title='Delete selected rows']")).click();
-			
-			AlertUtil.handleAlert(driver);
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("emailtmplt:footer:gettingStartedFooter")));
+			// Go back to list
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
+
+			AlertUtil.waitLongIgnoreTimeout(driver, By.id("custrulelst:footer:gettingStartedFooter"));
 		}
 		catch (Exception e) {
 			logger.error("Exception caught", e);

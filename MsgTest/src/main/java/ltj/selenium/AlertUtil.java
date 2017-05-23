@@ -20,7 +20,7 @@ public class AlertUtil {
 			logger.info("Accepted the alert successfully.");
 		}
 		catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-			logger.error(e.getMessage());
+			logger.error("TimeoutException caught: " + e.getMessage());
 		}
 	}
 
@@ -35,7 +35,7 @@ public class AlertUtil {
 			logger.info("Accepted the alert successfully.");
 		}
 		catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
-			logger.error(e.getMessage());
+			logger.error("TimeoutException caught: " + e.getMessage());
 		}
 	}
 

@@ -19,88 +19,6 @@ public class CustomRuleTest extends AbstractLogin {
 	static final Logger logger = Logger.getLogger(CustomRuleTest.class);
 
 	@Test
-	public void testAddNewAction() {
-		logger.info("Current URL: " + driver.getCurrentUrl());
-		String listTitle = "Setup Custom Bounce Rules and Actions";
-		try {
-			WebElement link = driver.findElement(By.linkText(listTitle));
-			link.click();
-			
-			WebDriverWait wait = new WebDriverWait(driver, 10);
-			wait.until(ExpectedConditions.titleIs(listTitle));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
-			
-			logger.info("Switched to URL: " + driver.getCurrentUrl());
-			
-			// Locate view/edit detail link
-			WebElement viewActionsLink = driver.findElement(By.cssSelector("a[title='XHeader_SpamScore_viewActions']"));
-			viewActionsLink.click();
-			
-			logger.info("Edit page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
-			
-			// View/Edit Detail Page
-			List<WebElement> actSeqList = driver.findElements(By.cssSelector("input[id$=':actionseq']"));
-			assertFalse(actSeqList.isEmpty());
-			int listSize = actSeqList.size();
-			
-			List<WebElement> actIdList = driver.findElements(By.cssSelector("select[id$=':actionid']"));
-			assertEquals(actSeqList.size(), actIdList.size());
-
-			// Click on Add New button
-			WebElement addNewLink = driver.findElement(By.cssSelector("input[title='Add a new row']"));
-			addNewLink.click();
-			
-			String prefix = "actionedit:content:jsftable:" + listSize + ":";
-			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "statusid")));
-			
-			// make changes to the new record
-			Select selectActId = new Select(driver.findElement(By.id(prefix + "actionid")));
-			selectActId.selectByValue("BOUNCE_UP");
-			
-			Select selectValues = new Select(driver.findElement(By.id(prefix + "datatypevalues1")));
-			selectValues.selectByValue("$OrigRcpt");
-			selectValues.selectByValue("$FinalRcpt");
-			assertEquals(2, selectValues.getAllSelectedOptions().size());
-			
-			// Submit the changes
-			WebElement submit = driver.findElement(By.cssSelector("input[title='Submit changes']"));
-			submit.click();
-			
-			AlertUtil.handleAlert(driver);
-
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "datatypevalues1")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "checkbox")));
-			
-			// Delete added record
-			// Tick check box of the record
-			AlertUtil.clickCommandLink(driver, By.id(prefix + "checkbox"));
-			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id(prefix + "checkbox"), true));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(prefix + "checkbox")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
-
-			// Delete the record
-			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Delete selected rows']"));
-
-			AlertUtil.handleAlert(driver);
-
-			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("select[id='" + prefix + "']"))));
-			
-			// Go back to list
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
-			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
-			AlertUtil.waitLongIgnoreTimeout(driver, By.id("custrulelst:footer:gettingStartedFooter"));
-		}
-		catch (Exception e) {
-			logger.error("Exception caught", e);
-			fail();
-		}
-	}
-
-	@Test
 	public void testListAndViewAction() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		String listTitle = "Setup Custom Bounce Rules and Actions";
@@ -111,6 +29,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='XHeader_SpamScore_viewActions']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -124,23 +43,24 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement categoryElm = driver.findElement(By.cssSelector("span[title='XHeader_SpamScore_category']"));
 			String categoryBefore = categoryElm.getText();
 			
+			// View/Edit Actions Page
 			WebElement viewActionsLink = driver.findElement(By.cssSelector("a[title='XHeader_SpamScore_viewActions']"));
 			viewActionsLink.click();
 			
 			logger.info("View Actions page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actionedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:action:rulecategory")));
 			
-			// View/Edit Actions Page
-			WebElement ruleNameEdt = driver.findElement(By.id("actionedit:content:rulename"));
+			WebElement ruleNameEdt = driver.findElement(By.id("custrulelst:action:rulename"));
 			assertEquals(ruleNameBefore, ruleNameEdt.getText());
 			
-			WebElement ruleTypeEdt = driver.findElement(By.id("actionedit:content:ruletype"));
+			WebElement ruleTypeEdt = driver.findElement(By.id("custrulelst:action:ruletype"));
 			assertEquals(ruleTypeBefore, ruleTypeEdt.getText());
 			
-			WebElement categoryEdt = driver.findElement(By.id("actionedit:content:rulecategory"));
+			WebElement categoryEdt = driver.findElement(By.id("custrulelst:action:rulecategory"));
 			assertEquals(categoryBefore, categoryEdt.getText());
 			
-			WebElement seqEdt = driver.findElement(By.id("actionedit:content:jsftable:0:actionseq"));
+			WebElement seqEdt = driver.findElement(By.id("custrulelst:action:jsftable:0:actionseq"));
 			assertEquals("1", seqEdt.getAttribute("value"));
 			
 			List<WebElement> actSeqList = driver.findElements(By.cssSelector("input[id$=':actionseq']"));
@@ -179,6 +99,93 @@ public class CustomRuleTest extends AbstractLogin {
 	}
 
 	@Test
+	public void testAddNewAction() {
+		logger.info("Current URL: " + driver.getCurrentUrl());
+		String listTitle = "Setup Custom Bounce Rules and Actions";
+		try {
+			WebElement link = driver.findElement(By.linkText(listTitle));
+			link.click();
+			
+			WebDriverWait wait = new WebDriverWait(driver, 10);
+			wait.until(ExpectedConditions.titleIs(listTitle));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='XHeader_SpamScore_viewActions']")));
+			
+			logger.info("Switched to URL: " + driver.getCurrentUrl());
+			
+			// Locate view/edit detail link
+			WebElement viewActionsLink = driver.findElement(By.cssSelector("a[title='XHeader_SpamScore_viewActions']"));
+			viewActionsLink.click();
+			
+			logger.info("Edit page URL: " + driver.getCurrentUrl());
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("select[id$=':actionid']")));
+			
+			// View/Edit Detail Page
+			List<WebElement> actSeqList = driver.findElements(By.cssSelector("input[id$=':actionseq']"));
+			assertFalse(actSeqList.isEmpty());
+			int listSize = actSeqList.size();
+			
+			List<WebElement> actIdList = driver.findElements(By.cssSelector("select[id$=':actionid']"));
+			assertEquals(actSeqList.size(), actIdList.size());
+
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Add a new row']")));
+			// Click on Add New button
+			WebElement addNewLink = driver.findElement(By.cssSelector("input[title='Add a new row']"));
+			addNewLink.click();
+			
+			String prefix = "custrulelst:action:jsftable:" + listSize + ":";
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "statusid")));
+			
+			// make changes to the new record
+			Select selectActId = new Select(driver.findElement(By.id(prefix + "actionid")));
+			selectActId.selectByValue("BOUNCE_UP");
+			
+			Select selectValues = new Select(driver.findElement(By.id(prefix + "datatypevalues1")));
+			selectValues.selectByValue("$OrigRcpt");
+			selectValues.selectByValue("$FinalRcpt");
+			assertEquals(2, selectValues.getAllSelectedOptions().size());
+			
+			// Submit the changes
+			WebElement submit = driver.findElement(By.cssSelector("input[title='Submit changes']"));
+			submit.click();
+			
+			AlertUtil.handleAlert(driver);
+
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "datatypevalues1")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id(prefix + "checkbox")));
+			
+			// Delete added record
+			// 1) Tick check box of the record
+			AlertUtil.clickCommandLink(driver, By.id(prefix + "checkbox"));
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(prefix + "checkbox")));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id(prefix + "checkbox"), true));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
+
+			// 2) Delete the record
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Delete selected rows']"));
+
+			AlertUtil.handleAlert(driver);
+
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("select[id='" + prefix + "']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Go Back']")));
+			// Go back to list
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Go Back']"));
+			AlertUtil.waitLongIgnoreTimeout(driver, By.id("custrulelst:footer:gettingStartedFooter"));
+		}
+		catch (Exception e) {
+			logger.error("Exception caught", e);
+			fail();
+		}
+	}
+
+	@Test
 	public void testListAndViewDetails() {
 		logger.info("Current URL: " + driver.getCurrentUrl());
 		String listTitle = "Setup Custom Bounce Rules and Actions";
@@ -189,6 +196,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -197,9 +205,10 @@ public class CustomRuleTest extends AbstractLogin {
 			viewDetailLink.click();
 
 			logger.info("View Detail page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:rulecategory")));
 			
-			WebElement ruleDescEdt = driver.findElement(By.id("ruleedit:content:desc"));
+			WebElement ruleDescEdt = driver.findElement(By.id("custrulelst:detail:desc"));
 			String desc = ruleDescEdt.getAttribute("value");
 			if (StringUtils.endsWith(desc, "_updated")) {
 				desc = StringUtils.removeEnd(desc, "_updated");
@@ -209,15 +218,15 @@ public class CustomRuleTest extends AbstractLogin {
 			}
 			ruleDescEdt.sendKeys(desc);
 			
-			Select selectCategory = new Select(driver.findElement(By.id("ruleedit:content:rulecategory")));
+			Select selectCategory = new Select(driver.findElement(By.id("custrulelst:detail:rulecategory")));
 			WebElement selectedCtgy = selectCategory.getFirstSelectedOption();
 			assertEquals("P", selectedCtgy.getAttribute("value"));
 			
-			Select selectSubrule = new Select(driver.findElement(By.id("ruleedit:content:subrule")));
+			Select selectSubrule = new Select(driver.findElement(By.id("custrulelst:detail:subrule")));
 			WebElement selectedSubrule = selectSubrule.getFirstSelectedOption();
 			assertEquals("false", selectedSubrule.getAttribute("value"));
 			
-			List<WebElement> ruleTypeList = driver.findElements(By.cssSelector("input[id^='ruleedit:content:ruletype:']"));
+			List<WebElement> ruleTypeList = driver.findElements(By.cssSelector("input[id^='custrulelst:detail:ruletype:']"));
 			assertEquals(4, ruleTypeList.size());
 			WebElement ruleTypeElm2 = ruleTypeList.get(1);
 			assertEquals(true, ruleTypeElm2.isSelected());
@@ -237,22 +246,22 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement copySelecedLink = driver.findElement(By.cssSelector("input[title='Create a new row from selected']"));
 			copySelecedLink.click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
-			Select selectDataName = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
+			Select selectDataName = new Select(driver.findElement(By.id("custrulelst:detail:data_table:" + nextIdx + ":dataname")));
 			selectDataName.selectByValue("From");
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":dataname")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.id("custrulelst:detail:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":editelement")));
 			
-			Select selectCriteria = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			Select selectCriteria = new Select(driver.findElement(By.id("custrulelst:detail:data_table:" + nextIdx + ":criteria")));
 			selectCriteria.selectByValue("contains");
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":casesensitive")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":casesensitive")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":editelement")));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='Submit Changes']")));
 			
 			// Submit changes
@@ -261,37 +270,38 @@ public class CustomRuleTest extends AbstractLogin {
 			
 			AlertUtil.handleAlert(driver);
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
-			// Refresh from database
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Refresh from database']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Refresh from database']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
 			
+			// Refresh from database
 			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Refresh from database']"));
 			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), false));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox"), false));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 			// Delete the added record
-			AlertUtil.clickCommandLink(driver, By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
+			AlertUtil.clickCommandLink(driver, By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox"));
 			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox"), true));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Create a new row from selected']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Delete selected rows']"));
 			
 			AlertUtil.handleAlert(driver);
 			
 			// Refresh from database
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
-			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Refresh from database']"));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Refresh from database']")));
 			
-			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Refresh from database']"));
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='custrulelst:detail:data_table:" + nextIdx + ":']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 		}
 		catch (Exception e) {
@@ -311,6 +321,7 @@ public class CustomRuleTest extends AbstractLogin {
 			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='HardBouce_WatchedMailbox_viewDetail']")));
 			
 			logger.info("Switched to URL: " + driver.getCurrentUrl());
 			
@@ -319,7 +330,8 @@ public class CustomRuleTest extends AbstractLogin {
 			viewDetailLink.click();
 
 			logger.info("View Detail page URL: " + driver.getCurrentUrl());
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("input[id$=':checkbox']")));
 			
 			List<WebElement> chkboxList = driver.findElements(By.cssSelector("input[id$=':checkbox']"));
 			assertTrue(chkboxList.size() >= 2);
@@ -329,17 +341,17 @@ public class CustomRuleTest extends AbstractLogin {
 			WebElement addNewLink = driver.findElement(By.cssSelector("input[title='Add a new row']"));
 			addNewLink.click();
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
-			Select selectDataName = new Select(driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":dataname")));
+			Select selectDataName = new Select(driver.findElement(By.id("custrulelst:detail:data_table:" + nextIdx + ":dataname")));
 			selectDataName.selectByValue("X-Header"); // triggers ajax event
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":headername")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":editelement")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":headername")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":editelement")));
 			
-			WebElement hdrNameElm = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":headername"));
+			WebElement hdrNameElm = driver.findElement(By.id("custrulelst:detail:data_table:" + nextIdx + ":headername"));
 			
 			Actions builder = new Actions(driver);
 			builder.moveToElement(hdrNameElm).build().perform();
@@ -349,7 +361,7 @@ public class CustomRuleTest extends AbstractLogin {
 			// to "blur" the header name field and trigger the ajax event
 			driver.findElement(By.cssSelector("input[title='" + nextIdx + "_input_targetText']")).click();
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":criteria")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":criteria")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("select[title='" + nextIdx + "_criteria']")));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='" + nextIdx + "_input_targetText']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_editElement']")));
@@ -366,7 +378,7 @@ public class CustomRuleTest extends AbstractLogin {
 			assertTrue(optionValues.contains("contains"));
 			selectCriteria.selectByValue("contains"); // triggers ajax event
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":headername")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":headername")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("select[title='" + nextIdx + "_criteria']")));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[title='" + nextIdx + "_input_targetText']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[title='" + nextIdx + "_editElement']")));
@@ -395,59 +407,61 @@ public class CustomRuleTest extends AbstractLogin {
 			
 			AlertUtil.handleAlert(driver);
 
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='custrulelst:detail:data_table:" + nextIdx + ":checkbox']")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='custrulelst:detail:data_table:" + nextIdx + ":checkbox']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 			// Enter edit rule element
-			AlertUtil.clickCommandLink(driver, By.id("ruleedit:content:data_table:" + nextIdx + ":editelement"));
+			AlertUtil.clickCommandLink(driver, By.id("custrulelst:detail:data_table:" + nextIdx + ":editelement"));
 			
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("elementedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:element:rulename")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:element:delimiter")));
 			
-			WebElement ruleNameElm = driver.findElement(By.id("elementedit:content:rulename"));
+			WebElement ruleNameElm = driver.findElement(By.id("custrulelst:element:rulename"));
 			assertEquals("HardBouce_WatchedMailbox", ruleNameElm.getAttribute("value"));
 			
-			Select selectDataNameElm = new Select(driver.findElement(By.id("elementedit:content:dataname")));
+			Select selectDataNameElm = new Select(driver.findElement(By.id("custrulelst:element:dataname")));
 			assertEquals("X-Header", selectDataNameElm.getFirstSelectedOption().getAttribute("value"));
 			
-			Select selectCriteriaElm = new Select(driver.findElement(By.id("elementedit:content:criteria")));
+			Select selectCriteriaElm = new Select(driver.findElement(By.id("custrulelst:element:criteria")));
 			assertNotNull(selectCriteriaElm.getFirstSelectedOption().getText());
 			assertEquals("contains", selectCriteriaElm.getFirstSelectedOption().getAttribute("value"));
 			
-			WebElement targetTextElm = driver.findElement(By.id("elementedit:content:targettext1"));
+			WebElement targetTextElm = driver.findElement(By.id("custrulelst:element:targettext1"));
 			assertEquals("Test add new element", targetTextElm.getAttribute("value"));
 			
-			WebElement exclusionsElm = driver.findElement(By.id("elementedit:content:exclusions"));
+			WebElement exclusionsElm = driver.findElement(By.id("custrulelst:element:exclusions"));
 			exclusionsElm.click();
 			exclusionsElm.sendKeys("test exclusions");
 			
-			driver.findElement(By.id("elementedit:content:delimiter")).sendKeys(",");
+			driver.findElement(By.id("custrulelst:element:delimiter")).sendKeys(",");
 			
 			// Submit rule element changes
 			WebElement doneEditLink = driver.findElement(By.cssSelector("input[title='Done Edit']"));
 			doneEditLink.click();
 			
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			//wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='ruleedit:content:data_table:" + nextIdx + ":checkbox']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.elementToBeClickable(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox")));
 			
 			// Delete the added record
-			WebElement chkboxLink = driver.findElement(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"));
+			WebElement chkboxLink = driver.findElement(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox"));
 			chkboxLink.click();
 			
-			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox"), true));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ruleedit:content:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox"), true));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Delete selected rows']")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[title='Delete selected rows']")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 			WebElement deleteLink = driver.findElement(By.cssSelector("input[title='Delete selected rows']"));
 			deleteLink.click();
 			
 			AlertUtil.handleAlert(driver);
 			
-			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='ruleedit:content:data_table:" + nextIdx + ":']"))));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("ruleedit:footer:gettingStartedFooter")));
+			wait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("input[id^='custrulelst:detail:data_table:" + nextIdx + ":']"))));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 		}
 		catch (Exception e) {
