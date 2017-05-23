@@ -247,6 +247,7 @@ public class CustomRuleTest extends AbstractLogin {
 			copySelecedLink.click();
 			
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":dataname")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 			Select selectDataName = new Select(driver.findElement(By.id("custrulelst:detail:data_table:" + nextIdx + ":dataname")));
@@ -256,6 +257,8 @@ public class CustomRuleTest extends AbstractLogin {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":criteria")));
 			wait.until(ExpectedConditions.elementToBeClickable(By.id("custrulelst:detail:data_table:" + nextIdx + ":criteria")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":editelement")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Submit Changes']")));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			
 			Select selectCriteria = new Select(driver.findElement(By.id("custrulelst:detail:data_table:" + nextIdx + ":criteria")));
 			selectCriteria.selectByValue("contains");
