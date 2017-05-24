@@ -281,6 +281,7 @@ public class CustomRuleTest extends AbstractLogin {
 			// Refresh from database
 			AlertUtil.clickCommandLink(driver, By.cssSelector("input[title='Refresh from database']"));
 			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox")));
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.id("custrulelst:detail:data_table:" + nextIdx + ":checkbox"), false));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("custrulelst:footer:gettingStartedFooter")));
 			

@@ -20,6 +20,7 @@ public class AlertUtil {
 			logger.info("Accepted the alert successfully.");
 		}
 		catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+			logger.error(ExceptionUtil.findRootTestClass(e));
 			logger.error("TimeoutException caught: " + e.getMessage());
 		}
 	}
@@ -35,6 +36,7 @@ public class AlertUtil {
 			logger.info("Accepted the alert successfully.");
 		}
 		catch (org.openqa.selenium.TimeoutException e) { // when running HtmlUnitDriver
+			logger.error(ExceptionUtil.findRootTestClass(e));
 			logger.error("TimeoutException caught: " + e.getMessage());
 		}
 	}
@@ -48,6 +50,7 @@ public class AlertUtil {
 			commandLink.click();
 		}
 		catch(org.openqa.selenium.StaleElementReferenceException ex) {
+			logger.error(ExceptionUtil.findRootTestClass(ex));
 			logger.error("StaleElementReferenceException caught: " + ex.getMessage());
 			try {
 				Thread.sleep(500);
@@ -57,6 +60,7 @@ public class AlertUtil {
 			driver.findElement(by).click();
 		}
 		catch (org.openqa.selenium.WebDriverException e) { //unknown error
+			logger.error(ExceptionUtil.findRootTestClass(e));
 			logger.error("WebDriverException caught: " + e.getMessage());
 			try {
 				Thread.sleep(500);
@@ -73,6 +77,7 @@ public class AlertUtil {
 			waitLong.until(ExpectedConditions.presenceOfElementLocated(by));			
 		}
 		catch (org.openqa.selenium.TimeoutException e) {
+			logger.error(ExceptionUtil.findRootTestClass(e));
 			logger.warn("TimeoutException caught: " + e.getMessage());
 		}
 	}

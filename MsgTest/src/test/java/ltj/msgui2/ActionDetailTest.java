@@ -26,7 +26,7 @@ public class ActionDetailTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("input[title$='_checkBox']")));
@@ -135,7 +135,7 @@ public class ActionDetailTest extends AbstractLogin {
 			WebElement link = driver.findElement(By.linkText(listTitle));
 			link.click();
 			
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.titleIs(listTitle));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("input[title$='_checkBox']")));
@@ -157,6 +157,7 @@ public class ActionDetailTest extends AbstractLogin {
 			checkBoxLink.click();
 
 			wait.until(ExpectedConditions.elementSelectionStateToBe(By.cssSelector("input[title='" + (nextIdx - 1) + "_checkBox']"), true));
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Create a new row from selected']")));
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.id("actdtllst:footer:gettingStartedFooter")));
 			
 			// Copy from selected
@@ -186,6 +187,8 @@ public class ActionDetailTest extends AbstractLogin {
 			
 			Select dataTypeSelect = new Select(driver.findElement(By.id("actdtllst:detail:datatype")));
 			dataTypeSelect.selectByValue("EMAIL_ADDRESS"); 
+			
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[title='Submit changes']")));
 			
 			// Submit changes
 			WebElement submitChanges = driver.findElement(By.cssSelector("input[title='Submit changes']"));
