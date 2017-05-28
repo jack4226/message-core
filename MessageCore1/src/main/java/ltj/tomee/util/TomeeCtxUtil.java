@@ -122,6 +122,37 @@ public class TomeeCtxUtil {
 		throw new RuntimeException("Tomcat or TomEE is down or not listening to one of the ports: " + Arrays.toString(ports));
 	}
 
+	public static boolean isActiveMQUp() {
+		String hostIP = "127.0.0.1";
+		int port = 61616;
+		return isHostPortUp(hostIP, port, 1000);
+	}
+	
+	static boolean isHostPortUp(String hostIP, int port, int timeout) {
+		long start = System.currentTimeMillis();
+		Socket socket = new Socket();
+		try {
+			socket.connect(new InetSocketAddress(hostIP, port), timeout);
+			logger.info("Port (" + port + ") reachable.");
+			return true;
+		}
+		catch (java.io.IOException e) {
+			logger.info("Port (" + port + ") unreachable, time spent: " + (System.currentTimeMillis() - start));
+		}
+		finally {
+			if (socket != null) {
+				try {
+					socket.close();
+				}
+				catch (java.io.IOException e) {
+					logger.error("IOException caught: " + e.getMessage());
+				}
+			}
+		}
+		return false;
+	}
+
+
 	public static void main(String[] args) {
 		try {
 			logger.info("port found: " + findHttpPort(new int[] {8181,8080,8161}));
