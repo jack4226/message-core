@@ -14,8 +14,16 @@ git gc --aggressive --prune=all     # remove the old files
 2) delete local and remote tags
 git tag -l | xargs -n 1 git push --delete origin
 
+
 3) ignore committed file
-git rm --cached /path/to/file
+1.git rm --cached /path/to/file
 for example:
 git rm --cached ./MessageStore/logs/jpatest.log
+2.Commit change
+
+4) ignore committed folder
+1.Add path to gitignore file
+2.Run this command
+	git rm -r --cached foldername
+3.Commit changes as usually.
 
