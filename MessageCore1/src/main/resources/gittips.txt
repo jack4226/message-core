@@ -4,7 +4,7 @@ cd to your git repository folder (message-core for example)
 
 git checkout --orphan new_branch
 git add -A  # Add all files and commit them
-git commit -m first
+git commit -m "initial add"
 git branch -D master  # Deletes the master branch
 git branch -m master  # Rename the current branch to master
 git push -f origin master  # Force push master branch to github
@@ -13,3 +13,9 @@ git gc --aggressive --prune=all     # remove the old files
 
 2) delete local and remote tags
 git tag -l | xargs -n 1 git push --delete origin
+
+3) ignore committed file
+git rm --cached /path/to/file
+for example:
+git rm --cached ./MessageStore/logs/jpatest.log
+
