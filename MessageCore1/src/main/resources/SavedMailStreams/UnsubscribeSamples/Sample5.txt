@@ -1,0 +1,4 @@
+Sample Footer for Newsletter (note: explanation of opt in, Mailing address, opt out instructions and dedicated UNSUBSCRIBE email address):
+
+You have received this e-mail because you opted in to the EXAMPLE COMPANY newsletter during an online purchase. To avoid future newsletters from EXAMPLE COMPANY, please email UNSUBSCRIBE@EXAMPLE-URL.com, or reply to this e-mail with the word 'UNSUBSCRIBE' as the subject line of your message. Our mailing address is EXAMPLE COMPANY, ADDRESS1, CITY ST 12345. Our Phone number is (888) 888-88888. All other e-mail inquiries should be directed to info@EXAMPLE-URL.com. Thank You.
+email | search | privacy | terms | news | site-map	

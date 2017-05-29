@@ -1,0 +1,67 @@
+Sample Text Message with Required Tokens
+
+
+++++++++++++++++++
+Community Partners
+++++++++++++++++++
+Helping people in Massachusetts get the health care coverage they need.
+
+
+August 23, 2006 - 12:35pm
+-------------------------
+Massachusetts&rsquo; Medical Security Program (MSP) provides health care
+coverage to eligible people while they are receiving unemployment benefits....
+
+
+Support our efforts to get health care coverage to all people of Massachusetts!
+Paste this link into your web browser:
+https://www.example.org/civicrm/contribute/transact?reset=1&id=1
+
+To unsubscribe from this newsletter, send email to the this address:
+{action.unsubscribe}
+
+
+To never receive email from Community Partners, send email to this address:
+{action.optOut}
+
+
+This email is sent from:
+{domain.address}
+
+
+
+
+Sample HTML Message with Required Tokens
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>CiviMail - Sample HTML Message</title>
+</head>
+<body>
+<table width="560" border="0" cellspacing="0" cellpadding="0" align="center">
+    <tr>
+       <td>
+	<h2>Community Partners</h2>
+        <p>Helping people in Massachusetts get the health care coverage they need.</p>
+        <p><strong>August 23, 2006 - 12:35pm</strong>. Massachusetts&rsquo; Medical Security Program (MSP) provides health care
+        coverage to eligible people while they are receiving unemployment benefits....
+        </p>
+        <p><a href="https://www.example.org/civicrm/contribute/transact?reset=1&id=1">Support our
+           efforts</a> to get health care coverage to all people of Massachusetts! </p>
+	</td>
+    </tr>
+    <tr>
+        <td align="center">
+        <p>To unsubscribe from this newsletter, send email to <a href="{action.unsubscribe}">this address</a>.<br />
+        To never receive email from Community Partners, send email to <a href="{action.optOut}">this address</a>.</p>
+        </td>
+    </tr>
+</table>
+<div style="text-align: left; font-size: 90%">
+    This email is sent from:<br />
+    {domain.address}
+</div>
+</body>
+</html>

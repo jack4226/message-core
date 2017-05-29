@@ -1,0 +1,41 @@
+Return-Path: <>
+Authentication-Results: mta376.mail.re4.yahoo.com from=; domainkeys=neutral (no sig)
+Received: from 204.170.82.5 (EHLO synergy.critpath.org) (204.170.82.5) by mta376.mail.re4.yahoo.com with SMTP; Tue, 20 Mar 2007 04:07:13 -0700
+Received: from deduce.critpath.org (deduce.CritPath.Org [204.170.82.2]) by synergy.critpath.org (8.12.10/8.12.10/mh-s/20040928) with SMTP id l2KB7DVx010234 for <jackwng@yahoo.com>; Tue, 20 Mar 2007 07:07:13 -0400 (EDT)
+Message-Id: <200703201107.l2KB7DVx010234@synergy.critpath.org>
+Date: Fri, 8 Jul 1994 09:21:47 -0400
+Subject: Delivery Status
+To: <owner-ups-mib@CS.UTK.EDU>
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=delivery-status;
+       boundary="JAA13167.773673707/CS.UTK.EDU"
+
+--JAA13167.773673707/CS.UTK.EDU
+content-type: text/plain; charset=us-ascii
+
+       ----- The following addresses had delivery problems -----
+<arathib@vnet.ibm.com> (unrecoverable error)
+<wsnell@sdcc13.ucsd.edu> (unrecoverable error)
+
+--JAA13167.773673707/CS.UTK.EDU
+content-type: message/delivery-status
+
+Original-Recipient: <bryan@critpath.org>
+Final-Recipient: rfc822;arathib@vnet.ibm.com
+Action: failed
+Diagnostic-Code: smtp; 550 5.1.1 <bryan@critpath.org>... User unknown
+Remote-MTA: 204.170.82.5
+
+--JAA13167.773673707/CS.UTK.EDU
+content-type: message/rfc822
+
+ [original message goes here]
+
+
+Excerpt from RFC3464:
+This is another DSN issued by the sender's MTA, which contains
+details of multiple delivery attempts.  Some of these were detected
+locally, and others by a remote MTA.
+
+
+--JAA13167.773673707/CS.UTK.EDU--

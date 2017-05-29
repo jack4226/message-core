@@ -1,0 +1,12 @@
+You are receiving this email from (Company name) because you (purchased a product/service, requested information, subscribed on our website, etc). To ensure that you continue to receive emails from us, add (Company email address) to your Address Book and your Approved Sender list, and have our email address Whitelisted with your Company.
+
+
+
+
+To subscribe or unsubscribe via the World Wide Web, visit
+        http://lists.macosforge.org/mailman/listinfo/macports-users
+or, via email, send a message with subject or body 'help' to
+        macports-users-request@xxxxxxxxxxxxxxxxxxxx
+
+You can reach the person managing the list at
+        macports-users-owner@xxxxxxxxxxxxxxxxxxxx
