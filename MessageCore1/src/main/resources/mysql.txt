@@ -31,18 +31,18 @@ or
 > .\bin\mysqld --defaults-file=..\mydb\my.ini --log_syslog=0
 
 6) connect to server the first time, cd to bin directory:
-> mysql -u root --skip-password
+> .\mysql -u root --skip-password
 
-> mysql -u email -p emaildb
+> .\mysql -u email -p emaildb
 
-> mysql -u email -p message
+> .\mysql -u email -p message
 
 
 7) assign a root password:
 > ALTER USER 'root'@'localhost' IDENTIFIED BY 'jackwng01';
 
 8) connect to server with password:
-> mysql -u root -p
+> .\mysql -u root -p
 
 9) shut down server
 > .\bin\mysqladmin -u root -p shutdown
