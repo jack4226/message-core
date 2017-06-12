@@ -29,6 +29,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
@@ -44,6 +46,13 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * of the HttpServletRequest. The attribute value of a form file field can be an
  * instance of FileItem or FileUploadException.
  */
+@WebFilter(filterName="multipartFilter", urlPatterns="/upload/*",
+	description="Check for multipart HttpServletRequests and parse the multipart form data",
+	initParams={
+		@WebInitParam(name="maxFileSize",value="5242880"),
+		@WebInitParam(name="totalFileSize",value="10485760")
+	}
+)
 public class MultipartFilter implements Filter {
 	/*
 	 * This filter requires that the following JAR's (newer versions are allowed) in

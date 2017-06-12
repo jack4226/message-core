@@ -9,53 +9,59 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.activemq.broker.region.Subscription;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import ltj.message.dao.emailaddr.EmailSubscrptDao;
-import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.user.SessionUploadDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.HtmlTags;
-import ltj.message.util.StringUtil;
 import ltj.message.vo.SessionUploadVo;
 import ltj.message.vo.UserVo;
 import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.msgui.bean.FileUploadForm;
 import ltj.msgui.bean.MailingListComposeBean;
-import ltj.msgui.bean.MsgInboxBean;
+import ltj.msgui.bean.MessageInboxBean;
 import ltj.msgui.filter.MultipartFilter;
 import ltj.msgui.filter.SessionTimeoutFilter;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
+@WebServlet(name="Upload Servlet", urlPatterns="/upload/uploadServlet", loadOnStartup=10)
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = -4905340132022275056L;
 	static final Logger logger = Logger.getLogger(UploadServlet.class);
 	
 	private SessionUploadDao sessionUploadDao = null;
-	private EmailSubscrptDao emailSubscrptDao = null;
+	private EmailSubscrptDao subscriptionDao = null;
 	
+	@Override
 	public void init() throws ServletException {
 		ServletContext ctx = getServletContext();
-		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Name: " + ctx.getServletContextName());
+		logger.info("init() - ServerInfo: " + ctx.getServerInfo() + ", Context Name: "
+				+ ctx.getServletContextName());
 		sessionUploadDao = SpringUtil.getWebAppContext(ctx).getBean(SessionUploadDao.class);
-		emailSubscrptDao = SpringUtil.getWebAppContext(ctx).getBean(EmailSubscrptDao.class);
+		subscriptionDao = SpringUtil.getWebAppContext(ctx).getBean(EmailSubscrptDao.class);
 		// initialize unread counts
-		MsgInboxDao msgInboxDao = SpringUtil.getWebAppContext(ctx).getBean(MsgInboxDao.class);
-		int initInboxCount = msgInboxDao.resetInboxUnreadCount();
-		int initSentCount = msgInboxDao.resetSentUnreadCount();
-		logger.info("init() - InboxUnreadCount = " + initInboxCount + ", SentUnreadCount = " + initSentCount);
+//		MessageInboxService msgInboxDao = SpringUtil.getWebAppContext(ctx).getBean(MessageInboxService.class);
+//		int initInboxCount = msgInboxDao.resetInboxUnreadCount(); // TODO
+//		int initSentCount = msgInboxDao.resetSentUnreadCount(); // TODO
+//		logger.info("init() - InboxUnreadCount = " + initInboxCount + ", SentUnreadCount = "
+//				+ initSentCount);
 	}
 	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String fromPage = request.getParameter("frompage");
@@ -64,6 +70,7 @@ public class UploadServlet extends HttpServlet {
 		forward(request, response, fromPage);
 	}
 	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("submit");
@@ -83,8 +90,8 @@ public class UploadServlet extends HttpServlet {
 			// calculate total file size
 			long size = getTotalFileSize(request, uploadForm);
 			if (MultipartFilter.getTotalFileSize() > 0 && size > MultipartFilter.getTotalFileSize()) {
-				uploadForm.setError("size",
-						"Total file size exceeded maximum amount of " + MultipartFilter.getTotalFileSize() + " bytes.");
+				uploadForm.setError("size", "Total file size exceeded maximum amount of "
+						+ MultipartFilter.getTotalFileSize() + " bytes.");
 			}
 			// Process request
 			for (int i = 1; i <= 10; i++) {
@@ -103,17 +110,17 @@ public class UploadServlet extends HttpServlet {
 		}
 	}
 	
-	private void redirect(HttpServletRequest request, HttpServletResponse response, String action, String fromPage)
-			throws IOException {
-		String targetPage = "/msgInboxList.faces";
+	private void redirect(HttpServletRequest request, HttpServletResponse response, String action,
+			String fromPage) throws IOException {
+		String targetPage = "/msgInboxList.xhtml";
 		if ("msgreply".equals(fromPage)) {
-			targetPage = "/msgInboxSend.faces";
+			targetPage = "/msgInboxSend.xhtml";
 		}
 		else if ("mailinglist".equals(fromPage)) {
-			targetPage = "/mailingListCompose.faces";
+			targetPage = "/mailingListCompose.xhtml";
 		}
 		else if ("uploademails".equals(fromPage)) {
-			targetPage = "/main.faces";
+			targetPage = "/main.xhtml";
 		}
 		
 		if ("uploademails".equals(fromPage) || "Cancel".equals(action)) {
@@ -124,27 +131,27 @@ public class UploadServlet extends HttpServlet {
 		}
 	}
 
-	private void redirectOnly(HttpServletRequest request, HttpServletResponse response, String targetPage)
-			throws IOException {
+	private void redirectOnly(HttpServletRequest request, HttpServletResponse response,
+			String targetPage) throws IOException {
 		String url = request.getContextPath() + targetPage;
 		response.sendRedirect(response.encodeRedirectURL(url));
 	}
 	
-	private void redirectWithUpload(HttpServletRequest request, HttpServletResponse response, String targetPage)
-			throws IOException {
+	private void redirectWithUpload(HttpServletRequest request, HttpServletResponse response,
+			String targetPage) throws IOException {
 		String fromPage = request.getParameter("frompage");
 		FacesContext facesContext = FacesUtil.getFacesContext(request, response);
 		if ("mailinglist".equals(fromPage)) { // from mailing list compose
 			// 1) retrieve MailingListComposeBean instance from faces context
 			MailingListComposeBean bean = (MailingListComposeBean) facesContext.getELContext()
-					.getELResolver().getValue(facesContext.getELContext(), null, "maillistcomp");
+					.getELResolver().getValue(facesContext.getELContext(), null, "mailingListCompose");
 			// 2) populate "uploads" list that contains uploaded files
 			bean.retrieveUploadFiles();
 		}
 		else { // from message reply
 			// 1) retrieve MsgInboxBean instance from faces context
-			MsgInboxBean bean = (MsgInboxBean) facesContext.getELContext().getELResolver()
-					.getValue(facesContext.getELContext(), null, "msgfolder");
+			MessageInboxBean bean = (MessageInboxBean) facesContext.getELContext().getELResolver()
+					.getValue(facesContext.getELContext(), null, "messageInbox");
 			// 2) populate "uploads" list that contains uploaded files
 			bean.retrieveUploadFiles();
 		}
@@ -199,8 +206,8 @@ public class UploadServlet extends HttpServlet {
 	    return fileSize;
 	}
 	
-	private void uploadToSessionTable(HttpServletRequest request, FileUploadForm uploadForm, int fileSeq,
-			FileItem fileItem) throws IOException {
+	private void uploadToSessionTable(HttpServletRequest request, FileUploadForm uploadForm,
+			int fileSeq, FileItem fileItem) throws IOException {
         String fileName = FilenameUtils.getName(fileItem.getName());
         String contentType = fileItem.getContentType();
     	String sessionId = request.getRequestedSessionId();
@@ -213,22 +220,22 @@ public class UploadServlet extends HttpServlet {
         	sessVo.setUserId(userVo.getUserId());
         }
         else {
-        	logger.warn("process() - UserVo not found in httpSession!");
+        	logger.warn("process() - UserData not found in httpSession!");
         }
     	sessVo.setFileName(fileName);
     	sessVo.setContentType(contentType);
     	InputStream is = fileItem.getInputStream();
     	sessVo.setSessionValue(IOUtils.toByteArray(is));
         // Write uploaded file to database
-    	int rowsInserted = sessionUploadDao.insertLast(sessVo);
-    	logger.info("process() - rows inserted: " + rowsInserted);
+    	sessionUploadDao.insertLast(sessVo);
+    	logger.info("process() - rows inserted: " + 1);
         uploadForm.setMessage(fileName, "File succesfully uploaded.");		
 	}
 	
-	private void uploadEmailsToList(HttpServletRequest request, FileUploadForm uploadForm, int fileSeq,
-			FileItem fileItem) throws IOException {
+	private void uploadEmailsToList(HttpServletRequest request, FileUploadForm uploadForm,
+			int fileSeq, FileItem fileItem) throws IOException {
 		String listId = request.getParameter("listid");
-		if (StringUtil.isEmpty(listId)) {
+		if (StringUtils.isBlank(listId)) {
 			logger.error("uploadEmailsToList() - listid parameter was not valued.");
 			uploadForm.setError("Contact Support!", "'listid' request parameter was not valued");
 			return;
@@ -240,7 +247,8 @@ public class UploadServlet extends HttpServlet {
 		String addr = null;
 		while ((addr = br.readLine()) != null) {
 			if (EmailAddrUtil.isRemoteEmailAddress(addr)) {
-				rowsAdded += emailSubscrptDao.subscribe(addr, listId);
+				subscriptionDao.subscribe(addr, listId);
+				rowsAdded++;
 			}
 			else {
 				rowsInvalid ++;
@@ -261,13 +269,13 @@ public class UploadServlet extends HttpServlet {
 	private void importEmailsFromList(HttpServletRequest request, FileUploadForm uploadForm)
 			throws IOException {
 		String listId = request.getParameter("listid");
-		if (StringUtil.isEmpty(listId)) {
+		if (StringUtils.isBlank(listId)) {
 			logger.error("uploadEmailsToList() - listid parameter was not valued.");
 			uploadForm.setError("Contact Support!", "'listid' request parameter was not valued");
 			return;
 		}
 		String fromListId = request.getParameter("fromlistid");
-		if (StringUtil.isEmpty(fromListId)) {
+		if (StringUtils.isBlank(fromListId)) {
 			logger.error("uploadEmailsToList() - fromlistid parameter was not valued.");
 			uploadForm.setError("Contact Support!", "'fromlistid' request parameter was not valued");
 			return;
@@ -278,10 +286,11 @@ public class UploadServlet extends HttpServlet {
 			return;
 		}
 		int rowsSubed = 0;
-		List<EmailSubscrptVo> fromList = emailSubscrptDao.getByListId(fromListId);
+		List<EmailSubscrptVo> fromList = subscriptionDao.getByListId(fromListId);
 		for (int i = 0; i < fromList.size(); i++) {
 			EmailSubscrptVo subed = fromList.get(i);
-			rowsSubed += emailSubscrptDao.subscribe(subed.getEmailAddrId(), listId);
+			subscriptionDao.subscribe(subed.getEmailAddr(), listId);
+			rowsSubed++;
 		}
 		uploadForm.setMessage("Number of email addresses imported", "" + rowsSubed);
 		logger.info("importEmailsFromList() - number of addresses imported from " + fromListId

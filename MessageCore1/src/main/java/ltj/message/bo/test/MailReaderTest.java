@@ -24,6 +24,7 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
@@ -79,7 +80,7 @@ public class MailReaderTest extends BoTestBase {
 			String toAddr = it.next();
 			EmailAddressVo toAddrVo = addrDao.getByAddress(toAddr);
 			if (toAddrVo != null) {
-				SearchFieldsVo vo = new SearchFieldsVo();
+				SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 				vo.setFromAddr(testFromAddr);
 				vo.setToAddrId(toAddrVo.getEmailAddrId());
 				vo.setSubject("Test MailReader");
@@ -109,7 +110,7 @@ public class MailReaderTest extends BoTestBase {
 			Integer count = msgCountMap.get(toAddr);
 			EmailAddressVo toAddrVo = addrDao.getByAddress(toAddr);
 			assertNotNull("Email address (" + toAddr + ") must be present in database.", toAddrVo);
-			SearchFieldsVo vo = new SearchFieldsVo();
+			SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 			vo.setFromAddr(testFromAddr);
 			vo.setToAddrId(toAddrVo.getEmailAddrId());
 			vo.setSubject("Test MailReader");

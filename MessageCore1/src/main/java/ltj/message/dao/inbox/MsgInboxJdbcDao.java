@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
+import ltj.data.preload.FolderEnum;
 import ltj.message.constant.AddressType;
 import ltj.message.constant.MsgDirection;
 import ltj.message.constant.StatusId;
@@ -305,35 +306,35 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		 * paging logic
 		 */
 		String fetchOrder = "desc";
-		int pageSize = vo.getPageSize();
-		if (vo.getPageAction().equals(PageAction.FIRST)) {
+		int pageSize = vo.getPagingVo().getPageSize();
+		if (vo.getPagingVo().getPageAction().equals(PageAction.FIRST)) {
 			// do nothing
 		}
-		else if (vo.getPageAction().equals(PageAction.NEXT)) {
-			if (vo.getMsgIdLast() > -1) {
+		else if (vo.getPagingVo().getPageAction().equals(PageAction.NEXT)) {
+			if (vo.getPagingVo().getSearchObjLast() != null) {
 				whereSql += CRIT[parms.size()] + " a.msg_id < ? ";
-				parms.add(vo.getMsgIdLast());
+				parms.add(vo.getPagingVo().getSearchObjLast());
 			}
 		}
-		else if (vo.getPageAction().equals(PageAction.PREVIOUS)) {
-			if (vo.getMsgIdFirst() > -1) {
+		else if (vo.getPagingVo().getPageAction().equals(PageAction.PREVIOUS)) {
+			if (vo.getPagingVo().getSearchObjFirst() != null) {
 				whereSql += CRIT[parms.size()] + " a.msg_id > ? ";
-				parms.add(vo.getMsgIdFirst());
+				parms.add(vo.getPagingVo().getSearchObjFirst());
 				fetchOrder = "asc";
 			}
 		}
-		else if (vo.getPageAction().equals(PageAction.LAST)) {
+		else if (vo.getPagingVo().getPageAction().equals(PageAction.LAST)) {
 			int rows = getRowCountForWeb(vo);
-			pageSize = rows % vo.getPageSize();
+			pageSize = rows % vo.getPagingVo().getPageSize();
 			if (pageSize == 0) {
-				pageSize = Math.min(rows, vo.getPageSize());
+				pageSize = Math.min(rows, vo.getPagingVo().getPageSize());
 			}
 			fetchOrder = "asc";
 		}
-		else if (vo.getPageAction().equals(PageAction.CURRENT)) {
-			if (vo.getMsgIdFirst() > -1) {
+		else if (vo.getPagingVo().getPageAction().equals(PageAction.CURRENT)) {
+			if (vo.getPagingVo().getSearchObjFirst() != null) {
 				whereSql += CRIT[parms.size()] + " a.msg_id <= ? ";
-				parms.add(vo.getMsgIdFirst());
+				parms.add(vo.getPagingVo().getSearchObjFirst());
 			}
 		}
 		// build SQL
@@ -365,8 +366,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			" order by a.msg_id " + fetchOrder +
 			" limit " + pageSize;
 		// set result set size
-		getJdbcTemplate().setFetchSize(vo.getPageSize());
-		getJdbcTemplate().setMaxRows(vo.getPageSize());
+		getJdbcTemplate().setFetchSize(vo.getPagingVo().getPageSize());
+		getJdbcTemplate().setMaxRows(vo.getPagingVo().getPageSize());
 		List<MsgInboxWebVo> list = getJdbcTemplate().query(sql, parms.toArray(),
 				new BeanPropertyRowMapper<MsgInboxWebVo>(MsgInboxWebVo.class));
 		if ("asc".equals(fetchOrder)) {
@@ -374,8 +375,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			Collections.reverse(list);
 		}
 		if (!list.isEmpty()) { // && !vo.getPageAction().equals(PageAction.CURRENT)) {
-			vo.setMsgIdFirst(list.get(0).getMsgId());
-			vo.setMsgIdLast(list.get(list.size() - 1).getMsgId());
+			vo.getPagingVo().setSearchObjFirst(list.get(0).getMsgId());
+			vo.getPagingVo().setSearchObjLast(list.get(list.size() - 1).getMsgId());
 		}
 		return list;
 	}
@@ -384,8 +385,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String whereSql = "";
 		// Closed?
 		String closed = null;
-		if (vo.getMsgType() != null) {
-			if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Closed)) {
+		if (vo.getFolderType() != null) {
+			if (vo.getFolderType().equals(FolderEnum.Closed)) {
 				closed = StatusId.CLOSED.value();
 			}
 		}
@@ -399,11 +400,11 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		// msgDirection
 		String direction = null;
-		if (vo.getMsgType() != null) {
-			if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Received)) {
+		if (vo.getFolderType() != null) {
+			if (vo.getFolderType().equals(FolderEnum.Inbox)) {
 				direction = MsgDirection.RECEIVED.value();
 			}
-			else if (vo.getMsgType().equals(SearchFieldsVo.MsgType.Sent)) {
+			else if (vo.getFolderType().equals(FolderEnum.Sent)) {
 				direction = MsgDirection.SENT.value();
 			}
 		}

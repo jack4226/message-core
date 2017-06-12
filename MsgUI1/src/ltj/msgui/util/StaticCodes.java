@@ -17,6 +17,7 @@ import java.util.jar.JarFile;
 
 import javax.faces.model.SelectItem;
 
+import ltj.data.preload.FolderEnum;
 import ltj.message.bean.MessageBeanUtil;
 import ltj.message.bo.rule.RuleBase;
 import ltj.message.constant.CarrierCode;
@@ -31,7 +32,6 @@ import ltj.message.constant.VariableName;
 import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.external.RuleTargetProc;
 import ltj.message.external.VariableResolver;
-import ltj.message.vo.inbox.SearchFieldsVo;
 
 public class StaticCodes {
 
@@ -592,10 +592,10 @@ public class StaticCodes {
 	public synchronized SelectItem[] getFolderTypeItems() {
 		if (folderTypeItems == null) {
 			folderTypeItems = new SelectItem[4];
-			folderTypeItems[0] = new SelectItem(SearchFieldsVo.MsgType.All);
-			folderTypeItems[1] = new SelectItem(SearchFieldsVo.MsgType.Received);
-			folderTypeItems[2] = new SelectItem(SearchFieldsVo.MsgType.Sent);
-			folderTypeItems[3] = new SelectItem(SearchFieldsVo.MsgType.Closed);
+			folderTypeItems[0] = new SelectItem(FolderEnum.All);
+			folderTypeItems[1] = new SelectItem(FolderEnum.Inbox);
+			folderTypeItems[2] = new SelectItem(FolderEnum.Sent);
+			folderTypeItems[3] = new SelectItem(FolderEnum.Closed);
 		}
 		return folderTypeItems;
 	}

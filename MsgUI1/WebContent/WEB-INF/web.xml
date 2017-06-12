@@ -6,30 +6,6 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>MsgUI1</display-name>
 	
-	<!-- define spring context listener -->
-	<!-- Configure ContextLoaderListener to use AnnotationConfigWebApplicationContext
-	       instead of the default XmlWebApplicationContext -->
-	<!-- context-param>
-	    <param-name>contextClass</param-name>
-	    <param-value>
-	        org.springframework.web.context.support.AnnotationConfigWebApplicationContext
-	    </param-value>
-	</context-param -->
-	
-	<!-- Configuration locations must consist of one or more comma- or space-delimited
-	     fully-qualified @Configuration classes. Fully-qualified packages may also be
-	     specified for component-scanning -->
-	<!-- context-param>
-	    <param-name>contextConfigLocation</param-name>
-	    <param-value>ltj.spring.util.SpringAppConfig, ltj.spring.util.SpringJmsConfig</param-value>
-	</context-param>
-	  
-	<listener>
-		<listener-class>
-			org.springframework.web.context.ContextLoaderListener
-		</listener-class>
-	</listener -->
-
 	<!-- define phase parameter for Phase Tracker -->
 	<context-param>
 		<param-name>listener.phaseTracker.phase</param-name>
@@ -80,95 +56,18 @@
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 
-	<!-- define file download servlet -->
-	<servlet>
-	    <servlet-name>File Servlet</servlet-name>
-	    <servlet-class>ltj.msgui.servlet.FileServlet</servlet-class>
-	    <load-on-startup>3</load-on-startup>
-	</servlet>
+	<!-- define JSF mapping -->
 	<servlet-mapping>
-	    <servlet-name>File Servlet</servlet-name>
-	    <url-pattern>/file/*</url-pattern>
-	</servlet-mapping>
-
-	<!-- define attachment upload servlet -->
-	<servlet>
-		<servlet-name>Upload Servlet</servlet-name>
-		<servlet-class>ltj.msgui.servlet.UploadServlet</servlet-class>
-		<load-on-startup>4</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Upload Servlet</servlet-name>
-		<url-pattern>/upload/uploadServlet</url-pattern>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>/faces/*</url-pattern>
+    	<url-pattern>*.xhtml</url-pattern>
+    	<url-pattern>*.fases</url-pattern>
 	</servlet-mapping>
 
 	<!-- define session timeout -->
 	<session-config>
 		<session-timeout>30<!-- minutes --></session-timeout>
 	</session-config>
-
-	<!-- define JSF mapping -->
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.faces</url-pattern>
-	</servlet-mapping>
-
-	<!-- define session expired listener -->
-	<listener>
-		<listener-class>
-			ltj.msgui.listener.SessionExpiredListener
-		</listener-class>
-	</listener>
-	
-	<!-- define session timeout filter -->
-	<filter>
-		<filter-name>SessionTimeoutFilter</filter-name>
-		<filter-class>ltj.msgui.filter.SessionTimeoutFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>SessionTimeoutFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-	<!-- define multipart filter -->
-	<filter>
-	    <description>
-	    	Check for multipart HttpServletRequests and parse the
-	    	multipart form data so that all regular form fields are
-	    	available in the parameterMap of the HttpServletRequest and
-	    	that all form file fields are available as attribute of the
-	    	HttpServletRequest. The attribute value of a form file field
-	    	can be an instance of FileItem or FileUploadException.
-	    </description>
-	    <filter-name>multipartFilter</filter-name>
-	    <filter-class>ltj.msgui.filter.MultipartFilter</filter-class>
-	    <init-param>
-	        <description>
-	        	Sets the maximum file size of the uploaded file in
-	        	bytes. Set to 0 to indicate an unlimited file size. The
-	        	example value of 5242880 indicates a maximum file size
-	        	of 5MB. This parameter is not required and can be
-	        	removed safely.
-	        </description>
-	        <param-name>maxFileSize</param-name>
-	        <param-value>5242880</param-value>
-	    </init-param>
-	    <init-param>
-	        <description>
-	        	Sets the maximum total file size of all the uploaded
-	        	files in bytes. Set to 0 to indicate an unlimited file
-	        	size. The example value of 10485760 indicates a size of
-	        	10MB. This parameter is not required and can be removed
-	        	safely.
-	        </description>
-	        <param-name>totalFileSize</param-name>
-	        <param-value>10485760</param-value>
-	    </init-param>
-	</filter>
-	<filter-mapping>
-	    <filter-name>multipartFilter</filter-name>
-	    <url-pattern>/upload/*</url-pattern>
-	</filter-mapping>
 
 	<!-- ejb-ref>
 		<description>A reference to MailingListEjb</description>

@@ -1,5 +1,7 @@
 package ltj.msgui.bean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -11,7 +13,10 @@ import ltj.message.vo.UserVo;
 import ltj.msgui.filter.SessionTimeoutFilter;
 import ltj.msgui.util.SpringUtil;
 
-public class ChangePasswordBean {
+@ManagedBean(name="changePassword")
+@RequestScoped
+public class ChangePasswordBean implements java.io.Serializable {
+	private static final long serialVersionUID = -7332671123699551896L;
 	static final Logger logger = Logger.getLogger(ChangePasswordBean.class);
 	private String currPassword = null;
 	private String password = null;
@@ -20,42 +25,45 @@ public class ChangePasswordBean {
 	
 	private UserDao userDao = null;
 	
+	private static String TO_FAILED = null;
+	private static String TO_SAVED = "main.xhtml";
+
 	public String changePassword() {
 		message = null;
-		UserVo vo = getSessionUserVo();
+		UserVo vo = getSessionUserData();
 		if (vo == null) {
 			message = "User is not logged in!";
-			return "changepswd.failed";
+			return TO_FAILED;
 		}
 		UserVo vo2 = getUserDao().getByUserId(vo.getUserId());
 		if (vo2 == null) {
 			message = "Internal error, contact programming!";
-			return "changepswd.failed";
+			return TO_FAILED;
 		}
 		logger.info("changePassword() - UserId: " +  vo.getUserId());
 		if (!vo2.getPassword().equals(currPassword)) {
 			message = "Current password is invalied.";
-			return "changepswd.failed";
+			return TO_FAILED;
 		}
 		vo2.setPassword(password);
-		int rowsUpdated = getUserDao().update(vo2);
-		logger.info("changePassword() - rows updated: " + rowsUpdated);
-		return "changepswd.saved";
+		getUserDao().update(vo2);
+		logger.info("changePassword() - rows updated: " + 1);
+		return TO_SAVED;
 	}
 	
 	private UserDao getUserDao() {
 		if (userDao == null) {
-			userDao = (UserDao) SpringUtil.getWebAppContext().getBean("userDao");
+			userDao = SpringUtil.getWebAppContext().getBean(UserDao.class);
 		}
 		return userDao;
 	}
 	
     // Getters
-    public UserVo getSessionUserVo() {
+    public UserVo getSessionUserData() {
 		return (UserVo) getHttpSession().getAttribute(SessionTimeoutFilter.USER_VO_ID);
 	}
 
-	public void setSessionUserVo(UserVo userVo) {
+	public void setSessionUserData(UserVo userVo) {
 		getHttpSession().setAttribute(SessionTimeoutFilter.USER_VO_ID, userVo);
 	}
 

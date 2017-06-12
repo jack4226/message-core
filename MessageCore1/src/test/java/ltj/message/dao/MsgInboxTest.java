@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.FolderEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.constant.CarrierCode;
 import ltj.message.dao.abstrct.DaoTestBase;
@@ -25,6 +26,7 @@ import ltj.message.dao.outbox.MsgSequenceDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.PrintUtil;
 import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.PagingVo.PageAction;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgClickCountVo;
@@ -134,7 +136,7 @@ public class MsgInboxTest extends DaoTestBase {
 	
 	@Test
 	public void testWebSearch() {
-		SearchFieldsVo vo = new SearchFieldsVo();
+		SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		assertFalse(list.isEmpty());
 		Random r = new Random();
@@ -188,7 +190,7 @@ public class MsgInboxTest extends DaoTestBase {
 				}
 			}
 		}
-		vo.resetPageContext();
+		vo.getPagingVo().resetPageContext();
 		list = msgInboxDao.getListForWeb(vo);
 		assertFalse(list.isEmpty());
 		for (MsgInboxWebVo mwvo : list) {
@@ -208,7 +210,7 @@ public class MsgInboxTest extends DaoTestBase {
 				if (StringUtils.isNotBlank(bodyStr)) {
 					vo.setBody(bodyStr);
 					logger.info("Search by body2: " + bodyStr);
-					vo.resetPageContext();
+					vo.getPagingVo().resetPageContext();
 					list = msgInboxDao.getListForWeb(vo);
 					assertFalse(list.isEmpty());
 					for (MsgInboxWebVo mwvo : list) {
@@ -224,9 +226,9 @@ public class MsgInboxTest extends DaoTestBase {
 	@Test
 	public void testWithPaging() {
 		int testPageSize = 2;
-		SearchFieldsVo vo = new SearchFieldsVo();
-		vo.setPageSize(testPageSize);
-		vo.setMsgType(null);
+		SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
+		vo.getPagingVo().setPageSize(testPageSize);
+		vo.setFolderType(null);
 		// get the first page
 		List<MsgInboxWebVo> list1 = msgInboxDao.getListForWeb(vo);
 		assertFalse(list1.isEmpty());
@@ -234,7 +236,7 @@ public class MsgInboxTest extends DaoTestBase {
 		logger.info("Total number of rows = " + rows);
 		assertTrue(rows >= list1.size());
 		// get it again
-		vo.setPageAction(PageAction.CURRENT);
+		vo.getPagingVo().setPageAction(PageAction.CURRENT);
 		List<MsgInboxWebVo> list2 = msgInboxDao.getListForWeb(vo);
 		assertEquals(list1.size(), list2.size());
 		for (int i = 0; i < list1.size(); i++) {
@@ -242,7 +244,7 @@ public class MsgInboxTest extends DaoTestBase {
 			assertMsgInboxWebVosSame(list1.get(i), list2.get(i));
 		}
 		// get the second page
-		vo.setPageAction(PageAction.NEXT);
+		vo.getPagingVo().setPageAction(PageAction.NEXT);
 		List<MsgInboxWebVo> list3 = msgInboxDao.getListForWeb(vo);
 		if (!list3.isEmpty()) {
 			for (int i = 0; i < list3.size(); i++) {
@@ -250,7 +252,7 @@ public class MsgInboxTest extends DaoTestBase {
 			}
 			assertTrue(list3.get(0).getMsgId() < list1.get(list1.size() - 1).getMsgId());
 			// get the first page
-			vo.setPageAction(PageAction.PREVIOUS);
+			vo.getPagingVo().setPageAction(PageAction.PREVIOUS);
 			List<MsgInboxWebVo> list4 = msgInboxDao.getListForWeb(vo);
 			assertEquals(list1.size(), list4.size());
 			for (int i = 0; i < list4.size(); i++) {
@@ -259,18 +261,18 @@ public class MsgInboxTest extends DaoTestBase {
 			}
 		}
 		// get the last page
-		vo.setPageAction(PageAction.LAST);
+		vo.getPagingVo().setPageAction(PageAction.LAST);
 		List<MsgInboxWebVo> list5 = msgInboxDao.getListForWeb(vo);
 		assertFalse(list5.isEmpty());
 		for (int i = 0; i < list5.size(); i++) {
 			logger.info("vo5:" + PrintUtil.prettyPrint(list5.get(i)));
 		}
-		vo.setPageAction(PageAction.PREVIOUS);
+		vo.getPagingVo().setPageAction(PageAction.PREVIOUS);
 		msgInboxDao.getListForWeb(vo);
 		// get it again
-		vo.setPageAction(PageAction.NEXT);
+		vo.getPagingVo().setPageAction(PageAction.NEXT);
 		List<MsgInboxWebVo> list6 = msgInboxDao.getListForWeb(vo);
-		if (msgInboxDao.getRowCountForWeb(vo) <= vo.getPageSize()) {
+		if (msgInboxDao.getRowCountForWeb(vo) <= vo.getPagingVo().getPageSize()) {
 			assertEquals(0, list6.size());
 		}
 		else {
@@ -280,7 +282,7 @@ public class MsgInboxTest extends DaoTestBase {
 			}
 		}
 		// back to the first page
-		vo.setPageAction(PageAction.FIRST);
+		vo.getPagingVo().setPageAction(PageAction.FIRST);
 		List<MsgInboxWebVo> list7 = msgInboxDao.getListForWeb(vo);
 		assertEquals(list1.size(), list7.size());
 		for (int i = 0; i < list1.size(); i++) {
@@ -348,9 +350,9 @@ public class MsgInboxTest extends DaoTestBase {
 	}
 	
 	private MsgInboxWebVo selectBroadcastMsg() {
-		SearchFieldsVo vo = new SearchFieldsVo();
+		SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 		vo.setRuleName(RuleNameEnum.BROADCAST.name());
-		vo.setMsgType(SearchFieldsVo.MsgType.Closed);
+		vo.setFolderType(FolderEnum.Closed);
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		for (MsgInboxWebVo webVo : list) {
 			logger.info("MsgInboxWebVo - selectBroadcastMsg: " + LF + webVo);
@@ -360,9 +362,9 @@ public class MsgInboxTest extends DaoTestBase {
 	}
 
 	private MsgInboxWebVo selectInboundGenericMsg() {
-		SearchFieldsVo vo = new SearchFieldsVo();
+		SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 		vo.setRuleName(RuleNameEnum.GENERIC.name());
-		vo.setMsgType(SearchFieldsVo.MsgType.Received);
+		vo.setFolderType(FolderEnum.Inbox);
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(vo);
 		for (MsgInboxWebVo webVo : list) {
 			logger.info("MsgInboxWebVo - selectInboundGenericMsg: " + LF + webVo);

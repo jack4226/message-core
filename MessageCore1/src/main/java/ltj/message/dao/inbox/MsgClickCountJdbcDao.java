@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
-import ltj.message.util.StringUtil;
 import ltj.message.vo.PagingCountVo;
 import ltj.message.vo.PagingVo;
+import ltj.message.vo.PagingVo.PagingContext;
 import ltj.message.vo.inbox.MsgClickCountVo;
 
 @Component("msgClickCountDao")
@@ -90,38 +90,44 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		/*
 		 * paging logic
 		 */
-		String fetchOrder = "desc";
-		int pageSize = vo.getPageSize();
-		if (vo.getPageAction().equals(PagingVo.PageAction.FIRST)) {
-			// do nothing
+//		String fetchOrder = "desc";
+//		int pageSize = vo.getPageSize();
+//		if (vo.getPageAction().equals(PagingVo.PageAction.FIRST)) {
+//			// do nothing
+//		}
+//		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
+//			if (vo.getSearchObjLast() != null) {
+//				whereSql += CRIT[parms.size()] + " a.msg_id < ? ";
+//				parms.add(vo.getSearchObjLast());
+//			}
+//		}
+//		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
+//			if (vo.getSearchObjFirst() != null) {
+//				whereSql += CRIT[parms.size()] + " a.msg_id > ? ";
+//				parms.add(vo.getSearchObjFirst());
+//				fetchOrder = "asc";
+//			}
+//		}
+//		else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
+//			int rows = getBroadcastsCount(vo);
+//			pageSize = rows % vo.getPageSize();
+//			if (pageSize == 0) {
+//				pageSize = Math.min(rows, vo.getPageSize());
+//			}
+//			fetchOrder = "asc";
+//		}
+//		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
+//			if (vo.getSearchObjFirst() != null) {
+//				whereSql += CRIT[parms.size()] + " a.msg_id <= ? ";
+//				parms.add(vo.getSearchObjFirst());
+//			}
+//		}
+		
+		int rows = 0;
+		if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
+			rows = getBroadcastsCount(vo);
 		}
-		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
-			if (vo.getNbrIdLast() > -1) {
-				whereSql += CRIT[parms.size()] + " a.msg_id < ? ";
-				parms.add(vo.getNbrIdLast());
-			}
-		}
-		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
-			if (vo.getNbrIdFirst() > -1) {
-				whereSql += CRIT[parms.size()] + " a.msg_id > ? ";
-				parms.add(vo.getNbrIdFirst());
-				fetchOrder = "asc";
-			}
-		}
-		else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-			int rows = getBroadcastsCount(vo);
-			pageSize = rows % vo.getPageSize();
-			if (pageSize == 0) {
-				pageSize = Math.min(rows, vo.getPageSize());
-			}
-			fetchOrder = "asc";
-		}
-		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			if (vo.getNbrIdFirst() > -1) {
-				whereSql += CRIT[parms.size()] + " a.msg_id <= ? ";
-				parms.add(vo.getNbrIdFirst());
-			}
-		}
+		PagingContext ctx = PagingVo.getPagingWhereSql(vo, CRIT, parms, rows, "a.msg_id");
 		
 		String sql = 
 			"select a.*, e.email_addr_id, e.email_addr as from_addr " +
@@ -130,8 +136,8 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 			+ " join email_address e on e.email_addr_id=m.from_addr_id " +
 			whereSql +
 			" and a.start_time is not null " +
-			" order by a.msg_id " + fetchOrder +
-			" limit " + pageSize;
+			" order by a.msg_id " + ctx.fetchOrder +
+			" limit " + ctx.pageSize;
 		int fetchSize = getJdbcTemplate().getFetchSize();
 		int maxRows = getJdbcTemplate().getMaxRows();
 		getJdbcTemplate().setFetchSize(vo.getPageSize());
@@ -140,13 +146,13 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 				new BeanPropertyRowMapper<MsgClickCountVo>(MsgClickCountVo.class));
 		getJdbcTemplate().setFetchSize(fetchSize);
 		getJdbcTemplate().setMaxRows(maxRows);
-		if ("asc".equals(fetchOrder)) {
+		if ("asc".equals(ctx.fetchOrder)) {
 			// reverse the list
 			Collections.reverse(list);
 		}
 		if (!list.isEmpty()) {
-			vo.setNbrIdFirst(list.get(0).getMsgId());
-			vo.setNbrIdLast(list.get(list.size() - 1).getMsgId());
+			vo.setSearchObjFirst(list.get(0).getMsgId());
+			vo.setSearchObjLast(list.get(list.size() - 1).getMsgId());
 		}
 		return list;
 	}
@@ -156,10 +162,10 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 
 	private String buildWhereClause(PagingCountVo vo, List<Object> parms) {
 		String whereSql = "";
-		if (!StringUtil.isEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
-			parms.add(vo.getStatusId());
-		}
+//		if (!StringUtil.isEmpty(vo.getStatusId())) {
+//			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
+//			parms.add(vo.getStatusId());
+//		}
 		if (vo.getSentCount() != null) {
 			whereSql += CRIT[parms.size()] + " a.sent_count >= ? ";
 			parms.add(vo.getSentCount());

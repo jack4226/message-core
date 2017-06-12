@@ -9,6 +9,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import ltj.tomee.util.TomeeCtxUtil;
 /**
  * The File Servlet that serves files from database.
  */
+@WebServlet(name="File Servlet", urlPatterns="/file/*", loadOnStartup=9)
 public class FileServlet extends HttpServlet {
 	private static final long serialVersionUID = -8129545604805974235L;
 	static final Logger logger = Logger.getLogger(FileServlet.class);

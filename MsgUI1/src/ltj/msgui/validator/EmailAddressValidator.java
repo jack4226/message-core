@@ -17,7 +17,7 @@ public class EmailAddressValidator implements Validator {
 			return;
 		}
 		if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
-			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "invalidEmailAddress",
+			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("ltj.msgui.messages", "invalidEmailAddress",
 					null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(message);

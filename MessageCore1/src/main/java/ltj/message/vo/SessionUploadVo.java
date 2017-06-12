@@ -3,7 +3,7 @@ package ltj.message.vo;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class SessionUploadVo extends BaseVo implements Serializable {
+public class SessionUploadVo extends BaseVoWithRowId implements Serializable {
 	private static final long serialVersionUID = 6484217849141134499L;
 	private String sessionId = "";
 	private int sessionSeq = -1;

@@ -3,23 +3,30 @@ package ltj.msgui.bean;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
 import org.apache.log4j.Logger;
 
-public class GettingStarted {
+@ManagedBean(name="gettingStarted")
+@javax.faces.bean.SessionScoped
+public class GettingStarted implements java.io.Serializable {
+	private static final long serialVersionUID = -7733276722871469541L;
 	static final Logger logger = Logger.getLogger(GettingStarted.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
+	@ManagedProperty(value="gettingStartedHeaderText")
 	private String titleKey;
-	private DataModel functionKeys = null;
+	
+	private transient DataModel<?> functionKeys = null;
 	private String functionKey = null;
 	private String jspPageLink = null;
 	
 	/* values must be defined in resource bundle - messages.properties */
 	private String[] menuTooltips = { "configureMailboxes", "configureSmtpServers",
-			"configureSiteProfiles", "customizeBuiltInRules", "configureCustomRules",
+			"configureSiteProfiles", "customizeBuiltinRules", "configureCustomRules",
 			"maintainActionDetails", "configureMailingLists", "configureEmailVariables",
 			"configureEmailTemplates", "manageUserAccounts" };
 
@@ -32,7 +39,7 @@ public class GettingStarted {
 
 	/* JSTL import attribute url does not accept any expressions. So this is not used.  */
 	private String[] jspPageLinks = { "configureMailboxes.jsp", "configureSmtpServers.jsp",
-			"configureSiteProfiles.jsp", "customizeBuiltInRules.jsp", "configureMsgRules.jsp",
+			"configureSiteProfiles.jsp", "customizeBuiltinRules.jsp", "configureCustomRules.jsp",
 			"msgActionDetailList.jsp", "configureMailingLists.jsp", "configureEmailVariables.jsp",
 			"configureEmailTemplates.jsp", "manageUserAccounts.jsp" };
 
@@ -46,13 +53,13 @@ public class GettingStarted {
 	}
 
 	// PROPERTY: functionKeys
-	public DataModel getFunctionKeys() {
+	public DataModel<?> getFunctionKeys() {
 		if (functionKeys == null) {
 			List<String> functionList = new LinkedList<String>();
 			for (int i = 0; i < menuTooltips.length; i++) {
 				functionList.add(menuTooltips[i]);
 			}
-			functionKeys = new ListDataModel();
+			functionKeys = new ListDataModel<Object>();
 			functionKeys.setWrappedData(functionList);
 		}
 		return functionKeys;

@@ -128,15 +128,15 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 			// do nothing
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
-			if (vo.getStrIdLast() != null) {
+			if (vo.getSearchObjLast() != null) {
 				whereSql += CRIT[parms.size()] + " a.cust_id > ? ";
-				parms.add(vo.getStrIdLast());
+				parms.add(vo.getSearchObjLast());
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
-			if (vo.getStrIdFirst() != null) {
+			if (vo.getSearchObjFirst() != null) {
 				whereSql += CRIT[parms.size()] + " a.cust_id < ? ";
-				parms.add(vo.getStrIdFirst());
+				parms.add(vo.getSearchObjFirst());
 				fetchOrder = "desc";
 			}
 		}
@@ -149,9 +149,9 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 			fetchOrder = "desc";
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			if (vo.getStrIdFirst() != null) {
+			if (vo.getSearchObjFirst() != null) {
 				whereSql += CRIT[parms.size()] + " a.cust_id >= ? ";
-				parms.add(vo.getStrIdFirst());
+				parms.add(vo.getSearchObjFirst());
 			}
 		}
 		String sql = 
@@ -175,8 +175,8 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 			Collections.reverse(list);
 		}
 		if (!list.isEmpty()) {
-			vo.setStrIdFirst(list.get(0).getCustId());
-			vo.setStrIdLast(list.get(list.size() - 1).getCustId());
+			vo.setSearchObjFirst(list.get(0).getCustId());
+			vo.setSearchObjLast(list.get(list.size() - 1).getCustId());
 		}
 		return list;
 	}

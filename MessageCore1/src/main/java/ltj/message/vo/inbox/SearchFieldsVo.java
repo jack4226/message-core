@@ -1,19 +1,25 @@
 package ltj.message.vo.inbox;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
+import ltj.data.preload.FolderEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.vo.PagingVo;
 
-public final class SearchFieldsVo extends PagingVo implements Serializable {
+public final class SearchFieldsVo implements Serializable {
 	private static final long serialVersionUID = 8888455019361283024L;
+	static Logger logger = Logger.getLogger(SearchFieldsVo.class);
 	
-	public static enum MsgType {All, Received, Sent, Draft, Closed, Trash};
 	public static enum RuleName {All};
 	
-	private MsgType msgType = null;
+	private final PagingVo pagingVo;
+	
+	private FolderEnum folderType = null;
 	private String ruleName = RuleName.All.toString();
 	private Long fromAddrId = null;
 	private Long toAddrId = null;
@@ -33,11 +39,11 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 	// end of paging
 	
 	public static void main(String[] args) {
-		SearchFieldsVo vo1 = new SearchFieldsVo();
-		vo1.printMethodNames();
+		SearchFieldsVo vo1 = new SearchFieldsVo(new PagingVo());
+		vo1.getPagingVo().printMethodNames();
 		System.out.println(vo1.toString());
-		SearchFieldsVo vo2 = new SearchFieldsVo();
-		vo2.setMsgType(MsgType.Closed);
+		SearchFieldsVo vo2 = new SearchFieldsVo(new PagingVo());
+		vo2.setFolderType(FolderEnum.Closed);
 		vo1.setSubject("auto-reply");
 		vo2.setRuleName(RuleNameEnum.HARD_BOUNCE.name());
 		vo1.setBody("test message");
@@ -46,17 +52,17 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 		vo2.setToAddr("to@to.com");
 		vo1.setToAddrId(20L);
 		System.out.println(vo1.equalsLevel1(vo2));
-		System.out.println(vo1.listChanges());
+		System.out.println(vo1.getPagingVo().listChanges());
 	}
 	
-	public SearchFieldsVo() {
-		super();
-		setPageSize(MSG_INBOX_PAGE_SIZE);
+	public SearchFieldsVo(PagingVo pagingVo) {
+		this.pagingVo = pagingVo;
+		pagingVo.setPageSize(MSG_INBOX_PAGE_SIZE);
 		init();
 	}
 	
 	private void init() {
-		msgType = MsgType.Received;
+		folderType = FolderEnum.Inbox;
 	}
 	
 	public void resetFlags() {
@@ -68,103 +74,72 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 	public void resetAll() {
 		init();
 		resetFlags();
-		resetPageContext();
+		pagingVo.resetPageContext();
+	}
+
+	public PagingVo getPagingVo() {
+		return pagingVo;
 	}
 
 
 	public boolean equalsLevel1(SearchFieldsVo vo) {
-		return equalsToSearch(vo);
-	}
-	
-	public boolean equalsLevel1_deprecated(SearchFieldsVo vo) {
-		getLogList().clear();
 		if (this == vo) {
 			return true;
 		}
 		if (vo == null) {
 			return false;
 		}
-		if (this.msgType == null) {
-			if (vo.msgType != null) {
-				addChangeLog("MsgType", this.msgType, vo.msgType);
+		
+		getPagingVo().equalsToSearch(vo.getPagingVo());
+
+		String className = this.getClass().getName();
+		Method thisMethods[] = this.getClass().getMethods();
+		for (int i = 0; i < thisMethods.length; i++) {
+			Method method = (Method) thisMethods[i];
+			String methodName = method.getName();
+			Class<?>[] params = method.getParameterTypes();
+			if (methodName.length() > 3 && methodName.startsWith("get") && params.length == 0) {
+				Method voMethod = null;
+				try {
+					voMethod = vo.getClass().getMethod(methodName, params);
+				}
+				catch (NoSuchMethodException e) {
+					logger.warn(className + ".equalsToSearch(): " + e.getMessage());
+					return false;
+				}
+				try {
+					Class<?> returnType = method.getReturnType();
+					String returnTypeName = returnType.getName();
+					if ((returnTypeName.endsWith("java.lang.String"))
+							|| (returnTypeName.endsWith("java.lang.Integer"))
+							|| (returnTypeName.endsWith("java.lang.Long"))
+							|| (returnTypeName.endsWith("java.sql.Timestamp"))
+							|| (returnTypeName.endsWith("java.sql.Date"))
+							|| (returnType.equals(java.lang.Integer.TYPE))
+							|| (returnType.equals(java.lang.Long.TYPE))
+							|| (returnType.equals(java.lang.Character.TYPE))
+							|| (returnTypeName.endsWith("FolderEnum"))) {
+						Object thisValue = method.invoke((Object)this, (Object[])params);
+						Object voValue = voMethod.invoke((Object)vo, (Object[])params);
+						if (thisValue == null) {
+							if (voValue != null) {
+								getPagingVo().addChangeLog(methodName.substring(3), thisValue, voValue);
+							}
+						}
+						else {
+							if (!thisValue.equals(voValue)) {
+								getPagingVo().addChangeLog(methodName.substring(3), thisValue, voValue);
+							}
+						}
+					}
+				}
+				catch (Exception e) {
+					logger.warn(className + ".equalsToSearch(): " + e.getMessage());
+					return false;
+				}
 			}
 		}
-		else {
-			if (!this.msgType.equals(vo.msgType)) {
-				addChangeLog("MsgType", this.msgType, vo.msgType);
-			}
-		}
-		if (this.ruleName == null) {
-			if (vo.ruleName != null) {
-				addChangeLog("RuleName", this.ruleName, vo.ruleName);
-			}
-		}
-		else {
-			if (!this.ruleName.equals(vo.ruleName)) {
-				addChangeLog("RuleName", this.ruleName, vo.ruleName);
-			}
-		}
-		if (this.toAddrId == null) {
-			if (vo.toAddrId != null) {
-				addChangeLog("ToAddrId", this.toAddrId, vo.toAddrId);
-			}
-		}
-		else {
-			if (!this.toAddrId.equals(vo.toAddrId)) {
-				addChangeLog("ToAddrId", this.toAddrId, vo.toAddrId);
-			}
-		}
-		if (this.fromAddrId == null) {
-			if (vo.fromAddrId != null) {
-				addChangeLog("FromAddrId", this.fromAddrId, vo.fromAddrId);
-			}
-		}
-		else {
-			if (!this.fromAddrId.equals(vo.fromAddrId)) {
-				addChangeLog("FromAddrId", this.fromAddrId, vo.fromAddrId);
-			}
-		}
-		if (this.toAddr == null) {
-			if (vo.toAddr != null) {
-				addChangeLog("ToAddr", this.toAddr, vo.toAddr);
-			}
-		}
-		else {
-			if (!this.toAddr.equals(vo.toAddr)) {
-				addChangeLog("ToAddr", this.toAddr, vo.toAddr);
-			}
-		}
-		if (this.fromAddr == null) {
-			if (vo.fromAddr != null) {
-				addChangeLog("FromAddr", this.fromAddr, vo.fromAddr);
-			}
-		}
-		else {
-			if (!this.fromAddr.equals(vo.fromAddr)) {
-				addChangeLog("FromAddr", this.fromAddr, vo.fromAddr);
-			}
-		}
-		if (this.subject == null) {
-			if (vo.subject != null) {
-				addChangeLog("Subject", this.subject, vo.subject);
-			}
-		}
-		else {
-			if (!this.subject.equals(vo.subject)) {
-				addChangeLog("Subject", this.subject, vo.subject);
-			}
-		}
-		if (this.body == null) {
-			if (vo.body != null) {
-				addChangeLog("Body", this.body, vo.body);
-			}
-		}
-		else {
-			if (!this.body.equals(vo.body)) {
-				addChangeLog("Body", this.body, vo.body);
-			}
-		}
-		if (getLogList().size() > 0) {
+		if (getPagingVo().getLogList().size() > 0) {
 			return false;
 		}
 		else {
@@ -172,11 +147,12 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 		}
 	}
 	
+	
 	public void copyLevel1To(SearchFieldsVo vo) {
 		if (vo == null) {
 			return;
 		}
-		vo.setMsgType(this.msgType);
+		vo.setFolderType(this.folderType);
 		vo.setRuleName(this.ruleName);
 		vo.setToAddrId(this.toAddrId);
 		vo.setFromAddrId(this.fromAddrId);
@@ -186,11 +162,11 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 		vo.setBody(this.body);
 	}
 	
-	public MsgType getMsgType() {
-		return msgType;
+	public FolderEnum getFolderType() {
+		return folderType;
 	}
-	public void setMsgType(MsgType msgType) {
-		this.msgType = msgType;
+	public void setFolderType(FolderEnum msgType) {
+		this.folderType = msgType;
 	}
 	public Long getFromAddrId() {
 		return fromAddrId;
@@ -263,17 +239,5 @@ public final class SearchFieldsVo extends PagingVo implements Serializable {
 	}
 	public void setReceivedTimeLast(Timestamp receivedTimeLast) {
 		this.receivedTimeLast = receivedTimeLast;
-	}
-	public long getMsgIdFirst() {
-		return nbrIdFirst;
-	}
-	public void setMsgIdFirst(long msgIdFirst) {
-		this.nbrIdFirst = msgIdFirst;
-	}
-	public long getMsgIdLast() {
-		return nbrIdLast;
-	}
-	public void setMsgIdLast(long msgIdLast) {
-		this.nbrIdLast = msgIdLast;
 	}
 }

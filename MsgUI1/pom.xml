@@ -12,7 +12,8 @@
   	<mysql.connector.version>5.1.39</mysql.connector.version>
     <commons-digester-version>2.1</commons-digester-version>
     <jstl.version>1.2</jstl.version>
-    <javax.faces-version>1.2-20</javax.faces-version>
+    <faces-api.version>2.2</faces-api.version>
+  	<jsf-version>2.2.14</jsf-version>
     <apache.tiles-version>2.2.2</apache.tiles-version>
     <tomcat.version>7.0.72</tomcat.version>
   </properties>
@@ -36,17 +37,21 @@
   		<artifactId>jstl</artifactId>
   		<version>${jstl.version}</version>
   	</dependency>
+  	<dependency>
+		<groupId>javax.faces</groupId>
+		<artifactId>javax.faces-api</artifactId>
+		<version>${faces-api.version}</version>
+	</dependency>
   	
 	<dependency>
-	    <groupId>javax.faces</groupId>
-	    <artifactId>jsf-api</artifactId>
-	    <version>${javax.faces-version}</version>
+		<groupId>com.sun.faces</groupId>
+		<artifactId>jsf-api</artifactId>
+		<version>${jsf-version}</version>
 	</dependency>
-	
 	<dependency>
-	    <groupId>javax.faces</groupId>
-	    <artifactId>jsf-impl</artifactId>
-	    <version>${javax.faces-version}</version>
+		<groupId>com.sun.faces</groupId>
+		<artifactId>jsf-impl</artifactId>
+		<version>${jsf-version}</version>
 	</dependency>
 	
 	<dependency>

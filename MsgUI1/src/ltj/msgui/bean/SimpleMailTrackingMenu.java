@@ -1,16 +1,21 @@
 package ltj.msgui.bean;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import ltj.data.preload.FolderEnum;
+import ltj.message.constant.RuleType;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
-import ltj.message.util.StringUtil;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.UserVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
@@ -20,92 +25,151 @@ import ltj.msgui.util.SpringUtil;
 
 /**
  * This is a request scoped bean that holds search fields from HTTP request.
- * Whenever MsgInboxBean.getAll() gets called, it retrieves search fields from
+ * Whenever MessageInboxBean.getAll() gets called, it retrieves search fields from
  * this bean and uses them to construct a query to retrieve mails from database.
  * By doing this, if a user clicks browser's back button followed by refresh
  * button, the email list returned will still be okay.
  * 
  * Note: request scoped did not work as expected, changed to session scoped.
  */
-public class SimpleMailTrackingMenu {
+@ManagedBean(name="mailTracking")
+@javax.faces.bean.ViewScoped
+public class SimpleMailTrackingMenu extends PaginationBean implements java.io.Serializable {
+	private static final long serialVersionUID = -4430208005555443392L;
 	static final Logger logger = Logger.getLogger(SimpleMailTrackingMenu.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private String titleKey;
 	private String functionKey = null;
-	private String ruleName = RuleName.All.toString();
+	private String ruleName = RuleName.All.name();
 	private String fromAddress = null;
 	private String toAddress = null;
 	private String subject = null;
 	private String body = null;
 
-	private String defaultFolder = SearchFieldsVo.MsgType.Received.toString();
-	private String defaultRuleName = RuleName.All.toString();
+	private final String defaultFolder = FolderEnum.Inbox.name();
+	private String defaultRuleName = RuleName.All.name();
 	private String defaultToAddr = null;
 	
-	private EmailAddressDao emailAddressDao;
-	private MsgInboxDao msgInboxDao;
-	private static String TO_SELF = "message.search";
+	private final static String TO_SELF = null;
+	
+	private transient EmailAddressDao emailAddrDao;
+	private transient MsgInboxDao msgInboxDao;
 	
 	public SimpleMailTrackingMenu() {
-		setDefaultSearchFields();
+		initDefaultSearchValues();
 		functionKey = defaultFolder;
 		ruleName = defaultRuleName;
 	}
 	
-	void setDefaultSearchFields() {
+	@Override
+	protected void refresh() {
+		// dummy to satisfy super class
+	}
+
+	@Override
+	public int getRowCount() { // dummy to satisfy super class
+		return 0;
+	}
+
+	void initDefaultSearchValues() {
 		// initialize search fields from user's default settings.
 		UserVo userVo = FacesUtil.getLoginUserVo();
 		if (userVo != null) {
-			defaultFolder = userVo.getDefaultFolder();
-			if (StringUtil.isEmpty(defaultFolder)) {
-				defaultFolder = SearchFieldsVo.MsgType.Received.toString();
-			}
 			defaultRuleName = userVo.getDefaultRuleName();
-			if (StringUtil.isEmpty(defaultRuleName)) {
-				defaultRuleName = RuleName.All.toString();
+			if (StringUtils.isBlank(defaultRuleName)) {
+				defaultRuleName = RuleType.ALL.value();
 			}
-			defaultToAddr = userVo.getDefaultToAddr();
-			if (StringUtil.isEmpty(defaultToAddr)) {
-				defaultToAddr = null;
-			}
-			else {
-				getEmailAddrDao().findByAddress(defaultToAddr);
+			if (userVo.getEmailAddr()!=null) {
+				defaultToAddr = userVo.getEmailAddr();
+				if (StringUtils.isBlank(defaultToAddr)) {
+					defaultToAddr = null;
+				}
+				else {
+					getEmailAddressDao().findByAddress(defaultToAddr);
+				}
 			}
 		}
 		else {
-			logger.error("constructor - UserVo not found in HTTP session.");
+			logger.error("constructor - UserData not found in HTTP session.");
 		}
 	}
 	
-	public String selectAll() {
-		functionKey = SearchFieldsVo.MsgType.All.toString();
+	public String resetSearchFields() {
+		ruleName = defaultRuleName;
+		fromAddress = null;
+		toAddress = defaultToAddr;
+		subject = null;
+		body = null;
 		return TO_SELF;
 	}
 	
-	public String selectReceived() {
-		functionKey = SearchFieldsVo.MsgType.Received.toString();
-		return TO_SELF;
+	/*
+	 * used by SimpleMailTrackingMenu.xhtml to reset search folder when
+	 * navigated from main menu.
+	 */
+	public void resetFolderIfFromMain() {
+		String fromPage = FacesUtil.getRequestParameter("frompage");
+		if (StringUtils.equals(fromPage, "main")) {
+			functionKey = defaultFolder;
+		}
+	}
+
+	public void selectAllListener(AjaxBehaviorEvent event) {
+		logger.info("Entering selectAllListener()...");
+		functionKey = FolderEnum.All.name();
+		updateMessageInboxBean();
+		return; // TO_SELF;
 	}
 	
-	public String selectSent() {
-		functionKey = SearchFieldsVo.MsgType.Sent.toString();
-		return TO_SELF;
+	public void selectReceivedListener(AjaxBehaviorEvent event) {
+		logger.info("Entering selectReceivedListener()...");
+		functionKey = FolderEnum.Inbox.name();
+		updateMessageInboxBean();
+		return; // TO_SELF;
 	}
 	
-	public String selectDraft() {
-		functionKey = SearchFieldsVo.MsgType.Draft.toString();
-		return TO_SELF;
+	public void selectSentListener(AjaxBehaviorEvent event) {
+		logger.info("Entering selectSentListener()...");
+		functionKey = FolderEnum.Sent.name();
+		updateMessageInboxBean();
+		return; // TO_SELF;
 	}
 	
-	public String selectClosed() {
-		functionKey = SearchFieldsVo.MsgType.Closed.toString();
-		return TO_SELF;
+	public void selectDraftListener(AjaxBehaviorEvent event) {
+		logger.info("Entering selectDraftListener()...");
+		functionKey = FolderEnum.Draft.name();
+		updateMessageInboxBean();
+		return; // TO_SELF;
+	}
+	
+	public void selectClosedListener(AjaxBehaviorEvent event) {
+		logger.info("Entering selectClosedListener()...");
+		functionKey = FolderEnum.Closed.name();
+		//getPagingVo().setSearchCriteria(PagingVo.Column.statusId, new PagingVo.Criteria(RuleCriteria.EQUALS, MsgStatusCode.CLOSED.getValue()));
+		updateMessageInboxBean();
+		return; // TO_SELF;
+	}
+	
+	void updateMessageInboxBean() {
+		MessageInboxBean bean = (MessageInboxBean) FacesUtil.getManagedBean("messageInbox");
+		if (bean != null) {
+			SearchFieldsVo beanSearchVo = bean.getSearchFieldsVo();
+			//logger.info("Menu SearchFieldVo: " + getSearchFieldsVo());
+			//logger.info("Inbox SearchFieldVo: " + beanSearchVo);
+			if (!getSearchFieldsVo().equalsLevel1(beanSearchVo)) {
+				if (getSearchFieldsVo().getPagingVo().getLogList().size() > 0) {
+					logger.info("updateMessageInboxBean() - Search criteria changes:  After <-> Before\n" + getSearchFieldsVo().getPagingVo().listChanges());
+				}
+				getSearchFieldsVo().copyLevel1To(beanSearchVo);
+			}
+			bean.resetPagingVo();
+		}
 	}
 	
 	/**
 	 * This method is designed to go along with following JSF tag:
-	 * <h:selectOneMenu value="#{mailtracking.ruleName}" onchange="submit()"
+	 * <h:selectOneMenu value="#{mailtracking.ruleName}" onclick="submit()"
 	 * valueChangeListener="#{mailtracking.ruleNameChanged}"/>
 	 * 
 	 * @param event
@@ -117,97 +181,81 @@ public class SimpleMailTrackingMenu {
 	 *             methods that rely on "folder" to fail.
 	 */
 	public void ruleNameChanged(ValueChangeEvent event) {
+		/*
+		 * <h:selectOneMenu value="#{mailTracking.ruleName}" onchange="submit()"
+		 *	valueChangeListener="#{mailTracking.ruleNameChanged}"/>
+		 */
 		logger.info("Entering ruleNameChanged()...");
-		MsgInboxBean bean = (MsgInboxBean) FacesUtil.getSessionMapValue("msgfolder");
+		MessageInboxBean bean = (MessageInboxBean) FacesUtil.getSessionMapValue("msgfolder");
 		if (bean == null) {
-			logger.error("ruleNameChanged() - failed to retrieve MsgInboxBean from HTTP session");
+			logger.error("ruleNameChanged() - failed to retrieve MessageInboxBean from HTTP session");
 			return;
 		}
 		String newValue = (String) event.getNewValue();
 		String oldValue = (String) event.getOldValue();
 		if (newValue != null && !newValue.equals(oldValue)) {
 			bean.viewAll(); // reset view search criteria
-			bean.getSearchFieldVo().setRuleName(newValue);
+			bean.getSearchFieldsVo().setRuleName(newValue);
 		}
 	}
 	
-	public String searchBySearchVo() {
+	public void searchBySearchVoListener(AjaxBehaviorEvent event) {
 		logger.info("Entering searchBySearchVo()...");
-		return TO_SELF;
+		updateMessageInboxBean();
+		return; // TO_SELF;
 	}
 	
-	public String resetSearchFields() {
-		ruleName = defaultRuleName;
-		fromAddress = null;
-		toAddress = defaultToAddr;
-		subject = null;
-		body = null;
-		// the value should be used in navigation rules to point to self to
-		// refresh the page
-		return TO_SELF;
+	public void resetSearchFieldsListener(AjaxBehaviorEvent event) {
+		resetSearchFields();
+		updateMessageInboxBean();
 	}
 	
 	public void checkEmailAddress(FacesContext context, UIComponent component, Object value) {
-		if (value == null) {
-			return;
-		}
-		if (!(value instanceof String)) {
+		if (value == null || !(value instanceof String)) {
 			return;
 		}
 		
 		String addr = (String) value;
-		if (addr.trim().length() == 0) {
+		if (StringUtils.isBlank(addr)) {
 			return;
 		}
 		
-		EmailAddressVo vo = getEmailAddrDao().getByAddress(addr);
+		EmailAddressVo vo = getEmailAddressDao().getByAddress(addr);
 		if (vo == null) {
-			FacesMessage message = ltj.msgui.util.Messages.getMessage("ltj.msgui.messages", "emailAddressNotFound",
-					null);
+			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
+					"jpa.msgui.messages", "emailAddressNotFound", new String[] {addr});
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 	        throw new ValidatorException(message);
 		}
 	}
 	
-	public SearchFieldsVo getSearchFieldVo() {
-		SearchFieldsVo vo = new SearchFieldsVo();
-		SearchFieldsVo.MsgType msgType = null;
-		if (SearchFieldsVo.MsgType.All.toString().equals(functionKey)) {
-			msgType = SearchFieldsVo.MsgType.All;
+	public SearchFieldsVo getSearchFieldsVo() {
+		SearchFieldsVo vo = new SearchFieldsVo(getPagingVo());
+		FolderEnum msgType = null;
+		try {
+			msgType = FolderEnum.getByName(functionKey);
 		}
-		else if (SearchFieldsVo.MsgType.Received.toString().equals(functionKey)) {
-			msgType = SearchFieldsVo.MsgType.Received;
+		catch (IllegalArgumentException e) {
+			logger.error("IllagalArgumentException caught: " + e.getMessage());
+			msgType = FolderEnum.Inbox;
 		}
-		else if (SearchFieldsVo.MsgType.Sent.toString().equals(functionKey)) {
-			msgType = SearchFieldsVo.MsgType.Sent;
-		}
-		else if (SearchFieldsVo.MsgType.Draft.toString().equals(functionKey)) {
-			msgType = SearchFieldsVo.MsgType.Draft;
-		}
-		else if (SearchFieldsVo.MsgType.Closed.toString().equals(functionKey)) {
-			msgType = SearchFieldsVo.MsgType.Closed;
-		}
-		else if (SearchFieldsVo.MsgType.Trash.toString().equals(functionKey)) {
-			msgType = SearchFieldsVo.MsgType.Trash;
-		}
-		vo.setMsgType(msgType);
+		vo.setFolderType(msgType);
 		vo.setRuleName(ruleName);
-		vo.setFromAddr(fromAddress);
-		if (fromAddress != null && fromAddress.trim().length() > 0) {
-			EmailAddressVo vo2 = getEmailAddrDao().getByAddress(fromAddress);
-			if (vo2 != null) {
-				vo.setFromAddrId(vo2.getEmailAddrId());
+		vo.getPagingVo().setSearchValue(PagingVo.Column.fromAddr, fromAddress);
+		if (StringUtils.isNotBlank(fromAddress)) {
+			EmailAddressVo from = getEmailAddressDao().getByAddress(fromAddress);
+			if (from != null) {
+				vo.getPagingVo().setSearchValue(PagingVo.Column.fromAddrId, from.getEmailAddrId());
 			}
 		}
-		vo.setToAddr(toAddress);
-		if (toAddress != null && toAddress.trim().length() > 0) {
-			EmailAddressVo vo3 = getEmailAddrDao().getByAddress(toAddress);
-			if (vo3 != null) {
-				vo.setToAddrId(vo3.getEmailAddrId());
+		if (StringUtils.isNotBlank(toAddress)) {
+			EmailAddressVo to = getEmailAddressDao().getByAddress(toAddress);
+			if (to != null) {
+				vo.getPagingVo().setSearchValue(PagingVo.Column.toAddrId, to.getEmailAddrId());
 			}
 		}
-		vo.setSubject(subject);
-		vo.setBody(body);
+		vo.getPagingVo().setSearchValue(PagingVo.Column.msgSubject, subject);
+		vo.getPagingVo().setSearchValue(PagingVo.Column.msgBody, body);
 		
 		return vo;
 	}
@@ -281,20 +329,20 @@ public class SimpleMailTrackingMenu {
 		this.body = body;
 	}
 
-	public EmailAddressDao getEmailAddrDao() {
-		if (emailAddressDao == null) {
-			emailAddressDao = (EmailAddressDao) SpringUtil.getWebAppContext().getBean("emailAddressDao");
+	public EmailAddressDao getEmailAddressDao() {
+		if (emailAddrDao == null) {
+			emailAddrDao = SpringUtil.getWebAppContext().getBean(EmailAddressDao.class);
 		}
-		return emailAddressDao;
+		return emailAddrDao;
 	}
 
-	public void setEmailAddrDao(EmailAddressDao emailAddressDao) {
-		this.emailAddressDao = emailAddressDao;
+	public void setEmailAddressDao(EmailAddressDao emailAddrDao) {
+		this.emailAddrDao = emailAddrDao;
 	}
 
 	public MsgInboxDao getMsgInboxDao() {
 		if (msgInboxDao == null) {
-			msgInboxDao = (MsgInboxDao) SpringUtil.getWebAppContext().getBean("msgInboxDao");
+			msgInboxDao = SpringUtil.getWebAppContext().getBean(MsgInboxDao.class);
 		}
 		return msgInboxDao;
 	}

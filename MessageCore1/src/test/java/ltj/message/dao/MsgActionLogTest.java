@@ -14,6 +14,7 @@ import ltj.data.preload.RuleActionDetailEnum;
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgActionLogDao;
 import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.inbox.MsgActionLogVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
@@ -94,9 +95,9 @@ public class MsgActionLogTest extends DaoTestBase {
 	}
 	
 	private int insertMultiple() {
-		SearchFieldsVo srchvo = new SearchFieldsVo();
-		srchvo.setPageSize(100);
-		srchvo.setMsgType(null);
+		SearchFieldsVo srchvo = new SearchFieldsVo(new PagingVo());
+		srchvo.getPagingVo().setPageSize(100);
+		srchvo.setFolderType(null);
 		List<MsgInboxWebVo> list = msgInboxDao.getListForWeb(srchvo);
 		assertFalse(list.isEmpty());
 		int rowsInserted = 0;

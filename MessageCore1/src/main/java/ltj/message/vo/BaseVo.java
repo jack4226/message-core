@@ -16,15 +16,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import ltj.message.constant.StatusId;
+import ltj.message.util.BeanCopyUtil;
 import ltj.message.util.Printf;
 
 @XmlAccessorType (XmlAccessType.NONE)
 @XmlRootElement (name = "baseVo")
 public class BaseVo implements java.io.Serializable, Cloneable {
 	private static final long serialVersionUID = 2438423000525545863L;
+	protected static Logger logger = Logger.getLogger(BaseVo.class);
 	
 	final static String LF = System.getProperty("line.separator", "\n");
 	@XmlElement
@@ -106,6 +110,18 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 			return null;
 		}
 	}
+	
+	public void copyPropertiesTo(BaseVo dest) {
+		BeanCopyUtil.registerBeanUtilsConverters();
+		try {
+			BeanUtils.copyProperties(dest, this);
+		}
+		catch (Exception e) {
+			logger.warn("Exception caught from BeanUtils.copyProperties() - " + e.getMessage());
+			BeanCopyUtil.copyProperties(dest, this);
+		}
+	}
+
 	/** end of UI components */
 	
 	public boolean equalsTo(BaseVo vo) {
@@ -307,7 +323,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 		return changeLogs;
 	}
 	
-	protected void addChangeLog(String fieldName, Object left, Object right) {
+	public void addChangeLog(String fieldName, Object left, Object right) {
 		getLogList().add(new ChangeLog(fieldName, left, right));
 	}
 	
@@ -367,7 +383,7 @@ public class BaseVo implements java.io.Serializable, Cloneable {
 	public final String getStatusId() {
 		return statusId;
 	}
-	public final void setStatusId(String status) {
+	public void setStatusId(String status) {
 		this.statusId = status;
 	}
 	public Timestamp getUpdtTime() {

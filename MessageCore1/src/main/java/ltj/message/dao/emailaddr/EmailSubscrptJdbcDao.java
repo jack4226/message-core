@@ -174,15 +174,15 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 			// do nothing
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
-			if (vo.getNbrIdLast() > -1) {
+			if (vo.getSearchObjLast() != null) {
 				whereSql += CRIT[parms.size()] + " a.email_addr_id > ? ";
-				parms.add(vo.getNbrIdLast());
+				parms.add(vo.getSearchObjLast());
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
-			if (vo.getNbrIdFirst() > -1) {
+			if (vo.getSearchObjFirst() != null) {
 				whereSql += CRIT[parms.size()] + " a.email_addr_id < ? ";
-				parms.add(vo.getNbrIdFirst());
+				parms.add(vo.getSearchObjFirst());
 				fetchOrder = "desc";
 			}
 		}
@@ -195,9 +195,9 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 			fetchOrder = "desc";
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			if (vo.getNbrIdFirst() > -1) {
+			if (vo.getSearchObjFirst() != null) {
 				whereSql += CRIT[parms.size()] + " a.email_addr_id >= ? ";
-				parms.add(vo.getNbrIdFirst());
+				parms.add(vo.getSearchObjFirst());
 			}
 		}
 		String sql = 
@@ -235,8 +235,8 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 			Collections.reverse(list);
 		}
 		if (!list.isEmpty()) {
-			vo.setNbrIdFirst(list.get(0).getEmailAddrId());
-			vo.setNbrIdLast(list.get(list.size() - 1).getEmailAddrId());
+			vo.setSearchObjFirst(list.get(0).getEmailAddrId());
+			vo.setSearchObjLast(list.get(list.size() - 1).getEmailAddrId());
 		}
 		return list;
 	}

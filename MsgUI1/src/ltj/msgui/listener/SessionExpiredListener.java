@@ -1,6 +1,7 @@
 package ltj.msgui.listener;
 
 import javax.servlet.ServletContext;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -19,6 +20,7 @@ import ltj.msgui.util.SpringUtil;
  * and audit logs, etc...). After this method, we will be in a clean and stable
  * state.
  */
+@WebListener
 public class SessionExpiredListener implements HttpSessionListener {
 	static final Logger logger = Logger.getLogger(SessionExpiredListener.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();

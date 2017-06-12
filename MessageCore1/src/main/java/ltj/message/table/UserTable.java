@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
+import ltj.data.preload.FolderEnum;
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.user.SessionUploadDao;
@@ -12,7 +13,6 @@ import ltj.message.dao.user.UserDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.SessionUploadVo;
 import ltj.message.vo.UserVo;
-import ltj.message.vo.inbox.SearchFieldsVo;
 import ltj.spring.util.SpringUtil;
 
 public class UserTable extends CreateTableBase {
@@ -81,6 +81,7 @@ public class UserTable extends CreateTableBase {
 	void createSessionUploadTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE session_upload ( " +
+			"row_id int AUTO_INCREMENT not null, " +
 			"session_id varchar(50) NOT NULL, " + 
 			"session_seq int NOT NULL, " +
 			"file_name varchar(100) NOT NULL, " +
@@ -104,6 +105,7 @@ public class UserTable extends CreateTableBase {
 	void createUserSessionTable() throws SQLException {
 		try {
 			stm.execute("CREATE TABLE user_session ( " +
+			"row_id int AUTO_INCREMENT not null, " +
 			"session_id varchar(50) NOT NULL, " + 
 			"session_name varchar(50), " +
 			"session_value text, " +
@@ -136,7 +138,7 @@ public class UserTable extends CreateTableBase {
 			vo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			vo.setStatusId(StatusId.ACTIVE.value());
 			vo.setRole(Constants.ADMIN_ROLE);
-			vo.setDefaultFolder(SearchFieldsVo.MsgType.Received.name()); //"All");
+			vo.setDefaultFolder(FolderEnum.Inbox.name()); //"All");
 			vo.setClientId(Constants.DEFAULT_CLIENTID);
 			
 			int rows = getUserDao().insert(vo);

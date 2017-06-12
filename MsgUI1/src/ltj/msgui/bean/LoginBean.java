@@ -1,5 +1,8 @@
 package ltj.msgui.bean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -14,14 +17,23 @@ import ltj.msgui.filter.SessionTimeoutFilter;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
-public class LoginBean {
+@ManagedBean(name="login")
+//@javax.inject.Named("login")
+@RequestScoped
+public class LoginBean implements java.io.Serializable {
+	private static final long serialVersionUID = -5547672142490601294L;
 	static final Logger logger = Logger.getLogger(LoginBean.class);
 	private String userId = null;
 	private String password = null;
 	private String message = null;
+	
+	@ManagedProperty(value="#{param.source}")
 	private String source = null; // login or timeout
 	
-	private UserDao userDao = null;
+	@ManagedProperty("#{facesContext}")
+	private FacesContext context;
+	
+	private transient UserDao userDao = null;
 	
 	public String login() {
 		logger.info("login() - UserId: " +  userId);
@@ -36,7 +48,7 @@ public class LoginBean {
 		}
 		vo.setPassword(null); // for security
 		setSessionUserVo(vo);
-		//logger.info("login() - user logged in: " + userId);
+		logger.info("login() - user logged in: " + userId);
 		if (Constants.ADMIN_ROLE.equals(vo.getRole())) {
 			return Constants.ADMIN_ROLE;
 		}
@@ -66,7 +78,7 @@ public class LoginBean {
     }
     
     public HttpSession getHttpSession() {
-    	ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+    	ExternalContext ctx = context.getExternalContext(); //FacesContext.getCurrentInstance().getExternalContext();
     	return ((HttpSession) ctx.getSession(true));
     }
     
@@ -86,7 +98,7 @@ public class LoginBean {
     
     public boolean isCurrentPageMainPage() {
     	String viewId = FacesUtil.getCurrentViewId();
-    	return "/main.jsp".equals(viewId);
+    	return ("/main.xhtml".equals(viewId) || "/main.faces".equals(viewId));
     }
     
 	public boolean getIsProductKeyValid() {
@@ -99,9 +111,17 @@ public class LoginBean {
 	}
 
     public String getMainPage() {
-    	return getHttpSession().getServletContext().getContextPath() + "/main.faces";
+    	return getHttpSession().getServletContext().getContextPath() + "/main.xhtml";
     }
     
+	public FacesContext getContext() {
+		return context;
+	}
+
+	public void setContext(FacesContext context) {
+		this.context = context;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -136,7 +156,7 @@ public class LoginBean {
 
 	public UserDao getUserDao() {
 		if (userDao == null) {
-			userDao = (UserDao) SpringUtil.getWebAppContext().getBean("userDao");
+			userDao = SpringUtil.getWebAppContext().getBean(UserDao.class);
 		}
 		return userDao;
 	}
