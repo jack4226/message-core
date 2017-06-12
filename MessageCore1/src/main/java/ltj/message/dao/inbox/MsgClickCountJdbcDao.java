@@ -90,44 +90,12 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		/*
 		 * paging logic
 		 */
-//		String fetchOrder = "desc";
-//		int pageSize = vo.getPageSize();
-//		if (vo.getPageAction().equals(PagingVo.PageAction.FIRST)) {
-//			// do nothing
-//		}
-//		else if (vo.getPageAction().equals(PagingVo.PageAction.NEXT)) {
-//			if (vo.getSearchObjLast() != null) {
-//				whereSql += CRIT[parms.size()] + " a.msg_id < ? ";
-//				parms.add(vo.getSearchObjLast());
-//			}
-//		}
-//		else if (vo.getPageAction().equals(PagingVo.PageAction.PREVIOUS)) {
-//			if (vo.getSearchObjFirst() != null) {
-//				whereSql += CRIT[parms.size()] + " a.msg_id > ? ";
-//				parms.add(vo.getSearchObjFirst());
-//				fetchOrder = "asc";
-//			}
-//		}
-//		else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-//			int rows = getBroadcastsCount(vo);
-//			pageSize = rows % vo.getPageSize();
-//			if (pageSize == 0) {
-//				pageSize = Math.min(rows, vo.getPageSize());
-//			}
-//			fetchOrder = "asc";
-//		}
-//		else if (vo.getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-//			if (vo.getSearchObjFirst() != null) {
-//				whereSql += CRIT[parms.size()] + " a.msg_id <= ? ";
-//				parms.add(vo.getSearchObjFirst());
-//			}
-//		}
-		
 		int rows = 0;
 		if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
 			rows = getBroadcastsCount(vo);
 		}
 		PagingContext ctx = PagingVo.getPagingWhereSql(vo, CRIT, parms, rows, "a.msg_id");
+		whereSql += ctx.whereSql;
 		
 		String sql = 
 			"select a.*, e.email_addr_id, e.email_addr as from_addr " +

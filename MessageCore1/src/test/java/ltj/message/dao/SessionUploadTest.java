@@ -30,6 +30,7 @@ public class SessionUploadTest extends DaoTestBase {
 			assertNotNull(vo2);
 			vo.setCreateTime(vo2.getCreateTime());
 			vo.setSessionSeq(vo2.getSessionSeq());
+			vo.setRowId(vo2.getRowId()); // fake row_id for comparison
 			assertTrue(vo.equalsTo(vo2));
 			int rows = update(vo2);
 			assertEquals(1, rows);

@@ -89,8 +89,9 @@ public class UserTable extends CreateTableBase {
 			"user_id varchar(20) NOT NULL, " +
 			"create_time datetime(3) NOT NULL, " +
 			"session_value mediumblob, " +
+			"CONSTRAINT session_upload_pkey PRIMARY KEY (row_id), " +
 			"INDEX session_upload_ix_user_id (user_id), " +
-			"CONSTRAINT session_upload_pkey PRIMARY KEY (session_id, session_seq) " +
+			"CONSTRAINT UNIQUE INDEX session_upload_ix_id_seq (session_id, session_seq) " +
 			") ENGINE=InnoDB");
 			System.out.println("Created session_upload Table...");
 		} catch (SQLException e) {
@@ -111,8 +112,9 @@ public class UserTable extends CreateTableBase {
 			"session_value text, " +
 			"user_row_id Integer NOT NULL, " +
 			"create_time datetime(3) NOT NULL, " +
+			"CONSTRAINT user_session_pkey PRIMARY KEY (row_id), " +
 			"INDEX user_session_ix_user_row_id (user_row_id), " +
-			"CONSTRAINT user_session_pkey PRIMARY KEY (session_id, session_name), " +
+			"CONSTRAINT UNIQUE INDEX user_session_ix_id_seq (session_id, session_name), " +
 			"FOREIGN KEY user_session_fk_user_row_id (user_row_id) REFERENCES user_tbl(row_id) ON DELETE CASCADE ON UPDATE CASCADE " +
 			") ENGINE=InnoDB");
 			System.out.println("Created user_session Table...");
