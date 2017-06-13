@@ -140,7 +140,7 @@ public class MailingListBoImpl implements MailingListBo {
 		catch (AddressException e) {
 			throw new DataValidationException("Invalid FROM address found from list: " + renderVo.getFromAddr());
 		}
-		if (!StringUtil.isEmpty(renderVo.getCcAddr())) {
+		if (StringUtil.isNotEmpty(renderVo.getCcAddr())) {
 			try {
 				msgBean.setCc(InternetAddress.parse(renderVo.getCcAddr()));
 			}
@@ -148,7 +148,7 @@ public class MailingListBoImpl implements MailingListBo {
 				logger.error("send() - ccAddr is invalid: " + renderVo.getCcAddr());
 			}
 		}
-		if (!StringUtil.isEmpty(renderVo.getBccAddr())) {
+		if (StringUtil.isNotEmpty(renderVo.getBccAddr())) {
 			try {
 				msgBean.setBcc(InternetAddress.parse(renderVo.getBccAddr()));
 			}

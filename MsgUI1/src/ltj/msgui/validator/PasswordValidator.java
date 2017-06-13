@@ -22,7 +22,7 @@ public class PasswordValidator implements Validator {
 		String confirm = (String) value;
 		// Check if the first password is actually entered and compare it with
 		// second password.
-		if (!StringUtil.isEmpty(password) && !password.equals(confirm)) {
+		if (StringUtil.isNotEmpty(password) && !password.equals(confirm)) {
 			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("ltj.msgui.messages", "passwordsNotEqual", null);
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);

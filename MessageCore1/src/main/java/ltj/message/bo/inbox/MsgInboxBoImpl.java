@@ -364,7 +364,7 @@ public class MsgInboxBoImpl implements MsgInboxBo {
 		
 		// we could have found a final recipient without delivery reports
 		if (msgBean.getReport() == null && msgBean.getRfc822() == null) {
-			if (!StringUtil.isEmpty(msgBean.getFinalRcpt()) || !StringUtil.isEmpty(msgBean.getOrigRcpt())) {
+			if (StringUtil.isNotEmpty(msgBean.getFinalRcpt()) || StringUtil.isNotEmpty(msgBean.getOrigRcpt())) {
 				MsgRfcFieldVo msgRfcFieldVo = new MsgRfcFieldVo();
 				msgRfcFieldVo.setMsgId(msgVo.getMsgId());
 				msgRfcFieldVo.setRfcType(StringUtils.left(msgBean.getContentType(),30));

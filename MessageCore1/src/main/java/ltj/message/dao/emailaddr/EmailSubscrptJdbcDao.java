@@ -247,7 +247,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 			whereSql = CRIT[parms.size()] + " a.list_id = ? ";
 			parms.add(vo.getListId().trim());
 		}
-		if (!StringUtil.isEmpty(vo.getStatusId())) {
+		if (StringUtil.isNotEmpty(vo.getStatusId())) {
 			whereSql += CRIT[parms.size()] + " b.status_id = ? ";
 			parms.add(vo.getStatusId());
 		}

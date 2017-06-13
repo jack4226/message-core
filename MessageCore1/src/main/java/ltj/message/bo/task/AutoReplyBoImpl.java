@@ -137,10 +137,10 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 			}
 			replyBean.setBody(body);
 			replyBean.setClientId(messageBean.getClientId());
-			if (!StringUtil.isEmpty(messageBean.getClientId())) {
+			if (StringUtil.isNotEmpty(messageBean.getClientId())) {
 				replyBean.setClientId(messageBean.getClientId());
 			}
-			else if (!StringUtil.isEmpty(renderVo.getClientId())) {
+			else if (StringUtil.isNotEmpty(renderVo.getClientId())) {
 				replyBean.setClientId(renderVo.getClientId());
 			}
 			replyBean.setCustId(messageBean.getCustId());

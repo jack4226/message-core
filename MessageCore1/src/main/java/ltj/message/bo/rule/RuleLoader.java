@@ -406,22 +406,22 @@ public final class RuleLoader implements java.io.Serializable {
 			// if VERP is enabled, add VERP addresses to the pattern 
 			String verpSub = vo.getVerpSubDomain();
 			verpSub = (StringUtil.isEmpty(verpSub) ? "" : verpSub.trim() + ".");
-			if (!StringUtil.isEmpty(vo.getVerpInboxName())) {
+			if (StringUtil.isNotEmpty(vo.getVerpInboxName())) {
 				returnPath += "|" + vo.getVerpInboxName().trim() + "@" + verpSub + domainName;
 			}
-			if (!StringUtil.isEmpty(vo.getVerpRemoveInbox())) {
+			if (StringUtil.isNotEmpty(vo.getVerpRemoveInbox())) {
 				returnPath += "|" + vo.getVerpRemoveInbox().trim() + "@" + verpSub + domainName;
 			}
 		}
 		if (vo.isUseTestAddr()) {
 			// if in test mode, add test address to the pattern
-			if (!StringUtil.isEmpty(vo.getTestFromAddr())) {
+			if (StringUtil.isNotEmpty(vo.getTestFromAddr())) {
 				returnPath += "|" + vo.getTestFromAddr().trim();
 			}
-			if (!StringUtil.isEmpty(vo.getTestReplytoAddr())) {
+			if (StringUtil.isNotEmpty(vo.getTestReplytoAddr())) {
 				returnPath += "|" + vo.getTestReplytoAddr().trim();
 			}
-			if (!StringUtil.isEmpty(vo.getTestToAddr())) {
+			if (StringUtil.isNotEmpty(vo.getTestToAddr())) {
 				returnPath += "|" + vo.getTestToAddr().trim();
 			}
 		}

@@ -186,32 +186,32 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	
 	private String buildWhereClause(PagingCustVo vo, List<Object> parms) {
 		String whereSql = "";
-		if (!StringUtil.isEmpty(vo.getStatusId())) {
+		if (StringUtil.isNotEmpty(vo.getStatusId())) {
 			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
 			parms.add(vo.getStatusId());
 		}
-		if (!StringUtil.isEmpty(vo.getClientId())) {
+		if (StringUtil.isNotEmpty(vo.getClientId())) {
 			whereSql += CRIT[parms.size()] + " lower(a.client_id) = ? ";
 			parms.add(vo.getClientId().toLowerCase());
 		}
-		if (!StringUtil.isEmpty(vo.getSsnNumber())) {
+		if (StringUtil.isNotEmpty(vo.getSsnNumber())) {
 			whereSql += CRIT[parms.size()] + " a.ssn_number = ? ";
 			parms.add(vo.getSsnNumber());
 		}
-		if (!StringUtil.isEmpty(vo.getLastName())) {
+		if (StringUtil.isNotEmpty(vo.getLastName())) {
 			whereSql += CRIT[parms.size()] + " lower(a.last_name) = ? ";
 			parms.add(vo.getLastName().toLowerCase());
 		}
-		if (!StringUtil.isEmpty(vo.getFirstName())) {
+		if (StringUtil.isNotEmpty(vo.getFirstName())) {
 			whereSql += CRIT[parms.size()] + " lower(a.first_name) = ? ";
 			parms.add(vo.getFirstName().toLowerCase());
 		}
-		if (!StringUtil.isEmpty(vo.getDayPhone())) {
+		if (StringUtil.isNotEmpty(vo.getDayPhone())) {
 			whereSql += CRIT[parms.size()] + " a.day_phone = ? ";
 			parms.add(vo.getDayPhone());
 		}
 		// search by email address
-		if (!StringUtil.isEmpty(vo.getEmailAddr())) {
+		if (StringUtil.isNotEmpty(vo.getEmailAddr())) {
 			String addr = vo.getEmailAddr().trim();
 			if (addr.indexOf(" ") < 0) {
 				whereSql += CRIT[parms.size()] + " a.email_addr LIKE ? ";
@@ -296,7 +296,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	}
 	
 	private void syncupEmailFields(CustomerVo vo) {
-		if (!StringUtil.isEmpty(vo.getEmailAddr())) {
+		if (StringUtil.isNotEmpty(vo.getEmailAddr())) {
 			EmailAddressVo addrVo = getEmailAddressDao().findByAddress(vo.getEmailAddr());
 			vo.setEmailAddrId(addrVo.getEmailAddrId());
 		}

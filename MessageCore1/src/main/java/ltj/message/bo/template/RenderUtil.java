@@ -478,7 +478,7 @@ public final class RenderUtil {
 			String query = vo.getVariableQuery();
 			String proc = vo.getVariableProc();
 			String value = null;
-			if (!StringUtil.isEmpty(query)) {
+			if (StringUtil.isNotEmpty(query)) {
 				try {
 					value = getEmailVariableDao().getByQuery(query, addrId);
 				}
@@ -486,7 +486,7 @@ public final class RenderUtil {
 					logger.error("Exception caught for: " + query, e);
 				}
 			}
-			else if (!StringUtil.isEmpty(proc)) {
+			else if (StringUtil.isNotEmpty(proc)) {
 				try {
 					Object obj = Class.forName(proc).newInstance();
 					if (obj instanceof VariableResolver) {
@@ -602,7 +602,7 @@ public final class RenderUtil {
 			throw new TemplateNotFoundException("Could not find Template by Id: " + templateId);
 		}
 		MailingListVo listVo = null;
-		if (!StringUtil.isEmpty(listIdOverride)) {
+		if (StringUtil.isNotEmpty(listIdOverride)) {
 			// try the list id from input parameters first
 			listVo = getMailingListDao().getByListId(listIdOverride);
 			if (listVo == null) {
@@ -756,7 +756,7 @@ public final class RenderUtil {
 		}
 		String _from = listVo.getEmailAddr();
 		String dispName = listVo.getDisplayName();
-		if (!StringUtil.isEmpty(dispName)) {
+		if (StringUtil.isNotEmpty(dispName)) {
 			_from = dispName + "<" + _from + ">";
 		}
 		validateFromAddress(_from); // us list address as FROM

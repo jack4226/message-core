@@ -162,12 +162,12 @@ public abstract class MailSenderBase {
 				}
 				String left = clientVo.getVerpInboxName() + "-" + emailId + "-" + recipient.replaceAll("@", "=");
 				String verpDomain = clientVo.getDomainName();
-				if (!StringUtil.isEmpty(clientVo.getVerpSubDomain())) {
+				if (StringUtil.isNotEmpty(clientVo.getVerpSubDomain())) {
 					verpDomain = clientVo.getVerpSubDomain() + "." + verpDomain;
 				}
 				msgBean.setReturnPath("<" + left + "@" + verpDomain + ">");
 				// set List-Unsubscribe VERP header
-				if (!StringUtil.isEmpty(msgBean.getMailingListId())) {
+				if (StringUtil.isNotEmpty(msgBean.getMailingListId())) {
 					if (StringUtil.isEmpty(clientVo.getVerpRemoveInbox())) {
 						throw new DataValidationException("VERP remove inbox is blank in Client table.");
 					}

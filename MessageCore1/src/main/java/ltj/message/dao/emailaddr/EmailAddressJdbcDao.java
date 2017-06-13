@@ -185,7 +185,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 
 	private String buildWhereClause(PagingAddrVo vo, List<Object> parms) {
 		String whereSql = "";
-		if (!StringUtil.isEmpty(vo.getStatusId())) {
+		if (StringUtil.isNotEmpty(vo.getStatusId())) {
 			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
 			parms.add(vo.getStatusId());
 		}
@@ -517,7 +517,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		if (emailAddressVo.getBounceCount() > Constants.BOUNCE_SUSPEND_THRESHOLD) {
 			if (!StatusId.SUSPENDED.value().equals(emailAddressVo.getStatusId())) {
 				emailAddressVo.setStatusId(StatusId.SUSPENDED.value());
-				if (!StringUtil.isEmpty(emailAddressVo.getUpdtUserId())) {
+				if (StringUtil.isNotEmpty(emailAddressVo.getUpdtUserId())) {
 					emailAddressVo.setStatusChangeUserId(emailAddressVo.getUpdtUserId());
 				} else {
 					emailAddressVo.setStatusChangeUserId(Constants.DEFAULT_USER_ID);

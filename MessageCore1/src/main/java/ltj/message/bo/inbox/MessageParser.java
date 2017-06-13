@@ -236,7 +236,7 @@ public final class MessageParser {
 				}
 				boolean foundAll = false;
 				String rfcHeaders = sb.toString();
-				if (!StringUtil.isEmpty(rfcHeaders)) {
+				if (StringUtil.isNotEmpty(rfcHeaders)) {
 					// rfc822 headers
 					if (isDebugEnabled) {
 						logger.debug("parse() - scan rfc822 headers -----<" + LF + rfcHeaders + ">-----");
@@ -310,12 +310,12 @@ public final class MessageParser {
 		for (MsgHeader header : headers) {
 			if (Constants.VERP_BOUNCE_ADDR_XHEADER.equals(header.getName())) {
 				logger.info("parse() - VERP Recipient found: ==>" + header.getValue() + "<==");
-				if (msgBean.getOrigRcpt() != null && !StringUtil.isEmpty(header.getValue())
+				if (msgBean.getOrigRcpt() != null && StringUtil.isNotEmpty(header.getValue())
 						&& !msgBean.getOrigRcpt().equalsIgnoreCase(header.getValue())) {
 					logger.warn("parse() - replace original recipient: " + msgBean.getOrigRcpt()
 							+ " with VERP recipient: " + header.getValue());
 				}
-				if (!StringUtil.isEmpty(header.getValue())) {
+				if (StringUtil.isNotEmpty(header.getValue())) {
 					// VERP Bounce - always override
 					msgBean.setOrigRcpt(header.getValue());
 				}
@@ -394,7 +394,7 @@ public final class MessageParser {
 				|| RuleNameEnum.SOFT_BOUNCE.name().equals(ruleName)) {
 			if (StringUtil.isEmpty(msgBean.getFinalRcpt()) && StringUtil.isEmpty(msgBean.getOrigRcpt())) {
 				String finalRcpt = BounceAddressFinder.getInstance().find(body);
-				if (!StringUtil.isEmpty(finalRcpt)) {
+				if (StringUtil.isNotEmpty(finalRcpt)) {
 					logger.info("parse() - Final Recipient found from message body: " + finalRcpt);
 					msgBean.setFinalRcpt(finalRcpt);
 				}

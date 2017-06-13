@@ -56,7 +56,7 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 				// retrieve the real queue name (Spring JMS template) from database:
 				MsgDataTypeVo vo = msgDataTypeDao.getByTypeValuePair(RuleDataTypeEnum.QUEUE_NAME.name(), taskArguments[0]);
 				if (vo != null) {
-					if (!StringUtil.isEmpty(vo.getMiscProperties())) {
+					if (StringUtil.isNotEmpty(vo.getMiscProperties())) {
 						queueName = vo.getMiscProperties();
 					}
 				}

@@ -310,7 +310,7 @@ public final class MessageBeanBuilder {
 		// TO: Received (non-VERP) > Delivered-To > Received (VERP) > Envelope 
 		if (received_to != null && received_to.length > 0) {
 			String dest = received_to[0] == null ? null : received_to[0].toString();
-			if (!StringUtil.isEmpty(dest) && !EmailAddrUtil.isVERPAddress(dest)) {
+			if (StringUtil.isNotEmpty(dest) && !EmailAddrUtil.isVERPAddress(dest)) {
 				msgBean.setTo(received_to);
 			}
 		}
@@ -328,7 +328,7 @@ public final class MessageBeanBuilder {
 				// address. This will cause a disaster to EmailAddr table since all
 				// TO addresses are saved to that table.
 				String dest = received_to[0] == null ? null : received_to[0].toString();
-				if (!StringUtil.isEmpty(dest) && EmailAddrUtil.isVERPAddress(dest)) {
+				if (StringUtil.isNotEmpty(dest) && EmailAddrUtil.isVERPAddress(dest)) {
 					String verpDest = EmailAddrUtil.getDestAddrFromVERP(dest);
 					try {
 						Address[] destAddr = InternetAddress.parse(verpDest);

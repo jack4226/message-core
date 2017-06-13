@@ -88,7 +88,7 @@ public class SuspendBoImpl extends TaskBaseAdaptor {
 				addrs = token;
 			}
 			
-			if (!StringUtil.isEmpty(addrs)) {
+			if (StringUtil.isNotEmpty(addrs)) {
 				try {
 					InternetAddress.parse(addrs);
 				}

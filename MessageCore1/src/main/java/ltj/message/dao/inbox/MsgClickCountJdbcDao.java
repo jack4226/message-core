@@ -130,7 +130,7 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 
 	private String buildWhereClause(PagingCountVo vo, List<Object> parms) {
 		String whereSql = "";
-//		if (!StringUtil.isEmpty(vo.getStatusId())) {
+//		if (StringUtil.isNotEmpty(vo.getStatusId())) {
 //			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
 //			parms.add(vo.getStatusId());
 //		}

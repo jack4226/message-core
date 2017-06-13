@@ -41,6 +41,10 @@ public final class StringUtil {
 		return StringUtils.isEmpty(str);
 	}
 
+	public static boolean isNotEmpty(String str) {
+		return StringUtils.isNotEmpty(str);
+	}
+
 	/**
 	 * trim the input string from the right to the provided length.
 	 * 

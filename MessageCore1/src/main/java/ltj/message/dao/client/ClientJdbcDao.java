@@ -235,7 +235,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		
-		if (!StringUtil.isEmpty(clientVo.getWebSiteUrl())) {
+		if (StringUtil.isNotEmpty(clientVo.getWebSiteUrl())) {
 			vo.setVariableName("WebSiteUrl");
 			vo.setVariableValue(clientVo.getWebSiteUrl());
 			vo.setVariableFormat(null);
@@ -255,7 +255,7 @@ public class ClientJdbcDao extends AbstractDao implements ClientDao {
 		getClientVariableDao().insert(vo);
 		rowsInserted++;
 		
-		if (!StringUtil.isEmpty(clientVo.getContactPhone())) {
+		if (StringUtil.isNotEmpty(clientVo.getContactPhone())) {
 			vo.setVariableName("ContactPhoneNumber");
 			vo.setVariableValue(clientVo.getContactPhone());
 			vo.setVariableFormat(null);
