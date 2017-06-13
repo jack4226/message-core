@@ -99,7 +99,7 @@ public class TaskDispatcher {
 		}
 		
 		SpringUtil.beginTransaction();
-		try{
+		try {
 			List<MsgActionVo> actions = msgActionDao.getByBestMatch(msgBean.getRuleName(), null, msgBean.getClientId());
 			if (actions == null || actions.isEmpty()) {
 				// actions not defined, save the message.
@@ -108,49 +108,50 @@ public class TaskDispatcher {
 						+ ", ProcessBeanId [0]: " + processBeanId);
 				TaskBaseBo bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
 				bo.process(msgBean);
-				return;
 			}
-			for (int i = 0; i < actions.size(); i++) {
-				MsgActionVo msgActionVo = actions.get(i);
-				TaskBaseBo bo = null;
-				String processClassName = msgActionVo.getProcessClassName();
-				if (StringUtils.isNotBlank(processClassName)) {
-					// use process class
-					logger.info("dispatchTasks() - ProcessClassName [" + i + "]: " + processClassName);
-					try {
-						bo = (TaskBaseBo) Class.forName(processClassName).newInstance();
+			else {
+				for (int i = 0; i < actions.size(); i++) {
+					MsgActionVo msgActionVo = actions.get(i);
+					TaskBaseBo bo = null;
+					String processClassName = msgActionVo.getProcessClassName();
+					if (StringUtils.isNotBlank(processClassName)) {
+						// use process class
+						logger.info("dispatchTasks() - ProcessClassName [" + i + "]: " + processClassName);
+						try {
+							bo = (TaskBaseBo) Class.forName(processClassName).newInstance();
+						}
+						catch (ClassNotFoundException e) {
+							logger.error("ClassNotFoundException caught", e);
+							throw new DataValidationException(e.getMessage());
+						}
+						catch (InstantiationException e) {
+							logger.error("InstantiationException caught", e);
+							throw new DataValidationException(e.getMessage());
+						}
+						catch (IllegalAccessException e) {
+							logger.error("IllegalAccessException caught", e);
+							throw new DataValidationException(e.getMessage());
+						}
 					}
-					catch (ClassNotFoundException e) {
-						logger.error("ClassNotFoundException caught", e);
-						throw new DataValidationException(e.getMessage());
+					else { // use process bean
+						String processBeanId = msgActionVo.getProcessBeanId();
+						logger.info("dispatchTasks() - ProcessBeanId [" + i + "]: " + processBeanId);
+						bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
 					}
-					catch (InstantiationException e) {
-						logger.error("InstantiationException caught", e);
-						throw new DataValidationException(e.getMessage());
+					/*
+					 * retrieve arguments
+					 */
+					if (msgActionVo.getDataTypeValues() != null) {
+						bo.setTaskArguments(msgActionVo.getDataTypeValues());
 					}
-					catch (IllegalAccessException e) {
-						logger.error("IllegalAccessException caught", e);
-						throw new DataValidationException(e.getMessage());
+					else {
+						bo.setTaskArguments((String[]) null);
 					}
+					// TODO set queue name for jmsProcessor
+					//bo.getJmsProcessor().setQueueName("");
+					// invoke the processor
+					bo.process(msgBean);
 				}
-				else { // use process bean
-					String processBeanId = msgActionVo.getProcessBeanId();
-					logger.info("dispatchTasks() - ProcessBeanId [" + i + "]: " + processBeanId);
-					bo = (TaskBaseBo) SpringUtil.getAppContext().getBean(processBeanId);
-				}
-				/*
-				 * retrieve arguments
-				 */
-				if (msgActionVo.getDataTypeValues() != null) {
-					bo.setTaskArguments(msgActionVo.getDataTypeValues());
-				}
-				else {
-					bo.setTaskArguments((String[]) null);
-				}
-				// TODO set queue name for jmsProcessor
-				//bo.getJmsProcessor().setQueueName("");
-				// invoke the processor
-				bo.process(msgBean);
 			}
 			
 			SpringUtil.commitTransaction();

@@ -59,6 +59,7 @@ public class RuleEngineTest extends BoTestBase {
 	}
 	
 	@Test
+	@Rollback(value=false)
 	public void test1() throws Exception { // process bounced email
 		for (int i = 0; i < loops; i++) {
 			ruleName[i] = messageParser.parse(messageBean[i]);
@@ -68,6 +69,7 @@ public class RuleEngineTest extends BoTestBase {
 	}
 	
 	@Test
+	@Rollback(value=false)
 	public void test2() { // wait for 5 seconds
 		try {
 			Thread.sleep(WaitTimeInMillis);
@@ -77,11 +79,12 @@ public class RuleEngineTest extends BoTestBase {
 	}
 
 	@Test
+	@Rollback(value=false)
 	public void test3() { // verifyDataRecord
 		for (int i = 0; i < loops; i++) {
 			assertNotNull(messageBean[i].getMsgId());
 			MsgInboxVo vo = selectMsgInboxByMsgId(messageBean[i].getMsgId());
-			assertNotNull(vo);
+			assertNotNull("MsgId = " + messageBean[i].getMsgId(), vo);
 			assertEquals(EmailAddrUtil.removeDisplayName(fromAddr[i]), vo.getFromAddress());
 			assertEquals(EmailAddrUtil.removeDisplayName(toAddr[i]),vo.getToAddress());
 			
