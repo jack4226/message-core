@@ -19,19 +19,19 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 
-import jpa.constant.Constants;
-import jpa.model.MailingList;
-import jpa.model.SenderData;
-import jpa.msgui.util.FacesUtil;
-import jpa.msgui.util.SpringUtil;
-import jpa.service.common.SenderDataService;
-import jpa.service.common.SubscriptionService;
-import jpa.service.maillist.MailingListService;
-import jpa.util.EmailAddrUtil;
-import jpa.util.SenderUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import ltj.message.constant.Constants;
+import ltj.message.dao.client.ClientDao;
+import ltj.message.dao.client.ClientUtil;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.dao.emailaddr.MailingListDao;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.vo.ClientVo;
+import ltj.message.vo.emailaddr.MailingListVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 @ManagedBean(name="mailingList")
 @javax.faces.bean.ViewScoped
@@ -40,11 +40,11 @@ public class MailingListBean implements java.io.Serializable {
 	static final Logger logger = Logger.getLogger(MailingListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private transient MailingListService mailingListDao = null;
-	private transient SubscriptionService subscriptionDao = null;
+	private transient MailingListDao mailingListDao = null;
+	private transient EmailSubscrptDao subscriptionDao = null;
 	
-	private transient DataModel<MailingList> mailingLists = null;
-	private MailingList mailingList = null;
+	private transient DataModel<MailingListVo> mailingLists = null;
+	private MailingListVo mailingList = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 	
@@ -59,20 +59,20 @@ public class MailingListBean implements java.io.Serializable {
 	private static String TO_DELETED = TO_SAVED;
 	private static String TO_CANCELED = TO_SAVED;
 
-	public DataModel<MailingList> getAll() {
+	public DataModel<MailingListVo> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (mailingLists == null) {
-			List<MailingList> mailingListList = null;
-			if (!SenderUtil.isProductKeyValid() && SenderUtil.isTrialPeriodEnded()) {
-				mailingListList = getMailingListService().getAll(false);
+			List<MailingListVo> mailingListList = null;
+			if (!ClientUtil.isProductKeyValid() && ClientUtil.isTrialPeriodEnded()) {
+				mailingListList = getMailingListDao().getAll(false);
 			}
 			else {
-				mailingListList = getMailingListService().getAll(false);
+				mailingListList = getMailingListDao().getAll(false);
 			}
-			mailingLists = new ListDataModel<MailingList>(mailingListList);
+			mailingLists = new ListDataModel<MailingListVo>(mailingListList);
 		}
 		return mailingLists;
 	}
@@ -86,20 +86,20 @@ public class MailingListBean implements java.io.Serializable {
 		return TO_SELF;
 	}
 	
-	public MailingListService getMailingListService() {
+	public MailingListDao getMailingListDao() {
 		if (mailingListDao == null) {
-			mailingListDao = SpringUtil.getWebAppContext().getBean(MailingListService.class);
+			mailingListDao = SpringUtil.getWebAppContext().getBean(MailingListDao.class);
 		}
 		return mailingListDao;
 	}
 
-	public void setMailingListService(MailingListService mailingListDao) {
+	public void setMailingListDao(MailingListDao mailingListDao) {
 		this.mailingListDao = mailingListDao;
 	}
 	
-	public SubscriptionService getSubscriptionService() {
+	public EmailSubscrptDao getEmailSubscrptDao() {
 		if (subscriptionDao == null) {
-			subscriptionDao = SpringUtil.getWebAppContext().getBean(SubscriptionService.class);
+			subscriptionDao = SpringUtil.getWebAppContext().getBean(EmailSubscrptDao.class);
 		}
 		return subscriptionDao;
 	}
@@ -108,7 +108,7 @@ public class MailingListBean implements java.io.Serializable {
 	 * Use String signature for rowId to support JSF script.
 	 */
 	public String findListIdByRowId(String rowId) {
-		MailingList mlist = getMailingListService().getByRowId(Integer.parseInt(rowId));
+		MailingListVo mlist = getMailingListDao().getByRowId(Integer.parseInt(rowId));
 		if (mlist != null) {
 			return mlist.getListId();
 		}
@@ -133,7 +133,7 @@ public class MailingListBean implements java.io.Serializable {
 			return "mailinglist.failed";
 		}
 		reset();
-		this.mailingList = (MailingList) mailingLists.getRowData();
+		this.mailingList = (MailingListVo) mailingLists.getRowData();
 		logger.info("viewMailingList() - MailingList to be edited: " + mailingList.getListId());
 		mailingList.setMarkedForEdition(true);
 		editMode = true;
@@ -156,7 +156,7 @@ public class MailingListBean implements java.io.Serializable {
 			return "mailinglist.failed";
 		}
 		reset();
-		if (!EmailAddrUtil.isRemoteEmailAddress(mailingList.getListEmailAddr())) {
+		if (!EmailAddrUtil.isRemoteEmailAddress(mailingList.getEmailAddr())) {
 			testResult = "invalidEmailAddress";
 			return TO_FAILED;
 		}
@@ -165,11 +165,11 @@ public class MailingListBean implements java.io.Serializable {
 			mailingList.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
 		if (editMode == true) {
-			getMailingListService().update(mailingList);
+			getMailingListDao().update(mailingList);
 			logger.info("saveMailingList() - Rows Updated: " + 1);
 		}
 		else { // a new list
-			getMailingListService().insert(mailingList);
+			getMailingListDao().insert(mailingList);
 			getMailingListList().add(mailingList);
 			logger.info("saveMailingList() - Rows Inserted: " + 1);
 		}
@@ -189,11 +189,11 @@ public class MailingListBean implements java.io.Serializable {
 			return "mailinglist.failed";
 		}
 		reset();
-		List<MailingList> mailList = getMailingListList();
+		List<MailingListVo> mailList = getMailingListList();
 		for (int i=0; i<mailList.size(); i++) {
-			MailingList vo = mailList.get(i);
+			MailingListVo vo = mailList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getMailingListService().deleteByListId(vo.getListId());
+				int rowsDeleted = getMailingListDao().deleteByListId(vo.getListId());
 				if (rowsDeleted > 0) {
 					logger.info("deleteMailingLists() - MailingList deleted: " + vo.getListId());
 				}
@@ -215,20 +215,18 @@ public class MailingListBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<MailingList> mailList = getMailingListList();
+		List<MailingListVo> mailList = getMailingListList();
 		for (int i=0; i<mailList.size(); i++) {
-			MailingList vo = mailList.get(i);
+			MailingListVo vo = mailList.get(i);
 			if (vo.isMarkedForDeletion()) { // copy from 
-				this.mailingList = new MailingList();
+				this.mailingList = new MailingListVo();
 				try {
 					vo.copyPropertiesTo(this.mailingList);
 					mailingList.setMarkedForDeletion(false);
 					vo.setMarkedForDeletion(false);
-					if (mailingList.getSenderData() == null) {
-						mailingList.setSenderData(vo.getSenderData());
+					if (mailingList.getClientId() == null) {
+						mailingList.setClientId(vo.getClientId());
 					}
-					mailingList.setSubscriptions(null);
-					mailingList.setBroadcastMessages(null);
 				}
 				catch (Exception e) {
 					logger.error("BeanUtils.copyProperties() failed: ", e);
@@ -252,10 +250,10 @@ public class MailingListBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addMailingList() - Entering...");
 		reset();
-		SenderDataService senderService = SpringUtil.getWebAppContext().getBean(SenderDataService.class);
-		SenderData sender = senderService.getBySenderId(Constants.DEFAULT_SENDER_ID);
-		this.mailingList = new MailingList();
-		mailingList.setSenderData(sender);
+		ClientDao senderService = SpringUtil.getWebAppContext().getBean(ClientDao.class);
+		ClientVo sender = senderService.getByClientId(Constants.DEFAULT_CLIENTID);
+		this.mailingList = new MailingListVo();
+		mailingList.setClientId(sender.getClientId());
 		mailingList.setMarkedForEdition(true);
 		editMode = false;
 		beanMode = BeanMode.insert;
@@ -305,9 +303,9 @@ public class MailingListBean implements java.io.Serializable {
 			logger.warn("getAnyListsMarkedForDeletion() - MailingList List is null.");
 			return false;
 		}
-		List<MailingList> mailList = getMailingListList();
-		for (Iterator<MailingList> it=mailList.iterator(); it.hasNext();) {
-			MailingList vo = it.next();
+		List<MailingListVo> mailList = getMailingListList();
+		for (Iterator<MailingListVo> it=mailList.iterator(); it.hasNext();) {
+			MailingListVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -325,12 +323,12 @@ public class MailingListBean implements java.io.Serializable {
 		String listId = (String) value;
 		if (isDebugEnabled)
 			logger.debug("validatePrimaryKey() - listId: " + listId);
-		MailingList vo = getMailingListService().getByListId(listId);
+		MailingListVo vo = getMailingListDao().getByListId(listId);
 		if (vo != null) {
 			if (editMode == true && mailingList != null
 					&& vo.getRowId() != mailingList.getRowId()) {
 				// mailingList does not exist
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 		        		"jpa.msgui.messages", "mailingListAlreadyExist", new String[] {listId});
 						//"jpa.msgui.messages", "mailingListDoesNotExist", null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
@@ -338,7 +336,7 @@ public class MailingListBean implements java.io.Serializable {
 			}
 			else if (editMode == false) {
 				// mailingList already exist
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 						"jpa.msgui.messages", "mailingListAlreadyExist", new String[] {listId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
@@ -353,7 +351,7 @@ public class MailingListBean implements java.io.Serializable {
 		if (StringUtils.isNotBlank(emailAddr)) {
 			if (!EmailAddrUtil.isRemoteOrLocalEmailAddress(emailAddr)) {
 				// invalid email address
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 						"jpa.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
@@ -368,7 +366,7 @@ public class MailingListBean implements java.io.Serializable {
 		if (StringUtils.isNotBlank(acctUserName)) {
 			if (!acctUserName.matches("^(?i)([a-z0-9\\.\\_\\%\\+\\-])+$")) {
 				// invalid email address
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 						"jpa.msgui.messages", "invalidAccountUserName", new String[] {acctUserName});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
@@ -402,20 +400,20 @@ public class MailingListBean implements java.io.Serializable {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	private List<MailingList> getMailingListList() {
+	private List<MailingListVo> getMailingListList() {
 		if (mailingLists == null) {
-			return new ArrayList<MailingList>();
+			return new ArrayList<MailingListVo>();
 		}
 		else {
-			return (List<MailingList>)mailingLists.getWrappedData();
+			return (List<MailingListVo>)mailingLists.getWrappedData();
 		}
 	}
 	
-	public MailingList getMailingList() {
+	public MailingListVo getMailingList() {
 		return mailingList;
 	}
 
-	public void setMailingList(MailingList mailingList) {
+	public void setMailingList(MailingListVo mailingList) {
 		this.mailingList = mailingList;
 	}
 

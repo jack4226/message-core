@@ -11,7 +11,7 @@ public abstract class PaginationBean extends BaseBean {
 
 	private final PagingVo pagingVo = new PagingVo();
 	
-	public abstract int getRowCount();
+	public abstract long getRowCount();
 	
 	/*
 	 * Do NOT add "final" to the method. It broke Mockito test!
@@ -53,7 +53,7 @@ public abstract class PaginationBean extends BaseBean {
 		return; // TO_PAGING;
 	}
 
-	public int getLastPageRow() {
+	public long getLastPageRow() {
 		int lastRow = (pagingVo.getPageNumber() + 1) * pagingVo.getPageSize();
 		if (pagingVo.getRowCount() < 0) {
 			pagingVo.setRowCount(getRowCount());

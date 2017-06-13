@@ -5,6 +5,7 @@ import java.util.List;
 import ltj.message.vo.emailaddr.MailingListVo;
 
 public interface MailingListDao {
+	public MailingListVo getByRowId(int rowId);
 	public MailingListVo getByListId(String listId);
 	public List<MailingListVo> getByAddress(String emailAddr);
 	public List<MailingListVo> getAll(boolean onlyActive);

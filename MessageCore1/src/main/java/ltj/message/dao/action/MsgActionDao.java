@@ -7,6 +7,7 @@ import ltj.message.vo.action.MsgActionVo;
 
 public interface MsgActionDao {
 	public List<MsgActionVo> getByRuleName(String ruleName);
+	public boolean getHasActions(String ruleName);
 	public List<MsgActionVo> getByBestMatch(String ruleName, Timestamp startTime, String clientId);
 	public MsgActionVo getByPrimaryKey(int rowId);
 	public List<MsgActionVo> getAll();

@@ -80,8 +80,7 @@ public class RuleTables extends CreateTableBase {
 			"built_in_rule boolean NOT NULL DEFAULT false, " +
 			"description varchar(255), " +
 			"CONSTRAINT rule_logic_pkey PRIMARY KEY (row_id), " +
-			"INDEX rule_logic_ix_rule_name (rule_name), " +
-			"UNIQUE INDEX rule_logic_ix_rulnm_rulsq (rule_name, rule_seq) " + // use index to allow update to rule name
+			"UNIQUE INDEX rule_logic_ix_rulnm (rule_name) " + // use index to allow update to rule name
 			") ENGINE=InnoDB");
 			System.out.println("Created rule_logic Table...");
 		}

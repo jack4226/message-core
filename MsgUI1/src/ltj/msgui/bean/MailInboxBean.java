@@ -20,17 +20,16 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Store;
 
-import jpa.constant.CarrierCode;
-import jpa.constant.Constants;
-import jpa.model.MailInbox;
-import jpa.model.MailInboxPK;
-import jpa.msgui.util.FacesUtil;
-import jpa.msgui.util.SpringUtil;
-import jpa.service.msgin.MailInboxService;
-import jpa.util.SenderUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import ltj.message.constant.CarrierCode;
+import ltj.message.constant.Constants;
+import ltj.message.dao.client.ClientUtil;
+import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.vo.MailBoxVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 @ManagedBean(name="mailInbox")
 @javax.faces.bean.ViewScoped
@@ -40,10 +39,10 @@ public class MailInboxBean implements java.io.Serializable {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 
-	private transient MailInboxService mailBoxDao = null;
+	private transient MailBoxDao mailBoxDao = null;
 	
-	private transient DataModel<MailInbox> mailBoxes = null;
-	private MailInbox mailbox = null;
+	private transient DataModel<MailBoxVo> mailBoxes = null;
+	private MailBoxVo mailbox = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 	
@@ -67,31 +66,31 @@ public class MailInboxBean implements java.io.Serializable {
 		return "";
 	}
 	
-	public MailInboxService getMailInboxService() {
+	public MailBoxDao getMailBoxDao() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (mailBoxDao == null) {
-			mailBoxDao = SpringUtil.getWebAppContext().getBean(MailInboxService.class);
+			mailBoxDao = SpringUtil.getWebAppContext().getBean(MailBoxDao.class);
 		}
 		return mailBoxDao;
 	}
 
-	public void setMailInboxService(MailInboxService mailBoxDao) {
+	public void setMailBoxDao(MailBoxDao mailBoxDao) {
 		this.mailBoxDao = mailBoxDao;
 	}
 	
-	public DataModel<MailInbox> getAll() {
+	public DataModel<MailBoxVo> getAll() {
 		if (mailBoxes == null) {
-			List<MailInbox> mailBoxList = null;
-			if (!SenderUtil.isProductKeyValid() && SenderUtil.isTrialPeriodEnded()) {
-				mailBoxList = getMailInboxService().getAll(false);
+			List<MailBoxVo> mailBoxList = null;
+			if (!ClientUtil.isProductKeyValid() && ClientUtil.isTrialPeriodEnded()) {
+				mailBoxList = getMailBoxDao().getAll(false);
 			}
 			else {
-				mailBoxList = getMailInboxService().getAll(false);
+				mailBoxList = getMailBoxDao().getAll(false);
 			}
-			mailBoxes = new ListDataModel<MailInbox>(mailBoxList);
+			mailBoxes = new ListDataModel<MailBoxVo>(mailBoxList);
 		}
 		return mailBoxes;
 	}
@@ -114,13 +113,13 @@ public class MailInboxBean implements java.io.Serializable {
 		reset();
 		this.mailbox = mailBoxes.getRowData();
 		if (isInfoEnabled) {
-			logger.info("viewMailBox() - Mailbox to be edited: " + mailbox.getMailInboxPK());
+			logger.info("viewMailBox() - Mailbox to be edited: " + mailbox.getHostName() + ":" + mailbox.getUserId());
 		}
 		mailbox.setMarkedForEdition(true);
 		editMode = true;
 		beanMode = BeanMode.edit;
 		if (isDebugEnabled)
-			logger.debug("viewMailBox() - MailInbox to be passed to jsp: " + mailbox);
+			logger.debug("viewMailBox() - MailBoxVo to be passed to jsp: " + mailbox);
 		
 		return TO_EDIT;
 	}
@@ -140,11 +139,11 @@ public class MailInboxBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("saveMailbox() - Entering...");
 		if (mailbox == null) {
-			logger.warn("saveMailbox() - MailInbox is null.");
+			logger.warn("saveMailbox() - MailBoxVo is null.");
 			return TO_FAILED;
 		}
 		reset();
-		if (validatePrimaryKey(mailbox.getMailInboxPK()) != null) {
+		if (validatePrimaryKey(mailbox.getUserId(), mailbox.getHostName()) != null) {
 			return TO_FAILED;
 		}
 		// update database
@@ -152,11 +151,11 @@ public class MailInboxBean implements java.io.Serializable {
 			mailbox.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
 		if (editMode == true) {
-			getMailInboxService().update(mailbox);
+			getMailBoxDao().update(mailbox);
 			logger.info("saveMailBox() - Rows Updated: " + 1);
 		}
 		else {
-			getMailInboxService().insert(mailbox);
+			getMailBoxDao().insert(mailbox);
 			getMailBoxList().add(mailbox);
 			logger.info("saveMailBox() - Rows Inserted: " + 1);
 		}
@@ -176,13 +175,13 @@ public class MailInboxBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<MailInbox> mboxList = getMailBoxList();
+		List<MailBoxVo> mboxList = getMailBoxList();
 		for (int i=0; i<mboxList.size(); i++) {
-			MailInbox vo = mboxList.get(i);
+			MailBoxVo vo = mboxList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getMailInboxService().deleteByPrimaryKey(vo.getMailInboxPK());
+				int rowsDeleted = getMailBoxDao().deleteByPrimaryKey(vo.getUserId(), vo.getHostName());
 				if (rowsDeleted > 0) {
-					logger.info("deleteMailBoxes() - Mailbox deleted: " + vo.getMailInboxPK());
+					logger.info("deleteMailBoxes() - Mailbox deleted: " + vo.getUserId() + ":" + vo.getHostName());
 				}
 				vo.setMarkedForDeletion(false);
 				mboxList.remove(vo);
@@ -195,14 +194,14 @@ public class MailInboxBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("testMailbox() - Entering...");
 		if (mailbox == null) {
-			logger.warn("testMailbox() - MailInbox is null.");
+			logger.warn("testMailbox() - MailBoxVo is null.");
 			testResult = "internalServerError";
 			return;
 		}
 		Properties m_props = (Properties) System.getProperties().clone();
 		Session session = null;
 		// Get a Session object
-		if (mailbox.isUseSsl()) {
+		if (mailbox.getUseSsl()) {
 			m_props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 			m_props.setProperty("mail.pop3.socketFactory.fallback", "false");
 			m_props.setProperty("mail.pop3.port", mailbox.getPortNumber()+"");
@@ -218,8 +217,7 @@ public class MailInboxBean implements java.io.Serializable {
 			// Get a Store object
 			store = session.getStore(mailbox.getProtocol());
 			// connect to the store
-			store.connect(mailbox.getMailInboxPK().getHostName(), mailbox.getPortNumber(),
-					mailbox.getMailInboxPK().getUserId(), mailbox.getUserPswd());
+			store.connect(mailbox.getHostName(), mailbox.getPortNumber(), mailbox.getUserId(), mailbox.getUserPswd());
 			
 			testResult = "mailboxTestSuccess";
 		}
@@ -243,7 +241,7 @@ public class MailInboxBean implements java.io.Serializable {
 		 * <h:messages id="myMessage" globalOnly="true" showDetail="false"/>
 		 * 
 		 */
-		FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 				"jpa.msgui.messages", testResult, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
@@ -260,11 +258,11 @@ public class MailInboxBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<MailInbox> mboxList = getMailBoxList();
+		List<MailBoxVo> mboxList = getMailBoxList();
 		for (int i=0; i<mboxList.size(); i++) {
-			MailInbox vo = mboxList.get(i);
+			MailBoxVo vo = mboxList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				mailbox = new MailInbox();
+				mailbox = new MailBoxVo();
 				try {
 					vo.copyPropertiesTo(mailbox);
 					mailbox.setMarkedForDeletion(false);
@@ -274,8 +272,6 @@ public class MailInboxBean implements java.io.Serializable {
 					logger.error("BeanUtils.copyProperties() failed: ", e);
 					setDefaultValues(mailbox);
 				}
-				MailInboxPK pk = new MailInboxPK();
-				mailbox.setMailInboxPK(pk);
 				mailbox.setMarkedForEdition(true);
 				editMode = false;
 				beanMode = BeanMode.insert;
@@ -293,29 +289,27 @@ public class MailInboxBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addMailbox() - Entering...");
 		reset();
-		this.mailbox = new MailInbox();
-		MailInboxPK pk = new MailInboxPK();
-		mailbox.setMailInboxPK(pk);
+		this.mailbox = new MailBoxVo();
 		mailbox.setMarkedForEdition(true);
 		mailbox.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		mailbox.setUseSsl(false);
-		mailbox.setIsToPlainText(false);
+		mailbox.setToPlainText(false);
 		mailbox.setReadPerPass(5);
-		mailbox.setNumberOfThreads(4);
+		mailbox.setThreads(4);
 		setDefaultValues(mailbox);
 		editMode = false;
 		beanMode = BeanMode.insert;
 		return TO_EDIT;
 	}
 	
-	private void setDefaultValues(MailInbox mailbox) {
+	private void setDefaultValues(MailBoxVo mailbox) {
 		// default values, not present on screen
-		mailbox.setIsCheckDuplicate(true);
-		mailbox.setIsAlertDuplicate(true);
-		mailbox.setIsLogDuplicate(true);
+		mailbox.setCheckDuplicate(true);
+		mailbox.setAlertDuplicate(true);
+		mailbox.setLogDuplicate(true);
 		mailbox.setPurgeDupsAfter(24); // in hours
-		mailbox.setCarrierCode(CarrierCode.SMTPMAIL.getValue());
-		mailbox.setIsInternalOnly(false);
+		mailbox.setCarrierCode(CarrierCode.SMTPMAIL.value());
+		mailbox.setInternalOnly(false);
 		mailbox.setMessageCount(-1);
 	}
 	
@@ -335,9 +329,9 @@ public class MailInboxBean implements java.io.Serializable {
 			logger.warn("getAnyMailBoxsMarkedForDeletion() - MailBox List is null.");
 			return false;
 		}
-		List<MailInbox> mboxList = getMailBoxList();
-		for (Iterator<MailInbox> it=mboxList.iterator(); it.hasNext();) {
-			MailInbox vo = it.next();
+		List<MailBoxVo> mboxList = getMailBoxList();
+		for (Iterator<MailBoxVo> it=mboxList.iterator(); it.hasNext();) {
+			MailBoxVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -350,17 +344,17 @@ public class MailInboxBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("validatePrimaryKey() - UserId: " + userId);
 
-		MailInbox vo = (MailInbox) getMailInboxService().getByPrimaryKey(mailbox.getMailInboxPK());
+		MailBoxVo vo = getMailBoxDao().getByPrimaryKey(mailbox.getUserId(), mailbox.getHostName());
 		if (vo != null) {
 			if (editMode == true && mailbox != null
 					&& vo.getRowId() != mailbox.getRowId()) {
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 						"jpa.msgui.messages", "mailboxAlreadyExist", new String[] {userId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
 			else if (editMode == false) {
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 						"jpa.msgui.messages", "mailboxAlreadyExist", new String[] {userId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
@@ -368,12 +362,12 @@ public class MailInboxBean implements java.io.Serializable {
 		}
 	}
 	
-	private String validatePrimaryKey(MailInboxPK pk) {
+	private String validatePrimaryKey(String userId, String hostName) {
 		if (isDebugEnabled)
-			logger.debug("validatePrimaryKey() - hostName/userId: " + pk.getHostName()+ "/" + pk.getUserId());
+			logger.debug("validatePrimaryKey() - hostName/userId: " + hostName+ "/" + userId);
 		testResult = null;
 
-		MailInbox vo = (MailInbox) getMailInboxService().getByPrimaryKey(pk);
+		MailBoxVo vo = (MailBoxVo) getMailBoxDao().getByPrimaryKey(userId, hostName);
 		if (vo != null) {
 			if (editMode == true && vo.getRowId() != mailbox.getRowId()) {
 				// mailbox does not exist
@@ -413,20 +407,20 @@ public class MailInboxBean implements java.io.Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<MailInbox> getMailBoxList() {
+	private List<MailBoxVo> getMailBoxList() {
 		if (mailBoxes == null) {
-			return new ArrayList<MailInbox>();
+			return new ArrayList<MailBoxVo>();
 		}
 		else {
-			return (List<MailInbox>) mailBoxes.getWrappedData();
+			return (List<MailBoxVo>) mailBoxes.getWrappedData();
 		}
 	}
 	
-	public MailInbox getMailbox() {
+	public MailBoxVo getMailbox() {
 		return mailbox;
 	}
 
-	public void setMailbox(MailInbox mailbox) {
+	public void setMailbox(MailBoxVo mailbox) {
 		this.mailbox = mailbox;
 	}
 

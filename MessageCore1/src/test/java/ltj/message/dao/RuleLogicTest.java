@@ -28,9 +28,8 @@ public class RuleLogicTest extends DaoTestBase {
 			assertTrue(listActive.size() > 0);
 			List<RuleLogicVo> listAll = selectAllRules();
 			assertTrue(listAll.size() > 0);
-			List<RuleLogicVo> list = selectByPrimaryKey(testRuleName);
-			assertTrue(list.size() > 0);
-			RuleLogicVo vo = list.get(0);
+			RuleLogicVo vo = selectByPrimaryKey(testRuleName);
+			assertNotNull(vo);
 			RuleLogicVo vo2 = insert(vo);
 			assertNotNull(vo2);
 			vo.setRowId(vo2.getRowId());
@@ -53,6 +52,14 @@ public class RuleLogicTest extends DaoTestBase {
 		List<RuleLogicVo> list1 = ruleLogicDao.getAll(true);
 		assertFalse(list1.isEmpty());
 		
+		boolean hasSubrule = false;
+		for (RuleLogicVo vo: list1) {
+			if (ruleLogicDao.getHasSubRules(vo.getRuleName())) {
+				hasSubrule = true;
+			}
+		}
+		assertTrue(hasSubrule);
+				
 		List<RuleLogicVo> list2 = ruleLogicDao.getAllSubRules(false);
 		assertFalse(list2.isEmpty());
 		int size2 = list2.size();
@@ -69,13 +76,12 @@ public class RuleLogicTest extends DaoTestBase {
 		logger.info("Custom Rule Names: " + list4);
 	}
 
-	private List<RuleLogicVo> selectByPrimaryKey(String ruleName) {
-		List<RuleLogicVo> list = ruleLogicDao.getByRuleName(ruleName);
-		if (list.size() > 0) {
-			RuleLogicVo ruleLogicVo = list.get(0);
-			logger.info("RuleLogicDao - selectByPrimaryKey: " + LF + ruleLogicVo);
+	private RuleLogicVo selectByPrimaryKey(String ruleName) {
+		RuleLogicVo vo = ruleLogicDao.getByRuleName(ruleName);
+		if (vo != null) {
+			logger.info("RuleLogicDao - selectByPrimaryKey: " + LF + vo);
 		}
-		return list;
+		return vo;
 	}
 
 	private List<RuleLogicVo> selectActiveRules() {
@@ -118,8 +124,8 @@ public class RuleLogicTest extends DaoTestBase {
 	}
 
 	private int deleteByPrimaryKey(RuleLogicVo vo) {
-		logger.info("RuleLogicDao - deleteByPrimaryKey: " + vo.getRuleName() + "/" + vo.getRuleSeq());
-		int rowsDeleted = ruleLogicDao.deleteByPrimaryKey(vo.getRuleName(), vo.getRuleSeq());
+		logger.info("RuleLogicDao - deleteByPrimaryKey: " + vo.getRuleName());
+		int rowsDeleted = ruleLogicDao.deleteByPrimaryKey(vo.getRuleName());
 		logger.info("RuleLogicDao - deleteByPrimaryKey: Rows Deleted: " + rowsDeleted);
 		return rowsDeleted;
 	}

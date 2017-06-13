@@ -53,6 +53,19 @@ public class MsgActionJdbcDao extends AbstractDao implements MsgActionDao {
 	}
 	
 	@Override
+	public boolean getHasActions(String ruleName) {
+		String sql = 
+			"select count(*) from rule_logic rl, msg_action m "
+			+ "where rl.rule_name = m.rule_name "
+			+ "and rl.rule_name = ?";
+		List<Object> fields = new ArrayList<>();
+		fields.add(ruleName);
+		
+		int rows = getJdbcTemplate().queryForObject(sql, fields.toArray(), Integer.class);
+		return (rows > 0);
+	}
+	
+	@Override
 	public List<MsgActionVo> getByBestMatch(String ruleName, Timestamp startTime, String clientId) {
 		if (startTime == null) {
 			startTime = new Timestamp(System.currentTimeMillis());

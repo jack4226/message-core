@@ -25,7 +25,7 @@ public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable 
 	protected PageAction pageAction; // = PageAction.CURRENT;
 	protected int pageSize = PAGE_SIZE;
 	protected int pageNumber = 0;
-	protected int rowCount = -1;
+	protected long rowCount = -1;
 	// end of paging
 	
 	protected Object searchObjFirst;
@@ -554,11 +554,11 @@ public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable 
 		this.pageSize = pageSize;
 	}
 
-	public int getRowCount() {
+	public long getRowCount() {
 		return rowCount;
 	}
 
-	public void setRowCount(int rowCount) {
+	public void setRowCount(long rowCount) {
 		this.rowCount = rowCount;
 	}
 

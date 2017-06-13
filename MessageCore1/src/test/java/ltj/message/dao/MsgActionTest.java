@@ -28,6 +28,7 @@ public class MsgActionTest extends DaoTestBase {
 	public void testSelects() {
 		List<MsgActionVo> list1 = selectByRuleName(testRuleName);
 		assertTrue(list1.size() > 0);
+		msgActionDao.getHasActions(testRuleName);
 		List<MsgActionVo> list2 = selectByBestMatch();
 		assertTrue(list2.size() > 0);
 		MsgActionVo vo1 = list1.get(0);

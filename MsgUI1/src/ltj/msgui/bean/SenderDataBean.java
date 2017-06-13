@@ -14,17 +14,17 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 
-import jpa.constant.CodeType;
-import jpa.constant.Constants;
-import jpa.model.SenderData;
-import jpa.msgui.util.FacesUtil;
-import jpa.msgui.util.SpringUtil;
-import jpa.service.common.SenderDataService;
-import jpa.util.EmailAddrUtil;
-import jpa.util.SenderUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import ltj.message.constant.CodeType;
+import ltj.message.constant.Constants;
+import ltj.message.dao.client.ClientDao;
+import ltj.message.dao.client.ClientUtil;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.vo.ClientVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 @ManagedBean(name="senderData")
 @javax.faces.bean.ViewScoped
@@ -33,10 +33,10 @@ public class SenderDataBean implements java.io.Serializable {
 	static final Logger logger = Logger.getLogger(SenderDataBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private transient SenderDataService senderDao = null;
+	private transient ClientDao senderDao = null;
 	
-	private transient DataModel<SenderData> siteProfiles = null;
-	private SenderData sender = null;
+	private transient DataModel<ClientVo> siteProfiles = null;
+	private ClientVo sender = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 	
@@ -53,35 +53,35 @@ public class SenderDataBean implements java.io.Serializable {
 	private static String TO_DELETED = TO_SAVED;
 	private static String TO_CANCELED = TO_SAVED;
 	
-	private final SenderData siteMeta = new SenderData();
+	private final ClientVo siteMeta = new ClientVo();
 	
 	//public SenderDataBean() {
 	//	getData();
 	//}
 	
-	public DataModel<SenderData> getAll() {
+	public DataModel<ClientVo> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (siteProfiles == null) {
-			List<SenderData> senderList = null;
-			if (!SenderUtil.isProductKeyValid() && SenderUtil.isTrialPeriodEnded()) {
-				senderList = getSenderDataService().getAll();
+			List<ClientVo> senderList = null;
+			if (!ClientUtil.isProductKeyValid() && ClientUtil.isTrialPeriodEnded()) {
+				senderList = getClientDao().getAll();
 			}
 			else {
-				senderList = getSenderDataService().getAll();
+				senderList = getClientDao().getAll();
 			}
-			List<SenderData> systemAtTop = new ArrayList<SenderData>();
+			List<ClientVo> systemAtTop = new ArrayList<ClientVo>();
 			for (int i = 0; i < senderList.size(); i++) {
-				SenderData vo = senderList.get(i);
-				if (Constants.DEFAULT_SENDER_ID.equals(vo.getSenderId())) {
+				ClientVo vo = senderList.get(i);
+				if (Constants.DEFAULT_CLIENTID.equals(vo.getClientId())) {
 					systemAtTop.add(vo);
 					senderList.remove(i);
 				}
 			}
 			systemAtTop.addAll(senderList);
-			siteProfiles = new ListDataModel<SenderData>(systemAtTop);
+			siteProfiles = new ListDataModel<ClientVo>(systemAtTop);
 		}
 		return siteProfiles;
 	}
@@ -101,9 +101,9 @@ public class SenderDataBean implements java.io.Serializable {
 	
 	public String refreshSender() {
 		if (siteProfiles != null && siteProfiles.isRowAvailable()) {
-			SenderData sd = siteProfiles.getRowData();
+			ClientVo sd = siteProfiles.getRowData();
 			if (sd != null) {
-				sender = getSenderDataService().getBySenderId(sd.getSenderId());
+				sender = getClientDao().getByClientId(sd.getClientId());
 			}
 		}
 		reset();
@@ -111,14 +111,14 @@ public class SenderDataBean implements java.io.Serializable {
 		return null;
 	}
 	
-	public SenderDataService getSenderDataService() {
+	public ClientDao getClientDao() {
 		if (senderDao == null) {
-			senderDao = SpringUtil.getWebAppContext().getBean(SenderDataService.class);
+			senderDao = SpringUtil.getWebAppContext().getBean(ClientDao.class);
 		}
 		return senderDao;
 	}
 
-	public void setSenderDataService(SenderDataService senderDao) {
+	public void setClientDao(ClientDao senderDao) {
 		this.senderDao = senderDao;
 	}
 	
@@ -147,13 +147,13 @@ public class SenderDataBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		this.sender = (SenderData) siteProfiles.getRowData();
-		logger.info("viewSiteProfile() - Site to be edited: " + sender.getSenderId());
+		this.sender = (ClientVo) siteProfiles.getRowData();
+		logger.info("viewSiteProfile() - Site to be edited: " + sender.getClientId());
 		sender.setMarkedForEdition(true);
 		editMode = true;
 		beanMode = BeanMode.edit;
 		if (isDebugEnabled)
-			logger.debug("viewSiteProfile() - SenderData to be passed to jsp: " + sender);
+			logger.debug("viewSiteProfile() - ClientVo to be passed to jsp: " + sender);
 		
 		return TO_EDIT;
 	}
@@ -172,7 +172,7 @@ public class SenderDataBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("saveSender() - Entering...");
 		if (sender == null) {
-			logger.warn("saveSender() - SenderData is null.");
+			logger.warn("saveSender() - ClientVo is null.");
 			return TO_FAILED;
 		}
 		reset();
@@ -181,11 +181,11 @@ public class SenderDataBean implements java.io.Serializable {
 			sender.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
 		if (editMode == true) {
-			getSenderDataService().update(sender);
+			getClientDao().update(sender);
 			logger.info("saveSender() - Rows Updated: " + 1);
 		}
 		else {
-			getSenderDataService().insert(sender);
+			getClientDao().insert(sender);
 			getSiteProfilesList().add(sender);
 			logger.info("saveSender() - Rows Inserted: " + 1);
 		}
@@ -206,13 +206,13 @@ public class SenderDataBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<SenderData> list = getSiteProfilesList();
+		List<ClientVo> list = getSiteProfilesList();
 		for (int i=0; i<list.size(); i++) {
-			SenderData vo = list.get(i);
+			ClientVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getSenderDataService().deleteBySenderId(vo.getSenderId());
+				int rowsDeleted = getClientDao().delete(vo.getClientId());
 				if (rowsDeleted > 0) {
-					logger.info("deleteSiteProfiles() - Sender deleted: " + vo.getSenderId());
+					logger.info("deleteSiteProfiles() - Sender deleted: " + vo.getClientId());
 				}
 				list.remove(vo);
 			}
@@ -232,22 +232,20 @@ public class SenderDataBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<SenderData> mailList = getSiteProfilesList();
+		List<ClientVo> mailList = getSiteProfilesList();
 		for (int i=0; i<mailList.size(); i++) {
-			SenderData vo = mailList.get(i);
+			ClientVo vo = mailList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				this.sender = new SenderData();
+				this.sender = new ClientVo();
 				try {
 					vo.copyPropertiesTo(this.sender);
 					sender.setMarkedForDeletion(false);
 					vo.setMarkedForDeletion(false);
-					sender.setRuleActions(null);
-					sender.setSenderVariables(null);
 				}
 				catch (Exception e) {
 					logger.error("BeanUtils.copyProperties() failed: ", e);
 				}
-				sender.setSenderId(null);
+				sender.setClientId(null);
 				sender.setMarkedForEdition(true);
 				editMode = false;
 				beanMode = BeanMode.insert;
@@ -265,7 +263,7 @@ public class SenderDataBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addSiteProfile() - Entering...");
 		reset();
-		this.sender = new SenderData();
+		this.sender = new ClientVo();
 		sender.setMarkedForEdition(true);
 		editMode = false;
 		beanMode = BeanMode.insert;
@@ -289,9 +287,9 @@ public class SenderDataBean implements java.io.Serializable {
 			logger.warn("getAnySitesMarkedForDeletion() - Sender List is null.");
 			return false;
 		}
-		List<SenderData> mailList = getSiteProfilesList();
-		for (Iterator<SenderData> it=mailList.iterator(); it.hasNext();) {
-			SenderData vo = it.next();
+		List<ClientVo> mailList = getSiteProfilesList();
+		for (Iterator<ClientVo> it=mailList.iterator(); it.hasNext();) {
+			ClientVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -305,7 +303,7 @@ public class SenderDataBean implements java.io.Serializable {
 			logger.debug("validateEmailAddress() - addr: " + emailAddr);
 		if (StringUtils.isNotBlank(emailAddr) && !EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 			// invalid email address
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -317,7 +315,7 @@ public class SenderDataBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("validateEmailLocalPart() - local part: " + localPart);
 		if (!EmailAddrUtil.isValidEmailLocalPart(localPart)) {
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "invalidEmailLocalPart", new String[] {localPart});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -328,16 +326,16 @@ public class SenderDataBean implements java.io.Serializable {
 		String senderId = (String) value;
 		if (isDebugEnabled)
 			logger.debug("validatePrimaryKey() - senderId: " + senderId);
-		SenderData vo = getSenderDataService().getBySenderId(senderId);
+		ClientVo vo = getClientDao().getByClientId(senderId);
 		if (editMode == true && vo != null && sender != null && vo.getRowId() != sender.getRowId()) {
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 	        		"jpa.msgui.messages", "siteProfileAlreadyExist", new String[] {senderId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// mailingList already exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "siteProfileAlreadyExist", new String[] {senderId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -347,10 +345,10 @@ public class SenderDataBean implements java.io.Serializable {
 	public boolean getIsVerpEnabledInput() {
 		if (verpEnabledInput != null) {
 			if (verpEnabledInput.getLocalValue() != null) {
-				return CodeType.YES.getValue().equals(verpEnabledInput.getLocalValue());
+				return CodeType.Yes.value().equals(verpEnabledInput.getLocalValue());
 			}
 			else if (verpEnabledInput.getValue() != null) {
-				return CodeType.YES.getValue().equals(verpEnabledInput.getValue());
+				return CodeType.Yes.value().equals(verpEnabledInput.getValue());
 			}
 		}
 		return true; // for safety
@@ -359,30 +357,30 @@ public class SenderDataBean implements java.io.Serializable {
 	public boolean getIsUseTestAddrInput() {
 		if (useTestAddrInput != null) {
 			if (useTestAddrInput.getLocalValue() != null) {
-				return CodeType.YES.getValue().equals(useTestAddrInput.getLocalValue());
+				return CodeType.Yes.value().equals(useTestAddrInput.getLocalValue());
 			}
 			else if (useTestAddrInput.getValue() != null) {
-				return CodeType.YES.getValue().equals(useTestAddrInput.getValue());
+				return CodeType.Yes.value().equals(useTestAddrInput.getValue());
 			}
 		}
 		return true; // for safety
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<SenderData> getSiteProfilesList() {
+	private List<ClientVo> getSiteProfilesList() {
 		if (siteProfiles == null) {
-			return new ArrayList<SenderData>();
+			return new ArrayList<ClientVo>();
 		}
 		else {
-			return (List<SenderData>)siteProfiles.getWrappedData();
+			return (List<ClientVo>)siteProfiles.getWrappedData();
 		}
 	}
 	
-	public SenderData getSender() {
+	public ClientVo getSender() {
 		return sender;
 	}
 
-	public void setSender(SenderData sender) {
+	public void setSender(ClientVo sender) {
 		this.sender = sender;
 	}
 
@@ -421,11 +419,11 @@ public class SenderDataBean implements java.io.Serializable {
 		this.actionFailure = actionFailure;
 	}
 
-	public DataModel<SenderData> getSiteProfiles() {
+	public DataModel<ClientVo> getSiteProfiles() {
 		return siteProfiles;
 	}
 
-	public void setSiteProfiles(DataModel<SenderData> siteProfiles) {
+	public void setSiteProfiles(DataModel<ClientVo> siteProfiles) {
 		this.siteProfiles = siteProfiles;
 	}
 
@@ -461,7 +459,7 @@ public class SenderDataBean implements java.io.Serializable {
 		this.returnPathLeftInput = returnPathLeftInput;
 	}
 
-	public SenderData getSiteMeta() {
+	public ClientVo getSiteMeta() {
 		return siteMeta;
 	}
 }

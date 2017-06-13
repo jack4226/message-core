@@ -6,10 +6,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
-import jpa.model.rule.RuleLogic;
-import jpa.msgui.util.FacesUtil;
-
 import org.apache.log4j.Logger;
+
+import ltj.message.vo.rule.RuleLogicVo;
+import ltj.msgui.util.FacesUtil;
 
 @ManagedBean(name="builtinRule")
 @javax.faces.bean.ViewScoped
@@ -19,18 +19,18 @@ public class RuleLogicBuiltinRuleBean extends RuleLogicBean {
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	@Override
-	public DataModel<RuleLogic> getAll() {
+	public DataModel<RuleLogicVo> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (ruleLogics == null) {
-			List<RuleLogic> ruleLogicList = getRuleLogicService().getAll(true);
-			for (RuleLogic rc : ruleLogicList) {
-				boolean hasActions = getRuleActionService().getHasActions(rc.getRuleName());
+			List<RuleLogicVo> ruleLogicList = getRuleLogicDao().getAll(true);
+			for (RuleLogicVo rc : ruleLogicList) {
+				boolean hasActions = getMsgActionDao().getHasActions(rc.getRuleName());
 				hasActionsMap.put(rc.getRuleName(), hasActions);
 			}
-			ruleLogics = new ListDataModel<RuleLogic>(ruleLogicList);
+			ruleLogics = new ListDataModel<RuleLogicVo>(ruleLogicList);
 		}
 		return ruleLogics;
 	}

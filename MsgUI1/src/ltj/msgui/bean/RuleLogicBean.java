@@ -24,30 +24,27 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 
-import jpa.constant.CodeType;
-import jpa.constant.RuleCategory;
-import jpa.constant.RuleCriteria;
-import jpa.constant.RuleDataName;
-import jpa.constant.RuleType;
-import jpa.model.rule.RuleAction;
-import jpa.model.rule.RuleActionDetail;
-import jpa.model.rule.RuleActionPK;
-import jpa.model.rule.RuleElement;
-import jpa.model.rule.RuleElementPK;
-import jpa.model.rule.RuleLogic;
-import jpa.model.rule.RuleSubruleMap;
-import jpa.model.rule.RuleSubruleMapPK;
-import jpa.msgui.util.FacesUtil;
-import jpa.msgui.util.SpringUtil;
-import jpa.service.rule.RuleActionDetailService;
-import jpa.service.rule.RuleActionService;
-import jpa.service.rule.RuleElementService;
-import jpa.service.rule.RuleLogicService;
-import jpa.service.rule.RuleSubruleMapService;
-import jpa.util.BlobUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import ltj.message.constant.CodeType;
+import ltj.message.constant.RuleCategory;
+import ltj.message.constant.RuleCriteria;
+import ltj.message.constant.RuleDataName;
+import ltj.message.constant.RuleType;
+import ltj.message.dao.action.MsgActionDao;
+import ltj.message.dao.action.MsgActionDetailDao;
+import ltj.message.dao.rule.RuleElementDao;
+import ltj.message.dao.rule.RuleLogicDao;
+import ltj.message.dao.rule.RuleSubRuleMapDao;
+import ltj.message.util.BlobUtil;
+import ltj.message.vo.action.MsgActionDetailVo;
+import ltj.message.vo.action.MsgActionVo;
+import ltj.message.vo.rule.RuleElementVo;
+import ltj.message.vo.rule.RuleLogicVo;
+import ltj.message.vo.rule.RuleSubRuleMapVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 @ManagedBean(name="ruleLogic")
 @javax.faces.bean.ViewScoped
@@ -56,17 +53,17 @@ public class RuleLogicBean implements java.io.Serializable {
 	protected static final Logger logger = Logger.getLogger(RuleLogicBean.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	protected transient RuleLogicService ruleLogicDao = null;
-	protected transient RuleElementService ruleElementDao = null;
-	protected transient RuleSubruleMapService ruleSubRuleMapDao = null;
-	protected transient RuleActionService msgActionDao = null;
-	protected transient RuleActionDetailService actionDetailDao = null;
+	protected transient RuleLogicDao ruleLogicDao = null;
+	protected transient RuleElementDao ruleElementDao = null;
+	protected transient RuleSubRuleMapDao ruleSubRuleMapDao = null;
+	protected transient MsgActionDao msgActionDao = null;
+	protected transient MsgActionDetailDao actionDetailDao = null;
 		
-	protected transient DataModel<RuleLogic> ruleLogics = null;
+	protected transient DataModel<RuleLogicVo> ruleLogics = null;
 	protected Map<String, Boolean> hasActionsMap = new LinkedHashMap<>();
 	protected Map<String, Boolean> hasSubruleMap = new LinkedHashMap<>();
 	
-	protected RuleLogic ruleLogic = null;
+	protected RuleLogicVo ruleLogic = null;
 	protected boolean editMode = true;
 	protected BeanMode beanMode = BeanMode.list;
 	
@@ -76,12 +73,12 @@ public class RuleLogicBean implements java.io.Serializable {
 	protected transient UIInput ruleNameInput = null;
 	protected transient UIInput startDateInput = null;
 	
-	protected transient DataModel<RuleElement> ruleElements = null;
-	protected transient DataModel<RuleSubruleMap> subRules = null;
-	protected transient DataModel<RuleAction> ruleActions = null;
+	protected transient DataModel<RuleElementVo> ruleElements = null;
+	protected transient DataModel<RuleSubRuleMapVo> subRules = null;
+	protected transient DataModel<MsgActionVo> ruleActions = null;
 	
-	protected RuleElement ruleElement = null;
-	protected RuleElement origRuleElement = null;
+	protected RuleElementVo ruleElement = null;
+	protected RuleElementVo origRuleElement = null;
 	
 	/* use navigation rules in faces-config.xml */
 	protected static final String TO_SELF = null;
@@ -106,37 +103,37 @@ public class RuleLogicBean implements java.io.Serializable {
 		this.sourcePage = sourcePage;
 	}
 
-	protected RuleLogicService getRuleLogicService() {
+	protected RuleLogicDao getRuleLogicDao() {
 		if (ruleLogicDao == null) {
-			ruleLogicDao = SpringUtil.getWebAppContext().getBean(RuleLogicService.class);
+			ruleLogicDao = SpringUtil.getWebAppContext().getBean(RuleLogicDao.class);
 		}
 		return ruleLogicDao;
 	}
 
-	protected RuleElementService getRuleElementService() {
+	protected RuleElementDao getRuleElementDao() {
 		if (ruleElementDao == null) {
-			ruleElementDao = SpringUtil.getWebAppContext().getBean(RuleElementService.class);
+			ruleElementDao = SpringUtil.getWebAppContext().getBean(RuleElementDao.class);
 		}
 		return ruleElementDao;
 	}
 
-	protected RuleSubruleMapService getRuleSubruleMapService() {
+	protected RuleSubRuleMapDao getRuleSubRuleMapDao() {
 		if (ruleSubRuleMapDao == null) {
-			ruleSubRuleMapDao = SpringUtil.getWebAppContext().getBean(RuleSubruleMapService.class);
+			ruleSubRuleMapDao = SpringUtil.getWebAppContext().getBean(RuleSubRuleMapDao.class);
 		}
 		return ruleSubRuleMapDao;
 	}
 
-	protected RuleActionService getRuleActionService() {
+	protected MsgActionDao getMsgActionDao() {
 		if (msgActionDao == null) {
-			msgActionDao = SpringUtil.getWebAppContext().getBean(RuleActionService.class);
+			msgActionDao = SpringUtil.getWebAppContext().getBean(MsgActionDao.class);
 		}
 		return msgActionDao;
 	}
 
-	private RuleActionDetailService getRuleActionDetailService() {
+	private MsgActionDetailDao getMsgActionDetailDao() {
 		if (actionDetailDao == null) {
-			actionDetailDao = SpringUtil.getWebAppContext().getBean(RuleActionDetailService.class);
+			actionDetailDao = SpringUtil.getWebAppContext().getBean(MsgActionDetailDao.class);
 		}
 		return actionDetailDao;
 	}
@@ -145,23 +142,23 @@ public class RuleLogicBean implements java.io.Serializable {
 	 * Main Page Section 
 	 */
 	
-	public DataModel<RuleLogic> getAll() {
+	public DataModel<RuleLogicVo> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		logger.info("getAll() - From page: " + fromPage + ", ruleLogics==null? " + (ruleLogics==null));
 		if (ruleLogics == null) {
-			List<RuleLogic> ruleLogicList = getRuleLogicService().getAll(false);
+			List<RuleLogicVo> ruleLogicList = getRuleLogicDao().getAll(false);
 			hasSubruleMap.clear();
 			hasActionsMap.clear();
-			for (RuleLogic rc : ruleLogicList) {
-				boolean hasSubrule = getRuleLogicService().getHasSubrules(rc.getRuleName());
+			for (RuleLogicVo rc : ruleLogicList) {
+				boolean hasSubrule = getRuleLogicDao().getHasSubRules(rc.getRuleName());
 				hasSubruleMap.put(rc.getRuleName(), hasSubrule);
-				boolean hasActions = getRuleActionService().getHasActions(rc.getRuleName());
+				boolean hasActions = getMsgActionDao().getHasActions(rc.getRuleName());
 				hasActionsMap.put(rc.getRuleName(), hasActions);
 			}
-			ruleLogics = new ListDataModel<RuleLogic>(ruleLogicList);
+			ruleLogics = new ListDataModel<RuleLogicVo>(ruleLogicList);
 		}
 		return ruleLogics;
 	}
@@ -170,7 +167,7 @@ public class RuleLogicBean implements java.io.Serializable {
 	 * Use String signature for rowId to support JSF script.
 	 */
 	public String findRuleNameByRowId(String rowId) {
-		RuleLogic rl = getRuleLogicService().getByRowId(Integer.parseInt(rowId));
+		RuleLogicVo rl = getRuleLogicDao().getByRowId(Integer.parseInt(rowId));
 		if (rl == null) {
 			return TO_SELF;
 		}
@@ -285,7 +282,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		}
 		reset();
 		origRuleElement = ruleElements.getRowData();
-		ruleElement = (RuleElement) BlobUtil.deepCopy(origRuleElement);
+		ruleElement = (RuleElementVo) BlobUtil.deepCopy(origRuleElement);
 		ruleElement.setMarkedForEdition(true);
 		beanMode = BeanMode.elements;
 		return TO_EDIT_ELEMENT;
@@ -312,7 +309,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		return TO_EDIT_LOGIC;
 	}
 
-	private void copyProperties(RuleElement dest, RuleElement src) {
+	private void copyProperties(RuleElementVo dest, RuleElementVo src) {
 //		RuleElementPK pk = new RuleElementPK();
 //		pk.setRuleLogic(src.getRuleElementPK().getRuleLogic());
 //		pk.setElementSequence(src.getRuleElementPK().getElementSequence());
@@ -322,9 +319,9 @@ public class RuleLogicBean implements java.io.Serializable {
 		dest.setCriteria(src.getCriteria());
 		dest.setCaseSensitive(src.isCaseSensitive());
 		dest.setTargetText(src.getTargetText());
-		dest.setTargetProcName(src.getTargetProcName());
+		dest.setTargetProc(src.getTargetProc());
 		dest.setExclusions(src.getExclusions());
-		dest.setExclListProcName(src.getExclListProcName());
+		dest.setExclListProc(src.getExclListProc());
 		dest.setDelimiter(src.getDelimiter());
 	}
 	
@@ -345,9 +342,9 @@ public class RuleLogicBean implements java.io.Serializable {
 			ruleLogic.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
 		// first delete the rule element
-		getRuleElementService().deleteByPrimaryKey(ruleElement.getRuleElementPK());
+		getRuleElementDao().deleteByPrimaryKey(ruleElement.getRuleName(), ruleElement.getElementSeq());
 		// insert the record
-		getRuleElementService().insert(ruleElement);
+		getRuleElementDao().insert(ruleElement);
 		logger.info("saveRuleElement() - Element Rows Deleted: " + 1);
 		//beanMode = BeanMode.edit;
 		return "msgrule.ruleelement.saved";
@@ -375,21 +372,21 @@ public class RuleLogicBean implements java.io.Serializable {
 			ruleLogic.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
 		if (editMode == true) {
-			getRuleLogicService().update(ruleLogic);
+			getRuleLogicDao().update(ruleLogic);
 			logger.info("saveRuleLogic() - Rows Updated: " + 1);
-			int rowsDeleted = getRuleElementService().deleteByRuleName(ruleLogic.getRuleName());
+			int rowsDeleted = getRuleElementDao().deleteByRuleName(ruleLogic.getRuleName());
 			logger.info("saveRuleLogic() - Element Rows Deleted: " + rowsDeleted);
 			int rowsInserted = insertRuleElements(ruleLogic.getRuleName());
 			logger.info("saveRuleLogic() - Element Rows Inserted: " + rowsInserted);
 		}
 		else {
-			List<RuleElement> elements = ruleLogic.getRuleElements();
-			if (elements!=null) {
-				for (RuleElement element : elements) {
-					element.getRuleElementPK().setRuleLogic(ruleLogic);
+			List<RuleElementVo> elements = ruleElementDao.getByRuleName(ruleLogic.getRuleName());
+			if (elements != null) {
+				for (RuleElementVo element : elements) {
+					element.setRuleName(ruleLogic.getRuleName());
 				}
 			}
-			getRuleLogicService().insert(ruleLogic);
+			getRuleLogicDao().insert(ruleLogic);
 			logger.info("saveRuleLogic() - Rows Inserted: " + 1);
 			addToRuleList(ruleLogic);
 //			int elementsInserted = insertRuleElements(ruleLogic.getRuleName());
@@ -400,24 +397,22 @@ public class RuleLogicBean implements java.io.Serializable {
 	}
 
 	protected int insertRuleElements(String _ruleName) {
-		List<RuleElement> list = getRuleElementList();
+		List<RuleElementVo> list = getRuleElementList();
 		int rowsInserted = 0;
 		for (int i=0; i<list.size(); i++) {
-			RuleElement ruleElementVo = list.get(i);
-			RuleElement vo = new RuleElement();
+			RuleElementVo ruleElementVo = list.get(i);
+			RuleElementVo vo = new RuleElementVo();
 			ruleElementVo.copyPropertiesTo(vo);
-			RuleElementPK pk = vo.getRuleElementPK();
-			RuleLogic ruleLogic = getRuleLogicService().getByRuleName(_ruleName);
-			pk.setRuleLogic(ruleLogic);
-			pk.setElementSequence(i);
-			getRuleElementService().insert(vo);
+			vo.setRuleName(_ruleName);
+			vo.setElementSeq(i);
+			getRuleElementDao().insert(vo);
 		}
 		return rowsInserted;
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void addToRuleList(RuleLogic vo) {
-		List<RuleLogic> list = (List<RuleLogic>) ruleLogics.getWrappedData();
+	protected void addToRuleList(RuleLogicVo vo) {
+		List<RuleLogicVo> list = (List<RuleLogicVo>) ruleLogics.getWrappedData();
 		list.add(vo);
 	}
 
@@ -433,11 +428,11 @@ public class RuleLogicBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleLogic> list = getRuleLogicList();
+		List<RuleLogicVo> list = getRuleLogicList();
 		for (int i = 0; i < list.size(); i++) {
-			RuleLogic vo = list.get(i);
+			RuleLogicVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getRuleLogicService().deleteByRuleName(vo.getRuleName());
+				int rowsDeleted = getRuleLogicDao().deleteByPrimaryKey(vo.getRuleName());
 				if (rowsDeleted > 0) {
 					logger.info("deleteRuleLogics() - RuleLogic deleted: " + vo.getRuleName());
 				}
@@ -469,11 +464,11 @@ public class RuleLogicBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleLogic> list = getRuleLogicList();
+		List<RuleLogicVo> list = getRuleLogicList();
 		for (int i=0; i<list.size(); i++) {
-			RuleLogic vo = list.get(i);
+			RuleLogicVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				this.ruleLogic = new RuleLogic();
+				this.ruleLogic = new RuleLogicVo();
 				try {
 					vo.copyPropertiesTo(this.ruleLogic);
 					this.ruleLogic.setMarkedForDeletion(false);
@@ -485,16 +480,16 @@ public class RuleLogicBean implements java.io.Serializable {
 				ruleElements = null;
 				getRuleElements();
 				// set processor fields to null as they are invisible from UI
-				List<RuleElement> elements = getRuleElementList();
-				for (RuleElement element : elements) {
-					element.setTargetProcName(null);
-					element.setExclListProcName(null);
+				List<RuleElementVo> elements = getRuleElementList();
+				for (RuleElementVo element : elements) {
+					element.setTargetProc(null);
+					element.setExclListProc(null);
 				}
 				// end of null
 				ruleElements.getWrappedData();
 				ruleLogic.setRuleName(null);
-				ruleLogic.setEvalSequence(getRuleLogicService().getNextEvalSequence());
-				ruleLogic.setRuleType(RuleType.SIMPLE.getValue());
+				ruleLogic.setRuleSeq(getRuleLogicDao().getNextRuleSequence());
+				ruleLogic.setRuleType(RuleType.SIMPLE.value());
 				ruleLogic.setMarkedForEdition(true);
 				editMode = false;
 				beanMode = BeanMode.insert;
@@ -513,13 +508,13 @@ public class RuleLogicBean implements java.io.Serializable {
 			logger.debug("addRuleLogic() - Entering...");
 		reset();
 		ruleElements = null;
-		this.ruleLogic = new RuleLogic();
+		this.ruleLogic = new RuleLogicVo();
 		ruleLogic.setMarkedForEdition(true);
 		//ruleLogic.setUpdtUserId(Constants.DEFAULT_USER_ID);
-		ruleLogic.setEvalSequence(getRuleLogicService().getNextEvalSequence());
-		ruleLogic.setRuleType(RuleType.SIMPLE.getValue());
-		ruleLogic.setRuleCategory(RuleCategory.MAIN_RULE.getValue());
-		ruleLogic.setStartTime(new Timestamp(new java.util.Date().getTime()));
+		ruleLogic.setRuleSeq(getRuleLogicDao().getNextRuleSequence());
+		ruleLogic.setRuleType(RuleType.SIMPLE.value());
+		ruleLogic.setRuleCategory(RuleCategory.MAIN_RULE.value());
+		ruleLogic.setStartTime(new Timestamp(System.currentTimeMillis()));
 		editMode = false;
 		beanMode = BeanMode.insert;
 		return TO_EDIT_LOGIC;
@@ -585,10 +580,10 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (ruleLogics == null || !ruleLogics.isRowAvailable()) {
 			return false;
 		}
-		RuleLogic vo = ruleLogics.getRowData();
+		RuleLogicVo vo = ruleLogics.getRowData();
 		int idx = ruleLogics.getRowIndex();
 		if (idx > 0) {
-			RuleLogic up = getRuleLogicList().get(idx - 1);
+			RuleLogicVo up = getRuleLogicList().get(idx - 1);
 			if (vo.getRuleCategory().equals(up.getRuleCategory())) {
 				return true;
 			}
@@ -600,10 +595,10 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (ruleLogics == null || !ruleLogics.isRowAvailable()) {
 			return false;
 		}
-		RuleLogic vo = ruleLogics.getRowData();
+		RuleLogicVo vo = ruleLogics.getRowData();
 		int idx = ruleLogics.getRowIndex();
 		if (idx < (ruleLogics.getRowCount() + 1)) {
-			RuleLogic down = getRuleLogicList().get(idx + 1);
+			RuleLogicVo down = getRuleLogicList().get(idx + 1);
 			if (vo.getRuleCategory().equals(down.getRuleCategory())) {
 				return true;
 			}
@@ -642,17 +637,17 @@ public class RuleLogicBean implements java.io.Serializable {
 	 */
 	protected void moveUpDownRule(int updown) {
 		reset();
-		RuleLogic currVo = getAll().getRowData();
+		RuleLogicVo currVo = getAll().getRowData();
 		int index = ruleLogics.getRowIndex();
-		List<RuleLogic> list = getRuleLogicList();
-		RuleLogic prevVo = list.get(index + updown);
+		List<RuleLogicVo> list = getRuleLogicList();
+		RuleLogicVo prevVo = list.get(index + updown);
 		if (currVo.getRuleCategory().equals(prevVo.getRuleCategory())) {
-			int currSeq = currVo.getEvalSequence();
-			int prevSeq = prevVo.getEvalSequence();
-			currVo.setEvalSequence(prevSeq);
-			prevVo.setEvalSequence(currSeq);
-			getRuleLogicService().update(currVo);
-			getRuleLogicService().update(prevVo);
+			int currSeq = currVo.getRuleSeq();
+			int prevSeq = prevVo.getRuleSeq();
+			currVo.setRuleSeq(prevSeq);
+			prevVo.setRuleSeq(currSeq);
+			getRuleLogicDao().update(currVo);
+			getRuleLogicDao().update(prevVo);
 			refresh();
 		}
 	}
@@ -673,7 +668,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		return TO_SELF;
 	}
 	
-	public DataModel<RuleElement> getRuleElements() {
+	public DataModel<RuleElementVo> getRuleElements() {
 		if (isDebugEnabled)
 			logger.debug("getRuleElement() - Entering...");
 		if (getRuleLogic() == null) {
@@ -682,15 +677,15 @@ public class RuleLogicBean implements java.io.Serializable {
 		}
 		if (ruleElements == null) {
 			String key = ruleLogic.getRuleName();
-			List<RuleElement> list = getRuleElementService().getByRuleName(key);
-			ruleElements = new ListDataModel<RuleElement>(list);
+			List<RuleElementVo> list = getRuleElementDao().getByRuleName(key);
+			ruleElements = new ListDataModel<RuleElementVo>(list);
 		}
 		return ruleElements;
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected List<RuleElement> getRuleElementList() {
-		List<RuleElement> list = (List<RuleElement>) getRuleElements().getWrappedData();
+	protected List<RuleElementVo> getRuleElementList() {
+		List<RuleElementVo> list = (List<RuleElementVo>) getRuleElements().getWrappedData();
 		return list;
 	}
 	
@@ -706,13 +701,13 @@ public class RuleLogicBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleElement> list = getRuleElementList();
+		List<RuleElementVo> list = getRuleElementList();
 		for (int i = 0; i < list.size(); i++) {
-			RuleElement vo = list.get(i);
+			RuleElementVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getRuleElementService().deleteByPrimaryKey(vo.getRuleElementPK());
+				int rowsDeleted = getRuleElementDao().deleteByPrimaryKey(vo.getRuleName(), vo.getElementSeq());
 				if (rowsDeleted > 0) {
-					logger.info("deleteRuleElements() - RuleElement deleted: " + vo.getRuleElementPK());
+					logger.info("deleteRuleElements() - RuleElement deleted: " + vo.getRuleName() + ":" + vo.getElementSeq());
 				}
 				list.remove(vo);
 			}
@@ -732,11 +727,11 @@ public class RuleLogicBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleElement> list = getRuleElementList();
+		List<RuleElementVo> list = getRuleElementList();
 		for (int i=0; i<list.size(); i++) {
-			RuleElement vo = list.get(i);
+			RuleElementVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				RuleElement vo2 = new RuleElement();
+				RuleElementVo vo2 = new RuleElementVo();
 				try {
 					vo.copyPropertiesTo(vo2);
 					vo2.setMarkedForDeletion(false);
@@ -745,7 +740,7 @@ public class RuleLogicBean implements java.io.Serializable {
 				catch (Exception e) {
 					logger.error("BeanUtils.copyProperties() failed: ", e);
 				}
-				vo2.getRuleElementPK().setElementSequence(getNextRuleElementSeq());
+				vo2.setElementSeq(getNextRuleElementSeq());
 				vo2.setMarkedForEdition(true);
 				list.add(vo2);
 				break;
@@ -762,29 +757,27 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addRuleElement() - Entering...");
 		reset();
-		List<RuleElement> list = getRuleElementList();
-		RuleElement vo = new RuleElement();
-		RuleElementPK pk = new RuleElementPK();
-		vo.setRuleElementPK(pk);
-		pk.setRuleLogic(ruleLogic);
-		vo.getRuleElementPK().setElementSequence(getNextRuleElementSeq());
+		List<RuleElementVo> list = getRuleElementList();
+		RuleElementVo vo = new RuleElementVo();
+		vo.setRuleName(ruleLogic.getRuleName());
+		vo.setElementSeq(getNextRuleElementSeq());
 		vo.setDataName(RuleDataName.BCC_ADDR.getValue());
-		vo.setCriteria(RuleCriteria.STARTS_WITH.getValue());
+		vo.setCriteria(RuleCriteria.STARTS_WITH.value());
 		vo.setMarkedForEdition(true);
 		list.add(vo);
 		return TO_SELF;
 	}
 	
 	private int getNextRuleElementSeq() {
-		List<RuleElement> list = getRuleElementList();
+		List<RuleElementVo> list = getRuleElementList();
 		if (list == null || list.isEmpty()) {
 			return 0;
 		}
 		else {
 			int seq = list.size() - 1;
-			for (RuleElement vo : list) { // just for safety
-				if (vo.getRuleElementPK().getElementSequence() > seq) {
-					seq = vo.getRuleElementPK().getElementSequence();
+			for (RuleElementVo vo : list) { // just for safety
+				if (vo.getElementSeq() > seq) {
+					seq = vo.getElementSeq();
 				}
 			}
 			return seq + 1;
@@ -807,7 +800,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		return TO_SELF;
 	}
 	
-	public DataModel<RuleSubruleMap> getSubRules() {
+	public DataModel<RuleSubRuleMapVo> getSubRules() {
 		if (isDebugEnabled)
 			logger.debug("getSubRules() - Entering...");
 		if (getRuleLogic() == null) {
@@ -816,15 +809,15 @@ public class RuleLogicBean implements java.io.Serializable {
 		}
 		if (subRules == null) {
 			String key = ruleLogic.getRuleName();
-			List<RuleSubruleMap> list = getRuleSubruleMapService().getByRuleName(key);
-			subRules = new ListDataModel<RuleSubruleMap>(list);
+			List<RuleSubRuleMapVo> list = getRuleSubRuleMapDao().getByRuleName(key);
+			subRules = new ListDataModel<RuleSubRuleMapVo>(list);
 		}
 		return subRules;
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected List<RuleSubruleMap> getSubRuleList() {
-		List<RuleSubruleMap> list = (List<RuleSubruleMap>) getSubRules().getWrappedData();
+	protected List<RuleSubRuleMapVo> getSubRuleList() {
+		List<RuleSubRuleMapVo> list = (List<RuleSubRuleMapVo>) getSubRules().getWrappedData();
 		return list;
 	}
 	
@@ -840,13 +833,13 @@ public class RuleLogicBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleSubruleMap> list = getSubRuleList();
+		List<RuleSubRuleMapVo> list = getSubRuleList();
 		for (int i=0; i<list.size(); i++) {
-			RuleSubruleMap vo = list.get(i); 
+			RuleSubRuleMapVo vo = list.get(i); 
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getRuleSubruleMapService().deleteByPrimaryKey(vo.getRuleSubruleMapPK());
+				int rowsDeleted = getRuleSubRuleMapDao().deleteByPrimaryKey(vo.getRuleName(), vo.getSubRuleName());
 				if (rowsDeleted > 0) {
-					logger.info("deleteSubRules() - SubRule deleted: " + vo.getRuleSubruleMapPK());
+					logger.info("deleteSubRules() - SubRule deleted: " + vo.getRuleName() + ":" + vo.getSubRuleName());
 				}
 				vo.setMarkedForDeletion(false);
 				list.remove(vo);
@@ -868,11 +861,11 @@ public class RuleLogicBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleSubruleMap> list = getSubRuleList();
+		List<RuleSubRuleMapVo> list = getSubRuleList();
 		for (int i=0; i<list.size(); i++) {
-			RuleSubruleMap vo = list.get(i);
+			RuleSubRuleMapVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				RuleSubruleMap vo2 = new RuleSubruleMap();
+				RuleSubRuleMapVo vo2 = new RuleSubRuleMapVo();
 				try {
 					vo.copyPropertiesTo(vo2);
 					vo2.setMarkedForDeletion(false);
@@ -897,15 +890,14 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addSubRule() - Entering...");
 		reset();
-		List<RuleSubruleMap> list = getSubRuleList();
-		RuleSubruleMap vo = new RuleSubruleMap();
-		RuleSubruleMapPK pk = new RuleSubruleMapPK();
-		pk.setRuleLogic(ruleLogic);
-		vo.setRuleSubruleMapPK(pk);
+		List<RuleSubRuleMapVo> list = getSubRuleList();
+		RuleSubRuleMapVo vo = new RuleSubRuleMapVo();
+		vo.setRuleName(ruleLogic.getRuleName());
+		vo.setSubRuleSeq(0); // TODO
 		vo.setMarkedForEdition(true);
-		List<RuleLogic> subrules = getRuleLogicService().getSubrules(false);
+		List<RuleLogicVo> subrules = getRuleLogicDao().getAllSubRules(false);
 		if (!subrules.isEmpty()) { // set a default rule name
-			vo.setSubruleName(subrules.get(0).getRuleName());
+			vo.setSubRuleName(subrules.get(0).getRuleName());
 		}
 		list.add(vo);
 		return TO_SELF;
@@ -924,25 +916,25 @@ public class RuleLogicBean implements java.io.Serializable {
 		}
 		reset();
 		// update database
-		int rowsDeleted = getRuleSubruleMapService().deleteByRuleName(ruleLogic.getRuleName());
+		int rowsDeleted = getRuleSubRuleMapDao().deleteByRuleName(ruleLogic.getRuleName());
 		logger.info("saveSubRules() - SubRule Rows Deleted: " + rowsDeleted);
 		
-		List<RuleSubruleMap> list = getSubRuleList();
+		List<RuleSubRuleMapVo> list = getSubRuleList();
 		if (hasDuplicateSubRules(list)) {
 			testResult = "duplicateSubRuleFound";
 			/* Add to Face message queue. Not working. */
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", testResult, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
 		for (int i=0; i<list.size(); i++) {
-			RuleSubruleMap ruleSubRuleMapVo = list.get(i);
-			RuleLogic subrule = getRuleLogicService().getByRuleName(ruleSubRuleMapVo.getSubruleName());
+			RuleSubRuleMapVo ruleSubRuleMapVo = list.get(i);
+			RuleLogicVo subrule = getRuleLogicDao().getByRuleName(ruleSubRuleMapVo.getSubRuleName());
 			if (subrule != null) { // should never happen
-				ruleSubRuleMapVo.getRuleSubruleMapPK().setSubruleLogic(subrule);
-				ruleSubRuleMapVo.setSubruleSequence(i);
-				getRuleSubruleMapService().insert(ruleSubRuleMapVo);
+				ruleSubRuleMapVo.setSubRuleName(subrule.getRuleName());
+				ruleSubRuleMapVo.setSubRuleSeq(i);
+				getRuleSubRuleMapDao().insert(ruleSubRuleMapVo);
 			}
 		}
 		logger.info("saveSubRules() - SubRule Rows Inserted: " + list.size());
@@ -962,15 +954,15 @@ public class RuleLogicBean implements java.io.Serializable {
 		moveSubRule(1);
 	}
 	
-	protected boolean hasDuplicateSubRules(List<RuleSubruleMap> list) {
+	protected boolean hasDuplicateSubRules(List<RuleSubRuleMapVo> list) {
 		if (list == null || list.size() <= 1) {
 			return false;
 		}
 		for (int i=0; i<list.size(); i++) {
-			RuleSubruleMap vo1 = list.get(i);
+			RuleSubRuleMapVo vo1 = list.get(i);
 			for (int j=i+1; j<list.size(); j++) {
-				RuleSubruleMap vo2 = list.get(j);
-				if (StringUtils.equals(vo1.getSubruleName(), vo2.getSubruleName())) {
+				RuleSubRuleMapVo vo2 = list.get(j);
+				if (StringUtils.equals(vo1.getSubRuleName(), vo2.getSubRuleName())) {
 					return true;
 				}
 			}
@@ -985,16 +977,16 @@ public class RuleLogicBean implements java.io.Serializable {
 	 */
 	protected void moveSubRule(int updown) {
 		reset();
-		RuleSubruleMap currVo = getSubRules().getRowData();
+		RuleSubRuleMapVo currVo = getSubRules().getRowData();
 		int index = subRules.getRowIndex();
-		List<RuleSubruleMap> list = getSubRuleList();
-		RuleSubruleMap prevVo = list.get(index + updown);
-		int currSeq = currVo.getSubruleSequence();
-		int prevSeq = prevVo.getSubruleSequence();
-		currVo.setSubruleSequence(prevSeq);
-		prevVo.setSubruleSequence(currSeq);
-		getRuleSubruleMapService().update(currVo);
-		getRuleSubruleMapService().update(prevVo);
+		List<RuleSubRuleMapVo> list = getSubRuleList();
+		RuleSubRuleMapVo prevVo = list.get(index + updown);
+		int currSeq = currVo.getSubRuleSeq();
+		int prevSeq = prevVo.getSubRuleSeq();
+		currVo.setSubRuleSeq(prevSeq);
+		prevVo.setSubRuleSeq(currSeq);
+		getRuleSubRuleMapDao().update(currVo);
+		getRuleSubRuleMapDao().update(prevVo);
 		refreshSubRules();
 	}
 	
@@ -1014,7 +1006,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		return TO_SELF;
 	}
 	
-	public DataModel<RuleAction> getMsgActions() {
+	public DataModel<MsgActionVo> getMsgActions() {
 		if (isDebugEnabled)
 			logger.debug("getMsgActions() - Entering...");
 		if (getRuleLogic() == null) {
@@ -1023,15 +1015,15 @@ public class RuleLogicBean implements java.io.Serializable {
 		}
 		if (ruleActions == null) {
 			String key = ruleLogic.getRuleName();
-			List<RuleAction> list = getRuleActionService().getByRuleName(key);
-			ruleActions = new ListDataModel<RuleAction>(list);
+			List<MsgActionVo> list = getMsgActionDao().getByRuleName(key);
+			ruleActions = new ListDataModel<MsgActionVo>(list);
 		}
 		return ruleActions;
 	}
 	
-	protected List<RuleAction> getMsgActionList() {
+	protected List<MsgActionVo> getMsgActionList() {
 		@SuppressWarnings("unchecked")
-		List<RuleAction> list = (List<RuleAction>) getMsgActions().getWrappedData();
+		List<MsgActionVo> list = (List<MsgActionVo>) getMsgActions().getWrappedData();
 		return list;
 	}
 	
@@ -1047,15 +1039,15 @@ public class RuleLogicBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleAction> list = getMsgActionList();
+		List<MsgActionVo> list = getMsgActionList();
 		for (int i = 0; i < list.size(); i++) {
-			RuleAction vo = list.get(i);
+			MsgActionVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getRuleActionService().deleteByPrimaryKey(vo.getRuleActionPK());
+				int rowsDeleted = getMsgActionDao().deleteByPrimaryKey(vo.getRowId());
 				if (rowsDeleted > 0) {
-					logger.info("deleteMsgActions() - MsgAction deleted: " + vo.getRuleActionPK().getRuleLogic().getRuleName() + "."
-							+ vo.getRuleActionPK().getActionSequence() + "." + vo.getRuleActionPK().getStartTime() +
-							"." + (vo.getRuleActionPK().getSenderData()==null?"":vo.getRuleActionPK().getSenderData().getSenderId()));
+					logger.info("deleteMsgActions() - MsgAction deleted: " + vo.getRuleName() + "."
+							+ vo.getActionSeq() + "." + vo.getStartTime() +
+							"." + (vo.getClientId()==null?"":vo.getClientId()));
 				}
 				list.remove(vo);
 			}
@@ -1075,11 +1067,11 @@ public class RuleLogicBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleAction> list = getMsgActionList();
+		List<MsgActionVo> list = getMsgActionList();
 		for (int i=0; i<list.size(); i++) {
-			RuleAction vo = list.get(i);
+			MsgActionVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				RuleAction vo2 =  new RuleAction();
+				MsgActionVo vo2 =  new MsgActionVo();
 				try {
 					vo.copyPropertiesTo(vo2);
 					vo2.setMarkedForDeletion(false);
@@ -1104,17 +1096,16 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addMsgAction() - Entering...");
 		reset();
-		List<RuleAction> list = getMsgActionList();
-		RuleAction vo = new RuleAction();
-		RuleActionPK pk = new RuleActionPK();
-		vo.setRuleActionPK(pk);
-		vo.getRuleActionPK().setActionSequence(list.size() + 1);
-		vo.getRuleActionPK().setStartTime(new Timestamp(System.currentTimeMillis()));
-		vo.setStatusId(CodeType.YES_CODE.getValue());
+		List<MsgActionVo> list = getMsgActionList();
+		MsgActionVo vo = new MsgActionVo();
+		
+		vo.setActionSeq(list.size() + 1);
+		vo.setStartTime(new Timestamp(System.currentTimeMillis()));
+		vo.setStatusId(CodeType.Y.value());
 		vo.setMarkedForEdition(true);
-		List<String> actionIdList = getRuleActionDetailService().getActionIdList();
-		RuleActionDetail detail = getRuleActionDetailService().getByActionId(actionIdList.get(0));
-		vo.setRuleActionDetail(detail);
+		List<String> actionIdList = getMsgActionDetailDao().getActionIds();
+		MsgActionDetailVo detail = getMsgActionDetailDao().getByActionId(actionIdList.get(0));
+		vo.setActionId(detail.getActionId());
 		list.add(vo);
 		return TO_SELF;
 	}
@@ -1132,19 +1123,19 @@ public class RuleLogicBean implements java.io.Serializable {
 		}
 		reset();
 		// update database
-		int rowsDeleted = getRuleActionService().deleteByRuleName(ruleLogic.getRuleName());
+		int rowsDeleted = getMsgActionDao().deleteByRuleName(ruleLogic.getRuleName());
 		logger.info("saveMsgActions() - MsgAction Rows Deleted: " + rowsDeleted);
 		
-		List<RuleAction> list = getMsgActionList();
+		List<MsgActionVo> list = getMsgActionList();
 		for (int i=0; i<list.size(); i++) {
-			RuleAction ruleAction = list.get(i);
-			ruleAction.getRuleActionPK().setRuleLogic(ruleLogic);
+			MsgActionVo ruleAction = list.get(i);
+			ruleAction.setRuleName(ruleLogic.getRuleName());
 			// set startTime from startDate and startHour
 			Calendar cal = Calendar.getInstance();
-			cal.setTime(ruleAction.getRuleActionPK().getStartTime());
-			ruleAction.getRuleActionPK().setStartTime(new Timestamp(cal.getTimeInMillis()));
+			cal.setTime(ruleAction.getStartTime());
+			ruleAction.setStartTime(new Timestamp(cal.getTimeInMillis()));
 			// end of startTime
-			getRuleActionService().insert(ruleAction);
+			getMsgActionDao().insert(ruleAction);
 		}
 		logger.info("saveMsgActions() - MsgAction Rows Inserted: " + list.size());
 		logger.info("saveMsgActions() - View Id: " + FacesUtil.getCurrentViewId());
@@ -1168,9 +1159,9 @@ public class RuleLogicBean implements java.io.Serializable {
 			logger.warn("actionIdChanged() - RuleLogic is null.");
 		}
 		logger.info("actionIdChanged() - " + event.getOldValue() + " -> " + event.getNewValue());
-		for (Iterator<RuleAction> it=ruleActions.iterator(); it.hasNext();) {
-			RuleAction ra = it.next();
-			logger.info("actionIdChanged() - RuleAction Id: " + ra.getRuleActionDetail().getActionId());
+		for (Iterator<MsgActionVo> it=ruleActions.iterator(); it.hasNext();) {
+			MsgActionVo ra = it.next();
+			logger.info("actionIdChanged() - RuleAction Id: " + ra.getActionId());
 		}
 	}
 
@@ -1179,9 +1170,9 @@ public class RuleLogicBean implements java.io.Serializable {
 			logger.warn("changedActionId() - RuleLogic is null.");
 		}
 		logger.info("changedActionId() - " + event);
-		for (Iterator<RuleAction> it=ruleActions.iterator(); it.hasNext();) {
-			RuleAction ra = it.next();
-			logger.info("changedActionId() - RuleAction Id: " + ra.getRuleActionDetail().getActionId());
+		for (Iterator<MsgActionVo> it=ruleActions.iterator(); it.hasNext();) {
+			MsgActionVo ra = it.next();
+			logger.info("changedActionId() - RuleAction Id: " + ra.getActionId());
 		}
 		if (event == null) return;
 		UISelectOne select = (UISelectOne) event.getSource();
@@ -1216,9 +1207,9 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (getRuleLogic() == null) {
 			logger.warn("changeSenderId() - RuleLogic is null.");
 		}
-		for (Iterator<RuleAction> it=ruleActions.iterator(); it.hasNext();) {
-			RuleAction ra = it.next();
-			logger.info("changeSenderId() - Sender Id: " + ra.getSenderId());
+		for (Iterator<MsgActionVo> it=ruleActions.iterator(); it.hasNext();) {
+			MsgActionVo ra = it.next();
+			logger.info("changeSenderId() - Sender Id: " + ra.getClientId());
 		}
 		if (event == null) return;
 		UISelectOne select = (UISelectOne) event.getSource();
@@ -1240,9 +1231,9 @@ public class RuleLogicBean implements java.io.Serializable {
 	public boolean getAnyRulesMarkedForDeletion() {
 		if (isDebugEnabled)
 			logger.debug("getAnyRulesMarkedForDeletion() - Entering...");
-		List<RuleLogic> list = getRuleLogicList();
-		for (Iterator<RuleLogic> it=list.iterator(); it.hasNext();) {
-			RuleLogic vo = it.next();
+		List<RuleLogicVo> list = getRuleLogicList();
+		for (Iterator<RuleLogicVo> it=list.iterator(); it.hasNext();) {
+			RuleLogicVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -1253,9 +1244,9 @@ public class RuleLogicBean implements java.io.Serializable {
 	public boolean getAnyElementsMarkedForDeletion() {
 		if (isDebugEnabled)
 			logger.debug("getAnyElementsMarkedForDeletion() - Entering...");
-		List<RuleElement> list = getRuleElementList();
-		for (Iterator<RuleElement> it=list.iterator(); it.hasNext();) {
-			RuleElement vo = it.next();
+		List<RuleElementVo> list = getRuleElementList();
+		for (Iterator<RuleElementVo> it=list.iterator(); it.hasNext();) {
+			RuleElementVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -1266,9 +1257,9 @@ public class RuleLogicBean implements java.io.Serializable {
 	public boolean getAnySubRulesMarkedForDeletion() {
 		if (isDebugEnabled)
 			logger.debug("getAnySubRulesMarkedForDeletion() - Entering...");
-		List<RuleSubruleMap> list = getSubRuleList();
-		for (Iterator<RuleSubruleMap> it=list.iterator(); it.hasNext();) {
-			RuleSubruleMap vo = it.next();
+		List<RuleSubRuleMapVo> list = getSubRuleList();
+		for (Iterator<RuleSubRuleMapVo> it=list.iterator(); it.hasNext();) {
+			RuleSubRuleMapVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -1279,9 +1270,9 @@ public class RuleLogicBean implements java.io.Serializable {
 	public boolean getAnyMsgActionsMarkedForDeletion() {
 		if (isDebugEnabled)
 			logger.debug("getAnyMsgActionsMarkedForDeletion() - Entering...");
-		List<RuleAction> list = getMsgActionList();
-		for (Iterator<RuleAction> it=list.iterator(); it.hasNext();) {
-			RuleAction vo = it.next();
+		List<MsgActionVo> list = getMsgActionList();
+		for (Iterator<MsgActionVo> it=list.iterator(); it.hasNext();) {
+			MsgActionVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -1296,7 +1287,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("isHasSubrules() - Entering...");
 		if (getRuleLogic() != null) {
-			return getRuleLogicService().getHasSubrules(ruleLogic.getRuleName());
+			return getRuleLogicDao().getHasSubRules(ruleLogic.getRuleName());
 		}
 		return false;
 	}
@@ -1307,7 +1298,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (hasSubruleMap.containsKey(ruleName)) {
 			return hasSubruleMap.get(ruleName);
 		}
-		return getRuleLogicService().getHasSubrules(ruleName);
+		return getRuleLogicDao().getHasSubRules(ruleName);
 	}
 
 	/*
@@ -1317,8 +1308,8 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("getHasMsgActions() - Entering...");
 		if (ruleLogics != null) {
-			RuleLogic vo = ruleLogics.getRowData();
-			return getRuleActionService().getHasActions(vo.getRuleName());
+			RuleLogicVo vo = ruleLogics.getRowData();
+			return getMsgActionDao().getHasActions(vo.getRuleName());
 		}
 		return false;
 	}
@@ -1329,7 +1320,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (hasActionsMap.containsKey(ruleName)) {
 			return hasActionsMap.get(ruleName);
 		}
-		return getRuleActionService().getHasActions(ruleName);
+		return getMsgActionDao().getHasActions(ruleName);
 	}
 
 	/*
@@ -1347,7 +1338,7 @@ public class RuleLogicBean implements java.io.Serializable {
 			logger.debug("validatePrimaryKey() - ruleName: " + value);
 		String ruleName = (String) value;
 		if (getRuleLogic() != null) {
-			int seq = ruleLogic.getEvalSequence();
+			int seq = ruleLogic.getRuleSeq();
 			logger.debug("RuleLogic sequence: " + seq);
 		}
 		else {
@@ -1355,10 +1346,10 @@ public class RuleLogicBean implements java.io.Serializable {
 			return;
 		}
 
-		RuleLogic vo = getRuleLogicService().getByRuleName(ruleName);
+		RuleLogicVo vo = getRuleLogicDao().getByRuleName(ruleName);
 		if (editMode == false && vo != null) {
 			// ruleLogic already exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "ruleLogicAlreadyExist", new String[] {ruleName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -1366,7 +1357,7 @@ public class RuleLogicBean implements java.io.Serializable {
 
 		if (editMode == true && vo == null) {
 			// ruleLogic does not exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "ruleLogicDoesNotExist", new String[] {ruleName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -1387,7 +1378,7 @@ public class RuleLogicBean implements java.io.Serializable {
 			Pattern.compile(regex);
 		}
 		catch (PatternSyntaxException e) {
-			FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "invalidRegex", new String[] {regex});
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			//context.addMessage(component.getClientId(context), message);
@@ -1411,7 +1402,7 @@ public class RuleLogicBean implements java.io.Serializable {
 			return;
 		}
 		((UIInput)component).setValid(false);
-		FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 				"jpa.msgui.messages", "invalidDate", new Object[] {value});
 		message.setSeverity(FacesMessage.SEVERITY_ERROR);
 		context.addMessage(component.getClientId(context), message);
@@ -1429,20 +1420,20 @@ public class RuleLogicBean implements java.io.Serializable {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	protected List<RuleLogic> getRuleLogicList() {
+	protected List<RuleLogicVo> getRuleLogicList() {
 		if (ruleLogics == null) {
-			return new ArrayList<RuleLogic>();
+			return new ArrayList<RuleLogicVo>();
 		}
 		else {
-			return (List<RuleLogic>)ruleLogics.getWrappedData();
+			return (List<RuleLogicVo>)ruleLogics.getWrappedData();
 		}
 	}
 	
-	public RuleLogic getRuleLogic() {
+	public RuleLogicVo getRuleLogic() {
 		return ruleLogic;
 	}
 
-	public void setRuleLogic(RuleLogic ruleLogic) {
+	public void setRuleLogic(RuleLogicVo ruleLogic) {
 		this.ruleLogic = ruleLogic;
 	}
 
@@ -1489,7 +1480,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		this.actionFailure = actionFailure;
 	}
 
-	public DataModel<RuleLogic> getRuleLogics() {
+	public DataModel<RuleLogicVo> getRuleLogics() {
 		return ruleLogics;
 	}
 
@@ -1501,11 +1492,11 @@ public class RuleLogicBean implements java.io.Serializable {
 		this.startDateInput = startDateInput;
 	}
 
-	public RuleElement getRuleElement() {
+	public RuleElementVo getRuleElement() {
 		return ruleElement;
 	}
 
-	public void setRuleElement(RuleElement ruleElement) {
+	public void setRuleElement(RuleElementVo ruleElement) {
 		this.ruleElement = ruleElement;
 	}
 }

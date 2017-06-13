@@ -1,7 +1,6 @@
 package ltj.message.main;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -72,14 +71,13 @@ public class PremiumUpgradeSetup {
 	
 	void insertRuleLogic() {
 		RuleLogicDao dao = context.getBean(RuleLogicDao.class);
-		List<RuleLogicVo> contact_us = dao.getByRuleName("Contact_Us");
+		RuleLogicVo contact_us = dao.getByRuleName("Contact_Us");
 		int ruleSeq = 201;
-		if (!contact_us.isEmpty()) {
-			ruleSeq = contact_us.get(0).getRuleSeq() - 1;
+		if (contact_us != null) {
+			ruleSeq = contact_us.getRuleSeq() - 1;
 		}
-		List<RuleLogicVo> list = dao.getByRuleName(ruleName);
-		RuleLogicVo vo = null;
-		if (list.isEmpty()) {
+		RuleLogicVo vo = dao.getByRuleName(ruleName);
+		if (vo != null) {
 			vo = new RuleLogicVo();
 			vo.setRuleName(ruleName);
 			vo.setRuleSeq(ruleSeq);
@@ -87,11 +85,7 @@ public class PremiumUpgradeSetup {
 			int rows = dao.insert(vo);
 			logger.info("RuleLogic - Record inserted: " + rows);
 		}
-		else if (list.size()>1) {
-			throw new RuntimeException("Unexpected results returned from RuleName lookup.");
-		}
 		else {
-			vo = list.get(0);
 			setRuleData(vo);
 			int rows = dao.update(vo);
 			logger.info("RuleLogic - Record updated: " + rows);

@@ -16,17 +16,17 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 
-import jpa.exception.DataValidationException;
-import jpa.model.EmailVariable;
-import jpa.msgui.util.FacesUtil;
-import jpa.msgui.util.SpringUtil;
-import jpa.service.common.EmailVariableService;
-import jpa.service.external.VariableResolver;
-import jpa.util.TestUtil;
-import jpa.variable.RenderUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import ltj.message.bo.template.RenderUtil;
+import ltj.message.dao.emailaddr.EmailVariableDao;
+import ltj.message.exception.DataValidationException;
+import ltj.message.external.VariableResolver;
+import ltj.message.util.TestUtil;
+import ltj.message.vo.emailaddr.EmailVariableVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 @ManagedBean(name="emailVariable")
 @javax.faces.bean.ViewScoped
@@ -35,10 +35,10 @@ public class EmailVariableBean implements java.io.Serializable {
 	static final Logger logger = Logger.getLogger(EmailVariableBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private transient EmailVariableService emailVariableDao = null;
-	private transient DataModel<EmailVariable> emailVariables = null;
+	private transient EmailVariableDao emailVariableDao = null;
+	private transient DataModel<EmailVariableVo> emailVariables = null;
 	
-	private EmailVariable emailVariable = null;
+	private EmailVariableVo emailVariable = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 	
@@ -54,16 +54,16 @@ public class EmailVariableBean implements java.io.Serializable {
 	final static String TO_DELETED = TO_SAVED;
 	final static String TO_CANCELED = TO_SAVED;
 	
-	public DataModel<EmailVariable> getAll() {
+	public DataModel<EmailVariableVo> getAll() {
 		if (emailVariables == null) {
-			List<EmailVariable> emailVariableList = null;
+			List<EmailVariableVo> emailVariableList = null;
 //			if (!jpa.util.SenderUtil.isProductKeyValid() && jpa.util.SenderUtil.isTrialPeriodEnded()) {
-//				emailVariableList = getEmailVariableService().getAll();
+//				emailVariableList = getEmailVariableDao().getAll();
 //			}
 //			else {
-				emailVariableList = getEmailVariableService().getAll();
+				emailVariableList = getEmailVariableDao().getAll();
 //			}
-			emailVariables = new ListDataModel<EmailVariable>(emailVariableList);
+			emailVariables = new ListDataModel<EmailVariableVo>(emailVariableList);
 		}
 		return emailVariables;
 	}
@@ -77,18 +77,18 @@ public class EmailVariableBean implements java.io.Serializable {
 		refresh();
 	}
 	
-	public EmailVariableService getEmailVariableService() {
+	public EmailVariableDao getEmailVariableDao() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (emailVariableDao == null) {
-			emailVariableDao = SpringUtil.getWebAppContext().getBean(EmailVariableService.class);
+			emailVariableDao = SpringUtil.getWebAppContext().getBean(EmailVariableDao.class);
 		}
 		return emailVariableDao;
 	}
 
-	public void setEmailVariableService(EmailVariableService emailVariableDao) {
+	public void setEmailVariableDao(EmailVariableDao emailVariableDao) {
 		this.emailVariableDao = emailVariableDao;
 	}
 	
@@ -138,7 +138,7 @@ public class EmailVariableBean implements java.io.Serializable {
 		}
 		else {
 			try {
-				getEmailVariableService().getByQuery(query, 1);
+				getEmailVariableDao().getByQuery(query, 1);
 				testResult = "variableQueryTestSuccess";
 				return true;
 			}
@@ -168,7 +168,7 @@ public class EmailVariableBean implements java.io.Serializable {
 		if (isQueryValid() == false) {
 			return TO_SELF;
 		}
-		String className = emailVariable.getVariableProcName();
+		String className = emailVariable.getVariableProc();
 		if (className != null && className.trim().length() > 0) {
 			Class<?> proc = null;
 			try {
@@ -208,11 +208,11 @@ public class EmailVariableBean implements java.io.Serializable {
 			}
 		}
 		if (editMode == true) {
-			getEmailVariableService().update(emailVariable);
+			getEmailVariableDao().update(emailVariable);
 			logger.info("saveEmailVariable() - Rows Updated: " + 1);
 		}
 		else {
-			getEmailVariableService().insert(emailVariable);
+			getEmailVariableDao().insert(emailVariable);
 			addToList(emailVariable);
 			logger.info("saveEmailVariable() - Rows Inserted: " + 1);
 		}
@@ -220,7 +220,7 @@ public class EmailVariableBean implements java.io.Serializable {
 		return TO_SAVED;
 	}
 
-	private void addToList(EmailVariable vo) {
+	private void addToList(EmailVariableVo vo) {
 		getEmailVariableList().add(vo);
 	}
 	
@@ -236,11 +236,11 @@ public class EmailVariableBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<EmailVariable> evList = getEmailVariableList();
+		List<EmailVariableVo> evList = getEmailVariableList();
 		for (int i = 0; i < evList.size(); i++) {
-			EmailVariable vo = evList.get(i);
+			EmailVariableVo vo = evList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getEmailVariableService().deleteByVariableName(vo.getVariableName());
+				int rowsDeleted = getEmailVariableDao().deleteByName(vo.getVariableName());
 				if (rowsDeleted > 0) {
 					logger.info("deleteEmailVariables() - EmailVariable deleted: " + vo.getVariableName());
 				}
@@ -262,11 +262,11 @@ public class EmailVariableBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<EmailVariable> smtpList = getEmailVariableList();
+		List<EmailVariableVo> smtpList = getEmailVariableList();
 		for (int i = 0; i < smtpList.size(); i++) {
-			EmailVariable vo = smtpList.get(i);
+			EmailVariableVo vo = smtpList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				this.emailVariable = new EmailVariable();
+				this.emailVariable = new EmailVariableVo();
 				try {
 					vo.copyPropertiesTo(this.emailVariable);
 					emailVariable.setMarkedForDeletion(false);
@@ -293,7 +293,7 @@ public class EmailVariableBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addEmailVariable() - Entering...");
 		reset();
-		this.emailVariable = new EmailVariable();
+		this.emailVariable = new EmailVariableVo();
 		emailVariable.setMarkedForEdition(true);
 		editMode = false;
 		beanMode = BeanMode.insert;
@@ -317,9 +317,9 @@ public class EmailVariableBean implements java.io.Serializable {
 			logger.warn("getAnyListsMarkedForDeletion() - EmailVariable List is null.");
 			return false;
 		}
-		List<EmailVariable> smtpList = getEmailVariableList();
-		for (Iterator<EmailVariable> it = smtpList.iterator(); it.hasNext();) {
-			EmailVariable vo = it.next();
+		List<EmailVariableVo> smtpList = getEmailVariableList();
+		for (Iterator<EmailVariableVo> it = smtpList.iterator(); it.hasNext();) {
+			EmailVariableVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -337,17 +337,17 @@ public class EmailVariableBean implements java.io.Serializable {
 		String variableName = (String) value;
 		if (isDebugEnabled)
 			logger.debug("validatePrimaryKey() - variableName: " + variableName);
-		EmailVariable vo = getEmailVariableService().getByVariableName(variableName);
+		EmailVariableVo vo = getEmailVariableDao().getByName(variableName);
 		if (editMode == false && vo != null) {
 			// emailVariable already exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "emailVariableAlreadyExist", new String[] {variableName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (vo == null && editMode == true) {
 			// emailVariable does not exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "emailVariableDoesNotExist", new String[] {variableName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -380,16 +380,16 @@ public class EmailVariableBean implements java.io.Serializable {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	private List<EmailVariable> getEmailVariableList() {
+	private List<EmailVariableVo> getEmailVariableList() {
 		if (emailVariables == null) {
-			return new ArrayList<EmailVariable>();
+			return new ArrayList<EmailVariableVo>();
 		}
 		else {
-			return (List<EmailVariable>)emailVariables.getWrappedData();
+			return (List<EmailVariableVo>)emailVariables.getWrappedData();
 		}
 	}
 	
-	public EmailVariable getEmailVariable() {
+	public EmailVariableVo getEmailVariable() {
 		if (emailVariable == null && emailVariables != null) {
 			if (emailVariables.isRowAvailable()) {
 				emailVariable = emailVariables.getRowData();
@@ -398,7 +398,7 @@ public class EmailVariableBean implements java.io.Serializable {
 		return emailVariable;
 	}
 
-	public void setEmailVariable(EmailVariable emailVariable) {
+	public void setEmailVariable(EmailVariableVo emailVariable) {
 		this.emailVariable = emailVariable;
 	}
 

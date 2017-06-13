@@ -79,6 +79,22 @@ public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
 	}
 	
 	@Override
+	public MailingListVo getByRowId(int rowId) {
+		String sql = getSelectClause() +
+				" where a.row_id = ? " +
+				getGroupByClause();
+		Object[] parms = new Object[] {rowId};
+		try {
+			MailingListVo vo = getJdbcTemplate().queryForObject(sql, parms, 
+					new BeanPropertyRowMapper<MailingListVo>(MailingListVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+	
+	@Override
 	public List<MailingListVo> getByAddress(String emailAddr) {
 		emailAddr = emailAddr == null ? "" : emailAddr; // just for safety
 		String acctUserName = emailAddr;

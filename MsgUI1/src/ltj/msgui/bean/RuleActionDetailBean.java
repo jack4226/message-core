@@ -15,19 +15,19 @@ import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.ServletContext;
 
-import jpa.constant.Constants;
-import jpa.model.rule.RuleActionDetail;
-import jpa.model.rule.RuleDataType;
-import jpa.msgui.util.FacesUtil;
-import jpa.msgui.util.SpringUtil;
-import jpa.service.rule.RuleActionDetailService;
-import jpa.service.rule.RuleDataTypeService;
-import jpa.service.task.TaskBaseBo;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import ltj.message.bo.task.TaskBaseBo;
+import ltj.message.constant.Constants;
+import ltj.message.dao.action.MsgActionDetailDao;
+import ltj.message.dao.action.MsgDataTypeDao;
+import ltj.message.vo.action.MsgActionDetailVo;
+import ltj.message.vo.action.MsgDataTypeVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 @ManagedBean(name="ruleAction")
 @javax.faces.bean.ViewScoped
@@ -37,11 +37,11 @@ public class RuleActionDetailBean implements java.io.Serializable {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 
-	private transient RuleActionDetailService msgActionDetailDao = null;
-	private transient RuleDataTypeService ruleDataTypeDao = null;
+	private transient MsgActionDetailDao msgActionDetailDao = null;
+	private transient MsgDataTypeDao ruleDataTypeDao = null;
 	
-	private transient DataModel<RuleActionDetail> actionDetails = null;
-	private RuleActionDetail actionDetail = null;
+	private transient DataModel<MsgActionDetailVo> actionDetails = null;
+	private MsgActionDetailVo actionDetail = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 	
@@ -57,14 +57,14 @@ public class RuleActionDetailBean implements java.io.Serializable {
 	private static String TO_DELETED = TO_SAVED;
 	private static String TO_CANCELED = TO_SAVED;
 
-	public DataModel<RuleActionDetail> getAll() {
+	public DataModel<MsgActionDetailVo> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (actionDetails == null) {
-			List<RuleActionDetail> MsgActionDetailList = getRuleActionDetailService().getAll();
-			actionDetails = new ListDataModel<RuleActionDetail>(MsgActionDetailList);
+			List<MsgActionDetailVo> MsgActionDetailList = getMsgActionDetailDao().getAll();
+			actionDetails = new ListDataModel<MsgActionDetailVo>(MsgActionDetailList);
 		}
 		return actionDetails;
 	}
@@ -79,20 +79,20 @@ public class RuleActionDetailBean implements java.io.Serializable {
 		return TO_SELF;
 	}
 	
-	public RuleActionDetailService getRuleActionDetailService() {
+	public MsgActionDetailDao getMsgActionDetailDao() {
 		if (msgActionDetailDao == null) {
-			msgActionDetailDao = SpringUtil.getWebAppContext().getBean(RuleActionDetailService.class);
+			msgActionDetailDao = SpringUtil.getWebAppContext().getBean(MsgActionDetailDao.class);
 		}
 		return msgActionDetailDao;
 	}
 
-	public void setRuleActionDetailService(RuleActionDetailService msgActionDetailDao) {
+	public void setMsgActionDetailDao(MsgActionDetailDao msgActionDetailDao) {
 		this.msgActionDetailDao = msgActionDetailDao;
 	}
 	
-	public RuleDataTypeService getRuleDataTypeService() {
+	public MsgDataTypeDao getMsgDataTypeDao() {
 		if (ruleDataTypeDao == null) {
-			ruleDataTypeDao = SpringUtil.getWebAppContext().getBean(RuleDataTypeService.class);
+			ruleDataTypeDao = SpringUtil.getWebAppContext().getBean(MsgDataTypeDao.class);
 		}
 		return ruleDataTypeDao;
 	}
@@ -113,7 +113,7 @@ public class RuleActionDetailBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		this.actionDetail = (RuleActionDetail) actionDetails.getRowData();
+		this.actionDetail = (MsgActionDetailVo) actionDetails.getRowData();
 		if (isInfoEnabled) {
 			logger.info("viewMsgActionDetail() - MsgActionDetail to be edited: "
 					+ actionDetail.getActionId());
@@ -122,7 +122,7 @@ public class RuleActionDetailBean implements java.io.Serializable {
 		editMode = true;
 		beanMode = BeanMode.edit;
 		if (isDebugEnabled) {
-			logger.debug("viewMsgActionDetail() - RuleActionDetail to be passed to jsp: "
+			logger.debug("viewMsgActionDetail() - MsgActionDetailVo to be passed to jsp: "
 					+ actionDetail);
 		}
 		return TO_EDIT;
@@ -136,22 +136,22 @@ public class RuleActionDetailBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("saveMsgActionDetail() - Entering...");
 		if (actionDetail == null) {
-			logger.warn("saveMsgActionDetail() - RuleActionDetail is null.");
+			logger.warn("saveMsgActionDetail() - MsgActionDetailVo is null.");
 			return TO_FAILED;
 		}
 		reset();
 		// update database
-		RuleDataType ruleDataType = getRuleDataTypeService().getByDataType(actionDetail.getRuleDataType().getDataType());
-		actionDetail.setRuleDataType(ruleDataType);
+		MsgDataTypeVo ruleDataType = getMsgDataTypeDao().getByTypeValuePair(actionDetail.getActionId(), actionDetail.getDataType());
+		actionDetail.setDataType(ruleDataType.getDataType());
 		if (StringUtils.isNotBlank(FacesUtil.getLoginUserId())) {
 			actionDetail.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
 		if (editMode == true) {
-			getRuleActionDetailService().update(actionDetail);
+			getMsgActionDetailDao().update(actionDetail);
 			logger.info("saveMsgActionDetail() - Rows Updated: " + 1);
 		}
 		else {
-			getRuleActionDetailService().insert(actionDetail);
+			getMsgActionDetailDao().insert(actionDetail);
 			getMsgActionDetailList().add(actionDetail);
 			logger.info("saveMsgActionDetail() - Rows Inserted: " + 1);
 		}
@@ -171,11 +171,11 @@ public class RuleActionDetailBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleActionDetail> list = getMsgActionDetailList();
+		List<MsgActionDetailVo> list = getMsgActionDetailList();
 		for (int i=0; i<list.size(); i++) {
-			RuleActionDetail vo = list.get(i);
+			MsgActionDetailVo vo = list.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getRuleActionDetailService().deleteByActionId(vo.getActionId());
+				int rowsDeleted = getMsgActionDetailDao().deleteByActionId(vo.getActionId());
 				if (rowsDeleted > 0) {
 					logger.info("deleteMsgActionDetails() - MsgActionDetail deleted: "
 							+ vo.getActionId());
@@ -198,11 +198,11 @@ public class RuleActionDetailBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<RuleActionDetail> mboxList = getMsgActionDetailList();
+		List<MsgActionDetailVo> mboxList = getMsgActionDetailList();
 		for (int i=0; i<mboxList.size(); i++) {
-			RuleActionDetail vo = mboxList.get(i);
+			MsgActionDetailVo vo = mboxList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				this.actionDetail = new RuleActionDetail();
+				this.actionDetail = new MsgActionDetailVo();
 				try {
 					vo.copyPropertiesTo(this.actionDetail);
 					actionDetail.setMarkedForDeletion(false);
@@ -229,10 +229,10 @@ public class RuleActionDetailBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addMsgActionDetail() - Entering...");
 		reset();
-		this.actionDetail = new RuleActionDetail();
-		RuleDataType ruleDataType = new RuleDataType();
+		this.actionDetail = new MsgActionDetailVo();
+		MsgDataTypeVo ruleDataType = new MsgDataTypeVo();
 		ruleDataType.setMarkedForEdition(true);
-		actionDetail.setRuleDataType(ruleDataType);
+		actionDetail.setDataType(ruleDataType.getDataType());
 		actionDetail.setMarkedForEdition(true);
 		actionDetail.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		editMode = false;
@@ -257,9 +257,9 @@ public class RuleActionDetailBean implements java.io.Serializable {
 			logger.warn("getAnyActionDetailsMarkedForDeletion() - MsgActionDetail List is null.");
 			return false;
 		}
-		List<RuleActionDetail> list = getMsgActionDetailList();
-		for (Iterator<RuleActionDetail> it=list.iterator(); it.hasNext();) {
-			RuleActionDetail vo = it.next();
+		List<MsgActionDetailVo> list = getMsgActionDetailList();
+		for (Iterator<MsgActionDetailVo> it=list.iterator(); it.hasNext();) {
+			MsgActionDetailVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -277,17 +277,17 @@ public class RuleActionDetailBean implements java.io.Serializable {
 		String actionDetailId = (String) value;
 		if (isDebugEnabled)
 			logger.debug("validatePrimaryKey() - MsgActionDetailKey: " + actionDetailId);
-		RuleActionDetail vo = getRuleActionDetailService().getByActionId(actionDetailId);
+		MsgActionDetailVo vo = getMsgActionDetailDao().getByActionId(actionDetailId);
 		if (!editMode && vo != null) {
 			// MsgActionDetail already exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "RuleActionIdAlreadyExist", new String[] {actionDetailId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		if (editMode && vo == null) {
 			// MsgActionDetail does not exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "RuleActionIdDoesNotExist", new String[] {actionDetailId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -302,7 +302,7 @@ public class RuleActionDetailBean implements java.io.Serializable {
 			return; // TO_FAILED;
 		}
 		testResult = null;
-		String className = actionDetail.getClassName();
+		String className = actionDetail.getProcessClassName();
 		if (className != null && className.trim().length() > 0) {
 			try {
 				Object bo = Class.forName(className).newInstance();
@@ -318,7 +318,7 @@ public class RuleActionDetailBean implements java.io.Serializable {
 				testResult = "actionDetailClassNameTestFailure";
 			}
 		}
-		String beanId = actionDetail.getServiceName();
+		String beanId = actionDetail.getProcessBeanId();
 		if (beanId != null && testResult == null) {
 			FacesContext facesCtx = FacesContext.getCurrentInstance();
 			ServletContext sctx = (ServletContext) facesCtx.getExternalContext().getContext();
@@ -348,20 +348,20 @@ public class RuleActionDetailBean implements java.io.Serializable {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	private List<RuleActionDetail> getMsgActionDetailList() {
+	private List<MsgActionDetailVo> getMsgActionDetailList() {
 		if (actionDetails == null) {
-			return new ArrayList<RuleActionDetail>();
+			return new ArrayList<MsgActionDetailVo>();
 		}
 		else {
-			return (List<RuleActionDetail>)actionDetails.getWrappedData();
+			return (List<MsgActionDetailVo>)actionDetails.getWrappedData();
 		}
 	}
 	
-	public RuleActionDetail getActionDetail() {
+	public MsgActionDetailVo getActionDetail() {
 		return actionDetail;
 	}
 
-	public void setActionDetail(RuleActionDetail actionDetail) {
+	public void setActionDetail(MsgActionDetailVo actionDetail) {
 		this.actionDetail = actionDetail;
 	}
 

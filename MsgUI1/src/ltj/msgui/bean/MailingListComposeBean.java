@@ -27,13 +27,30 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import ltj.data.preload.RuleNameEnum;
+import ltj.message.bean.BodypartBean;
+import ltj.message.bean.MessageBean;
+import ltj.message.bo.mailsender.MessageBodyBuilder;
+import ltj.message.bo.task.AssignRuleNameBoImpl;
+import ltj.message.bo.task.TaskBaseBo;
+import ltj.message.bo.template.RenderUtil;
+import ltj.message.constant.CodeType;
+import ltj.message.constant.MLDeliveryType;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailTemplateDao;
 import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.dao.user.SessionUploadDao;
+import ltj.message.exception.DataValidationException;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.HtmlTags;
 import ltj.message.vo.SessionUploadVo;
 import ltj.message.vo.UserVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
+import ltj.message.vo.emailaddr.EmailTemplateVo;
+import ltj.message.vo.emailaddr.EmailVariableVo;
+import ltj.message.vo.emailaddr.MailingListVo;
+import ltj.message.vo.emailaddr.TemplateRenderVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
@@ -50,7 +67,6 @@ public class MailingListComposeBean implements java.io.Serializable {
 	private transient SessionUploadDao sessionUploadDao = null;
 	private transient EmailTemplateDao emailTemplateDao = null;
 	private transient EmailVariableDao emailVariableDao = null;
-	private transient EmailTemplateBo emailTemplateBo = null;
 	private transient EmailAddressDao emailAddrDao = null;
 	
 	private String listId = null;
@@ -111,13 +127,6 @@ public class MailingListComposeBean implements java.io.Serializable {
 		return emailVariableDao;
 	}
 
-	public EmailTemplateBo getEmailTemplateBo() {
-		if (emailTemplateBo == null) {
-			emailTemplateBo = SpringUtil.getWebAppContext().getBean(EmailTemplateBo.class);
-		}
-		return emailTemplateBo;
-	}
-
 	public EmailAddressDao getEmailAddressDao() {
 		if (emailAddrDao == null) {
 			emailAddrDao = SpringUtil.getWebAppContext().getBean(EmailAddressDao.class);
@@ -159,7 +168,7 @@ public class MailingListComposeBean implements java.io.Serializable {
 		try {
 			javax.servlet.http.Part file = (javax.servlet.http.Part) value;
 			if (file.getSize() > (256 * 1024)) { // limit to 256KB
-				FacesMessage msg = jpa.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "uploadFileTooBig",
+				FacesMessage msg = ltj.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "uploadFileTooBig",
 						new String[] { "256kb" });
 				msgs.add(msg);
 			}
@@ -226,7 +235,7 @@ public class MailingListComposeBean implements java.io.Serializable {
            logger.error("IOException caught", ex);
         }
     	
-		FacesMessage message = jpa.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "uploadFileResult",
+		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "uploadFileResult",
 				new String[] { fileName });
 		message.setSeverity(FacesMessage.SEVERITY_WARN);
         return TO_SELF;
@@ -267,14 +276,13 @@ public class MailingListComposeBean implements java.io.Serializable {
 		try {
 			int sessionSeq = Integer.parseInt(seq);
 			for (int i = 0; uploads != null && i < uploads.size(); i++) {
-				SessionUpload vo = uploads.get(i);
-				if (sessionSeq == vo.getSessionUploadPK().getSessionSequence()) {
+				SessionUploadVo vo = uploads.get(i);
+				if (sessionSeq == vo.getSessionSeq()) {
 					uploads.remove(i);
 					break;
 				}
 			}
-			SessionUploadPK pk = new SessionUploadPK(id, sessionSeq);
-			int rowsDeleted = getSessionUploadDao().deleteByPrimaryKey(pk);
+			int rowsDeleted = getSessionUploadDao().deleteByPrimaryKey(id, sessionSeq);
 			logger.info("removeUploadFile() - rows deleted: " + rowsDeleted + ", file name: " + name);
 		}
 		catch (RuntimeException e) {
@@ -290,14 +298,14 @@ public class MailingListComposeBean implements java.io.Serializable {
 	public String copyFromTemplate() {
 		String id = (String) templateIdInput.getSubmittedValue();
 		logger.info("copyFromTemplate() - templateId = " + id);
-		EmailTemplate vo = getEmailTemplateDao().getByTemplateId(id);
+		EmailTemplateVo vo = getEmailTemplateDao().getByTemplateId(id);
 		if (vo != null) {
-			listId = vo.getMailingList().getListId();
+			listId = vo.getListId();
 			msgSubject = vo.getSubject();
 			msgBody = vo.getBodyText();
-			isHtml = vo.isHtml();
-			isHtml = isHtml == false ? HtmlUtil.isHTML(msgBody) : isHtml;
-			embedEmailId = vo.getIsEmbedEmailId();
+			isHtml = vo.getIsHtml();
+			isHtml = isHtml == false ? HtmlTags.isHTML(msgBody) : isHtml;
+			embedEmailId = vo.getEmbedEmailId();
 			deliveryOption = vo.getDeliveryOption();
 		}
 		else {
@@ -309,7 +317,7 @@ public class MailingListComposeBean implements java.io.Serializable {
 	private void checkVariableLoop(String text) throws DataValidationException {
 		List<String> varNames = RenderUtil.retrieveVariableNames(text);
 		for (String loopName : varNames) {
-			EmailVariable vo = getEmailVariableDao().getByVariableName(loopName);
+			EmailVariableVo vo = getEmailVariableDao().getByName(loopName);
 			if (vo != null) {
 				RenderUtil.checkVariableLoop(vo.getDefaultValue(), loopName);
 			}
@@ -342,42 +350,42 @@ public class MailingListComposeBean implements java.io.Serializable {
 		}
 		// make sure we have all the data to build a message bean
 		try {
-			MailingList listVo =  getMailingListDao().getByListId(listId);
+			MailingListVo listVo =  getMailingListDao().getByListId(listId);
 			if (listVo == null) {
 				String errmsg = "failed to get mailing list by ListId (" + listId + ")!";
 				logger.error("sendMessage() - " + errmsg);
 				throw new IllegalStateException(errmsg);
 			}
 			// retrieve new addresses
-			Address[] from = InternetAddress.parse(listVo.getListEmailAddr());
-			Address[] to = InternetAddress.parse(listVo.getListEmailAddr());
+			Address[] from = InternetAddress.parse(listVo.getEmailAddr());
+			Address[] to = InternetAddress.parse(listVo.getEmailAddr());
 			// retrieve new message body
 			msgBody = msgBody == null ? "" : msgBody; // just for safety
 			// construct messageBean for new message
 			MessageBean mBean = new MessageBean();
 			mBean.setMailingListId(listId);
-			mBean.setSenderId(listVo.getSenderData().getSenderId());
+			mBean.setClientId(listVo.getClientId());
 			mBean.setRuleName(RuleNameEnum.BROADCAST.getValue());
-			if (CodeType.YES_CODE.getValue().equals(embedEmailId)) {
+			if (CodeType.Y.value().equals(embedEmailId)) {
 				mBean.setEmBedEmailId(Boolean.valueOf(true));
 			}
-			else if (CodeType.NO_CODE.getValue().equals(embedEmailId)) {
+			else if (CodeType.N.value().equals(embedEmailId)) {
 				mBean.setEmBedEmailId(Boolean.valueOf(false));
 			}
-			if (MailingListDeliveryType.SUBSCRIBERS_ONLY.getValue().equals(deliveryOption)) {
-				mBean.setToSubscribersOnly(true);
+			if (MLDeliveryType.CUSTOMERS_ONLY.value().equals(deliveryOption)) {
+				mBean.setToCustomersOnly(true);
 			}
-			else if (MailingListDeliveryType.PROSPECTS_ONLY.getValue().equals(deliveryOption)) {
+			else if (MLDeliveryType.PROSPECTS_ONLY.value().equals(deliveryOption)) {
 				mBean.setToProspectsOnly(true);
 			}
 			String contentType = "text/plain";
-			isHtml = isHtml == false ? HtmlUtil.isHTML(msgBody) : isHtml;
+			isHtml = isHtml == false ? HtmlTags.isHTML(msgBody) : isHtml;
 			if (isHtml) {
 				contentType = "text/html";
 			}
 			// retrieve upload files
 			String sessionId = FacesUtil.getSessionId();
-			List<SessionUpload> list = getSessionUploadDao().getBySessionId(sessionId);
+			List<SessionUploadVo> list = getSessionUploadDao().getBySessionId(sessionId);
 			if (list != null && list.size() > 0) {
 				// construct multipart
 				mBean.setContentType("multipart/mixed");
@@ -389,7 +397,7 @@ public class MailingListComposeBean implements java.io.Serializable {
 				mBean.put(aNode);
 				// message attachments
 				for (int i = 0; i < list.size(); i++) {
-					SessionUpload vo = list.get(i);
+					SessionUploadVo vo = list.get(i);
 					BodypartBean subNode = new BodypartBean();
 					subNode.setContentType(vo.getContentType());
 					subNode.setDisposition(Part.ATTACHMENT);
@@ -418,13 +426,12 @@ public class MailingListComposeBean implements java.io.Serializable {
 			mBean.setTo(to);
 			mBean.setSubject(msgSubject);
 			// process the message
-			TaskBaseBo taskBo = (TaskBaseBo) SpringUtil.getWebAppContext().getBean(AssignRuleName.class);
-			MessageContext ctx = new MessageContext(mBean);
-			ctx.setTaskArguments(mBean.getRuleName());
-			taskBo.process(ctx);
-			List<Integer> mailsSent = ctx.getRowIds();
-			if (mailsSent != null && !mailsSent.isEmpty()) {
-				logger.info("sendMessage() - Broadcast Message queued: " + mailsSent.size());
+			TaskBaseBo taskBo = (TaskBaseBo) SpringUtil.getWebAppContext().getBean(AssignRuleNameBoImpl.class);
+			taskBo.setTaskArguments(mBean.getRuleName());
+			taskBo.process(mBean);
+			Long mailsSent = mBean.getMsgId();
+			if (mailsSent != null) {
+				logger.info("sendMessage() - Broadcast Message queued: " + mailsSent);
 				if (isDebugEnabled)
 					logger.debug("sendMessage() - Broadcast message: " + LF + mBean);
 			}
@@ -455,14 +462,14 @@ public class MailingListComposeBean implements java.io.Serializable {
 	public String previewMsgBody() {
 		try {
 			// build variable values using the first email address found in EmailAddr table.
-			int previewAddrId = getEmailAddressDao().getRowIdForPreview();
+			long previewAddrId = getEmailAddressDao().getEmailAddrIdForPreview();
 			// include mailing list variables
-			EmailAddress addrVo = getEmailAddressDao().getByRowId(previewAddrId);
+			EmailAddressVo addrVo = getEmailAddressDao().getByAddrId(previewAddrId);
 			String previewAddr = "1";
 			if (addrVo != null) {
-				previewAddr = addrVo.getAddress();
+				previewAddr = addrVo.getEmailAddr();
 			}
-			TemplateRenderVo renderVo = getEmailTemplateBo().renderEmailText(previewAddr, null, msgSubject,
+			TemplateRenderVo renderVo = RenderUtil.renderEmailText(previewAddr, null, msgSubject,
 					msgBody, listId);
 			renderedBody = getDisplayBody(renderVo.getBody());
 			renderedSubj = renderVo.getSubject();
@@ -471,10 +478,6 @@ public class MailingListComposeBean implements java.io.Serializable {
 			logger.error("DataValidationException caught", e);
 			return TO_FAILED;
 		} 
-		catch (TemplateException e) {
-			logger.error("TemplateException caught", e);
-			return TO_FAILED;
-		}
 		beanMode = BeanMode.preview;
 		return TO_PREVIEW;
 	}
@@ -485,7 +488,7 @@ public class MailingListComposeBean implements java.io.Serializable {
 			return MessageBodyBuilder.removeHtmlBodyTags(bodytext);
 		}
 		else {
-			return StringUtil.getHtmlDisplayText(bodytext);
+			return EmailAddrUtil.getHtmlDisplayText(bodytext);
 		}
 	}
 
@@ -506,7 +509,7 @@ public class MailingListComposeBean implements java.io.Serializable {
 		String fromAddr = (String) value;
 		if (!isValidEmailAddress(fromAddr)) {
 			// invalid email address
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "invalidEmailAddress", new String[] {fromAddr});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -541,13 +544,13 @@ public class MailingListComposeBean implements java.io.Serializable {
 		this.listId = listId;
 	}
 
-	public List<SessionUpload> getUploads() {
+	public List<SessionUploadVo> getUploads() {
 		//if (uploads == null)
 			retrieveUploadFiles();
 		return uploads;
 	}
 
-	public void setUploads(List<SessionUpload> uploads) {
+	public void setUploads(List<SessionUploadVo> uploads) {
 		this.uploads = uploads;
 	}
 	

@@ -5,15 +5,17 @@ import java.util.List;
 import ltj.message.vo.rule.RuleLogicVo;
 
 public interface RuleLogicDao {
+	public RuleLogicVo getByRowId(int rowId);
 	public RuleLogicVo getByPrimaryKey(String ruleName, int ruleSeq);
-	public List<RuleLogicVo> getByRuleName(String ruleName);
+	public RuleLogicVo getByRuleName(String ruleName);
 	public int getNextRuleSequence();
 	public List<RuleLogicVo> getActiveRules();
+	public boolean getHasSubRules(String ruleName);
 	public List<RuleLogicVo> getAll(boolean builtInRule);
 	public List<RuleLogicVo> getAllSubRules(boolean excludeBuiltIn);
 	public List<String> getBuiltinRuleNames4Web();
 	public List<String> getCustomRuleNames4Web();
 	public int update(RuleLogicVo ruleLogicVo);
-	public int deleteByPrimaryKey(String ruleName, int ruleSeq);
+	public int deleteByPrimaryKey(String ruleName);
 	public int insert(RuleLogicVo ruleLogicVo);
 }

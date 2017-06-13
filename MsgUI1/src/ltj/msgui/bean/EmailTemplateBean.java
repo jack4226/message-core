@@ -20,27 +20,27 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
-import jpa.constant.Constants;
-import jpa.exception.DataValidationException;
-import jpa.model.EmailTemplate;
-import jpa.model.EmailVariable;
-import jpa.model.MailingList;
-import jpa.model.SchedulesBlob;
-import jpa.model.SenderData;
-import jpa.msgui.util.DynamicCodes;
-import jpa.msgui.util.FacesUtil;
-import jpa.msgui.util.SpringUtil;
-import jpa.service.common.EmailTemplateService;
-import jpa.service.common.EmailVariableService;
-import jpa.service.common.SenderDataService;
-import jpa.service.maillist.MailingListService;
-import jpa.util.BlobUtil;
-import jpa.util.HtmlUtil;
-import jpa.util.SenderUtil;
-import jpa.variable.RenderUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import ltj.message.bo.template.RenderUtil;
+import ltj.message.constant.Constants;
+import ltj.message.dao.client.ClientDao;
+import ltj.message.dao.client.ClientUtil;
+import ltj.message.dao.emailaddr.EmailTemplateDao;
+import ltj.message.dao.emailaddr.EmailVariableDao;
+import ltj.message.dao.emailaddr.MailingListDao;
+import ltj.message.dao.emailaddr.SchedulesBlob;
+import ltj.message.exception.DataValidationException;
+import ltj.message.util.BlobUtil;
+import ltj.message.util.HtmlTags;
+import ltj.message.vo.ClientVo;
+import ltj.message.vo.emailaddr.EmailTemplateVo;
+import ltj.message.vo.emailaddr.EmailVariableVo;
+import ltj.message.vo.emailaddr.MailingListVo;
+import ltj.msgui.util.DynamicCodes;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
 
 @ManagedBean(name="emailTemplate")
 @javax.faces.bean.ViewScoped
@@ -49,14 +49,14 @@ public class EmailTemplateBean implements java.io.Serializable {
 	static final Logger logger = Logger.getLogger(EmailTemplateBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private transient EmailTemplateService emailTemplateDao = null;
-	private transient EmailVariableService emailVariableDao = null;
-	private transient MailingListService mailingListDao = null;
-	private transient SenderDataService senderDataDao = null;
+	private transient EmailTemplateDao emailTemplateDao = null;
+	private transient EmailVariableDao emailVariableDao = null;
+	private transient MailingListDao mailingListDao = null;
+	private transient ClientDao senderDataDao = null;
 	
-	private transient DataModel<EmailTemplate> emailTemplates = null;
+	private transient DataModel<EmailTemplateVo> emailTemplates = null;
 	
-	private EmailTemplate emailTemplate = null;
+	private EmailTemplateVo emailTemplate = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 	
@@ -75,20 +75,20 @@ public class EmailTemplateBean implements java.io.Serializable {
 	final static String TO_SCHEDULE_EDIT = "emailSchedulesEdit.xhtml";
 	final static String TO_SCHEDULE_SAVED = TO_SAVED;
 	
-	public DataModel<EmailTemplate> getAll() {
+	public DataModel<EmailTemplateVo> getAll() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (fromPage != null && fromPage.equals("main")) {
 			refresh();
 		}
 		if (emailTemplates == null) {
-			List<EmailTemplate> emailTemplateList = null;
-			if (!SenderUtil.isProductKeyValid() && SenderUtil.isTrialPeriodEnded()) {
-				emailTemplateList = getEmailTemplateService().getAll();
+			List<EmailTemplateVo> emailTemplateList = null;
+			if (!ClientUtil.isProductKeyValid() && ClientUtil.isTrialPeriodEnded()) {
+				emailTemplateList = getEmailTemplateDao().getAll();
 			}
 			else {
-				emailTemplateList = getEmailTemplateService().getAll();
+				emailTemplateList = getEmailTemplateDao().getAll();
 			}
-			emailTemplates = new ListDataModel<EmailTemplate>(emailTemplateList);
+			emailTemplates = new ListDataModel<EmailTemplateVo>(emailTemplateList);
 		}
 		return emailTemplates;
 	}
@@ -102,34 +102,34 @@ public class EmailTemplateBean implements java.io.Serializable {
 		return TO_SELF;
 	}
 	
-	public EmailTemplateService getEmailTemplateService() {
+	public EmailTemplateDao getEmailTemplateDao() {
 		if (emailTemplateDao == null) {
-			emailTemplateDao = SpringUtil.getWebAppContext().getBean(EmailTemplateService.class);
+			emailTemplateDao = SpringUtil.getWebAppContext().getBean(EmailTemplateDao.class);
 		}
 		return emailTemplateDao;
 	}
 
-	public void setEmailTemplateService(EmailTemplateService emailTemplateDao) {
+	public void setEmailTemplateDao(EmailTemplateDao emailTemplateDao) {
 		this.emailTemplateDao = emailTemplateDao;
 	}
 	
-	public EmailVariableService getEmailVariableService() {
+	public EmailVariableDao getEmailVariableDao() {
 		if (emailVariableDao == null) {
-			emailVariableDao = SpringUtil.getWebAppContext().getBean(EmailVariableService.class);
+			emailVariableDao = SpringUtil.getWebAppContext().getBean(EmailVariableDao.class);
 		}
 		return emailVariableDao;
 	}
 
-	public MailingListService getMailingListService() {
+	public MailingListDao getMailingListDao() {
 		if (mailingListDao == null) {
-			mailingListDao = SpringUtil.getWebAppContext().getBean(MailingListService.class);
+			mailingListDao = SpringUtil.getWebAppContext().getBean(MailingListDao.class);
 		}
 		return mailingListDao;
 	}
 	
-	public SenderDataService getSenderDataService() {
+	public ClientDao getClientDao() {
 		if (senderDataDao == null) {
-			senderDataDao = SpringUtil.getWebAppContext().getBean(SenderDataService.class);
+			senderDataDao = SpringUtil.getWebAppContext().getBean(ClientDao.class);
 		}
 		return senderDataDao;
 	}
@@ -164,7 +164,7 @@ public class EmailTemplateBean implements java.io.Serializable {
 	private void checkVariableLoop(String text) throws DataValidationException {
 		List<String> varNames = RenderUtil.retrieveVariableNames(text);
 		for (String loopName : varNames) {
-			EmailVariable vo = getEmailVariableService().getByVariableName(loopName);
+			EmailVariableVo vo = getEmailVariableDao().getByName(loopName);
 			if (vo != null) {
 				RenderUtil.checkVariableLoop(vo.getDefaultValue(), loopName);
 			}
@@ -204,17 +204,17 @@ public class EmailTemplateBean implements java.io.Serializable {
 		if (StringUtils.isNotBlank(FacesUtil.getLoginUserId())) {
 			emailTemplate.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
-		if (!emailTemplate.isHtml()) { // make sure HTML is set correctly
-			emailTemplate.setHtml(HtmlUtil.isHTML(emailTemplate.getBodyText()));
+		if (!emailTemplate.getIsHtml()) { // make sure HTML is set correctly
+			emailTemplate.setIsHtml(HtmlTags.isHTML(emailTemplate.getBodyText()));
 		}
 		if (editMode == true) {
-			getEmailTemplateService().update(emailTemplate);
+			getEmailTemplateDao().update(emailTemplate);
 			logger.info("saveEmailTemplate() - Rows Updated: " + 1);
 		}
 		else { // insert
-			MailingList mlist = getMailingListService().getByListId(emailTemplate.getMailingList().getListId());
-			emailTemplate.setMailingList(mlist);
-			getEmailTemplateService().insert(emailTemplate);
+			MailingListVo mlist = getMailingListDao().getByListId(emailTemplate.getListId());
+			emailTemplate.setListId(mlist.getListId());
+			getEmailTemplateDao().insert(emailTemplate);
 			getEmailTemplateList().add(emailTemplate);
 			refresh();
 			logger.info("saveEmailTemplate() - Rows Inserted: " + 1);
@@ -243,7 +243,7 @@ public class EmailTemplateBean implements java.io.Serializable {
 	public String saveSchedules() {
 		if (isDebugEnabled)
 			logger.debug("saveSchedules() - Entering...");
-		getEmailTemplateService().update(emailTemplate);
+		getEmailTemplateDao().update(emailTemplate);
 		if (isDebugEnabled)
 			logger.debug("saveSchedules() - rows updated: " + 1);
 		beanMode = BeanMode.list;
@@ -262,11 +262,11 @@ public class EmailTemplateBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<EmailTemplate> smtpList = getEmailTemplateList();
+		List<EmailTemplateVo> smtpList = getEmailTemplateList();
 		for (int i=0; i<smtpList.size(); i++) {
-			EmailTemplate vo = smtpList.get(i);
+			EmailTemplateVo vo = smtpList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getEmailTemplateService().deleteByTemplateId(vo.getTemplateId());
+				int rowsDeleted = getEmailTemplateDao().deleteByTemplateId(vo.getTemplateId());
 				if (rowsDeleted > 0) {
 					logger.info("deleteEmailTemplates() - EmailTemplate deleted: " + vo.getTemplateId());
 				}
@@ -288,17 +288,17 @@ public class EmailTemplateBean implements java.io.Serializable {
 			return TO_FAILED;
 		}
 		reset();
-		List<EmailTemplate> smtpList = getEmailTemplateList();
+		List<EmailTemplateVo> smtpList = getEmailTemplateList();
 		for (int i=0; i<smtpList.size(); i++) {
-			EmailTemplate vo = smtpList.get(i);
+			EmailTemplateVo vo = smtpList.get(i);
 			if (vo.isMarkedForDeletion()) { // template to copy from
-				emailTemplate = new EmailTemplate();
+				emailTemplate = new EmailTemplateVo();
 				try {
 					vo.copyPropertiesTo(this.emailTemplate);
 					emailTemplate.setMarkedForDeletion(false);
 					vo.setMarkedForDeletion(false);
-					if (emailTemplate.getSenderData() == null) {
-						emailTemplate.setSenderData(vo.getSenderData());
+					if (emailTemplate.getClientId() == null) {
+						emailTemplate.setClientId(vo.getClientId());
 					}
 				}
 				catch (Exception e) {
@@ -324,11 +324,11 @@ public class EmailTemplateBean implements java.io.Serializable {
 		if (isDebugEnabled)
 			logger.debug("addEmailTemplate() - Entering...");
 		reset();
-		this.emailTemplate = new EmailTemplate();
-		MailingList mlist = new MailingList();
-		emailTemplate.setMailingList(mlist);
-		SenderData sender = getSenderDataService().getBySenderId(Constants.DEFAULT_SENDER_ID);
-		emailTemplate.setSenderData(sender);
+		this.emailTemplate = new EmailTemplateVo();
+		MailingListVo mlist = new MailingListVo();
+		emailTemplate.setListId(mlist.getListId());
+		ClientVo sender = getClientDao().getByClientId(Constants.DEFAULT_CLIENTID);
+		emailTemplate.setClientId(sender.getClientId());
 		emailTemplate.setSchedulesBlob(new SchedulesBlob());
 		emailTemplate.setMarkedForEdition(true);
 		emailTemplate.setSubject("");
@@ -355,9 +355,9 @@ public class EmailTemplateBean implements java.io.Serializable {
 			logger.warn("getAnyTemplatesMarkedForDeletion() - EmailTemplate List is null.");
 			return false;
 		}
-		List<EmailTemplate> smtpList = getEmailTemplateList();
-		for (Iterator<EmailTemplate> it=smtpList.iterator(); it.hasNext();) {
-			EmailTemplate vo = it.next();
+		List<EmailTemplateVo> smtpList = getEmailTemplateList();
+		for (Iterator<EmailTemplateVo> it=smtpList.iterator(); it.hasNext();) {
+			EmailTemplateVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -375,24 +375,24 @@ public class EmailTemplateBean implements java.io.Serializable {
 		String templateId = (String) value;
 		if (isDebugEnabled)
 			logger.debug("validatePrimaryKey() - templateId: " + templateId);
-		EmailTemplate vo = getEmailTemplateService().getByTemplateId(templateId);
+		EmailTemplateVo vo = getEmailTemplateDao().getByTemplateId(templateId);
 		if (editMode == true && vo != null && emailTemplate != null && vo.getRowId() != emailTemplate.getRowId()) {
 			// emailTemplate already exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 	        		"jpa.msgui.messages", "emailTemplateAlreadyExist", new String[] {templateId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// emailTemplate already exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "emailTemplateAlreadyExist", new String[] {templateId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		if (editMode == true && vo == null) {
 			// emailTemplate does not exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "emailTemplateDoesNotExist", new String[] {templateId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -409,7 +409,7 @@ public class EmailTemplateBean implements java.io.Serializable {
 			return;
 		}
 		((UIInput)component).setValid(false);
-		FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 				"jpa.msgui.messages", "invalidDate", new Object[] {value});
 		message.setSeverity(FacesMessage.SEVERITY_ERROR);
 		context.addMessage(component.getClientId(context), message);
@@ -460,20 +460,20 @@ public class EmailTemplateBean implements java.io.Serializable {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	private List<EmailTemplate> getEmailTemplateList() {
+	private List<EmailTemplateVo> getEmailTemplateList() {
 		if (emailTemplates == null) {
-			return new ArrayList<EmailTemplate>();
+			return new ArrayList<EmailTemplateVo>();
 		}
 		else {
-			return (List<EmailTemplate>)emailTemplates.getWrappedData();
+			return (List<EmailTemplateVo>)emailTemplates.getWrappedData();
 		}
 	}
 	
-	public EmailTemplate getEmailTemplate() {
+	public EmailTemplateVo getEmailTemplate() {
 		return emailTemplate;
 	}
 
-	public void setEmailTemplate(EmailTemplate emailTemplate) {
+	public void setEmailTemplate(EmailTemplateVo emailTemplate) {
 		this.emailTemplate = emailTemplate;
 	}
 

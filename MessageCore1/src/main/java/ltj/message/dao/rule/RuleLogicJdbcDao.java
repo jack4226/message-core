@@ -63,7 +63,7 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 			" where r.rule_name=? and r.rule_seq=? " +
 			getGroupByClause();
 		
-		Object[] parms = new Object[] {ruleName};
+		Object[] parms = new Object[] {ruleName, ruleSeq};
 		try {
 			RuleLogicVo vo = getJdbcTemplate().queryForObject(sql, parms, 
 					new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
@@ -75,17 +75,32 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	}
 	
 	@Override
-	public List<RuleLogicVo> getByRuleName(String ruleName) {
+	public RuleLogicVo getByRowId(int rowId) {
 		String sql = getSelectClause() +
-			" where r.rule_name=? " +
-			getGroupByClause() +
-			" order by r.rule_seq ";
+				" where r.row_id=? " +
+				getGroupByClause();
+			
+		Object[] parms = new Object[] {rowId};
+		try {
+			RuleLogicVo vo = getJdbcTemplate().queryForObject(sql, parms, 
+					new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
+			return vo;
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+	
+	@Override
+	public RuleLogicVo getByRuleName(String ruleName) {
+		String sql = getSelectClause() +
+			" where r.rule_name=? ";
 		
 		Object[] parms = new Object[] {ruleName};
 		
-		List<RuleLogicVo> list = getJdbcTemplate().query(sql, parms, 
+		RuleLogicVo vo = getJdbcTemplate().queryForObject(sql, parms, 
 				new BeanPropertyRowMapper<RuleLogicVo>(RuleLogicVo.class));
-		return list;
+		return vo;
 	}
 	
 	@Override
@@ -147,6 +162,19 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	}
 	
 	@Override
+	public boolean getHasSubRules(String ruleName) {
+		String sql = 
+			"select count(*) from rule_logic rl, rule_subrule_map m "
+			+ "where rl.rule_name = m.rule_name "
+			+ "and rl.rule_name = ?";
+		List<Object> fields = new ArrayList<>();
+		fields.add(ruleName);
+		
+		int rows = getJdbcTemplate().queryForObject(sql, fields.toArray(), Integer.class);
+		return (rows > 0);
+	}
+	
+	@Override
 	public List<String> getBuiltinRuleNames4Web() {
 		String sql = 
 			"select distinct(rule_name) " +
@@ -190,13 +218,12 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	}
 	
 	@Override
-	public synchronized int deleteByPrimaryKey(String ruleName, int ruleSeq) {
+	public synchronized int deleteByPrimaryKey(String ruleName) {
 		String sql = 
-			"delete from rule_logic where rule_name=? and rule_seq=? ";
+			"delete from rule_logic where rule_name=? ";
 		
 		List<Object> fields = new ArrayList<>();
 		fields.add(ruleName);
-		fields.add(ruleSeq);
 		
 		int rowsDeleted = getJdbcTemplate().update(sql, fields.toArray());
 		updateReloadFlags();
