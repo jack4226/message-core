@@ -19,24 +19,41 @@ import javax.faces.validator.ValidatorException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import ltj.data.preload.MobileCarrierEnum;
+import ltj.message.constant.Constants;
+import ltj.message.dao.client.ClientDao;
+import ltj.message.dao.customer.CustomerDao;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.util.EmailAddrUtil;
+import ltj.message.util.PhoneNumberUtil;
+import ltj.message.util.PrintUtil;
+import ltj.message.util.SsnNumberUtil;
+import ltj.message.vo.ClientVo;
+import ltj.message.vo.CustomerVo;
+import ltj.message.vo.PagingVo;
+import ltj.message.vo.SearchCustVo;
+import ltj.message.vo.emailaddr.EmailAddressVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
+
 @ManagedBean(name="subscriberData")
 @javax.faces.bean.ViewScoped
-public class SubscriberDataBean extends PaginationBean implements java.io.Serializable {
+public class CustomersListBean extends PaginationBean implements java.io.Serializable {
 	private static final long serialVersionUID = 7927665483948452101L;
-	static final Logger logger = Logger.getLogger(SubscriberDataBean.class);
+	static final Logger logger = Logger.getLogger(CustomersListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private transient SubscriberDataService subscriberDao = null;
-	private transient SenderDataService senderDao = null;
-	private transient EmailAddressService emailAddrDao = null;
+	private transient CustomerDao customerDao = null;
+	private transient EmailAddressDao emailAddrDao = null;
+	private transient ClientDao senderDao = null;
 	
-	private transient DataModel<SubscriberData> subscribers = null;
-	private SubscriberData subscriber = null;
+	private transient DataModel<CustomerVo> subscribers = null;
+	private CustomerVo subscriber = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 
 	private transient HtmlDataTable dataTable;
-	private PagingSubscriberData searchVo = null;
+	private SearchCustVo searchVo = new SearchCustVo(getPagingVo());
 	private String searchString = null;
 	
 	private transient UIInput subscriberIdInput = null;
@@ -59,47 +76,58 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 	private static String TO_SAVED = TO_LIST;
 	private static String TO_CANCELED = TO_LIST;
 
-	public DataModel<SubscriberData> getSubscribers() {
+	public DataModel<CustomerVo> getSubscribers() {
 		String fromPage = sessionBean.getRequestParam("frompage");
 		if (StringUtils.equals(fromPage,"main")) {
 			resetPagingVo();
 		}
 		if (!getPagingVo().getPageAction().equals(PagingVo.PageAction.CURRENT) || subscribers == null) {
-			List<SubscriberData> subscriberList = getSubscriberDataService().getSubscribersWithPaging(getSearchVo());
-			logger.info("PagingVo After: " + PrintUtil.prettyPrint(getSearchVo(), 2));
+			List<CustomerVo> subscriberList = getCustomerDao().getCustomersWithPaging(searchVo);
+			logger.info("PagingVo After: " + PrintUtil.prettyPrint(searchVo, 2));
 			getPagingVo().setPageAction(PagingVo.PageAction.CURRENT);
 			//subscribers = new ListDataModel(subscriberList);
-			subscribers = new ListDataModel<SubscriberData>(subscriberList);
+			subscribers = new ListDataModel<CustomerVo>(subscriberList);
 		}
 		return subscribers;
 	}
 	
 	@Override
 	public long getRowCount() {
-		long rowCount = getSubscriberDataService().getSubscriberCount(getSearchVo());
+		long rowCount = getCustomerDao().getCustomerCount(searchVo);
 		getPagingVo().setRowCount(rowCount);
 		return rowCount;
 	}
 
-	public SenderDataService getSenderDataService() {
+	public CustomerDao getCustomerDao() {
+		if (customerDao == null) {
+			customerDao = SpringUtil.getWebAppContext().getBean(CustomerDao.class);
+		}
+		return customerDao;
+	}
+
+	public void setCustomerDao(CustomerDao customerDao) {
+		this.customerDao = customerDao;
+	}
+
+	public ClientDao getClientDao() {
 		if (senderDao == null) {
-			senderDao = SpringUtil.getWebAppContext().getBean(SenderDataService.class);
+			senderDao = SpringUtil.getWebAppContext().getBean(ClientDao.class);
 		}
 		return senderDao;
 	}
 
-	public void setSenderDataService(SenderDataService senderDao) {
+	public void setClientDao(ClientDao senderDao) {
 		this.senderDao = senderDao;
 	}
 	
-	public EmailAddressService getEmailAddressService() {
+	public EmailAddressDao getEmailAddressDao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = SpringUtil.getWebAppContext().getBean(EmailAddressService.class);
+			emailAddrDao = SpringUtil.getWebAppContext().getBean(EmailAddressDao.class);
 		}
 		return emailAddrDao;
 	}
 
-	public void setEmailAddressService(EmailAddressService emailAddrDao) {
+	public void setEmailAddressDao(EmailAddressDao emailAddrDao) {
 		this.emailAddrDao = emailAddrDao;
 	}
 
@@ -119,49 +147,41 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 			return TO_FAILED;
 		}
 		reset();
-		this.subscriber = (SubscriberData) subscribers.getRowData();
-		logger.info("viewSubscriber() - Subscriber to be edited: " + subscriber.getSubscriberId());
+		this.subscriber = (CustomerVo) subscribers.getRowData();
+		logger.info("viewSubscriber() - Subscriber to be edited: " + subscriber.getCustId());
 		subscriber.setMarkedForEdition(true);
 		editMode = true;
 		beanMode = BeanMode.edit;
 		if (isDebugEnabled) {
-			logger.debug("viewSubscriber() - SubscriberData to be passed to jsp: " + subscriber);
+			logger.debug("viewSubscriber() - CustomerVo to be passed to jsp: " + subscriber);
 		}
 		return TO_EDIT;
 	}
 
 	public void searchByAddress(AjaxBehaviorEvent event) {
 		boolean changed = false;
-		PagingVo.Criteria criteria = getPagingVo().getSearchCriteria(PagingVo.Column.address);
 		if (this.searchString == null) {
-			if (criteria != null && criteria.getValue() != null) {
+			if (searchVo.getEmailAddr() != null) {
 				changed = true;
 			}
 		}
 		else {
-			if (criteria != null && !this.searchString.equals(criteria.getValue())) {
+			if (!this.searchString.equals(searchVo.getEmailAddr())) {
 				changed = true;
 			}
 		}
 		if (changed) {
 			resetPagingVo();
-			getPagingVo().setSearchCriteria(PagingVo.Column.address, new PagingVo.Criteria(RuleCriteria.CONTAINS, searchString));
+			searchVo.setEmailAddr(searchString);
 		}
 		return; // TO_SELF;
 	}
 	
 	public void resetSearch(AjaxBehaviorEvent event) {
 		searchString = null;
-		getPagingVo().setSearchCriteria(PagingVo.Column.address, new PagingVo.Criteria(RuleCriteria.CONTAINS, searchString));
+		searchVo.setEmailAddr(searchString);
 		resetPagingVo();
 		return; // TO_SELF;
-	}
-	
-	public PagingSubscriberData getSearchVo() {
-		if (searchVo == null) {
-			searchVo = new PagingSubscriberData(getPagingVo());
-		}
-		return searchVo;
 	}
 	
 	@Override
@@ -175,8 +195,8 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		return; // TO_SELF;
 	}
 	
-	public SubscriberData getData() {
-		subscriber = getSubscriberDataService().getBySubscriberId(subscriber.getSubscriberId());
+	public CustomerVo getData() {
+		subscriber = getCustomerDao().getByCustId(subscriber.getCustId());
 		reset();
 		return subscriber;
 	}
@@ -209,13 +229,13 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 			return; //TO_FAILED;
 		}
 		reset();
-		List<SubscriberData> addrList = getSubscriberList();
+		List<CustomerVo> addrList = getSubscriberList();
 		for (int i=0; i<addrList.size(); i++) {
-			SubscriberData vo = addrList.get(i);
+			CustomerVo vo = addrList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getSubscriberDataService().deleteBySubscriberId(vo.getSubscriberId());
+				int rowsDeleted = getCustomerDao().delete(vo.getCustId());
 				if (rowsDeleted > 0) {
-					logger.info("deleteSubscribers() - Subscriber deleted: " + vo.getSubscriberId());
+					logger.info("deleteSubscribers() - Subscriber deleted: " + vo.getCustId());
 					getPagingVo().setRowCount(getPagingVo().getRowCount() - rowsDeleted);
 				}
 			}
@@ -239,28 +259,28 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		// update database
 		//emailAddrInput.getValue();
 		// TODO need to check email address from input field
-		EmailAddress email = getEmailAddressService().findSertAddress(subscriber.getEmailAddress().getAddress());
-		subscriber.setEmailAddress(email);
-		SenderData sender = getSenderDataService().getBySenderId(subscriber.getSenderData().getSenderId());
-		subscriber.setSenderData(sender);
+		EmailAddressVo email = getEmailAddressDao().findByAddress(subscriber.getEmailAddr());
+		subscriber.setEmailAddr(email.getEmailAddr());
+		ClientVo sender = getClientDao().getByClientId(subscriber.getClientId());
+		subscriber.setClientId(sender.getClientId());
 		if (StringUtils.isNotBlank(FacesUtil.getLoginUserId())) {
 			subscriber.setUpdtUserId(FacesUtil.getLoginUserId());
 		}
 		try {
 			if (editMode == true) {
-				getSubscriberDataService().update(subscriber);
+				getCustomerDao().update(subscriber);
 				logger.info("saveSubscriber() - Rows Updated: " + 1);
 			}
 			else {
-				getSubscriberDataService().insert(subscriber);
+				getCustomerDao().insert(subscriber);
 				addToList(subscriber);
 				getPagingVo().setRowCount(getPagingVo().getRowCount() + 1);
 				refresh();
 				logger.info("saveSubscriber() - Rows Inserted: " + 1);
 			}
 		}
-		catch (DataValidationException e) {
-			logger.error("DataValidationException caught", e);
+		catch (Exception e) {
+			logger.error("Exception caught", e);
 			actionFailure = e.getMessage();
 			return TO_FAILED;
 		}
@@ -269,8 +289,8 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void addToList(SubscriberData vo) {
-		List<SubscriberData> list = (List<SubscriberData>)subscribers.getWrappedData();
+	private void addToList(CustomerVo vo) {
+		List<CustomerVo> list = (List<CustomerVo>)subscribers.getWrappedData();
 		list.add(vo);
 	}
 
@@ -286,17 +306,17 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 			return TO_FAILED;
 		}
 		reset();
-		List<SubscriberData> subrList = getSubscriberList();
+		List<CustomerVo> subrList = getSubscriberList();
 		for (int i=0; i<subrList.size(); i++) {
-			SubscriberData vo = subrList.get(i);
+			CustomerVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				this.subscriber = new SubscriberData();
+				this.subscriber = new CustomerVo();
 				try {
 					vo.copyPropertiesTo(this.subscriber);
 					subscriber.setMarkedForDeletion(false);
 					vo.setMarkedForDeletion(false);
-					if (subscriber.getSenderData() == null) {
-						subscriber.setSenderData(vo.getSenderData());
+					if (subscriber.getClientId() == null) {
+						subscriber.setClientId(vo.getClientId());
 					}
 				}
 				catch (Exception e) {
@@ -304,8 +324,8 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 				}
 				//subscriber.setLastName(null);
 				//subscriber.setFirstName(null);
-				subscriber.setSubscriberId(null);
-				subscriber.setEmailAddress(new EmailAddress());
+				subscriber.setCustId(null);
+				subscriber.setEmailAddr(null);
 				subscriber.setUserPassword(null);
 				subscriber.setMarkedForEdition(true);
 				editMode = false;
@@ -324,10 +344,10 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		if (isDebugEnabled)
 			logger.debug("addSubscriber() - Entering...");
 		reset();
-		this.subscriber = new SubscriberData();
-		SenderData default_sender = getSenderDataService().getBySenderId(Constants.DEFAULT_SENDER_ID);
-		subscriber.setEmailAddress(new EmailAddress());
-		subscriber.setSenderData(default_sender);
+		this.subscriber = new CustomerVo();
+		ClientVo default_sender = getClientDao().getByClientId(Constants.DEFAULT_CLIENTID);
+		subscriber.setEmailAddr(null);
+		subscriber.setClientId(default_sender.getClientId());
 		subscriber.setMarkedForEdition(true);
 		subscriber.setUpdtUserId(Constants.DEFAULT_USER_ID);
 		editMode = false;
@@ -352,9 +372,9 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 			logger.warn("getSubscribersMarkedForDeletion() - Subscriber List is null.");
 			return false;
 		}
-		List<SubscriberData> addrList = getSubscriberList();
-		for (Iterator<SubscriberData> it=addrList.iterator(); it.hasNext();) {
-			SubscriberData vo = it.next();
+		List<CustomerVo> addrList = getSubscriberList();
+		for (Iterator<CustomerVo> it=addrList.iterator(); it.hasNext();) {
+			CustomerVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -372,18 +392,18 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		String subrId = (String) value;
 		if (isDebugEnabled)
 			logger.debug("validatePrimaryKey() - SubscriberId: " + subrId);
-		SubscriberData vo = getSubscriberDataService().getBySubscriberId(subrId);
+		CustomerVo vo = getCustomerDao().getByCustId(subrId);
 		if (vo != null) {
 			if (editMode == true && subscriber != null
 					&& vo.getRowId() != subscriber.getRowId()) {
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 		        		"jpa.msgui.messages", "subscriberAlreadyExist", new String[] {subrId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
 			else if (editMode == false) {
 				// subscriber already exist
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 						"jpa.msgui.messages", "subscriberAlreadyExist", new String[] {subrId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
@@ -398,16 +418,16 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		if (StringUtils.isNotBlank(emailAddr)) {
 			if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 				// invalid email address
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 						"jpa.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
 			else {
-				SubscriberData vo = getSubscriberDataService().getByEmailAddress(emailAddr);
+				CustomerVo vo = getCustomerDao().getByEmailAddress(emailAddr);
 				if (vo != null) {
-					if (subscriber != null && !vo.getSubscriberId().equals(subscriber.getSubscriberId())) {
-						FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+					if (subscriber != null && !vo.getCustId().equals(subscriber.getCustId())) {
+						FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 								"jpa.msgui.messages", "emailAddressAlreadyUsed", new String[] {emailAddr});
 						message.setSeverity(FacesMessage.SEVERITY_WARN);
 						throw new ValidatorException(message);
@@ -422,7 +442,7 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		if (isDebugEnabled)
 			logger.debug("validateSsnNumber() - SSN: " + ssn);
 		if (StringUtils.isNotBlank(ssn) && !SsnNumberUtil.isValidSSN(ssn)) {
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "invalidSsnNumber", new String[] {ssn});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -433,7 +453,7 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		if (isDebugEnabled)
 			logger.debug("validateDate() - date = " + value);
 		if (value != null && !(value instanceof Date)) {
-			FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "invalidDate", new Object[] {value});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -445,7 +465,7 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		if (isDebugEnabled)
 			logger.debug("validatePhoneNumber() - Phone Number: " + phone);
 		if (StringUtils.isNotBlank(phone) && !PhoneNumberUtil.isValidPhoneNumber(phone)) {
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "invalidPhoneNumber", new String[] {phone});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -461,7 +481,7 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 				MobileCarrierEnum.getByValue(carrier);
 			}
 			catch (IllegalArgumentException e) {
-		        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 						"jpa.msgui.messages", "invalidMobileCarrier", new String[] {carrier});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
@@ -474,7 +494,7 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		if (isDebugEnabled)
 			logger.debug("validateZipCode5() - Zip Code: " + zip5);
 		if (StringUtils.isNotBlank(zip5) && !zip5.matches("\\d{5}")) {
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 	        		"jpa.msgui.messages", "invalidZipCode", new String[] {zip5});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -486,7 +506,7 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 		if (isDebugEnabled)
 			logger.debug("validateZipCode4() - Zip Code: " + zip4);
 		if (StringUtils.isNotBlank(zip4) && !zip4.matches("\\d{4}")) {
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 	        		"jpa.msgui.messages", "invalidZipCode", new String[] {zip4});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -494,32 +514,20 @@ public class SubscriberDataBean extends PaginationBean implements java.io.Serial
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	private List<SubscriberData> getSubscriberList() {
+	private List<CustomerVo> getSubscriberList() {
 		if (subscribers == null) {
-			return new ArrayList<SubscriberData>();
+			return new ArrayList<CustomerVo>();
 		}
 		else {
-			return (List<SubscriberData>)subscribers.getWrappedData();
+			return (List<CustomerVo>)subscribers.getWrappedData();
 		}
 	}
 
-	public SubscriberDataService getSubscriberDataService() {
-		if (subscriberDao == null) {
-			subscriberDao = (SubscriberDataService) SpringUtil.getWebAppContext().getBean(
-					"subscriberDataService");
-		}
-		return subscriberDao;
-	}
-
-	public void setSubscriberDataService(SubscriberDataService subscriberDao) {
-		this.subscriberDao = subscriberDao;
-	}
-
-	public SubscriberData getSubscriber() {
+	public CustomerVo getSubscriber() {
 		return subscriber;
 	}
 
-	public void setSubscriber(SubscriberData subscriber) {
+	public void setSubscriber(CustomerVo subscriber) {
 		this.subscriber = subscriber;
 	}
 

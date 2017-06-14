@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.activemq.broker.region.Subscription;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.io.FilenameUtils;
@@ -32,7 +31,7 @@ import ltj.message.vo.UserVo;
 import ltj.message.vo.emailaddr.EmailSubscrptVo;
 import ltj.msgui.bean.FileUploadForm;
 import ltj.msgui.bean.MailingListComposeBean;
-import ltj.msgui.bean.MessageInboxBean;
+import ltj.msgui.bean.MsgInboxBean;
 import ltj.msgui.filter.MultipartFilter;
 import ltj.msgui.filter.SessionTimeoutFilter;
 import ltj.msgui.util.FacesUtil;
@@ -150,7 +149,7 @@ public class UploadServlet extends HttpServlet {
 		}
 		else { // from message reply
 			// 1) retrieve MsgInboxBean instance from faces context
-			MessageInboxBean bean = (MessageInboxBean) facesContext.getELContext().getELResolver()
+			MsgInboxBean bean = (MsgInboxBean) facesContext.getELContext().getELResolver()
 					.getValue(facesContext.getELContext(), null, "messageInbox");
 			// 2) populate "uploads" list that contains uploaded files
 			bean.retrieveUploadFiles();

@@ -17,19 +17,30 @@ import javax.faces.validator.ValidatorException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import ltj.message.constant.Constants;
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.dao.emailaddr.MailingListDao;
+import ltj.message.vo.PagingVo;
+import ltj.message.vo.SearchSbsrVo;
+import ltj.message.vo.emailaddr.EmailSubscrptVo;
+import ltj.message.vo.emailaddr.MailingListVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
+
 @ManagedBean(name="subscription")
 @javax.faces.bean.ViewScoped
-public class SubscriptionBean extends PaginationBean implements java.io.Serializable {
+public class SubscribersListBean extends PaginationBean implements java.io.Serializable {
 	private static final long serialVersionUID = 6216351042518651517L;
-	static final Logger logger = Logger.getLogger(SubscriptionBean.class);
+	static final Logger logger = Logger.getLogger(SubscribersListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
-	private transient SubscriptionService subscriptionDao = null;
-	private transient EmailAddressService emailAddrDao = null;
-	private transient MailingListService mailingListDao = null;
+	private transient EmailSubscrptDao subscriptionDao = null;
+	private transient EmailAddressDao emailAddrDao = null;
+	private transient MailingListDao mailingListDao = null;
 	
-	private transient DataModel<Subscription> subscriptions = null;
-	private Subscription subscription = null;
+	private transient DataModel<EmailSubscrptVo> subscriptions = null;
+	private EmailSubscrptVo subscription = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 	
@@ -37,6 +48,8 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 
 	private transient HtmlDataTable dataTable;
 	private String searchString = null;
+	
+	private SearchSbsrVo searchVo = new SearchSbsrVo(getPagingVo());
 	
 	private String testResult = null;
 	private String actionFailure = null;
@@ -49,7 +62,7 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 	static final String TO_EDIT = "subscriptions.xhtml";
 	static final String TO_CANCELED = "configureMailingLists.xhtml";
 
-	public DataModel<Subscription> getSubscriptions() {
+	public DataModel<EmailSubscrptVo> getSubscriptions() {
 		String fromPage = FacesUtil.getRequestParameter("frompage");
 		if (StringUtils.equals(fromPage,"main")) {
 			resetPagingVo();
@@ -63,14 +76,14 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 		logger.info("getSubscriptions() - From Page: " + fromPage + ", List Id: " + listId);
 		// retrieve total number of rows
 		if (getPagingVo().getRowCount() < 0) {
-			long rowCount = getSubscriptionService().getSubscriptionCount(listId, getPagingVo());
+			long rowCount = getEmailSubscrptDao().getSubscriberCount(searchVo);
 			getPagingVo().setRowCount(rowCount);
 		}
 		if (subscriptions == null || !getPagingVo().getPageAction().equals(PagingVo.PageAction.CURRENT)) {
-			List<Subscription> subscriptionList = getSubscriptionService().getSubscriptionsWithPaging(listId, getPagingVo());
+			List<EmailSubscrptVo> subscriptionList = getEmailSubscrptDao().getSubscribersWithPaging(searchVo);
 			logger.info("PagingVo After: " + getPagingVo());
 			getPagingVo().setPageAction(PagingVo.PageAction.CURRENT);
-			subscriptions = new ListDataModel<Subscription>(subscriptionList);
+			subscriptions = new ListDataModel<EmailSubscrptVo>(subscriptionList);
 		}
 		return subscriptions;
 	}
@@ -80,7 +93,7 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 		if (StringUtils.equals(FacesUtil.getRequestParameter("frompage"), "mailinglist")) {
 			listId = FacesUtil.getRequestParameter("listId"); 
 		}
-		long rowCount = getSubscriptionService().getSubscriptionCount(listId, getPagingVo());
+		long rowCount = getEmailSubscrptDao().getSubscriberCount(searchVo);
 		getPagingVo().setRowCount(rowCount);
 		return rowCount;
 	}
@@ -91,20 +104,19 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 	
 	public String searchByAddress() {
 		boolean changed = false;
-		PagingVo.Criteria criteria = getPagingVo().getSearchCriteria(PagingVo.Column.origAddress);
 		if (this.searchString == null) {
-			if (criteria != null && criteria.getValue() != null) {
+			if (searchVo.getEmailAddr() != null) {
 				changed = true;
 			}
 		}
 		else {
-			if (criteria != null && !this.searchString.equals(criteria.getValue())) {
+			if (!this.searchString.equals(searchVo.getEmailAddr())) {
 				changed = true;
 			}
 		}
 		if (changed) {
 			resetPagingVo();
-			getPagingVo().setSearchCriteria(PagingVo.Column.origAddress, new PagingVo.Criteria(RuleCriteria.CONTAINS, searchString));
+			searchVo.setEmailAddr(searchString);
 		}
 		return null;
 	}
@@ -115,7 +127,7 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 	
 	public String resetSearch() {
 		searchString = null;
-		getPagingVo().setSearchCriteria(PagingVo.Column.origAddress, new PagingVo.Criteria(RuleCriteria.CONTAINS, searchString));
+		searchVo.setEmailAddr(searchString);
 		resetPagingVo();
 		return null;
 	}
@@ -138,31 +150,31 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 		refreshPage();
 	}
 	
-	public SubscriptionService getSubscriptionService() {
+	public EmailSubscrptDao getEmailSubscrptDao() {
 		if (subscriptionDao == null) {
-			subscriptionDao = SpringUtil.getWebAppContext().getBean(SubscriptionService.class);
+			subscriptionDao = SpringUtil.getWebAppContext().getBean(EmailSubscrptDao.class);
 		}
 		return subscriptionDao;
 	}
 
-	public void setSubscriptionService(SubscriptionService subscriptionDao) {
+	public void setEmailSubscrptDao(EmailSubscrptDao subscriptionDao) {
 		this.subscriptionDao = subscriptionDao;
 	}
 
-	public EmailAddressService getEmailAddressService() {
+	public EmailAddressDao getEmailAddressDao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = SpringUtil.getWebAppContext().getBean(EmailAddressService.class);
+			emailAddrDao = SpringUtil.getWebAppContext().getBean(EmailAddressDao.class);
 		}
 		return emailAddrDao;
 	}
 
-	public void setEmailAddressService(EmailAddressService emailAddrDao) {
+	public void setEmailAddressDao(EmailAddressDao emailAddrDao) {
 		this.emailAddrDao = emailAddrDao;
 	}
 
-	public MailingListService getMailingListDao() {
+	public MailingListDao getMailingListDao() {
 		if (mailingListDao == null) {
-			mailingListDao = SpringUtil.getWebAppContext().getBean(MailingListService.class);
+			mailingListDao = SpringUtil.getWebAppContext().getBean(MailingListDao.class);
 		}
 		return mailingListDao;
 	}
@@ -175,7 +187,7 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 		if (isDebugEnabled)
 			logger.debug("deleteSubscriptions() - Entering...");
 		if (subscriptions == null) {
-			logger.warn("deleteSubscriptions() - Subscription List is null.");
+			logger.warn("deleteSubscriptions() - EmailSubscrptVo List is null.");
 			return TO_FAILED;
 		}
 		if (listId == null) {
@@ -183,13 +195,13 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 			return TO_FAILED;
 		}
 		reset();
-		List<Subscription> subrList = getSubscriptionList();
+		List<EmailSubscrptVo> subrList = getSubscriptionList();
 		for (int i=0; i<subrList.size(); i++) {
-			Subscription vo = subrList.get(i);
+			EmailSubscrptVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getSubscriptionService().deleteByAddressAndListId(vo.getEmailAddress().getAddress(), listId);
+				int rowsDeleted = getEmailSubscrptDao().deleteByPrimaryKey(vo.getEmailAddrId(), listId);
 				if (rowsDeleted > 0) {
-					logger.info("deleteSubscriptions() - Subscription deleted: " + vo.getEmailAddress());
+					logger.info("deleteSubscriptions() - Subscription deleted: " + vo.getEmailAddr());
 					getPagingVo().setRowCount(getPagingVo().getRowCount() - rowsDeleted);
 				}
 			}
@@ -210,21 +222,21 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 			return TO_FAILED;
 		}
 		reset();
-		List<Subscription> subrList = getSubscriptionList();
+		List<EmailSubscrptVo> subrList = getSubscriptionList();
 		for (int i=0; i<subrList.size(); i++) {
-			Subscription vo = subrList.get(i);
+			EmailSubscrptVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
 				if (StringUtils.isNotBlank(FacesUtil.getLoginUserId())) {
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
 				}
-				getSubscriptionService().update(vo);
+				getEmailSubscrptDao().update(vo);
 //				boolean acceptHtml =  CodeType.YES.getValue().equalsIgnoreCase(vo.getAcceptHtmlDesc());
-//				EmailAddress emailAddr = getEmailAddressService().getByRowId(vo.getEmailAddr().getRowId());
+//				EmailAddress emailAddr = getEmailAddressDao().getByRowId(vo.getEmailAddr().getRowId());
 //				if (acceptHtml!=emailAddr.isAcceptHtml()) {
 //					emailAddr.setAcceptHtml(acceptHtml);
-//					getEmailAddressService().update(emailAddr);
+//					getEmailAddressDao().update(emailAddr);
 //				}
-				logger.info("saveSubscriptions() - Subscription updated: " + vo.getEmailAddress().getAddress());
+				logger.info("saveSubscriptions() - Subscription updated: " + vo.getEmailAddr());
 			}
 		}
 		refresh();
@@ -240,10 +252,10 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 		if (isDebugEnabled)
 			logger.debug("addSubscription() - Entering...");
 		reset();
-		this.subscription = new Subscription();
-		MailingList list = getMailingListDao().getByListId(listId);
-		subscription.setMailingList(list);
-		subscription.setSubscribed(true);
+		this.subscription = new EmailSubscrptVo();
+		MailingListVo list = getMailingListDao().getByListId(listId);
+		subscription.setListId(list.getListId());
+		subscription.setSubscribed(Constants.Y);
 		subscription.setMarkedForEdition(true);
 		editMode = false;
 		beanMode = BeanMode.insert;
@@ -274,9 +286,9 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 			logger.warn("getSubscriptionsMarkedForDeletion() - Subscription List is null.");
 			return false;
 		}
-		List<Subscription> subrList = getSubscriptionList();
-		for (Iterator<Subscription> it=subrList.iterator(); it.hasNext();) {
-			Subscription vo = it.next();
+		List<EmailSubscrptVo> subrList = getSubscriptionList();
+		for (Iterator<EmailSubscrptVo> it=subrList.iterator(); it.hasNext();) {
+			EmailSubscrptVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -294,17 +306,17 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 		String subId = (String) value;
 		if (isDebugEnabled)
 			logger.debug("validatePrimaryKey() - subscriptionId: " + subId);
-		Subscription vo = getSubscriptionService().getByAddressAndListId(subId, listId);
+		EmailSubscrptVo vo = getEmailSubscrptDao().getByAddrAndListId(subId, listId);
 		if (editMode == false && vo != null) {
 			// subscription already exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "subscriptionAlreadyExist", new String[] {subId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == true && vo == null) {
 			// subscription does not exist
-	        FacesMessage message = jpa.msgui.util.MessageUtil.getMessage(
+	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
 					"jpa.msgui.messages", "subscriptionDoesNotExist", new String[] {subId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -317,20 +329,20 @@ public class SubscriptionBean extends PaginationBean implements java.io.Serializ
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	private List<Subscription> getSubscriptionList() {
+	private List<EmailSubscrptVo> getSubscriptionList() {
 		if (subscriptions == null) {
-			return new ArrayList<Subscription>();
+			return new ArrayList<EmailSubscrptVo>();
 		}
 		else {
-			return (List<Subscription>)subscriptions.getWrappedData();
+			return (List<EmailSubscrptVo>)subscriptions.getWrappedData();
 		}
 	}
 
-	public Subscription getSubscription() {
+	public EmailSubscrptVo getSubscription() {
 		return subscription;
 	}
 
-	public void setSubscription(Subscription subscription) {
+	public void setSubscription(EmailSubscrptVo subscription) {
 		this.subscription = subscription;
 	}
 

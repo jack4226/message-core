@@ -12,28 +12,36 @@ import javax.faces.model.ListDataModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.dao.inbox.MsgClickCountDao;
+import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.vo.PagingVo;
+import ltj.message.vo.SearchCountVo;
+import ltj.message.vo.inbox.MsgClickCountVo;
+import ltj.msgui.util.FacesUtil;
+import ltj.msgui.util.SpringUtil;
+
 @ManagedBean(name="broadcastMsg")
 @javax.faces.bean.ViewScoped
-public class BroadcastMsgBean extends PaginationBean implements java.io.Serializable {
+public class BroadcastMsgListBean extends PaginationBean implements java.io.Serializable {
 	private static final long serialVersionUID = -5557435572452796392L;
-	static final Logger logger = Logger.getLogger(BroadcastMsgBean.class);
+	static final Logger logger = Logger.getLogger(BroadcastMsgListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	private transient BroadcastMessageService broadcastMsgDao = null;
-	private transient EmailAddressService emailAddrDao = null;
-	private transient BroadcastTrackingService broadcastTrkDao = null;
+	private transient MsgClickCountDao broadcastMsgDao = null;
+	private transient EmailAddressDao emailAddrDao = null;
+	private transient MsgInboxDao msgInboxDao = null;
 	
-	private transient DataModel<BroadcastMessage> broadcasts = null;
-	private transient DataModel<BroadcastTracking> msgTrackings = null;
+	private transient DataModel<MsgClickCountVo> broadcasts = null;
 	
-	private BroadcastMessage broadcastMsg = null;
+	private MsgClickCountVo broadcastMsg = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 
+	private SearchCountVo searchVo = new SearchCountVo(getPagingVo());
+	
 	private String testResult = null;
 	private String actionFailure = null;
-	
-	final PagingVo trkPagingVo = new PagingVo();
 	
 	static final String TO_VIEW = "broadcastMsgView.xhtml";
 	static final String TO_SELF = null; // null -> remains in the same view
@@ -44,24 +52,24 @@ public class BroadcastMsgBean extends PaginationBean implements java.io.Serializ
 	static final String TO_CANCELED = "main.xhtml";
 	static final String TO_CANCELED_FROM_VIEW = TO_SAVED;
 
-	public DataModel<BroadcastMessage> getBroadcasts() {
+	public DataModel<MsgClickCountVo> getBroadcasts() {
 		String fromPage = sessionBean.getRequestParam("frompage");
 		logger.info(" getBroadcasts() - fromPage = " + fromPage);
 		if (fromPage != null && fromPage.equals("main")) {
 			resetPagingVo();
 		}
 		if (!getPagingVo().getPageAction().equals(PagingVo.PageAction.CURRENT) || broadcasts == null) {
-			Page<BroadcastMessage> brdList = getBroadcastMessageService().getMessageListForWeb(getPagingVo());
+			List<MsgClickCountVo> brdList = getMsgClickCountDao().getBroadcastsWithPaging(searchVo);
 			logger.info("PagingVo After: " + getPagingVo());
 			getPagingVo().setPageAction(PagingVo.PageAction.CURRENT);
-			broadcasts = new ListDataModel<BroadcastMessage>(brdList.getContent());
+			broadcasts = new ListDataModel<MsgClickCountVo>(brdList);
 		}
 		return broadcasts;
 	}
 	
 	@Override
 	public long getRowCount() {
-		long rowCount = getBroadcastMessageService().getMessageCountForWeb();
+		long rowCount = getMsgClickCountDao().getMsgCountForWeb();
 		getPagingVo().setRowCount(rowCount);
 		return rowCount;
 	}
@@ -77,25 +85,25 @@ public class BroadcastMsgBean extends PaginationBean implements java.io.Serializ
 		return "";
 	}
 	
-	public BroadcastMessageService getBroadcastMessageService() {
+	public MsgClickCountDao getMsgClickCountDao() {
 		if (broadcastMsgDao == null) {
-			broadcastMsgDao = SpringUtil.getWebAppContext().getBean(BroadcastMessageService.class);
+			broadcastMsgDao = SpringUtil.getWebAppContext().getBean(MsgClickCountDao.class);
 		}
 		return broadcastMsgDao;
 	}
 
-	public EmailAddressService getEmailAddressService() {
+	public EmailAddressDao getEmailAddressDao() {
 		if (emailAddrDao == null) {
-			emailAddrDao = SpringUtil.getWebAppContext().getBean(EmailAddressService.class);
+			emailAddrDao = SpringUtil.getWebAppContext().getBean(EmailAddressDao.class);
 		}
 		return emailAddrDao;
 	}
 	
-	public BroadcastTrackingService getBroadcastTrackingService() {
-		if (broadcastTrkDao == null) {
-			broadcastTrkDao = SpringUtil.getWebAppContext().getBean(BroadcastTrackingService.class);
+	public MsgInboxDao getMsgInboxDao() {
+		if (msgInboxDao == null) {
+			msgInboxDao = SpringUtil.getWebAppContext().getBean(MsgInboxDao.class);
 		}
-		return broadcastTrkDao;
+		return msgInboxDao;
 	}
 
 	public void viewBroadcastMsgListener(AjaxBehaviorEvent event) {
@@ -115,12 +123,12 @@ public class BroadcastMsgBean extends PaginationBean implements java.io.Serializ
 		}
 		reset();
 		this.broadcastMsg = broadcasts.getRowData();
-		logger.info("viewBroadcastMsg() - Broadcast to be viewed: " + broadcastMsg.getRowId());
+		logger.info("viewBroadcastMsg() - Broadcast to be viewed: " + broadcastMsg.getMsgId());
 		broadcastMsg.setMarkedForEdition(true);
 		editMode = true;
 		beanMode = BeanMode.edit;
 		if (isDebugEnabled) {
-			logger.debug("viewBroadcastMsg() - BroadcastMessage to be passed to jsp: " + broadcastMsg);
+			logger.debug("viewBroadcastMsg() - MsgClickCountVo to be passed to jsp: " + broadcastMsg);
 		}
 		return TO_VIEW;
 	}
@@ -137,14 +145,14 @@ public class BroadcastMsgBean extends PaginationBean implements java.io.Serializ
 			return TO_FAILED;
 		}
 		reset();
-		List<BroadcastMessage> subrList = getBroadcastList();
+		List<MsgClickCountVo> subrList = getBroadcastList();
 		for (int i=0; i<subrList.size(); i++) {
-			BroadcastMessage vo = subrList.get(i);
+			MsgClickCountVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
-				int rowsDeleted = getBroadcastMessageService().deleteByRowId(vo.getRowId());
+				int rowsDeleted = getMsgClickCountDao().deleteByPrimaryKey(vo.getMsgId());
 				vo.setMarkedForDeletion(false);
 				if (rowsDeleted > 0) {
-					logger.info("deleteBroadcasts() - Broadcast deleted: " + vo.getRowId());
+					logger.info("deleteBroadcasts() - Broadcast deleted: " + vo.getMsgId());
 					getPagingVo().setRowCount(getPagingVo().getRowCount() - rowsDeleted);
 				}
 			}
@@ -165,15 +173,15 @@ public class BroadcastMsgBean extends PaginationBean implements java.io.Serializ
 			return TO_FAILED;
 		}
 		reset();
-		List<BroadcastMessage> subrList = getBroadcastList();
+		List<MsgClickCountVo> subrList = getBroadcastList();
 		for (int i=0; i<subrList.size(); i++) {
-			BroadcastMessage vo = subrList.get(i);
+			MsgClickCountVo vo = subrList.get(i);
 			if (vo.isMarkedForDeletion()) {
 				if (StringUtils.isNotBlank(FacesUtil.getLoginUserId())) {
 					vo.setUpdtUserId(FacesUtil.getLoginUserId());
 				}
-				getBroadcastMessageService().update(vo);
-				logger.info("saveBroadcasts() - Broadcast updated: " + vo.getRowId());
+				getMsgClickCountDao().update(vo);
+				logger.info("saveBroadcasts() - Broadcast updated: " + vo.getMsgId());
 			}
 		}
 		refresh();
@@ -198,9 +206,9 @@ public class BroadcastMsgBean extends PaginationBean implements java.io.Serializ
 			logger.warn("getAnyBroadcastsMarkedForDeletion() - Broadcast List is null.");
 			return false;
 		}
-		List<BroadcastMessage> subrList = getBroadcastList();
-		for (Iterator<BroadcastMessage> it=subrList.iterator(); it.hasNext();) {
-			BroadcastMessage vo = it.next();
+		List<MsgClickCountVo> subrList = getBroadcastList();
+		for (Iterator<MsgClickCountVo> it=subrList.iterator(); it.hasNext();) {
+			MsgClickCountVo vo = it.next();
 			if (vo.isMarkedForDeletion()) {
 				return true;
 			}
@@ -214,20 +222,20 @@ public class BroadcastMsgBean extends PaginationBean implements java.io.Serializ
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<BroadcastMessage> getBroadcastList() {
+	private List<MsgClickCountVo> getBroadcastList() {
 		if (broadcasts == null) {
-			return new ArrayList<BroadcastMessage>();
+			return new ArrayList<MsgClickCountVo>();
 		}
 		else {
-			return (List<BroadcastMessage>)broadcasts.getWrappedData();
+			return (List<MsgClickCountVo>)broadcasts.getWrappedData();
 		}
 	}
 	
-	public BroadcastMessage getBroadcastMsg() {
+	public MsgClickCountVo getBroadcastMsg() {
 		return broadcastMsg;
 	}
 
-	public void setBroadcastMsg(BroadcastMessage subscriber) {
+	public void setBroadcastMsg(MsgClickCountVo subscriber) {
 		this.broadcastMsg = subscriber;
 	}
 

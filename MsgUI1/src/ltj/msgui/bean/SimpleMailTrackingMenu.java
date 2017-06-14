@@ -25,7 +25,7 @@ import ltj.msgui.util.SpringUtil;
 
 /**
  * This is a request scoped bean that holds search fields from HTTP request.
- * Whenever MessageInboxBean.getAll() gets called, it retrieves search fields from
+ * Whenever MsgInboxBean.getAll() gets called, it retrieves search fields from
  * this bean and uses them to construct a query to retrieve mails from database.
  * By doing this, if a user clicks browser's back button followed by refresh
  * button, the email list returned will still be okay.
@@ -152,7 +152,7 @@ public class SimpleMailTrackingMenu extends PaginationBean implements java.io.Se
 	}
 	
 	void updateMessageInboxBean() {
-		MessageInboxBean bean = (MessageInboxBean) FacesUtil.getManagedBean("messageInbox");
+		MsgInboxBean bean = (MsgInboxBean) FacesUtil.getManagedBean("messageInbox");
 		if (bean != null) {
 			SearchFieldsVo beanSearchVo = bean.getSearchFieldsVo();
 			//logger.info("Menu SearchFieldVo: " + getSearchFieldsVo());
@@ -186,9 +186,9 @@ public class SimpleMailTrackingMenu extends PaginationBean implements java.io.Se
 		 *	valueChangeListener="#{mailTracking.ruleNameChanged}"/>
 		 */
 		logger.info("Entering ruleNameChanged()...");
-		MessageInboxBean bean = (MessageInboxBean) FacesUtil.getSessionMapValue("msgfolder");
+		MsgInboxBean bean = (MsgInboxBean) FacesUtil.getSessionMapValue("msgfolder");
 		if (bean == null) {
-			logger.error("ruleNameChanged() - failed to retrieve MessageInboxBean from HTTP session");
+			logger.error("ruleNameChanged() - failed to retrieve MsgInboxBean from HTTP session");
 			return;
 		}
 		String newValue = (String) event.getNewValue();
