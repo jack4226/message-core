@@ -5,9 +5,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
 
 import org.apache.commons.lang.StringUtils;
 
+@FacesConverter("NullableStringConverter")
 public class NullableStringConverter implements Converter {
 
 	public Object getAsObject(FacesContext context, UIComponent comp, String value) throws ConverterException {
