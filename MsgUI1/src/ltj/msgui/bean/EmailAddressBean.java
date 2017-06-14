@@ -16,14 +16,13 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.opensaml.saml2.metadata.EmailAddress;
 
 import ltj.message.constant.Constants;
-import ltj.message.constant.RuleCriteria;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.MailingListDao;
 import ltj.message.util.TestUtil;
 import ltj.message.vo.PagingVo;
+import ltj.message.vo.SearchAddrVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.msgui.util.FacesUtil;
@@ -47,6 +46,7 @@ public class EmailAddressBean extends PaginationBean implements java.io.Serializ
 	private transient UIInput emailAddrInput = null;
 	
 	private String searchString = null;
+	private SearchAddrVo searchVo = new SearchAddrVo(getPagingVo());
 	
 	private List<MailingListVo> mailingLists = null;
 	private String testResult = null;
@@ -69,7 +69,7 @@ public class EmailAddressBean extends PaginationBean implements java.io.Serializ
 			getPagingVo().setStatusId(null);
 			getPagingVo().setOrderBy(PagingVo.Column.emailAddr, true);
 			logger.info("PagingVo Before: " + getPagingVo());
-			List<EmailAddressVo> emailAddrList = getEmailAddressDao().getEmailAddrsWithPaging(getPagingVo());
+			List<EmailAddressVo> emailAddrList = getEmailAddressDao().getEmailAddrsWithPaging(searchVo);
 			getPagingVo().setPageAction(PagingVo.PageAction.CURRENT);
 			logger.info("PagingVo After: " + getPagingVo());
 			emailAddrs = new ListDataModel<EmailAddressVo>(emailAddrList);
@@ -80,7 +80,7 @@ public class EmailAddressBean extends PaginationBean implements java.io.Serializ
 	@Override
 	public long getRowCount() {
 		getPagingVo().setStatusId(null);
-		long rowCount = getEmailAddressDao().getEmailAddressCount(getPagingVo());
+		long rowCount = getEmailAddressDao().getEmailAddressCount(searchVo);
 		getPagingVo().setRowCount(rowCount);
 		return rowCount;
 	}
@@ -101,27 +101,27 @@ public class EmailAddressBean extends PaginationBean implements java.io.Serializ
 	public void searchByAddress(AjaxBehaviorEvent event) {
 		boolean changed = false;
 		
-		PagingVo.Criteria criteria = getPagingVo().getSearchBy().getCriteria(PagingVo.Column.origEmailAddr);
+		//PagingVo.Criteria criteria = getPagingVo().getSearchBy().getCriteria(PagingVo.Column.origEmailAddr);
 		if (this.searchString == null) {
-			if (criteria != null && criteria.getValue() != null) {
+			if (searchVo.getEmailAddr() != null) {
 				changed = true;
 			}
 		}
 		else {
-			if (criteria != null && !this.searchString.equals(criteria.getValue())) {
+			if (!this.searchString.equals(searchVo.getEmailAddr())) {
 				changed = true;
 			}
 		}
 		if (changed) {
 			resetPagingVo();
-			getPagingVo().setSearchCriteria(PagingVo.Column.origEmailAddr, new PagingVo.Criteria(RuleCriteria.CONTAINS, searchString));
+			searchVo.setEmailAddr(searchString);
 		}
 		return; // TO_SELF;
 	}
 	
 	public String resetSearch() {
 		searchString = null;
-		getPagingVo().setSearchCriteria(PagingVo.Column.origEmailAddr, new PagingVo.Criteria(RuleCriteria.CONTAINS, null));
+		searchVo.setEmailAddr(null);
 		resetPagingVo();
 		return TO_SELF;
 	}
@@ -185,7 +185,7 @@ public class EmailAddressBean extends PaginationBean implements java.io.Serializ
 		emailAddr.setMarkedForEdition(true);
 		editMode = true;
 		beanMode = BeanMode.edit;
-		mailingLists = getMailingListDao().getByAddressWithCounts(emailAddr.getEmailAddr());
+		mailingLists = getMailingListDao().getByAddress(emailAddr.getEmailAddr());
 		if (isDebugEnabled) {
 			logger.debug("viewEmailAddr() - EmailAddress to be passed to jsp: " + emailAddr);
 		}
