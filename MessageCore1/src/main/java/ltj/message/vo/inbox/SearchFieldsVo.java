@@ -10,8 +10,9 @@ import org.apache.log4j.Logger;
 import ltj.data.preload.FolderEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.vo.PagingVo;
+import ltj.message.vo.SearchVo;
 
-public final class SearchFieldsVo implements Serializable {
+public final class SearchFieldsVo implements Serializable, SearchVo {
 	private static final long serialVersionUID = 8888455019361283024L;
 	static Logger logger = Logger.getLogger(SearchFieldsVo.class);
 	
@@ -77,6 +78,7 @@ public final class SearchFieldsVo implements Serializable {
 		pagingVo.resetPageContext();
 	}
 
+	@Override
 	public PagingVo getPagingVo() {
 		return pagingVo;
 	}

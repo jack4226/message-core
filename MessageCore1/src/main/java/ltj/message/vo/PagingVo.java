@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import ltj.message.constant.Constants;
 import ltj.message.constant.RuleCriteria;
 
 public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable {
@@ -407,18 +408,20 @@ public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable 
 	}
 	
 	public static enum Type {
-		common, emailaddr, subrdata, subscipt, msginbox;
+		common, emailaddr, msgcount, subrdata, subscipt, msginbox;
 	}
 	
 	public static enum Column {
 		rowId(Integer.class, Type.common), updtTime(java.sql.Timestamp.class, Type.common), updtUserId(Type.common), statusId(Type.common),
 		// Email Address
 		emailAddrId(Integer.class, Type.emailaddr, Type.subscipt), origEmailAddr(Type.emailaddr), bounceCount(Integer.class, Type.emailaddr),
-		emailAddr(true, Type.subrdata, Type.emailaddr),
+		emailAddr(true, Type.subrdata, Type.emailaddr, Type.msgcount),
+		// Message Count
+		sentCount(Integer.class, Type.msgcount), openCount(Integer.class, Type.msgcount), clickCount(Integer.class, Type.msgcount),
 		// Subscription
-		listId(true, Type.subscipt),
+		listId(true, Type.subscipt), subscribed(Boolean.class, true, Type.subscipt),
 		// Subscriber Data
-		senderId(true, Type.subrdata), ssnNumber(Type.subrdata), dayPhone(Type.subrdata), firstName(Type.subrdata), lastName(Type.subrdata),
+		clientId(true, Type.subrdata), ssnNumber(Type.subrdata), dayPhone(Type.subrdata), firstName(Type.subrdata), lastName(Type.subrdata),
 		// Message in box
 		msgId(Integer.class, Type.msginbox), receivedTime(java.sql.Timestamp.class, Type.msginbox),
 		fromAddrId(Integer.class, true, Type.msginbox), toAddrId(Integer.class, true, Type.msginbox), ruleName(true, Type.msginbox),
@@ -489,7 +492,7 @@ public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable 
 		public int pageSize = 0;
 	}
 
-	public static PagingContext getPagingWhereSql(PagingCountVo vo, String[] CRIT, List<Object> parms, int rows,
+	public static PagingContext getPagingWhereSql(PagingVo vo, String[] CRIT, List<Object> parms, int rows,
 			String sqlField) {
 		PagingContext ctx = new PagingContext();
 		ctx.fetchOrder = "desc";
@@ -545,7 +548,120 @@ public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable 
 			pageNumber = (int) Math.floor(Math.abs((double)(rowCount - 1)) / (double)pageSize);
 		}
 	}
+	
+	
+	public final static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and ", " and ",
+			" and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ",
+			" and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ",
+			" and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ",
+			" and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ",
+			" and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and ", " and "};
 
+	public static String buildSearchField(PagingVo vo, PagingVo.Column col, String[] CRIT, List<Object> parms,
+			String field) {
+		return buildSearchField(vo, col, CRIT, parms, field, false);
+	}
+	
+	public static String buildSearchField(PagingVo vo, PagingVo.Column col, String[] CRIT, List<Object> parms,
+			String field, boolean toLowerCase) {
+		String sql = "";
+		PagingVo.Criteria criteria = vo.getSearchCriteria(col);
+		if (criteria != null) {
+			String operator = " =? ";
+			if (RuleCriteria.NOT_EQUALS.equals(criteria.getOperation())) {
+				operator = " !=? ";
+			}
+			else if (RuleCriteria.GE.equals(criteria.getOperation())) {
+				operator = " >=? ";
+			}
+			else if (RuleCriteria.GREATER_THAN.equals(criteria.getOperation())) {
+				operator = " >? ";
+			}
+			else if (RuleCriteria.LE.equals(criteria.getOperation())) {
+				operator = " <=? ";
+			}
+			else if (RuleCriteria.LESS_THAN.equals(criteria.getOperation())) {
+				operator = " <? ";
+			}
+			else if (RuleCriteria.IS_BLANK.equals(criteria.getOperation())) {
+				operator = " is null ";
+			}
+			else if (RuleCriteria.IS_NOT_BLANK.equals(criteria.getOperation())) {
+				operator = " is not null ";
+			}
+			
+			if (RuleCriteria.IS_BLANK.equals(criteria.getOperation())
+					|| RuleCriteria.IS_NOT_BLANK.equals(criteria.getOperation())) {
+				sql = CRIT[parms.size()] + " " + field + operator;
+			}
+			else if (criteria.getValue() != null) {
+				if (col.getDataType().isAssignableFrom(String.class)) {
+					String value = ((String) criteria.getValue()).trim();
+					
+					if (toLowerCase || RuleCriteria.STARTS_WITH.equals(criteria.getOperation())
+							|| RuleCriteria.ENDS_WITH.equals(criteria.getOperation())
+							|| RuleCriteria.CONTAINS.equals(criteria.getOperation())
+							|| RuleCriteria.REG_EX.equals(criteria.getOperation())) {
+						// make it case insensitive
+						field = "lower(" + field + ")";
+						value = value.toLowerCase();
+					}
+					
+					if (RuleCriteria.STARTS_WITH.equals(criteria.getOperation())) {
+						operator = " like ? ";
+						value = value + "%";
+					}
+					else if (RuleCriteria.ENDS_WITH.equals(criteria.getOperation())) {
+						operator = " like ? ";
+						value = "%" + value;
+					}
+					else if (RuleCriteria.CONTAINS.equals(criteria.getOperation())
+							|| RuleCriteria.REG_EX.equals(criteria.getOperation())) {
+						operator = " like ? ";
+						if (value.indexOf(" ") < 0) { // only one word
+							value = "%" + value + "%";
+						}
+						else { // two or more words
+							if (PagingVo.MatchBy.AnyWords.equals(criteria.getMatchBy())) {
+								operator = " REGEXP ? ";
+								value = (value + "").replaceAll("[ ]+", "|"); // any word
+							}
+							else if (PagingVo.MatchBy.AllWords.equals(criteria.getMatchBy())) {
+								String[] items = value.split("[ ]+");
+								for (String item : items) {
+									sql += CRIT[parms.size()] + " " + field + operator;
+									parms.add("%" + item + "%");
+								}
+								return sql;
+							}
+							else {
+								value = "%" + value + "%";
+							}
+						}
+					}
+					
+					sql = CRIT[parms.size()] + " " + field + operator;
+					parms.add(value);
+				}
+				else if (col.getDataType().isAssignableFrom(Boolean.class)) {
+					sql = CRIT[parms.size()] + " " + field + operator;
+					if (Boolean.TRUE.equals(criteria.getValue())) {
+						parms.add(Constants.Y);
+					}
+					else {
+						parms.add(Constants.N);
+					}
+				}
+				else {
+					Object value = criteria.getValue();
+					sql = CRIT[parms.size()] + " " + field + operator;
+					parms.add(value);
+				}
+			}
+		}
+		return sql;
+	}
+	
 	public int getPageSize() {
 		return pageSize;
 	}

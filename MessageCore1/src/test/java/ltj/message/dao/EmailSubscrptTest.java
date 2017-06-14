@@ -14,8 +14,9 @@ import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.emailaddr.EmailSubscrptDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.PrintUtil;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.PagingVo.PageAction;
-import ltj.message.vo.PagingSbsrVo;
+import ltj.message.vo.SearchSbsrVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.EmailSubscrptVo;
 
@@ -64,25 +65,26 @@ public class EmailSubscrptTest extends DaoTestBase {
 	
 	@Test
 	public void testSearchByAddr() {
-		PagingSbsrVo vo = new PagingSbsrVo();
-		vo.setListId(listId);
+		SearchSbsrVo searchVo = new SearchSbsrVo(new PagingVo());
+		//PagingVo vo = searchVo.getPagingVo();
+		searchVo.setListId(listId);
 		
-		List<EmailSubscrptVo> listAll = emailSubscrptDao.getSubscribersWithPaging(vo);
+		List<EmailSubscrptVo> listAll = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		assertFalse(listAll.isEmpty());
 		
-		vo.setSubscribed(true);
-		List<EmailSubscrptVo> listSubed = emailSubscrptDao.getSubscribersWithPaging(vo);
+		searchVo.setSubscribed(true);
+		List<EmailSubscrptVo> listSubed = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		assertFalse(listSubed.isEmpty());
-		vo.setSubscribed(false);
-		List<EmailSubscrptVo> listUnsed = emailSubscrptDao.getSubscribersWithPaging(vo);
+		searchVo.setSubscribed(false);
+		List<EmailSubscrptVo> listUnsed = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		assertEquals(listSubed.size() + listUnsed.size(), listAll.size());
 		
 		String emailAddr1 = listSubed.get(0).getEmailAddr();
 		String emailAddr2 = listSubed.get(listSubed.size() - 1).getEmailAddr();
 		
-		vo.setSubscribed(true);
-		vo.setEmailAddr(EmailAddrUtil.getEmailDomainName(emailAddr1) + " " + EmailAddrUtil.getEmailUserName(emailAddr2));
-		List<EmailSubscrptVo> listSrched = emailSubscrptDao.getSubscribersWithPaging(vo);
+		searchVo.setSubscribed(true);
+		searchVo.setEmailAddr(EmailAddrUtil.getEmailDomainName(emailAddr1) + " " + EmailAddrUtil.getEmailUserName(emailAddr2));
+		List<EmailSubscrptVo> listSrched = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		assertFalse(listSrched.isEmpty());
 		for (EmailSubscrptVo sub : listSrched) {
 			logger.info("Search result 1:" + PrintUtil.prettyPrint(sub, 2));
@@ -93,27 +95,28 @@ public class EmailSubscrptTest extends DaoTestBase {
 	@Test
 	public void testWithPaging() {
 		int testPageSize = 4;
-		PagingSbsrVo vo = new PagingSbsrVo();
-		vo.setListId(listId);
+		SearchSbsrVo searchVo = new SearchSbsrVo(new PagingVo());
+		PagingVo vo = searchVo.getPagingVo();
+		searchVo.setListId(listId);
 		vo.setPageSize(testPageSize);
 		// fetch the first page
-		List<EmailSubscrptVo> list1 = emailSubscrptDao.getSubscribersWithPaging(vo);
+		List<EmailSubscrptVo> list1 = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		assertFalse(list1.isEmpty());
 		// fetch is again
 		vo.setPageAction(PageAction.CURRENT);
-		List<EmailSubscrptVo> list2 = emailSubscrptDao.getSubscribersWithPaging(vo);
+		List<EmailSubscrptVo> list2 = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		assertEquals(list1.size(), list2.size());
 		for (int i = 0; i < list1.size(); i++) {
 			assertSbsrVosAreSame(list1.get(i), list2.get(i));
 		}
 		// fetch the second page
 		vo.setPageAction(PageAction.NEXT);
-		List<EmailSubscrptVo> list3 = emailSubscrptDao.getSubscribersWithPaging(vo);
+		List<EmailSubscrptVo> list3 = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		if (!list3.isEmpty()) {
 			assertTrue(list3.get(0).getEmailAddrId() > list1.get(list1.size() - 1).getEmailAddrId());
 			// back to the first page
 			vo.setPageAction(PageAction.PREVIOUS);
-			List<EmailSubscrptVo> list4 = emailSubscrptDao.getSubscribersWithPaging(vo);
+			List<EmailSubscrptVo> list4 = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 			assertEquals(list1.size(), list4.size());
 			for (int i = 0; i < list1.size(); i++) {
 				assertSbsrVosAreSame(list1.get(i), list4.get(i));
@@ -121,14 +124,14 @@ public class EmailSubscrptTest extends DaoTestBase {
 		}
 		// fetch the last page
 		vo.setPageAction(PageAction.LAST);
-		List<EmailSubscrptVo> list5 = emailSubscrptDao.getSubscribersWithPaging(vo);
+		List<EmailSubscrptVo> list5 = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		assertFalse(list5.isEmpty());
 		vo.setPageAction(PageAction.PREVIOUS);
-		emailSubscrptDao.getSubscribersWithPaging(vo);
+		emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		// back to the last page
 		vo.setPageAction(PageAction.NEXT);
-		List<EmailSubscrptVo> list6 = emailSubscrptDao.getSubscribersWithPaging(vo);
-		if (emailSubscrptDao.getSubscriberCount(vo) <= vo.getPageSize()) {
+		List<EmailSubscrptVo> list6 = emailSubscrptDao.getSubscribersWithPaging(searchVo);
+		if (emailSubscrptDao.getSubscriberCount(searchVo) <= vo.getPageSize()) {
 			assertEquals(0, list6.size());
 		}
 		else {
@@ -139,7 +142,7 @@ public class EmailSubscrptTest extends DaoTestBase {
 		}
 		// back to the first page
 		vo.setPageAction(PageAction.FIRST);
-		List<EmailSubscrptVo> list7 = emailSubscrptDao.getSubscribersWithPaging(vo);
+		List<EmailSubscrptVo> list7 = emailSubscrptDao.getSubscribersWithPaging(searchVo);
 		assertEquals(list1.size(), list7.size());
 		for (int i = 0; i < list1.size(); i++) {
 			assertSbsrVosAreSame(list1.get(i), list7.get(i));

@@ -22,8 +22,8 @@ import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 import ltj.message.vo.CustomerVo;
-import ltj.message.vo.PagingCustVo;
 import ltj.message.vo.PagingVo;
+import ltj.message.vo.SearchVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @Repository
@@ -104,9 +104,9 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	}
 	
 	@Override
-	public int getCustomerCount(PagingCustVo vo) {
+	public int getCustomerCount(SearchVo vo) {
 		List<Object> parms = new ArrayList<>();
-		String whereSql = buildWhereClause(vo, parms);
+		String whereSql = buildWhereClause(vo.getPagingVo(), parms);
 		String sql = 
 			"select count(*) from customer_tbl a " 
 			+ " LEFT OUTER JOIN email_address b on a.email_addr_id=b.email_addr_id "
@@ -116,8 +116,9 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 	}
 	
 	@Override
-	public List<CustomerVo> getCustomersWithPaging(PagingCustVo vo) {
+	public List<CustomerVo> getCustomersWithPaging(SearchVo searchVo) {
 		List<Object> parms = new ArrayList<>();
+		PagingVo vo = searchVo.getPagingVo();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic
@@ -141,7 +142,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-			int rows = getCustomerCount(vo);
+			int rows = getCustomerCount(searchVo);
 			pageSize = rows % vo.getPageSize();
 			if (pageSize == 0) {
 				pageSize = Math.min(rows, vo.getPageSize());
@@ -181,49 +182,18 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDao {
 		return list;
 	}
 
-	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and ", " and ",
-		" and ", " and ", " and ", " and " };
+	static String[] CRIT = PagingVo.CRIT;
 	
-	private String buildWhereClause(PagingCustVo vo, List<Object> parms) {
+	private String buildWhereClause(PagingVo vo, List<Object> parms) {
 		String whereSql = "";
-		if (StringUtil.isNotEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
-			parms.add(vo.getStatusId());
-		}
-		if (StringUtil.isNotEmpty(vo.getClientId())) {
-			whereSql += CRIT[parms.size()] + " lower(a.client_id) = ? ";
-			parms.add(vo.getClientId().toLowerCase());
-		}
-		if (StringUtil.isNotEmpty(vo.getSsnNumber())) {
-			whereSql += CRIT[parms.size()] + " a.ssn_number = ? ";
-			parms.add(vo.getSsnNumber());
-		}
-		if (StringUtil.isNotEmpty(vo.getLastName())) {
-			whereSql += CRIT[parms.size()] + " lower(a.last_name) = ? ";
-			parms.add(vo.getLastName().toLowerCase());
-		}
-		if (StringUtil.isNotEmpty(vo.getFirstName())) {
-			whereSql += CRIT[parms.size()] + " lower(a.first_name) = ? ";
-			parms.add(vo.getFirstName().toLowerCase());
-		}
-		if (StringUtil.isNotEmpty(vo.getDayPhone())) {
-			whereSql += CRIT[parms.size()] + " a.day_phone = ? ";
-			parms.add(vo.getDayPhone());
-		}
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.statusId, CRIT, parms, "a.status_id");
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.clientId, CRIT, parms, "a.client_id", true);
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.ssnNumber, CRIT, parms, "a.ssn_number");
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.lastName, CRIT, parms, "a.last_name", true);
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.firstName, CRIT, parms, "a.first_name", true);
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.dayPhone, CRIT, parms, "a.day_phone");
 		// search by email address
-		if (StringUtil.isNotEmpty(vo.getEmailAddr())) {
-			String addr = vo.getEmailAddr().trim();
-			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " a.email_addr LIKE ? ";
-				parms.add("%" + addr + "%");
-			}
-			else {
-				//String regex = StringUtil.replaceAll(addr, " ", ".+");
-				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
-				whereSql += CRIT[parms.size()] + " a.email_addr REGEXP ? ";
-				parms.add(regex);
-			}
-		}
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.emailAddr, CRIT, parms, "a.email_addr");
 		return whereSql;
 	}
 	

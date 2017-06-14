@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,9 +17,8 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
-import ltj.message.util.StringUtil;
-import ltj.message.vo.PagingSbsrVo;
 import ltj.message.vo.PagingVo;
+import ltj.message.vo.SearchVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.EmailSubscrptVo;
 
@@ -144,12 +142,12 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 		return optInConfirm(addrVo.getEmailAddrId(), listId);
 	}
 	
-	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and ", " and ",
-		" and ", " and ", " and ", " and " };
+	static String[] CRIT = PagingVo.CRIT;
 	
 	@Override
-	public int getSubscriberCount(PagingSbsrVo vo) {
+	public int getSubscriberCount(SearchVo searchVo) {
 		List<Object> parms = new ArrayList<>();
+		PagingVo vo = searchVo.getPagingVo();
 		String whereSql = buildWhereClause(vo, parms);
 		String sql = 
 			"select count(*) " +
@@ -162,8 +160,9 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 	}
 	
 	@Override
-	public List<EmailSubscrptVo> getSubscribersWithPaging(PagingSbsrVo vo) {
+	public List<EmailSubscrptVo> getSubscribersWithPaging(SearchVo searchVo) {
 		List<Object> parms = new ArrayList<>();
+		PagingVo vo = searchVo.getPagingVo();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic
@@ -187,7 +186,7 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 			}
 		}
 		else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-			int rows = getSubscriberCount(vo);
+			int rows = getSubscriberCount(searchVo);
 			pageSize = rows % vo.getPageSize();
 			if (pageSize == 0) {
 				pageSize = Math.min(rows, vo.getPageSize());
@@ -241,33 +240,25 @@ public class EmailSubscrptJdbcDao extends AbstractDao implements EmailSubscrptDa
 		return list;
 	}
 	
-	private String buildWhereClause(PagingSbsrVo vo, List<Object> parms) {
+	private String buildWhereClause(PagingVo vo, List<Object> parms) {
 		String whereSql = "";
-		if (StringUtils.isNotBlank(vo.getListId())) {
-			whereSql = CRIT[parms.size()] + " a.list_id = ? ";
-			parms.add(vo.getListId().trim());
-		}
-		if (StringUtil.isNotEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " b.status_id = ? ";
-			parms.add(vo.getStatusId());
-		}
-		if (vo.getSubscribed() != null) {
-			whereSql += CRIT[parms.size()] + " a.subscribed = ? ";
-			parms.add(vo.getSubscribed() ? Constants.Y : Constants.N);
-		}
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.listId, CRIT, parms, "a.list_id");
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.statusId, CRIT, parms, "b.status_id");
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.subscribed, CRIT, parms, "a.subscribed");
 		// search by address
-		if (StringUtils.isNotBlank(vo.getEmailAddr())) {
-			String addr = vo.getEmailAddr().trim();
-			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " b.orig_email_addr LIKE ? ";
-				parms.add("%" + addr + "%");
-			}
-			else {
-				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
-				whereSql += CRIT[parms.size()] + " b.orig_email_addr REGEXP ? ";
-				parms.add(regex);
-			}
-		}
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.emailAddr, CRIT, parms, "b.orig_email_addr");
+//		if (StringUtils.isNotBlank(vo.getEmailAddr())) {
+//			String addr = vo.getEmailAddr().trim();
+//			if (addr.indexOf(" ") < 0) {
+//				whereSql += CRIT[parms.size()] + " b.orig_email_addr LIKE ? ";
+//				parms.add("%" + addr + "%");
+//			}
+//			else {
+//				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
+//				whereSql += CRIT[parms.size()] + " b.orig_email_addr REGEXP ? ";
+//				parms.add(regex);
+//			}
+//		}
 		return whereSql;
 	}
 	

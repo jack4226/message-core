@@ -12,8 +12,9 @@ import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.inbox.MsgClickCountDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.PrintUtil;
-import ltj.message.vo.PagingCountVo;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.PagingVo.PageAction;
+import ltj.message.vo.SearchCountVo;
 import ltj.message.vo.inbox.MsgClickCountVo;
 
 public class MsgClickCountTest extends DaoTestBase {
@@ -40,7 +41,7 @@ public class MsgClickCountTest extends DaoTestBase {
 	
 	@Test
 	public void testSearchByAddr() {
-		PagingCountVo vo = new PagingCountVo();
+		SearchCountVo vo = new SearchCountVo(new PagingVo());
 		
 		logger.info("MsgClickCounts Dao, search all: " + vo);
 		List<MsgClickCountVo> listAll = msgClickCountDao.getBroadcastsWithPaging(vo);
@@ -63,27 +64,28 @@ public class MsgClickCountTest extends DaoTestBase {
 	@Test
 	public void testWithPaging() {
 		int testPageSize = 4;
-		PagingCountVo vo = new PagingCountVo();
+		SearchCountVo searchVo = new SearchCountVo(new PagingVo());
+		PagingVo vo = searchVo.getPagingVo();
 		vo.setPageSize(testPageSize);
 		// fetch the first page
-		List<MsgClickCountVo> list1 = msgClickCountDao.getBroadcastsWithPaging(vo);
+		List<MsgClickCountVo> list1 = msgClickCountDao.getBroadcastsWithPaging(searchVo);
 		assertFalse(list1.isEmpty());
 		// fetch is again
 		vo.setPageAction(PageAction.CURRENT);
-		List<MsgClickCountVo> list2 = msgClickCountDao.getBroadcastsWithPaging(vo);
+		List<MsgClickCountVo> list2 = msgClickCountDao.getBroadcastsWithPaging(searchVo);
 		assertEquals(list1.size(), list2.size());
 		for (int i = 0; i < list1.size(); i++) {
 			assertClickCountsAreSame(list1.get(i), list2.get(i));
 		}
 		// fetch the second page
 		vo.setPageAction(PageAction.NEXT);
-		List<MsgClickCountVo> list3 = msgClickCountDao.getBroadcastsWithPaging(vo);
+		List<MsgClickCountVo> list3 = msgClickCountDao.getBroadcastsWithPaging(searchVo);
 		if (!list3.isEmpty()) {
 			logger.info("Found the second page, page size = " + list3.size());
 			assertTrue(list3.get(0).getMsgId() < list1.get(list1.size() - 1).getMsgId());
 			// back to the first back
 			vo.setPageAction(PageAction.PREVIOUS);
-			List<MsgClickCountVo> list4 = msgClickCountDao.getBroadcastsWithPaging(vo);
+			List<MsgClickCountVo> list4 = msgClickCountDao.getBroadcastsWithPaging(searchVo);
 			assertEquals(list1.size(), list4.size());
 			for (int i = 0; i < list1.size(); i++) {
 				assertClickCountsAreSame(list1.get(i), list4.get(i));
@@ -91,14 +93,14 @@ public class MsgClickCountTest extends DaoTestBase {
 		}
 		// fetch the last page
 		vo.setPageAction(PageAction.LAST);
-		List<MsgClickCountVo> list5 = msgClickCountDao.getBroadcastsWithPaging(vo);
+		List<MsgClickCountVo> list5 = msgClickCountDao.getBroadcastsWithPaging(searchVo);
 		assertFalse(list5.isEmpty());
 		vo.setPageAction(PageAction.PREVIOUS);
-		msgClickCountDao.getBroadcastsWithPaging(vo);
+		msgClickCountDao.getBroadcastsWithPaging(searchVo);
 		// fetch is again
 		vo.setPageAction(PageAction.NEXT);
-		List<MsgClickCountVo> list6 = msgClickCountDao.getBroadcastsWithPaging(vo);
-		if (msgClickCountDao.getBroadcastsCount(vo) <= vo.getPageSize()) {
+		List<MsgClickCountVo> list6 = msgClickCountDao.getBroadcastsWithPaging(searchVo);
+		if (msgClickCountDao.getBroadcastsCount(searchVo) <= vo.getPageSize()) {
 			assertEquals(0, list6.size());
 		}
 		else {
@@ -109,7 +111,7 @@ public class MsgClickCountTest extends DaoTestBase {
 		}
 		// fetch the first page again
 		vo.setPageAction(PageAction.FIRST);
-		List<MsgClickCountVo> list7 = msgClickCountDao.getBroadcastsWithPaging(vo);
+		List<MsgClickCountVo> list7 = msgClickCountDao.getBroadcastsWithPaging(searchVo);
 		assertEquals(list1.size(), list7.size());
 		for (int i = 0; i < list1.size(); i++) {
 			assertClickCountsAreSame(list1.get(i), list7.get(i));

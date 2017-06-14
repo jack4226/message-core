@@ -17,8 +17,9 @@ import ltj.message.dao.customer.CustomerDao;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.PrintUtil;
 import ltj.message.vo.CustomerVo;
-import ltj.message.vo.PagingCustVo;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.PagingVo.PageAction;
+import ltj.message.vo.SearchCustVo;
 
 public class CustomerTest extends DaoTestBase {
 	@Resource
@@ -63,25 +64,26 @@ public class CustomerTest extends DaoTestBase {
 	@Test
 	public void testSearchWithPaging() {
 		int testPageSize = 2;
-		PagingCustVo vo = new PagingCustVo();
+		SearchCustVo searchVo = new SearchCustVo(new PagingVo());
+		PagingVo vo = searchVo.getPagingVo();
 		vo.setPageSize(testPageSize);
-		List<CustomerVo> list1 = customerDao.getCustomersWithPaging(vo);
+		List<CustomerVo> list1 = customerDao.getCustomersWithPaging(searchVo);
 		assertFalse(list1.isEmpty());
 		
 		vo.setPageAction(PageAction.CURRENT);
-		List<CustomerVo> list2 = customerDao.getCustomersWithPaging(vo);
+		List<CustomerVo> list2 = customerDao.getCustomersWithPaging(searchVo);
 		assertEquals(list1.size(), list2.size());
 		for (int i = 0; i < list1.size(); i++) {
 			assertCustomerVosAreSame(list1.get(i), list2.get(i));
 		}
 		
 		vo.setPageAction(PageAction.NEXT);
-		List<CustomerVo> list3 = customerDao.getCustomersWithPaging(vo);
+		List<CustomerVo> list3 = customerDao.getCustomersWithPaging(searchVo);
 		if (!list3.isEmpty()) {
 			logger.info("Next page found, page size = " + list3.size());
 			assertTrue(list3.get(0).getCustId().compareTo(list1.get(list1.size() - 1).getCustId()) > 0);
 			vo.setPageAction(PageAction.PREVIOUS);
-			List<CustomerVo> list4 = customerDao.getCustomersWithPaging(vo);
+			List<CustomerVo> list4 = customerDao.getCustomersWithPaging(searchVo);
 			assertEquals(list1.size(), list4.size());
 			for (int i = 0; i < list1.size(); i++) {
 				assertCustomerVosAreSame(list1.get(i), list4.get(i));
@@ -89,11 +91,11 @@ public class CustomerTest extends DaoTestBase {
 		}
 		
 		vo.setPageAction(PageAction.LAST);
-		List<CustomerVo> list5 = customerDao.getCustomersWithPaging(vo);
+		List<CustomerVo> list5 = customerDao.getCustomersWithPaging(searchVo);
 		assertFalse(list5.isEmpty());
 		
 		vo.setPageAction(PageAction.FIRST);
-		List<CustomerVo> list6 = customerDao.getCustomersWithPaging(vo);
+		List<CustomerVo> list6 = customerDao.getCustomersWithPaging(searchVo);
 		assertEquals(list1.size(), list6.size());
 		for (int i = 0; i < list1.size(); i++) {
 			assertCustomerVosAreSame(list1.get(i), list6.get(i));
@@ -101,12 +103,12 @@ public class CustomerTest extends DaoTestBase {
 		
 		CustomerVo cust = list1.get(0);
 		vo.resetPageContext();
-		vo.setClientId(Constants.DEFAULT_CLIENTID);
-		vo.setLastName(StringUtils.lowerCase(cust.getLastName()));
-		vo.setFirstName(StringUtils.upperCase(cust.getFirstName()));
-		vo.setEmailAddr(EmailAddrUtil.getEmailDomainName(cust.getEmailAddr()));
+		searchVo.setClientId(Constants.DEFAULT_CLIENTID);
+		searchVo.setLastName(StringUtils.lowerCase(cust.getLastName()));
+		searchVo.setFirstName(StringUtils.upperCase(cust.getFirstName()));
+		searchVo.setEmailAddr(EmailAddrUtil.getEmailDomainName(cust.getEmailAddr()));
 		
-		list1 = customerDao.getCustomersWithPaging(vo);
+		list1 = customerDao.getCustomersWithPaging(searchVo);
 		assertFalse(list1.isEmpty());
 		for (CustomerVo custvo : list1) {
 			logger.info("Customer search result: " + PrintUtil.prettyPrint(custvo, 2));

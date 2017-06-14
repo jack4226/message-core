@@ -68,7 +68,7 @@ public class SimpleMailTrackingMenu extends PaginationBean implements java.io.Se
 	}
 
 	@Override
-	public int getRowCount() { // dummy to satisfy super class
+	public long getRowCount() { // dummy to satisfy super class
 		return 0;
 	}
 

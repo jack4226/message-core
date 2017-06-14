@@ -94,7 +94,8 @@ public class RuleLogicJdbcDao extends AbstractDao implements RuleLogicDao {
 	@Override
 	public RuleLogicVo getByRuleName(String ruleName) {
 		String sql = getSelectClause() +
-			" where r.rule_name=? ";
+			" where r.rule_name=? " +
+			getGroupByClause();
 		
 		Object[] parms = new Object[] {ruleName};
 		

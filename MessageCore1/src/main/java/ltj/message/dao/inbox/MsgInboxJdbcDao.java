@@ -21,6 +21,7 @@ import ltj.message.constant.MsgDirection;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.PagingVo.PageAction;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
@@ -282,8 +283,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return sentUnreadCount;
 	}
 	
-	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ", " and ", " and ",
-		" and ", " and ", " and ", " and " };
+	static String[] CRIT = PagingVo.CRIT;
 
 	@Override
 	public int getRowCountForWeb(SearchFieldsVo vo) {

@@ -14,7 +14,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,8 +37,8 @@ import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
-import ltj.message.vo.PagingAddrVo;
 import ltj.message.vo.PagingVo;
+import ltj.message.vo.SearchVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @Component("emailAddressDao")
@@ -95,9 +94,9 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	}
 
 	@Override
-	public int getEmailAddressCount(PagingAddrVo vo) {
+	public int getEmailAddressCount(SearchVo vo) {
 		List<Object> parms = new ArrayList<>();
-		String whereSql = buildWhereClause(vo, parms);
+		String whereSql = buildWhereClause(vo.getPagingVo(), parms);
 		String sql = "select count(*) from email_address a "
 				+ " LEFT OUTER JOIN customer_tbl b on a.email_addr_id=b.email_addr_id "
 				+ " LEFT OUTER JOIN email_subscrpt c on a.email_addr_id=c.email_addr_id "
@@ -107,7 +106,8 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 	}
 
 	@Override
-	public List<EmailAddressVo> getEmailAddrsWithPaging(PagingAddrVo vo) {
+	public List<EmailAddressVo> getEmailAddrsWithPaging(SearchVo searchVo) {
+		PagingVo vo = searchVo.getPagingVo();
 		List<Object> parms = new ArrayList<>();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
@@ -129,7 +129,7 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 				fetchOrder = "desc";
 			}
 		} else if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-			int rows = getEmailAddressCount(vo);
+			int rows = getEmailAddressCount(searchVo);
 			pageSize = rows % vo.getPageSize();
 			if (pageSize == 0) {
 				pageSize = Math.min(rows, vo.getPageSize());
@@ -180,28 +180,13 @@ public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao 
 		return list;
 	}
 
-	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ",
-			" and ", " and ", " and ", " and ", " and ", " and " };
+	static String[] CRIT = PagingVo.CRIT;
 
-	private String buildWhereClause(PagingAddrVo vo, List<Object> parms) {
+	private String buildWhereClause(PagingVo vo, List<Object> parms) {
 		String whereSql = "";
-		if (StringUtil.isNotEmpty(vo.getStatusId())) {
-			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
-			parms.add(vo.getStatusId());
-		}
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.statusId, CRIT, parms, "a.status_id");
 		// search by address
-		if (StringUtils.isNotBlank(vo.getEmailAddr())) {
-			String addr = vo.getEmailAddr().trim();
-			if (addr.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " a.orig_email_addr LIKE ? ";
-				parms.add("%" + addr + "%");
-			} else {
-				//String regex = (addr + "").replaceAll("[ ]+", ".+");
-				String regex = (addr + "").replaceAll("[ ]+", "|"); // any word
-				whereSql += CRIT[parms.size()] + " a.orig_email_addr REGEXP ? ";
-				parms.add(regex);
-			}
-		}
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.emailAddr, CRIT, parms, "a.orig_email_addr");
 		return whereSql;
 	}
 

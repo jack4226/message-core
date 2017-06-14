@@ -2,15 +2,15 @@ package ltj.message.dao.inbox;
 
 import java.util.List;
 
-import ltj.message.vo.PagingCountVo;
+import ltj.message.vo.SearchVo;
 import ltj.message.vo.inbox.MsgClickCountVo;
 
 public interface MsgClickCountDao {
 	public MsgClickCountVo getRandomRecord();
 	public int getMsgCountForWeb();
 	public MsgClickCountVo getByPrimaryKey(long msgId);
-	public int getBroadcastsCount(PagingCountVo vo);
-	public List<MsgClickCountVo> getBroadcastsWithPaging(PagingCountVo vo);
+	public int getBroadcastsCount(SearchVo vo);
+	public List<MsgClickCountVo> getBroadcastsWithPaging(SearchVo vo);
 	public int update(MsgClickCountVo msgClickCountVo);
 	public int deleteByPrimaryKey(long msgId);
 	public int insert(MsgClickCountVo msgClickCountVo);

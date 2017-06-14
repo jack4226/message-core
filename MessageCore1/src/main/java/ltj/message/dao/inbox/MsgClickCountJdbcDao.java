@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Component;
 
 import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
-import ltj.message.vo.PagingCountVo;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.PagingVo.PagingContext;
+import ltj.message.vo.SearchVo;
 import ltj.message.vo.inbox.MsgClickCountVo;
 
 @Component("msgClickCountDao")
@@ -69,9 +68,9 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 	}
 	
 	@Override
-	public int getBroadcastsCount(PagingCountVo vo) {
+	public int getBroadcastsCount(SearchVo vo) {
 		List<Object> parms = new ArrayList<>();
-		String whereSql = buildWhereClause(vo, parms);
+		String whereSql = buildWhereClause(vo.getPagingVo(), parms);
 		String sql = 
 				"select count(*) " +
 				" from msg_click_count a "
@@ -84,15 +83,16 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 	}
 	
 	@Override
-	public List<MsgClickCountVo> getBroadcastsWithPaging(PagingCountVo vo) {
+	public List<MsgClickCountVo> getBroadcastsWithPaging(SearchVo searchVo) {
 		List<Object> parms = new ArrayList<>();
+		PagingVo vo = searchVo.getPagingVo();
 		String whereSql = buildWhereClause(vo, parms);
 		/*
 		 * paging logic
 		 */
 		int rows = 0;
 		if (vo.getPageAction().equals(PagingVo.PageAction.LAST)) {
-			rows = getBroadcastsCount(vo);
+			rows = getBroadcastsCount(searchVo);
 		}
 		PagingContext ctx = PagingVo.getPagingWhereSql(vo, CRIT, parms, rows, "a.msg_id");
 		whereSql += ctx.whereSql;
@@ -125,30 +125,21 @@ public class MsgClickCountJdbcDao extends AbstractDao implements MsgClickCountDa
 		return list;
 	}
 
-	static String[] CRIT = { " where ", " and ", " and ", " and ", " and ",
-			" and ", " and ", " and ", " and ", " and ", " and " };
+	static String[] CRIT = PagingVo.CRIT;
 
-	private String buildWhereClause(PagingCountVo vo, List<Object> parms) {
+	private String buildWhereClause(PagingVo vo, List<Object> parms) {
 		String whereSql = "";
 //		if (StringUtil.isNotEmpty(vo.getStatusId())) {
 //			whereSql += CRIT[parms.size()] + " a.status_id = ? ";
 //			parms.add(vo.getStatusId());
 //		}
-		if (vo.getSentCount() != null) {
-			whereSql += CRIT[parms.size()] + " a.sent_count >= ? ";
-			parms.add(vo.getSentCount());
-		}
-		if (vo.getOpenCount() != null) {
-			whereSql += CRIT[parms.size()] + " a.open_count >= ? ";
-			parms.add(vo.getOpenCount());
-		}
-		if (vo.getClickCount() != null) {
-			whereSql += CRIT[parms.size()] + " a.click_count >= ? ";
-			parms.add(vo.getClickCount());
-		}
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.sentCount, CRIT, parms, "a.sent_count");
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.openCount, CRIT, parms, "a.open_count");
+		whereSql += PagingVo.buildSearchField(vo, PagingVo.Column.clickCount, CRIT, parms, "a.click_count");
 		// search by address
-		if (StringUtils.isNotBlank(vo.getFromEmailAddr())) {
-			String addr = vo.getFromEmailAddr().trim();
+		PagingVo.Criteria criteria = vo.getSearchCriteria(PagingVo.Column.emailAddr);
+		if (criteria != null && criteria.getValue() != null) {
+			String addr = ((String) criteria.getValue()).trim();
 			if (addr.indexOf(" ") < 0) {
 				whereSql += CRIT[parms.size()] + " e.orig_email_addr LIKE ? ";
 				parms.add("%" + addr + "%");

@@ -2,7 +2,7 @@ package ltj.message.dao.emailaddr;
 
 import java.util.List;
 
-import ltj.message.vo.PagingSbsrVo;
+import ltj.message.vo.SearchVo;
 import ltj.message.vo.emailaddr.EmailSubscrptVo;
 
 public interface EmailSubscrptDao {
@@ -14,8 +14,8 @@ public interface EmailSubscrptDao {
 	public int optInRequest(long addrId, String listId);
 	public int optInConfirm(long addrId, String listId);
 	public int optInConfirm(String addr, String listId);
-	public int getSubscriberCount(PagingSbsrVo vo);
-	public List<EmailSubscrptVo> getSubscribersWithPaging(PagingSbsrVo vo);
+	public int getSubscriberCount(SearchVo vo);
+	public List<EmailSubscrptVo> getSubscribersWithPaging(SearchVo vo);
 	public List<EmailSubscrptVo> getSubscribers(String listId);
 	public List<EmailSubscrptVo> getSubscribersWithCustomerRecord(String listId);
 	public List<EmailSubscrptVo> getSubscribersWithoutCustomerRecord(String listId);
