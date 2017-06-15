@@ -30,7 +30,7 @@
 		<h:outputText value="#{msgs.siteIdPrompt}"/>
 		<h:selectOneMenu value="#{subscriberData.subscriber.clientId}"
 			id="senderid" label="#{msgs.siteIdPrompt}">
-			<f:selectItems value="#{dynacodes.senderIdItems}"/>
+			<f:selectItems value="#{dynacodes.clientIdItems}"/>
 		</h:selectOneMenu>
 		<h:message for="senderid" styleClass="errorMessage"/>
 

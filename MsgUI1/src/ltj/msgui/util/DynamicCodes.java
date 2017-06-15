@@ -3,6 +3,8 @@ package ltj.msgui.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
 
 import org.springframework.web.context.WebApplicationContext;
@@ -24,6 +26,8 @@ import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.rule.RuleLogicVo;
 import ltj.vo.template.ClientVariableVo;
 
+@ManagedBean(name="dynacodes")
+@ApplicationScoped
 public class DynamicCodes {
 	static WebApplicationContext webContext = null;
 	

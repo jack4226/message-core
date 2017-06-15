@@ -82,7 +82,7 @@ function displayDP(rowIndex) {
 			</f:facet>
 			<h:selectOneMenu id="senderid" value="#{msgaction.senderId}">
 				<f:selectItem itemLabel="" itemValue=""/>
-				<f:selectItems value="#{dynacodes.senderIdItems}"/>
+				<f:selectItems value="#{dynacodes.clientIdItems}"/>
 				<f:converter converterId="NullableStringConverter"/>
 			</h:selectOneMenu>
         </h:column>

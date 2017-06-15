@@ -61,7 +61,7 @@ function displayDP(rowIndex) {
 			<f:facet name="header">
 				<h:outputText value="#{msgs.actionSeqHeader}"/> 
 			</f:facet>
-			<h:inputText id="actionseq" value="#{rule_action.ruleActionPK.actionSequence}"
+			<h:inputText id="actionseq" value="#{rule_action.actionSeq}"
 				required="true">
 				<f:validateLongRange minimum="0" maximum="100"/>
 			</h:inputText>
@@ -70,7 +70,7 @@ function displayDP(rowIndex) {
 			<f:facet name="header">
 				<h:outputText value="#{msgs.actionIdHeader}"/> 
 			</f:facet>
-			<h:selectOneMenu id="actionid" value="#{rule_action.ruleActionDetail.actionId}"
+			<h:selectOneMenu id="actionid" value="#{rule_action.actionId}"
 				required="true">
 				<f:ajax event="change" listener="#{rule_action.changedActionId}" render="@this"/>
 				<f:selectItems value="#{dynacodes.actionIdItems}"/>
@@ -80,10 +80,10 @@ function displayDP(rowIndex) {
 			<f:facet name="header">
 				<h:outputText value="#{msgs.senderIdHeader}"/>
 			</f:facet>
-			<h:selectOneMenu id="senderid" value="#{rule_action.senderId}">
+			<h:selectOneMenu id="senderid" value="#{rule_action.clientId}">
 				<f:ajax event="change" listener="#{builtinRule.changedSenderId}" render="@this"/>
 				<f:selectItem itemLabel="" itemValue=""/>
-				<f:selectItems value="#{dynacodes.senderIdItems}"/>
+				<f:selectItems value="#{dynacodes.clientIdItems}"/>
 				<f:converter converterId="NullableStringConverter"/>
 			</h:selectOneMenu>
         </h:column>
@@ -92,7 +92,7 @@ function displayDP(rowIndex) {
 			<f:facet name="header">
 				<h:outputText value="#{msgs.startTimeHeader}"/> 
 			</f:facet>
-       		<h:inputText id="starttime" value="#{rule_action.ruleActionPK.startTime}"
+       		<h:inputText id="starttime" value="#{rule_action.startTime}"
 				size="16" maxlength="16" required="true"
 				onclick="displayDP('#{builtinRule.msgActions.rowIndex}');">
 				<f:converter converterId="TimestampConverter"/>

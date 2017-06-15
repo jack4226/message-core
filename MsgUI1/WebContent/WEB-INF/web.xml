@@ -6,22 +6,6 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>MsgUI1</display-name>
 	
-	<!-- define phase parameter for Phase Tracker -->
-	<context-param>
-		<param-name>listener.phaseTracker.phase</param-name>
-		<param-value>INVOKE_APPLICATION</param-value>
-	</context-param>
-
-	<!-- set state saving method to Client -->
-	<context-param>
-		<description>
-		    State saving method: "client" or "server" (= default)
-		    See JSF Specification 2.5.2
-		</description>
-        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-		<param-value>client</param-value>
-    </context-param>
-
 	<!-- define welcome pages -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
@@ -40,7 +24,7 @@
 	</servlet>
 
 	<!-- define servlet for Apache Tiles -->
-	<servlet>
+	<!-- servlet>
 		<servlet-name>tiles</servlet-name>
 		<servlet-class>
 			org.apache.tiles.web.startup.TilesServlet
@@ -54,7 +38,7 @@
 	        </param-value>
 	    </init-param>
 		<load-on-startup>2</load-on-startup>
-	</servlet>
+	</servlet -->
 
 	<!-- define JSF mapping -->
 	<servlet-mapping>
@@ -63,6 +47,28 @@
     	<url-pattern>*.xhtml</url-pattern>
     	<url-pattern>*.fases</url-pattern>
 	</servlet-mapping>
+
+	<context-param>
+	    <param-name>javax.faces.PROJECT_STAGE</param-name>
+	    <param-value>Development</param-value>
+	</context-param>
+	<!-- set state saving method to Client -->
+	<context-param>
+	    <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+	    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+	    <param-value>client</param-value>
+	</context-param>
+	<context-param>
+	  	<description>Not recommended (partial state saving has better performance), but it solves IndexOutOfBoundsException problem.</description>
+		<param-name>javax.faces.PARTIAL_STATE_SAVING</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<!-- define phase parameter for Phase Tracker -->
+	<!-- context-param>
+		<param-name>listener.phaseTracker.phase</param-name>
+		<param-value>INVOKE_APPLICATION</param-value>
+	</context-param -->
 
 	<!-- define session timeout -->
 	<session-config>

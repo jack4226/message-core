@@ -19,7 +19,7 @@
          <h:outputText value="#{msgs.deleteColumnHeader}"/>
       </f:facet>
       <h:selectBooleanCheckbox value="#{mbox.markedForDeletion}" disabled="#{not mbox.editable}"
-      		title="#{mbox.mailInboxPK.hostName}_#{mbox.mailInboxPK.userId}_checkBox">
+      		title="#{mbox.hostName}_#{mbox.userId}_checkBox">
          <f:ajax event="click" render="@form" />
       </h:selectBooleanCheckbox>
    </h:column>
@@ -28,10 +28,10 @@
          <h:outputText value="#{msgs.hostNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:commandLink title="#{mbox.mailInboxPK.hostName} #{mbox.mailInboxPK.userId}">
-      	<h:outputText value="#{mbox.mailInboxPK.hostName}" title="Click to Edit"/>
-      	<f:param name="hostName" value="#{mbox.mailInboxPK.hostName}"/>
-      	<f:param name="userId" value="#{mbox.mailInboxPK.userId}"/>
+      <h:commandLink title="#{mbox.hostName} #{mbox.userId}">
+      	<h:outputText value="#{mbox.hostName}" title="Click to Edit"/>
+      	<f:param name="hostName" value="#{mbox.hostName}"/>
+      	<f:param name="userId" value="#{mbox.userId}"/>
       	<f:ajax listener="#{mailInbox.viewMailBoxListener}" render="@form"/>
       </h:commandLink>
       </div>
@@ -40,39 +40,39 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.portNumberHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.portNumber}" title="#{mbox.mailInboxPK.hostName}_#{mbox.mailInboxPK.userId}_portNumber"/>
+      <h:outputText value="#{mbox.portNumber}" title="#{mbox.hostName}_#{mbox.userId}_portNumber"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.protocolHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.protocol}" title="#{mbox.mailInboxPK.hostName}_#{mbox.mailInboxPK.userId}_protocol"/>
+      <h:outputText value="#{mbox.protocol}" title="#{mbox.hostName}_#{mbox.userId}_protocol"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.userIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.mailInboxPK.userId}" title="#{mbox.mailInboxPK.hostName}_#{mbox.mailInboxPK.userId}_userId"/>
+      <h:outputText value="#{mbox.userId}" title="#{mbox.hostName}_#{mbox.userId}_userId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.descriptionHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{mbox.description}" title="#{mbox.mailInboxPK.hostName}_#{mbox.mailInboxPK.userId}_description"/>
+      <h:outputText value="#{mbox.description}" title="#{mbox.hostName}_#{mbox.userId}_description"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.useSslHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.useSsl}" title="#{mbox.mailInboxPK.hostName}_#{mbox.mailInboxPK.userId}_useSsl"/>
+      <h:outputText value="#{mbox.useSsl}" title="#{mbox.hostName}_#{mbox.userId}_useSsl"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.statusIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{mbox.statusIdDesc}" title="#{mbox.mailInboxPK.hostName}_#{mbox.mailInboxPK.userId}_statusId"/>
+      <h:outputText value="#{mbox.statusIdDesc}" title="#{mbox.hostName}_#{mbox.userId}_statusId"/>
    </h:column>
 </h:dataTable>
 <f:verbatim><p/></f:verbatim>

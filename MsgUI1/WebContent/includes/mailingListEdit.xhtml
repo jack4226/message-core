@@ -53,7 +53,7 @@
 		<h:outputText value="#{msgs.senderIdPrompt}"/>
 		<h:selectOneMenu id="clientid" value="#{mailingList.mailingList.clientId}"
 			required="true" label="#{msgs.senderIdPrompt}">
-			<f:selectItems value="#{dynacodes.senderIdItems}"/>
+			<f:selectItems value="#{dynacodes.clientIdItems}"/>
 		</h:selectOneMenu>
 		<h:message for="clientid" styleClass="errorMessage"/>
 		

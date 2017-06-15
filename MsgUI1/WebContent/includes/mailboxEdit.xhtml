@@ -9,7 +9,7 @@
 <h:panelGrid columns="1" styleClass="gettingStartedContent">
 	<h:messages styleClass="errors" layout="list" rendered="#{debug.showMessages}"/>
 	<h:outputFormat value="#{msgs.mailboxEditLabel}" styleClass="gridHeader">
-	   <f:param value="#{mailInbox.mailbox.userId}@#{mailInbox.mailbox.mailInboxPK.hostName}"/>
+	   <f:param value="#{mailInbox.mailbox.userId}@#{mailInbox.mailbox.hostName}"/>
 	</h:outputFormat>
 	<h:panelGrid columns="3" styleClass="editPaneHeader"
 		columnClasses="promptColumn, inputColumn, messageColumn">

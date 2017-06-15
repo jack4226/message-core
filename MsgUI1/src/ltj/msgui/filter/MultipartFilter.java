@@ -202,7 +202,7 @@ public class MultipartFilter implements Filter {
             throw new ServletException("Cannot parse multipart request: " + e.getMessage());
         }
         // Prepare the request parameter map
-        Map<String, String[]> parameterMap = new HashMap<String, String[]>();
+        Map<String, String[]> parameterMap = new HashMap<>();
         // Loop through multipart request items
         for (FileItem multipartItem : multipartItems) {
             if (multipartItem.isFormField()) {

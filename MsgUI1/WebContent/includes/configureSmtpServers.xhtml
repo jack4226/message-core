@@ -40,14 +40,14 @@
          <h:outputText value="#{msgs.hostNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{smtp.smtpHostName}" title="#{smtp.serverName}_hostName"/>
+      <h:outputText value="#{smtp.smtpHost}" title="#{smtp.serverName}_hostName"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.portNumberHeader}"/>
       </f:facet>
-      <h:outputText value="#{smtp.smtpPortNumber}" title="#{smtp.serverName}_portNumber"/>
+      <h:outputText value="#{smtp.smtpPort}" title="#{smtp.serverName}_portNumber"/>
    </h:column>
    <h:column>
       <f:facet name="header">
@@ -59,13 +59,13 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.useSslHeader}"/>
       </f:facet>
-      <h:outputText value="#{smtp.isUseSsl}" title="#{smtp.serverName}_useSsl"/>
+      <h:outputText value="#{smtp.useSsl}" title="#{smtp.serverName}_useSsl"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.persistenceHeader}"/>
       </f:facet>
-      <h:outputText value="#{smtp.isPersistence}" title="#{smtp.serverName}_persistence"/>
+      <h:outputText value="#{smtp.persistence}" title="#{smtp.serverName}_persistence"/>
    </h:column>
    <h:column>
       <f:facet name="header">

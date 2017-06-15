@@ -43,12 +43,16 @@ public class CreateAllTables {
 	UserTable userTable;
 	
 	public static void main(String[] args) {
+		CreateAllTables create = new CreateAllTables();
+		create.createTablesAndLoadData();
+	}
+	
+	public void createTablesAndLoadData() {
 		try {
-			CreateAllTables create = new CreateAllTables();
-			create.init();
-			create.dropAllTables();
-			create.createAllTables();
-			create.wrapup();
+			init();
+			dropAllTables();
+			createAllTables();
+			wrapup();
 			/*** Now run following code to complete data load ***/
 			// RuleEngineTest - to create a record on MsgStream
 			// MsgOutboxBoTest - to create a record on MsgRendered

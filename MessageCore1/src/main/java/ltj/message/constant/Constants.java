@@ -1,5 +1,7 @@
 package ltj.message.constant;
 
+import org.apache.commons.lang3.StringUtils;
+
 import ltj.data.preload.MailingListEnum;
 
 public final class Constants {
@@ -18,6 +20,25 @@ public final class Constants {
 	
 	public final static String ADMIN_ROLE = "admin";
 	public final static String USER_ROLE = "user";
+	
+	
+	final static String DB_PRODNAME_MYSQL = "MySQL";
+	final static String DB_PRODNAME_PSQL  = "PostgreSQL";
+	final static String DB_PRODNAME_DERBY = "Derby";
+	final static String DB_PRODNAME_APACHEDERBY = "Apache Derby";
+	
+	public final static boolean isDerbyDatabase(String db_name) {
+		return (StringUtils.containsIgnoreCase(db_name, DB_PRODNAME_DERBY));
+	}
+	
+	public final static boolean isMySQLDatabase(String db_name) {
+		return (StringUtils.containsIgnoreCase(db_name, DB_PRODNAME_MYSQL));
+	}
+	
+	public final static boolean isPgSQLDatabase(String db_name) {
+		return (StringUtils.containsIgnoreCase(db_name, DB_PRODNAME_PSQL));
+	}
+
 	
 	public final static String FreePremiumUpgradeTemplateId = "FreePremiumUpgradeReply";
 	public final static String FreePremiumUpgradeRuleName = "FreePremiumUpgrade";

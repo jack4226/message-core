@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
 
 import ltj.data.preload.FolderEnum;
@@ -33,6 +35,8 @@ import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.external.RuleTargetProc;
 import ltj.message.external.VariableResolver;
 
+@ManagedBean(name="codes")
+@ApplicationScoped
 public class StaticCodes {
 
 	public static void main(String[] args) {
@@ -267,8 +271,8 @@ public class StaticCodes {
 	}
 
 	private static SelectItem[] yesNoItems = {
-		new SelectItem(Constants.YES, "Yes"),
-		new SelectItem(Constants.NO, "No")
+		new SelectItem(true, "Yes"),
+		new SelectItem(false, "No")
 	};
 	
 	// PROPERTY: Y/N Items
@@ -277,8 +281,8 @@ public class StaticCodes {
 	}
 
 	private static SelectItem[] yorNItems = {
-		new SelectItem(Constants.Y, "Yes"),
-		new SelectItem(Constants.N, "No")
+		new SelectItem(true, "Y"),
+		new SelectItem(false, "N")
 	};
 	
 	// PROPERTY: true/false Items

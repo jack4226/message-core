@@ -56,7 +56,7 @@
 			</f:facet>
 			<h:selectOneMenu value="#{subrule.subruleName}">
 				<f:ajax execute="@this" render="@this"/>
-				<f:selectItems value="#{dynacodes.subruleItems}"/>
+				<f:selectItems value="#{dynacodes.subRuleItems}"/>
 			</h:selectOneMenu>
         </h:column>
 	   <h:column>
@@ -93,7 +93,7 @@
 		</h:commandButton>
 		<f:verbatim>&nbsp;</f:verbatim>
 		<h:commandButton value="#{msgs.addNewButtonText}" title="Add a new row"
-			rendered="#{fn:length(dynacodes.subruleItems) > 0}">
+			rendered="#{fn:length(dynacodes.subRuleItems) > 0}">
 		   <f:ajax event="click" listener="#{ruleLogic.addSubRuleListener}" render="data_table"/>
 		</h:commandButton>
     </h:panelGroup>
