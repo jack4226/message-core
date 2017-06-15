@@ -242,7 +242,7 @@ public class MailInboxBean implements java.io.Serializable {
 		 * 
 		 */
 		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-				"jpa.msgui.messages", testResult, null);
+				"ltj.msgui.messages", testResult, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 	
@@ -349,13 +349,13 @@ public class MailInboxBean implements java.io.Serializable {
 			if (editMode == true && mailbox != null
 					&& vo.getRowId() != mailbox.getRowId()) {
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-						"jpa.msgui.messages", "mailboxAlreadyExist", new String[] {userId});
+						"ltj.msgui.messages", "mailboxAlreadyExist", new String[] {userId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
 			else if (editMode == false) {
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-						"jpa.msgui.messages", "mailboxAlreadyExist", new String[] {userId});
+						"ltj.msgui.messages", "mailboxAlreadyExist", new String[] {userId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}

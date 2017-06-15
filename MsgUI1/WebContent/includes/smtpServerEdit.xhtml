@@ -24,21 +24,21 @@
 		<h:message for="servername" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.hostNamePrompt}"/>
-		<h:inputText id="smtphost" value="#{smtpServer.smtpServer.smtpHostName}"
+		<h:inputText id="smtphost" value="#{smtpServer.smtpServer.smtpHost}"
 			required="true" label="#{msgs.hostNamePrompt}" maxlength="100" size="50">
 			<f:validateLength minimum="1" maximum="100" />
 		</h:inputText>
 		<h:message for="smtphost" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.portNumberPrompt}"/>
-		<h:inputText id="port" value="#{smtpServer.smtpServer.smtpPortNumber}"
+		<h:inputText id="port" value="#{smtpServer.smtpServer.smtpPort}"
 			required="true" label="#{msgs.portNumberPrompt}" size="10">
 			<f:validateLongRange minimum="-1" maximum="9999"/>
 		</h:inputText>
 		<h:message for="port" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.useSslPrompt}"/>
-		<h:selectOneMenu id="ssl" value="#{smtpServer.smtpServer.isUseSsl}"
+		<h:selectOneMenu id="ssl" value="#{smtpServer.smtpServer.useSsl}"
 			binding="#{smtpServer.useSslInput}"
 			required="true" label="#{msgs.useSslPrompt}">
 			<f:selectItems value="#{codes.yesNoItems}"/>
@@ -47,7 +47,7 @@
 		<h:message for="ssl" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.useAuthPrompt}"/>
-		<h:selectOneMenu id="auth" value="#{smtpServer.smtpServer.isUseAuth}"
+		<h:selectOneMenu id="auth" value="#{smtpServer.smtpServer.useAuth}"
 			binding="#{smtpServer.useAuthInput}"
 			label="#{msgs.useAuthPrompt}">
 			<f:selectItems value="#{codes.yesNoItems}"/>
@@ -76,7 +76,7 @@
 		<h:message for="desc" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.persistencePrompt}"/>
-		<h:selectOneMenu id="persistence" value="#{smtpServer.smtpServer.isPersistence}"
+		<h:selectOneMenu id="persistence" value="#{smtpServer.smtpServer.persistence}"
 			required="true" label="#{msgs.persistencePrompt}">
 			<f:selectItems value="#{codes.yesNoItems}"/>
 		</h:selectOneMenu>
@@ -97,14 +97,14 @@
 		<h:message for="servertype" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.retriesPrompt}"/>
-		<h:inputText id="retries" value="#{smtpServer.smtpServer.maximumRetries}"
+		<h:inputText id="retries" value="#{smtpServer.smtpServer.retries}"
 			required="true" label="#{msgs.retriesPrompt}" size="10">
 			<f:validateLongRange minimum="-1" maximum="500"/>
 		</h:inputText>
 		<h:message for="retries" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.retryFreqPrompt}"/>
-		<h:inputText id="retryfreq" value="#{smtpServer.smtpServer.retryFrequence}"
+		<h:inputText id="retryfreq" value="#{smtpServer.smtpServer.retryFreq}"
 			required="true" label="#{msgs.retryFreqPrompt}" size="10">
 			<f:validateLongRange minimum="-1" maximum="500"/>
 		</h:inputText>
@@ -131,7 +131,7 @@
 		<h:message for="alertlevel" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.threadsPrompt}"/>
-		<h:inputText id="threads" value="#{smtpServer.smtpServer.numberOfThreads}"
+		<h:inputText id="threads" value="#{smtpServer.smtpServer.threads}"
 			required="true" label="#{msgs.threadsPrompt}" size="10">
 			<f:validateLongRange minimum="1" maximum="20"/>
 		</h:inputText>

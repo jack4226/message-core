@@ -329,15 +329,15 @@ public class MailingListBean implements java.io.Serializable {
 					&& vo.getRowId() != mailingList.getRowId()) {
 				// mailingList does not exist
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-		        		"jpa.msgui.messages", "mailingListAlreadyExist", new String[] {listId});
-						//"jpa.msgui.messages", "mailingListDoesNotExist", null);
+		        		"ltj.msgui.messages", "mailingListAlreadyExist", new String[] {listId});
+						//"ltj.msgui.messages", "mailingListDoesNotExist", null);
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
 			else if (editMode == false) {
 				// mailingList already exist
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-						"jpa.msgui.messages", "mailingListAlreadyExist", new String[] {listId});
+						"ltj.msgui.messages", "mailingListAlreadyExist", new String[] {listId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -352,7 +352,7 @@ public class MailingListBean implements java.io.Serializable {
 			if (!EmailAddrUtil.isRemoteOrLocalEmailAddress(emailAddr)) {
 				// invalid email address
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-						"jpa.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
+						"ltj.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -367,7 +367,7 @@ public class MailingListBean implements java.io.Serializable {
 			if (!acctUserName.matches("^(?i)([a-z0-9\\.\\_\\%\\+\\-])+$")) {
 				// invalid email address
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-						"jpa.msgui.messages", "invalidAccountUserName", new String[] {acctUserName});
+						"ltj.msgui.messages", "invalidAccountUserName", new String[] {acctUserName});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}

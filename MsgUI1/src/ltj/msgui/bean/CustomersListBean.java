@@ -397,14 +397,14 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 			if (editMode == true && subscriber != null
 					&& vo.getRowId() != subscriber.getRowId()) {
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-		        		"jpa.msgui.messages", "subscriberAlreadyExist", new String[] {subrId});
+		        		"ltj.msgui.messages", "subscriberAlreadyExist", new String[] {subrId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
 			else if (editMode == false) {
 				// subscriber already exist
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-						"jpa.msgui.messages", "subscriberAlreadyExist", new String[] {subrId});
+						"ltj.msgui.messages", "subscriberAlreadyExist", new String[] {subrId});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -419,7 +419,7 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 			if (!EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 				// invalid email address
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-						"jpa.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
+						"ltj.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -428,7 +428,7 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 				if (vo != null) {
 					if (subscriber != null && !vo.getCustId().equals(subscriber.getCustId())) {
 						FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-								"jpa.msgui.messages", "emailAddressAlreadyUsed", new String[] {emailAddr});
+								"ltj.msgui.messages", "emailAddressAlreadyUsed", new String[] {emailAddr});
 						message.setSeverity(FacesMessage.SEVERITY_WARN);
 						throw new ValidatorException(message);
 					}
@@ -443,7 +443,7 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 			logger.debug("validateSsnNumber() - SSN: " + ssn);
 		if (StringUtils.isNotBlank(ssn) && !SsnNumberUtil.isValidSSN(ssn)) {
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "invalidSsnNumber", new String[] {ssn});
+					"ltj.msgui.messages", "invalidSsnNumber", new String[] {ssn});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -454,7 +454,7 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 			logger.debug("validateDate() - date = " + value);
 		if (value != null && !(value instanceof Date)) {
 			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "invalidDate", new Object[] {value});
+					"ltj.msgui.messages", "invalidDate", new Object[] {value});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -466,7 +466,7 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 			logger.debug("validatePhoneNumber() - Phone Number: " + phone);
 		if (StringUtils.isNotBlank(phone) && !PhoneNumberUtil.isValidPhoneNumber(phone)) {
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "invalidPhoneNumber", new String[] {phone});
+					"ltj.msgui.messages", "invalidPhoneNumber", new String[] {phone});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -482,7 +482,7 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 			}
 			catch (IllegalArgumentException e) {
 		        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-						"jpa.msgui.messages", "invalidMobileCarrier", new String[] {carrier});
+						"ltj.msgui.messages", "invalidMobileCarrier", new String[] {carrier});
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				throw new ValidatorException(message);
 			}
@@ -495,7 +495,7 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 			logger.debug("validateZipCode5() - Zip Code: " + zip5);
 		if (StringUtils.isNotBlank(zip5) && !zip5.matches("\\d{5}")) {
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-	        		"jpa.msgui.messages", "invalidZipCode", new String[] {zip5});
+	        		"ltj.msgui.messages", "invalidZipCode", new String[] {zip5});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -507,7 +507,7 @@ public class CustomersListBean extends PaginationBean implements java.io.Seriali
 			logger.debug("validateZipCode4() - Zip Code: " + zip4);
 		if (StringUtils.isNotBlank(zip4) && !zip4.matches("\\d{4}")) {
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-	        		"jpa.msgui.messages", "invalidZipCode", new String[] {zip4});
+	        		"ltj.msgui.messages", "invalidZipCode", new String[] {zip4});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

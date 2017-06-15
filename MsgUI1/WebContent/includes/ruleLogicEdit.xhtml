@@ -22,7 +22,7 @@
 		<h:message for="rulename" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.ruleSeqPrompt}"/>
-		<h:outputText id="ruleseq" value="#{ruleLogic.ruleLogic.evalSequence}"/>
+		<h:outputText id="ruleseq" value="#{ruleLogic.ruleLogic.ruleSeq}"/>
 		<f:verbatim>&nbsp;</f:verbatim>
 		
 		<h:outputText value="#{msgs.descriptionPrompt}"/>
@@ -65,7 +65,7 @@
 		<h:message for="rulecategory" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.subRulePrompt}"/>
-		<h:selectOneMenu id="subrule" value="#{ruleLogic.ruleLogic.subrule}"
+		<h:selectOneMenu id="subrule" value="#{ruleLogic.ruleLogic.subRule}"
 			required="true" label="#{msgs.subRulePrompt}">
 			<f:selectItems value="#{codes.yorNItems}"/>
 		</h:selectOneMenu>

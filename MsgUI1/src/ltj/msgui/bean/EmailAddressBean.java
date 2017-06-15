@@ -359,15 +359,15 @@ public class EmailAddressBean extends PaginationBean implements java.io.Serializ
 				&& vo.getEmailAddrId() != emailAddr.getEmailAddrId()) {
 			// emailAddr does not exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					//"jpa.msgui.messages", "emailAddrDoesNotExist", null);
-	        		"jpa.msgui.messages", "emailAddrAlreadyExist", new String[] {address});
+					//"ltj.msgui.messages", "emailAddrDoesNotExist", null);
+	        		"ltj.msgui.messages", "emailAddrAlreadyExist", new String[] {address});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false) {
 			// emailAddr already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "emailAddrAlreadyExist", new String[] {address});
+					"ltj.msgui.messages", "emailAddrAlreadyExist", new String[] {address});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

@@ -59,10 +59,10 @@
 			rendered="#{not messageInbox.message.showAllHeaders}">
 			
 			<h:outputText value="#{msgs.fromAddressPrompt}" />
-			<h:outputText value="#{messageInbox.message.fromAddress==null?'':messageInbox.message.fromAddress.address}"/>
+			<h:outputText value="#{messageInbox.message.fromAddress==null?'':messageInbox.message.fromAddress}"/>
 
 			<h:outputText value="#{msgs.toAddressPrompt}" />
-			<h:outputText value="#{messageInbox.message.toAddress==null?'':messageInbox.message.toAddress.address}"/>
+			<h:outputText value="#{messageInbox.message.toAddress==null?'':messageInbox.message.toAddress}"/>
 
 			<h:outputText value="#{msgs.msgSubjectPrompt}" />
 			<h:outputText value="#{messageInbox.message.msgSubject}" />
@@ -78,21 +78,21 @@
 				rendered="#{messageInbox.rfcFields != null}" />
 			
 			<h:outputText value="#{msgs.siteIdPrompt}" 
-				rendered="#{messageInbox.message.senderData.senderId != null}" />
-			<h:outputText value="#{messageInbox.message.senderData.senderId}" 
-				rendered="#{messageInbox.message.senderData.senderId != null}" />
+				rendered="#{messageInbox.message.clientId != null}" />
+			<h:outputText value="#{messageInbox.message.clientId}" 
+				rendered="#{messageInbox.message.clientId != null}" />
 			
 			<h:outputText value="#{msgs.ruleNamePrompt}" />
-			<h:outputText value="#{messageInbox.message.ruleLogic.ruleName}" />
+			<h:outputText value="#{messageInbox.message.ruleName}" />
 
 			<h:outputText value="#{msgs.statusIdPrompt}" />
-			<h:outputText value="#{messageInbox.message.msgStatusCodeDesc}" />
+			<h:outputText value="#{messageInbox.message.statusIdDesc}" />
 
 			<h:outputText value="#{msgs.bodyContentTypePrompt}" />
 			<h:outputText value="#{messageInbox.message.bodyContentType}" />
 		</h:panelGrid>
 		
-		<h:dataTable id="miv_hdr_dt" value="#{messageInbox.message.messageHeaderList}" var="hdr" 
+		<h:dataTable id="miv_hdr_dt" value="#{messageInbox.message.msgHeaders}" var="hdr" 
   			styleClass="smtpHeaders" columnClasses="smtpLabelColumn, smtpTextColumn"
    			rendered="#{messageInbox.message.showAllHeaders}">
 		   <h:column id="miv_hdr_1">
@@ -121,17 +121,17 @@
 					<h:outputText value="#{msgs.attachmentsPrompt}"
 						style="color: #2F4F4F; font-size: 1.2em;"/>
 				</h:panelGrid>
-				<h:dataTable value="#{messageInbox.message.messageAttachmentList}" var="attch"
+				<h:dataTable value="#{messageInbox.message.attachments}" var="attch"
 					style="width: 100%; background: white; border: thin solid LightGray;">
 					<h:column>
 						<h:graphicImage value="/images/clip_1.gif" alt="attachment" style="border: 0px"
 							title="attachment"/>
 						<h:outputLink value="file"
 							style="color: darkblue; font-size: 1em; font-weight: bold;">
-							<f:param name="id" value="#{attch.rowId}"/>
-							<f:param name="depth" value="#{attch.messageAttachmentPK.attachmentDepth}"/>
-							<f:param name="seq" value="#{attch.messageAttachmentPK.attachmentSequence}"/>
-							<h:outputText value="#{attch.attachmentName}"/>
+							<f:param name="id" value="#{attch.msgId}"/>
+							<f:param name="depth" value="#{attch.attchmntDepth"/>
+							<f:param name="seq" value="#{attch.attchmntSeq}"/>
+							<h:outputText value="#{attch.attchmntName}"/>
 						</h:outputLink>
 						<f:verbatim>&nbsp;&nbsp;</f:verbatim>
 						<h:outputText value="#{msgs.sizePrompt}"/>
@@ -150,35 +150,35 @@
 					style="width: 100%; background: white; border: thin solid LightGray;">
 					<h:column>
 						<h:outputText value="#{msgs.previousThreadPrompt}" style="font-weight: bold;"
-							rendered="#{messageInbox.message.rowId gt thread.rowId}"/>
+							rendered="#{messageInbox.message.msgId gt thread.msgId}"/>
 						<h:outputText value="#{msgs.nextThreadPrompt}" style="font-weight: bold;"
-							rendered="#{messageInbox.message.rowId lt thread.rowId}"/>
+							rendered="#{messageInbox.message.msgId lt thread.msgId}"/>
 						<h:outputText value="#{msgs.currentThreadPrompt}" style="font-weight: bold;"
-							rendered="#{messageInbox.message.rowId eq thread.rowId}"/>
+							rendered="#{messageInbox.message.msgId eq thread.msgId}"/>
 					</h:column>
 					<h:column>
 						<h:outputText value="#{messageInbox.getLevelPrefix(thread.threadLevel)}" escape="false"
 							style="font-size: 1.0em; font-weight: bold; font-family: monospace;"/>
 						<h:graphicImage value="/images/unopened.gif" alt="unopened" 
-							rendered="#{messageInbox.message.rowId ne thread.rowId}"/>
+							rendered="#{messageInbox.message.msgId ne thread.msgId}"/>
 						<h:commandLink 
-							rendered="#{messageInbox.message.rowId ne thread.rowId}"
+							rendered="#{messageInbox.message.msgId ne thread.msgId}"
 							value=" #{thread.msgSubject}"
 							style="color: darkblue; font-size: 1em; font-weight: bold;">
-							<f:param name="msgThreadId" value="#{thread.rowId}" />
+							<f:param name="msgThreadId" value="#{thread.msgId}" />
 							<f:ajax listener="#{messageInbox.viewThreadListener}" render="@form"/>
 						</h:commandLink>
 						<h:graphicImage value="/images/opened.gif" alt="opened" 
-							rendered="#{messageInbox.message.rowId == thread.rowId}"/>
+							rendered="#{messageInbox.message.msgId == thread.msgId}"/>
 						<h:outputText value=" #{thread.msgSubject}"
-							rendered="#{messageInbox.message.rowId == thread.rowId}"
+							rendered="#{messageInbox.message.msgId == thread.msgId}"
 							style="color: darkgray; font-size: 1em; font-weight: bold;"/>
 						<h:outputText value=" #{msgs.newLabelText}" 
 							style="color: green; font-size: 1em; font-weight: bold;"
 							rendered="#{thread.readCount == 0}"/>
 					</h:column>
 					<h:column>
-					<h:outputText value="#{thread.ruleLogic==null?'':messageInbox.getRuleName(thread.ruleLogic.rowId)}"/>
+					<h:outputText value="#{thread.ruleName==null?'':thread.ruleName"/>
 					</h:column>
 					<h:column>
 					<h:outputText value="#{thread.receivedTime}"/>
@@ -211,9 +211,9 @@
 				</h:selectOneMenu>
 				<f:verbatim>&nbsp;</f:verbatim>
 				<h:commandButton value="#{msgs.reassignRuleButton}" title="Reassign to a new Rule"
-					disabled="#{messageInbox.message.ruleLogic != null and 
-						(messageInbox.message.ruleLogic.ruleName=='SEND_MAIL' or messageInbox.message.ruleLogic.ruleName=='BROADCAST')}"
-					onclick="javascript:return confirmReassignRule('#{messageInbox.message.ruleLogic.ruleName}');">
+					disabled="#{messageInbox.message.ruleName != null and 
+						(messageInbox.message.ruleName=='SEND_MAIL' or messageInbox.message.ruleName=='BROADCAST')}"
+					onclick="javascript:return confirmReassignRule('#{messageInbox.message.ruleName}');">
 					<f:ajax execute="newrulename" listener="#{messageInbox.reassignRuleListener}" render="@form @all"/>
 				</h:commandButton>
 			</h:panelGroup>

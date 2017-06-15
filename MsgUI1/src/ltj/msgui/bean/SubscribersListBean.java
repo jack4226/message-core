@@ -310,14 +310,14 @@ public class SubscribersListBean extends PaginationBean implements java.io.Seria
 		if (editMode == false && vo != null) {
 			// subscription already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "subscriptionAlreadyExist", new String[] {subId});
+					"ltj.msgui.messages", "subscriptionAlreadyExist", new String[] {subId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == true && vo == null) {
 			// subscription does not exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "subscriptionDoesNotExist", new String[] {subId});
+					"ltj.msgui.messages", "subscriptionDoesNotExist", new String[] {subId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

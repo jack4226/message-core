@@ -9,12 +9,12 @@
 <h:panelGrid columns="1" styleClass="gettingStartedContent">
 	<h:messages styleClass="errors" layout="list" rendered="#{debug.showMessages}"/>
 	<h:outputFormat value="#{msgs.ruleElementEditLabel}" styleClass="gridHeader">
-	   <f:param value="#{ruleLogic.ruleElement.ruleElementPK.ruleLogic.ruleName}.#{ruleLogic.ruleElement.ruleElementPK.elementSequence}"/>
+	   <f:param value="#{ruleLogic.ruleElement.ruleName}.#{ruleLogic.ruleElement.elementSeq}"/>
 	</h:outputFormat>
 	<h:panelGrid columns="3" styleClass="editPaneHeader"
 		columnClasses="promptColumn, inputColumn, messageColumn">
 		<h:outputText value="#{msgs.ruleNamePrompt}"/>
-		<h:inputText id="rulename" value="#{ruleLogic.ruleElement.ruleElementPK.ruleLogic.ruleName}"
+		<h:inputText id="rulename" value="#{ruleLogic.ruleElement.ruleName}"
 			required="true" label="#{msgs.ruleNamePrompt}" maxlength="26" size="30"
 			disabled="#{ruleLogic.ruleElement.markedForEdition}">
 			<f:validateLength minimum="1" maximum="26"/>
@@ -22,7 +22,7 @@
 		<h:message for="rulename" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.ruleElementSeqPrompt}"/>
-		<h:inputText id="ruleseq" value="#{ruleLogic.ruleElement.ruleElementPK.elementSequence}"
+		<h:inputText id="ruleseq" value="#{ruleLogic.ruleElement.elementSeq}"
 			required="true" label="#{msgs.ruleElementSeqPrompt}" size="5"
 			disabled="#{ruleLogic.ruleElement.markedForEdition}">
 			<f:validateLongRange minimum="0" maximum="999"/>
@@ -89,7 +89,7 @@
 		<h:message for="case" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.targetProcPrompt}"/>
-		<h:selectOneMenu id="targetproc" value="#{ruleLogic.ruleElement.targetProcName}">
+		<h:selectOneMenu id="targetproc" value="#{ruleLogic.ruleElement.targetProc}">
 			<f:selectItem itemValue="" itemLabel="Not Selected"/>
 			<f:selectItems value="#{codes.targetProcItems}"/>
 			<f:converter converterId="NullableStringConverter"/>

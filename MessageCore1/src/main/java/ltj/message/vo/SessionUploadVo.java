@@ -22,6 +22,16 @@ public class SessionUploadVo extends BaseVoWithRowId implements Serializable {
 		return this.fileSize;
 	}
 	
+	public String getSizeAsString() {
+		long len = getFileSize();
+		if (len < 1024) {
+			return 1024 + "";
+		}
+		else {
+			return (int) Math.ceil((double)len / 1024.0) + "K";
+		}
+	}
+
 	// Getters/Setters
 	public String getSessionId() {
 		return sessionId;

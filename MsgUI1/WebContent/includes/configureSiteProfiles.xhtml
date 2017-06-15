@@ -18,8 +18,8 @@
       <f:facet name="header">
          <h:outputText value="#{msgs.deleteColumnHeader}"/>
       </f:facet>
-      <h:selectBooleanCheckbox value="#{list.markedForDeletion}" title="#{list.senderId}_checkBox"
-         disabled="#{not list.editable || list.systemSender}">
+      <h:selectBooleanCheckbox value="#{list.markedForDeletion}" title="#{list.clientId}_checkBox"
+         disabled="#{not list.editable || list.isSystemClient}">
          <f:ajax event="click" render="@form" />
       </h:selectBooleanCheckbox>
    </h:column>
@@ -28,9 +28,9 @@
          <h:outputText value="#{msgs.siteIdHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:commandLink title="#{list.senderId}_viewDetail">
-      	<h:outputText value="#{list.senderId}" title="Click to Edit"/>
-      	<f:param name="senderId" value="#{list.senderId}"/>
+      <h:commandLink title="#{list.clientId}_viewDetail">
+      	<h:outputText value="#{list.clientId}" title="Click to Edit"/>
+      	<f:param name="senderId" value="#{list.clientId}"/>
       	<f:ajax listener="#{senderData.viewSiteProfileListener}" render="@form" />
       </h:commandLink>
       </div>
@@ -40,32 +40,32 @@
          <h:outputText value="#{msgs.siteNameHeader}"/>
       </f:facet>
       <div class="cellHeight">
-      <h:outputText value="#{list.senderName}" title="#{list.senderId}_senderName"/>
+      <h:outputText value="#{list.clientName}" title="#{list.clientId}_senderName"/>
       </div>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.emberEmailIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.embedEmailId}" title="#{list.senderId}_embedEmailId"/>
+      <h:outputText value="#{list.embedEmailId}" title="#{list.clientId}_embedEmailId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.useTestAddressHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.useTestAddr}" title="#{list.senderId}_userTestAddr"/>
+      <h:outputText value="#{list.useTestAddr}" title="#{list.clientId}_userTestAddr"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.enableVerpHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.verpEnabled}" title="#{list.senderId}_verpEnabled"/>
+      <h:outputText value="#{list.isVerpEnabled}" title="#{list.clientId}_verpEnabled"/>
    </h:column>
    <h:column>
       <f:facet name="header">
          <h:outputText value="#{msgs.statusIdHeader}"/>
       </f:facet>
-      <h:outputText value="#{list.statusIdDesc}" title="#{list.senderId}_statusId"/>
+      <h:outputText value="#{list.statusIdDesc}" title="#{list.clientId}_statusId"/>
    </h:column>
 </h:dataTable>
 <f:verbatim><p/></f:verbatim>

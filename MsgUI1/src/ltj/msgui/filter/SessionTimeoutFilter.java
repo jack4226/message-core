@@ -26,8 +26,8 @@ import ltj.message.vo.UserVo;
 public class SessionTimeoutFilter implements Filter {
 	static final Logger logger = Logger.getLogger(SessionTimeoutFilter.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
-	private String timeoutPage = "/login.faces";
-	private String loginPage = "/login.faces";
+	private String timeoutPage = "/login.xhtml";
+	private String loginPage = "/login.xhtml";
 	private String noPermissionPage = "/noPermission.faces";
 	/** The unique ID to set and get the UserVo from the HttpSession. */
 	public static final String USER_VO_ID = "SessionTimeoutFilter.UserVo";
@@ -35,6 +35,7 @@ public class SessionTimeoutFilter implements Filter {
 	/**
 	 * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
 	 */
+	@Override
 	public void init(FilterConfig filterConfig) {
 		// Nothing to do here.
 	}
@@ -43,6 +44,7 @@ public class SessionTimeoutFilter implements Filter {
 	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
 	 *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
 	 */
+	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		if (!(request instanceof HttpServletRequest) || !(response instanceof HttpServletResponse)) {
@@ -65,6 +67,7 @@ public class SessionTimeoutFilter implements Filter {
 			String timeoutUrl = httpRequest.getContextPath() + timeoutPage + "?source=timeout";
 			logger.info("doFilter() - session is invalid! redirecting to: " + timeoutUrl);
 			httpResponse.sendRedirect(timeoutUrl);
+			//FacesContext.getCurrentInstance().getExternalContext().redirect(timeoutUrl);
 			return;
 		}
 		if (!isPagePermitted(userVo, pathInfo)) {
@@ -75,12 +78,19 @@ public class SessionTimeoutFilter implements Filter {
 		// Add hit count and update UserVo
 		userVo.addHit();
 		// Continue filtering
-		chain.doFilter(request, response);
+		try { // we've been getting random IndexOutOfBoundsException
+				// did not work
+			chain.doFilter(request, response);
+		}
+		catch (IndexOutOfBoundsException e) {
+			logger.error("IndexOutOfBoundsException caught", e);
+		}
 	}
 
 	/**
 	 * @see javax.servlet.Filter#destroy()
 	 */
+	@Override
 	public void destroy() {
 		// Apparently there's nothing to destroy?
 	}
@@ -101,11 +111,12 @@ public class SessionTimeoutFilter implements Filter {
 			// in the web.xml is specific enough, this if-block can be removed.
 			pageSessioned = false;
 		}
-		if (pathInfo.matches("^(?:/[a-zA-Z]{5,8})?/[a-zA-Z]\\w{0,250}\\.(?:faces|jsp).*")) {
-			// file name matches "/*.faces" or "/*.jsp"
+		if (pathInfo.matches("^(?:/[a-zA-Z]{5,8})?/[a-zA-Z]\\w{0,250}\\.(?:faces|xhtml|jsf).*")) {
+			// file name matches "/*.faces" or "/*.xhtml" or "/*.jsf"
 			if (!pathInfo.startsWith(loginPage) && !pathInfo.startsWith(timeoutPage)
 					&& !pathInfo.startsWith(noPermissionPage)
-					&& !pathInfo.startsWith("/publicsite")) {
+					&& !pathInfo.startsWith("/publicsite")
+					&& !pathInfo.startsWith("/javax.faces.resource")) {
 				// not login page and timeout page
 				pageSessioned = true;
 			}

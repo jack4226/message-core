@@ -9,12 +9,12 @@
 <h:panelGrid columns="1" styleClass="gettingStartedContent">
 	<h:messages styleClass="errors" layout="list" rendered="#{debug.showMessages}"/>
 	<h:outputFormat value="#{msgs.emailAddressEditLabel}" styleClass="gridHeader">
-	   <f:param value="#{emailAddress.emailAddr.address}"/>
+	   <f:param value="#{emailAddress.emailAddr.emailAddr}"/>
 	</h:outputFormat>
 	<h:panelGrid columns="3" styleClass="editPaneHeader" 
 		columnClasses="promptColumn, inputColumn, messageColumn">
 		<h:outputText value="#{msgs.emailAddrPrompt}"/>
-		<h:inputText id="emailaddr" value="#{emailAddress.emailAddr.address}"
+		<h:inputText id="emailaddr" value="#{emailAddress.emailAddr.emailAddr}"
 			required="true" binding="#{emailAddress.emailAddrInput}" 
 			label="#{msgs.emailAddrPrompt}" maxlength="255" size="80"
 			validator="#{emailAddress.validatePrimaryKey}">

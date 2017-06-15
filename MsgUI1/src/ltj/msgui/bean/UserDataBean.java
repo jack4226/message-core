@@ -314,14 +314,14 @@ public class UserDataBean implements java.io.Serializable {
 		if (editMode == false && vo != null) {
 			// user already exist
 	        FacesMessage message =ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "userAlreadyExist", new String[] {userId});
+					"ltj.msgui.messages", "userAlreadyExist", new String[] {userId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == true && vo == null) {
 			// user does not exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "userDoesNotExist", new String[] {userId});
+					"ltj.msgui.messages", "userDoesNotExist", new String[] {userId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

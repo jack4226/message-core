@@ -281,14 +281,14 @@ public class RuleActionDetailBean implements java.io.Serializable {
 		if (!editMode && vo != null) {
 			// MsgActionDetail already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "RuleActionIdAlreadyExist", new String[] {actionDetailId});
+					"ltj.msgui.messages", "RuleActionIdAlreadyExist", new String[] {actionDetailId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		if (editMode && vo == null) {
 			// MsgActionDetail does not exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "RuleActionIdDoesNotExist", new String[] {actionDetailId});
+					"ltj.msgui.messages", "RuleActionIdDoesNotExist", new String[] {actionDetailId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

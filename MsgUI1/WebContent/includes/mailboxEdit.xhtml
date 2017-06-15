@@ -9,12 +9,12 @@
 <h:panelGrid columns="1" styleClass="gettingStartedContent">
 	<h:messages styleClass="errors" layout="list" rendered="#{debug.showMessages}"/>
 	<h:outputFormat value="#{msgs.mailboxEditLabel}" styleClass="gridHeader">
-	   <f:param value="#{mailInbox.mailbox.mailInboxPK.userId}@#{mailInbox.mailbox.mailInboxPK.hostName}"/>
+	   <f:param value="#{mailInbox.mailbox.userId}@#{mailInbox.mailbox.mailInboxPK.hostName}"/>
 	</h:outputFormat>
 	<h:panelGrid columns="3" styleClass="editPaneHeader"
 		columnClasses="promptColumn, inputColumn, messageColumn">
 		<h:outputText value="#{msgs.hostNamePrompt}"/>
-		<h:inputText id="hostname" value="#{mailInbox.mailbox.mailInboxPK.hostName}"
+		<h:inputText id="hostname" value="#{mailInbox.mailbox.hostName}"
 			required="true" label="#{msgs.hostNamePrompt}" maxlength="100" size="50"
 			disabled="#{mailInbox.editMode}">
 			<f:validateLength minimum="1" maximum="100"/>
@@ -36,7 +36,7 @@
 		<h:message for="protocol" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.userIdPrompt}"/>
-		<h:inputText id="userid" value="#{mailInbox.mailbox.mailInboxPK.userId}"
+		<h:inputText id="userid" value="#{mailInbox.mailbox.userId}"
 			required="true" label="#{msgs.userIdPrompt}" maxlength="30" size="30"
 			binding="#{mailInbox.userIdInput}"
 			validator="#{mailInbox.validatePrimaryKey}">
@@ -59,7 +59,7 @@
 		<h:message for="carriercode" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.internalOnlyPrompt}"/>
-		<h:selectOneMenu id="internal" value="#{mailInbox.mailbox.isInternalOnly}"
+		<h:selectOneMenu id="internal" value="#{mailInbox.mailbox.internalOnly}"
 			label="#{msgs.internalOnlyPrompt}">
 			<f:selectItems value="#{codes.yesNoItems}"/>
 		</h:selectOneMenu>
@@ -100,7 +100,7 @@
 		<h:message for="readperpass" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.retryMaxPrompt}"/>
-		<h:inputText id="retrymax" value="#{mailInbox.mailbox.maximumRetries}"
+		<h:inputText id="retrymax" value="#{mailInbox.mailbox.retryMax}"
 			label="#{msgs.retryMaxPrompt}" size="10">
 			<f:validateLongRange maximum="500"/>
 		</h:inputText>
@@ -114,35 +114,35 @@
 		<h:message for="minimumwait" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.toPlainTextPrompt}"/>
-		<h:selectOneMenu id="toplaintext" value="#{mailInbox.mailbox.isToPlainText}"
+		<h:selectOneMenu id="toplaintext" value="#{mailInbox.mailbox.toPlainText}"
 			label="#{msgs.toPlainTextPrompt}">
 			<f:selectItems value="#{codes.yesNoItems}"/>
 		</h:selectOneMenu>
 		<h:message for="toplaintext" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.toAddrDomainPrompt}"/>
-		<h:inputTextarea id="toaddrdomain" value="#{mailInbox.mailbox.toAddressDomain}"
+		<h:inputTextarea id="toaddrdomain" value="#{mailInbox.mailbox.toAddrDomain}"
 			label="#{msgs.toAddrDomainPrompt}" rows="2" cols="40">
 			<f:validateLength maximum="500"/>
 		</h:inputTextarea>
 		<h:message for="toaddrdomain" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.checkDuplicatePrompt}"/>
-		<h:selectOneMenu id="checkduplicate" value="#{mailInbox.mailbox.isCheckDuplicate}"
+		<h:selectOneMenu id="checkduplicate" value="#{mailInbox.mailbox.checkDuplicate}"
 			label="#{msgs.checkDuplicatePrompt}">
 			<f:selectItems value="#{codes.yesNoItems}"/>
 		</h:selectOneMenu>
 		<h:message for="checkduplicate" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.alertDuplicatePrompt}" escape="false"/>
-		<h:selectOneMenu id="alertduplicate" value="#{mailInbox.mailbox.isAlertDuplicate}"
+		<h:selectOneMenu id="alertduplicate" value="#{mailInbox.mailbox.alertDuplicate}"
 			label="#{msgs.alertDuplicatePrompt}">
 			<f:selectItems value="#{codes.yesNoItems}"/>
 		</h:selectOneMenu>
 		<h:message for="alertduplicate" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.logDuplicatePrompt}"/>
-		<h:selectOneMenu id="logduplicate" value="#{mailInbox.mailbox.isLogDuplicate}"
+		<h:selectOneMenu id="logduplicate" value="#{mailInbox.mailbox.logDuplicate}"
 			label="#{msgs.logDuplicatePrompt}">
 			<f:selectItems value="#{codes.yesNoItems}"/>
 		</h:selectOneMenu>
@@ -156,7 +156,7 @@
 		<h:message for="purgedupsAfter" styleClass="errorMessage"/>
 
 		<h:outputText value="#{msgs.threadsPrompt}"/>
-		<h:inputText id="threads" value="#{mailInbox.mailbox.numberOfThreads}"
+		<h:inputText id="threads" value="#{mailInbox.mailbox.threads}"
 			required="true" label="#{msgs.threadsPrompt}" size="10">
 			<f:validateLongRange minimum="1" maximum="20"/>
 		</h:inputText>

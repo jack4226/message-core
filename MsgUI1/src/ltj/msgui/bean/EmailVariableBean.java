@@ -341,14 +341,14 @@ public class EmailVariableBean implements java.io.Serializable {
 		if (editMode == false && vo != null) {
 			// emailVariable already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "emailVariableAlreadyExist", new String[] {variableName});
+					"ltj.msgui.messages", "emailVariableAlreadyExist", new String[] {variableName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (vo == null && editMode == true) {
 			// emailVariable does not exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "emailVariableDoesNotExist", new String[] {variableName});
+					"ltj.msgui.messages", "emailVariableDoesNotExist", new String[] {variableName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

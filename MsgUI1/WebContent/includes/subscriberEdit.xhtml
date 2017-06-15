@@ -9,16 +9,16 @@
 <h:panelGrid columns="1" styleClass="gettingStartedContent">
 	<h:messages styleClass="errors" layout="list" rendered="#{debug.showMessages}"/>
 	<h:outputFormat value="#{msgs.subscriberEditLabel}" styleClass="gridHeader">
-	   <f:param value="#{subscriberData.subscriber.subscriberId}"/>
+	   <f:param value="#{subscriberData.subscriber.custId}"/>
 	</h:outputFormat>
 	<h:panelGrid columns="3" styleClass="editPaneHeader" 
 		columnClasses="promptColumn, inputColumn, messageColumn">
 		
 		<h:panelGroup>
 		<h:outputText value="#{msgs.subscriberIdPrompt}"/>
-		<h:outputText value="*" style="color: red;" rendered="#{subscriberData.subscriber.subscriberId != null}"/>
+		<h:outputText value="*" style="color: red;" rendered="#{subscriberData.subscriber.custId != null}"/>
 		</h:panelGroup>
-		<h:inputText id="subscriberid" value="#{subscriberData.subscriber.subscriberId}"
+		<h:inputText id="subscriberid" value="#{subscriberData.subscriber.custId}"
 			required="true" label="#{msgs.subscriberIdPrompt}" 
 			binding="#{subscriberData.subscriberIdInput}" 
 			validator="#{subscriberData.validatePrimaryKey}"
@@ -28,7 +28,7 @@
 		<h:message for="subscriberid" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.siteIdPrompt}"/>
-		<h:selectOneMenu value="#{subscriberData.subscriber.senderData.senderId}"
+		<h:selectOneMenu value="#{subscriberData.subscriber.clientId}"
 			id="senderid" label="#{msgs.siteIdPrompt}">
 			<f:selectItems value="#{dynacodes.senderIdItems}"/>
 		</h:selectOneMenu>
@@ -64,10 +64,10 @@
 		
 		<h:panelGroup>
 		<h:outputText value="#{msgs.emailAddrPrompt}"/>
-		<h:outputText value="*" style="color: red;" rendered="#{subscriberData.subscriber.emailAddress != null}"/>
+		<h:outputText value="*" style="color: red;" rendered="#{subscriberData.subscriber.emailAddr != null}"/>
 		</h:panelGroup>
 		<h:panelGroup>
-		<h:inputText id="emailaddr" value="#{subscriberData.subscriber.emailAddress.address}"
+		<h:inputText id="emailaddr" value="#{subscriberData.subscriber.emailAddr}"
 			binding="#{subscriberData.emailAddrInput}"
 			required="true" validator="#{subscriberData.validateEmailAddress}"
 			label="#{msgs.emailAddrPrompt}" maxlength="255" size="50">

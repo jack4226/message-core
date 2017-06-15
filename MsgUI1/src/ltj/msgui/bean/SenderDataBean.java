@@ -304,7 +304,7 @@ public class SenderDataBean implements java.io.Serializable {
 		if (StringUtils.isNotBlank(emailAddr) && !EmailAddrUtil.isRemoteEmailAddress(emailAddr)) {
 			// invalid email address
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
+					"ltj.msgui.messages", "invalidEmailAddress", new String[] {emailAddr});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -316,7 +316,7 @@ public class SenderDataBean implements java.io.Serializable {
 			logger.debug("validateEmailLocalPart() - local part: " + localPart);
 		if (!EmailAddrUtil.isValidEmailLocalPart(localPart)) {
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "invalidEmailLocalPart", new String[] {localPart});
+					"ltj.msgui.messages", "invalidEmailLocalPart", new String[] {localPart});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -329,14 +329,14 @@ public class SenderDataBean implements java.io.Serializable {
 		ClientVo vo = getClientDao().getByClientId(senderId);
 		if (editMode == true && vo != null && sender != null && vo.getRowId() != sender.getRowId()) {
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-	        		"jpa.msgui.messages", "siteProfileAlreadyExist", new String[] {senderId});
+	        		"ltj.msgui.messages", "siteProfileAlreadyExist", new String[] {senderId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// mailingList already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "siteProfileAlreadyExist", new String[] {senderId});
+					"ltj.msgui.messages", "siteProfileAlreadyExist", new String[] {senderId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

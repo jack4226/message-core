@@ -17,7 +17,7 @@
 		<h:inputText id="listid" value="#{mailingList.mailingList.listId}"
 			required="true" binding="#{mailingList.listIdInput}" 
 			label="#{msgs.listIdPrompt}" maxlength="8" size="10"
-			disabled="#{mailingList.mailingList.builtin}"
+			disabled="#{mailingList.mailingList.isBuiltIn}"
 			validator="#{mailingList.validatePrimaryKey}">
 			<f:validateLength minimum="1" maximum="8"/>
 		</h:inputText>
@@ -51,7 +51,7 @@
 		<h:message for="statusid" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.senderIdPrompt}"/>
-		<h:selectOneMenu id="clientid" value="#{mailingList.mailingList.senderData.senderId}"
+		<h:selectOneMenu id="clientid" value="#{mailingList.mailingList.clientId}"
 			required="true" label="#{msgs.senderIdPrompt}">
 			<f:selectItems value="#{dynacodes.senderIdItems}"/>
 		</h:selectOneMenu>

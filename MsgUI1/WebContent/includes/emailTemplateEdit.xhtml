@@ -24,7 +24,7 @@
 		<h:message for="templateid" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.defaultListIdPrompt}"/>
-		<h:selectOneMenu id="listid" value="#{emailTemplate.emailTemplate.mailingList.listId}"
+		<h:selectOneMenu id="listid" value="#{emailTemplate.emailTemplate.listId}"
 			required="true" label="#{msgs.defaultListIdPrompt}">
 			<f:selectItems value="#{dynacodes.mailingListIdItems}"/>
 		</h:selectOneMenu>
@@ -82,7 +82,7 @@
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputText value="#{msgs.htmlContentPrompt}"/>
-			<h:selectBooleanCheckbox value="#{emailTemplate.emailTemplate.html}" id="ishtml"/>
+			<h:selectBooleanCheckbox value="#{emailTemplate.emailTemplate.isHtml}" id="ishtml"/>
 		</h:panelGroup>
 		</h:panelGrid>
 		<h:inputTextarea value="#{emailTemplate.emailTemplate.bodyText}"

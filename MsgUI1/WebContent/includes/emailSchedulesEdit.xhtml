@@ -9,7 +9,7 @@
 <h:panelGrid columns="1" styleClass="gettingStartedContent">
 	<h:messages styleClass="errors" layout="list" rendered="#{debug.showMessages}"/>
 	<h:outputFormat value="#{msgs.mailingListSchedulesLabel}" styleClass="gridHeader">
-	   <f:param value="#{emailTemplate.emailTemplate.mailingList.listId}"/>
+	   <f:param value="#{emailTemplate.emailTemplate.listId}"/>
 	</h:outputFormat>
 	<h:panelGrid columns="3" styleClass="editPaneHeader" 
 		columnClasses="promptColumn, inputColumn, messageColumn">

@@ -168,7 +168,7 @@ public class MailingListComposeBean implements java.io.Serializable {
 		try {
 			javax.servlet.http.Part file = (javax.servlet.http.Part) value;
 			if (file.getSize() > (256 * 1024)) { // limit to 256KB
-				FacesMessage msg = ltj.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "uploadFileTooBig",
+				FacesMessage msg = ltj.msgui.util.MessageUtil.getMessage("ltj.msgui.messages", "uploadFileTooBig",
 						new String[] { "256kb" });
 				msgs.add(msg);
 			}
@@ -235,7 +235,7 @@ public class MailingListComposeBean implements java.io.Serializable {
            logger.error("IOException caught", ex);
         }
     	
-		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "uploadFileResult",
+		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("ltj.msgui.messages", "uploadFileResult",
 				new String[] { fileName });
 		message.setSeverity(FacesMessage.SEVERITY_WARN);
         return TO_SELF;
@@ -510,7 +510,7 @@ public class MailingListComposeBean implements java.io.Serializable {
 		if (!isValidEmailAddress(fromAddr)) {
 			// invalid email address
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "invalidEmailAddress", new String[] {fromAddr});
+					"ltj.msgui.messages", "invalidEmailAddress", new String[] {fromAddr});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

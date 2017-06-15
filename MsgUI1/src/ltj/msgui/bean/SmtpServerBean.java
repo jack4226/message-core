@@ -343,7 +343,7 @@ public class SmtpServerBean implements java.io.Serializable {
 		if (editMode == false && vo != null) {
 			// smtpServer already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "smtpServerAlreadyExist", new String[] {serverName});
+					"ltj.msgui.messages", "smtpServerAlreadyExist", new String[] {serverName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -351,7 +351,7 @@ public class SmtpServerBean implements java.io.Serializable {
 		if (editMode == true && vo == null) {
 			// smtpServer does not exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "smtpServerDoesNotExist", new String[] {serverName});
+					"ltj.msgui.messages", "smtpServerDoesNotExist", new String[] {serverName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}

@@ -9,20 +9,20 @@
 <h:panelGrid columns="1" styleClass="gettingStartedContent">
 	<h:messages styleClass="errors" layout="list" rendered="#{debug.showMessages}"/>
 	<h:outputFormat value="#{msgs.siteProfileEditLabel}" styleClass="gridHeader">
-	   <f:param value="#{senderData.sender.senderId}"/>
+	   <f:param value="#{senderData.sender.clientId}"/>
 	</h:outputFormat>
 	<h:panelGrid columns="3" styleClass="editPaneHeader" 
 		columnClasses="promptColumn, inputColumn, messageColumn">
 		
 		<h:panelGroup>
 		<h:outputText value="#{msgs.siteIdPrompt}"/>
-		<h:outputText value="*" style="color: red;" rendered="#{senderData.siteMeta.senderId != null}"/>
+		<h:outputText value="*" style="color: red;" rendered="#{senderData.siteMeta.clientId != null}"/>
 		</h:panelGroup>
-		<h:inputText id="senderid" value="#{senderData.sender.senderId}"
+		<h:inputText id="senderid" value="#{senderData.sender.clientId}"
 			required="true" label="#{msgs.siteIdPrompt}" 
 			binding="#{senderData.senderIdInput}" 
 			validator="#{senderData.validatePrimaryKey}"
-			readonly="#{senderData.sender.systemSender}"
+			readonly="#{senderData.sender.isSystemClient}"
 			maxlength="16" size="16">
 			<f:validateLength minimum="1" maximum="16"/>
 		</h:inputText>
@@ -30,9 +30,9 @@
 		
 		<h:panelGroup>
 		<h:outputText value="#{msgs.siteNamePrompt}"/>
-		<h:outputText value="*" style="color: red;" rendered="#{senderData.siteMeta.senderName != null}"/>
+		<h:outputText value="*" style="color: red;" rendered="#{senderData.siteMeta.clientName != null}"/>
 		</h:panelGroup>
-		<h:inputText id="sitename" value="#{senderData.sender.senderName}"
+		<h:inputText id="sitename" value="#{senderData.sender.clientName}"
 			required="true" label="#{msgs.siteNamePrompt}" 
 			maxlength="40" size="40">
 			<f:validateLength minimum="1" maximum="40"/>
@@ -92,9 +92,9 @@
 		
 		<h:panelGroup>
 		<h:outputText value="#{msgs.custcareEmailPrompt}"/>
-		<h:outputText value="*" style="color: red;" rendered="#{senderData.siteMeta.subrCareEmail != null}"/>
+		<h:outputText value="*" style="color: red;" rendered="#{senderData.siteMeta.custcareEmail != null}"/>
 		</h:panelGroup>
-		<h:inputText id="custcare" value="#{senderData.sender.subrCareEmail}"
+		<h:inputText id="custcare" value="#{senderData.sender.custcareEmail}"
 			required="true" label="#{msgs.custcareEmailPrompt}" 
 			maxlength="255" size="50"
 			validator="#{senderData.validateEmailAddress}">
@@ -175,7 +175,7 @@
 		<h:message for="replyto" styleClass="errorMessage"/>
 
 		<h:outputText value="#{msgs.isVerpEnabledPrompt}"/>
-		<h:selectOneMenu id="useverp" value="#{senderData.sender.verpEnabled}"
+		<h:selectOneMenu id="useverp" value="#{senderData.sender.isVerpEnabled}"
 			binding="#{senderData.verpEnabledInput}"
 			required="true" label="#{msgs.isVerpEnabledPrompt}">
 			<f:ajax event="change" render="@this"/>

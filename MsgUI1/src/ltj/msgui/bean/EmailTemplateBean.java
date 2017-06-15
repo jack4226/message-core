@@ -379,21 +379,21 @@ public class EmailTemplateBean implements java.io.Serializable {
 		if (editMode == true && vo != null && emailTemplate != null && vo.getRowId() != emailTemplate.getRowId()) {
 			// emailTemplate already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-	        		"jpa.msgui.messages", "emailTemplateAlreadyExist", new String[] {templateId});
+	        		"ltj.msgui.messages", "emailTemplateAlreadyExist", new String[] {templateId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		else if (editMode == false && vo != null) {
 			// emailTemplate already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "emailTemplateAlreadyExist", new String[] {templateId});
+					"ltj.msgui.messages", "emailTemplateAlreadyExist", new String[] {templateId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
 		if (editMode == true && vo == null) {
 			// emailTemplate does not exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "emailTemplateDoesNotExist", new String[] {templateId});
+					"ltj.msgui.messages", "emailTemplateDoesNotExist", new String[] {templateId});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -410,7 +410,7 @@ public class EmailTemplateBean implements java.io.Serializable {
 		}
 		((UIInput)component).setValid(false);
 		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-				"jpa.msgui.messages", "invalidDate", new Object[] {value});
+				"ltj.msgui.messages", "invalidDate", new Object[] {value});
 		message.setSeverity(FacesMessage.SEVERITY_ERROR);
 		context.addMessage(component.getClientId(context), message);
 	}

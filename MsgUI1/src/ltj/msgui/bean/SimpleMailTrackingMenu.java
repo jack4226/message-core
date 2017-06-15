@@ -223,7 +223,7 @@ public class SimpleMailTrackingMenu extends PaginationBean implements java.io.Se
 		EmailAddressVo vo = getEmailAddressDao().getByAddress(addr);
 		if (vo == null) {
 			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "emailAddressNotFound", new String[] {addr});
+					"ltj.msgui.messages", "emailAddressNotFound", new String[] {addr});
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 	        throw new ValidatorException(message);
 		}

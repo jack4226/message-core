@@ -32,14 +32,14 @@
 		<h:message for="description" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.processBeanIdPrompt}"/>
-		<h:inputText id="beanid" value="#{ruleAction.actionDetail.serviceName}"
+		<h:inputText id="beanid" value="#{ruleAction.actionDetail.processBeanId}"
 			required="true"
 			label="#{msgs.processBeanIdPrompt}" maxlength="50" size="50">
 		</h:inputText>
 		<h:message for="beanid" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.processClassNamePrompt}"/>
-		<h:inputText id="classname" value="#{ruleAction.actionDetail.className}"
+		<h:inputText id="classname" value="#{ruleAction.actionDetail.processClassName}"
 			label="#{msgs.processClassNamePrompt}" maxlength="100" size="50">
 			<f:validateLength maximum="100"/>
 			<f:converter converterId="NullableStringConverter"/>
@@ -47,7 +47,7 @@
 		<h:message for="classname" styleClass="errorMessage"/>
 		
 		<h:outputText value="#{msgs.dataTypePrompt}"/>
-		<h:selectOneMenu id="datatype" value="#{ruleAction.actionDetail.ruleDataType.dataType}"
+		<h:selectOneMenu id="datatype" value="#{ruleAction.actionDetail.dataType}"
 			label="#{msgs.dataTypePrompt}">
 			<f:ajax render="@this" />
 			<f:selectItems value="#{dynacodes.msgDataTypeItems}"/>

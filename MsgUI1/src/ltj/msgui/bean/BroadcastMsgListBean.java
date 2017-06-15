@@ -18,6 +18,7 @@ import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.SearchCountVo;
 import ltj.message.vo.inbox.MsgClickCountVo;
+import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
@@ -35,6 +36,7 @@ public class BroadcastMsgListBean extends PaginationBean implements java.io.Seri
 	private transient DataModel<MsgClickCountVo> broadcasts = null;
 	
 	private MsgClickCountVo broadcastMsg = null;
+	private MsgInboxVo msgInbox = null;
 	private boolean editMode = true;
 	private BeanMode beanMode = BeanMode.list;
 
@@ -124,6 +126,7 @@ public class BroadcastMsgListBean extends PaginationBean implements java.io.Seri
 		reset();
 		this.broadcastMsg = broadcasts.getRowData();
 		logger.info("viewBroadcastMsg() - Broadcast to be viewed: " + broadcastMsg.getMsgId());
+		msgInbox = getMsgInboxDao().getByPrimaryKey(broadcastMsg.getMsgId());
 		broadcastMsg.setMarkedForEdition(true);
 		editMode = true;
 		beanMode = BeanMode.edit;
@@ -237,6 +240,14 @@ public class BroadcastMsgListBean extends PaginationBean implements java.io.Seri
 
 	public void setBroadcastMsg(MsgClickCountVo subscriber) {
 		this.broadcastMsg = subscriber;
+	}
+
+	public MsgInboxVo getMsgInbox() {
+		return msgInbox;
+	}
+
+	public void setMsgInbox(MsgInboxVo msgInbox) {
+		this.msgInbox = msgInbox;
 	}
 
 	public boolean isEditMode() {

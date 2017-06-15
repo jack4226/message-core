@@ -442,7 +442,7 @@ public class MsgInboxBean extends PaginationBean implements java.io.Serializable
 		try {
 			javax.servlet.http.Part file = (javax.servlet.http.Part) value;
 			if (file.getSize() > (256 * 1024)) { // limit to 256KB
-				FacesMessage msg = ltj.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "uploadFileTooBig",
+				FacesMessage msg = ltj.msgui.util.MessageUtil.getMessage("ltj.msgui.messages", "uploadFileTooBig",
 						new String[] { "256kb" });
 				msgs.add(msg);
 			}
@@ -511,7 +511,7 @@ public class MsgInboxBean extends PaginationBean implements java.io.Serializable
            logger.error("IOException caught", ex);
         }
     	
-		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "uploadFileResult",
+		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("ltj.msgui.messages", "uploadFileResult",
 				new String[] { fileName });
 		message.setSeverity(FacesMessage.SEVERITY_WARN);
         return TO_SELF;
@@ -1039,7 +1039,7 @@ public class MsgInboxBean extends PaginationBean implements java.io.Serializable
 		String fromAddr = (String) value;
 		if (!isValidEmailAddress(fromAddr)) {
 			// invalid email address
-			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "invalidEmailAddress",
+			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("ltj.msgui.messages", "invalidEmailAddress",
 					new String[] { fromAddr });
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
@@ -1059,7 +1059,7 @@ public class MsgInboxBean extends PaginationBean implements java.io.Serializable
 		String toAddr = (String) value;
 		if (!isValidEmailAddress(toAddr)) {
 			// invalid email address
-			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("jpa.msgui.messages", "invalidEmailAddress",
+			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage("ltj.msgui.messages", "invalidEmailAddress",
 					new String[] { toAddr });
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);

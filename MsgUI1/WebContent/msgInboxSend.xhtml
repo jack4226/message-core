@@ -63,7 +63,7 @@
 		</h:panelGrid>
 
 		<h:panelGrid columns="1" styleClass="fullWidth"
-			rendered="#{messageInbox.replyMessageVo!=null and messageInbox.replyMessageVo.reply}">
+			rendered="#{messageInbox.replyMessageVo!=null and messageInbox.replyMessageVo.isReply}">
 			<f:verbatim><br/></f:verbatim>
 			<h:outputLabel value="#{msgs.attachFileButtonText}: "/>
 			<h:inputFile id="file" label="#{msgs.uploadFileButtonText}" value="#{messageInbox.file}" 
@@ -80,7 +80,7 @@
 					<h:outputText value="#{msgs.sizePrompt}"/>
 					<h:outputText value="(#{upload.sizeAsString})"/>
 					<h:commandLink title="Remove upload file" style="color: darkblue; font-size: 1em; font-weight: bold;">
-						<f:param name="seq" value="#{upload.sessionUploadPK.sessionSequence}"/>
+						<f:param name="seq" value="#{upload.sessionSeq}"/>
 						<f:param name="name" value="#{upload.fileName}"/>
 						<h:outputText value="[#{msgs.removeLinkText}]"/>
 						<f:ajax listener="#{messageInbox.removeUploadFileListener}" render="@form" />

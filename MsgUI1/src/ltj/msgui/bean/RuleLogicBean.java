@@ -924,7 +924,7 @@ public class RuleLogicBean implements java.io.Serializable {
 			testResult = "duplicateSubRuleFound";
 			/* Add to Face message queue. Not working. */
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", testResult, null);
+					"ltj.msgui.messages", testResult, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
@@ -1350,7 +1350,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (editMode == false && vo != null) {
 			// ruleLogic already exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "ruleLogicAlreadyExist", new String[] {ruleName});
+					"ltj.msgui.messages", "ruleLogicAlreadyExist", new String[] {ruleName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -1358,7 +1358,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		if (editMode == true && vo == null) {
 			// ruleLogic does not exist
 	        FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "ruleLogicDoesNotExist", new String[] {ruleName});
+					"ltj.msgui.messages", "ruleLogicDoesNotExist", new String[] {ruleName});
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			throw new ValidatorException(message);
 		}
@@ -1379,7 +1379,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		}
 		catch (PatternSyntaxException e) {
 			FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-					"jpa.msgui.messages", "invalidRegex", new String[] {regex});
+					"ltj.msgui.messages", "invalidRegex", new String[] {regex});
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			//context.addMessage(component.getClientId(context), message);
 			throw new ValidatorException(message);
@@ -1403,7 +1403,7 @@ public class RuleLogicBean implements java.io.Serializable {
 		}
 		((UIInput)component).setValid(false);
 		FacesMessage message = ltj.msgui.util.MessageUtil.getMessage(
-				"jpa.msgui.messages", "invalidDate", new Object[] {value});
+				"ltj.msgui.messages", "invalidDate", new Object[] {value});
 		message.setSeverity(FacesMessage.SEVERITY_ERROR);
 		context.addMessage(component.getClientId(context), message);
 	}

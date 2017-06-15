@@ -39,15 +39,17 @@
    </h:column>
    <h:column>
       <f:facet name="header">
-         <h:outputText value="#{msgs.listIdHeader}"/>
+         <h:outputText value="#{msgs.timeEndedHeader}"/>
       </f:facet>
-      <h:outputText value="#{mailingList.findListIdByRowId(list.mailingList.rowId)}" title="#{table.rowIndex}_listId"/>
+		<h:outputText value="#{list.endTime}">
+		  <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" title="#{table.rowIndex}_endTime"/>
+		</h:outputText>
    </h:column>
    <h:column>
       <f:facet name="header">
-         <h:outputText value="#{msgs.tmpltSubjectHeader}"/>
+         <h:outputText value="#{msgs.listIdHeader}"/>
       </f:facet>
-		<h:outputText value="#{fn:substring(list.emailTemplate.subject, 0, 22)}" title="#{table.rowIndex}_subject"/>
+      <h:outputText value="#{mailingList.findListIdByRowId(list.mailingList.rowId)}" title="#{table.rowIndex}_listId"/>
    </h:column>
    <h:column>
       <f:facet name="header">
@@ -94,16 +96,6 @@
          <h:outputText value="#{fn:substring(msgs.unsubscribeCountHeader, 0, 5)}"/>
       </f:facet>
 	  <h:outputText value="#{list.unsubscribeCount}" title="#{table.rowIndex}_unsubCount"/>
-   </h:column>
-   <h:column>
-      <f:facet name="header">
-         <h:outputText value="#{msgs.broadcastMsgRecipients}"/>
-      </f:facet>
-      <h:commandLink title="#{table.rowIndex}_viewRecipients">
-	      <h:outputText value="#{msgs.broadcastMsgRecipients}" title="Click to view broadcast recipients"/>
-	      <f:param name="frompage" value="broadcast"/>
-	      <f:ajax listener="#{broadcastMsg.viewMessageTrackingListener(list.rowId)}" render="@form"/>
-      </h:commandLink>
    </h:column>
 	<f:facet name="footer">
     <h:panelGroup>
