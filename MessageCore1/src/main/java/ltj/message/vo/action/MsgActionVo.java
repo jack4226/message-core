@@ -3,6 +3,7 @@ package ltj.message.vo.action;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import ltj.data.preload.RuleDataTypeEnum;
 import ltj.message.vo.BaseVoWithRowId;
 
 public class MsgActionVo extends BaseVoWithRowId implements Serializable {
@@ -37,6 +38,14 @@ public class MsgActionVo extends BaseVoWithRowId implements Serializable {
 		setStatusId(statusId);
 		this.dataTypeValues = dataTypeValues;
 	}
+	
+	/** Define methods for UI */
+	
+	public boolean isDataTypeEmailAddress() {
+		return (RuleDataTypeEnum.EMAIL_ADDRESS.name().equals(getDataType()));
+	}
+	
+	/** End of UI */
 	
 	public String getRuleName() {
 		return ruleName;
