@@ -50,8 +50,9 @@ public class Log4jConfigUtil {
 			Appender appender = appenders.nextElement();
 			if ("CONSOLE".equalsIgnoreCase(appender.getName()) && console != null) {
 				System.out.println("Appender: " + appender.getName() + ", level: " + console.toString());
-				if (appender instanceof ConsoleAppender)
+				if (appender instanceof ConsoleAppender) {
 					((ConsoleAppender)appender).setThreshold(console);
+				}
 			}
 			else if ("FILE".equalsIgnoreCase(appender.getName()) && file != null) {
 				System.out.println("Appender: " + appender.getName() + ", level: " + file.toString());
