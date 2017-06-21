@@ -8,9 +8,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 public class JcePbeTest {
+	static final Logger logger = Logger.getLogger(JcePbeTest.class);
 
 	@Test
 	public void testEncryption() {
@@ -52,16 +54,16 @@ public class JcePbeTest {
 
 		    // Encrypt the clear text
 		    byte[] ciphertext = pbeCipher.doFinal(cleartext);
-		    System.out.println("Encrypted text length: " + ciphertext.length + " " + new String(ciphertext));
+		    logger.info("Encrypted text length: " + ciphertext.length + " " + new String(ciphertext));
 		    
 		    pbeCipher.init(Cipher.DECRYPT_MODE, pbeKey, pbeParamSpec);
 		    byte[] cleartext2 = pbeCipher.doFinal(ciphertext);
-		    System.out.println("Decrypted text: " + new String(cleartext2));
+		    logger.info("Decrypted text: " + new String(cleartext2));
 		    
 		    assertEquals(data, new String(cleartext2));
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception caught", e);
 			fail();
 		}
 	}

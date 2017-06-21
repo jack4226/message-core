@@ -6,9 +6,11 @@ import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 public class EmailAddrUtilTest {
+	static final Logger logger = Logger.getLogger(EmailAddrUtilTest.class);
 
 	@Test
 	public void test1() {
@@ -23,7 +25,7 @@ public class EmailAddrUtilTest {
 		assertEquals(true, EmailAddrUtil.isRemoteOrLocalEmailAddress(addr));
 		
 		addr = "DirectStarTV <fqusoogd.undlwfeteot@chaffingphotosensitive.com>";
-		System.out.println(addr+" --> "+EmailAddrUtil.removeDisplayName(addr));
+		logger.info(addr+" --> "+EmailAddrUtil.removeDisplayName(addr));
 		assertEquals("fqusoogd.undlwfeteot@chaffingphotosensitive.com", EmailAddrUtil.removeDisplayName(addr));
 		
 		addr = "TEST@test.com";
@@ -64,7 +66,7 @@ public class EmailAddrUtilTest {
 			assertEquals("test1@test.com,test2@test.com,test3@test.com", addr3);
 			
 		} catch (AddressException e) {
-			e.printStackTrace();
+			logger.error("AddressException caught", e);
 			fail();
 		}
 	}

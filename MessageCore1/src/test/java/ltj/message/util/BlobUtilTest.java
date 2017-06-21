@@ -4,10 +4,12 @@ import static org.junit.Assert.*;
 
 import java.util.Calendar;
 
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
 public class BlobUtilTest {
+	static final Logger logger = Logger.getLogger(BlobUtilTest.class);
 
 	private Calendar cal;
 	
@@ -15,11 +17,11 @@ public class BlobUtilTest {
 	public void setup() {
  		cal = Calendar.getInstance();
 		cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-		System.out.println("Calendar 1: " + cal.getTime());
+		logger.info("Calendar 1: " + cal.getTime());
 		cal.roll(Calendar.MONTH, false);
-		System.out.println("Calendar 2: " + cal.getTime());
+		logger.info("Calendar 2: " + cal.getTime());
 		cal.roll(Calendar.MONTH, false);
-		System.out.println("Calendar 3: " + cal.getTime());
+		logger.info("Calendar 3: " + cal.getTime());
  	}
 	
 	@Test
@@ -31,7 +33,7 @@ public class BlobUtilTest {
 			
     	}
     	catch (Exception e) {
-    		e.printStackTrace();
+    		logger.error("Exception caught", e);
     		fail();
     	}
     }
@@ -45,7 +47,7 @@ public class BlobUtilTest {
 			
     	}
     	catch (Exception e) {
-    		e.printStackTrace();
+    		logger.error("Exception caught", e);
     		fail();
     	}
     }

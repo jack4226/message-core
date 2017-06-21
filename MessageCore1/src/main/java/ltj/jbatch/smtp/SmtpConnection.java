@@ -13,6 +13,7 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import ltj.message.constant.MailServerType;
@@ -120,7 +121,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		// Get a Session object
 		session = Session.getInstance(sys_props);
 		if (isDebugEnabled) {
-			session.setDebug(true);
+			session.setDebug(Level.DEBUG.equals(logger.getLevel())); //true);
 		}
 		int extraRetryTime = 0;
 		extraRetryTime = vo.getRetries();

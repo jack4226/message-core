@@ -9,11 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import ltj.jbatch.common.SimpleConnPool;
 
 public class SimpleConnPoolTest {
+	static final Logger logger = Logger.getLogger(SimpleConnPoolTest.class);
 
 	@Test
 	public void test1() {
@@ -38,7 +40,7 @@ public class SimpleConnPoolTest {
 				ResultSet result = stmt.executeQuery("select count(*) from email_address");
 				if (result.next()) {
 					long rows = result.getLong(1);
-					System.out.println("email_address count: " + rows);
+					logger.info("email_address count: " + rows);
 					assertTrue(rows > 0);
 				}
 				assertNotNull(result);

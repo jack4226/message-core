@@ -59,9 +59,7 @@ public final class MessageBeanUtil {
 	 */
 	public static Message createMimeMessage(MessageBean msgBean) throws MessagingException {
 		javax.mail.Session session = Session.getDefaultInstance(System.getProperties());
-		if (debugSession) {
-			session.setDebug(true);
-		}
+		session.setDebug(debugSession);
 		Message msg = new MimeMessage(session);
 
 		// First Set All Headers from a header List
@@ -367,9 +365,7 @@ public final class MessageBeanUtil {
 			logger.debug("Entering createMimeMessage() for email loopback");
 		}
 		javax.mail.Session session = Session.getDefaultInstance(System.getProperties());
-		if (debugSession) {
-			session.setDebug(true);
-		}
+		session.setDebug(debugSession);
 		Message msg = new MimeMessage(session);
 
 		Address[] fromAddr = InternetAddress.parse("postmaster@localhost");
@@ -613,13 +609,13 @@ public final class MessageBeanUtil {
 		for (int i=0; i<methodNameList.size(); i++) {
 			sb.append(methodNameList.get(i) + LF);
 		}
-		System.out.println(sb.toString());
+		logger.info(sb.toString());
 		
 		MessageBean msgBean = new MessageBean();
 		msgBean.setBody("test body text");
-		System.out.println("Invoke getBody(): " + invokeMethod(msgBean, "Body"));
+		logger.info("Invoke getBody(): " + invokeMethod(msgBean, "Body"));
 		msgBean.setMsgId(Long.valueOf(100));
-		System.out.println("Invoke getMsgId(): " + invokeMethod(msgBean, "MsgId"));
+		logger.info("Invoke getMsgId(): " + invokeMethod(msgBean, "MsgId"));
 		
 		try {
 			Address addr = new InternetAddress("bad.address@localhost");

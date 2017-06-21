@@ -197,14 +197,14 @@ public class EmailAddressTest extends DaoTestBase {
 	
 	private EmailAddressVo selectByAddress(String emailAddr) {
 		EmailAddressVo addrVo = emailAddressDao.findByAddress(emailAddr);
-		System.out.println("EmailAddressDao - selectByAddress: "+LF+addrVo);
+		logger.info("EmailAddressDao - selectByAddress: "+LF+addrVo);
 		return addrVo;
 	}
 	
 	private EmailAddressVo selectByAddrId(long emailAddrId) {
 		EmailAddressVo emailAddr = emailAddressDao.getByAddrId(emailAddrId);
 		if (emailAddr!=null) {
-			System.out.println("EmailAddressDao - selectByAddrId: "+LF+emailAddr);
+			logger.info("EmailAddressDao - selectByAddrId: "+LF+emailAddr);
 		}
 		return emailAddr;
 	}
@@ -219,14 +219,14 @@ public class EmailAddressTest extends DaoTestBase {
 			rowsUpdated += emailAddressDao.updateLastRcptTime(emailAddr.getEmailAddrId());
 			rowsUpdated += emailAddressDao.updateLastSentTime(emailAddr.getEmailAddrId());
 			rowsUpdated += emailAddressDao.updateBounceCount(emailAddr);
-			System.out.println("EmailAddressDao - rows updated: "+rowsUpdated);
+			logger.info("EmailAddressDao - rows updated: "+rowsUpdated);
 		}
 		return rowsUpdated;
 	}
 	
 	private int delete(EmailAddressVo emailAddressVo) {
 		int rowsDeleted = emailAddressDao.deleteByAddress(emailAddressVo.getEmailAddr());
-		System.out.println("EmailAddressDao - delete: Rows Deleted: "+rowsDeleted);
+		logger.info("EmailAddressDao - delete: Rows Deleted: "+rowsDeleted);
 		return rowsDeleted;
 	}
 	
@@ -235,10 +235,10 @@ public class EmailAddressTest extends DaoTestBase {
 		emailAddressVo.setEmailAddr(insertEmailAddr);
 		try {
 			emailAddressDao.insert(emailAddressVo);
-			System.out.println("EmailAddressDao - insert: "+emailAddressVo);
+			logger.info("EmailAddressDao - insert: "+emailAddressVo);
 		}
 		catch (org.springframework.dao.DataIntegrityViolationException e) {
-			System.out.println("DataIntegrityViolationException caught: " + e);
+			logger.error("DataIntegrityViolationException caught: " + e);
 			//e.printStackTrace();
 		}
 		return emailAddressVo;

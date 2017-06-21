@@ -9,10 +9,12 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
 public class JceDesTest {
+	static final Logger logger = Logger.getLogger(JceDesTest.class);
 
 	private SecretKey desKey;
 	private Cipher desCipher;
@@ -20,14 +22,14 @@ public class JceDesTest {
 	@Before
 	public void setup() {
 		try {
-		KeyGenerator keygen = KeyGenerator.getInstance("DES");
-	    desKey = keygen.generateKey();
-	    
-	    // Create the cipher 
-	    desCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+			KeyGenerator keygen = KeyGenerator.getInstance("DES");
+		    desKey = keygen.generateKey();
+		    
+		    // Create the cipher 
+		    desCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 		}
 		catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			e.printStackTrace();
+			logger.error("Exception caught", e);
 			fail();
 		}
 	}
@@ -52,7 +54,7 @@ public class JceDesTest {
 		    	//byte b = ciphertext[i];
 		    	//System.out.println("Encrypted byte[" + i + "]: " + b);
 		    }
-		    System.out.println("Encrypted text: " + new String(ciphertext));
+		    logger.info("Encrypted text: " + new String(ciphertext));
 		
 		    // Initialize the same cipher for decryption
 		    desCipher.init(Cipher.DECRYPT_MODE, desKey);
@@ -60,11 +62,11 @@ public class JceDesTest {
 		    // Decrypt the cipher text
 		    byte[] cleartext1 = desCipher.doFinal(ciphertext);
 		    
-		    System.out.println("Decrypted text: " + new String(cleartext1));
+		    logger.info("Decrypted text: " + new String(cleartext1));
 		    assertEquals(data, new String(cleartext1));
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception caught", e);
 			fail();
 		}
 	}

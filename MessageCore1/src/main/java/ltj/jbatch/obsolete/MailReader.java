@@ -22,6 +22,7 @@ import javax.mail.event.ConnectionListener;
 import javax.mail.event.MessageCountAdapter;
 import javax.mail.event.MessageCountEvent;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import ltj.jbatch.app.JbEvent;
@@ -56,7 +57,7 @@ public class MailReader extends JbThread implements Serializable, JbEventListene
 	private final MailBoxVo mailBoxVo;
 	private final JbEventBroker eventBroker;
 	protected final String processorName;
-	private final boolean debugSession = false;
+	private final boolean debugSession = Level.DEBUG.equals(logger.getLevel()); //false;
 	final Session session;
 
 	private static final int MAX_READ_PER_PASS = 100;

@@ -43,7 +43,7 @@ public class MessageBeanUtilTest {
 		int msgId = 100;
 		msgBean.setMsgId(Long.valueOf(msgId));
 		String msgIdStr = MessageBeanUtil.invokeMethod(msgBean, "MsgId");
-		System.out.println("Invoke getMsgId(): " + msgIdStr);
+		logger.info("Invoke getMsgId(): " + msgIdStr);
 		assertEquals(body, bodyStr);
 		assertEquals(String.valueOf(msgId), msgIdStr);
 		

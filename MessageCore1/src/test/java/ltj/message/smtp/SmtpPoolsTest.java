@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import ltj.jbatch.pool.NamedPools;
@@ -16,13 +17,15 @@ import ltj.jbatch.smtp.SmtpConnection;
 import ltj.message.bo.mailsender.SmtpWrapperUtil;
 
 public class SmtpPoolsTest {
+	static final Logger logger = Logger.getLogger(SmtpPoolsTest.class);
+	
 	static int init_count = 0;
 
 	final static String LF = System.getProperty("line.separator", "\n");
 
 	@Test
 	public void testDistribution() throws Exception {
-		System.out.println(LF + "********** Starting testDistribution **********");
+		logger.info(LF + "********** Starting testDistribution **********");
 
 		ArrayList<ObjectPool> poolItems = new ArrayList<ObjectPool> ();
 		poolItems.add(new ObjectPool("smtpConnection", 2, "smtp1", "SMTP", 50));
@@ -56,7 +59,7 @@ public class SmtpPoolsTest {
 
 	@Test
 	public void testSmtpConnection() throws Exception {
-		System.out.println(LF + "********** Starting testSmtpConnection **********");
+		logger.info(LF + "********** Starting testSmtpConnection **********");
 		{
 			NamedPools pools = SmtpWrapperUtil.getSmtpNamedPools();
 			assertNotNull(pools);
@@ -104,14 +107,14 @@ public class SmtpPoolsTest {
 
 	@Test
 	public void testAllSmtpPools() throws Exception {
-		System.out.println(LF + "********** Starting testAllSmtpPools **********");
+		logger.info(LF + "********** Starting testAllSmtpPools **********");
 		NamedPools pools = SmtpWrapperUtil.getSmtpNamedPools();
 		assertNotNull(pools);
 		for (int i=0; i<pools.size(); i++) {
 			ObjectPool pool = pools.getPools().get(i);
 			smtpPools(pools, pool.getName());
 		}
-		System.out.println("++++++++++ Now Testing Anonymous getConnection()");
+		logger.info("++++++++++ Now Testing Anonymous getConnection()");
 		for (int i = 0; pools.size()> 0 && i < 4; i++) {
 			smtpPools(pools);
 		}
@@ -120,7 +123,7 @@ public class SmtpPoolsTest {
 
 	@Test
 	public void testPostSmtpPools() throws Exception {
-		System.out.println(LF + "********** Starting testPostSmtpPools **********");
+		logger.info(LF + "********** Starting testPostSmtpPools **********");
 		ArrayList<ObjectPool> poolItems = new ArrayList<ObjectPool>();
 		poolItems.add(new ObjectPool("smtpConnection", 2, "postfix1", "SMTP", 50));
 		poolItems.add(new ObjectPool("smtpConnection", 2, "smtpsvr1", "SMTP", 50));
@@ -129,7 +132,7 @@ public class SmtpPoolsTest {
 		assertTrue(pools.size() > 0);
 		smtpPools(pools, "postfix1");
 		smtpPools(pools, "smtpsvr1");
-		System.out.println("++++++++++ Now Testing POST Anonymous getConnection()");
+		logger.info("++++++++++ Now Testing POST Anonymous getConnection()");
 		for (int i = 0; i < 4; i++) {
 			smtpPools(pools);
 		}
@@ -138,7 +141,7 @@ public class SmtpPoolsTest {
 
 	@Test
 	public void testExchSmtpPools() throws Exception {
-		System.out.println(LF + "********** Starting testExchSmtpPools **********");
+		logger.info(LF + "********** Starting testExchSmtpPools **********");
 		ArrayList<ObjectPool> poolItems = new ArrayList<ObjectPool>();
 		poolItems.add(new ObjectPool("smtpConnection", 2, "postexch", "SMTP", 50));
 		poolItems.add(new ObjectPool("smtpConnection", 2, "exchsvr1", "SMTP", 50));
@@ -148,7 +151,7 @@ public class SmtpPoolsTest {
 		Object obj = pools.remove("postexch");
 		assertNotNull(obj);
 		smtpPools(pools, "exchsvr1");
-		System.out.println("++++++++++ Now Testing EXCH Anonymous getConnection()");
+		logger.info("++++++++++ Now Testing EXCH Anonymous getConnection()");
 		for (int i = 0; i < 4; i++) {
 			smtpPools(pools);
 		}
@@ -182,7 +185,7 @@ public class SmtpPoolsTest {
 			String name = (String) enu.nextElement();
 			Integer count = (Integer) map.get(name);
 			int dist = pools.getDistribution(name);
-			System.out.println("name=" + name + ", count=" + count.intValue() + ", dist=" + dist);
+			logger.info("name=" + name + ", count=" + count.intValue() + ", dist=" + dist);
 			if (dist == 0) {
 				assertTrue(count.intValue() == 0);
 			}
@@ -191,7 +194,6 @@ public class SmtpPoolsTest {
 				assertTrue(count + "/" + dist + " must < 1.3", ((float) count.intValue() / dist) < 1.3);
 			}
 		}
-		System.out.println();
 	}
 
 	private void smtpPools(NamedPools pools, String name) throws Exception {

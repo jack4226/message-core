@@ -49,7 +49,7 @@ public class MailReaderReplyTest extends BoTestBase {
 			assertTrue(StringUtils.contains(msgBean.toString(0), "We're sorry, but the size of the email body you sent is too large"));
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception caught", e);
 			fail();
 		}
 	}

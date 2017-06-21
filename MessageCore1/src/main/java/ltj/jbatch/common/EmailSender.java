@@ -15,6 +15,7 @@ import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import ltj.message.constant.MailProtocol;
@@ -104,7 +105,7 @@ public class EmailSender implements java.io.Serializable {
 		}
 		// Get a Session object
 		Session session = Session.getDefaultInstance(props, null);
-		session.setDebug(debug);
+		session.setDebug(Level.DEBUG.equals(logger.getLevel())); //debug);
 		// construct a MimeMessage
 		Message msg = new MimeMessage(session);
 		Address[] addrs = InternetAddress.parse(m.getFromAddr(), false);
