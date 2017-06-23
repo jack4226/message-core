@@ -14,15 +14,19 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
+import ltj.data.preload.MailingListEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
 import ltj.message.dao.emailaddr.MailingListDao;
+import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.dao.emailaddr.EmailSubscrptDao;
+import ltj.message.vo.MailBoxVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.emailaddr.MailingListVo;
 import ltj.message.vo.emailaddr.EmailSubscrptVo;
@@ -41,10 +45,29 @@ public class EmailSubscribeTest extends BoTestBase {
 	private EmailSubscrptDao emailSubscrptDao;
 	@Resource
 	private MailingListDao mailingListDao;
+	@Resource
+	private MailBoxDao mailBoxDao;
 	
 	private static String testFromAddress;
 	private static String mailingListAddr = Constants.DEMOLIST1_ADDR;
 
+	@Test
+	@Rollback(value=false)
+	public void test0() {
+		// Add mailing list email address to mailbox table for mail reader.
+		MailBoxVo vo = mailBoxDao.getByPrimaryKey(MailingListEnum.SMPLLST1.getAcctName(), "localhost");
+		if (vo == null) {
+			vo = new MailBoxVo();
+			vo.setUserId(MailingListEnum.SMPLLST1.getAcctName());
+			vo.setHostName("localhost");
+			vo.setUserPswd(vo.getUserId());
+			vo.setProtocol("pop3");
+			vo.setUpdtUserId(Constants.DEFAULT_USER_ID);
+			int rows = mailBoxDao.insert(vo);
+			logger.info("Rows inserted: " + rows);
+		}
+	}
+	
 	@Test
 	public void test1() {
 		
@@ -76,7 +99,7 @@ public class EmailSubscribeTest extends BoTestBase {
 		List<MailingListVo> list = mailingListDao.getByAddress(mailingListAddr);
 		assertTrue(list.size()>0);
 		EmailSubscrptVo vo = emailSubscrptDao.getByAddrAndListId(addrVo.getEmailAddr(), list.get(0).getListId());
-		assertNotNull(vo);
+		assertNotNull("Subscription for " + addrVo.getEmailAddr() + "/" + list.get(0).getListId() + " must be in database", vo);
 		assertEquals(Constants.Y, vo.getSubscribed());
 		
 		List<MsgInboxVo> miFrom = msgInboxDao.getByFromAddrId(addrVo.getEmailAddrId());
@@ -113,12 +136,12 @@ public class EmailSubscribeTest extends BoTestBase {
 		assertEquals(true, foundTo);
 	}
 	
-	void sendNotify(String subject, String body, String user) {
+	void sendNotify(String subject, String body, String listAddr) {
 		try {
 			MessageBean mBean = new MessageBean();
 			try {
 				mBean.setFrom(InternetAddress.parse(testFromAddress, false));
-				mBean.setTo(InternetAddress.parse(user, false));
+				mBean.setTo(InternetAddress.parse(listAddr, false));
 			}
 			catch (AddressException e) {
 				logger.error("AddressException caught", e);

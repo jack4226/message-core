@@ -16,6 +16,7 @@ import ltj.message.dao.abstrct.AbstractDao;
 import ltj.message.dao.abstrct.MetaDataUtil;
 import ltj.message.dao.client.ClientDao;
 import ltj.message.dao.emailaddr.EmailAddressDao;
+import ltj.message.util.EmailAddrUtil;
 import ltj.message.vo.ClientVo;
 import ltj.message.vo.MailBoxVo;
 
@@ -55,6 +56,13 @@ public class MailBoxJdbcDao extends AbstractDao implements MailBoxDao {
 		catch (EmptyResultDataAccessException e) {
 			return null;
 		}
+	}
+	
+	@Override
+	public MailBoxVo getByEmailAddress(String address) {
+		String userId = EmailAddrUtil.getEmailUserName(address);
+		String hostName = EmailAddrUtil.getEmailDomainName(address);
+		return getByPrimaryKey(userId, hostName);
 	}
 	
 	@Override

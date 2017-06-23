@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -24,9 +23,9 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
+import ltj.message.dao.mailbox.MailBoxDao;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
-import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
 import ltj.spring.util.SpringAppConfig;
 import ltj.spring.util.SpringJmsConfig;
@@ -42,6 +41,8 @@ public class MailReaderTest extends BoTestBase {
 	private MsgInboxDao inboxDao;
 	@Resource
 	private EmailAddressDao addrDao;
+	@Resource
+	private MailBoxDao mailBoxDao;
 	
 	private static String testFromAddr = "testfrom@localhost";
 	
@@ -50,7 +51,6 @@ public class MailReaderTest extends BoTestBase {
 	private static int startUser = 25;
 	private static int endUser = 50;
 	private static int loops = 100; //Integer.MAX_VALUE;
- 	
 	
 	@Test
 	@Rollback(value=false)
@@ -72,6 +72,7 @@ public class MailReaderTest extends BoTestBase {
 			e.printStackTrace();
 			fail();
 		}
+		
 	}
 	
 	@Test
@@ -83,10 +84,10 @@ public class MailReaderTest extends BoTestBase {
 				SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 				vo.setFromAddr(testFromAddr);
 				vo.setToAddrId(toAddrVo.getEmailAddrId());
-				vo.setSubject("Test MailReader");
-				List<MsgInboxWebVo> list = inboxDao.getListForWeb(vo);
-				if (list.size() > 0) {
-					msgCountMap.put(toAddr, msgCountMap.get(toAddr) + list.size());
+				vo.setSubject("MailReader"); // "Test MailReader"
+				int row_count = inboxDao.getRowCountForWeb(vo);
+				if (row_count > 0) {
+					msgCountMap.put(toAddr, msgCountMap.get(toAddr) + row_count);
 				}
 			}
 		}
@@ -113,11 +114,11 @@ public class MailReaderTest extends BoTestBase {
 			SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 			vo.setFromAddr(testFromAddr);
 			vo.setToAddrId(toAddrVo.getEmailAddrId());
-			vo.setSubject("Test MailReader");
-			List<MsgInboxWebVo> list = inboxDao.getListForWeb(vo);
-			logger.info("Message count for (" + toAddr + ") expected = " + count + ", actual = " + list.size());
+			vo.setSubject("MailReader"); // "Test MailReader"
+			int row_count = inboxDao.getRowCountForWeb(vo);
+			logger.info("Message count for (" + toAddr + ") expected = " + count + ", actual = " + row_count);
 			// TODO fix Jamses server delay or missed emails issue.
-			//assertTrue(list.size() >= count);
+			//assertTrue(row_count >= count);
 		}
 	}
 	

@@ -14,7 +14,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -40,7 +39,6 @@ import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.dao.inbox.MsgInboxDao;
 import ltj.message.dao.inbox.MsgStreamDao;
 import ltj.message.exception.DataValidationException;
-import ltj.message.util.Log4jConfigUtil;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.message.vo.inbox.MsgInboxWebVo;
@@ -76,7 +74,7 @@ public class BoTestBase {
 	protected static boolean enableJunitRunClasses = false;
 	
 	static {
-		Log4jConfigUtil.modifyLogLevel(Level.ERROR, Level.INFO, true);
+		//ltj.message.util.Log4jConfigUtil.modifyLogLevel(org.apache.log4j.Level.ERROR, org.apache.log4j.Level.INFO, true);
 	}
 	
 	@BeforeClass

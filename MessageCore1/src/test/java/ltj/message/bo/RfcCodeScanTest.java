@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bo.inbox.RfcCodeScan;
+import ltj.message.bo.test.BoTestBase;
 
 public class RfcCodeScanTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(RfcCodeScanTest.class);

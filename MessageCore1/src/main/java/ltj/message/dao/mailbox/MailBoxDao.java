@@ -6,6 +6,7 @@ import ltj.message.vo.MailBoxVo;
 
 public interface MailBoxDao {
 	public MailBoxVo getByPrimaryKey(String userId, String hostName);
+	public MailBoxVo getByEmailAddress(String address);
 	public List<MailBoxVo> getAll(boolean onlyActive);
 	public List<MailBoxVo> getAllForTrial(boolean onlyActive);
 	public int update(MailBoxVo mailBoxVo);

@@ -122,6 +122,7 @@ public class MailReaderTaskExr {
 				try {
 					Thread.sleep(new Random().nextInt(1000));
 				} catch (InterruptedException e) {}
+				logger.info("Starting mail reader for: " + vo.getUserId() + "@" + vo.getHostName());
 				Future<?> future = executor.submit(reader);
 				futureList.add(future);
 			}
