@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import ltj.message.constant.AddressType;
@@ -14,6 +15,7 @@ import ltj.message.constant.RuleCriteria;
 import ltj.message.constant.RuleDataName;
 import ltj.message.constant.RuleType;
 import ltj.message.constant.VariableName;
+import ltj.message.util.StringUtil;
 
 public abstract class RuleBase implements java.io.Serializable {
 	private static final long serialVersionUID = -2619176738651938695L;
@@ -124,28 +126,66 @@ public abstract class RuleBase implements java.io.Serializable {
 		return subRuleList;
 	}
 
-	public String getRuleContent() {
+	public String printRuleContent() {
+		return printRuleContent(0);
+	}
+
+	public String printRuleContent(int level) {
+		String dots = getBlanks(level) + StringUtil.getDots(level);
 		StringBuffer sb = new StringBuffer();
-		sb.append(LF + "---- listing rule content for " + ruleName + " ----" + LF);
-		sb.append("Rule Name: " + ruleName + LF);
-		sb.append("Rule Type: " + ruleType + LF);
-		sb.append("Mail Type: " + mailType + LF);
-		sb.append("Data Type: " + dataName + LF);
-		if (headerName != null) {
-			sb.append("Header Name: " + headerName + LF);
+		sb.append(LF + dots + "---- listing rule content for " + ruleName + " ----" + LF);
+		if (dots.length()==0) {
+			sb.append(dots + "Rule Name : " + ruleName + LF);
+			sb.append(dots + "Rule Type : " + ruleType + LF);
+			sb.append(dots + "Mail Type : " + mailType + LF);
 		}
-		sb.append("Criteria : " + criteria + LF);
-		sb.append("Case Sensitive : " + caseSensitive + LF);
-		if (subRuleList != null) {
-			sb.append("SubRule List:" + LF);
-			for (int i = 0; i < subRuleList.size(); i++) {
-				sb.append("     " + subRuleList.get(i) + LF);
+		sb.append(dots + "Data Name : " + dataName + LF);
+		if (headerName != null) {
+			sb.append(dots + "Header Name: " + headerName + LF);
+		}
+		sb.append(dots + "Criteria  : " + criteria + LF);
+		sb.append(dots + "Case Sensitive : " + caseSensitive + LF);
+		if (this instanceof RuleSimple) {
+			if (StringUtils.isNotBlank(((RuleSimple)this).getTargetText())) {
+				sb.append(dots + "Target Text : " + ((RuleSimple)this).getTargetText() + LF);
 			}
+			if (((RuleSimple)this).getStoredProcedure() != null) {
+				sb.append(dots + "Stored Procedure: " + ((RuleSimple)this).getStoredProcedure() + LF);
+			}
+			if (((RuleSimple)this).getExclusionList() != null) {
+				sb.append(dots + "Exclusion List:" + LF);
+				for (int i = 0; i < ((RuleSimple)this).getExclusionList().size(); i++) {
+					sb.append("     " + dots + ((RuleSimple)this).getExclusionList().get(i) + LF);
+				}
+			}
+		}
+		if (subRuleList != null) {
+			sb.append(dots + "SubRule List:" + LF);
+			for (int i = 0; i < subRuleList.size(); i++) {
+				sb.append(dots + "     " + subRuleList.get(i) + LF);
+			}
+		}
+		if (this instanceof RuleComplex) {
+			sb.append(dots + "Rule Category: Complex" + LF);
+			for (RuleBase rule :((RuleComplex)this).getRuleList()) {
+				sb.append(dots + rule.printRuleContent(level+1));
+			}
+		}
+		else if (this instanceof RuleSimple) {
+			sb.append(dots + "Rule Category: Simple" + LF);
 		}
 
 		return sb.toString();
 	}
 	
+	private String getBlanks(int level) {
+		StringBuffer sb = new StringBuffer();
+		for (int i=0; i<level; i++) {
+			sb.append("   ");
+		}
+		return sb.toString();
+	}
+
 	public abstract String match(String mail_type, String data_type, String data);
 	
 	public abstract String match(String mail_type, Object mail_obj);

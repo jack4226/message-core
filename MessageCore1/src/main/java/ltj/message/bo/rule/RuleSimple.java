@@ -88,6 +88,18 @@ public class RuleSimple extends RuleBase {
 	private void setStoredProcedure(String _storedProcedure) {
 	}
 
+	public String getTargetText() {
+		return targetText;
+	}
+
+	public String getStoredProcedure() {
+		return storedProcedure;
+	}
+
+	public List<String> getExclusionList() {
+		return exclusionList;
+	}
+
 	public String match(String mail_type, String data_type, String data) {
 		if (mail_type==null || !mail_type.equals(mailType)) {
 			return null;
@@ -166,22 +178,6 @@ public class RuleSimple extends RuleBase {
 		}
 	}
 	
-	public String getRuleContent() {
-		StringBuffer sb = new StringBuffer();
-		sb.append(super.getRuleContent());
-		
-		if (storedProcedure != null) {
-			sb.append("Stored Procedure: " + storedProcedure + LF);
-		}
-		if (exclusionList != null) {
-			sb.append("Exclusion List:" + LF);
-			for (int i = 0; i < exclusionList.size(); i++) {
-				sb.append("     " + exclusionList.get(i) + LF);
-			}
-		}
-		return sb.toString();
-	}
-
 	public String match(String mail_type, Object mail_obj) {
 		// dummy implementation satisfying the super class
 		return null;

@@ -95,4 +95,9 @@ public class RuleComplex extends RuleBase {
 		// dummy implementation satisfying the super class
 		return null;
 	}
+
+	public List<RuleBase> getRuleList() {
+		return ruleList;
+	}
+	
 }
