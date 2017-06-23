@@ -39,7 +39,6 @@ public class EmailSender implements java.io.Serializable {
 	final String user;
 	final String password;
 	
-	private boolean debug = false;
 	String LF = System.getProperty("line.separator","\n");
 	
     /**
@@ -105,7 +104,7 @@ public class EmailSender implements java.io.Serializable {
 		}
 		// Get a Session object
 		Session session = Session.getDefaultInstance(props, null);
-		session.setDebug(Level.DEBUG.equals(logger.getLevel())); //debug);
+		session.setDebug(Level.DEBUG.equals(logger.getLevel()));
 		// construct a MimeMessage
 		Message msg = new MimeMessage(session);
 		Address[] addrs = InternetAddress.parse(m.getFromAddr(), false);
