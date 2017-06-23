@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
@@ -23,6 +23,7 @@ import ltj.message.bean.MsgHeader;
 import ltj.message.bo.rule.RuleLoader;
 import ltj.message.bo.rule.RuleMatcher;
 import ltj.message.bo.rule.RulesDataBo;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.constant.XHeaderName;
 import ltj.message.vo.rule.RuleVo;
@@ -45,10 +46,10 @@ public class RuleMatch2Test extends BoTestBase {
 	public void testRuleMatcher() {
 		try {
 			RuleVo ruleVo = rulesDataBo.getRuleByPrimaryKey("HardBouce_WatchedMailbox");
-			System.out.println("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
+			logger.info("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
 			
 			ruleVo = rulesDataBo.getRuleByPrimaryKey(RuleNameEnum.VIRUS_BLOCK.name());
-			System.out.println("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
+			logger.info("RulesDataBoImpl - getRuleByPrimaryKey: " + LF + ruleVo);
 			
 			loader.listRuleNames();
 			

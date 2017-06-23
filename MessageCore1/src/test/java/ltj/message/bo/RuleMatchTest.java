@@ -1,4 +1,4 @@
-package ltj.message.bo.test;
+package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +21,7 @@ import ltj.message.bean.MessageNode;
 import ltj.message.bean.MsgHeader;
 import ltj.message.bo.rule.RuleLoader;
 import ltj.message.bo.rule.RuleMatcher;
+import ltj.message.bo.test.BoTestBase;
 import ltj.message.constant.Constants;
 import ltj.message.constant.XHeaderName;
 
