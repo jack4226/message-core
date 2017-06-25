@@ -74,7 +74,7 @@ public class BoTestBase {
 	protected static boolean enableJunitRunClasses = false;
 	
 	static {
-		//ltj.message.util.Log4jConfigUtil.modifyLogLevel(org.apache.log4j.Level.ERROR, org.apache.log4j.Level.INFO, true);
+		ltj.message.util.Log4jConfigUtil.modifyLogLevel(org.apache.log4j.Level.ERROR, org.apache.log4j.Level.INFO, true);
 	}
 	
 	@BeforeClass
