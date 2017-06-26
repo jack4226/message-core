@@ -12,12 +12,17 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
+import ltj.data.preload.FolderEnum;
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.task.TaskBaseBo;
+import ltj.message.constant.MsgDirection;
 import ltj.message.constant.TableColumnName;
+import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.MsgInboxVo;
+import ltj.message.vo.inbox.MsgInboxWebVo;
+import ltj.message.vo.inbox.SearchFieldsVo;
 
 @FixMethodOrder
 public class ToSecurityBoTest extends BoTestBase {
@@ -50,6 +55,7 @@ public class ToSecurityBoTest extends BoTestBase {
 	}
 	
 	@Test
+	@Rollback(value=false)
 	public void toSecurity2() { // waitForMailEngine
 		// wait for the MailEngine to add a record to MsgInbox
 		try {
@@ -62,14 +68,49 @@ public class ToSecurityBoTest extends BoTestBase {
 	public void toSecurity3() { // verifyDatabaseRecord
 		EmailAddressVo addrVo = selectEmailAddrByAddress(toStr);
 		assertNotNull(addrVo);
+		
+		SearchFieldsVo srchvo = new SearchFieldsVo(new PagingVo());
+		srchvo.setFolderType(FolderEnum.Sent);
+		//srchvo.getPagingVo().setStatusId(null);
+		srchvo.setSubject("toSecurityBo");
+		srchvo.setToAddrId(addrVo.getEmailAddrId());
+		int rows = msgInboxDao.getRowCountForWeb(srchvo);
+		assertTrue(rows > 0);
+		
+		if (rows > srchvo.getPagingVo().getPageSize()) {
+			srchvo.getPagingVo().setPageSize(rows);
+		}
+		List<MsgInboxWebVo> srchList = msgInboxDao.getListForWeb(srchvo);
+		assertFalse(srchList.isEmpty());
+		
+		boolean found = false;
+		for (MsgInboxWebVo vo : srchList) {
+			if (vo.getMsgSubject().startsWith("Fwd:")) {
+				if (StringUtils.contains(vo.getMsgSubject(), messageBean.getSubject())) {
+					found = true;
+					assertEquals(RuleNameEnum.SEND_MAIL.name(), vo.getRuleName());
+					assertEquals(MsgDirection.SENT.value(), vo.getMsgDirection());
+				}
+			}
+		}
+		assertEquals(true, found);
+	}
+	
+	@Test
+	public void toSecurity4() { // verifyDatabaseRecord
+		EmailAddressVo addrVo = selectEmailAddrByAddress(toStr);
+		assertNotNull(addrVo);
+
 		List<MsgInboxVo> msgList = msgInboxDao.getByToAddrId(addrVo.getEmailAddrId());
 		assertFalse(msgList.isEmpty());
 		boolean found = false;
 		for (MsgInboxVo vo : msgList) {
 			if (vo.getMsgSubject().startsWith("Fwd:")) {
 				if (StringUtils.contains(vo.getMsgSubject(), messageBean.getSubject())) {
-					found = true;
-					assertEquals(RuleNameEnum.SEND_MAIL.name(), vo.getRuleName());
+					if (MsgDirection.SENT.value().equals(vo.getMsgDirection())) {
+						found = true;
+						assertEquals(RuleNameEnum.SEND_MAIL.name(), vo.getRuleName());
+					}
 				}
 			}
 		}

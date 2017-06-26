@@ -125,9 +125,10 @@ public class EmailSubscribeTest extends BoTestBase {
 			if (StringUtils.contains(mivo.getMsgSubject(), "You have subscribed to mailing list")) {
 				if (StringUtils.contains(mivo.getMsgBody(), "This is an automatically generated message to confirm")) {
 					if (mailingListAddr.equals(mivo.getFromAddress())) {
-						foundTo = true;
-						assertEquals(RuleNameEnum.SEND_MAIL.name(), mivo.getRuleName());
-						assertEquals(MsgDirection.SENT.value(), mivo.getMsgDirection());
+						if (MsgDirection.SENT.value().equals(mivo.getMsgDirection())) {
+							foundTo = true;
+							assertEquals(RuleNameEnum.SEND_MAIL.name(), mivo.getRuleName());
+						}
 					}
 					
 				}

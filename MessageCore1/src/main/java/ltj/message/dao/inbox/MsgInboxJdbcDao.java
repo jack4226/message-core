@@ -292,7 +292,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		String sql = 
 			"SELECT count(*) " +
 			" FROM msg_inbox a " + 
-			" JOIN email_address b ON a.from_addr_id=b.email_addr_id " +
+			//" JOIN email_address b ON a.from_addr_id=b.email_addr_id " +
 			whereSql;
 		int rowCount = getJdbcTemplate().queryForObject(sql, parms.toArray(), Integer.class);
 		return rowCount;
@@ -361,7 +361,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				"a.status_id as OrigStatusId " +
 			" FROM " +
 				"msg_inbox a " +
-				" JOIN email_address b ON a.from_addr_id=b.email_addr_id " +
+				//" JOIN email_address b ON a.from_addr_id=b.email_addr_id " +
 				whereSql +
 			" order by a.msg_id " + fetchOrder +
 			" limit " + pageSize;
@@ -421,13 +421,19 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		// toAddress
 		if (vo.getToAddrId() != null) {
-			whereSql += CRIT[parms.size()] + " a.to_addr_id = ? ";
-			parms.add(vo.getToAddrId());
+			//whereSql += CRIT[parms.size()] + " a.to_addr_id = ? ";
+			//parms.add(vo.getToAddrId());
+			whereSql = " join msg_address s on s.msg_id=a.msg_id and s.addr_type='To' " +
+					" join email_address e on e.email_addr=s.addr_value and e.email_addr_id=" + vo.getToAddrId() +
+					" " + whereSql;
 		}
 		// fromAddress
 		if (vo.getFromAddrId() != null) {
-			whereSql += CRIT[parms.size()] + " a.from_addr_id = ? ";
-			parms.add(vo.getFromAddrId());
+			//whereSql += CRIT[parms.size()] + " a.from_addr_id = ? ";
+			//parms.add(vo.getFromAddrId());
+			whereSql = " join msg_address s on s.msg_id=a.msg_id and s.addr_type='From' " +
+					" join email_address e on e.email_addr=s.addr_value and e.email_addr_id=" + vo.getFromAddrId() +
+					" " + whereSql;
 		}
 		// readCount
 		if (vo.getRead() != null) {
@@ -473,15 +479,16 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		// from address
 		if (StringUtils.isNotBlank(vo.getFromAddr()) && vo.getFromAddrId() == null) {
+			whereSql = " join email_address e ON a.from_addr_id=e.email_addr_id " + whereSql;
 			String from = vo.getFromAddr().trim();
 			if (from.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " b.orig_email_addr LIKE ? ";
+				whereSql += CRIT[parms.size()] + " e.orig_email_addr LIKE ? ";
 				parms.add("%" + from + "%");
 			}
 			else {
 				//String regex = (from + "").replaceAll("[ ]+", ".+");
 				String regex = (from + "").replaceAll("[ ]+", "|");
-				whereSql += CRIT[parms.size()] + " b.orig_email_addr REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " e.orig_email_addr REGEXP ? ";
 				parms.add(regex);
 			}
 		}
