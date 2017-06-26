@@ -120,7 +120,7 @@ public class MailReaderTaskExr {
 				vo.setFromTimer(true);
 				MailReaderBoImpl reader = new MailReaderBoImpl(vo);
 				try {
-					Thread.sleep(new Random().nextInt(1000));
+					Thread.sleep(new Random().nextInt(200));
 				} catch (InterruptedException e) {}
 				logger.info("Starting mail reader for: " + vo.getUserId() + "@" + vo.getHostName());
 				Future<?> future = executor.submit(reader);
@@ -163,7 +163,9 @@ public class MailReaderTaskExr {
 	
 	void testReadFromOneMailbox() {
 		MailBoxVo vo = mailBoxDao.getByPrimaryKey("jwang", "localhost");
-		if (vo == null) return;
+		if (vo == null) {
+			return;
+		}
 		vo.setFromTimer(true);
 		MailReaderBoImpl reader = new MailReaderBoImpl(vo);
 		try {
@@ -180,15 +182,16 @@ public class MailReaderTaskExr {
 	static boolean testReadFromOneMailbox = false;
 	
 	public static void main(String[] args) {
-		AbstractApplicationContext factory = SpringUtil.getAppContext();
+		AbstractApplicationContext factory = SpringUtil.getTaskAppContext();
 		
+		MailReaderTaskExr taskExr = null;
 		if (testSpringTaskExecutor) {
-			MailReaderTaskExr taskExr = factory.getBean(MailReaderTaskExr.class);
+			taskExr = factory.getBean(MailReaderTaskExr.class);
 			taskExr.testRunWithSpringTaskExecutor();
 		}
 		
 		if (testReadFromOneMailbox) {
-			MailReaderTaskExr taskExr = factory.getBean(MailReaderTaskExr.class);
+			taskExr = factory.getBean(MailReaderTaskExr.class);
 			taskExr.testReadFromOneMailbox();
 		}
 		

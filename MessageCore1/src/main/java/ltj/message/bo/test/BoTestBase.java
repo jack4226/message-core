@@ -16,7 +16,6 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
@@ -75,10 +74,6 @@ public class BoTestBase {
 	
 	static {
 		ltj.message.util.Log4jConfigUtil.modifyLogLevel(org.apache.log4j.Level.ERROR, org.apache.log4j.Level.INFO, true);
-	}
-	
-	@BeforeClass
-	public static void prepare() {
 	}
 	
 	@Before

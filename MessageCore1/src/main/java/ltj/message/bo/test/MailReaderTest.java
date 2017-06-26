@@ -13,6 +13,7 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -52,6 +53,13 @@ public class MailReaderTest extends BoTestBase {
 	private static int endUser = 50;
 	private static int loops = 100; //Integer.MAX_VALUE;
 	
+	private static String SubjPrefix = "TestMailReader"; // one word
+	
+	@BeforeClass
+	public static void prepare() {
+		ltj.message.util.Log4jConfigUtil.modifyLogLevel(org.apache.log4j.Level.DEBUG, org.apache.log4j.Level.INFO);
+	}
+	
 	@Test
 	@Rollback(value=false)
 	public void test1() { // MailReader
@@ -65,7 +73,7 @@ public class MailReaderTest extends BoTestBase {
 				else {
 					msgCountMap.put(user, 1);
 				}
-				sendNotify("Test MailReader - " + suffix, "Test MailReader Body Message - " + suffix, user);
+				sendNotify(SubjPrefix + " - " + suffix, "Test MailReader Body Message - " + suffix, user);
 			}
 		}
 		catch (Exception e) {
@@ -84,7 +92,7 @@ public class MailReaderTest extends BoTestBase {
 				SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 				vo.setFromAddr(testFromAddr);
 				vo.setToAddrId(toAddrVo.getEmailAddrId());
-				vo.setSubject("MailReader"); // "Test MailReader"
+				vo.setSubject(SubjPrefix);
 				int row_count = inboxDao.getRowCountForWeb(vo);
 				if (row_count > 0) {
 					msgCountMap.put(toAddr, msgCountMap.get(toAddr) + row_count);
@@ -114,7 +122,7 @@ public class MailReaderTest extends BoTestBase {
 			SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 			vo.setFromAddr(testFromAddr);
 			vo.setToAddrId(toAddrVo.getEmailAddrId());
-			vo.setSubject("MailReader"); // "Test MailReader"
+			vo.setSubject(SubjPrefix);
 			int row_count = inboxDao.getRowCountForWeb(vo);
 			logger.info("Message count for (" + toAddr + ") expected = " + count + ", actual = " + row_count);
 			// TODO fix Jamses server delay or missed emails issue.
