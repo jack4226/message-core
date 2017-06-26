@@ -28,7 +28,7 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 
 	/**
 	 * Forward the message to CSR input queue. The queue name should be stored
-	 * in "DataTypeValues" of MsgAction table. Queue name ruleEngineOutput
+	 * in "DataTypeValues" of MsgAction table. Queue name customerCareInput
 	 * will be used if the value from the table is not defined or not valid.
 	 * 
 	 * @return the JMS Message Id (a String) from the message that were sent to
@@ -44,7 +44,7 @@ public class ToCsrBoImpl extends TaskBaseAdaptor {
 			throw new DataValidationException("input MessageBean is null");
 		}
 		if (getArgumentList().size() == 0) {
-			logger.warn("Arguments is not valued, use default queue: ruleEngineOutput");
+			logger.warn("Arguments is not valued, use default queue: customerCareInput");
 		}
 		else if (isDebugEnabled) {
 			logger.debug("Arguments passed: " + taskArguments);

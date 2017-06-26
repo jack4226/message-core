@@ -28,7 +28,7 @@ public class RuleEngineListener implements MessageListener {
 	@Autowired
 	private MessageParser parser;
 	
-	private @Value("${ruleEngineOutput.Queue}") String ruleEngineOutputQueue;
+	private @Value("${ruleEngineError.Queue}") String ruleEngineErrorQueue;
 	private @Value("${errorOutput.Queue}") String errorQueueName;
 	
 	public RuleEngineListener() {
@@ -38,7 +38,7 @@ public class RuleEngineListener implements MessageListener {
 	@Override
 	public void onMessage(Message message) {
 		logger.info("JMS Message Received: " + message);
-		jmsProcessor.setQueueName(ruleEngineOutputQueue);
+		jmsProcessor.setQueueName(ruleEngineErrorQueue);
 		long start = System.currentTimeMillis();
 		try {
 			String JmsMessageId = message.getJMSMessageID();

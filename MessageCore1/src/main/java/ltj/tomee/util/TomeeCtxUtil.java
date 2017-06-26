@@ -56,7 +56,7 @@ public class TomeeCtxUtil {
 		// trust all packages for ActiveMQ
 		props.setProperty("trustAllPackages", "true");
 		
-		//specify queue property name as queue.jndiname
+		// specify queue property name as queue.jndiname
 		if (queueNames != null && queueNames.length > 0) {
 			for (String queueName : queueNames) {
 				props.setProperty("queue."+ queueName, queueName);
@@ -73,8 +73,13 @@ public class TomeeCtxUtil {
 	}
 
 	public static void listContext(javax.naming.Context context, String listName) {
+		NamingEnumeration<NameClassPair> list = null;
     	try {
-			NamingEnumeration<NameClassPair> list = context.list(listName);
+			list = context.list(listName);
+    	} catch (Exception e) {
+ 			logger.error("Exception caught - listName (" + listName + "): " + e.getMessage());
+ 		}
+    	try {
 			while (list!=null && list.hasMore()) {
 				NameClassPair pair = list.next();
 				String name = pair.getName();

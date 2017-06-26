@@ -13,7 +13,7 @@ public class TomeeCtxUtilTest {
 	@Test
 	public void testTomeeCtxUtil() {
 		try {
-			int port = TomeeCtxUtil.findHttpPort(new int[] {8181,8080, 8161});
+			int port = TomeeCtxUtil.findHttpPort(new int[] {8181, 8080, 8161});
 			logger.info("port found: " + port);
 			assertTrue(port==8080 || port==8181 || port==8161);
 			// test EJB remote access
