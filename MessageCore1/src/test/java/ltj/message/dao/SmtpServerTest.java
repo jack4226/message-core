@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
-import ltj.message.dao.smtp.SmtpServerDao;
+import ltj.message.dao.servers.SmtpServerDao;
 import ltj.message.vo.SmtpConnVo;
 
 public class SmtpServerTest extends DaoTestBase {

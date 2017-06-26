@@ -1,4 +1,4 @@
-package ltj.message.dao.timer;
+package ltj.message.dao.servers;
 
 import java.sql.Timestamp;
 import java.util.List;

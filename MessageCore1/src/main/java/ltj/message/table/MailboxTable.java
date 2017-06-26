@@ -13,7 +13,7 @@ import ltj.message.constant.MailProtocol;
 import ltj.message.constant.MailServerType;
 import ltj.message.constant.StatusId;
 import ltj.message.dao.emailaddr.EmailAddressDao;
-import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.dao.servers.MailBoxDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.MailBoxVo;
 import ltj.spring.util.SpringUtil;

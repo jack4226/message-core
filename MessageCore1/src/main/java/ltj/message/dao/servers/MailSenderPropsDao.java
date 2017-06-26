@@ -1,4 +1,4 @@
-package ltj.message.dao.smtp;
+package ltj.message.dao.servers;
 
 import java.util.List;
 

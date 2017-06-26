@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
-import ltj.message.dao.socket.SocketServerDao;
+import ltj.message.dao.servers.SocketServerDao;
 import ltj.message.vo.SocketServerVo;
 
 public class SocketServerTest extends DaoTestBase {

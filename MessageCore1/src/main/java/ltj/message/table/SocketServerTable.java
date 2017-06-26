@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.StatusId;
-import ltj.message.dao.socket.SocketServerDao;
+import ltj.message.dao.servers.SocketServerDao;
 import ltj.message.main.CreateTableBase;
 import ltj.message.vo.SocketServerVo;
 import ltj.spring.util.SpringUtil;

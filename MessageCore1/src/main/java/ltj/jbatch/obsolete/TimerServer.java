@@ -8,7 +8,7 @@ import java.util.Timer;
 
 import org.apache.log4j.Logger;
 
-import ltj.message.dao.timer.TimerServerDao;
+import ltj.message.dao.servers.TimerServerDao;
 import ltj.message.vo.TimerServerVo;
 
 /**

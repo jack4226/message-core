@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
-import ltj.message.dao.timer.TimerServerDao;
+import ltj.message.dao.servers.TimerServerDao;
 import ltj.message.vo.TimerServerVo;
 
 public class TimerServerTest extends DaoTestBase {

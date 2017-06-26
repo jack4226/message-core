@@ -7,7 +7,7 @@ import ltj.jbatch.pool.NamedPools;
 import ltj.jbatch.pool.ObjectPool;
 import ltj.jbatch.smtp.SmtpConnection;
 import ltj.message.dao.client.ClientUtil;
-import ltj.message.dao.smtp.SmtpServerDao;
+import ltj.message.dao.servers.SmtpServerDao;
 import ltj.message.vo.SmtpConnVo;
 import ltj.spring.util.SpringUtil;
 

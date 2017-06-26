@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ltj.message.bo.mailreader.MailReaderBoImpl;
-import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.dao.servers.MailBoxDao;
 import ltj.message.vo.MailBoxVo;
 import ltj.spring.util.SpringUtil;
 

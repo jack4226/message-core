@@ -32,7 +32,7 @@ import ltj.jbatch.queue.JmsProcessor;
 import ltj.message.bo.mailreader.DuplicateCheckDao;
 import ltj.message.bo.mailreader.MailProcessor;
 import ltj.message.constant.MailProtocol;
-import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.dao.servers.MailBoxDao;
 import ltj.message.vo.MailBoxVo;
 
 /**

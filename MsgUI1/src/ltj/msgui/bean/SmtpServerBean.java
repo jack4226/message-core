@@ -27,7 +27,7 @@ import ltj.message.constant.CodeType;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailServerType;
 import ltj.message.dao.client.ClientUtil;
-import ltj.message.dao.smtp.SmtpServerDao;
+import ltj.message.dao.servers.SmtpServerDao;
 import ltj.message.vo.SmtpConnVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;

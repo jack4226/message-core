@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 
 import ltj.message.dao.abstrct.DaoTestBase;
-import ltj.message.dao.smtp.MailSenderPropsDao;
+import ltj.message.dao.servers.MailSenderPropsDao;
 import ltj.message.vo.MailSenderVo;
 
 public class MailSenderPropsTest extends DaoTestBase {

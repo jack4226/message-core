@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
 import ltj.message.dao.client.ClientUtil;
-import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.dao.servers.MailBoxDao;
 import ltj.message.vo.MailBoxVo;
 import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;

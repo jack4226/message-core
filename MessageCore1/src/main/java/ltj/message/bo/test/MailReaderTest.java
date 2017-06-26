@@ -24,7 +24,7 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bean.SimpleEmailSender;
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
-import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.dao.servers.MailBoxDao;
 import ltj.message.vo.PagingVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.message.vo.inbox.SearchFieldsVo;

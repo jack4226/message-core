@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
-import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.dao.servers.MailBoxDao;
 import ltj.message.vo.MailBoxVo;
 
 public class MailBoxTest extends DaoTestBase {

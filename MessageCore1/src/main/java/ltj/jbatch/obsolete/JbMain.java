@@ -29,8 +29,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 import ltj.jbatch.app.HostUtil;
 import ltj.message.bo.mailreader.MailReaderBoImpl;
-import ltj.message.dao.mailbox.MailBoxDao;
-import ltj.message.dao.timer.TimerServerDao;
+import ltj.message.dao.servers.MailBoxDao;
+import ltj.message.dao.servers.TimerServerDao;
 import ltj.message.vo.MailBoxVo;
 import ltj.message.vo.ServerBaseVo;
 import ltj.message.vo.SocketServerVo;

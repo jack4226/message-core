@@ -24,7 +24,7 @@ import ltj.message.bean.SimpleEmailSender;
 import ltj.message.constant.Constants;
 import ltj.message.constant.MsgDirection;
 import ltj.message.dao.emailaddr.MailingListDao;
-import ltj.message.dao.mailbox.MailBoxDao;
+import ltj.message.dao.servers.MailBoxDao;
 import ltj.message.dao.emailaddr.EmailSubscrptDao;
 import ltj.message.vo.MailBoxVo;
 import ltj.message.vo.emailaddr.EmailAddressVo;
