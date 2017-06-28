@@ -159,15 +159,15 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	
 	@Override
 	public List<MsgInboxVo> getByFromAddrId(long addrId) {
-		return getByToAddrIdAndType(addrId, AddressType.FROM_ADDR);
+		return getByAddrIdAndType(addrId, AddressType.FROM_ADDR);
 	}
 	
 	@Override
 	public List<MsgInboxVo> getByToAddrId(long addrId) {
-		return getByToAddrIdAndType(addrId, AddressType.TO_ADDR);
+		return getByAddrIdAndType(addrId, AddressType.TO_ADDR);
 	}
 
-	private List<MsgInboxVo> getByToAddrIdAndType(long addrId, AddressType type) {
+	private List<MsgInboxVo> getByAddrIdAndType(long addrId, AddressType type) {
 			String sql = 
 			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
 			" from msg_inbox a " +
@@ -175,6 +175,25 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 				" join email_address e on e.email_addr=s.addr_value and e.email_addr_id=? " +
 			" order by a.msg_id";
 		Object[] parms = new Object[] {type.value(), addrId};
+		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
+				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
+		return list;
+	}
+
+	// TODO use this version instead
+	List<MsgInboxVo> getByAddrIdAndType_v2(long addrId, AddressType type) {
+		String col_nm = AddressType.TO_ADDR.equals(type) ? "a.to_addr_id" : "a.from_addr_id";
+		String sql = 
+			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
+			" from msg_inbox a " +
+				" join msg_address s on s.msg_id=a.msg_id and s.addr_type=? " +
+				" join email_address e on e.email_addr=s.addr_value and e.email_addr_id=? " +
+			" union " +
+			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
+			" from msg_inbox a " +
+				" join email_address e on e.email_addr_id=" + col_nm + " and e.email_addr_id=? " +
+			" "; //order by a.msg_id";
+		Object[] parms = new Object[] {type.value(), addrId, addrId};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		return list;
