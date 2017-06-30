@@ -96,7 +96,7 @@ public class ToSecurityBoTest extends BoTestBase {
 		assertEquals(true, found);
 	}
 	
-	@org.junit.Ignore // TODO revisit
+	@org.junit.Ignore
 	public void toSecurity4() { // verifyDatabaseRecord
 		EmailAddressVo addrVo = selectEmailAddrByAddress(toStr);
 		assertNotNull(addrVo);
@@ -114,7 +114,7 @@ public class ToSecurityBoTest extends BoTestBase {
 				}
 			}
 		}
-		assertEquals(true, found); // XXX Failed on this most of the times, why?
+		assertEquals(true, found); // TODO revisit - failed on this most of the times, why?
 	}
 
 }

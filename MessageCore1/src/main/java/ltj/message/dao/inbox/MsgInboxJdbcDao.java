@@ -167,7 +167,10 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return getByAddrIdAndType(addrId, AddressType.TO_ADDR);
 	}
 
-	private List<MsgInboxVo> getByAddrIdAndType(long addrId, AddressType type) {
+	/*
+	 * @deprecated - did not do well when msg_address table is corrupted.
+	 */
+	List<MsgInboxVo> getByAddrIdAndType_v0(long addrId, AddressType type) {
 			String sql = 
 			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
 			" from msg_inbox a " +
@@ -180,8 +183,7 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		return list;
 	}
 
-	// TODO use this version instead
-	List<MsgInboxVo> getByAddrIdAndType_v2(long addrId, AddressType type) {
+	private List<MsgInboxVo> getByAddrIdAndType(long addrId, AddressType type) {
 		String col_nm = AddressType.TO_ADDR.equals(type) ? "a.to_addr_id" : "a.from_addr_id";
 		String sql = 
 			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
@@ -191,8 +193,8 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 			" union " +
 			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
 			" from msg_inbox a " +
-				" join email_address e on e.email_addr_id=" + col_nm + " and e.email_addr_id=? " +
-			" "; //order by a.msg_id";
+				" join email_address e on e.email_addr_id=" + col_nm + " and e.email_addr_id=? ";
+
 		Object[] parms = new Object[] {type.value(), addrId, addrId};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms, 
 				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
@@ -210,13 +212,18 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 	}
 	
 	private List<MsgInboxVo> getByAddressAndType(String address, AddressType type) {
+		String col_nm = AddressType.TO_ADDR.equals(type) ? "a.to_addr_id" : "a.from_addr_id";
 		String sql = 
 			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
 			" from msg_inbox a " +
 				" join msg_address s on s.msg_id=a.msg_id and s.addr_type=? " +
 				" join email_address e on e.email_addr=s.addr_value and e.email_addr=? " +
-			" order by a.msg_id";
-		Object[] parms = new Object[] {type.value(), address};
+			" union " +
+			"select a.*, a.updt_time as OrigUpdtTime, a.read_count as OrigReadCount, a.status_id as OrigStatusId " +
+			" from msg_inbox a " +
+				" join email_address e on e.email_addr_id=" + col_nm + " and e.email_addr=? ";
+
+		Object[] parms = new Object[] {type.value(), address, address};
 		List<MsgInboxVo> list = getJdbcTemplate().query(sql, parms,
 				new BeanPropertyRowMapper<MsgInboxVo>(MsgInboxVo.class));
 		return list;
@@ -498,16 +505,16 @@ public class MsgInboxJdbcDao extends AbstractDao implements MsgInboxDao {
 		}
 		// from address
 		if (StringUtils.isNotBlank(vo.getFromAddr()) && vo.getFromAddrId() == null) {
-			whereSql = " join email_address e ON a.from_addr_id=e.email_addr_id " + whereSql;
+			whereSql = " join email_address b ON a.from_addr_id=b.email_addr_id " + whereSql;
 			String from = vo.getFromAddr().trim();
 			if (from.indexOf(" ") < 0) {
-				whereSql += CRIT[parms.size()] + " e.orig_email_addr LIKE ? ";
+				whereSql += CRIT[parms.size()] + " b.orig_email_addr LIKE ? ";
 				parms.add("%" + from + "%");
 			}
 			else {
 				//String regex = (from + "").replaceAll("[ ]+", ".+");
 				String regex = (from + "").replaceAll("[ ]+", "|");
-				whereSql += CRIT[parms.size()] + " e.orig_email_addr REGEXP ? ";
+				whereSql += CRIT[parms.size()] + " b.orig_email_addr REGEXP ? ";
 				parms.add(regex);
 			}
 		}
