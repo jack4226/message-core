@@ -146,7 +146,7 @@ public class BoTestBase {
 		return addrVo;
 	}
 
-	protected MessageBean addMsgToInbox() throws Exception {
+	private MessageBean addMsgToInbox() throws Exception {
 		long msgRefId = 1L;
 		try {
 			MessageBean messageBean = msgOutboxBo.getMessageByPK(renderId);
