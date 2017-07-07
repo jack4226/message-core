@@ -2,9 +2,11 @@ package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -114,11 +116,16 @@ public class MailReaderTest extends BoTestBase {
 	
 	@Test
 	public void test4() { //verify results
+		List<String> errMsgList = new ArrayList<>();
 		for (Iterator<String> it=msgCountMap.keySet().iterator(); it.hasNext();) {
 			String toAddr = it.next();
 			Integer count = msgCountMap.get(toAddr);
 			EmailAddressVo toAddrVo = addrDao.getByAddress(toAddr);
-			assertNotNull("Email address (" + toAddr + ") must be present in database.", toAddrVo);
+			if (toAddrVo == null) {
+				errMsgList.add("Email address (" + toAddr + ") must be present in database.");
+				continue;
+			}
+			//assertNotNull("Email address (" + toAddr + ") must be present in database.", toAddrVo);
 			SearchFieldsVo vo = new SearchFieldsVo(new PagingVo());
 			vo.setFromAddr(testFromAddr);
 			vo.setToAddrId(toAddrVo.getEmailAddrId());
@@ -127,6 +134,12 @@ public class MailReaderTest extends BoTestBase {
 			logger.info("Message count for (" + toAddr + ") expected = " + count + ", actual = " + row_count);
 			// TODO fix Jamses server delay or missed emails issue.
 			//assertTrue(row_count >= count);
+		}
+		if (errMsgList.size() > 0) {
+			for (String errMsg : errMsgList) {
+				logger.error(errMsg);
+			}
+			fail("Number of email addresses not in database: " + errMsgList.size());
 		}
 	}
 	
