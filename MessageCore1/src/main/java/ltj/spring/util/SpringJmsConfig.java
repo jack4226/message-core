@@ -34,6 +34,7 @@ import ltj.tomee.util.TomeeCtxUtil;
 public class SpringJmsConfig implements JmsListenerConfigurer {
 	protected final static Logger logger = Logger.getLogger(SpringJmsConfig.class);
 
+	// populate with values defined in spring-jms.properties
 	private @Value("${test.Queue}") String listenerQueueName;
 	
 	private @Value("${listener.Queues}") String[] listenerQueues;
@@ -43,6 +44,7 @@ public class SpringJmsConfig implements JmsListenerConfigurer {
 	private @Value("${mailSenderInput.Queue}") String mailSenderInputQueueName;
 	private @Value("${customerCareInput.Queue}") String customerCareInputQueueName;
 	private @Value("${rmaRequestInput.Queue}") String rmaRequestInputQueueName;
+	// end of values
 	
 	@Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
