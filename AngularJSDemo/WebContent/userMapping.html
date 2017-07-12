@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="demoApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>EDI User Mapping</title>
+<script src="lib/angular.min.js"></script>
+<script src="js/angulardemo.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+<form name="userForm" novalidate>
+	<div ng-controller="userCtrl as main">
+		<!-- div ng-include="'header.html'"></div -->
+		<p>{{ main.title }} - ClientId: 
+		<input name="ClientId" type="text" ng-model="main.entityId" required="required" pattern="[0-9]{5,12}">
+		, EDI Ticket: <input name="Ticket" type="text" ng-model="main.ticket" required="required" pattern=".{8,12}"></p>
+		
+		<span style="color: red;" ng-show="userForm.ClientId.$dirty && userForm.ClientId.$invalid">
+             <span ng-show="userForm.ClientId.$error.required">Client ID is required.</span>
+             <span ng-show="userForm.ClientId.$error.pattern">Client ID must be numbers of length from 5 to 12.</span>
+        </span>
+        <span style="color: red;" ng-show="userForm.Ticket.$dirty && userForm.Ticket.$invalid">
+             <span ng-show="userForm.Ticket.$error.pattern">Ticker number must be of length from 8 to 12.</span>
+        </span>
+        
+		<table style="width: 500px;">
+			<tr align="left" >
+				<th>CL User Id</th>
+				<th>Client User Id</th>
+			</tr>
+			<tr align="left"  ng-repeat="mapping in main.mappings">
+				<td><input type="text" ng-model="mapping.clId" required="required"></td>
+				<td><input type="text" ng-model="mapping.sso" required="required"></td>
+			</tr>
+		</table>
+		<p><button ng-click="main.reset()">Reset</button></p>
+		
+		<p><button ng-disabled="userForm.ClientId.$invalid || userForm.Ticket.$invalid"
+					ng-click="submit()">Submit</button>
+		</p>
+		
+		<p/>
+		<input type = "checkbox" ng-model="enableDisableButton">Disable Button
+		<button ng-disabled="enableDisableButton">Click Me!</button>
+		<p/>
+		<p ng-init="clickCounter = 0">Total click: {{ clickCounter }}</p>
+		<button ng-click="clickCounter = clickCounter + 1">Click Me!</button>
+	</div>
+</form>
+</body>
+</html>

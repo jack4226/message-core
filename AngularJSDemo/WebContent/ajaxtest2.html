@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="demoApp">
+<head>
+<script src="lib/angular.min.js"></script>
+<script src="js/angulardemo.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+
+	<p>The $http service requests a page on the server, and the
+		response is set as the value of the "myWelcome" variable.</p>
+
+	<p>Today's welcome message is:</p>
+
+	<div ng-controller="ajaxCtrl">
+		<h1>{{ content }}</h1>
+		<p>Config: {{ config }}</p>
+		<p>Headers: {{ headers }}</p>
+		<p>Status: {{ status }}</p>
+	</div>
+
+	<div ng-controller="studentController">
+		<table style="width: 600px;">
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Roll No</th>
+				<th>Percentage</th>
+			</tr>
+			<tr ng-repeat="student in students">
+				<td ng-if="$odd" style="background-color:#f1f1f1">{{ $index + 1 }}</td>
+				<td ng-if="$odd" style="background-color:#f1f1f1">{{ student.Name }}</td>
+				<td ng-if="$odd" style="background-color:#f1f1f1">{{ student.RollNo }}</td>
+				<td ng-if="$odd" style="background-color:#f1f1f1">{{ student.Percentage }}</td>
+				
+				<td ng-if="$even">{{ $index + 1 }}</td>
+				<td ng-if="$even">{{ student.Name }}</td>
+				<td ng-if="$even">{{ student.RollNo }}</td>
+				<td ng-if="$even">{{ student.Percentage }}</td>
+			</tr>
+		</table>
+	</div>
+
+</body>
+</html>

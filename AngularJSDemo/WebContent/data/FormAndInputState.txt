@@ -1,0 +1,32 @@
+
+Input fields have the following states:
+
+	$untouched - The field has not been touched yet
+	$touched - The field has been touched
+	$pristine - The field has not been modified yet
+	$dirty - The field has been modified
+	$invalid - The field content is not valid
+	$valid - The field content is valid
+
+They are all properties of the input field, and are either true or false.
+
+
+Forms have the following states:
+
+	$pristine - No fields have been modified yet
+	$dirty - One or more have been modified
+	$invalid - The form content is not valid
+	$valid - The form content is valid
+	$submitted - The form is submitted
+	
+They are all properties of the form, and are either true or false.
+
+
+Angular Global API
+
+list of some common API functions:
+	angular.lowercase()	- Converts a string to lowercase
+	angular.uppercase()	- Converts a string to uppercase
+	angular.isString()	- Returns true if the reference is a string
+	angular.isNumber()	- Returns true if the reference is a number
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>AngularJS Demo</title>
+<script src="lib/angular.min.js"></script>
+<script src="lib/angular-route.js"></script>
+<script src="js/angulardemo.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body ng-app="myApp">
+
+<p><a href="#/!">Main</a></p>
+
+<a href="#!red">Red</a>
+<a href="#!green">Green</a>
+<a href="#!blue">Blue</a>
+
+
+<div ng-view></div>
+
+<!-- other ways to include ng-view directive in your application -->
+<!-- 
+<ng-view></ng-view>
+
+<div class="ng-view"></div>
+-->
+
+<p>Click on the links to change the content.</p>
+
+<script>
+var app = angular.module("myApp", ["ngRoute"]);
+app.config(function($routeProvider) {
+    $routeProvider
+    .when("/", {
+        template : "<h1>Main</h1>"
+    })
+    .when("/red", {
+        template : "<h1 style='color: red;'>Red</h1>"
+    })
+    .when("/green", {
+        template : "<h1 style='color: green;'>Green</h1>"
+    })
+    .when("/blue", {
+        template : "<h1 style='color: blue;'>Blue</h1>"
+    })
+    //.otherwise({
+    //    template : "<h1>Nothing</h1><p>Nothing has been selected</p>"
+    //})
+    ;
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html ng-app="demoApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>AngularJS Demo</title>
+<script src="lib/angular.min.js"></script>
+<script src="js/angulardemo.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+<form name="myForm">
+	<p>The rootScope's favorite color:</p>
+	<h1 style="color: {{myColor}};">{{ myColor }}</h1>
+	
+	<div ng-init="myCol='lightblue'">
+	<input style="background-color:{{myCol}};" ng-model="myCol" value="{{myCol}}">
+	<p/><span ng-bind="'My color from $rootScope: ' + myColor + ', from ng-init: ' + myCol"></span>
+	</div>
+	
+	<div ng-controller="demoCtrl as main">
+		<p>{{ main.title }}</p>
+		<p>Title in Upper case: {{ main.title | uppercase }}</p>
+		<p>Title in Lower case: {{ main.title | lowercase }}</p>
+		<p>Price: {{ main.price | currency }}</p>
+		<!-- ng-bind -->
+		<table border="1" style="width: 500px;">
+			<tr>
+				<td>Book Name</td>
+				<td ng-bind="main.book"></td>
+			</tr>
+			<tr>
+				<td>Author</td>
+				<td ng-bind="main.author"></td>
+			</tr>
+		</table>
+		
+		<div ng-init="myText = 'post@myweb.com'">
+		Enter Email address: <input type="email" name="myAddress" ng-model="myText">
+    	<span ng-show="myForm.myAddress.$error.email" style="color: red;"> Not a valid e-mail address</span>
+    	<p>Status - Valid? {{myForm.myAddress.$valid}}
+	    , Modified? {{myForm.myAddress.$dirty}}
+	    , Touched? {{myForm.myAddress.$touched}}
+	    </p>
+    	</div>
+		
+		<!-- ng-model -->
+		<input type="text" ng-model="main.message">
+		<p>Message: {{ main.message }}</p>
+		
+		<!-- ng-href, ng-click, ng-src -->
+		<a ng-href="{{ main.demohref }}"
+			ng-click="main.showMessage(main.message);">Show my message</a>
+		<p>
+			<img ng-src="{{ main.demosrc}}" alt='' />
+		</p>
+
+		<!-- ng-class -->
+		<div class="notification"
+			ng-class="{
+			  warning: main.response == 'error',
+			  ok: main.response == 'success'
+			}">
+			{{ main.showResponse() }}
+		</div>
+		<p/>
+		
+		<!-- ng-show/ng-hide -->
+		<a href='' ng-click="main.showMenu=!main.showMenu">Toggle menu!</a>
+		<ul ng-show="main.showMenu">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+		</ul>
+		<ul ng-hide="main.showMenu">
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+		
+		<!-- ng-if -->
+		<p/>
+		<div ng-if="main.userExists" style="color: teal; font: bolder; font-size: x-large;">
+		  Please log in
+		</div>
+		
+		<!-- ng-switch -->
+		<p/>
+		<div ng-switch on="main.access">
+			<p ng-bind="main.access" style="color: red; font-size: x-large;"></p>
+		  <div ng-switch-when="admin">
+		    <!-- code for admins -->
+		  </div>
+		  <div ng-switch-when="user">
+		    <!-- code for users -->
+		  </div>
+		  <div ng-switch-when="author">
+		    <!-- code for authors -->
+		  </div>
+		</div>
+	</div>
+
+
+	<p/>
+	<div ng-controller="itemCtrl as main">
+		{{ main.items.length }} in stock
+		<p/>List with "Custom Filter":
+		<ul>
+			<li ng-repeat="item in main.items">
+				{{ item.name | myFormat }} {{'.' + item.id }}
+				<span ng-click="main.removeFromStock(item, $index)"> Remove</span>
+			</li>
+		</ul>
+		Name: <input ng-model="main.form.name">, Id: <input ng-model="main.form.id">
+  		<button ng-click="main.addItem()">Add</button>
+		
+		<p/>
+		Filter by item name: <input type="text" ng-model="itemName">
+		<ul>
+		  <li ng-repeat = "item in main.items | filter: itemName">
+		     {{ item.name + '.' + item.id }}
+		  </li>
+		</ul>
+		
+		<p/>
+		Order by item Id:
+		<ul>
+		  <li ng-repeat = "item in main.items | orderBy: 'id'">
+		     {{ item.name + ', ' + item.id }}
+		  </li>
+		</ul>
+		
+		<p>Order by user input:</p> 
+		<table style="width: 240px;">
+		  <tr>
+		    <th ng-click="main.orderByMe('name')">Name</th>
+		    <th ng-click="main.orderByMe('id')">Id</th>
+		  </tr>
+		  <tr ng-repeat="x in main.items | orderBy:main.myOrderBy">
+		    <td>{{x.name}}</td>
+		    <td>{{x.id}}</td>
+		  </tr>
+		</table>
+	</div>
+	<p/>
+</form>
+</body>
+</html>

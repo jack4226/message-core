@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>AngularJS Demo</title>
+<script src="lib/angular.min.js"></script>
+<script src="js/angulardemo.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+
+<h2>ng-options vs ng-repeat</h2>
+<div ng-controller="myCtrl">
+	<p/>ng-options: <select ng-model="selectedName" ng-options="x.model for x in cars">
+	</select>
+	<h3><span ng-bind="'You selected: ' + selectedName.model + ', color: ' + selectedName.color"></span></h3>
+	
+	<p>Select a car (ng-repeat):</p>
+	<select ng-model="selectedCar">
+	<option ng-repeat="x in cars" value="{{x.model}}">{{x.model}}</option>
+	</select>
+	<h3>You selected: {{selectedCar}}</h3>
+</div>
+
+<p>When you use the ng-repeat directive to create dropdown lists, the selected value must be a string.</p>
+<p>In this example you will have to choose between the color or the model to be your selected value.</p>
+
+
+<div ng-controller="myCtrl2">
+	<p>Select a car:</p>
+	<select ng-model="selectedCar" ng-options="x for (x, y) in cars">
+	</select>
+	<h3>You selected: {{selectedCar}}</h3>
+</div>
+
+<p>This example demonstrates the use of an object as the data source when creating a dropdown list.</p>
+
+<div ng-controller="myCtrl3">
+	<p>Select a car:</p>
+	<!-- 
+	<select ng-model="selectedCar" ng-options="x for (x, y) in cars">
+	</select>
+	-->
+	<select ng-model="selectedCar" ng-options="y.brand for (x, y) in cars">
+	</select>
+	<h3>You selected: {{selectedCar.brand}}</h3>
+	<h4>Model: {{selectedCar.model}}</h4>
+	<h4>Color: {{selectedCar.color}}</h4>
+</div>
+
+<p>Note that the selected value represents an object.</p>
+
+<script>
+var app = angular.module('myApp', []);
+
+//The Data Source as an Array
+app.controller('myCtrl', function($scope) {
+    $scope.cars = [
+        {model : "Ford Mustang", color : "red"},
+        {model : "Fiat 500", color : "white"},
+        {model : "Volvo XC90", color : "black"}
+    ];
+});
+
+// The Data Source as an Object
+app.controller('myCtrl2', function($scope) {
+    $scope.cars = {
+        car01 : "Ford",
+        car02 : "Fiat",
+        car03 : "Volvo"
+    }
+});
+
+// he value in a key-value pair can also be an object:
+app.controller('myCtrl3', function($scope) {
+    $scope.cars = {
+        car01 : {brand : "Ford", model : "Mustang", color : "red"},
+        car02 : {brand : "Fiat", model : "500", color : "white"},
+        car03 : {brand : "Volvo", model : "XC90", color : "black"}
+    }
+});
+</script>
+
+</body>
+</html>

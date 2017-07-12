@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>AngularJS Demo</title>
+<script src="lib/angular.min.js"></script>
+<script src="js/angulardemo.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+
+<h1>Example of Custom Validation</h1>
+<p>Try writing in the input field:</p>
+
+<form name="myForm">
+	<input name="myInput" ng-model="myInput" required my-directive>
+</form>
+
+<p>The input's valid state is:</p>
+<h1>{{myForm.myInput.$valid}}</h1>
+
+<p>The input field must contain the character "e" to be consider valid.</p>
+
+<script>
+var app = angular.module('myApp', []);
+app.directive('myDirective', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attr, mCtrl) {
+            function myValidation(value) {
+                if (value.indexOf("e") > -1) {
+                    mCtrl.$setValidity('charE', true);
+                } else {
+                    mCtrl.$setValidity('charE', false);
+                }
+                return value;
+            }
+            mCtrl.$parsers.push(myValidation);
+        }
+    };
+});
+</script>
+
+</body>
+</html>

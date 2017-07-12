@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>AngularJS Demo</title>
+<script src="lib/angular.min.js"></script>
+<script src="js/angulardemo.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+
+<div ng-controller="myCtrl">
+	<h2><span ng-mousemove="count = count + 1">Mouse Move Me!</span></h2>
+	<p/><span ng-mouseover="count = count + 1">Mouse Over Me!</span>
+	<p/><span ng-mouseenter="count = count + 1">Mouse Enter Me!</span>
+	<p/><span ng-mouseleave="count = count - 1">Mouse Leave Me!</span>
+	<p/><button ng-click="count = count + 1">Click me!</button>
+	<h3>Count: {{ count }}</h3>
+</div>
+
+<div ng-controller="myCtrl2">
+	<button ng-click="myFunction()">Click Me!</button>
+	<p>Count: {{ count }}</p>
+</div>
+
+<div ng-controller="myCtrl3">
+	Show Menu: <button ng-click="myFunc()">Click Me!</button>
+	<div ng-show="showMe">
+	    <h2>Menu:</h2>
+	    <div>Pizza</div>
+	    <div>Pasta</div>
+	    <div>Pesce</div>
+	</div>
+</div>
+
+<div ng-controller="myCtrl4">
+	<h2><span ng-mousemove="myFunc($event)">Mouse Over Me!</span></h2>
+	<p>Coordinates: {{x + ', ' + y}}</p>
+</div>
+
+<div ng-controller="formCtrl">
+  <form name="myForm" novalidate>
+    First Name:<br>
+    <input type="text" ng-model="user.firstName"><br>
+    Last Name:<br>
+    <input type="text" ng-model="user.lastName" name="last_name" required="required">
+    <span style="color: red;" ng-show="myForm.last_name.$invalid">Last name is required</span>
+    <br><br>
+    <button ng-click="reset()">RESET</button>
+  </form>
+  <p>form = {{user}}</p>
+  <p>master = {{master}}</p>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+    $scope.count = 0;
+});
+
+// Count with function
+app.controller('myCtrl2', function($scope) {
+    $scope.count = 0;
+    $scope.myFunction = function() {
+        $scope.count++;
+    }
+});
+
+// Toggle, True/False
+app.controller('myCtrl3', function($scope) {
+    $scope.showMe = false;
+    $scope.myFunc = function() {
+        $scope.showMe = !$scope.showMe;
+    }
+});
+
+// $event Object
+app.controller('myCtrl4', function($scope) {
+    $scope.myFunc = function(myE) {
+        $scope.x = myE.clientX;
+        $scope.y = myE.clientY;
+    }
+});
+
+// Form
+app.controller('formCtrl', function($scope) {
+    $scope.master = {firstName:"John", lastName:"Doe"};
+    $scope.reset = function() {
+        $scope.user = angular.copy($scope.master);
+    };
+    $scope.reset();
+});
+</script> 
+
+</body>
+</html>

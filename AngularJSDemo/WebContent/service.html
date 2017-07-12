@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="demoApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>AngularJS Demo</title>
+<script src="lib/angular.min.js"></script>
+<script src="js/angulardemo.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+
+<div ng-controller="getUrlCtrl">
+	<p>The url of this page is:</p>
+	<h3>{{myUrl}}</h3>
+</div>
+<p>This example uses the built-in $location service to get the absolute url of the page.</p>
+
+<div ng-controller="myTimeout">
+	<p>This header will change after two seconds:</p>
+	<h1>{{myHeader}}</h1>
+</div>
+<p>The $timeout service runs a function after a specified number of milliseconds.</p>
+
+<div ng-controller="myInterval"> 
+	<p>The time is:</p>
+	<h1>{{theTime}}</h1>
+</div>
+<p>The $interval service runs a function every specified millisecond.</p>
+
+<div ng-controller="myHexafy">
+	<p>The hexadecimal value of 255 is:</p>
+	<h1>{{hex}}</h1>
+</div>
+<p>A custom service with a method that converts a given number into a hexadecimal number.</p>
+
+<h2>The hex of number 244: {{244 | myToHex}}</h2>
+
+</body>
+</html>
