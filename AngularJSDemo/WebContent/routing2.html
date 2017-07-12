@@ -32,11 +32,13 @@ app.config(function($routeProvider) {
     })
     .when("/london", {
         templateUrl : "include/london.html",
-        controller : "londonCtrl"
+        controller : "londonCtrl",
+        controllerAs: 'lctrl'
     })
     .when("/paris", {
         templateUrl : "include/paris.html",
-        controller : "parisCtrl"
+        controller : "parisCtrl",
+        controllerAs: 'pctrl'
     });
 });
 app.controller("londonCtrl", function ($scope) {

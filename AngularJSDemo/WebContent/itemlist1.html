@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html ng-app="demoApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>AngularJS Demo</title>
+<script src="lib/angular.min.js"></script>
+<link rel="stylesheet" href="css/demo.css">
+<link rel="stylesheet" href="css/w3.css">
+</head>
+<body>
+<form name="myForm" class="w3-card-2 w3-margin" style="max-width:600px;">
+	<p/>
+	<div ng-controller="itemCtrl">
+		<header class="w3-container w3-light-grey w3-padding-16">
+		    <h3>{{ items.length }} in stock</h3>
+		</header>
+		<ul class="w3-ul">
+			<li ng-repeat="item in items" class="w3-padding-16">
+				<span style="width: 50%" class="w3-left"><input name="name_{{$index}}" ng-model="item.name" value="{{item.name}}" required="required"/></span>
+				<span style="width: 30%;"><input name="id_{{$index}}" ng-model="item.id" value="{{ item.id }}" ng-pattern="/^[0-9]{1,10}$/"/></span>
+				<span ng-click="removeFromStock(item, $index)" style="cursor:pointer;" class="w3-right w3-margin-right">x</span>
+				<p ng-show="myForm.name_{{$index}}.$invalid" style="color: red;">Item name is required!</p>
+				<p ng-show="myForm.id_{{$index}}.$invalid" style="color: red;">Item Id must be numbers!</p>
+			</li>
+		</ul>
+		<div class="w3-border w3-padding">
+			<span style="width: 50%"><input placeholder="Add item name here" name="new_name" ng-model="form.name" ng-pattern="/^.{1,50}$/" class="demo-input"></span>
+			<span style="width: 30%"><input placeholder="Add item id here" name="new_id" ng-model="form.id" ng-pattern="/^[0-9]{1,10}$/" class="demo-input"></span>
+	  		<span style="width: 20%">
+	  		<button ng-disabled="myForm.new_name.$pristine || myForm.new_name.$invalid || myForm.new_id.$pristine || myForm.new_id.$invalid" 
+	  			ng-click="addToStock(form)" class="w3-btn w3-green">Add</button>
+	  		</span>
+	  		<p ng-show="myForm.item_id.$invalid" style="color: red;">Item Id must be numbers!</p>
+ 		</div>
+
+  		<p/>
+  		<span>Name entered: {{form.name}}, Id entered: {{form.id}}</span>
+  		<p style="color: red;">{{ errortext }}</p>
+	</div>
+	<p/>
+</form>
+
+<script type="text/javascript">
+var app = angular.module("demoApp", []);
+
+function itemCtrl($scope) {
+	$scope.itemName="Snorkel";
+	
+	$scope.items = [ {
+		name : 'Scuba Diving Kit',
+		id : 7297510
+	}, {
+		name : 'Snorkel',
+		id : 0278916
+	}, {
+		name : 'Wet Suit',
+		id : 2389017
+	}, {
+		name : 'Beach Towel',
+		id : 1000983
+	} ];
+	
+	// define an empty object
+	$scope.form = {
+		name : '',
+		id : ''
+	};
+
+	// function to remove an item
+	$scope.removeFromStock = function(item, index) {
+		$scope.errortext = "Item removed from the stock.";
+		$scope.items.splice(index, 1);
+	};
+	
+	// function to add an item
+	$scope.addToStock = function(item) {
+		$scope.errortext = "Item added to stock.";
+		$scope.newitem = {
+			name : item.name,
+			id : item.id
+		};
+		$scope.items.push($scope.newitem);
+	};
+	
+	// order by user input
+	$scope.orderByMe = function(x) {
+		$scope.myOrderBy = x;
+	};
+};
+
+app.controller("itemCtrl", itemCtrl);
+</script>
+
+</body>
+</html>

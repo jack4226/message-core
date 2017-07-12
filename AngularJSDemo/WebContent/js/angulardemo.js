@@ -1,5 +1,16 @@
 // Define Angular Module
-var app = angular.module("demoApp", []);
+var baseApp1 = angular.module('myReuseableMod', []);
+
+baseApp1.factory('myReusableSrvc1', function() {
+    // code here
+});
+
+baseApp1.factory('myReusableSrvc2', function() {
+    // code here
+});
+
+
+var app = angular.module("demoApp", ['myReuseableMod']);
 
 // Example of $rootScope
 app.run(function($rootScope) {
@@ -48,21 +59,31 @@ function userCtrl() {
     ];
     
     this.reset = function() {
-    	this.entityId = "";
-        this.ticket = "";
-        this.mappings = [ {
-        	clId : '',
-        	sso : ''
-        } ];
+    	//this.entityId = "";
+        //this.ticket = "";
+        this.mappings = [];
     };
     
     this.addUser = function() {
-    	this.mappings.push(this.addMe);
+    	this.mappings.push({
+    		clId : '',
+	    	sso : ''
+    	});
     };
     
     this.removeUser = function(x) {
     	this.mappings.splice(x, 1);
     };
+    
+    this.remove = function() {
+		var newDataList = [];
+		angular.forEach(this.mappings, function(selected) {
+			if (!selected.selected) {
+				newDataList.push(selected);
+			}
+		});
+		this.mappings = newDataList;
+	};
 };
 
 function servCtrl(UserService) {
@@ -76,11 +97,17 @@ function itemCtrl() {
 	var vm = this;
 	// function to remove an item
 	vm.removeFromStock = function(item, index) {
+		vm.errortext = "Item removed shopping list.";
 		vm.items.splice(index, 1);
 	};
 	// function to add an item
 	vm.addStock = function(item) {
-		vm.items.push(item);
+		vm.errortext = "Pushing item to shopping list.";
+		vm.newitem = {
+			name : item.name,
+			id : item.id
+		};
+		vm.items.push(vm.newitem);
 	};
 	// define an empty object
 	vm.form = {
@@ -211,9 +238,10 @@ function UserService() {
 // Services
 app.service('UserService', UserService);
 
-
 // Controllers
-app.controller("demoCtrl", demoCtrl);
+app.controller("demoCtrl", demoCtrl, ['$scope', 'myReusableSrvc1', 'myReusableSrvc2', function($scope, myReusableSrvc1, myReusableSrvc2) {
+    // controller code
+}]);
 
 app.controller("userCtrl", userCtrl);
 

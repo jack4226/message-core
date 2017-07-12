@@ -43,6 +43,17 @@ input.ng-valid {
     background-color:white;
 }
 
+.demo-input {
+	padding: 8px;
+	display: inline;
+	border: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+.btn-primary{
+    margin-right: 10px;
+}
+
 .done-true {
   text-decoration: line-through;
   color: grey;

@@ -6,12 +6,16 @@
 <script src="lib/angular.min.js"></script>
 <script src="js/angulardemo.js"></script>
 <link rel="stylesheet" href="css/demo.css">
+<link rel="stylesheet" href="css/w3.css">
 </head>
 <body>
-<form name="userForm" novalidate>
+<form name="userForm" novalidate style="width: 800px;">
 	<div ng-controller="userCtrl as main">
 		<!-- div ng-include="'header.html'"></div -->
-		<p>{{ main.title }} - ClientId: 
+		<header class="w3-container w3-light-grey w3-padding-16">
+			<h3>{{ main.title }}</h3>
+		</header>
+		<p>ClientId: 
 		<input name="ClientId" type="text" ng-model="main.entityId" required="required" pattern="[0-9]{5,12}">
 		, EDI Ticket: <input name="Ticket" type="text" ng-model="main.ticket" required="required" pattern=".{8,12}"></p>
 		
@@ -23,22 +27,25 @@
              <span ng-show="userForm.Ticket.$error.pattern">Ticker number must be of length from 8 to 12.</span>
         </span>
         
-		<table style="width: 500px;">
+		<table style="width: 100%;">
 			<tr align="left" >
+				<th></th>
 				<th>CL User Id</th>
 				<th>Client User Id</th>
 			</tr>
 			<tr align="left"  ng-repeat="mapping in main.mappings">
+				<td><input type="checkbox" ng-model="mapping.selected" /></td>
 				<td><input type="text" ng-model="mapping.clId" required="required"></td>
 				<td><input type="text" ng-model="mapping.sso" required="required"></td>
 			</tr>
 		</table>
-		<p><button ng-click="main.reset()">Reset</button></p>
-		
-		<p><button ng-disabled="userForm.ClientId.$invalid || userForm.Ticket.$invalid"
-					ng-click="submit()">Submit</button>
-		</p>
-		
+		<div class="w3-container w3-padding-16">
+			<input ng-click="main.addUser()" type="button" class="w3-btn btn-primary" value="Add" />
+			<input ng-disabled="!main.mappings.length" type="button" class="w3-btn" ng-click="main.remove()" value="Remove" />
+			<input ng-disabled="!main.mappings.length" type="button" ng-click="main.reset()" class="w3-btn" value="Reset" />
+			<button ng-disabled="userForm.ClientId.$invalid || userForm.Ticket.$invalid || !main.mappings.length"
+						ng-click="submit()" class="w3-btn">Submit</button>
+		</div>
 		<p/>
 		<input type = "checkbox" ng-model="enableDisableButton">Disable Button
 		<button ng-disabled="enableDisableButton">Click Me!</button>

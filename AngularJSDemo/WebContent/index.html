@@ -111,8 +111,11 @@
 			</li>
 		</ul>
 		Name: <input ng-model="main.form.name">, Id: <input ng-model="main.form.id">
-  		<button ng-click="main.addItem()">Add</button>
-		
+  		<button ng-click="main.addStock(main.form)">Add</button>
+  		<p style="color: red;">{{ main.errortext }}</p>
+	</div>
+	
+	<div ng-controller="itemCtrl as main">
 		<p/>
 		Filter by item name: <input type="text" ng-model="itemName">
 		<ul>
