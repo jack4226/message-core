@@ -9,9 +9,9 @@
 <link rel="stylesheet" href="css/demo.css">
 <link rel="stylesheet" href="css/w3.css">
 </head>
-<body>
-<form name="userForm" novalidate style="width: 800px;">
-	<div ng-controller="userCtrl as main">
+<body ng-controller="userCtrl as main">
+<form name="userForm" novalidate style="width: 800px;" ng-submit="main.submitForm()">
+	<div>
 		<!-- div ng-include="'header.html'"></div -->
 		<header class="w3-container w3-light-grey w3-padding-16">
 			<h3>{{ main.title }}</h3>
@@ -51,15 +51,17 @@
 			</tr>
 		</table>
 		<div class="w3-container w3-padding-16">
-			<input ng-click="main.addUser()" type="button" class="w3-btn btn-primary" value="Add" />
-			<input ng-disabled="!main.mappings.length || !main.rowSelected()" type="button" class="w3-btn" ng-click="main.remove()" value="Remove" />
-			<input ng-disabled="!main.mappings.length" type="button" ng-click="main.reset()" class="w3-btn" value="Reset" />
+			<input ng-click="main.addUser()" type="button" class="w3-btn btn-primary w3-light-grey" value="Add" />
+			<input ng-disabled="!main.mappings.length || !main.rowSelected()" type="button" class="w3-btn w3-light-grey" 
+				ng-click="main.remove()" value="Remove" />
+			<input ng-disabled="!main.mappings.length" type="button" ng-click="main.reset()" class="w3-btn w3-light-grey" value="Reset" />
 			<button ng-disabled="userForm.ClientId.$invalid || userForm.Ticket.$invalid || !main.mappings.length || userForm.$invalid"
-						ng-click="submit()" class="w3-btn">Submit</button>
+				ng-click="submit()" class="w3-btn w3-light-grey">Submit</button>
 		</div>
 		<p/>
 		<p style="color: red;">{{ main.errortext }}</p>
-		<input type = "checkbox" ng-model="enableDisableButton">Disable Button
+		<span>Saved: {{main.savedUsers}}</span>
+		<p/><input type = "checkbox" ng-model="enableDisableButton">Disable Button
 		<button ng-disabled="enableDisableButton">Click Me!</button>
 		<p/>
 		<p ng-init="clickCounter = 0">Total click: {{ clickCounter }}</p>

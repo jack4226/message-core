@@ -56,7 +56,7 @@ function demoCtrl(messageLabel, responseLabel) {
     this.price = "123.45";
 };
 
-function userCtrl($filter, messageLabel) {
+function userCtrl($filter, messageLabel, $http) {
 	this.title = "EDI User Mapping";
     this.entityId = "6276143";
     this.ticket = "EDI-11111";
@@ -107,21 +107,20 @@ function userCtrl($filter, messageLabel) {
 	    return trues.length;
 	};
 	
-	this.validateAll = function() {
-		this.countClId = 0;
-		this.countSso = 0;
-		for (var i = 0; i < this.mappings.length; i++) {
-			if (!angular.isNumber(this.mappings[i].clId)) {
-				this.countClId ++;
-			}
-			if (this.mappings[i].sso == "") {
-				this.countSso ++;
-			}
-		}
-	};
-	
-    this.showMessage = function(message) {
-    	return messageLabel + message;
+    this.showMessage = function() {
+    	return messageLabel + this.message;
+    };
+    
+    this.submitForm = function($http) {
+    	// TO DO
+    	console.log("In submit form!");
+    	localStorage.setItem('users', JSON.stringify(this.mappings));
+    	if (localStorage.getItem('users') != null) {
+    		this.savedUsers = JSON.parse(localStorage.getItem('users'));
+    	}
+    	else {
+    		this.savedUsers = [];
+    	}
     };
 };
 
