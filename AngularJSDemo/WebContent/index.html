@@ -4,6 +4,7 @@
 <meta charset="ISO-8859-1">
 <title>AngularJS Demo</title>
 <script src="lib/angular.min.js"></script>
+<script src="lib/angular-route.js"></script>
 <script src="js/angulardemo.js"></script>
 <link rel="stylesheet" href="css/demo.css">
 </head>
@@ -46,13 +47,11 @@
 		<!-- ng-model -->
 		<input type="text" ng-model="main.message">
 		<p>Message: {{ main.message }}</p>
+		<p>{{ main.showMessage() }}</p>
 		
 		<!-- ng-href, ng-click, ng-src -->
-		<a ng-href="{{ main.demohref }}"
-			ng-click="main.showMessage(main.message);">Show my message</a>
-		<p>
-			<img ng-src="{{ main.demosrc}}" alt='' />
-		</p>
+		<a ng-href="{{ main.demohref }}">Go to {{main.demohref}}</a>
+		<p>{{main.demosrc}}: <img ng-src="{{ main.demosrc}}" alt='' /></p>
 
 		<!-- ng-class -->
 		<div class="notification"

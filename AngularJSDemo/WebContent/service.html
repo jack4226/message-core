@@ -4,6 +4,7 @@
 <meta charset="ISO-8859-1">
 <title>AngularJS Demo</title>
 <script src="lib/angular.min.js"></script>
+<script src="lib/angular-route.js"></script>
 <script src="js/angulardemo.js"></script>
 <link rel="stylesheet" href="css/demo.css">
 </head>
@@ -34,6 +35,12 @@
 <p>A custom service with a method that converts a given number into a hexadecimal number.</p>
 
 <h2>The hex of number 244: {{244 | myToHex}}</h2>
+
+<div ng-controller="CalcController as main">
+	<!-- only type="text" would trigger css: input.ng-invalid -->
+	<p>Enter a number: <input type="text" ng-model="main.number" pattern="[0-9\.]{0,12}" /></p>
+	Click <button ng-click="main.square()">X<sup>2</sup></button> to calculate, Result: {{main.result}}
+</div>
 
 </body>
 </html>

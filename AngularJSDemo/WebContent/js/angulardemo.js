@@ -10,26 +10,43 @@ baseApp1.factory('myReusableSrvc2', function() {
 });
 
 
-var app = angular.module("demoApp", ['myReuseableMod']);
+var app = angular.module("demoApp", ['myReuseableMod', 'ngRoute']);
 
 // Example of $rootScope
 app.run(function($rootScope) {
     $rootScope.myColor = 'blue';
 });
 
+app.value("messageLabel", "Message - ");
+app.constant("responseLabel", "Response: ");
 
-function demoCtrl() {
-    this.showMessage = function(message) {
-    	return 'Message - ' + message;
+// Create a service using provider that load during configuration phase.
+app.config(function($provide) {
+   $provide.provider('MathService', function() {
+      this.$get = function() {
+         var factory = {};  
+         
+         factory.multiply = function(a, b) {
+            return a * b; 
+         }
+         return factory;
+      };
+   });
+});
+
+
+function demoCtrl(messageLabel, responseLabel) {
+    this.showMessage = function() {
+    	return messageLabel + this.message;
     };
     this.showResponse = function() {
-    	return 'Response - ' + this.response + " - " + this.responseMsg;
+    	return responseLabel + this.response + " - " + this.responseMsg;
     };
 	this.title = "AngularJS Demo";
     this.book = "The Alchemist";
     this.author = "Paulo Coelho";
     this.message = "demoCtrl message";
-    this.demohref = "index.html";
+    this.demohref = "select.html";
     this.demosrc = "img/file.png";
     this.response = "error";
     this.responseMsg = "Response message";
@@ -39,11 +56,7 @@ function demoCtrl() {
     this.price = "123.45";
 };
 
-function userCtrl() {
-    this.showMessage = function(message) {
-    	return 'Message - ' + message;
-    };
-    
+function userCtrl($filter, messageLabel) {
 	this.title = "EDI User Mapping";
     this.entityId = "6276143";
     this.ticket = "EDI-11111";
@@ -71,19 +84,45 @@ function userCtrl() {
     	});
     };
     
-    this.removeUser = function(x) {
-    	this.mappings.splice(x, 1);
+    this.removeUser = function(user) {
+    	this.mappings.splice(user, 1);
     };
     
+    // remove selected records
     this.remove = function() {
 		var newDataList = [];
-		angular.forEach(this.mappings, function(selected) {
-			if (!selected.selected) {
-				newDataList.push(selected);
+		angular.forEach(this.mappings, function(mapping) {
+			if (!mapping.selected) {
+				newDataList.push(mapping);
 			}
 		});
 		this.mappings = newDataList;
 	};
+	
+	// check if any CheckBox is selected
+	this.rowSelected = function() {
+		var trues = $filter("filter")(this.mappings, {
+	        selected: true
+	    });
+	    return trues.length;
+	};
+	
+	this.validateAll = function() {
+		this.countClId = 0;
+		this.countSso = 0;
+		for (var i = 0; i < this.mappings.length; i++) {
+			if (!angular.isNumber(this.mappings[i].clId)) {
+				this.countClId ++;
+			}
+			if (this.mappings[i].sso == "") {
+				this.countSso ++;
+			}
+		}
+	};
+	
+    this.showMessage = function(message) {
+    	return messageLabel + message;
+    };
 };
 
 function servCtrl(UserService) {
@@ -206,15 +245,38 @@ app.controller('myInterval', function($scope, $interval) {
 });
 
 app.service('hexafy', function() {
-    this.myFunc = function (x) {
+    this.toHexString = function (x) {
         return x.toString(16);
     }
 });
 
 app.controller('myHexafy', function($scope, hexafy) {
-  $scope.hex = hexafy.myFunc(255);
+  $scope.hex = hexafy.toHexString(255);
 });
 
+// Inject factory to service to controller
+// replaced by same service using $provider
+app.factory('MathService_2', function() {
+	var factory = {};
+
+	factory.multiply = function(a, b) {
+		return a * b
+	}
+	return factory;
+});
+
+app.service('CalcService', function(MathService) {
+	this.square = function(a) {
+		return MathService.multiply(a, a);
+	}
+});
+
+app.controller('CalcController', function(CalcService) {
+	this.square = function() {
+		this.result = CalcService.square(this.number);
+	}
+});
+// End of Inject
 
 function UserService_Service() {
 	this.sayHello = function(name) {
@@ -292,7 +354,7 @@ app.filter('myFormat', function() {
 // Use a Custom Service Inside a Filter
 app.filter('myToHex',['hexafy', function(hexafy) {
     return function(x) {
-        return hexafy.myFunc(x);
+        return hexafy.toHexString(x);
     };
 }]);
 

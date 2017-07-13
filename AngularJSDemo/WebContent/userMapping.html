@@ -5,6 +5,7 @@
 <title>EDI User Mapping</title>
 <script src="lib/angular.min.js"></script>
 <script src="js/angulardemo.js"></script>
+<script src="lib/angular-route.js"></script>
 <link rel="stylesheet" href="css/demo.css">
 <link rel="stylesheet" href="css/w3.css">
 </head>
@@ -15,16 +16,17 @@
 		<header class="w3-container w3-light-grey w3-padding-16">
 			<h3>{{ main.title }}</h3>
 		</header>
-		<p>ClientId: 
-		<input name="ClientId" type="text" ng-model="main.entityId" required="required" pattern="[0-9]{5,12}">
-		, EDI Ticket: <input name="Ticket" type="text" ng-model="main.ticket" required="required" pattern=".{8,12}"></p>
+		<p>Client Id: <input name="ClientId" type="text" ng-model="main.entityId" required="required" pattern="[0-9]{5,12}">
+		, EDI Ticket: <input name="Ticket" type="text" ng-model="main.ticket" required="required" pattern="EDI[\- ][0-9]{3,10}">
+		</p>
 		
 		<span style="color: red;" ng-show="userForm.ClientId.$dirty && userForm.ClientId.$invalid">
              <span ng-show="userForm.ClientId.$error.required">Client ID is required.</span>
              <span ng-show="userForm.ClientId.$error.pattern">Client ID must be numbers of length from 5 to 12.</span>
         </span>
         <span style="color: red;" ng-show="userForm.Ticket.$dirty && userForm.Ticket.$invalid">
-             <span ng-show="userForm.Ticket.$error.pattern">Ticker number must be of length from 8 to 12.</span>
+        	 <span ng-show="userForm.Ticket.$error.required">Ticker number is required.</span>
+             <span ng-show="userForm.Ticket.$error.pattern">Ticker number must be a valid EDI ticket.</span>
         </span>
         
 		<table style="width: 100%;">
@@ -33,20 +35,30 @@
 				<th>CL User Id</th>
 				<th>Client User Id</th>
 			</tr>
-			<tr align="left"  ng-repeat="mapping in main.mappings">
+			<tr align="left" ng-repeat="mapping in main.mappings">
 				<td><input type="checkbox" ng-model="mapping.selected" /></td>
-				<td><input type="text" ng-model="mapping.clId" required="required"></td>
-				<td><input type="text" ng-model="mapping.sso" required="required"></td>
+				<td><input type="text" name="clid_{{$index}}" ng-model="mapping.clId" pattern="[0-9]{3,12}" required="required">
+					<span style="color: red;" ng-show="userForm.clid_{{$index}}.$dirty && userForm.clid_{{$index}}.$invalid">
+						<br/><span ng-show="userForm.clid_{{$index}}.$error.required">CL User Id is required.</span>
+             			<span ng-show="userForm.clid_{{$index}}.$error.pattern">CL User Id must be numbers of length from 3 to 12.</span>
+					</span>
+				</td>
+				<td><input type="text" name="sso_{{$index}}" ng-model="mapping.sso" required="required">
+					<span style="color: red;" ng-show="userForm.sso_{{$index}}.$dirty && userForm.sso_{{$index}}.$invalid">
+						<br/><span ng-show="userForm.sso_{{$index}}.$error.required">Client User Id is required.</span>
+ 					</span>
+				</td>
 			</tr>
 		</table>
 		<div class="w3-container w3-padding-16">
 			<input ng-click="main.addUser()" type="button" class="w3-btn btn-primary" value="Add" />
-			<input ng-disabled="!main.mappings.length" type="button" class="w3-btn" ng-click="main.remove()" value="Remove" />
+			<input ng-disabled="!main.mappings.length || !main.rowSelected()" type="button" class="w3-btn" ng-click="main.remove()" value="Remove" />
 			<input ng-disabled="!main.mappings.length" type="button" ng-click="main.reset()" class="w3-btn" value="Reset" />
-			<button ng-disabled="userForm.ClientId.$invalid || userForm.Ticket.$invalid || !main.mappings.length"
+			<button ng-disabled="userForm.ClientId.$invalid || userForm.Ticket.$invalid || !main.mappings.length || userForm.$invalid"
 						ng-click="submit()" class="w3-btn">Submit</button>
 		</div>
 		<p/>
+		<p style="color: red;">{{ main.errortext }}</p>
 		<input type = "checkbox" ng-model="enableDisableButton">Disable Button
 		<button ng-disabled="enableDisableButton">Click Me!</button>
 		<p/>
