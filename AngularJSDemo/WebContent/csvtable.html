@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularJS Plunker</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <link rel="stylesheet" href="css/demo.css" />
+ 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  </head>
+
+  <body ng-controller="InviteController as main">
+	<input type = "checkbox" ng-model="enableTextArea">Load from csv
+	<span ng-show="enableTextArea">, please paste your csv content below:<br/>
+      <textarea name="excel" ng-model="main.excelData" id="" cols="30" rows="10"></textarea>
+     </span>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+        </tr>
+        <tr ng-repeat="i in main.inviteList">
+          <td><input type="text" value="{{i.name}}"></td>
+          <td><input type="text" value="{{i.email}}"></td>
+          <td>{{i.status}}</td>
+        </tr>
+      </table>
+  </body>
+
+<script type="text/javascript">
+var app = angular.module('plunker', []);
+
+app.controller("InviteController", function($scope) {
+
+	var vm = this;
+	
+    //Initliase objects
+    vm.excelData = "";
+    vm.errorMessage = "";
+    vm.inviteList = [{name: 'name', email: 'abc@com', status: 'not sent'}];
+
+    $scope.$watch(function() { // variable to watch
+    		return vm.excelData;
+    	}, function(newValue, oldValue) { // action to perform
+        var lines, lineNumber;
+        //vm.inviteList = [];
+        lines = vm.excelData.split(/\r\n|\n/);
+        lineNumber = 0;
+        for (var i = lines.length - 1; i >= 0; i--) {
+
+            var line = lines[i];
+            
+            lineNumber++;
+            var data = line.split(/[,\|]+/);
+            
+            var name = data[0];
+            var email = data[1];
+
+            if (name != null && name.length > 0) {
+	            vm.inviteList.push({
+	                name: name,
+	                email: email,
+	                status: "not sent"
+	            });
+            }
+        }
+
+    });
+
+});
+
+</script>
+</html>

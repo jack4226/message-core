@@ -56,7 +56,7 @@ function demoCtrl(messageLabel, responseLabel) {
     this.price = "123.45";
 };
 
-function userCtrl($filter, messageLabel, $http) {
+function userCtrl($filter, messageLabel, $http, $q) {
 	this.title = "EDI User Mapping";
     this.entityId = "6276143";
     this.ticket = "EDI-11111";
@@ -122,6 +122,30 @@ function userCtrl($filter, messageLabel, $http) {
     		this.savedUsers = [];
     	}
     };
+    
+    function okToGreet(name) {
+    	return true;
+    }
+
+    function asyncGreet(name) {
+	// perform some asynchronous operation, resolve or reject the promise when appropriate.
+		return $q(function(resolve, reject) {
+			setTimeout(function() {
+				if (okToGreet(name)) {
+					resolve('Hello, ' + name + '!');
+				} else {
+					reject('Greeting ' + name + ' is not allowed.');
+				}
+			}, 1000);
+		});
+	}
+
+	var promise = asyncGreet('Robin Hood');
+	promise.then(function(greeting) {
+		alert('Success: ' + greeting);
+	}, function(reason) {
+		alert('Failed: ' + reason);
+	});
 };
 
 function servCtrl(UserService) {
