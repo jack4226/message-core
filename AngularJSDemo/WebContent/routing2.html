@@ -23,12 +23,16 @@
 
 <div ng-view></div>
 
+<hr/>
+<pre>$location.path() = {{$location.path()}}</pre>
+<pre>$route.current.params = {{$route.current.params}}</pre>
+
 <script>
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        templateUrl : "main.html",
+        templateUrl : "include/main.html",
     })
     .when("/london", {
         templateUrl : "include/london.html",
