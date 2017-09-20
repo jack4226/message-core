@@ -59,6 +59,7 @@ public class PagingVo extends BaseVo implements java.io.Serializable, Cloneable 
 		pageAction = PageAction.CURRENT;
 		pageNumber = 0;
 		rowCount = -1;
+		searchObjFirst = searchObjLast = null;
 		
 //		Field[] fields = this.getClass().getDeclaredFields();
 //		for (int i = 0; i < fields.length; i++) {

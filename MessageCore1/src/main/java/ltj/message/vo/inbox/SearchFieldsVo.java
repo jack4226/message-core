@@ -2,7 +2,6 @@ package ltj.message.vo.inbox;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -35,8 +34,8 @@ public final class SearchFieldsVo implements Serializable, SearchVo {
 	
 	// define paging context
 	public static final int MSG_INBOX_PAGE_SIZE = 25;
-	protected Timestamp receivedTimeFirst = null;
-	protected Timestamp receivedTimeLast = null;
+//	protected Timestamp receivedTimeFirst = null;
+//	protected Timestamp receivedTimeLast = null;
 	// end of paging
 	
 	public static void main(String[] args) {
@@ -230,16 +229,16 @@ public final class SearchFieldsVo implements Serializable, SearchVo {
 	public void setBody(String body) {
 		this.body = body;
 	}
-	public Timestamp getReceivedTimeFirst() {
-		return receivedTimeFirst;
-	}
-	public void setReceivedTimeFirst(Timestamp receivedTimeFirst) {
-		this.receivedTimeFirst = receivedTimeFirst;
-	}
-	public Timestamp getReceivedTimeLast() {
-		return receivedTimeLast;
-	}
-	public void setReceivedTimeLast(Timestamp receivedTimeLast) {
-		this.receivedTimeLast = receivedTimeLast;
-	}
+//	public Timestamp getReceivedTimeFirst() {
+//		return receivedTimeFirst;
+//	}
+//	public void setReceivedTimeFirst(Timestamp receivedTimeFirst) {
+//		this.receivedTimeFirst = receivedTimeFirst;
+//	}
+//	public Timestamp getReceivedTimeLast() {
+//		return receivedTimeLast;
+//	}
+//	public void setReceivedTimeLast(Timestamp receivedTimeLast) {
+//		this.receivedTimeLast = receivedTimeLast;
+//	}
 }
