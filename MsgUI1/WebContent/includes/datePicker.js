@@ -106,27 +106,29 @@ This would display the datepicker beneath the StartDate field (because the
 displayBelowThisObject parameter was false), and update the StartDate field with
 the chosen value of the datepicker using a date format of dd.mm.yyyy
 */
-function displayDatePicker(dateFieldName, displayBelowThisObject, dtFormat, dtSep)
-{
+function displayDatePicker(dateFieldName, displayBelowThisObject, dtFormat, dtSep) {
   var targetDateField = document.getElementsByName (dateFieldName).item(0);
  
   // if we weren't told what node to display the datepicker beneath, just display it
   // beneath the date field we're updating
-  if (!displayBelowThisObject)
+  if (!displayBelowThisObject) {
     displayBelowThisObject = targetDateField;
- 
+  }
+
   // if a date separator character was given, update the dateSeparator variable
-  if (dtSep)
+  if (dtSep) {
     dateSeparator = dtSep;
-  else
+  } else {
     dateSeparator = defaultDateSeparator;
- 
+  }
+  
   // if a date format was given, update the dateFormat variable
-  if (dtFormat)
+  if (dtFormat) {
     dateFormat = dtFormat;
-  else
+  } else {
     dateFormat = defaultDateFormat;
- 
+  }
+  
   var x = displayBelowThisObject.offsetLeft;
   var y = displayBelowThisObject.offsetTop + displayBelowThisObject.offsetHeight ;
  
@@ -149,8 +151,7 @@ that will ultimately be populated with a date.
 
 This function will normally be called by the displayDatePicker function.
 */
-function drawDatePicker(targetDateField, x, y)
-{
+function drawDatePicker(targetDateField, x, y) {
   var dt = getFieldDate(targetDateField.value );
  
   // the datepicker table will be drawn inside of a <div> with an ID defined by the
@@ -184,8 +185,7 @@ function drawDatePicker(targetDateField, x, y)
 /**
 This is the function that actually draws the datepicker calendar.
 */
-function refreshDatePicker(dateFieldName, year, month, day)
-{
+function refreshDatePicker(dateFieldName, year, month, day) {
   // if no arguments are passed, use today's date; otherwise, month and year
   // are required (if a day is passed, it will be highlighted later)
   var thisDay = new Date();
@@ -233,30 +233,34 @@ function refreshDatePicker(dateFieldName, year, month, day)
   // this is the row that indicates which day of the week we're on
   html += TR_days;
   var i;
-  for(i = 0; i < dayArrayShort.length; i++)
+  for(i = 0; i < dayArrayShort.length; i++) {
     html += TD_days + dayArrayShort[i] + xTD;
+  }
   html += xTR;
  
   // now we'll start populating the table with days of the month
   html += TR;
  
   // first, the leading blanks
-  for (i = 0; i < thisDay.getDay(); i++)
+  for (i = 0; i < thisDay.getDay(); i++) {
     html += TD + "&nbsp;" + xTD;
+  }
  
   // now, the days of the month
   do {
     dayNum = thisDay.getDate();
     TD_onclick = " onclick=\"updateDateField('" + dateFieldName + "', '" + getDateString(thisDay) + "');\">";
     
-    if (dayNum == day)
+    if (dayNum == day) {
       html += TD_selected + TD_onclick + DIV_selected + dayNum + xDIV + xTD;
-    else
+    } else {
       html += TD + TD_onclick + dayNum + xTD;
+    }
     
     // if this is a Saturday, start a new row
-    if (thisDay.getDay() == 6)
+    if (thisDay.getDay() == 6) {
       html += xTR + TR;
+    }
     
     // increment the day
     thisDay.setDate(thisDay.getDate() + 1);
@@ -264,8 +268,9 @@ function refreshDatePicker(dateFieldName, year, month, day)
  
   // fill in any trailing blanks
   if (thisDay.getDay() > 0) {
-    for (i = 6; i > thisDay.getDay(); i--)
+    for (i = 6; i > thisDay.getDay(); i--) {
       html += TD + "&nbsp;" + xTD;
+    }
   }
   html += xTR;
  
@@ -290,8 +295,7 @@ function refreshDatePicker(dateFieldName, year, month, day)
 Convenience function for writing the code for the buttons that bring us back or forward
 a month.
 */
-function getButtonCode(dateFieldName, dateVal, adjust, label)
-{
+function getButtonCode(dateFieldName, dateVal, adjust, label) {
   var newMonth = (dateVal.getMonth () + adjust) % 12;
   var newYear = dateVal.getFullYear() + parseInt((dateVal.getMonth() + adjust) / 12);
   if (newMonth < 0) {
@@ -307,8 +311,7 @@ function getButtonCode(dateFieldName, dateVal, adjust, label)
 Convert a JavaScript Date object to a string, based on the dateFormat and dateSeparator
 variables at the beginning of this script library.
 */
-function getDateString(dateVal)
-{
+function getDateString(dateVal) {
   var dayString = "00" + dateVal.getDate();
   var monthString = "00" + (dateVal.getMonth()+1);
   dayString = dayString.substring(dayString.length - 2);
@@ -329,8 +332,7 @@ function getDateString(dateVal)
 /**
 Convert a string to a JavaScript Date object.
 */
-function getFieldDate(dateString)
-{
+function getFieldDate(dateString) {
   var dateVal;
   var dArray;
   var d, m, y;
@@ -374,8 +376,7 @@ function getFieldDate(dateString)
 Try to split a date string into an array of elements, using common date separators.
 If the date is split, an array is returned; otherwise, we just return false.
 */
-function splitDateString(dateString)
-{
+function splitDateString(dateString) {
   var dArray;
   if (dateString.indexOf("/") >= 0)
     dArray = dateString.split("/");
@@ -402,8 +403,7 @@ field as a parameter. This can be used for such things as date validation, setti
 values for related fields, etc. For example, you might have a function like this to validate
 a start date field:
 
-function datePickerClosed(dateField)
-{
+function datePickerClosed(dateField) {
   var dateObj = getFieldDate(dateField.value);
   var today = new Date();
   today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -425,11 +425,11 @@ function datePickerClosed(dateField)
 }
 
 */
-function updateDateField(dateFieldName, dateString)
-{
+function updateDateField(dateFieldName, dateString) {
   var targetDateField = document.getElementsByName (dateFieldName).item(0);
-  if (dateString)
+  if (dateString) {
     targetDateField.value = dateString;
+  }
  
   var pickerDiv = document.getElementById(datePickerDivID);
   pickerDiv.style.visibility = "hidden";
@@ -441,8 +441,9 @@ function updateDateField(dateFieldName, dateString)
   // after the datepicker has closed, optionally run a user-defined function called
   // datePickerClosed, passing the field that was just updated as a parameter
   // (note that this will only run if the user actually selected a date from the datepicker)
-  if ((dateString) && (typeof(datePickerClosed) == "function"))
+  if ((dateString) && (typeof(datePickerClosed) == "function")) {
     datePickerClosed(targetDateField);
+  }
 }
 
 
@@ -454,13 +455,13 @@ described at:
 http://dotnetjunkies.com/WebLog/jking/archive/2003/07/21/488.aspx
 http://dotnetjunkies.com/WebLog/jking/archive/2003/10/30/2975.aspx
 */
-function adjustiFrame(pickerDiv, iFrameDiv)
-{
+function adjustiFrame(pickerDiv, iFrameDiv) {
   // we know that Opera doesn't like something about this, so if we
   // think we're using Opera, don't even try
   var is_opera = (navigator.userAgent.toLowerCase().indexOf("opera") != -1);
-  if (is_opera)
+  if (is_opera) {
     return;
+  }
   
   // put a try/catch block around the whole thing, just in case
   try {
@@ -476,10 +477,12 @@ function adjustiFrame(pickerDiv, iFrameDiv)
       document.body.appendChild(newNode);
     }
     
-    if (!pickerDiv)
+    if (!pickerDiv) {
       pickerDiv = document.getElementById(datePickerDivID);
-    if (!iFrameDiv)
+    }
+    if (!iFrameDiv) {
       iFrameDiv = document.getElementById(iFrameDivID);
+    }
     
     try {
       iFrameDiv.style.position = "absolute";
