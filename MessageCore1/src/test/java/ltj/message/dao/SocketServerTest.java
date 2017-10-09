@@ -7,9 +7,8 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.constant.StatusId;
 import ltj.message.dao.abstrct.DaoTestBase;
@@ -17,7 +16,7 @@ import ltj.message.dao.servers.SocketServerDao;
 import ltj.message.vo.SocketServerVo;
 
 public class SocketServerTest extends DaoTestBase {
-	@Resource
+	@Autowired
 	private SocketServerDao socketServerDao;
 	
 	@Test
