@@ -4,12 +4,11 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bo.rule.RulesDataBo;
@@ -22,10 +21,10 @@ import ltj.message.vo.rule.RuleVo;
 public class RuleDataBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(RuleDataBoTest.class);
 	
-	@Resource
+	@Autowired
 	private RulesDataBo rulesDataBo;
 	
-	@Resource
+	@Autowired
 	private RuleDao ruleDao;;
 
 	private List<RuleVo> ruleList;

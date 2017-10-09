@@ -6,12 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.data.preload.FolderEnum;
@@ -36,15 +35,15 @@ import ltj.message.vo.inbox.SearchFieldsVo;
 
 public class MsgInboxTest extends DaoTestBase {
 	static final Logger logger = Logger.getLogger(MsgInboxTest.class);
-	@Resource
+	@Autowired
 	private MsgUnreadCountDao unreadCountDao;
-	@Resource
+	@Autowired
 	private MsgInboxDao msgInboxDao;
-	@Resource
+	@Autowired
 	private MsgClickCountDao msgClickCountDao;
-	@Resource
+	@Autowired
 	private MsgSequenceDao msgSequenceDao;
-	@Resource
+	@Autowired
 	private EmailAddressDao emailAddressDao;
 	
 	private static Long testMsgId = null; //2L;

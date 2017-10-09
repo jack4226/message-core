@@ -5,9 +5,8 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.constant.StatusId;
@@ -16,7 +15,7 @@ import ltj.message.dao.rule.RuleLogicDao;
 import ltj.message.vo.rule.RuleLogicVo;
 
 public class RuleLogicTest extends DaoTestBase {
-	@Resource
+	@Autowired
 	private RuleLogicDao ruleLogicDao;
 	
 	final static String testRuleName = RuleNameEnum.Executable_Attachment.name();

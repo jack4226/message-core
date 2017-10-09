@@ -36,7 +36,7 @@ public class MsgInboxBoTest extends BoTestBase {
 	@Resource
 	private MessageParser parser;
 	
-	@Resource
+	@Autowired
 	private MsgRenderedDao renderedDao;
 	
 	@Test

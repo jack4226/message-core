@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bean.MessageBean;
@@ -17,7 +18,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.vo.outbox.DeliveryStatusVo;
 
 public class DeliveryErrorBoTest extends BoTestBase {
-	@Resource
+	@Autowired
 	private DeliveryStatusDao deliveryStatusDao;
 	@Resource
 	private TaskBaseBo deliveryErrorBo;

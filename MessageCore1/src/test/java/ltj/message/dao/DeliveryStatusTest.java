@@ -5,9 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.message.constant.Constants;
@@ -20,11 +19,11 @@ import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.vo.outbox.DeliveryStatusVo;
 
 public class DeliveryStatusTest extends DaoTestBase {
-	@Resource
+	@Autowired
 	private DeliveryStatusDao deliveryStatusDao;
-	@Resource
+	@Autowired
 	private EmailAddressDao emailAddressDao;
-	@Resource
+	@Autowired
 	private MsgInboxDao msgInboxDao;
 	private static long testMsgId = 3L;
 	private String testEmailAddr = Constants.DEMOLIST1_ADDR;
