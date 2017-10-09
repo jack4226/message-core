@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.bo.template.RenderVariable;
@@ -32,13 +31,13 @@ public class RenderUtilTest extends BoTestBase {
 	
 	public static final String LF = System.getProperty("line.separator", "\n");
 	
-	@Resource
+	@Autowired
 	private BodyTemplateDao bodyTemplateDao;
 	
-	@Resource
+	@Autowired
 	private EmailVariableDao emailVariableDao;
 	
-	@Resource
+	@Autowired
 	private EmailTemplateDao emailTemplateDao;
 	
 	@Test

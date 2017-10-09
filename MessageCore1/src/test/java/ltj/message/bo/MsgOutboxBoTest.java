@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import java.text.ParseException;
 
-import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bo.outbox.MsgOutboxBo;
@@ -26,15 +26,15 @@ import ltj.vo.template.SubjTemplateVo;
 
 public class MsgOutboxBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MsgOutboxBoTest.class);
-	@Resource
+	@Autowired
 	private MsgOutboxBo msgOutboxBo;
-	@Resource
+	@Autowired
 	private MsgRenderedDao renderedDao;
-	@Resource
+	@Autowired
 	private SubjTemplateDao subjTmpltDao;
-	@Resource
+	@Autowired
 	private BodyTemplateDao bodyTmpltDao;
-	@Resource
+	@Autowired
 	private RenderBo renderBo;
 	
 	@Test

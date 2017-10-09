@@ -12,13 +12,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.bo.template.RenderBo;
 import ltj.message.bo.template.RenderRequest;
@@ -39,11 +39,11 @@ public class RenderTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(RenderTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
-	@Resource
+	@Autowired
 	private RenderBo util;
-	@Resource
+	@Autowired
 	private BodyTemplateDao bodyTmpltDao;
-	@Resource
+	@Autowired
 	private SubjTemplateDao subjTmpltDao;
 	
 	@Test

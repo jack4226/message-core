@@ -5,16 +5,15 @@ import static org.junit.Assert.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.template.MsgSourceDao;
 import ltj.vo.template.MsgSourceVo;
 
 public class MsgSourceTest extends DaoTestBase {
-	@Resource
+	@Autowired
 	private MsgSourceDao msgSourceDao;
 	Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 	final String testMsgSourceId = "WeekendDeals";

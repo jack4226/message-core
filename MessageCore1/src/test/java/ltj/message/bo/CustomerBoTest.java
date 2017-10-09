@@ -2,10 +2,9 @@ package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import ltj.message.bo.customer.CustomerBo;
@@ -17,7 +16,7 @@ public class CustomerBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(CustomerBoTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
-	@Resource
+	@Autowired
 	private CustomerBo customerBo;
 	@Test
 	@Rollback(value=true)

@@ -11,6 +11,7 @@ import javax.mail.internet.InternetAddress;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.bean.MessageBean;
 import ltj.message.bean.MsgHeader;
@@ -28,9 +29,9 @@ public class MsgInboxBoTest extends BoTestBase {
 	static final Logger logger = Logger.getLogger(MsgInboxBoTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
-	@Resource
+	@Autowired
 	private MsgInboxBo msgInboxBo;
-	@Resource
+	@Autowired
 	private MsgOutboxBo msgOutboxBo;
 	@Resource
 	private MessageParser parser;

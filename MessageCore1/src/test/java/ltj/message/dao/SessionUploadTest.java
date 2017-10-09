@@ -5,16 +5,15 @@ import static org.junit.Assert.*;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.user.SessionUploadDao;
 import ltj.message.vo.SessionUploadVo;
 
 public class SessionUploadTest extends DaoTestBase {
-	@Resource
+	@Autowired
 	private SessionUploadDao sessDao;
 	
 	final static String testSessionId = "test_session_id";

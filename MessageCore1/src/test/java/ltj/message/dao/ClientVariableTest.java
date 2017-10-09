@@ -6,16 +6,15 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.dao.abstrct.DaoTestBase;
 import ltj.message.dao.template.ClientVariableDao;
 import ltj.vo.template.ClientVariableVo;
 
 public class ClientVariableTest extends DaoTestBase {
-	@Resource
+	@Autowired
 	private ClientVariableDao clientVariableDao;
 	Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 	final String testVariableName = "CurrentDate";

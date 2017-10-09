@@ -2,10 +2,9 @@ package ltj.message.bo;
 
 import static org.junit.Assert.*;
 
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.message.bo.customer.CustomerSignupBo;
 import ltj.message.bo.test.BoTestBase;
@@ -21,12 +20,12 @@ public class CustomerSignupBoTest extends BoTestBase {
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
 	
-	@Resource
+	@Autowired
 	private CustomerSignupBo signUpBo;
 	
-	@Resource
+	@Autowired
 	private CustomerDao customerDao;
-	@Resource
+	@Autowired
 	private EmailSubscrptDao subscrDao;
 	
 	@Test
