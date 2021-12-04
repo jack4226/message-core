@@ -21,9 +21,9 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import ltj.data.preload.RuleNameEnum;
@@ -48,8 +48,10 @@ import ltj.vo.outbox.MsgStreamVo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={SpringAppConfig.class, SpringJmsConfig.class})
-@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
+// deprecated since 4.2
+//@TransactionConfiguration(transactionManager="mysqlTransactionManager", defaultRollback=true)
 @Transactional
+@Rollback(true)
 public class BoTestBase {
 	protected static final Logger logger = Logger.getLogger(BoTestBase.class);
 	protected final static boolean isDebugEnabled = logger.isDebugEnabled();
