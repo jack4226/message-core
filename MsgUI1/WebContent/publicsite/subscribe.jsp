@@ -66,7 +66,7 @@ function validateListSelection(myform) {
 <input type="hidden" name="sbsrid" value="<%= subscribersBean.getSbsrid() %>">
 
 <%
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	//String serverInfo = application.getServerInfo();
 	ServletContext ctx = application;
  	

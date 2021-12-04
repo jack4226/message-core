@@ -92,22 +92,24 @@ public class AutoReplyBoImpl extends TaskBaseAdaptor {
 			/* 
 			 * add product key to reply message for "Free Premium Upgrade" promotion. 
 			 */
-			if (Constants.FreePremiumUpgradeTemplateId.equals(taskArguments)) {
-				variables = new HashMap<String, String>();
-				try {
-					variables.put("_ProductKey", KeyGenerator.generateKey());
-				}
-				catch (DigestException e) { // should never happen
-					logger.error("DigestException caught", e);
-				}
-				String origBody = messageBean.getBody();
-				Pattern p = Pattern.compile("^user_name=([\\w\\s]{1,50});");
-				Matcher m = p.matcher(origBody);
-				if (m.find() && m.groupCount() >= 1) {
-					variables.put("_UserName", m.group(1));
-				}
-				else {
-					variables.put("_UserName", vo.getEmailAddr());
+			if (taskArguments != null && taskArguments.length > 0) {
+				if (Constants.FreePremiumUpgradeTemplateId.equals(taskArguments[0])) {
+					variables = new HashMap<String, String>();
+					try {
+						variables.put("_ProductKey", KeyGenerator.generateKey());
+					}
+					catch (DigestException e) { // should never happen
+						logger.error("DigestException caught", e);
+					}
+					String origBody = messageBean.getBody();
+					Pattern p = Pattern.compile("^user_name=([\\w\\s]{1,50});");
+					Matcher m = p.matcher(origBody);
+					if (m.find() && m.groupCount() >= 1) {
+						variables.put("_UserName", m.group(1));
+					}
+					else {
+						variables.put("_UserName", vo.getEmailAddr());
+					}
 				}
 			}
 			// end of promotion

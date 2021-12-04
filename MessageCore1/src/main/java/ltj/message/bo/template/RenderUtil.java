@@ -489,7 +489,7 @@ public final class RenderUtil {
 			}
 			else if (!StringUtil.isEmpty(proc)) {
 				try {
-					Object obj = Class.forName(proc).newInstance();
+					Object obj = Class.forName(proc).getDeclaredConstructor().newInstance();
 					if (obj instanceof VariableResolver) {
 						value = ((VariableResolver)obj).process(addrId);
 					}

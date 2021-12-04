@@ -410,6 +410,7 @@ public class MsgInboxBean {
 		return TO_SELF;
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public String deleteMessage() {
 		if (message == null) {
 			logger.error("deleteMessage() - MsgInboxVo is null");

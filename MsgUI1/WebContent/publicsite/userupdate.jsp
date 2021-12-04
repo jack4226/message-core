@@ -43,7 +43,7 @@ if ("yes".equals(request.getParameter("remember"))) {
 <%@page import="ltj.message.util.StringUtil"%>
 <%@page import="ltj.message.dao.idtokens.MsgIdCipher"%>
 <%
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	//String serverInfo = application.getServerInfo();
 	ServletContext ctx = application;
  	
@@ -80,7 +80,7 @@ if ("yes".equals(request.getParameter("remember"))) {
  			EmailAddressVo addrVo = getEmailAddressDao(ctx).findByAddress(request.getParameter("emailAddr"));
  			// update accept HTML flag if changed
  			boolean acceptHtml = "html".equals(request.getParameter("emailtype"))?true:false;
- 			if (acceptHtml != "Y".equals(addrVo.getAcceptHtml())) {
+ 			if (acceptHtml != addrVo.getAcceptHtml()) {
  				getEmailAddressDao(ctx).updateAcceptHtml(addrVo.getEmailAddrId(), acceptHtml);
  				logger.info("userupdate.jsp - Accept HTML flag changed to: " + acceptHtml);
  			}

@@ -55,7 +55,7 @@
 <%@page import="ltj.message.dao.idtokens.MsgIdCipher"%>
 <%@page import="ltj.message.vo.emailaddr.EmailAddressVo"%>
 <%
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;
 	
 	String emailAddr = request.getParameter("sbsrAddr");

@@ -501,7 +501,7 @@ public final class SmtpConnection implements java.io.Serializable {
 		catch (MessagingException e) {
 			logger.error("MessagingException caught", e);
 		}
-		super.finalize();
+		//super.finalize(); // Deprecated
 	}
 
 	public SmtpConnVo getSmtpConnVo() {

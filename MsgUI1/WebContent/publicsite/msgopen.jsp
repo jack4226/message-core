@@ -8,7 +8,7 @@
 <%@page import="ltj.message.vo.inbox.MsgClickCountVo"%>
 <%@page import="ltj.message.util.StringUtil"%>
 <%
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;
 	String sbsrId = request.getParameter("sbsrid");
 	String listId = request.getParameter("listid");

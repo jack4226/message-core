@@ -260,7 +260,7 @@ public class MsgActionDetailsBean {
 		String className = actionDetail.getProcessClassName();
 		if (className != null && className.trim().length() > 0) {
 			try {
-				Object bo = Class.forName(className).newInstance();
+				Object bo = Class.forName(className).getDeclaredConstructor().newInstance();
 				if (bo instanceof TaskBaseBo) {
 					testResult = "actionDetailClassNameTestSuccess";
 				}

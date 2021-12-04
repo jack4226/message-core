@@ -2,6 +2,7 @@ package ltj.message.bo.task;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -119,7 +120,7 @@ public class TaskDispatcher {
 					// use process class
 					logger.info("dispatchTasks() - ProcessClassName [" + i + "]: " + processClassName);
 					try {
-						bo = (TaskBaseBo) Class.forName(processClassName).newInstance();
+						bo = (TaskBaseBo) Class.forName(processClassName).getDeclaredConstructor().newInstance();
 					}
 					catch (ClassNotFoundException e) {
 						logger.error("ClassNotFoundException caught", e);
@@ -131,6 +132,22 @@ public class TaskDispatcher {
 					}
 					catch (IllegalAccessException e) {
 						logger.error("IllegalAccessException caught", e);
+						throw new DataValidationException(e.getMessage());
+					}
+					catch (IllegalArgumentException e) {
+						logger.error("(IllegalArgumentException caught", e);
+						throw new DataValidationException(e.getMessage());
+					}
+					catch (InvocationTargetException e) {
+						logger.error("InvocationTargetException caught", e);
+						throw new DataValidationException(e.getMessage());
+					}
+					catch (NoSuchMethodException e) {
+						logger.error("NoSuchMethodException caught", e);
+						throw new DataValidationException(e.getMessage());
+					}
+					catch (SecurityException e) {
+						logger.error("SecurityException caught", e);
 						throw new DataValidationException(e.getMessage());
 					}
 				}

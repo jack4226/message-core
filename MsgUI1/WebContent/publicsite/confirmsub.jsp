@@ -36,7 +36,7 @@
 <%@page import="ltj.message.vo.emailaddr.EmailAddressVo"%>
 <%@page import="ltj.message.util.EmailAddrUtil"%>
 <%
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;
 	
 	String encodedSbsrId = request.getParameter("sbsrid");

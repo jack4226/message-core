@@ -52,7 +52,7 @@ public class EmailVariableDataTest extends DaoTestBase {
 				try {
 					Class<?> proc = Class.forName(vo.getVariableProc());
 					try {
-						Object obj = proc.newInstance();
+						Object obj = proc.getDeclaredConstructor().newInstance();
 						if (!(obj instanceof VariableResolver)) {
 							fail("VariableType class is not a VariableResolver");
 						}

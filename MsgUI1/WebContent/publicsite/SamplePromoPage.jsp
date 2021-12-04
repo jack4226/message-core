@@ -23,7 +23,7 @@
 /**
  *	sbsrid, listid and msgid should be passed from http query string
  */
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;
 	String sbsrId = request.getParameter("sbsrid");
 	Long sbsrIdLong = null;

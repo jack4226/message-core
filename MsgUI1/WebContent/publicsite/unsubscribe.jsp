@@ -92,7 +92,7 @@ function checkLength(element, maxvalue) {
 <%@page import="ltj.message.vo.emailaddr.EmailAddressVo"%>
 <%@page import="ltj.message.dao.idtokens.MsgIdCipher"%>
 <%
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;
  	
 	String encodedSbsrId = request.getParameter("sbsrid");

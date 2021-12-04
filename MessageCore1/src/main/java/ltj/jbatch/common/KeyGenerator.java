@@ -71,7 +71,7 @@ public class KeyGenerator {
 	static void insertProductKeys() throws Exception {
 		Connection conn = null;
 		try {
-			Class.forName ("com.mysql.jdbc.Driver").newInstance ();
+			Class.forName ("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance ();
 			conn = DriverManager.getConnection (dburl, "jwang", "jwang");
 			Statement stmt = conn.createStatement();
 			int count = 100;

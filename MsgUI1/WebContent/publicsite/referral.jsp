@@ -71,7 +71,7 @@ function checkLength(element, maxvalue) {
 <%@page import="ltj.message.constant.Constants"%>
 <%@page import="ltj.message.constant.AddressType"%>
 <%
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	//String serverInfo = application.getServerInfo();
 	ServletContext ctx = application;
  	
@@ -82,7 +82,7 @@ function checkLength(element, maxvalue) {
 		EmailAddressVo addrVo = getEmailAddressDao(ctx).findByAddress(rcptEmail);
 		// update accept HTML flag if changed
 		boolean acceptHtml = "html".equals(request.getParameter("emailtype"))?true:false;
-		if (acceptHtml != "Y".equals(addrVo.getAcceptHtml())) {
+		if (acceptHtml != addrVo.getAcceptHtml()) {
 			getEmailAddressDao(ctx).updateAcceptHtml(addrVo.getEmailAddrId(), acceptHtml);
 			logger.info("referral.jsp - Accept HTML flag changed to: " + acceptHtml);
 		}

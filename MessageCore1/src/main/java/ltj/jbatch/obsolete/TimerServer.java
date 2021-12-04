@@ -101,7 +101,7 @@ class TimerServer extends Timer implements java.io.Serializable {
 	 */
 	protected void finalize() throws Throwable {
 		taskPool.clear();
-		super.finalize();
+		//super.finalize(); // Deprecated
 	}
 
 	/**

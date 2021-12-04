@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-<wb-module deploy-name="MsgUI1-1.0.0-SNAPSHOT">
+    
+    <wb-module deploy-name="MsgUI1-1.0.0-SNAPSHOT">
+                
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-<wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <dependent-module archiveName="MessageCore1-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/MessageCore1/MessageCore1">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-<property name="java-output-path" value="build/classes"/>
+        <dependent-module deploy-path="/" handle="module:/overlay/var/M2_REPO/org/apache/activemq/artemis-plugin/2.19.0/artemis-plugin-2.19.0.war?unpackFolder=target/m2e-wtp/overlays&amp;includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/var/M2_REPO/org/apache/activemq/activemq-branding/2.19.0/activemq-branding-2.19.0.war?unpackFolder=target/m2e-wtp/overlays&amp;includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/var/M2_REPO/org/apache/activemq/artemis-console/2.19.0/artemis-console-2.19.0.war?unpackFolder=target/m2e-wtp/overlays&amp;includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        
+        <property name="java-output-path" value="build/classes"/>
+                
         <property name="context-root" value="MsgUI1"/>
-</wb-module>
+        
+    </wb-module>
+    
 </project-modules>

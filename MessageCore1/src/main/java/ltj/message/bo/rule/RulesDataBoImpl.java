@@ -68,7 +68,7 @@ public final class RulesDataBoImpl implements RulesDataBo {
 			}
 			Object obj = null;
 			try { // a TargetProc could be a class name or a bean id
-				obj = Class.forName(element.getTargetProc()).newInstance();
+				obj = Class.forName(element.getTargetProc()).getDeclaredConstructor().newInstance();
 				logger.info("Loaded class " + element.getTargetProc() + " for rule " + rule.getRuleName());
 			}
 			catch (Exception e) { // not a class name, try load it as a Bean

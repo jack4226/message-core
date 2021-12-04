@@ -163,7 +163,7 @@ public class EmailVariablesBean {
 				return TO_SELF;
 			}
 			try {
-				Object obj = proc.newInstance();
+				Object obj = proc.getDeclaredConstructor().newInstance();
 				if (!(obj instanceof VariableResolver)) {
 					throw new Exception("VariableType class is not a VariableResolver");
 				}

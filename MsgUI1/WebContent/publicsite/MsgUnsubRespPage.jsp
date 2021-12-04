@@ -46,7 +46,7 @@ MsgUnsubCmntDao getMsgUnsubCmntDao(ServletContext ctx) {
 }
 %>
 <%
-	Logger logger = Logger.getLogger("com.legacytojava.jsp");
+	Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 	ServletContext ctx = application;
 	
 	String sbsrId = request.getParameter("sbsrid");

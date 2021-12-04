@@ -11,7 +11,8 @@
 <%@page import="ltj.message.constant.Constants"%>
 <%@page import="ltj.message.constant.VariableType"%>
 <%@page import="ltj.message.bo.template.*"%>
-<%@page import="org.apache.log4j.Logger" %>
+<%@page import="org.apache.logging.log4j.Logger" %>
+<%@page import="org.apache.logging.log4j.LogManager" %>
 <%@page import="java.util.*" %>
 <%!
 	MailingListDao mailingListDao = null;
@@ -96,7 +97,7 @@
 	}
 	
 	String renderURLVariable(ServletContext ctx, String emailVariableName, Long sbsrId, String listId, Long msgId) {
-		Logger logger = Logger.getLogger("com.legacytojava.jsp");
+		Logger logger = LogManager.getLogger("com.legacytojava.jsp");
 		String renderedValue = "";
 		EmailVariableVo vo = getEmailVariableDao(ctx).getByName(emailVariableName);
 		Map<String, RenderVariable> vars = new HashMap<String, RenderVariable>();

@@ -47,7 +47,7 @@ public class JmsQueueSender {
 	public void sendWithConversion(AbstractApplicationContext factory) {
 	    Map<String, Object> map = new HashMap<>();
 	    map.put("Name", "Mark");
-	    map.put("Age", new Integer(47));
+	    map.put("Age", Integer.valueOf(47));
 	    JmsTemplate template = (JmsTemplate) factory.getBean("jmsTemplate");
 	    if (template.getDefaultDestination() == null) {
 	    	template.setDefaultDestination(new ActiveMQQueue(QueueNameEnum.RMA_REQUEST_INPUT.getQueueName()));

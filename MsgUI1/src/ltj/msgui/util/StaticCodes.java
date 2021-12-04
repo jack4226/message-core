@@ -80,7 +80,7 @@ public class StaticCodes {
 							Class<?> cls = Class.forName(fullName);
 							if (!cls.isInterface()) {
 								try {
-									Object obj = cls.newInstance();
+									Object obj = cls.getDeclaredConstructor().newInstance();
 									if (obj instanceof RuleTargetProc) {
 										list.add(new SelectItem(fullName, className));
 									}
@@ -154,7 +154,7 @@ public class StaticCodes {
 							Class<?> cls = Class.forName(fullName);
 							if (!cls.isInterface()) {
 								try {
-									Object obj = cls.newInstance();
+									Object obj = cls.getDeclaredConstructor().newInstance();
 									if (obj instanceof VariableResolver) {
 										list.add(new SelectItem(fullName, className));
 									}
