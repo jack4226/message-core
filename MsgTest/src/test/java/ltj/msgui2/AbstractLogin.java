@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -25,7 +26,7 @@ import ltj.selenium.OSUtil;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public abstract class AbstractLogin extends TestCase {
-	protected static final Logger logger = Logger.getLogger(AbstractLogin.class);
+	protected static final Logger logger = LogManager.getLogger(AbstractLogin.class);
 
 	private static ChromeDriverService service;
 	protected WebDriver driver;

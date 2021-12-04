@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -19,7 +20,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import ltj.selenium.StringUtil;
 
 public class EmailAddressTest extends AbstractLogin {
-	static final Logger logger = Logger.getLogger(EmailAddressTest.class);
+	static final Logger logger = LogManager.getLogger(EmailAddressTest.class);
 
 	@Test
 	public void testEmailAddrBrowser() {

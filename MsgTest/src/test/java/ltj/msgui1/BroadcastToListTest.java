@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
@@ -16,7 +17,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BroadcastToListTest extends AbstractLogin {
-	static final Logger logger = Logger.getLogger(BroadcastToListTest.class);
+	static final Logger logger = LogManager.getLogger(BroadcastToListTest.class);
 
 	@Test
 	public void testBroadcastToList() {

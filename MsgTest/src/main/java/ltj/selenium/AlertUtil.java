@@ -1,6 +1,7 @@
 package ltj.selenium;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AlertUtil {
-	static final Logger logger = Logger.getLogger(AlertUtil.class);
+	static final Logger logger = LogManager.getLogger(AlertUtil.class);
 
 	public static void handleAlert(WebDriver driver) {
 		// accept (Click OK) JavaScript Alert pop-up

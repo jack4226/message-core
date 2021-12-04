@@ -1,13 +1,14 @@
 package ltj.selenium;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class Google {
-	static final Logger logger = Logger.getLogger(Google.class);
+	static final Logger logger = LogManager.getLogger(Google.class);
 
 	public static void main(String[] args) {
 		OSUtil.setupSeleniumBrowserDriver();

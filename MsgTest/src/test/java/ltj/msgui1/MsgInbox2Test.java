@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -16,7 +17,7 @@ import ltj.msgui1.MsgInbox1Test.MsgListDetail;
 import ltj.selenium.StringUtil;
 
 public class MsgInbox2Test extends AbstractLogin {
-	static final Logger logger = Logger.getLogger(MsgInbox2Test.class);
+	static final Logger logger = LogManager.getLogger(MsgInbox2Test.class);
 
 	@Test
 	public void testEmailBrowser() {
