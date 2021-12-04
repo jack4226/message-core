@@ -9,7 +9,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <message-core-version>1.0.0-SNAPSHOT</message-core-version>
     <java.version>1.8</java.version>
-  	<mysql.connector.version>5.1.39</mysql.connector.version>
+  	<mysql.connector.version>8.0.16</mysql.connector.version>
     <commons-digester-version>2.1</commons-digester-version>
     <jstl.version>1.2</jstl.version>
     <javax.faces-version>1.2-20</javax.faces-version>
