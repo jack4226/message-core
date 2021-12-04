@@ -1,13 +1,14 @@
 package ltj.message.dao.outbox;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import ltj.message.dao.abstrct.AbstractDao;
 
 @Component("msgSequenceDao")
 public class MsgSequenceJdbcDao extends AbstractDao implements MsgSequenceDao {
-	protected static final Logger logger = Logger.getLogger(MsgSequenceJdbcDao.class);
+	protected static final Logger logger = LogManager.getLogger(MsgSequenceJdbcDao.class);
 	
 	@Override
 	public long findNextValue() {

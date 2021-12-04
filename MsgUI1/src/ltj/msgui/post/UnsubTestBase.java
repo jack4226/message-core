@@ -14,7 +14,8 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.idtokens.MsgIdCipher;
@@ -25,7 +26,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringUtil;
 
 public class UnsubTestBase {
-	static Logger logger = Logger.getLogger(UnsubTestBase.class);
+	static Logger logger = LogManager.getLogger(UnsubTestBase.class);
 	
 	private final String USER_AGENT = "Mozilla/5.0";
 	

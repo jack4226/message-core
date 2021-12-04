@@ -9,13 +9,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.dao.idtokens.MsgIdCipher;
 
 public class ConfirmSubsTest {
-	static Logger logger = Logger.getLogger(ConfirmSubsTest.class);
+	static Logger logger = LogManager.getLogger(ConfirmSubsTest.class);
 
 	private final String USER_AGENT = "Mozilla/5.0";
 

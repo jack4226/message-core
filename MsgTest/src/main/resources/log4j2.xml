@@ -12,7 +12,7 @@
 	</Appenders>
 
 	<Loggers>
-		<Logger name="org.apache.log4j.xml" level="info">
+		<Logger name="ltj" level="debug">
 			<AppenderRef ref="FILE" />
 		</Logger>
 		<Root level="debug">

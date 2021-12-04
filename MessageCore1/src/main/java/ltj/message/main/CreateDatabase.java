@@ -12,12 +12,13 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.spring.util.SpringUtil;
 
 public class CreateDatabase {
-	static final Logger logger = Logger.getLogger(CreateDatabase.class);
+	static final Logger logger = LogManager.getLogger(CreateDatabase.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private static String DB_NAME = "message";

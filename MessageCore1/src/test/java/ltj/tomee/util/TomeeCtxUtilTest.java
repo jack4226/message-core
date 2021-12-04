@@ -4,11 +4,12 @@ import static org.junit.Assert.*;
 
 import javax.naming.Context;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 public class TomeeCtxUtilTest {
-	protected final static Logger logger = Logger.getLogger(TomeeCtxUtilTest.class);
+	protected final static Logger logger = LogManager.getLogger(TomeeCtxUtilTest.class);
 	
 	@Test
 	public void testTomeeCtxUtil() {

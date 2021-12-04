@@ -5,7 +5,8 @@ import java.util.List;
 import javax.jms.JMSException;
 import javax.mail.MessagingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -23,7 +24,7 @@ import ltj.spring.util.SpringUtil;
 
 public class MailFileReader {
 	final static String LF = System.getProperty("line.separator","\n");
-	static final Logger logger = Logger.getLogger(MailFileReader.class);
+	static final Logger logger = LogManager.getLogger(MailFileReader.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	public static void main(String[] args){

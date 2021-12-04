@@ -3,7 +3,8 @@ package ltj.message.dao.inbox;
 import java.sql.Timestamp;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -16,7 +17,7 @@ import ltj.message.vo.inbox.MsgUnsubCmntVo;
 
 @Component("msgUnsubCmntDao")
 public class MsgUnsubCmntJdbcDao extends AbstractDao implements MsgUnsubCmntDao {
-	static final Logger logger = Logger.getLogger(MsgUnsubCmntJdbcDao.class);
+	static final Logger logger = LogManager.getLogger(MsgUnsubCmntJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Override

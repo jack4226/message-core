@@ -25,7 +25,8 @@ import javax.mail.Part;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.bean.BodypartBean;
 import ltj.message.bean.MessageBean;
@@ -53,7 +54,7 @@ import ltj.msgui.util.MessageThreadsBuilder;
 import ltj.msgui.util.SpringUtil;
 
 public class MsgInboxBean {
-	static final Logger logger = Logger.getLogger(MsgInboxBean.class);
+	static final Logger logger = LogManager.getLogger(MsgInboxBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 	final static String LF = System.getProperty("line.separator","\n");

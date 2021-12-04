@@ -8,7 +8,8 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -23,7 +24,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 /*** Please start MailEngine and MailSender before running this test ***/
 @FixMethodOrder
 public class ForwardBoTest extends BoTestBase {
-	protected static final Logger logger = Logger.getLogger(ForwardBoTest.class);
+	protected static final Logger logger = LogManager.getLogger(ForwardBoTest.class);
 	@Resource
 	private TaskBaseBo forwardBo;
 	

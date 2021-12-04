@@ -6,7 +6,8 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.spring.util.SpringUtil;
 
@@ -15,7 +16,7 @@ import ltj.spring.util.SpringUtil;
  */
 public class Resource implements java.io.Serializable {
 	private static final long serialVersionUID = 6273146753143924178L;
-	protected static final Logger logger = Logger.getLogger(Resource.class);
+	protected static final Logger logger = LogManager.getLogger(Resource.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private transient DataSource dataSource;

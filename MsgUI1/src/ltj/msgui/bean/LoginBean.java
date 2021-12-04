@@ -4,7 +4,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.constant.Constants;
 import ltj.message.dao.client.ClientUtil;
@@ -15,7 +16,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class LoginBean {
-	static final Logger logger = Logger.getLogger(LoginBean.class);
+	static final Logger logger = LogManager.getLogger(LoginBean.class);
 	private String userId = null;
 	private String password = null;
 	private String message = null;

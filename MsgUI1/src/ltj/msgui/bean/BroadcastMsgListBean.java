@@ -7,7 +7,8 @@ import java.util.List;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.model.DataModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgClickCountDao;
@@ -21,7 +22,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class BroadcastMsgListBean {
-	static final Logger logger = Logger.getLogger(BroadcastMsgListBean.class);
+	static final Logger logger = LogManager.getLogger(BroadcastMsgListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private MsgClickCountDao msgClickCountDao = null;

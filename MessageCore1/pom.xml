@@ -276,7 +276,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
+		<!-- dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
 			<version>${activemq-version}</version>
@@ -286,9 +286,8 @@
 					<artifactId>log4j</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency -->
 
-		<!-- https://mvnrepository.com/artifact/org.apache.activemq/apache-artemis -->
 		<dependency>
 		    <groupId>org.apache.activemq</groupId>
 		    <artifactId>apache-artemis</artifactId>

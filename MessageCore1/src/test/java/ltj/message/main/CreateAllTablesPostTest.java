@@ -2,7 +2,8 @@ package ltj.message.main;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
@@ -15,7 +16,7 @@ import ltj.message.dao.outbox.MsgRenderedDao;
 import ltj.spring.util.SpringUtil;
 
 public class CreateAllTablesPostTest {
-	protected static final Logger logger = Logger.getLogger(CreateAllTablesPostTest.class);
+	protected static final Logger logger = LogManager.getLogger(CreateAllTablesPostTest.class);
 
 	static boolean forceInsert = true;
 	

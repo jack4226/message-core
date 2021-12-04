@@ -8,7 +8,8 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.sun.jdmk.comm.HtmlAdaptorServer;
 
@@ -16,7 +17,7 @@ import com.sun.jdmk.comm.HtmlAdaptorServer;
  * define MBean server for JBatch
  */
 public class JbMBeanSvr {
-	static final Logger logger = Logger.getLogger(JbMBeanSvr.class);
+	static final Logger logger = LogManager.getLogger(JbMBeanSvr.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	MBeanServer server;
 

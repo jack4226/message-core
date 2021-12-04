@@ -18,7 +18,8 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Store;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.constant.CarrierCode;
 import ltj.message.constant.Constants;
@@ -30,7 +31,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class MailboxesBean {
-	static final Logger logger = Logger.getLogger(MailboxesBean.class);
+	static final Logger logger = LogManager.getLogger(MailboxesBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 

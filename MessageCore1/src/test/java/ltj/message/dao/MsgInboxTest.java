@@ -9,7 +9,8 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -33,7 +34,7 @@ import ltj.message.vo.inbox.MsgInboxWebVo;
 import ltj.message.vo.inbox.SearchFieldsVo;
 
 public class MsgInboxTest extends DaoTestBase {
-	static final Logger logger = Logger.getLogger(MsgInboxTest.class);
+	static final Logger logger = LogManager.getLogger(MsgInboxTest.class);
 	@Resource
 	private MsgUnreadCountDao unreadCountDao;
 	@Resource

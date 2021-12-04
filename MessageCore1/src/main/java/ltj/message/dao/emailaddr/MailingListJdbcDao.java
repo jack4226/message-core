@@ -4,7 +4,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -18,7 +19,8 @@ import ltj.message.vo.emailaddr.MailingListVo;
 
 @Component("mailingListDao")
 public class MailingListJdbcDao extends AbstractDao implements MailingListDao {
-	static final Logger logger = Logger.getLogger(MailingListJdbcDao.class);
+	static final Logger logger = LogManager
+			.getLogger(MailingListJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private String getSelectClause() {

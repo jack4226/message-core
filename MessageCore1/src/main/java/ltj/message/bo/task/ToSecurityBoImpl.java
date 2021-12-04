@@ -5,7 +5,8 @@ import javax.mail.Address;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ import ltj.message.vo.ClientVo;
 @Scope(value="prototype")
 @Lazy(value=true)
 public class ToSecurityBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(ToSecurityBoImpl.class);
+	static final Logger logger = LogManager.getLogger(ToSecurityBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	/**

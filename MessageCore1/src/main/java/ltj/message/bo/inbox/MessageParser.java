@@ -14,7 +14,8 @@ import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -48,7 +49,7 @@ import ltj.vo.outbox.MsgRenderedVo;
 @Scope(value="singleton")
 @Lazy(value=true)
 public final class MessageParser {
-	static final Logger logger = Logger.getLogger(MessageParser.class);
+	static final Logger logger = LogManager.getLogger(MessageParser.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private final RfcCodeScan rfcScan;

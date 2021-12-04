@@ -7,7 +7,8 @@ import java.util.Date;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.data.preload.RuleNameEnum;
@@ -15,7 +16,7 @@ import ltj.message.bean.MessageBean;
 import ltj.message.bo.test.BoTestBase;
 
 public class MessageParserTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(MessageParserTest.class);
+	static final Logger logger = LogManager.getLogger(MessageParserTest.class);
 
 	@Test
 	public void test1() {

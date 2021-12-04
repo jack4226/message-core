@@ -8,7 +8,8 @@ import java.util.GregorianCalendar;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class contains some useful time stamp routines. Like converting db2 time
@@ -17,7 +18,7 @@ import org.apache.log4j.Logger;
  */
 public class TimestampUtil implements java.io.Serializable {
 	private static final long serialVersionUID = -6023017890883430172L;
-	protected static final Logger logger = Logger.getLogger(TimestampUtil.class);
+	protected static final Logger logger = LogManager.getLogger(TimestampUtil.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	//private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");

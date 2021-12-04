@@ -5,7 +5,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.smtp.SmtpConnection;
 import ltj.message.constant.MailServerType;
@@ -17,7 +18,7 @@ import ltj.spring.util.SpringUtil;
  */
 public class ObjectPool implements java.io.Serializable {
 	private static final long serialVersionUID = 2272863504438513367L;
-	protected static final Logger logger = Logger.getLogger(ObjectPool.class);
+	protected static final Logger logger = LogManager.getLogger(ObjectPool.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private final Vector<Object> freeConns;

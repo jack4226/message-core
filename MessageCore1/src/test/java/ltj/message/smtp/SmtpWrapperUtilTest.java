@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.jbatch.pool.NamedPools;
@@ -13,7 +14,7 @@ import ltj.jbatch.smtp.SmtpConnection;
 import ltj.message.bo.mailsender.SmtpWrapperUtil;
 
 public class SmtpWrapperUtilTest {
-	static final Logger logger = Logger.getLogger(SmtpWrapperUtilTest.class);
+	static final Logger logger = LogManager.getLogger(SmtpWrapperUtilTest.class);
 
 	@Test
 	public void test() {

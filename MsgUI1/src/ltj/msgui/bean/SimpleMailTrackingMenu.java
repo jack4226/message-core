@@ -6,7 +6,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.emailaddr.EmailAddressDao;
 import ltj.message.dao.inbox.MsgInboxDao;
@@ -28,7 +29,7 @@ import ltj.msgui.util.SpringUtil;
  * Note: request scoped did not work as expected, changed to session scoped.
  */
 public class SimpleMailTrackingMenu {
-	static final Logger logger = Logger.getLogger(SimpleMailTrackingMenu.class);
+	static final Logger logger = LogManager.getLogger(SimpleMailTrackingMenu.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private String titleKey;

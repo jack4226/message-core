@@ -13,7 +13,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -37,7 +38,7 @@ import ltj.spring.util.SpringUtil;
 @Lazy(value=true)
 public final class RuleLoader implements java.io.Serializable {
 	private static final long serialVersionUID = 5251082728950956779L;
-	static final Logger logger = Logger.getLogger(RuleLoader.class);
+	static final Logger logger = LogManager.getLogger(RuleLoader.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	final List<RuleBase>[] mainRules;

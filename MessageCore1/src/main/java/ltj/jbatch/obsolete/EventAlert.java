@@ -9,7 +9,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.HostUtil;
 import ltj.jbatch.common.EmailSender;
@@ -28,7 +29,7 @@ import ltj.spring.util.SpringUtil;
  */
 public class EventAlert implements java.io.Serializable {
 	private static final long serialVersionUID = -1532509663419472555L;
-	static final Logger logger = Logger.getLogger(EventAlert.class);
+	static final Logger logger = LogManager.getLogger(EventAlert.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	final String LF = System.getProperty("line.separator", "\n");

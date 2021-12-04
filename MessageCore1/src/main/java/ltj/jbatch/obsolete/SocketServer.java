@@ -9,7 +9,8 @@ import java.net.SocketException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.JbEvent;
 import ltj.jbatch.app.JbEventBroker;
@@ -35,7 +36,7 @@ import ltj.message.vo.SocketServerVo;
  */
 class SocketServer extends JbThread implements java.io.Serializable, JbEventListener {
 	private static final long serialVersionUID = 1049584640041154018L;
-	protected static final Logger logger = Logger.getLogger(SocketServer.class);
+	protected static final Logger logger = LogManager.getLogger(SocketServer.class);
 
 	final SocketServerVo socketServerVo;
 	final JbEventBroker eventBroker;

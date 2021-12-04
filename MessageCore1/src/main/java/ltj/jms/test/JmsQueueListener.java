@@ -6,14 +6,15 @@ import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 import ltj.spring.util.SpringUtil;
 
 public class JmsQueueListener implements MessageListener {
-	static final Logger logger = Logger.getLogger(JmsQueueListener.class);
+	static final Logger logger = LogManager.getLogger(JmsQueueListener.class);
 	
 	public void onMessage(Message message) {
 		logger.info("Invoking onMessage Now ...");

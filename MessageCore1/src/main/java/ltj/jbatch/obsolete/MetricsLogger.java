@@ -6,14 +6,15 @@ import java.util.GregorianCalendar;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * repository for storing and displaying JBatch server status
  */
 public class MetricsLogger implements java.io.Serializable {
 	private static final long serialVersionUID = -7525717173156032898L;
-	static final Logger logger = Logger.getLogger(MetricsLogger.class);
+	static final Logger logger = LogManager.getLogger(MetricsLogger.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private transient final DataSource dataSource;

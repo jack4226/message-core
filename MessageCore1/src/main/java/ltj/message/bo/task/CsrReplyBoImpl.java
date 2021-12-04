@@ -4,7 +4,8 @@ import javax.jms.JMSException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ import ltj.message.util.StringUtil;
 @Scope(value="prototype")
 @Lazy(value=true)
 public class CsrReplyBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(CsrReplyBoImpl.class);
+	static final Logger logger = LogManager.getLogger(CsrReplyBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	/**

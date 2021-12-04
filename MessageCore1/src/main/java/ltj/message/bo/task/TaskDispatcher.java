@@ -16,7 +16,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,7 @@ import ltj.spring.util.SpringUtil;
 @Component("taskDispatcher")
 @Lazy(value=true)
 public class TaskDispatcher {
-	static final Logger logger = Logger.getLogger(TaskDispatcher.class);
+	static final Logger logger = LogManager.getLogger(TaskDispatcher.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	static final String LF = System.getProperty("line.separator", "\n");

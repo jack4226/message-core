@@ -10,10 +10,11 @@ import java.util.Arrays;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PasswordUtil {
-	static final Logger logger = Logger.getLogger(PasswordUtil.class);
+	static final Logger logger = LogManager.getLogger(PasswordUtil.class);
 
 	public static PasswordTuple getEncryptedPassword(String clearPassword) {
 		PasswordTuple tuple = new PasswordTuple();

@@ -10,7 +10,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
@@ -18,7 +19,7 @@ import ltj.message.bean.MessageBeanBuilder;
 import ltj.message.bean.MessageBeanUtil;
 
 public class MessageBeanUtilTest {
-	static final Logger logger = Logger.getLogger(MessageBeanUtilTest.class);
+	static final Logger logger = LogManager.getLogger(MessageBeanUtilTest.class);
 
 	@Test
 	public void test() {

@@ -17,7 +17,8 @@ import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.VariableDelimiter;
@@ -58,7 +59,7 @@ import ltj.message.exception.DataValidationException;
  */
 public final class Renderer implements java.io.Serializable {
 	private static final long serialVersionUID = -583021283225176808L;
-	static final Logger logger = Logger.getLogger(Renderer.class);
+	static final Logger logger = LogManager.getLogger(Renderer.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	final static String TableTagBgn="TABLE_SECTION_BEGIN";

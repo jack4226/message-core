@@ -14,7 +14,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.JUnitCore;
@@ -53,7 +54,7 @@ import ltj.vo.outbox.MsgStreamVo;
 @Transactional
 @Rollback(true)
 public class BoTestBase {
-	protected static final Logger logger = Logger.getLogger(BoTestBase.class);
+	protected static final Logger logger = LogManager.getLogger(BoTestBase.class);
 	protected final static boolean isDebugEnabled = logger.isDebugEnabled();
 	protected final static String LF = System.getProperty("line.separator","\n");
 	protected static final long renderId = 1L;

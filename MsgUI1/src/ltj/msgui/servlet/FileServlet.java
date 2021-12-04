@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.inbox.MsgAttachmentDao;
 import ltj.message.vo.inbox.MsgAttachmentVo;
@@ -26,7 +27,7 @@ import ltj.tomee.util.TomeeCtxUtil;
  */
 public class FileServlet extends HttpServlet {
 	private static final long serialVersionUID = -8129545604805974235L;
-	static final Logger logger = Logger.getLogger(FileServlet.class);
+	static final Logger logger = LogManager.getLogger(FileServlet.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private MsgAttachmentDao msgAttachmentDao = null;

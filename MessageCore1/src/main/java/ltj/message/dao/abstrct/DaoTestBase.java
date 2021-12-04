@@ -1,6 +1,7 @@
 package ltj.message.dao.abstrct;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -17,7 +18,7 @@ import ltj.spring.util.SpringUtil;
 @Transactional
 @Rollback(true)
 public abstract class DaoTestBase {
-	protected static final Logger logger = Logger.getLogger(DaoTestBase.class);
+	protected static final Logger logger = LogManager.getLogger(DaoTestBase.class);
 	protected final static boolean isDebugEnabled = logger.isDebugEnabled();
 	protected final static String LF = System.getProperty("line.separator","\n");
 	

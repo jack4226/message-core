@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ import ltj.spring.util.SpringUtil;
 @Component("rulesDataBo")
 @org.springframework.context.annotation.Scope(value="singleton")
 public final class RulesDataBoImpl implements RulesDataBo {
-	static final Logger logger = Logger.getLogger(RulesDataBoImpl.class);
+	static final Logger logger = LogManager.getLogger(RulesDataBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired

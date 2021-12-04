@@ -3,7 +3,8 @@ package ltj.message.dao.emailaddr;
 import java.sql.Timestamp;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -16,7 +17,7 @@ import ltj.message.vo.emailaddr.EmailUnsubCmntVo;
 
 @Component("emailUnsubCmntDao")
 public class EmailUnsubCmntJdbcDao extends AbstractDao implements EmailUnsubCmntDao {
-	static final Logger logger = Logger.getLogger(EmailUnsubCmntJdbcDao.class);
+	static final Logger logger = LogManager.getLogger(EmailUnsubCmntJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Override

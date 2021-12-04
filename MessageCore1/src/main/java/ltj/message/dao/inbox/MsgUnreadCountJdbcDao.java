@@ -3,14 +3,15 @@ package ltj.message.dao.inbox;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import ltj.message.dao.abstrct.AbstractDao;
 
 @Component("msgUnreadCountDao")
 public class MsgUnreadCountJdbcDao extends AbstractDao implements MsgUnreadCountDao {
-	protected static final Logger logger = Logger.getLogger(MsgUnreadCountJdbcDao.class);
+	protected static final Logger logger = LogManager.getLogger(MsgUnreadCountJdbcDao.class);
 	
 	@Override
 	public int updateInboxUnreadCount(int delta) {

@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.bean.MsgHeader;
 import ltj.message.constant.EmailIdToken;
@@ -20,7 +21,7 @@ import ltj.message.vo.IdTokensVo;
  */
 public final class EmailIdParser implements Serializable {
 	private static final long serialVersionUID = 8659745554700580366L;
-	static final Logger logger = Logger.getLogger(EmailIdParser.class);
+	static final Logger logger = LogManager.getLogger(EmailIdParser.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private final IdTokensVo idTokensVo;

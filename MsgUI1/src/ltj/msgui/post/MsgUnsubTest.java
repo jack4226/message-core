@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.dao.emailaddr.EmailAddressDao;
@@ -20,7 +21,7 @@ import ltj.message.vo.inbox.MsgClickCountVo;
 import ltj.spring.util.SpringUtil;
 
 public class MsgUnsubTest {
-	static Logger logger = Logger.getLogger(MsgUnsubTest.class);
+	static Logger logger = LogManager.getLogger(MsgUnsubTest.class);
 
 	private final String USER_AGENT = "Mozilla/5.0";
 

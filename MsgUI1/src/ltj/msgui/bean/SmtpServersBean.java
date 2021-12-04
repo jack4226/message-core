@@ -18,7 +18,8 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.constant.Constants;
 import ltj.message.constant.MailServerType;
@@ -30,7 +31,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class SmtpServersBean {
-	static final Logger logger = Logger.getLogger(SmtpServersBean.class);
+	static final Logger logger = LogManager.getLogger(SmtpServersBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private SmtpServerDao smtpServerDao = null;

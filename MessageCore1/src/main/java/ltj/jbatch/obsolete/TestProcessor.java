@@ -14,7 +14,8 @@ import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 import javax.mail.MessagingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.HostUtil;
 import ltj.jbatch.app.RunnableProcessor;
@@ -25,7 +26,7 @@ import ltj.message.vo.SocketServerVo;
  * test processor
  */
 public class TestProcessor extends RunnableProcessor {
-	static final Logger logger = Logger.getLogger(TestProcessor.class);
+	static final Logger logger = LogManager.getLogger(TestProcessor.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private ServerBaseVo serverBaseVo;
@@ -105,7 +106,7 @@ public class TestProcessor extends RunnableProcessor {
 	// implement a simple message consumer
 	// to be used by ltj.test.testQueueSvr
 	void processMessage(Message msg) {
-		final Logger logger = Logger.getLogger("ltj.queueout");
+		final Logger logger = LogManager.getLogger("ltj.queueout");
 		logger.info("JMS Message Received: " + msg);
 	}
 

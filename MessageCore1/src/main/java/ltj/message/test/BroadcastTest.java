@@ -9,7 +9,8 @@ import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -30,7 +31,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
 public class BroadcastTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(BroadcastTest.class);
+	static final Logger logger = LogManager.getLogger(BroadcastTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
 	

@@ -5,7 +5,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.JbEventBroker;
 import ltj.jbatch.app.Processor;
@@ -16,7 +17,7 @@ import ltj.message.vo.SocketServerVo;
  */
 class SocketThread implements Runnable, java.io.Serializable {
 	private static final long serialVersionUID = -8750867597546298468L;
-	static final Logger logger = Logger.getLogger(SocketThread.class);
+	static final Logger logger = LogManager.getLogger(SocketThread.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private final SocketServer sktServer;

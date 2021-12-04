@@ -6,7 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.timer.TimerServerDao;
 import ltj.message.vo.TimerServerVo;
@@ -23,7 +24,7 @@ import ltj.message.vo.TimerServerVo;
  */
 class TimerServer extends Timer implements java.io.Serializable {
 	private static final long serialVersionUID = -1541104444206505520L;
-	static final Logger logger = Logger.getLogger(TimerServer.class);
+	static final Logger logger = LogManager.getLogger(TimerServer.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	final TimerServerVo timerServerVo;

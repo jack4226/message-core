@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.constant.Constants;
 import ltj.message.util.StringUtil;
@@ -22,7 +23,7 @@ import ltj.message.vo.UserVo;
  * The UserVo filter.
  */
 public class SessionTimeoutFilter implements Filter {
-	static final Logger logger = Logger.getLogger(SessionTimeoutFilter.class);
+	static final Logger logger = LogManager.getLogger(SessionTimeoutFilter.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	private String timeoutPage = "/login.faces";
 	private String loginPage = "/login.faces";

@@ -20,7 +20,8 @@ import javax.mail.event.MessageCountEvent;
 import javax.mail.event.StoreEvent;
 import javax.mail.event.StoreListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.data.preload.QueueNameEnum;
 import ltj.jbatch.app.RunnableProcessor;
@@ -46,7 +47,7 @@ import ltj.spring.util.SpringUtil;
  */
 public class MailReaderBoImpl extends RunnableProcessor implements Serializable, ConnectionListener, StoreListener {
 	private static final long serialVersionUID = -9061869821061961065L;
-	private static final Logger logger = Logger.getLogger(MailReaderBoImpl.class);
+	private static final Logger logger = LogManager.getLogger(MailReaderBoImpl.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	protected final MailBoxVo mailBoxVo;
@@ -449,7 +450,7 @@ public class MailReaderBoImpl extends RunnableProcessor implements Serializable,
 	 */
 	private void addMsgCountListener(final Folder folder, final String _folder, final boolean fromTimer) {
 		folder.addMessageCountListener(new MessageCountAdapter() {
-			private final Logger logger = Logger.getLogger(MessageCountAdapter.class);
+			private final Logger logger = LogManager.getLogger(MessageCountAdapter.class);
 			public void messagesAdded(MessageCountEvent ev) {
 				Message[] msgs = ev.getMessages();
 				logger.info("Got " + msgs.length + " new messages from " + _folder);

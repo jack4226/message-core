@@ -14,7 +14,8 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.user.UserDao;
 import ltj.message.util.EmailAddrUtil;
@@ -24,7 +25,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class UserAccountsBean {
-	static final Logger logger = Logger.getLogger(UserAccountsBean.class);
+	static final Logger logger = LogManager.getLogger(UserAccountsBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private UserDao userDao = null;

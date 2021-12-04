@@ -7,7 +7,8 @@ import java.text.ParseException;
 import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
@@ -25,7 +26,7 @@ import ltj.vo.template.BodyTemplateVo;
 import ltj.vo.template.SubjTemplateVo;
 
 public class MsgOutboxBoTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(MsgOutboxBoTest.class);
+	static final Logger logger = LogManager.getLogger(MsgOutboxBoTest.class);
 	@Resource
 	private MsgOutboxBo msgOutboxBo;
 	@Resource

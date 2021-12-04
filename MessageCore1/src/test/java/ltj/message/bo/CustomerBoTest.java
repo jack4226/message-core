@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
@@ -14,7 +15,7 @@ import ltj.message.exception.DataValidationException;
 import ltj.message.vo.CustomerVo;
 
 public class CustomerBoTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(CustomerBoTest.class);
+	static final Logger logger = LogManager.getLogger(CustomerBoTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final static String LF = System.getProperty("line.separator","\n");
 	@Resource

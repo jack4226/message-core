@@ -11,7 +11,8 @@ import java.net.URLEncoder;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.dao.customer.CustomerDao;
@@ -20,7 +21,7 @@ import ltj.message.vo.emailaddr.EmailAddressVo;
 import ltj.spring.util.SpringUtil;
 
 public class UserSignupTest {
-	static Logger logger = Logger.getLogger(UserSignupTest.class);
+	static Logger logger = LogManager.getLogger(UserSignupTest.class);
 
 	private final String USER_AGENT = "Mozilla/5.0";
 

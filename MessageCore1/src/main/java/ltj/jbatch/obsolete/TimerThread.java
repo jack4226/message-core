@@ -3,7 +3,8 @@ package ltj.jbatch.obsolete;
 import java.util.Date;
 import java.util.TimerTask;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.Processor;
 import ltj.message.vo.TimerServerVo;
@@ -13,7 +14,7 @@ import ltj.message.vo.TimerServerVo;
  */
 class TimerThread extends TimerTask implements java.io.Serializable {
 	private static final long serialVersionUID = -325424710879386189L;
-	static final Logger logger = Logger.getLogger(TimerThread.class);
+	static final Logger logger = LogManager.getLogger(TimerThread.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	final TimerServerVo timerServerVo;

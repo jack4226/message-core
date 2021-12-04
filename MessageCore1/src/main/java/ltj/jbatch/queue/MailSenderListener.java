@@ -10,7 +10,8 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.mail.MessagingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -20,7 +21,7 @@ import ltj.message.bo.mailsender.MailSenderBoImpl;
 import ltj.message.exception.DataValidationException;
 
 public class MailSenderListener implements MessageListener {
-	static final Logger logger = Logger.getLogger(MailSenderListener.class);
+	static final Logger logger = LogManager.getLogger(MailSenderListener.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	@Autowired

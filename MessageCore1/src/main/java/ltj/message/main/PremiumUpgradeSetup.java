@@ -3,7 +3,8 @@ package ltj.message.main;
 import java.sql.Timestamp;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 
 import ltj.message.bo.rule.RuleBase;
@@ -23,7 +24,7 @@ import ltj.message.vo.rule.RuleLogicVo;
 import ltj.spring.util.SpringUtil;
 
 public class PremiumUpgradeSetup {
-	static final Logger logger = Logger.getLogger(PremiumUpgradeSetup.class);
+	static final Logger logger = LogManager.getLogger(PremiumUpgradeSetup.class);
 	static final String LF = System.getProperty("line.separator", "\n");
 	final AbstractApplicationContext context;
 	private String templateId = Constants.FreePremiumUpgradeTemplateId;

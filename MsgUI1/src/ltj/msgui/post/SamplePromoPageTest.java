@@ -9,7 +9,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.dao.emailaddr.EmailAddressDao;
@@ -21,7 +22,7 @@ import ltj.message.vo.inbox.MsgClickCountVo;
 import ltj.spring.util.SpringUtil;
 
 public class SamplePromoPageTest {
-	static Logger logger = Logger.getLogger(SamplePromoPageTest.class);
+	static Logger logger = LogManager.getLogger(SamplePromoPageTest.class);
 
 	private final String USER_AGENT = "Mozilla/5.0";
 

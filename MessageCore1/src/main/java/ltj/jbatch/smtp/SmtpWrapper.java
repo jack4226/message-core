@@ -1,6 +1,7 @@
 package ltj.jbatch.smtp;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.pool.ObjectPool;
 
@@ -9,7 +10,7 @@ import ltj.jbatch.pool.ObjectPool;
  */
 public class SmtpWrapper implements java.io.Serializable {
 	private static final long serialVersionUID = 1993933036805249603L;
-	static final Logger logger = Logger.getLogger(SmtpWrapper.class);
+	static final Logger logger = LogManager.getLogger(SmtpWrapper.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	final ObjectPool objectPool;

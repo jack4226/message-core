@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration>
+
+	<Appenders>
+		<File name="FILE" fileName="./logs/msg_core.log" append="false">
+			<PatternLayout pattern="[%d] %t [%p,%c:%L] %m%n" />
+		</File>
+		<RollingFile name="rollingFile" fileName="./logs/msgcore.log" filePattern="./logs/msgcore.%i.log.gz" ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>[%d] %t [%p,%c:%L] %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="3" />
+		</RollingFile>
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<PatternLayout pattern="[%d] %t [%p,%c:%L] %m%n" />
+		</Console>
+	</Appenders>
+
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="CONSOLE" />
+		</Root>
+		<Logger name="ltj" level="debug">
+			<AppenderRef ref="rollingFile" />
+			<AppenderRef ref="FILE" />
+		</Logger>
+		<Logger name="org.jboss.mq" level="error">
+			<AppenderRef ref="FILE" />
+		</Logger>
+		<Logger name="org.jboss.remoting" level="info">
+			<AppenderRef ref="FILE" />
+		</Logger>
+
+		<logger name="org.springframework" level="info" />
+		<logger name="org.springframework.jdbc.core.JdbcTemplate" level="debug" />
+		<logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="trace" />
+		<logger name="org.hibernate.ejb" level="info" />
+		<logger name="org.hibernate.engine" level="info" />
+
+		<logger name="org.apache.activemq.transport.AbstractInactivityMonitor" level="info" />
+
+		<logger name="org.apache.activemq.ActiveMQSession" level="info" />
+		<!-- set level to INFO to suppress messages:
+   	[DEBUG,org.apache.activemq.ActiveMQSession:572] ID:Mac-H97I.nc.rr.com-57359-1482084873564-1:5:1 Transaction Commit :null 
+   	[DEBUG,org.apache.activemq.ActiveMQSession:572] ID:twang-pc-52098-1482089241059-1:4:1 Transaction Commit :TX:ID:twang-pc-52098-1482089241059-1:4:5
+   	[DEBUG,org.apache.activemq.ActiveMQSession:593] ID:twang-pc-52098-1482089241059-3:4:4 Transaction Rollback, txid:TX:ID:twang-pc-52098-1482089241059-3:4:4
+   -->
+
+		<logger name="org.apache.activemq.TransactionContext" level="debug" />
+		<!-- set level to INFO to suppress messages:
+   	[DEBUG,org.apache.activemq.TransactionContext:249] Begin:TX:ID:twang-pc-53168-1482094267152-1:5:3
+	[DEBUG,org.apache.activemq.TransactionContext:318] Commit: TX:ID:twang-pc-53168-1482094267152-1:5:1 syncCount: 1
+   	[DEBUG,org.apache.activemq.TransactionContext:276] Rollback: TX:ID:twang-pc-52098-1482089241059-3:4:4 syncCount: 1
+   	[DEBUG,org.apache.activemq.ActiveMQMessageConsumer:848] on close, rollback duplicate: ID:twang-pc-52098-1482089241059-1:17:1:1:1
+   -->
+	</Loggers>
+</Configuration>

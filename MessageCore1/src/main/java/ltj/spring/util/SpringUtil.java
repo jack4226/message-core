@@ -6,7 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -16,7 +17,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public final class SpringUtil {
-	static final Logger logger = Logger.getLogger(SpringUtil.class);
+	static final Logger logger = LogManager.getLogger(SpringUtil.class);
 
 	private static AnnotationConfigApplicationContext appConfCtx = null;
 	

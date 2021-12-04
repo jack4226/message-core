@@ -3,7 +3,8 @@ package ltj.message.dao.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import ltj.message.vo.ReloadFlagsVo;
 
 @Component("reloadFlagsDao")
 public class ReloadFlagsJdbcDao extends AbstractDao implements ReloadFlagsDao {
-	protected static final Logger logger = Logger.getLogger(ReloadFlagsJdbcDao.class);
+	protected static final Logger logger = LogManager.getLogger(ReloadFlagsJdbcDao.class);
 	
 	@Override
 	public ReloadFlagsVo select() {

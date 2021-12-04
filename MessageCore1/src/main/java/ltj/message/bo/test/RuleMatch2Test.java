@@ -11,7 +11,8 @@ import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ import ltj.message.constant.XHeaderName;
 import ltj.message.vo.rule.RuleVo;
 
 public class RuleMatch2Test extends BoTestBase {
-	static final Logger logger = Logger.getLogger(RuleMatch2Test.class);
+	static final Logger logger = LogManager.getLogger(RuleMatch2Test.class);
 	@Resource
 	private RulesDataBo rulesDataBo;
 	@Resource

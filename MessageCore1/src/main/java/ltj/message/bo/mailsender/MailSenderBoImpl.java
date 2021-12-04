@@ -5,7 +5,8 @@ import java.util.Map;
 import javax.mail.Address;
 import javax.mail.MessagingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import ltj.jbatch.pool.NamedPools;
@@ -19,7 +20,7 @@ import ltj.jbatch.smtp.SmtpException;
  */
 @Component("mailSenderBo")
 public class MailSenderBoImpl extends MailSenderBase {
-	static final Logger logger = Logger.getLogger(MailSenderBoImpl.class);
+	static final Logger logger = LogManager.getLogger(MailSenderBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	/**

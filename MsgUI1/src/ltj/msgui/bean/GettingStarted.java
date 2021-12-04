@@ -6,10 +6,11 @@ import java.util.List;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GettingStarted {
-	static final Logger logger = Logger.getLogger(GettingStarted.class);
+	static final Logger logger = LogManager.getLogger(GettingStarted.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private String titleKey;

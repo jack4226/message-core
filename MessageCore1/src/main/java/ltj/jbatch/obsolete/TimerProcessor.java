@@ -3,7 +3,8 @@ package ltj.jbatch.obsolete;
 import javax.jms.JMSException;
 import javax.mail.MessagingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.RunnableProcessor;
 import ltj.message.bo.mailreader.DuplicateCheckDao;
@@ -14,7 +15,7 @@ import ltj.spring.util.SpringUtil;
  * test processor
  */
 public class TimerProcessor extends RunnableProcessor {
-	static final Logger logger = Logger.getLogger(TimerProcessor.class);
+	static final Logger logger = LogManager.getLogger(TimerProcessor.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private DuplicateCheckDao duplicateCheck = null;

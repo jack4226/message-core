@@ -2,7 +2,8 @@ package ltj.jbatch.obsolete;
 
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 
 import ltj.jbatch.app.JbEventBroker;
@@ -15,7 +16,7 @@ import ltj.jbatch.app.Processor;
  */
 class QueueReaderThread extends Thread implements java.io.Serializable {
 	private static final long serialVersionUID = 7418816567428963622L;
-	static final Logger logger = Logger.getLogger(QueueReaderThread.class);
+	static final Logger logger = LogManager.getLogger(QueueReaderThread.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private final QueueReader queServer;

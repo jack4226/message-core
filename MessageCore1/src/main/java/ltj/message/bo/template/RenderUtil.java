@@ -14,7 +14,8 @@ import java.util.Set;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.bo.mailinglist.MailingListUtil;
 import ltj.message.constant.AddressType;
@@ -47,7 +48,7 @@ import ltj.vo.template.GlobalVariableVo;
 import ltj.vo.template.TemplateVariableVo;
 
 public final class RenderUtil {
-	static final Logger logger = Logger.getLogger(RenderUtil.class);
+	static final Logger logger = LogManager.getLogger(RenderUtil.class);
 	public static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final String LF = System.getProperty("line.separator", "\n");
 	

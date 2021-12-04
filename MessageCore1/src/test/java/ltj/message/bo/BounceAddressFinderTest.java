@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.bo.inbox.BounceAddressFinder;
@@ -15,7 +16,7 @@ import ltj.message.bo.test.BoTestBase;
 import ltj.message.util.StringUtil;
 
 public class BounceAddressFinderTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(BounceAddressFinderTest.class);
+	static final Logger logger = LogManager.getLogger(BounceAddressFinderTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	static final String LF = System.getProperty("line.separator", "\n");

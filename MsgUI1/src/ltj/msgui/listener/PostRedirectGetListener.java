@@ -17,7 +17,8 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a JSF Phase Listener, not a servlet listener.
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
  */
 public class PostRedirectGetListener implements PhaseListener {
 	private static final long serialVersionUID = -3904347364541320388L;
-	static final Logger logger = Logger.getLogger(PostRedirectGetListener.class);
+	static final Logger logger = LogManager.getLogger(PostRedirectGetListener.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
     private static final String ALL_FACES_MESSAGES_ID = "PostRedirectGetListener.allFacesMessages";

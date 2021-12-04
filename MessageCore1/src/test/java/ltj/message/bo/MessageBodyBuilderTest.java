@@ -3,7 +3,8 @@ package ltj.message.bo;
 import static org.junit.Assert.*;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.bean.MessageBean;
@@ -14,7 +15,7 @@ import ltj.message.dao.idtokens.EmailIdParser;
 import ltj.message.util.StringUtil;
 
 public class MessageBodyBuilderTest {
-	static final Logger logger = Logger.getLogger(MessageBodyBuilderTest.class);
+	static final Logger logger = LogManager.getLogger(MessageBodyBuilderTest.class);
 
 	@Test
 	public void testAppendTextToHtml() {

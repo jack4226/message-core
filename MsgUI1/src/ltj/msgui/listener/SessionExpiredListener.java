@@ -5,7 +5,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.user.SessionUploadDao;
 import ltj.message.dao.user.UserDao;
@@ -20,7 +21,7 @@ import ltj.msgui.util.SpringUtil;
  * state.
  */
 public class SessionExpiredListener implements HttpSessionListener {
-	static final Logger logger = Logger.getLogger(SessionExpiredListener.class);
+	static final Logger logger = LogManager.getLogger(SessionExpiredListener.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	public SessionExpiredListener() {

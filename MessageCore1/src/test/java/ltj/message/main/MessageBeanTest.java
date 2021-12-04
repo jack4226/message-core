@@ -7,7 +7,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.bean.BodypartUtil;
@@ -20,7 +21,7 @@ import ltj.message.util.FileUtil;
 import ltj.vo.outbox.MsgStreamVo;
 
 public class MessageBeanTest extends DaoTestBase {
-	static final Logger logger = Logger.getLogger(MessageBeanTest.class);
+	static final Logger logger = LogManager.getLogger(MessageBeanTest.class);
 	
 	@Resource
 	MsgStreamDao msgStreamDao;

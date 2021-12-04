@@ -18,7 +18,8 @@ import java.net.URLConnection;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.Processor;
 
@@ -27,7 +28,7 @@ import ltj.jbatch.app.Processor;
  */
 public final class HttpServer implements Processor, Serializable {
 	private static final long serialVersionUID = 4857593043104131177L;
-	static final Logger logger = Logger.getLogger(HttpServer.class);
+	static final Logger logger = LogManager.getLogger(HttpServer.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	// private Properties props;

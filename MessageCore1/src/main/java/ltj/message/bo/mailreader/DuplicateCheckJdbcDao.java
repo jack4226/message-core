@@ -7,7 +7,8 @@ import java.util.GregorianCalendar;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -24,7 +25,7 @@ import ltj.spring.util.SpringUtil;
  */
 @Component("duplicateCheck")
 public class DuplicateCheckJdbcDao implements DuplicateCheckDao {
-	static final Logger logger = Logger.getLogger(DuplicateCheckJdbcDao.class);
+	static final Logger logger = LogManager.getLogger(DuplicateCheckJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired

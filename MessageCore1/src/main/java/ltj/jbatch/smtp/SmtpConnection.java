@@ -13,7 +13,8 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.constant.MailServerType;
 import ltj.message.util.EmailAddrUtil;
@@ -32,7 +33,7 @@ import ltj.message.vo.SmtpConnVo;
  */
 public final class SmtpConnection implements java.io.Serializable {
 	private static final long serialVersionUID = -2482207330299000973L;
-	static final Logger logger = Logger.getLogger(SmtpConnection.class);
+	static final Logger logger = LogManager.getLogger(SmtpConnection.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private final SmtpConnVo smtpConnVo;

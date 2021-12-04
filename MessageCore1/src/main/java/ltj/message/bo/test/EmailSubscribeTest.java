@@ -11,7 +11,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +35,7 @@ import ltj.spring.util.SpringTaskConfig;
 @ContextConfiguration(classes={SpringAppConfig.class, SpringJmsConfig.class, SpringTaskConfig.class})
 @FixMethodOrder
 public class EmailSubscribeTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(EmailSubscribeTest.class);
+	static final Logger logger = LogManager.getLogger(EmailSubscribeTest.class);
 	@Resource
 	private SimpleEmailSender mSend;
 	@Resource

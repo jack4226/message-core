@@ -11,7 +11,8 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.bo.template.RenderUtil;
@@ -28,7 +29,7 @@ import ltj.message.vo.emailaddr.TemplateRenderVo;
 import ltj.vo.template.BodyTemplateVo;
 
 public class RenderUtilTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(RenderUtilTest.class);
+	static final Logger logger = LogManager.getLogger(RenderUtilTest.class);
 	
 	public static final String LF = System.getProperty("line.separator", "\n");
 	

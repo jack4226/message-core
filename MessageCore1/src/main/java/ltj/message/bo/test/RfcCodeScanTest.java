@@ -2,14 +2,15 @@ package ltj.message.bo.test;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bo.inbox.RfcCodeScan;
 
 public class RfcCodeScanTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(RfcCodeScanTest.class);
+	static final Logger logger = LogManager.getLogger(RfcCodeScanTest.class);
 	
 	@Test
 	public void testSoftBounce() throws Exception {

@@ -12,7 +12,8 @@ import java.util.StringTokenizer;
 
 import javax.mail.Address;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.htmlparser.util.ParserException;
 
 /**
@@ -22,7 +23,7 @@ import org.htmlparser.util.ParserException;
  */
 public final class MessageBean extends BodypartBean implements java.io.Serializable {
 	private static final long serialVersionUID = -7651754840464120630L;
-	static final Logger logger = Logger.getLogger(MessageBean.class);
+	static final Logger logger = LogManager.getLogger(MessageBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private Address[] from, to, cc, bcc, replyto, forward;

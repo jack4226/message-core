@@ -5,13 +5,14 @@ import java.util.List;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.vo.rule.RuleLogicVo;
 import ltj.msgui.util.FacesUtil;
 
 public class MsgBuiltInRulesBean extends MsgRulesBean {
-	protected static final Logger logger = Logger.getLogger(MsgBuiltInRulesBean.class);
+	protected static final Logger logger = LogManager.getLogger(MsgBuiltInRulesBean.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	public DataModel getAll() {

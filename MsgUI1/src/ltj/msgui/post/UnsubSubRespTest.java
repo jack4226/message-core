@@ -10,7 +10,8 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ import ltj.spring.util.SpringUtil;
 
 @FixMethodOrder
 public class UnsubSubRespTest {
-	static Logger logger = Logger.getLogger(UnsubSubRespTest.class);
+	static Logger logger = LogManager.getLogger(UnsubSubRespTest.class);
 
 	private final String USER_AGENT = "Mozilla/5.0";
 

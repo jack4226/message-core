@@ -9,7 +9,8 @@ import javax.jms.Message;
 import javax.jms.MessageFormatException;
 import javax.jms.MessageListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
@@ -23,7 +24,7 @@ import ltj.message.vo.QueueReaderVo;
  */
 public class QueueListener extends JbThread implements MessageListener {
 	private static final long serialVersionUID = -3578869656621657472L;
-	static final Logger logger = Logger.getLogger(QueueListener.class);
+	static final Logger logger = LogManager.getLogger(QueueListener.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private final QueueReaderVo queueReaderVo;

@@ -18,7 +18,8 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.bo.template.RenderUtil;
 import ltj.message.dao.client.ClientUtil;
@@ -33,7 +34,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class EmailTemplatesBean {
-	static final Logger logger = Logger.getLogger(EmailTemplatesBean.class);
+	static final Logger logger = LogManager.getLogger(EmailTemplatesBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private EmailTemplateDao emailTemplateDao = null;

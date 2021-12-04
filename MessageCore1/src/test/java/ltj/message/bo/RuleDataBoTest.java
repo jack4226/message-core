@@ -7,7 +7,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ import ltj.message.vo.rule.RuleElementVo;
 import ltj.message.vo.rule.RuleVo;
 
 public class RuleDataBoTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(RuleDataBoTest.class);
+	static final Logger logger = LogManager.getLogger(RuleDataBoTest.class);
 	
 	@Resource
 	private RulesDataBo rulesDataBo;

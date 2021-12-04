@@ -28,7 +28,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.bo.mailsender.MessageBodyBuilder;
 import ltj.message.constant.Constants;
@@ -38,7 +39,7 @@ import ltj.message.util.EmailAddrUtil;
 import ltj.message.util.StringUtil;
 
 public final class MessageBeanUtil {
-	static final Logger logger = Logger.getLogger(MessageBeanUtil.class);
+	static final Logger logger = LogManager.getLogger(MessageBeanUtil.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	final static String LF = System.getProperty("line.separator", "\n");

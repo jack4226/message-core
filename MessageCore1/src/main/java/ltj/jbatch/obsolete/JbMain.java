@@ -23,7 +23,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -43,7 +44,7 @@ import ltj.spring.util.SpringUtil;
  * JBatch is a java batch job container.
  */
 public final class JbMain implements Runnable, JbMainMBean {
-	static final Logger logger = Logger.getLogger(JbMain.class);
+	static final Logger logger = LogManager.getLogger(JbMain.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private static JbMain theMonitor = null;

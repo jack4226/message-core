@@ -7,7 +7,8 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.mail.MessagingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
@@ -18,7 +19,7 @@ import ltj.message.bo.task.TaskDispatcher;
 import ltj.message.exception.DataValidationException;
 
 public class RuleEngineListener implements MessageListener {
-	static final Logger logger = Logger.getLogger(RuleEngineListener.class);
+	static final Logger logger = LogManager.getLogger(RuleEngineListener.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	@Autowired

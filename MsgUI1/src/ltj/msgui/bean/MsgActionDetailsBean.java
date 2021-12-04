@@ -13,7 +13,8 @@ import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.ServletContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -26,7 +27,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class MsgActionDetailsBean {
-	static final Logger logger = Logger.getLogger(MsgActionDetailsBean.class);
+	static final Logger logger = LogManager.getLogger(MsgActionDetailsBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 

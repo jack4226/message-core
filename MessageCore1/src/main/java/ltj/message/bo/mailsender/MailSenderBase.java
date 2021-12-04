@@ -22,7 +22,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ltj.data.preload.RuleNameEnum;
@@ -61,7 +62,7 @@ import ltj.vo.outbox.MsgStreamVo;
  * @author Administrator
  */
 public abstract class MailSenderBase {
-	protected static final Logger logger = Logger.getLogger(MailSenderBase.class);
+	protected static final Logger logger = LogManager.getLogger(MailSenderBase.class);
 	protected static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	protected boolean debugSession = false;

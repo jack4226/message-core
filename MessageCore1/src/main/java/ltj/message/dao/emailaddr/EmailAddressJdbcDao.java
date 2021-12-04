@@ -15,7 +15,8 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DeadlockLoserDataAccessException;
@@ -44,7 +45,7 @@ import ltj.message.vo.emailaddr.EmailAddressVo;
 
 @Component("emailAddressDao")
 public class EmailAddressJdbcDao extends AbstractDao implements EmailAddressDao {
-	static final Logger logger = Logger.getLogger(EmailAddressJdbcDao.class);
+	static final Logger logger = LogManager.getLogger(EmailAddressJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	@Override

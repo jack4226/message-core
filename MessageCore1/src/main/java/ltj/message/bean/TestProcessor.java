@@ -12,7 +12,8 @@ import javax.jms.Message;
 import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.HostUtil;
 import ltj.jbatch.app.Processor;
@@ -21,7 +22,7 @@ import ltj.jbatch.app.Processor;
  * test processor
  */
 public class TestProcessor implements Processor {
-	static final Logger logger = Logger.getLogger(TestProcessor.class);
+	static final Logger logger = LogManager.getLogger(TestProcessor.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private Properties properties;
@@ -88,7 +89,7 @@ public class TestProcessor implements Processor {
 	// implement a simple message consumer
 	// to be used by ltj.test.testQueueSvr
 	void processMessage(Message msg) throws Exception {
-		final Logger logger = Logger.getLogger("ltj.queueout");
+		final Logger logger = LogManager.getLogger("ltj.queueout");
 
 		MessageBean msgBean = null;
 		try {

@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * create a named pool. A pool contains sub-pools, and the sub-pool could be
@@ -31,7 +32,7 @@ import org.apache.log4j.Logger;
  * </pre>
  */
 public final class NamedPools {
-	static final Logger logger = Logger.getLogger(NamedPools.class);
+	static final Logger logger = LogManager.getLogger(NamedPools.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private final Map<String, ObjectPool> pools;

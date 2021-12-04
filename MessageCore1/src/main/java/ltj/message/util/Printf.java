@@ -30,7 +30,7 @@ public class Printf {
 
 	public static void main(String[] args) {
 		System.out.println(Printf.sprintf("%-20s", "Field Name"));
-		Object[] objs = new Object[] {"-------------", new Integer(10)};
+		Object[] objs = new Object[] {"-------------", Integer.valueOf(10)};
 		System.out.println(Printf.sprintf("%-20s : %-5d", objs));
 	}
 }

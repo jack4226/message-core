@@ -18,7 +18,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.bean.BodypartBean;
@@ -43,7 +44,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class MailingListComposeBean {
-	static final Logger logger = Logger.getLogger(MailingListComposeBean.class);
+	static final Logger logger = LogManager.getLogger(MailingListComposeBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final boolean isInfoEnabled = logger.isInfoEnabled();
 	final static String LF = System.getProperty("line.separator","\n");

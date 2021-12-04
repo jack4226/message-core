@@ -9,7 +9,8 @@ package ltj.jbatch.obsolete;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
@@ -46,7 +47,7 @@ import ltj.message.vo.QueueReaderVo;
 class QueueReader extends JbThread implements java.io.Serializable,
 		JbEventListener {
 	private static final long serialVersionUID = -7345655559355669343L;
-	protected static final Logger logger = Logger.getLogger(QueueReader.class);
+	protected static final Logger logger = LogManager.getLogger(QueueReader.class);
 
 	private final QueueReaderVo queueReaderVo;
 	private JmsTemplate jmsTemplate;

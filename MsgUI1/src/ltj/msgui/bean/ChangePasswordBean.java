@@ -4,7 +4,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.user.UserDao;
 import ltj.message.vo.UserVo;
@@ -12,7 +13,7 @@ import ltj.msgui.filter.SessionTimeoutFilter;
 import ltj.msgui.util.SpringUtil;
 
 public class ChangePasswordBean {
-	static final Logger logger = Logger.getLogger(ChangePasswordBean.class);
+	static final Logger logger = LogManager.getLogger(ChangePasswordBean.class);
 	private String currPassword = null;
 	private String password = null;
 	private String confirm = null;

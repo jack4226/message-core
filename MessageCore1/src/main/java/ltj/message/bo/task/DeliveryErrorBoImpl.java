@@ -3,7 +3,8 @@ package ltj.message.bo.task;
 import java.sql.Timestamp;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -26,7 +27,7 @@ import ltj.vo.outbox.DeliveryStatusVo;
 @Scope(value="prototype")
 @Lazy(value=true)
 public class DeliveryErrorBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(DeliveryErrorBoImpl.class);
+	static final Logger logger = LogManager.getLogger(DeliveryErrorBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired

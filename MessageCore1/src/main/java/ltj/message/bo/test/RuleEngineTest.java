@@ -6,7 +6,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -23,7 +24,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
 public class RuleEngineTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(RuleEngineTest.class);
+	static final Logger logger = LogManager.getLogger(RuleEngineTest.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Resource

@@ -1,6 +1,7 @@
 package ltj.message.dao.customer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +10,7 @@ import ltj.message.dao.abstrct.AbstractDao;
 @Repository
 @Component("custSequenceDao")
 public class CustSequenceJdbcDao extends AbstractDao implements CustSequenceDao {
-	protected static final Logger logger = Logger.getLogger(CustSequenceJdbcDao.class);
+	protected static final Logger logger = LogManager.getLogger(CustSequenceJdbcDao.class);
 	
 	@Override
 	public long findNextValue() {

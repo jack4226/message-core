@@ -14,7 +14,8 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -38,7 +39,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 
 @FixMethodOrder
 public class MsgOutboxBoTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(MsgOutboxBoTest.class);
+	static final Logger logger = LogManager.getLogger(MsgOutboxBoTest.class);
 	@Resource
 	private MsgOutboxBo msgOutboxBo;
 	@Resource

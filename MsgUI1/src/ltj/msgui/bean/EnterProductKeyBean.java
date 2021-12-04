@@ -1,13 +1,14 @@
 package ltj.msgui.bean;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.common.ProductKey;
 import ltj.message.dao.client.ClientDao;
 import ltj.msgui.util.SpringUtil;
 
 public class EnterProductKeyBean {
-	static final Logger logger = Logger.getLogger(EnterProductKeyBean.class);
+	static final Logger logger = LogManager.getLogger(EnterProductKeyBean.class);
 	private String name = null;
 	private String productKey = null;
 	private String message = null;

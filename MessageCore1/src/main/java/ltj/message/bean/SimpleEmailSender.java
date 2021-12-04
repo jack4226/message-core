@@ -17,7 +17,8 @@ import javax.mail.Transport;
 import javax.mail.URLName;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.constant.MailProtocol;
 import ltj.message.constant.MailServerType;
@@ -30,7 +31,7 @@ import ltj.message.constant.XHeaderName;
  */
 public class SimpleEmailSender implements java.io.Serializable {
 	private static final long serialVersionUID = -4393953612684807498L;
-	protected static final Logger logger = Logger.getLogger(SimpleEmailSender.class);
+	protected static final Logger logger = LogManager.getLogger(SimpleEmailSender.class);
 	protected final static boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private final Properties smtpProps;

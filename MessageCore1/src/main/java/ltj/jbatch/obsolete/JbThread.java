@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.vo.ServerBaseVo;
 
@@ -14,7 +15,7 @@ import ltj.message.vo.ServerBaseVo;
  */
 public abstract class JbThread extends Thread implements java.io.Serializable {
 	private static final long serialVersionUID = 4237270399644566809L;
-	protected static final Logger logger = Logger.getLogger(JbThread.class);
+	protected static final Logger logger = LogManager.getLogger(JbThread.class);
 	protected final static boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	protected final ServerBaseVo serverBaseVo;

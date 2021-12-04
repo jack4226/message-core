@@ -1,13 +1,14 @@
 package ltj.message.external;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.emailaddr.EmailVariableDao;
 import ltj.message.exception.DataValidationException;
 import ltj.spring.util.SpringUtil;
 
 public class CustomerNameResolver implements VariableResolver {
-	static final Logger logger = Logger.getLogger(CustomerNameResolver.class);
+	static final Logger logger = LogManager.getLogger(CustomerNameResolver.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	public String process(long addrId) throws DataValidationException {

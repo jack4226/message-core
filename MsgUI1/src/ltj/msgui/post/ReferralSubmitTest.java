@@ -11,7 +11,8 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.dao.emailaddr.EmailAddressDao;
@@ -26,7 +27,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 import ltj.spring.util.SpringUtil;
 
 public class ReferralSubmitTest {
-	static Logger logger = Logger.getLogger(ReferralSubmitTest.class);
+	static Logger logger = LogManager.getLogger(ReferralSubmitTest.class);
 
 	private final String USER_AGENT = "Mozilla/5.0";
 

@@ -11,7 +11,8 @@ import javax.mail.MessagingException;
 import javax.mail.Part;
 import javax.mail.Transport;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.RunnableProcessor;
 import ltj.jbatch.queue.JmsProcessor;
@@ -26,9 +27,9 @@ import ltj.message.vo.MailBoxVo;
  * @author Administrator
  */
 public class MailProcessor extends RunnableProcessor {
-	static final Logger logger = Logger.getLogger(MailProcessor.class);
+	static final Logger logger = LogManager.getLogger(MailProcessor.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
-	static Logger duplicateReport = Logger.getLogger("ltj.report.duplicate");
+	static Logger duplicateReport = LogManager.getLogger("ltj.report.duplicate");
 
 	private final JmsProcessor jmsProcessor;
 	private final MailBoxVo mailBoxVo;

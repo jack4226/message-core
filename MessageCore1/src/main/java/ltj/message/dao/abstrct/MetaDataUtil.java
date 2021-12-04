@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.constant.Constants;
 import ltj.message.util.PrintUtil;
@@ -25,7 +26,7 @@ import ltj.message.vo.rule.RuleLogicVo;
 import ltj.spring.util.SpringUtil;
 
 public class MetaDataUtil {
-	static final Logger logger = Logger.getLogger(MetaDataUtil.class);
+	static final Logger logger = LogManager.getLogger(MetaDataUtil.class);
 
 	private static Map<String, Table> tableMetaData = new LinkedHashMap<>();
 

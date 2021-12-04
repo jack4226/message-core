@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ import ltj.message.vo.emailaddr.EmailTemplateVo;
 
 @Component("emailTemplateDao")
 public class EmailTemplateJdbcDao extends AbstractDao implements EmailTemplateDao {
-	static final Logger logger = Logger.getLogger(EmailTemplateJdbcDao.class);
+	static final Logger logger = LogManager.getLogger(EmailTemplateJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private static final class EmailTemplateMapper implements RowMapper<EmailTemplateVo> {

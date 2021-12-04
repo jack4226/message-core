@@ -12,7 +12,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.htmlparser.util.ParserException;
 
 import ltj.message.bo.mailsender.MessageBodyBuilder;
@@ -25,7 +26,7 @@ import ltj.message.constant.XHeaderName;
  * @author Administrator
  */
 public class MailReaderReply {
-	static final Logger logger = Logger.getLogger(MailReaderReply.class);
+	static final Logger logger = LogManager.getLogger(MailReaderReply.class);
 	/**
 	 * compose a reply message.
 	 * 

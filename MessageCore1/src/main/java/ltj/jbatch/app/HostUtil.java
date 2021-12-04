@@ -10,12 +10,13 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.util.PrintUtil;
 
 public class HostUtil {
-	static final Logger logger = Logger.getLogger(HostUtil.class);
+	static final Logger logger = LogManager.getLogger(HostUtil.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	/** host IP address and host name */

@@ -28,7 +28,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MailDateFormat;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.app.HostUtil;
 import ltj.jbatch.common.EmailSender;
@@ -44,7 +45,7 @@ import ltj.message.vo.inbox.MsgHeaderVo;
 import ltj.message.vo.inbox.MsgInboxVo;
 
 public final class MessageBeanBuilder {
-	static final Logger logger = Logger.getLogger(MessageBeanBuilder.class);
+	static final Logger logger = LogManager.getLogger(MessageBeanBuilder.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	public static final String MSG_RAW_STREAM = "msg_raw_stream";

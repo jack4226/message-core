@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.dao.user.UserDao;
 import ltj.message.util.StringUtil;
@@ -30,7 +31,7 @@ import ltj.msgui.util.SpringUtil;
  * times out.
  */
 public class SessionTimeoutRestoreFilter implements Filter {
-	static final Logger logger = Logger.getLogger(SessionTimeoutRestoreFilter.class);
+	static final Logger logger = LogManager.getLogger(SessionTimeoutRestoreFilter.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	private String timeoutPage = "/timeout.faces";
 	private String loginPage = "/login.faces";

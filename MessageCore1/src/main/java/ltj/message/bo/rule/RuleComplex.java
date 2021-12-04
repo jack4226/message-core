@@ -2,13 +2,14 @@ package ltj.message.bo.rule;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.bean.MessageBean;
 
 public class RuleComplex extends RuleBase {
 	private static final long serialVersionUID = -3559383665410520477L;
-	protected static final Logger logger = Logger.getLogger(RuleComplex.class);
+	protected static final Logger logger = LogManager.getLogger(RuleComplex.class);
 	
 	private final List<RuleBase> ruleList;
 	

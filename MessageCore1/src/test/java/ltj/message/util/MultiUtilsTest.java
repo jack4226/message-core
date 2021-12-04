@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ import ltj.jbatch.common.ProductKey;
 import ltj.message.bean.HtmlConverter;
 
 public class MultiUtilsTest {
-	static final Logger logger = Logger.getLogger(MultiUtilsTest.class);
+	static final Logger logger = LogManager.getLogger(MultiUtilsTest.class);
 	
 	@Test
 	public void testPhoneNumberUtil() {

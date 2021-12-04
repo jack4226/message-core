@@ -5,7 +5,8 @@ import static ltj.message.constant.Constants.DEFAULT_CLIENTID;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.jbatch.common.ProductKey;
 import ltj.jbatch.obsolete.ProductUtil;
@@ -15,7 +16,7 @@ import ltj.message.vo.ClientVo;
 import ltj.spring.util.SpringUtil;
 
 public final class ClientUtil {
-	static final Logger logger = Logger.getLogger(ClientUtil.class);
+	static final Logger logger = LogManager.getLogger(ClientUtil.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	private static ClientDao clientDao = null;

@@ -25,11 +25,12 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public final class StringUtil {
-	static final Logger logger = Logger.getLogger(StringUtil.class);
+	static final Logger logger = LogManager.getLogger(StringUtil.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	public static final String LF = System.getProperty("line.separator", "\n");
 

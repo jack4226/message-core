@@ -12,7 +12,8 @@ import javax.jms.ObjectMessage;
 import javax.mail.Address;
 import javax.mail.MessagingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -33,7 +34,7 @@ import ltj.message.exception.DataValidationException;
  * @author Administrator
  */
 public class MailSenderProcessor extends MailSenderBase implements Processor {
-	static final Logger logger = Logger.getLogger(MailSenderProcessor.class);
+	static final Logger logger = LogManager.getLogger(MailSenderProcessor.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private JmsProcessor jmsProcessor;

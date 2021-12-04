@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.data.preload.RuleNameEnum;
 import ltj.message.util.StringUtil;
@@ -23,7 +24,7 @@ import ltj.message.util.StringUtil;
  * Scan input string for RFC1893/RFC2821 mail status code
  */
 public final class RfcCodeScan {
-	static final Logger logger = Logger.getLogger(RfcCodeScan.class);
+	static final Logger logger = LogManager.getLogger(RfcCodeScan.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	final int maxLenToScan = 8192 * 4; // scan up to 32k
 	

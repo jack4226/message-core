@@ -4,7 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -18,7 +19,7 @@ import ltj.message.vo.emailaddr.EmailVariableVo;
 
 @Component("emailVariableDao")
 public class EmailVariableJdbcDao extends AbstractDao implements EmailVariableDao {
-	static final Logger logger = Logger.getLogger(EmailVariableJdbcDao.class);
+	static final Logger logger = LogManager.getLogger(EmailVariableJdbcDao.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Override

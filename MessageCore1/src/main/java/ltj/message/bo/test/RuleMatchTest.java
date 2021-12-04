@@ -11,7 +11,8 @@ import javax.annotation.Resource;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.data.preload.RuleNameEnum;
@@ -25,7 +26,7 @@ import ltj.message.constant.Constants;
 import ltj.message.constant.XHeaderName;
 
 public class RuleMatchTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(RuleMatchTest.class);
+	static final Logger logger = LogManager.getLogger(RuleMatchTest.class);
 	
 	Timestamp updtTime = new Timestamp(System.currentTimeMillis());
 	@Resource

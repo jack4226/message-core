@@ -8,11 +8,12 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RuleSimple extends RuleBase {
 	private static final long serialVersionUID = -1386955504774162841L;
-	protected static final Logger logger = Logger.getLogger(RuleSimple.class);
+	protected static final Logger logger = LogManager.getLogger(RuleSimple.class);
 	
 	final String targetText;
 	

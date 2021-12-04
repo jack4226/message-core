@@ -13,7 +13,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ltj.message.bo.customer.CustomerBo;
 import ltj.message.constant.Constants;
@@ -31,7 +32,7 @@ import ltj.msgui.util.FacesUtil;
 import ltj.msgui.util.SpringUtil;
 
 public class CustomersListBean {
-	static final Logger logger = Logger.getLogger(CustomersListBean.class);
+	static final Logger logger = LogManager.getLogger(CustomersListBean.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	private CustomerDao customerDao = null;

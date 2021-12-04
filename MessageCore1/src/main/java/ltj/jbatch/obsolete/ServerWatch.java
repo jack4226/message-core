@@ -2,13 +2,14 @@ package ltj.jbatch.obsolete;
 
 import java.util.TimerTask;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * watch status of started servers and jobs. restart failed servers and jobs.
  */
 class ServerWatch extends TimerTask {
-	static final Logger logger = Logger.getLogger(ServerWatch.class);
+	static final Logger logger = LogManager.getLogger(ServerWatch.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 
 	final JbMain jbMain;

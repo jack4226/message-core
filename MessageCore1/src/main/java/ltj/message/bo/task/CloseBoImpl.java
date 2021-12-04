@@ -1,6 +1,7 @@
 package ltj.message.bo.task;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -16,7 +17,7 @@ import ltj.message.vo.inbox.MsgInboxVo;
 @Scope(value="prototype")
 @Lazy(value=true)
 public class CloseBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(CloseBoImpl.class);
+	static final Logger logger = LogManager.getLogger(CloseBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired

@@ -8,7 +8,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,7 +21,7 @@ import ltj.message.util.BlobUtil;
 import ltj.message.vo.emailaddr.EmailTemplateVo;
 
 public class CalendarTest extends DaoTestBase {
-	protected static final Logger logger = Logger.getLogger(CalendarTest.class);
+	protected static final Logger logger = LogManager.getLogger(CalendarTest.class);
 	
 	@Resource
 	private EmailTemplateDao emailTemplateDao;

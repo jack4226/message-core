@@ -2,13 +2,14 @@ package ltj.message.util;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.jbatch.common.PasswordUtil;
 
 public class PasswordUtilTest {
-	static final Logger logger = Logger.getLogger(PasswordUtilTest.class);
+	static final Logger logger = LogManager.getLogger(PasswordUtilTest.class);
 	
 	@Test
 	public void testAuthenticate() {

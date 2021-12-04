@@ -25,10 +25,11 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public final class ServiceLocator {
-	static final Logger logger = Logger.getLogger(ServiceLocator.class);
+	static final Logger logger = LogManager.getLogger(ServiceLocator.class);
 
 	private ServiceLocator() {
 		// static only

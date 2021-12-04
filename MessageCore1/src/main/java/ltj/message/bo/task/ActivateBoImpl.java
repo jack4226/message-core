@@ -7,7 +7,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -25,7 +26,7 @@ import ltj.message.vo.emailaddr.EmailAddressVo;
 @Scope(value="prototype")
 @Lazy(value=true)
 public class ActivateBoImpl extends TaskBaseAdaptor {
-	static final Logger logger = Logger.getLogger(ActivateBoImpl.class);
+	static final Logger logger = LogManager.getLogger(ActivateBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	
 	@Autowired

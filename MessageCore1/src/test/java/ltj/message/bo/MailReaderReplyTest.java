@@ -8,7 +8,8 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import ltj.message.bean.BodypartUtil;
@@ -21,7 +22,7 @@ import ltj.message.bo.test.BoTestBase;
 import ltj.message.util.FileUtil;
 
 public class MailReaderReplyTest extends BoTestBase {
-	static final Logger logger = Logger.getLogger(MailReaderReplyTest.class);
+	static final Logger logger = LogManager.getLogger(MailReaderReplyTest.class);
 	
 	private static String body;
 	private static String contentType;

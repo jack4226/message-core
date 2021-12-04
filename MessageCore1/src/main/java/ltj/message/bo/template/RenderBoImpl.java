@@ -16,7 +16,8 @@ import javax.mail.Part;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +48,7 @@ import ltj.vo.template.TemplateVariableVo;
 
 @Component("renderBo")
 public class RenderBoImpl implements RenderBo {
-	static final Logger logger = Logger.getLogger(RenderBoImpl.class);
+	static final Logger logger = LogManager.getLogger(RenderBoImpl.class);
 	static final boolean isDebugEnabled = logger.isDebugEnabled();
 	static final String LF = System.getProperty("line.separator","\n");
 	
