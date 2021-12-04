@@ -22,7 +22,7 @@ releases.
 -->
 <!ELEMENT jboss-web (class-loading?, security-domain?, jacc-star-role-allow?, context-root?,
    virtual-host*, use-session-cookies?, replication-config?, resource-env-ref*,
-   ejb-ref*, ejb-local-ref*,  service-ref*, resource-ref*,
+   ejb-ref*, ejb-local-ref*,  resource-ref*,
    message-destination-ref*, security-role*, message-destination*,
    webservice-description*, depends*, servlet*, max-active-sessions?, passivation-config?)>
 
@@ -552,7 +552,7 @@ where the final wsdl and any dependent files should be stored.  This location
 resides on the file system from which deployment is initiated.
 
 -->
-<!ELEMENT webservice-description ( webservice-description-name, config-name?, config-file?, wsdl-publish-location? )>
+<!ELEMENT webservice-description ( webservice-description-name, wsdl-publish-location? )>
 
 <!--
 Unique name of a webservice within a module

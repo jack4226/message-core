@@ -30,6 +30,13 @@
   		<artifactId>mysql-connector-java</artifactId>
   		<version>${mysql.connector.version}</version>
   	</dependency>
+
+	<dependency>
+		<groupId>jakarta.servlet</groupId>
+		<artifactId>jakarta.servlet-api</artifactId>
+		<version>4.0.4</version>
+		<scope>provided</scope>
+	</dependency>
 	
 	<dependency>
   		<groupId>jstl</groupId>
@@ -137,7 +144,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.3.1</version>
         <configuration>
           <warSourceDirectory>WebContent</warSourceDirectory>
         </configuration>
