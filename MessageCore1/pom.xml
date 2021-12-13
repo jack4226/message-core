@@ -13,11 +13,11 @@
 		<cglib.version>3.2.4</cglib.version>
 		<eclipselink.version>2.6.4</eclipselink.version>
 		<derby.version>10.14.2.0</derby.version>	<!-- 10.14.2.0: java 1.8, 10.15.2.0: java 1.9+ -->
-		<mysql.connector.version>8.0.16</mysql.connector.version>
+		<mysql.connector.version>[8.0.16,)</mysql.connector.version>
 		<postgresql.jdbc.version>9.4.1211.jre7</postgresql.jdbc.version>
 		<commons.dbcp.version>1.4</commons.dbcp.version>
 		<commons.pool.version>1.6</commons.pool.version>
-		<commons.lang3.version>3.5</commons.lang3.version>
+		<commons.lang3.version>3.10</commons.lang3.version>
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.io.version>2.7</commons.io.version>
 		<commons.beanutils.version>1.9.4</commons.beanutils.version>
@@ -28,7 +28,7 @@
 		<javax.mail.version>1.4.7</javax.mail.version>
 		<log4j2.version>[2.15.0,)</log4j2.version>
 		<slf4j.version>1.7.21</slf4j.version>
-		<junit.version>4.13.1</junit.version>
+		<junit.version>[4.13.1,)</junit.version>
 		<htmlparser.version>2.1</htmlparser.version>
 		<aspectjrt.version>1.8.9</aspectjrt.version>
 		<activemq-version>5.16.3</activemq-version>
